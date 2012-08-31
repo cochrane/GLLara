@@ -1,0 +1,470 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
+		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
+		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
+		525ACD5C15F0F1A700534E7D /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5A15F0F1A700534E7D /* Credits.rtf */; };
+		525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5E15F0F1A700534E7D /* GLLDocument.m */; };
+		525ACD6215F0F1A700534E7D /* GLLDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD6015F0F1A700534E7D /* GLLDocument.xib */; };
+		525ACD6515F0F1A700534E7D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD6315F0F1A700534E7D /* MainMenu.xib */; };
+		525ACD6D15F0F1A700534E7D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD6C15F0F1A700534E7D /* SenTestingKit.framework */; };
+		525ACD6E15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
+		525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD7415F0F1A700534E7D /* InfoPlist.strings */; };
+		525ACD7915F0F1A700534E7D /* GLLaraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD7815F0F1A700534E7D /* GLLaraTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		525ACD6F15F0F1A700534E7D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 525ACD3E15F0F1A700534E7D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 525ACD4615F0F1A700534E7D;
+			remoteInfo = GLLara;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		525ACD4F15F0F1A700534E7D /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		525ACD5015F0F1A700534E7D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		525ACD5315F0F1A700534E7D /* GLLara-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GLLara-Info.plist"; sourceTree = "<group>"; };
+		525ACD5515F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		525ACD5715F0F1A700534E7D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		525ACD5915F0F1A700534E7D /* GLLara-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GLLara-Prefix.pch"; sourceTree = "<group>"; };
+		525ACD5B15F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		525ACD5D15F0F1A700534E7D /* GLLDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLDocument.h; sourceTree = "<group>"; };
+		525ACD5E15F0F1A700534E7D /* GLLDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLDocument.m; sourceTree = "<group>"; };
+		525ACD6115F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLDocument.xib; sourceTree = "<group>"; };
+		525ACD6415F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLLaraTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		525ACD6C15F0F1A700534E7D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		525ACD7315F0F1A700534E7D /* GLLaraTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GLLaraTests-Info.plist"; sourceTree = "<group>"; };
+		525ACD7515F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		525ACD7715F0F1A700534E7D /* GLLaraTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLaraTests.h; sourceTree = "<group>"; };
+		525ACD7815F0F1A700534E7D /* GLLaraTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLaraTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		525ACD4415F0F1A700534E7D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		525ACD6715F0F1A700534E7D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				525ACD6D15F0F1A700534E7D /* SenTestingKit.framework in Frameworks */,
+				525ACD6E15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		525ACD3C15F0F1A700534E7D = {
+			isa = PBXGroup;
+			children = (
+				525ACD5115F0F1A700534E7D /* GLLara */,
+				525ACD7115F0F1A700534E7D /* GLLaraTests */,
+				525ACD4A15F0F1A700534E7D /* Frameworks */,
+				525ACD4815F0F1A700534E7D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		525ACD4815F0F1A700534E7D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				525ACD4715F0F1A700534E7D /* GLLara.app */,
+				525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		525ACD4A15F0F1A700534E7D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				525ACD4B15F0F1A700534E7D /* Cocoa.framework */,
+				525ACD6C15F0F1A700534E7D /* SenTestingKit.framework */,
+				525ACD4D15F0F1A700534E7D /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		525ACD4D15F0F1A700534E7D /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				525ACD4E15F0F1A700534E7D /* AppKit.framework */,
+				525ACD4F15F0F1A700534E7D /* CoreData.framework */,
+				525ACD5015F0F1A700534E7D /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		525ACD5115F0F1A700534E7D /* GLLara */ = {
+			isa = PBXGroup;
+			children = (
+				525ACD5D15F0F1A700534E7D /* GLLDocument.h */,
+				525ACD5E15F0F1A700534E7D /* GLLDocument.m */,
+				525ACD6015F0F1A700534E7D /* GLLDocument.xib */,
+				525ACD6315F0F1A700534E7D /* MainMenu.xib */,
+				525ACD5215F0F1A700534E7D /* Supporting Files */,
+			);
+			path = GLLara;
+			sourceTree = "<group>";
+		};
+		525ACD5215F0F1A700534E7D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				525ACD5315F0F1A700534E7D /* GLLara-Info.plist */,
+				525ACD5415F0F1A700534E7D /* InfoPlist.strings */,
+				525ACD5715F0F1A700534E7D /* main.m */,
+				525ACD5915F0F1A700534E7D /* GLLara-Prefix.pch */,
+				525ACD5A15F0F1A700534E7D /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		525ACD7115F0F1A700534E7D /* GLLaraTests */ = {
+			isa = PBXGroup;
+			children = (
+				525ACD7715F0F1A700534E7D /* GLLaraTests.h */,
+				525ACD7815F0F1A700534E7D /* GLLaraTests.m */,
+				525ACD7215F0F1A700534E7D /* Supporting Files */,
+			);
+			path = GLLaraTests;
+			sourceTree = "<group>";
+		};
+		525ACD7215F0F1A700534E7D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				525ACD7315F0F1A700534E7D /* GLLaraTests-Info.plist */,
+				525ACD7415F0F1A700534E7D /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		525ACD4615F0F1A700534E7D /* GLLara */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 525ACD7C15F0F1A700534E7D /* Build configuration list for PBXNativeTarget "GLLara" */;
+			buildPhases = (
+				525ACD4315F0F1A700534E7D /* Sources */,
+				525ACD4415F0F1A700534E7D /* Frameworks */,
+				525ACD4515F0F1A700534E7D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GLLara;
+			productName = GLLara;
+			productReference = 525ACD4715F0F1A700534E7D /* GLLara.app */;
+			productType = "com.apple.product-type.application";
+		};
+		525ACD6A15F0F1A700534E7D /* GLLaraTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 525ACD7F15F0F1A700534E7D /* Build configuration list for PBXNativeTarget "GLLaraTests" */;
+			buildPhases = (
+				525ACD6615F0F1A700534E7D /* Sources */,
+				525ACD6715F0F1A700534E7D /* Frameworks */,
+				525ACD6815F0F1A700534E7D /* Resources */,
+				525ACD6915F0F1A700534E7D /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				525ACD7015F0F1A700534E7D /* PBXTargetDependency */,
+			);
+			name = GLLaraTests;
+			productName = GLLaraTests;
+			productReference = 525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		525ACD3E15F0F1A700534E7D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = GLL;
+				LastUpgradeCheck = 0440;
+				ORGANIZATIONNAME = "Torsten Kammer";
+			};
+			buildConfigurationList = 525ACD4115F0F1A700534E7D /* Build configuration list for PBXProject "GLLara" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 525ACD3C15F0F1A700534E7D;
+			productRefGroup = 525ACD4815F0F1A700534E7D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				525ACD4615F0F1A700534E7D /* GLLara */,
+				525ACD6A15F0F1A700534E7D /* GLLaraTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		525ACD4515F0F1A700534E7D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */,
+				525ACD5C15F0F1A700534E7D /* Credits.rtf in Resources */,
+				525ACD6215F0F1A700534E7D /* GLLDocument.xib in Resources */,
+				525ACD6515F0F1A700534E7D /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		525ACD6815F0F1A700534E7D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		525ACD6915F0F1A700534E7D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		525ACD4315F0F1A700534E7D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				525ACD5815F0F1A700534E7D /* main.m in Sources */,
+				525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		525ACD6615F0F1A700534E7D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				525ACD7915F0F1A700534E7D /* GLLaraTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		525ACD7015F0F1A700534E7D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 525ACD4615F0F1A700534E7D /* GLLara */;
+			targetProxy = 525ACD6F15F0F1A700534E7D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		525ACD5415F0F1A700534E7D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				525ACD5515F0F1A700534E7D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		525ACD5A15F0F1A700534E7D /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				525ACD5B15F0F1A700534E7D /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		525ACD6015F0F1A700534E7D /* GLLDocument.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				525ACD6115F0F1A700534E7D /* en */,
+			);
+			name = GLLDocument.xib;
+			sourceTree = "<group>";
+		};
+		525ACD6315F0F1A700534E7D /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				525ACD6415F0F1A700534E7D /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		525ACD7415F0F1A700534E7D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				525ACD7515F0F1A700534E7D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		525ACD7A15F0F1A700534E7D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		525ACD7B15F0F1A700534E7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		525ACD7D15F0F1A700534E7D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GLLara/GLLara-Prefix.pch";
+				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		525ACD7E15F0F1A700534E7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GLLara/GLLara-Prefix.pch";
+				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		525ACD8015F0F1A700534E7D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GLLara.app/Contents/MacOS/GLLara";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GLLara/GLLara-Prefix.pch";
+				INFOPLIST_FILE = "GLLaraTests/GLLaraTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		525ACD8115F0F1A700534E7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GLLara.app/Contents/MacOS/GLLara";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GLLara/GLLara-Prefix.pch";
+				INFOPLIST_FILE = "GLLaraTests/GLLaraTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		525ACD4115F0F1A700534E7D /* Build configuration list for PBXProject "GLLara" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				525ACD7A15F0F1A700534E7D /* Debug */,
+				525ACD7B15F0F1A700534E7D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		525ACD7C15F0F1A700534E7D /* Build configuration list for PBXNativeTarget "GLLara" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				525ACD7D15F0F1A700534E7D /* Debug */,
+				525ACD7E15F0F1A700534E7D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		525ACD7F15F0F1A700534E7D /* Build configuration list for PBXNativeTarget "GLLaraTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				525ACD8015F0F1A700534E7D /* Debug */,
+				525ACD8115F0F1A700534E7D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 525ACD3E15F0F1A700534E7D /* Project object */;
+}
