@@ -18,6 +18,12 @@
 		525ACD6E15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD7415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD7915F0F1A700534E7D /* GLLaraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD7815F0F1A700534E7D /* GLLaraTests.m */; };
+		525ACD8415F0F33700534E7D /* GLLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8315F0F33700534E7D /* GLLModel.m */; };
+		525ACD8715F0F3ED00534E7D /* GLLMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8615F0F3ED00534E7D /* GLLMesh.m */; };
+		529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692C915F1568200DF2FA3 /* TRInDataStream.m */; };
+		529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692CB15F1568200DF2FA3 /* TROutDataStream.m */; };
+		529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692D015F2374F00DF2FA3 /* libz.dylib */; };
+		529692D415F24EF100DF2FA3 /* GLLBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D315F24EF100DF2FA3 /* GLLBone.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +57,17 @@
 		525ACD7515F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		525ACD7715F0F1A700534E7D /* GLLaraTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLaraTests.h; sourceTree = "<group>"; };
 		525ACD7815F0F1A700534E7D /* GLLaraTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLaraTests.m; sourceTree = "<group>"; };
+		525ACD8215F0F33700534E7D /* GLLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModel.h; sourceTree = "<group>"; };
+		525ACD8315F0F33700534E7D /* GLLModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModel.m; sourceTree = "<group>"; };
+		525ACD8515F0F3ED00534E7D /* GLLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMesh.h; sourceTree = "<group>"; };
+		525ACD8615F0F3ED00534E7D /* GLLMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMesh.m; sourceTree = "<group>"; };
+		529692C815F1568200DF2FA3 /* TRInDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRInDataStream.h; sourceTree = "<group>"; };
+		529692C915F1568200DF2FA3 /* TRInDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRInDataStream.m; sourceTree = "<group>"; };
+		529692CA15F1568200DF2FA3 /* TROutDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TROutDataStream.h; sourceTree = "<group>"; };
+		529692CB15F1568200DF2FA3 /* TROutDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TROutDataStream.m; sourceTree = "<group>"; };
+		529692D015F2374F00DF2FA3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		529692D215F24EF000DF2FA3 /* GLLBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBone.h; sourceTree = "<group>"; };
+		529692D315F24EF100DF2FA3 /* GLLBone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBone.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */,
 				525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +114,7 @@
 		525ACD4A15F0F1A700534E7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				529692D015F2374F00DF2FA3 /* libz.dylib */,
 				525ACD4B15F0F1A700534E7D /* Cocoa.framework */,
 				525ACD6C15F0F1A700534E7D /* SenTestingKit.framework */,
 				525ACD4D15F0F1A700534E7D /* Other Frameworks */,
@@ -116,11 +135,18 @@
 		525ACD5115F0F1A700534E7D /* GLLara */ = {
 			isa = PBXGroup;
 			children = (
+				529692CF15F1568700DF2FA3 /* From TR Poser */,
 				525ACD5D15F0F1A700534E7D /* GLLDocument.h */,
 				525ACD5E15F0F1A700534E7D /* GLLDocument.m */,
 				525ACD6015F0F1A700534E7D /* GLLDocument.xib */,
 				525ACD6315F0F1A700534E7D /* MainMenu.xib */,
 				525ACD5215F0F1A700534E7D /* Supporting Files */,
+				525ACD8215F0F33700534E7D /* GLLModel.h */,
+				525ACD8315F0F33700534E7D /* GLLModel.m */,
+				525ACD8515F0F3ED00534E7D /* GLLMesh.h */,
+				525ACD8615F0F3ED00534E7D /* GLLMesh.m */,
+				529692D215F24EF000DF2FA3 /* GLLBone.h */,
+				529692D315F24EF100DF2FA3 /* GLLBone.m */,
 			);
 			path = GLLara;
 			sourceTree = "<group>";
@@ -154,6 +180,17 @@
 				525ACD7415F0F1A700534E7D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		529692CF15F1568700DF2FA3 /* From TR Poser */ = {
+			isa = PBXGroup;
+			children = (
+				529692C815F1568200DF2FA3 /* TRInDataStream.h */,
+				529692C915F1568200DF2FA3 /* TRInDataStream.m */,
+				529692CA15F1568200DF2FA3 /* TROutDataStream.h */,
+				529692CB15F1568200DF2FA3 /* TROutDataStream.m */,
+			);
+			name = "From TR Poser";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,6 +305,11 @@
 			files = (
 				525ACD5815F0F1A700534E7D /* main.m in Sources */,
 				525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */,
+				525ACD8415F0F33700534E7D /* GLLModel.m in Sources */,
+				525ACD8715F0F3ED00534E7D /* GLLMesh.m in Sources */,
+				529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */,
+				529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */,
+				529692D415F24EF100DF2FA3 /* GLLBone.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,6 +393,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -358,6 +401,12 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				WARNING_CFLAGS = (
+					"-Wextra",
+					"-Wall",
+					"-Wno-unused-parameter",
+					"-Wno-semicolon-before-method-body",
+				);
 			};
 			name = Debug;
 		};
@@ -373,12 +422,19 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
+				WARNING_CFLAGS = (
+					"-Wextra",
+					"-Wall",
+					"-Wno-unused-parameter",
+					"-Wno-semicolon-before-method-body",
+				);
 			};
 			name = Release;
 		};
@@ -455,6 +511,7 @@
 				525ACD7E15F0F1A700534E7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		525ACD7F15F0F1A700534E7D /* Build configuration list for PBXNativeTarget "GLLaraTests" */ = {
 			isa = XCConfigurationList;
@@ -463,6 +520,7 @@
 				525ACD8115F0F1A700534E7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

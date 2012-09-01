@@ -1,0 +1,60 @@
+//
+//  GLLMesh.h
+//  GLLara
+//
+//  Created by Torsten Kammer on 31.08.12.
+//  Copyright (c) 2012 Torsten Kammer. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@class GLLModel;
+@class TRInDataStream;
+
+@interface GLLMesh : NSObject
+
+- (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
+
+@property (nonatomic, weak, readonly) GLLModel *model;
+
+@property (nonatomic, copy, readonly) NSString *name;
+@property (nonatomic, retain, readonly) NSArray *textures;
+
+/*
+ * Vertex buffer (format described below)
+ */
+@property (nonatomic, retain, readonly) NSData *vertexData;
+@property (nonatomic, assign, readonly) NSUInteger countOfVertices;
+
+/*
+ * Description of vertex buffer.
+ *
+ * Position and normal are 3 floats
+ * Color is 4 uint8_ts (r, g, b, a)
+ * Any texcoord is two floats.
+ * Any tangent is four floats (x, y, z, w)
+ * Bone indices is 4 uint16_ts
+ * Bone weights is 4 floats.
+ */
+@property (nonatomic, assign, readonly) NSUInteger offsetForPosition;
+@property (nonatomic, assign, readonly) NSUInteger offsetForNormal;
+@property (nonatomic, assign, readonly) NSUInteger offsetForColor;
+- (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer;
+- (NSUInteger)offsetForTangentLayer:(NSUInteger)layer;
+@property (nonatomic, assign, readonly) NSUInteger offsetForBoneIndices;
+@property (nonatomic, assign, readonly) NSUInteger offsetForBoneWeights;
+@property (nonatomic, assign, readonly) NSUInteger stride;
+
+/*
+ * Element buffer (format always uint32_ts arranged as triangles)
+ */
+@property (nonatomic, retain, readonly) NSData *elementData;
+@property (nonatomic, assign, readonly) NSUInteger countOfElements;
+
+/*
+ * Other important properties.
+ */
+@property (nonatomic, assign, readonly) NSUInteger countOfUVLayers;
+@property (nonatomic, assign, readonly) BOOL hasBoneWeights;
+
+@end

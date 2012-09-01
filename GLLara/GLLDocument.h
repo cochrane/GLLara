@@ -10,4 +10,6 @@
 
 @interface GLLDocument : NSDocument
 
+- (IBAction)loadMesh:(id)sender;
+
 @end

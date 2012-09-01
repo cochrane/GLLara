@@ -8,6 +8,8 @@
 
 #import "GLLDocument.h"
 
+#import "GLLModel.h"
+
 @implementation GLLDocument
 
 - (id)init
@@ -54,6 +56,20 @@
 	NSException *exception = [NSException exceptionWithName:@"UnimplementedMethod" reason:[NSString stringWithFormat:@"%@ is unimplemented", NSStringFromSelector(_cmd)] userInfo:nil];
 	@throw exception;
 	return YES;
+}
+
+- (IBAction)loadMesh:(id)sender
+{
+	NSOpenPanel *panel = [NSOpenPanel openPanel];
+	panel.allowedFileTypes = @[ @"mesh" ];
+	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
+		if (result != NSOKButton) return;
+		
+		NSData *data = [NSData dataWithContentsOfURL:panel.URL];
+		GLLModel *model = [[GLLModel alloc] initWithData:data];
+		
+		NSLog(@"Got model %@, with %lu bones and %lu meshes", model, model.bones.count, model.meshes.count);
+	}];
 }
 
 @end
