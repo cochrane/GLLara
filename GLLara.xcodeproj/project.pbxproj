@@ -68,6 +68,7 @@
 		529692D015F2374F00DF2FA3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		529692D215F24EF000DF2FA3 /* GLLBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBone.h; sourceTree = "<group>"; };
 		529692D315F24EF100DF2FA3 /* GLLBone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBone.m; sourceTree = "<group>"; };
+		529692D615F2590000DF2FA3 /* XNALara Model File Format.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "XNALara Model File Format.md"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +96,7 @@
 		525ACD3C15F0F1A700534E7D = {
 			isa = PBXGroup;
 			children = (
+				529692D515F258E600DF2FA3 /* XNALara File formats */,
 				525ACD5115F0F1A700534E7D /* GLLara */,
 				525ACD7115F0F1A700534E7D /* GLLaraTests */,
 				525ACD4A15F0F1A700534E7D /* Frameworks */,
@@ -191,6 +193,14 @@
 				529692CB15F1568200DF2FA3 /* TROutDataStream.m */,
 			);
 			name = "From TR Poser";
+			sourceTree = "<group>";
+		};
+		529692D515F258E600DF2FA3 /* XNALara File formats */ = {
+			isa = PBXGroup;
+			children = (
+				529692D615F2590000DF2FA3 /* XNALara Model File Format.md */,
+			);
+			name = "XNALara File formats";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
