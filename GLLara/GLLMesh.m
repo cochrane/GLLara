@@ -106,6 +106,77 @@
 }
 
 #pragma mark -
+#pragma mark Splitting
+
+- (GLLMesh *)partialMeshInBoxMin:(float *)min max:(float *)max name:(NSString *)name;
+{
+	NSMutableData *newVertices = [[NSMutableData alloc] init];
+	NSMutableData *newElements = [[NSMutableData alloc] init];
+	NSUInteger newVerticesCount = 0;
+	NSMutableDictionary *oldToNewVertices = [[NSMutableDictionary alloc] init];
+		
+	const NSUInteger stride = self.stride;
+	const NSUInteger positionOffset = self.offsetForPosition;
+	const NSUInteger countOfFaces = self.countOfElements / 3;
+	
+	const void *oldBytes = self.vertexData.bytes;
+	const uint32_t *oldElements = self.elementData.bytes;
+	
+	for (NSUInteger i = 0; i < countOfFaces; i++)
+	{
+		const uint32_t *indices = &oldElements[i*3];
+		
+		const float *position[3] = {
+			&oldBytes[indices[0]*stride + positionOffset],
+			&oldBytes[indices[1]*stride + positionOffset],
+			&oldBytes[indices[2]*stride + positionOffset]
+		};
+		
+		// Find out if one corner is completely in the box. If yes, then this triangle becomes part of the split mesh.
+		BOOL anyCornerInsideBox = NO;
+		for (int corner = 0; corner < 3; corner++)
+		{
+			BOOL allCoordsInsideBox = YES;
+			for (int coord = 0; coord < 3; coord++)
+				allCoordsInsideBox = allCoordsInsideBox && position[corner][coord] >= min[coord] && position[corner][coord] <= max[coord];
+			if (allCoordsInsideBox)
+				anyCornerInsideBox = YES;
+		}
+		
+		// All outside - not part of the split mesh.
+		if (!anyCornerInsideBox) continue;
+		
+		for (int corner = 0; corner < 3; corner++)
+		{
+			// If this vertex is already in the new mesh, then just add the index. Otherwise, add the vertex itself to the vertices, too.
+			NSNumber *newIndex = oldToNewVertices[@(indices[corner])];
+			if (!newIndex)
+			{
+				[newVertices appendBytes:&oldBytes[indices[corner] * stride] length:stride];
+				
+				newIndex = @(newVerticesCount);
+				oldToNewVertices[@(indices[corner])] = newIndex;
+				newVerticesCount += 1;
+			}
+			uint32_t index = newIndex.unsignedIntValue;
+			[newElements appendBytes:&index length:sizeof(index)];
+		}
+	}
+	
+	GLLMesh *result = [[GLLMesh alloc] init];
+	result->_vertexData = [newVertices copy];
+	result->_elementData = [newElements copy];
+	
+	result->_boneIndices = [self.boneIndices copy];
+	result->_countOfUVLayers = self.countOfUVLayers;
+	result->_model = self.model;
+	result->_name = [name copy];
+	result->_textures = [self.textures copy];
+	
+	return result;
+}
+
+#pragma mark -
 #pragma mark Private methods
 
 - (NSData *)_postprocessVertices:(NSData *)vertexData;
