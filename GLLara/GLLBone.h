@@ -31,6 +31,7 @@
  * Access the bones as a tree. Right now, these methods do not
  * cache their results in any way.
  */
+@property (nonatomic, assign, readonly) BOOL hasParent;
 @property (nonatomic, retain, readonly) GLLBone *parent;
 @property (nonatomic, retain, readonly) NSArray *children;
 

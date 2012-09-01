@@ -61,7 +61,7 @@ static NSCache *cachedModels;
 - (NSArray *)rootBones
 {
 	return [self.bones filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(GLLBone *bone, NSDictionary *bindings){
-		return bone.parent == nil;
+		return !bone.hasParent;
 	}]];
 }
 

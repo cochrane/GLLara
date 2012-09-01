@@ -34,9 +34,13 @@
 #pragma mark Accessing the bones as a tree
 
 // These methods are not the fastest way to do this (the fastest way would be to cache the results or load them explicitly once all bones have been loaded), but they are definitely the shortest way to write the code. Until I see proof that this causes problems, I prefer shorter.
+- (BOOL)hasParent
+{
+	return self.parentIndex != UINT16_MAX;
+}
 - (GLLBone *)parent
 {
-	if (self.parentIndex != UINT16_MAX)
+	if (self.hasParent)
 		return self.model.bones[self.parentIndex];
 	else
 		return nil;
