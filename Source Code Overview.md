@@ -7,6 +7,11 @@ GLLara currently requires Mac OS X 10.8, and uses all the newest features: Liter
 
 A note: The code is **not** a copy or straight port of XNALara. In many cases, I reorganized things to make more sense for me. So best to get into this with a fresh mind.
 
+Conventions
+-----------
+
+All class names start with `GLL` (for GL Lara, duh). The `CFBundleIdentifier` is mine; if you make a  different version, please change it to one that does not start with `de.ferroequinologist` (or ask me first). There is always one class per file, and the files are named after the class they contain, to reduce searching.
+
 Main classes
 ------------
 
