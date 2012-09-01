@@ -8,6 +8,7 @@
 
 #import "GLLBone.h"
 
+#import "GLLASCIIScanner.h"
 #import "GLLModel.h"
 #import "TRInDataStream.h"
 
@@ -25,7 +26,20 @@
 	_defaultPositionY = [stream readFloat32];
 	_defaultPositionZ = [stream readFloat32];
 	
-	NSLog(@"parent index: %lu", self.parentIndex);
+	return self;
+}
+
+- (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model;
+{
+	if (!(self = [super init])) return nil;
+	
+	_model = model;
+	
+	_name = [scanner readPascalString];
+	_parentIndex = [scanner readUint16];
+	_defaultPositionX = [scanner readFloat32];
+	_defaultPositionY = [scanner readFloat32];
+	_defaultPositionZ = [scanner readFloat32];
 	
 	return self;
 }

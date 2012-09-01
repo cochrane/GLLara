@@ -61,12 +61,11 @@
 - (IBAction)loadMesh:(id)sender
 {
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
-	panel.allowedFileTypes = @[ @"mesh" ];
+	panel.allowedFileTypes = @[ @"mesh", @"ascii" ];
 	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
 		if (result != NSOKButton) return;
 		
-		NSData *data = [NSData dataWithContentsOfURL:panel.URL];
-		GLLModel *model = [[GLLModel alloc] initWithData:data];
+		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL];
 		
 		NSLog(@"Got model %@, with %lu bones and %lu meshes", model, model.bones.count, model.meshes.count);
 	}];

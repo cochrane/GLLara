@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLLASCIIScanner;
 @class GLLModel;
 @class TRInDataStream;
 
@@ -18,6 +19,7 @@
 @interface GLLMesh : NSObject
 
 - (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
+- (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model;
 
 @property (nonatomic, weak, readonly) GLLModel *model;
 

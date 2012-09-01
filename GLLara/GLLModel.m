@@ -8,6 +8,7 @@
 
 #import "GLLModel.h"
 
+#import "GLLASCIIScanner.h"
 #import "GLLBone.h"
 #import "GLLMesh.h"
 #import "TRInDataStream.h"
@@ -26,13 +27,23 @@ static NSCache *cachedModels;
 	id result = [cachedModels objectForKey:file.absoluteURL];
 	if (!result)
 	{
-		result = [[self alloc] initWithData:[NSData dataWithContentsOfURL:file]];
+		if ([file.path hasSuffix:@".mesh"])
+		{
+			result = [[self alloc] initBinaryWithData:[NSData dataWithContentsOfURL:file]];
+		}
+		else if ([file.path hasSuffix:@".mesh.ascii"])
+		{
+			result = [[self alloc] initASCIIWithString:[NSString stringWithContentsOfURL:file usedEncoding:NULL error:NULL]];
+		}
+		else
+			return nil;
+		
 		[cachedModels setObject:result forKey:file.absoluteURL];
 	}
 	return result;
 }
 
-- (id)initWithData:(NSData *)data
+- (id)initBinaryWithData:(NSData *)data;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -48,6 +59,27 @@ static NSCache *cachedModels;
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
 	for (NSUInteger i = 0; i < numMeshes; i++)
 		[meshes addObject:[[GLLMesh alloc] initFromStream:stream partOfModel:self]];
+	_meshes = meshes;
+	
+	return self;
+}
+
+- (id)initASCIIWithString:(NSString *)string;
+{
+	if (!(self = [super init])) return nil;
+	
+	GLLASCIIScanner *scanner = [[GLLASCIIScanner alloc] initWithString:string];
+	
+	NSUInteger numBones = [scanner readUint32];
+	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
+	for (NSUInteger i = 0; i < numBones; i++)
+		[bones addObject:[[GLLBone alloc] initFromScanner:scanner partOfModel:self]];
+	_bones = [bones copy];
+	
+	NSUInteger numMeshes = [scanner readUint32];
+	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
+	for (NSUInteger i = 0; i < numMeshes; i++)
+		[meshes addObject:[[GLLMesh alloc] initFromScanner:scanner partOfModel:self]];
 	_meshes = meshes;
 	
 	return self;
