@@ -11,6 +11,10 @@
 @class GLLModel;
 @class TRInDataStream;
 
+/*!
+ * @abstract Description of a bone in a model.
+ * @discussion A bone is a transformable entity; vertices belong to one or several bones, with different weights. The bone here is purely a static description and with default values. It does not contain any transformation information.
+ */
 @interface GLLBone : NSObject
 
 - (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;

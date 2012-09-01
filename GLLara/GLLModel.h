@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+/*!
+ * @abstract A renderable object.
+ * @discussion A GLLModel corresponds to one mesh file (which actually contains many meshes; this is a bit confusing) and describes its graphics contexts. It contains some default transformations, but does not store poses and the like.
+ */
 @interface GLLModel : NSObject
 
 - (id)initWithData:(NSData *)data;

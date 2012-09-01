@@ -11,6 +11,10 @@
 @class GLLModel;
 @class TRInDataStream;
 
+/*!
+ * @abstract Vertex and element data.
+ * @discussion A GLLMesh stores a set of vertices that belong together, along with the necessary information for rendering it (especially the indices and the names of the textures used). In XNALara, it corresponds to a MeshDesc.
+ */
 @interface GLLMesh : NSObject
 
 - (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
