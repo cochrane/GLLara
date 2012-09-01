@@ -33,7 +33,7 @@
  * Color is 4 uint8_ts (r, g, b, a)
  * Any texcoord is two floats.
  * Any tangent is four floats (x, y, z, w)
- * Bone indices is 4 uint16_ts
+ * Bone indices is 4 uint16_ts, and are indices in the boneIndices array
  * Bone weights is 4 floats.
  */
 @property (nonatomic, assign, readonly) NSUInteger offsetForPosition;
@@ -50,6 +50,11 @@
  */
 @property (nonatomic, retain, readonly) NSData *elementData;
 @property (nonatomic, assign, readonly) NSUInteger countOfElements;
+
+/*
+ * Bone indices. A mesh can use at most 59 bones, but a model can have much more than that. Each element of this array is an NSNumber index into the total number of bones the model has.
+ */
+@property (nonatomic, copy, readonly) NSArray *boneIndices;
 
 /*
  * Other important properties.

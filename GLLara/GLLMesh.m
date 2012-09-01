@@ -11,8 +11,11 @@
 #import "GLLModel.h"
 #import "TRInDataStream.h"
 
-// There's a very important difference between this Mesh and the one created by XNALara: This one does less work and does not parse the vertex data at all. All target hardware supports enough vertex uniform attributes to allow all 59s bones in the same shader, and there's nothing wrong with storing colors as four bytes.
-// That means normalization of bone weights has to be done in the vertex shader, which should not be a big problem.
+@interface GLLMesh ()
+
+- (NSData *)_postprocessVertices:(NSData *)vertexData;
+
+@end
 
 @implementation GLLMesh
 
@@ -42,7 +45,8 @@
 	_textures = [textures copy];
 	
 	_countOfVertices = [stream readUint32];
-	_vertexData = [stream dataWithLength:_countOfVertices * self.stride];
+	NSData *rawVertexData = [stream dataWithLength:_countOfVertices * self.stride];
+	_vertexData = [[self _postprocessVertices:rawVertexData] copy];
 	
 	_countOfElements = 3 * [stream readUint32]; // File saves number of triangles
 	_elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
@@ -99,6 +103,74 @@
 - (BOOL)hasBoneWeights
 {
 	return self.model.hasBones;
+}
+
+#pragma mark -
+#pragma mark Private methods
+
+- (NSData *)_postprocessVertices:(NSData *)vertexData;
+{
+	if (!self.hasBoneWeights)
+		return vertexData; // No processing necessary
+	
+	NSMutableData *mutableVertices = [vertexData mutableCopy];
+	void *bytes = mutableVertices.mutableBytes;
+	const NSUInteger boneIndexOffset = self.offsetForBoneIndices;
+	const NSUInteger boneWeightOffset = self.offsetForBoneWeights;
+	const NSUInteger stride = self.stride;
+	
+	NSMutableDictionary *localForGlobalIndex = [[NSMutableDictionary alloc] init];
+	NSMutableArray *boneIndices = [[NSMutableArray alloc] init];
+	
+	for (NSUInteger i = 0; i < self.countOfVertices; i++)
+	{
+		float *weights = &bytes[boneWeightOffset + i*stride];
+		uint16_t *indices = &bytes[boneIndexOffset + i*stride];
+		
+		// Normalize weights. If no weights, use first bone.
+		float weightSum = 0.0f;
+		for (int i = 0; i < 4; i++)
+			weightSum += weights[i];
+		
+		if (weightSum == 0.0f)
+			weights[0] = 1.0f;
+		else if (weightSum != 1.0f)
+		{
+			for (int i = 0; i < 4; i++)
+				weights[i] /= weightSum;
+		}
+		
+		// Find the first index with non-null weight (i.e. the first this mesh absolutely has to have). Used later.
+		uint16_t firstUsedIndex = UINT16_MAX;
+		for (int i = 0; i < 4; i++)
+		{
+			if (weights[i] > 0.0f)
+			{
+				firstUsedIndex = indices[i];
+				break;
+			}
+		}
+		
+		// Convert global to local index.
+		for (int i = 0; i < 4; i++)
+		{
+			// If it doesn't matter what bone is used (because weight is 0), use one that is already required for this mesh.
+			uint16_t index = weights[i] > 0.0f ? indices[i] : firstUsedIndex;
+			
+			NSNumber *local = localForGlobalIndex[@(index)];
+			if (!local)
+			{
+				local = @(boneIndices.count);
+				localForGlobalIndex[@(index)] = local;
+				[boneIndices addObject:@(index)];
+			}
+			weights[i] = local.unsignedShortValue;
+		}
+	}
+	
+	_boneIndices = [boneIndices copy];
+	
+	return mutableVertices;
 }
 
 @end
