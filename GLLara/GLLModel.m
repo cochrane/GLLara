@@ -12,7 +12,25 @@
 #import "GLLMesh.h"
 #import "TRInDataStream.h"
 
+static NSCache *cachedModels;
+
 @implementation GLLModel
+
++ (void)initialize
+{
+	cachedModels = [[NSCache alloc] init];
+}
+
++ (id)cachedModelFromFile:(NSURL *)file;
+{
+	id result = [cachedModels objectForKey:file.absoluteURL];
+	if (!result)
+	{
+		result = [[self alloc] initWithData:[NSData dataWithContentsOfURL:file]];
+		[cachedModels setObject:result forKey:file.absoluteURL];
+	}
+	return result;
+}
 
 - (id)initWithData:(NSData *)data
 {

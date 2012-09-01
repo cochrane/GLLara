@@ -14,6 +14,13 @@
  */
 @interface GLLModel : NSObject
 
+/*!
+ * @abstract Returns a model with a given URL, returning a cached instance if one exists.
+ * @discussion Since a model is immutable here, it can be shared as much as necessary. This method uses an internal cache to share objects. Note that a model can be evicted from this cache again, if nobody is using it.
+ */
++ (id)cachedModelFromFile:(NSURL *)file;
+
+
 - (id)initWithData:(NSData *)data;
 
 @property (nonatomic, assign, readonly) BOOL hasBones;
