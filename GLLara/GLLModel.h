@@ -28,4 +28,6 @@
 @property (nonatomic, copy, readonly) NSArray *bones;
 @property (nonatomic, copy, readonly) NSArray *meshes;
 
+@property (nonatomic, copy, readonly) NSArray *rootBones;
+
 @end

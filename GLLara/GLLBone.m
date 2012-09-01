@@ -25,6 +25,8 @@
 	_defaultPositionY = [stream readFloat32];
 	_defaultPositionZ = [stream readFloat32];
 	
+	NSLog(@"parent index: %lu", self.parentIndex);
+	
 	return self;
 }
 
@@ -34,7 +36,10 @@
 // These methods are not the fastest way to do this (the fastest way would be to cache the results or load them explicitly once all bones have been loaded), but they are definitely the shortest way to write the code. Until I see proof that this causes problems, I prefer shorter.
 - (GLLBone *)parent
 {
-	return self.model.bones[self.parentIndex];
+	if (self.parentIndex != UINT16_MAX)
+		return self.model.bones[self.parentIndex];
+	else
+		return nil;
 }
 - (NSArray *)children
 {
