@@ -29,17 +29,19 @@ layout(std140) uniform Light {
 	float shadowDepth;
 } lights[3];
 
-uniform float bumpSpecularGloss;
-uniform float bumpSpecularAmount;
-uniform float bump1UVScale;
-uniform float bump2UVScale;
+uniform RenderParameters {
+	float bumpSpecularGloss;
+	float bumpSpecularAmount;
+	float bump1UVScale;
+	float bump2UVScale;
+} parameters;
 
 void main()
 {
 	vec4 diffuseColor = texture(diffuseColor, outTexCoord) * outColor;
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
-	vec4 detailNormalMap1 = texture(bump1Texture, outTexCoord * bump1UVScale);
-	vec4 detailNormalMap2 = texture(bump2Texture, outTexCoord * bump2UVScale);
+	vec4 detailNormalMap1 = texture(bump1Texture, outTexCoord * parameters.bump1UVScale);
+	vec4 detailNormalMap2 = texture(bump2Texture, outTexCoord * parameters.bump2UVScale);
 	vec4 maskColor = texture(maskTexture, outTexCoord);
 	
 	vec4 lightmapColor = texture(lightmapTexture, outTexCoord);
@@ -63,7 +65,7 @@ void main()
 		// Calculate specular factor
 		vec3 refLightDir = -reflect(lights[i].direction, normal);
 		float specularFactor = clamp(dot(cameraDirection, refLightDir), 0, 1);
-		float specularShading = diffuseFactor * pow(specularFactor, bumpSpecularGloss) * bumpSpecularAmount;
+		float specularShading = diffuseFactor * pow(specularFactor, parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
 		
 		// Make diffuse color brighter by specular amount, then apply normal diffuse shading (that means specular highlights are always white).
 		// Include lightmap color, too.

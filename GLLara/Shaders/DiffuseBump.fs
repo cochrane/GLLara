@@ -23,8 +23,10 @@ layout(std140) uniform Light {
 	float shadowDepth;
 } lights[3];
 
-uniform float bumpSpecularGloss;
-uniform float bumpSpecularAmount;
+uniform RenderParameters {
+	float bumpSpecularGloss;
+	float bumpSpecularAmount;
+} parameters;
 
 void main()
 {
@@ -46,7 +48,7 @@ void main()
 		// Calculate specular factor
 		vec3 refLightDir = -reflect(lights[i].direction, normal);
 		float specularFactor = clamp(dot(cameraDirection, refLightDir), 0, 1);
-		float specularShading = diffuseFactor * pow(specularFactor, bumpSpecularGloss) * bumpSpecularAmount;
+		float specularShading = diffuseFactor * pow(specularFactor, parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
 		
 		// Make diffuse color brighter by specular amount, then apply normal diffuse shading (that means specular highlights are always white).
 		vec4 lightenedColor = diffuseColor + vec4(vec3(specularShading), 1.0);
