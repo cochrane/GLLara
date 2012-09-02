@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>renderParameters</key>
+	<dict>
+		<key>thorgauntletleft</key>
+		<dict>
+			<key>BumpSpecularAmount</key>
+			<string>0,5</string>
+		</dict>
+		<key>thorgauntletright</key>
+		<dict>
+			<key>BumpSpecularAmount</key>
+			<string>0,5</string>
+		</dict>
+		<key>thorbelt2</key>
+		<dict>
+			<key>BumpSpecularAmount</key>
+			<string>0,5</string>
+		</dict>
+		<key>thorbelt1</key>
+		<dict>
+			<key>BumpSpecularAmount</key>
+			<string>0,5</string>
+		</dict>
+		<key>handgunhandright</key>
+		<dict>
+			<key>BumpSpecularAmount</key>
+			<string>0,4</string>
+		</dict>
+		<key>handgunholsterleft</key>
+		<dict>
+			<key>BumpSpecularAmount</key>
+			<string>0,4</string>
+		</dict>
+		<key>handgunholsterright</key>
+		<dict>
+			<key>BumpSpecularAmount</key>
+			<string>0,4</string>
+		</dict>
+		<key>handgunhandleft</key>
+		<dict>
+			<key>BumpSpecularAmount</key>
+			<string>0,4</string>
+		</dict>
+	</dict>
+	<key>defaultRenderParameters</key>
+	<dict>
+		<key>BumpSpecularAmount</key>
+		<real>0.1</real>
+	</dict>
+	<key>meshSplitters</key>
+	<dict>
+		<key>thorwireframe</key>
+		<array>
+			<dict>
+				<key>maxX</key>
+				<string>0</string>
+				<key>minY</key>
+				<real>1.25</real>
+				<key>Name</key>
+				<string>thorglowgauntletright</string>
+			</dict>
+			<dict>
+				<key>minX</key>
+				<string>0</string>
+				<key>minY</key>
+				<string>1,25</string>
+				<key>Name</key>
+				<string>thorglowgauntletleft</string>
+			</dict>
+			<dict>
+				<key>maxY</key>
+				<real>1.25</real>
+				<key>Name</key>
+				<string>thorglowbelt</string>
+			</dict>
+		</array>
+	</dict>
+	<key>cameraTargets</key>
+	<dict>
+		<key>body upper</key>
+		<array>
+			<string>breast right</string>
+			<string>breast left</string>
+		</array>
+		<key>body lower</key>
+		<array>
+			<string>pelvis</string>
+		</array>
+		<key>hand left</key>
+		<array>
+			<string>arm left wrist</string>
+		</array>
+		<key>hand right</key>
+		<array>
+			<string>arm right wrist</string>
+		</array>
+		<key>knee left</key>
+		<array>
+			<string>leg left knee</string>
+		</array>
+		<key>knee right</key>
+		<array>
+			<string>leg right knee</string>
+		</array>
+		<key>foot left</key>
+		<array>
+			<string>leg left ankle</string>
+		</array>
+		<key>foot right</key>
+		<array>
+			<string>leg right ankle</string>
+		</array>
+		<key>head</key>
+		<array>
+			<string>head jaw</string>
+		</array>
+	</dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>HandGuns</key>
+		<array>
+			<string>handgunhandleft</string>
+			<string>handgunhandright</string>
+			<string>handgunholsterleft</string>
+			<string>handgunholsterright</string>
+		</array>
+		<key>ThorGearAll</key>
+		<array>
+			<string>thorbelt1</string>
+			<string>thorbelt2</string>
+			<string>thorgauntletleft</string>
+			<string>thorgauntletright</string>
+		</array>
+		<key>ThorGearBelt</key>
+		<array>
+			<string>thorbelt1</string>
+			<string>thorbelt2</string>
+		</array>
+		<key>ThorGearGauntletLeft</key>
+		<array>
+			<string>thorgauntletleft</string>
+		</array>
+		<key>ThorGearGauntletRight</key>
+		<array>
+			<string>thorgauntletright</string>
+		</array>
+		<key>ThorGlowAll</key>
+		<array>
+			<string>thorglowgauntletright</string>
+			<string>thorglowgauntletleft</string>
+			<string>thorglowbelt</string>
+		</array>
+		<key>ThorGlowBelt</key>
+		<array>
+			<string>thorglowbelt</string>
+		</array>
+		<key>ThorGlowGauntletLeft</key>
+		<array>
+			<string>thorglowgauntletleft</string>
+		</array>
+		<key>ThorGlowGauntletRight</key>
+		<array>
+			<string>thorglowgauntletright</string>
+		</array>
+		<key>HandGunHandLeft</key>
+		<array>
+			<string>handgunhandleft</string>
+		</array>
+		<key>HandGunHandRight</key>
+		<array>
+			<string>handgunhandright</string>
+		</array>
+		<key>HandGunHolsterLeft</key>
+		<array>
+			<string>handgunholsterleft</string>
+		</array>
+		<key>HandGunHolsterRight</key>
+		<array>
+			<string>handgunholsterright</string>
+		</array>
+	</dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+</dict>
+</plist>
