@@ -21,8 +21,8 @@
 + (id)cachedModelFromFile:(NSURL *)file;
 
 
-- (id)initBinaryWithData:(NSData *)data;
-- (id)initASCIIWithString:(NSString *)string;
+- (id)initBinaryFromFile:(NSURL *)file;
+- (id)initASCIIFromFile:(NSURL *)file;
 
 @property (nonatomic, assign, readonly) BOOL hasBones;
 

@@ -29,11 +29,11 @@ static NSCache *cachedModels;
 	{
 		if ([file.path hasSuffix:@".mesh"])
 		{
-			result = [[self alloc] initBinaryWithData:[NSData dataWithContentsOfURL:file]];
+			result = [[self alloc] initBinaryFromFile:file];
 		}
 		else if ([file.path hasSuffix:@".mesh.ascii"])
 		{
-			result = [[self alloc] initASCIIWithString:[NSString stringWithContentsOfURL:file usedEncoding:NULL error:NULL]];
+			result = [[self alloc] initASCIIFromFile:file];
 		}
 		else
 			return nil;
@@ -43,11 +43,11 @@ static NSCache *cachedModels;
 	return result;
 }
 
-- (id)initBinaryWithData:(NSData *)data;
+- (id)initBinaryFromFile:(NSURL *)file;
 {
 	if (!(self = [super init])) return nil;
 	
-	TRInDataStream *stream = [[TRInDataStream alloc] initWithData:data];
+	TRInDataStream *stream = [[TRInDataStream alloc] initWithData:[NSData dataWithContentsOfURL:file]];
 	
 	NSUInteger numBones = [stream readUint32];
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
@@ -64,11 +64,11 @@ static NSCache *cachedModels;
 	return self;
 }
 
-- (id)initASCIIWithString:(NSString *)string;
+- (id)initASCIIFromFile:(NSURL *)file;
 {
 	if (!(self = [super init])) return nil;
 	
-	GLLASCIIScanner *scanner = [[GLLASCIIScanner alloc] initWithString:string];
+	GLLASCIIScanner *scanner = [[GLLASCIIScanner alloc] initWithString:[NSString stringWithContentsOfURL:file usedEncoding:NULL error:NULL]];
 	
 	NSUInteger numBones = [scanner readUint32];
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
