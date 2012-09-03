@@ -27,7 +27,7 @@
 	scanner = [NSScanner scannerWithString:string];
 	
 	// Use american english at all times, because that is the number format used.
-	scanner.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en-US"];
+	scanner.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
 	
 	return self;
 }
