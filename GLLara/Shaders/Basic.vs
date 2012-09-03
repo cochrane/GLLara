@@ -3,8 +3,11 @@
  */
 #version 150
 
-uniform mat4 modelViewProjection;
-uniform mat4 model;
+layout(std140) uniform Transform {
+	mat4 modelViewProjection;
+	mat4 model;
+} transform;
+
 uniform mat4 boneMatrices[59];
 
 in vec3 position;
@@ -33,8 +36,8 @@ void main()
 {
 	// Transform
 	mat4 bone = boneTransform();
-	gl_Position = modelViewProjection * (bone * vec4(position, 1.0));
-	normalWorld = mat3(model) * (mat3(bone) * normal);
+	gl_Position = transform.modelViewProjection * (bone * vec4(position, 1.0));
+	normalWorld = mat3(transform.model) * (mat3(bone) * normal);
 	
 	// Pass through
 	outColor = color;

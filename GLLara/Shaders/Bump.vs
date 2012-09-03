@@ -3,8 +3,11 @@
  */
 #version 150
 
-uniform mat4 modelViewProjection;
-uniform mat4 model;
+layout(std140) uniform Transform {
+	mat4 modelViewProjection;
+	mat4 model;
+} transform;
+
 uniform mat4 boneMatrices[59];
 
 in vec3 position;
@@ -35,10 +38,10 @@ void main()
 {
 	// Transformation
 	mat4 bone = boneTransform();
-	gl_Position = modelViewProjection * (bone * vec4(position, 1.0));
+	gl_Position = transform.modelViewProjection * (bone * vec4(position, 1.0));
 	
 	// Relative to world
-	mat4 worldBone = model * bone;
+	mat4 worldBone = transform.model * bone;
 	positionWorld = vec3(worldBone * vec4(position, 1.0));
 	normalWorld = vec3(worldBone * vec4(normal, 0.0));
 	
