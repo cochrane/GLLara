@@ -9,6 +9,7 @@
 #import "GLLMesh.h"
 
 #import "GLLASCIIScanner.h"
+#import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "TRInDataStream.h"
 
@@ -214,7 +215,7 @@ void vec_addTo(float *a, float *b)
 #pragma mark -
 #pragma mark Splitting
 
-- (GLLMesh *)partialMeshInBoxMin:(float *)min max:(float *)max name:(NSString *)name;
+- (GLLMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
 {
 	NSMutableData *newVertices = [[NSMutableData alloc] init];
 	NSMutableData *newElements = [[NSMutableData alloc] init];
@@ -280,6 +281,10 @@ void vec_addTo(float *a, float *b)
 	result->_textures = [self.textures copy];
 	
 	return result;
+}
+- (GLLMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
+{
+	return [self partialMeshInBoxMin:splitter.min max:splitter.max name:splitter.newName];
 }
 
 #pragma mark -

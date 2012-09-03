@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class GLLASCIIScanner;
+@class GLLMeshSplitter;
 @class GLLModel;
 @class TRInDataStream;
 
@@ -71,6 +72,13 @@
 /*
  * XNALara insists that some meshes need to be split; apparently only for cosmetic reasons. I shall oblige, but in a way that is not specific to exactly one thing, thank you very much. Note that this mesh keeps the bone indices of the original.
  */
-- (GLLMesh *)partialMeshInBoxMin:(float *)min max:(float *)max name:(NSString *)name;
+- (GLLMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
+- (GLLMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
+
+/*
+ * Drawing information, gained through the model parameters. This information is not stored in the mesh file.
+ */
+@property (nonatomic, copy, readonly) NSString *programName;
+@property (nonatomic, copy, readonly) NSDictionary *renderParameters;
 
 @end
