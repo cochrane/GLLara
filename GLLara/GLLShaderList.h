@@ -16,6 +16,7 @@
 
 @property (nonatomic, copy, readonly) NSArray *shaderNames;
 - (NSString *)vertexShaderForName:(NSString *)shaderName;
+- (NSString *)geometryShaderForName:(NSString *)shaderName;
 - (NSString *)fragmentShaderForName:(NSString *)shaderName;
 - (NSArray *)renderParameterNamesForName:(NSString *)shaderName;
 

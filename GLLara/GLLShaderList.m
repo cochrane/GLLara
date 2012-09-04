@@ -49,6 +49,10 @@ static GLLShaderList *defaultShaderList;
 {
 	return shaderList[shaderName][@"vertex"];
 }
+- (NSString *)geometryShaderForName:(NSString *)shaderName;
+{
+	return shaderList[shaderName][@"geometry"];
+}
 - (NSString *)fragmentShaderForName:(NSString *)shaderName;
 {
 	return shaderList[shaderName][@"fragment"];
