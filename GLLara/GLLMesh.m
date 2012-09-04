@@ -294,7 +294,7 @@ void vec_addTo(float *a, float *b)
 }
 - (GLLMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
 {
-	return [self partialMeshInBoxMin:splitter.min max:splitter.max name:splitter.newName];
+	return [self partialMeshInBoxMin:splitter.min max:splitter.max name:splitter.splitPartName];
 }
 
 #pragma mark -

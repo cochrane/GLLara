@@ -25,7 +25,7 @@
 	min[0] = min[1] = min[2] = -HUGE_VALF;
 	max[0] = max[1] = max[2] = HUGE_VALF;
 	
-	_newName = plist[@"Name"];
+	_splitPartName = plist[@"Name"];
 	
 	if (plist[@"minX"])
 		min[0] = [plist[@"minX"] floatValue];

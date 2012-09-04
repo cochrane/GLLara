@@ -14,6 +14,6 @@
 
 @property (nonatomic, assign, readonly) const float *min;
 @property (nonatomic, assign, readonly) const float *max;
-@property (nonatomic, copy, readonly) NSString *newName;
+@property (nonatomic, copy, readonly) NSString *splitPartName;
 
 @end
