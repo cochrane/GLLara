@@ -75,7 +75,7 @@ static NSCache *parameterCache;
 		NSURL *plistURL = [[NSBundle mainBundle] URLForResource:name withExtension:@"modelparams.plist"];
 		NSError *error = nil;
 		result = [[self alloc] initWithPlist:[NSPropertyListSerialization propertyListWithData:[NSData dataWithContentsOfURL:plistURL] options:NSPropertyListImmutable format:NULL error:&error]];
-		if (result)
+		if (!result)
 			[NSException raise:NSInvalidArgumentException format:@"Error trying to get parameters for name %@: %@", name, error];
 		
 		[parameterCache setObject:result forKey:name];
