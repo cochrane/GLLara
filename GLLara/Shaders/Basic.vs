@@ -15,7 +15,7 @@ in vec3 normal;
 in vec4 color;
 in vec2 texCoord;
 in vec4 tangent;
-in uint4 boneIndices;
+in ivec4 boneIndices;
 in vec4 boneWeights;
 
 out vec4 outColor;
@@ -24,12 +24,10 @@ out vec3 normalWorld;
 
 mat4 boneTransform()
 {
-	mat4 boneTransform = 0;
-	boneTransform += boneMatrices[boneIndices[0]] * boneWeights[0];
-	boneTransform += boneMatrices[boneIndices[1]] * boneWeights[1];
-	boneTransform += boneMatrices[boneIndices[2]] * boneWeights[2];
-	boneTransform += boneMatrices[boneIndices[3]] * boneWeights[3];
-	return boneTransform;
+	return boneMatrices[boneIndices[0]] * boneWeights[0] +
+		boneMatrices[boneIndices[1]] * boneWeights[1] +
+		boneMatrices[boneIndices[2]] * boneWeights[2] +
+		boneMatrices[boneIndices[3]] * boneWeights[3];
 }
 
 void main()
