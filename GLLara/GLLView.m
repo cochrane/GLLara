@@ -11,6 +11,7 @@
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
 
+#import "GLLSceneDrawer.h"
 #import "GLLResourceManager.h"
 
 @implementation GLLView
@@ -34,18 +35,17 @@
 - (void)prepareOpenGL
 {
 	_resourceManager = [[GLLResourceManager alloc] init];
-	
-	glClearColor(0.5, 0.5, 0.5, 1.0);
+	self.sceneDrawer.resourceManager = _resourceManager;
 }
 
 - (void)reshape
 {
-	glViewport(0, 0, self.bounds.size.width, self.bounds.size.height);
+	[self.sceneDrawer setWindowSize:self.bounds.size];
 }
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	[self.sceneDrawer draw];
 	
 	[self.openGLContext flushBuffer];
 }

@@ -21,10 +21,21 @@
 	_model = model;
 	_resourceManager = resourceManager;
 	
-	NSMutableArray *mutableMeshDrawers = [[NSMutableArray alloc] initWithCapacity:model.meshes.count];
+	NSMutableArray *mutableNormalMeshDrawers = [[NSMutableArray alloc] init];
+	NSMutableArray *mutableAlphaMeshDrawers = [[NSMutableArray alloc] init];
 	for (GLLMesh *mesh in model.meshes)
-		[mutableMeshDrawers addObject:[[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager]];
-	_meshDrawers = [mutableMeshDrawers copy];
+	{
+		// Ignore objects that can't be rendered.
+		if (!mesh.programName)
+			continue;
+		
+		if (mesh.isAlphaPiece)
+			[mutableAlphaMeshDrawers addObject:[[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager]];
+		else
+			[mutableNormalMeshDrawers addObject:[[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager]];
+	}
+	_normalMeshDrawers = [mutableNormalMeshDrawers copy];
+	_alphaMeshDrawers = [mutableAlphaMeshDrawers copy];
 	
 	return self;
 }

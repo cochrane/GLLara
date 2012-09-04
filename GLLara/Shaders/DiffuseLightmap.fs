@@ -12,23 +12,28 @@ out vec4 screenColor;
 uniform sampler2D diffuseTexture;
 uniform sampler2D lightmapTexture;
 
-layout(std140) uniform Light {
+struct Light {
 	vec4 color;
 	vec3 direction;
 	float intensity;
 	float shadowDepth;
-} lights[3];
+};
+
+layout(std140) uniform LightData {
+	vec3 cameraPosition;
+	Light lights[3];
+} lightData;
 
 void main()
 {
-	vec4 diffuseColor = texture(diffuseColor, outTexCoord) * outColor;
+	vec4 diffuseColor = texture(diffuseTexture, outTexCoord) * outColor;
 	vec4 lightmapColor = texture(lightmapTexture, outTexCoord);
 	vec4 lightColor = vec4(0);
 	for (int i = 0; i < 3; i++)
 	{
-		float factor = clamp(dot(normal, -lights[i].direction), 0, 1);
-		float shading = mix(1, factor, lights[i].shadowDepth);
-		lightColor += lights[i].color * shading;
+		float factor = clamp(dot(normalWorld, -lightData.lights[i].direction), 0, 1);
+		float shading = mix(1, factor, lightData.lights[i].shadowDepth);
+		lightColor += lightData.lights[i].color * shading;
 	}
 	
 	screenColor = diffuseColor * lightmapColor * lightColor;

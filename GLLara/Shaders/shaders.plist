@@ -4,6 +4,11 @@
 <dict>
 	<key>DiffuseLightmap</key>
 	<dict>
+		<key>textures</key>
+		<array>
+			<string>diffuseTexture</string>
+			<string>lightmapTexture</string>
+		</array>
 		<key>fragment</key>
 		<string>DiffuseLightmap.fs</string>
 		<key>vertex</key>
@@ -11,6 +16,10 @@
 	</dict>
 	<key>Diffuse</key>
 	<dict>
+		<key>textures</key>
+		<array>
+			<string>diffuseTexture</string>
+		</array>
 		<key>fragment</key>
 		<string>Diffuse.fs</string>
 		<key>vertex</key>
@@ -53,6 +62,11 @@
 	</dict>
 	<key>DiffuseBump</key>
 	<dict>
+		<key>textures</key>
+		<array>
+			<string>diffuseTexture</string>
+			<string>bumpTexture</string>
+		</array>
 		<key>parameters</key>
 		<array>
 			<string>bumpSpecularAmount</string>
@@ -64,6 +78,12 @@
 	</dict>
 	<key>DiffuseLightmapBump</key>
 	<dict>
+		<key>textures</key>
+		<array>
+			<string>diffuseTexture</string>
+			<string>lightmapTexture</string>
+			<string>bumpTexture</string>
+		</array>
 		<key>parameters</key>
 		<array>
 			<string>bumpSpecularAmount</string>
@@ -99,6 +119,15 @@
 	</dict>
 	<key>DiffuseLightmapBump3</key>
 	<dict>
+		<key>textures</key>
+		<array>
+			<string>diffuseTexture</string>
+			<string>lightmapTexture</string>
+			<string>bumpTexture</string>
+			<string>bump1Texture</string>
+			<string>bump2Texture</string>
+			<string>maskTexture</string>
+		</array>
 		<key>parameters</key>
 		<array>
 			<string>bumpSpecularAmount</string>

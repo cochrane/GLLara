@@ -9,13 +9,15 @@
 #import "GLLItemDrawer.h"
 
 #import "GLLItem.h"
+#import "GLLModelDrawer.h"
 #import "GLLMeshDrawer.h"
+#import "GLLSceneDrawer.h"
+#import "GLLResourceManager.h"
 #import "simd_types.h"
 
 @interface GLLItemDrawer ()
 {
-	NSArray *normalMeshes;
-	NSArray *alphaMeshes;
+	GLLModelDrawer *modelDrawer;
 }
 
 @end
@@ -29,13 +31,16 @@
 	_item = item;
 	_sceneDrawer = sceneDrawer;
 	
+	
 	return self;
 }
 
 - (void)drawNormal;
 {
+	if (!modelDrawer) modelDrawer = [_sceneDrawer.resourceManager drawerForModel:_item.model];
+
 	mat_float16 transforms[60];
-	for (GLLMeshDrawer *drawer in normalMeshes)
+	for (GLLMeshDrawer *drawer in modelDrawer.normalMeshDrawers)
 	{
 		[_item getTransforms:transforms maxCount:60 forMesh:drawer.mesh];
 		[drawer drawWithTransforms:transforms];
@@ -43,8 +48,10 @@
 }
 - (void)drawAlpha;
 {
+	if (!modelDrawer) modelDrawer = [_sceneDrawer.resourceManager drawerForModel:_item.model];
+	
 	mat_float16 transforms[60];
-	for (GLLMeshDrawer *drawer in alphaMeshes)
+	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)
 	{
 		[_item getTransforms:transforms maxCount:60 forMesh:drawer.mesh];
 		[drawer drawWithTransforms:transforms];

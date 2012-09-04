@@ -20,14 +20,17 @@ uniform sampler2D bump1Texture;
 uniform sampler2D bump2Texture;
 uniform sampler2D maskTexture;
 
-uniform vec3 cameraPosition;
-
-layout(std140) uniform Light {
+struct Light {
 	vec4 color;
 	vec3 direction;
 	float intensity;
 	float shadowDepth;
-} lights[3];
+};
+
+layout(std140) uniform LightData {
+	vec3 cameraPosition;
+	Light lights[3];
+} lightData;
 
 uniform RenderParameters {
 	float bumpSpecularGloss;
@@ -38,7 +41,7 @@ uniform RenderParameters {
 
 void main()
 {
-	vec4 diffuseColor = texture(diffuseColor, outTexCoord) * outColor;
+	vec4 diffuseColor = texture(diffuseTexture, outTexCoord) * outColor;
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
 	vec4 detailNormalMap1 = texture(bump1Texture, outTexCoord * parameters.bump1UVScale);
 	vec4 detailNormalMap2 = texture(bump2Texture, outTexCoord * parameters.bump2UVScale);
@@ -53,24 +56,24 @@ void main()
 	vec3 normalFromMap = vec3(normalMap.rg * 2 - 1, normalMap.b);
 	vec3 normal = normalize(tangentToWorld * normalFromMap);
 	
-	vec3 cameraDirection = normalize(positionWorld - cameraPosition);
+	vec3 cameraDirection = normalize(positionWorld - lightData.cameraPosition);
 	
 	vec4 color = vec4(0);
 	for (int i = 0; i < 3; i++)
 	{
 		// Calculate diffuse factor
-		float diffuseFactor = clamp(dot(normal, -lights[i].direction), 0, 1);
-		float diffuseShading = mix(1, factor, lights[i].shadowDepth);
+		float diffuseFactor = clamp(dot(normal, -lightData.lights[i].direction), 0, 1);
+		float diffuseShading = mix(1, diffuseFactor, lightData.lights[i].shadowDepth);
 		
 		// Calculate specular factor
-		vec3 refLightDir = -reflect(lights[i].direction, normal);
+		vec3 refLightDir = -reflect(lightData.lights[i].direction, normal);
 		float specularFactor = clamp(dot(cameraDirection, refLightDir), 0, 1);
 		float specularShading = diffuseFactor * pow(specularFactor, parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
 		
 		// Make diffuse color brighter by specular amount, then apply normal diffuse shading (that means specular highlights are always white).
 		// Include lightmap color, too.
 		vec4 lightenedColor = diffuseColor + vec4(vec3(specularShading), 1.0);
-		color += lights[i].color * diffuseShading * lightenedColor * lightmapColor;
+		color += lightData.lights[i].color * diffuseShading * lightenedColor * lightmapColor;
 	}
 	
 	color.a = diffuseColor.a;

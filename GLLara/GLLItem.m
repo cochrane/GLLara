@@ -29,7 +29,7 @@
 	self.scaleZ = 1.0f;
 	
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:model.bones.count];
-	for (GLLBone *bone in bones)
+	for (GLLBone *bone in model.bones)
 	{
 		GLLBoneTransformation *transform = [[GLLBoneTransformation alloc] initWithItem:self bone:bone];
 		[bones addObject:transform];

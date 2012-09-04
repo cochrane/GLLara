@@ -96,7 +96,7 @@ static NSCache *parameterCache;
 	// Load the things that are easily to load.
 	ownMeshGroups = propertyList[@"meshGroupNames"];
 	ownShadersForGroups = propertyList[@"shadersForGroups"];
-	ownShadersForGroupsAlpha = propertyList[@"shadersForGroups"];
+	ownShadersForGroupsAlpha = propertyList[@"shadersForGroupsAlpha"];
 	ownRenderParameters = propertyList[@"renderParameters"];
 	ownDefaultParameters = propertyList[@"defaultParameters"];
 	ownCameraTargets = propertyList[@"cameratargets"];
@@ -274,7 +274,7 @@ static NSCache *parameterCache;
 	// 2. Look in alpha shaders
 	for (NSString *shaderName in ownShadersForGroupsAlpha)
 	{
-		if ([ownShadersForGroups[shaderName] containsObject:meshGroup])
+		if ([ownShadersForGroupsAlpha[shaderName] containsObject:meshGroup])
 		{
 			if (shaderIsAlpha) *shaderIsAlpha = YES;
 			if (shader) *shader = shaderName;

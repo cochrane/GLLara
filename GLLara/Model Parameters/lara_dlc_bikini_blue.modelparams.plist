@@ -63,7 +63,7 @@
 			<string>mesh015</string>
 			<string>mesh022</string>
 			<string>mesh023</string>
-			<string>mesh024</string>
+			<string>mesh027</string>
 		</array>
 		<key>MeshGroup2</key>
 		<array>
@@ -72,6 +72,11 @@
 			<string>mesh010</string>
 			<string>mesh017</string>
 			<string>mesh018</string>
+			<string>mesh019</string>
+			<string>mesh020</string>
+			<string>mesh021</string>
+			<string>mesh024</string>
+			<string>mesh025</string>
 		</array>
 		<key>MeshGroup3</key>
 		<array>

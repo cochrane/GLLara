@@ -110,8 +110,10 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 - (id)initWithData:(NSData *)data;
 {
 	if (!(self = [super init])) return nil;
+
+	if (!data) return nil;
 	
-	glGenTextures(GL_TEXTURE_2D, &_textureID);
+	glGenTextures(1, &_textureID);
 	glBindTexture(GL_TEXTURE_2D, _textureID);
 	
 	// Ensure that memcmp does not error out.
@@ -170,7 +172,8 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 	CFRelease(source);
 	
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	CGContextRef cgContext = CGBitmapContextCreate(bufferData, width, height, 8, width * 4, colorSpace, kCGImageAlphaFirst);
+	CGContextRef cgContext = CGBitmapContextCreate(bufferData, width, height, 8, width * 4, colorSpace, kCGImageAlphaPremultipliedFirst);
+	NSAssert(cgContext != NULL, @"Could not create CG Context");
 	
 	CGColorSpaceRelease(colorSpace);
 	
@@ -183,7 +186,7 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) width, (GLsizei) height, 0, GL_BGRA_INTEGER, GL_UNSIGNED_INT_8_8_8_8_REV, bufferData);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) width, (GLsizei) height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, bufferData);
 	
 	free(bufferData);
 }

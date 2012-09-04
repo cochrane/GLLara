@@ -11,10 +11,13 @@
 #import "GLLItem.h"
 #import "GLLModel.h"
 #import "GLLScene.h"
+#import "GLLSceneDrawer.h"
+#import "GLLView.h"
 
 @interface GLLDocument ()
 {
 	GLLScene *scene;
+	GLLSceneDrawer *sceneDrawer;
 }
 
 @end
@@ -43,6 +46,9 @@
 {
 	[super windowControllerDidLoadNib:aController];
 	// Add any code here that needs to be executed once the windowController has loaded the document's window.
+	
+	sceneDrawer = [[GLLSceneDrawer alloc] initWithScene:scene resourceManager:self.renderView.resourceManager];
+	self.renderView.sceneDrawer = sceneDrawer;
 }
 
 + (BOOL)autosavesInPlace

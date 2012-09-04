@@ -11,9 +11,12 @@
 #import <AppKit/NSOpenGLView.h>
 
 @class GLLResourceManager;
+@class GLLSceneDrawer;
 
 @interface GLLView : NSOpenGLView
 
 @property (nonatomic, retain, readonly) GLLResourceManager *resourceManager;
+
+@property (nonatomic, retain) GLLSceneDrawer *sceneDrawer;
 
 @end

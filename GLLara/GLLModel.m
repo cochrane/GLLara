@@ -69,7 +69,7 @@ static NSCache *cachedModels;
 	NSUInteger numMeshes = [stream readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
 	for (NSUInteger i = 0; i < numMeshes; i++)
-		[meshes addObject:[[GLLMesh alloc] initFromStream:stream partOfModel:self]];
+		[self _addMesh:[[GLLMesh alloc] initFromStream:stream partOfModel:self] toArray:meshes];
 	_meshes = meshes;
 	
 	return self;
@@ -93,7 +93,7 @@ static NSCache *cachedModels;
 	NSUInteger numMeshes = [scanner readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
 	for (NSUInteger i = 0; i < numMeshes; i++)
-		[meshes addObject:[[GLLMesh alloc] initFromScanner:scanner partOfModel:self]];
+		[self _addMesh:[[GLLMesh alloc] initFromScanner:scanner partOfModel:self] toArray:meshes];
 	_meshes = meshes;
 	
 	return self;

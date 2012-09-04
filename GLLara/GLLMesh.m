@@ -37,6 +37,7 @@ void vec_addTo(float *a, float *b)
 
 - (NSData *)_postprocessVertices:(NSData *)vertexData;
 - (void)_calculateTangents:(NSMutableData *)vertexData;
+- (void)_setRenderParameters;
 
 @end
 
@@ -74,10 +75,7 @@ void vec_addTo(float *a, float *b)
 	_countOfElements = 3 * [stream readUint32]; // File saves number of triangles
 	_elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
 	
-	NSString *programName = nil;
-	[_model.parameters getShader:&programName alpha:&_isAlphaPiece forMesh:_name];
-	_programName = programName;
-	_renderParameters = [_model.parameters renderParametersForMesh:_name];
+	[self _setRenderParameters];
 	
 	return self;
 }
@@ -163,6 +161,8 @@ void vec_addTo(float *a, float *b)
 	
 	[self _calculateTangents:rawVertexData];
 	_vertexData = [[self _postprocessVertices:rawVertexData] copy];
+	
+	[self _setRenderParameters];
 	
 	return self;
 }
@@ -289,6 +289,7 @@ void vec_addTo(float *a, float *b)
 	result->_model = self.model;
 	result->_name = [name copy];
 	result->_textures = [self.textures copy];
+	[result _setRenderParameters]; // Result may have different mesh group or shader. In fact, for the one and only object class where this entire feature is needed, this is guaranteed.
 	
 	return result;
 }
@@ -456,6 +457,19 @@ void vec_addTo(float *a, float *b)
 			target[2] = tangent[2];
 			target[3] = w > 0.0f ? 1.0f : -1.0f;
 		}
+	}
+}
+
+- (void)_setRenderParameters;
+{
+	NSString *programName = nil;
+	[_model.parameters getShader:&programName alpha:&_isAlphaPiece forMesh:_name];
+	_programName = programName;
+	_renderParameters = [_model.parameters renderParametersForMesh:_name];
+	
+	if (!programName)
+	{
+		NSLog(@"No program name for object %@", self.name);
 	}
 }
 

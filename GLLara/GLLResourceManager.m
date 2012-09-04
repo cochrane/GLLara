@@ -19,10 +19,10 @@
 
 @interface GLLResourceManager ()
 {
-	NSCache *shaders;
-	NSCache *programs;
-	NSCache *textures;
-	NSCache *models;
+	NSMutableDictionary *shaders;
+	NSMutableDictionary *programs;
+	NSMutableDictionary *textures;
+	NSMutableDictionary *models;
 }
 
 - (GLLShader *)_shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL;
@@ -37,9 +37,10 @@
 {
 	if (!(self = [super init])) return nil;
 	
-	shaders = [[NSCache alloc] init];
-	programs = [[NSCache alloc] init];
-	textures = [[NSCache alloc] init];
+	shaders = [[NSMutableDictionary alloc] init];
+	programs = [[NSMutableDictionary alloc] init];
+	textures = [[NSMutableDictionary alloc] init];
+	models = [[NSMutableDictionary alloc] init];
 	
 	return self;
 }
@@ -61,6 +62,8 @@
 
 - (GLLProgram *)programForName:(NSString *)programName baseURL:(NSURL *)baseURL
 {
+	if (!programName) return nil;
+	
 	id result = [programs objectForKey:programName];
 	if (!result)
 	{
@@ -121,6 +124,7 @@
 	if (!result)
 	{
 		result = [[GLLShader alloc] initWithSource:[self _utf8StringForFilename:shaderName baseURL:baseURL] type:type];
+		[shaders setObject:result forKey:shaderName];
 	}
 	return result;
 }

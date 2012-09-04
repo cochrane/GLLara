@@ -37,9 +37,13 @@
 	
 	// Set up shader
 	_program = [resourceManager programForName:mesh.programName baseURL:mesh.baseURL];
+	if (!_program) return nil;
 	
 	// Set up textures
-	_textures = [resourceManager texturesForNames:mesh.textures baseURL:mesh.baseURL];
+	NSMutableArray *textures = [[NSMutableArray alloc] initWithCapacity:mesh.textures.count];
+	for (NSDictionary *textureDescription in mesh.textures)
+		[textures addObject:[resourceManager textureForName:textureDescription[@"name"] baseURL:mesh.baseURL]];
+	_textures = [textures copy];
 	
 	// If there are render parameters to be set, create a uniform buffer for them and set their values from the mesh.
 	if (_program.renderParametersUniformBlockIndex != GL_INVALID_INDEX)

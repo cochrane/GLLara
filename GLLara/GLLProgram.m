@@ -20,6 +20,9 @@
 {
 	if (!(self = [super init])) return nil;
 	
+	if (!vertex && !geometry && !fragment)
+		[NSException raise:NSInvalidArgumentException format:@"No shader at all for program"];
+	
 	_programID = glCreateProgram();
 	if (vertex)
 		glAttachShader(_programID, vertex.shaderID);
