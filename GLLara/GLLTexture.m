@@ -107,15 +107,18 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 
 @implementation GLLTexture
 
-- (id)initWithFile:(NSURL *)fileURL;
+- (id)initWithData:(NSData *)data;
 {
 	if (!(self = [super init])) return nil;
 	
-	glGenTextures(GL_TEXTURE_2D, &_name);
-	glBindTexture(GL_TEXTURE_2D, _name);
+	glGenTextures(GL_TEXTURE_2D, &_textureID);
+	glBindTexture(GL_TEXTURE_2D, _textureID);
 	
-	NSData *data = [NSData dataWithContentsOfURL:fileURL];
-	if ([fileURL.pathExtension isEqual:@"dds"])
+	// Ensure that memcmp does not error out.
+	if (data.length < 4) return nil;
+	
+	// Load texture
+	if (memcmp(data.bytes, "DDS ", 4) == 0)
 		[self _loadDDSTextureWithData:data];
 	else
 		[self _loadCGCompatibleTexture:data];
@@ -125,13 +128,13 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 
 - (void)unload;
 {
-	glDeleteTextures(1, &_name);
-	_name = 0;
+	glDeleteTextures(1, &_textureID);
+	_textureID = 0;
 }
 
 - (void)dealloc
 {
-	NSAssert(_name == 0, @"did not call unload before dealloc");
+	NSAssert(_textureID == 0, @"did not call unload before dealloc");
 }
 
 #pragma mark -

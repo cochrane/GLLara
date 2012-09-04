@@ -12,10 +12,10 @@
 
 @interface GLLTexture : NSObject
 
-- (id)initWithFile:(NSURL *)fileURL;
+- (id)initWithData:(NSData *)data;
 
 - (void)unload;
 
-@property (nonatomic, assign, readonly) GLuint name;
+@property (nonatomic, assign, readonly) GLuint textureID;
 
 @end
