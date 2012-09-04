@@ -8,6 +8,7 @@
 
 #import "GLLDocument.h"
 
+#import "GLLItem.h"
 #import "GLLModel.h"
 
 @implementation GLLDocument
@@ -68,6 +69,9 @@
 		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL];
 		
 		NSLog(@"Got model %@, with %lu bones and %lu meshes", model, model.bones.count, model.meshes.count);
+		
+		GLLItem *item = [[GLLItem alloc] initWithModel:model];
+		NSLog(@"got item %@", item);
 	}];
 }
 

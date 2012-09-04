@@ -29,7 +29,7 @@ The GLLItems are all part of a GLLScene. Likewise, on the top level, the GLLItem
 Other resources
 ---------------
 
-The GLLSceneDrawer manages drawable resources; both the Model and Mesh drawers, and the textures. It also manages the GLSL programs. At least right now, there is no way to specify custom ones (thank goodness…). The ones I'm using are basically taken directly from XNALara, just with a few important differences.
+The GLLSceneDrawer has a GLLResourceManager that manages drawable resources; both the Model and Mesh drawers, and the textures. It also manages the GLSL programs. At least right now, there is no way to specify custom ones (thank goodness…). The ones I'm using are basically GLSL rewrites of the HLSL ones from XNALara.
 
 Utilities, loading, saving
 --------------------------
