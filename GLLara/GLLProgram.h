@@ -19,4 +19,12 @@
 
 @property (nonatomic, assign, readonly) GLuint programID;
 
+// Uniforms set by mesh
+@property (nonatomic, assign, readonly) GLint boneMatricesUniformLocation;
+@property (nonatomic, assign, readonly) GLuint renderParametersUniformBlockIndex;
+
+// Uniforms set by scene drawer
+@property (nonatomic, assign, readonly) GLuint lightsUniformBlockIndex;
+@property (nonatomic, assign, readonly) GLuint transformUniformBlockIndex;
+
 @end

@@ -12,6 +12,7 @@
 
 #import "GLLShader.h"
 #import "GLLVertexFormat.h"
+#import "GLLUniformBlockBindings.h"
 
 @implementation GLLProgram
 
@@ -27,14 +28,14 @@
 	if (fragment)
 		glAttachShader(_programID, fragment.shaderID);
 	
-	glBindAttribLocation(_programID, GLLVertexAttribPosition, "Position");
-	glBindAttribLocation(_programID, GLLVertexAttribNormal, "Normal");
-	glBindAttribLocation(_programID, GLLVertexAttribColor, "Color");
-	glBindAttribLocation(_programID, GLLVertexAttribTexCoord0, "TexCoord");
-	glBindAttribLocation(_programID, GLLVertexAttribTangent0, "Tangent");
-	glBindAttribLocation(_programID, GLLVertexAttribTexCoord0+2, "TexCoord2");
-	glBindAttribLocation(_programID, GLLVertexAttribBoneIndices, "BoneIndices");
-	glBindAttribLocation(_programID, GLLVertexAttribBoneWeights, "BoneWeights");
+	glBindAttribLocation(_programID, GLLVertexAttribPosition, "position");
+	glBindAttribLocation(_programID, GLLVertexAttribNormal, "normal");
+	glBindAttribLocation(_programID, GLLVertexAttribColor, "color");
+	glBindAttribLocation(_programID, GLLVertexAttribTexCoord0, "texCoord");
+	glBindAttribLocation(_programID, GLLVertexAttribTangent0, "tangent");
+	glBindAttribLocation(_programID, GLLVertexAttribTexCoord0+2, "texCoord2");
+	glBindAttribLocation(_programID, GLLVertexAttribBoneIndices, "boneIndices");
+	glBindAttribLocation(_programID, GLLVertexAttribBoneWeights, "boneWeights");
 	
 	glLinkProgram(_programID);
 	
@@ -50,6 +51,15 @@
 		
 		[NSException raise:NSInvalidArgumentException format:@"Could not link shaders to program. Log: %s", log];
 	}
+	
+	_boneMatricesUniformLocation = glGetUniformLocation(_programID, "boneMatrices");
+	_lightsUniformBlockIndex = glGetUniformBlockIndex(_programID, "lights");
+	_renderParametersUniformBlockIndex = glGetUniformBlockIndex(_programID, "renderParameters");
+	_transformUniformBlockIndex = glGetUniformBlockIndex(_programID, "transform");
+	
+	glUniformBlockBinding(_programID, _renderParametersUniformBlockIndex, GLLUniformBlockBindingRenderParameters);
+	glUniformBlockBinding(_programID, _lightsUniformBlockIndex, GLLUniformBlockBindingLights);
+	glUniformBlockBinding(_programID, _transformUniformBlockIndex, GLLUniformBlockBindingTransforms);
 	
 	return self;
 }
