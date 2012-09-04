@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLLModelParams;
+
 /*!
  * @abstract A renderable object.
  * @discussion A GLLModel corresponds to one mesh file (which actually contains many meshes; this is a bit confusing) and describes its graphics contexts. It contains some default transformations, but does not store poses and the like.
@@ -23,6 +25,10 @@
 
 - (id)initBinaryFromFile:(NSURL *)file;
 - (id)initASCIIFromFile:(NSURL *)file;
+
+@property (nonatomic, copy, readonly) NSURL *baseURL;
+
+@property (nonatomic, retain, readonly) GLLModelParams *parameters;
 
 @property (nonatomic, assign, readonly) BOOL hasBones;
 

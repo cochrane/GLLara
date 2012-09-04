@@ -68,6 +68,7 @@
  */
 @property (nonatomic, assign, readonly) NSUInteger countOfUVLayers;
 @property (nonatomic, assign, readonly) BOOL hasBoneWeights;
+@property (nonatomic, copy, readonly) NSURL *baseURL;
 
 /*
  * XNALara insists that some meshes need to be split; apparently only for cosmetic reasons. I shall oblige, but in a way that is not specific to exactly one thing, thank you very much. Note that this mesh keeps the bone indices of the original.
@@ -79,6 +80,7 @@
  * Drawing information, gained through the model parameters. This information is not stored in the mesh file.
  */
 @property (nonatomic, copy, readonly) NSString *programName;
+@property (nonatomic, assign, readonly) BOOL isAlphaPiece;
 @property (nonatomic, copy, readonly) NSDictionary *renderParameters;
 
 @end

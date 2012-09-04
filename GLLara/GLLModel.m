@@ -11,7 +11,15 @@
 #import "GLLASCIIScanner.h"
 #import "GLLBone.h"
 #import "GLLMesh.h"
+#import "GLLModelParams.h"
 #import "TRInDataStream.h"
+
+@interface GLLModel ()
+
+// Adds a single mesh to the object, splitting it up into multiple parts if necessary (as specified by the model parameters). Also takes care to add it to the mesh groups and so on.
+- (void)_addMesh:(GLLMesh *)mesh toArray:(NSMutableArray *)array;
+
+@end
 
 static NSCache *cachedModels;
 
@@ -47,6 +55,9 @@ static NSCache *cachedModels;
 {
 	if (!(self = [super init])) return nil;
 	
+	_baseURL = file;
+	_parameters = [GLLModelParams parametersForModel:self];
+	
 	TRInDataStream *stream = [[TRInDataStream alloc] initWithData:[NSData dataWithContentsOfURL:file]];
 	
 	NSUInteger numBones = [stream readUint32];
@@ -67,6 +78,9 @@ static NSCache *cachedModels;
 - (id)initASCIIFromFile:(NSURL *)file;
 {
 	if (!(self = [super init])) return nil;
+	
+	_baseURL = file;
+	_parameters = [GLLModelParams parametersForModel:self];
 	
 	GLLASCIIScanner *scanner = [[GLLASCIIScanner alloc] initWithString:[NSString stringWithContentsOfURL:file usedEncoding:NULL error:NULL]];
 	
@@ -95,6 +109,22 @@ static NSCache *cachedModels;
 	return [self.bones filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(GLLBone *bone, NSDictionary *bindings){
 		return !bone.hasParent;
 	}]];
+}
+
+#pragma mark -
+#pragma mark Private methods
+
+- (void)_addMesh:(GLLMesh *)mesh toArray:(NSMutableArray *)array;
+{
+	if ([self.parameters.meshesToSplit containsObject:mesh.name])
+	{
+		for (GLLMeshSplitter *splitter in [self.parameters meshSplittersForMesh:mesh.name])
+			[array addObject:[mesh partialMeshFromSplitter:splitter]];
+	}
+	else
+	{
+		[array addObject:mesh];
+	}
 }
 
 @end

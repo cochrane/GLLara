@@ -6,52 +6,52 @@
 	<dict>
 		<key>mesh012</key>
 		<dict>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<real>0.6</real>
 		</dict>
 		<key>mesh013</key>
 		<dict>
-			<key>Bump1UVScale</key>
+			<key>bump1UVScale</key>
 			<integer>12</integer>
-			<key>Bump2UVScale</key>
+			<key>bump2UVScale</key>
 			<integer>16</integer>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<real>0.1</real>
 		</dict>
 		<key>mesh015</key>
 		<dict>
-			<key>Bump1UVScale</key>
+			<key>bump1UVScale</key>
 			<integer>12</integer>
-			<key>Bump2UVScale</key>
+			<key>bump2UVScale</key>
 			<integer>16</integer>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<real>0.1</real>
 		</dict>
 		<key>mesh022</key>
 		<dict>
-			<key>Bump1UVScale</key>
+			<key>bump1UVScale</key>
 			<integer>12</integer>
-			<key>Bump2UVScale</key>
+			<key>bump2UVScale</key>
 			<integer>16</integer>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<real>0.1</real>
 		</dict>
 		<key>mesh023</key>
 		<dict>
-			<key>Bump1UVScale</key>
+			<key>bump1UVScale</key>
 			<integer>12</integer>
-			<key>Bump2UVScale</key>
+			<key>bump2UVScale</key>
 			<integer>16</integer>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<real>0.1</real>
 		</dict>
 		<key>mesh024</key>
 		<dict>
-			<key>Bump1UVScale</key>
+			<key>bump1UVScale</key>
 			<integer>12</integer>
-			<key>Bump2UVScale</key>
+			<key>bump2UVScale</key>
 			<integer>16</integer>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<real>0.1</real>
 		</dict>
 	</dict>

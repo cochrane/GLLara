@@ -6,48 +6,48 @@
 	<dict>
 		<key>thorgauntletleft</key>
 		<dict>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<string>0,5</string>
 		</dict>
 		<key>thorgauntletright</key>
 		<dict>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<string>0,5</string>
 		</dict>
 		<key>thorbelt2</key>
 		<dict>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<string>0,5</string>
 		</dict>
 		<key>thorbelt1</key>
 		<dict>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<string>0,5</string>
 		</dict>
 		<key>handgunhandright</key>
 		<dict>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<string>0,4</string>
 		</dict>
 		<key>handgunholsterleft</key>
 		<dict>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<string>0,4</string>
 		</dict>
 		<key>handgunholsterright</key>
 		<dict>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<string>0,4</string>
 		</dict>
 		<key>handgunhandleft</key>
 		<dict>
-			<key>BumpSpecularAmount</key>
+			<key>bumpSpecularAmount</key>
 			<string>0,4</string>
 		</dict>
 	</dict>
 	<key>defaultRenderParameters</key>
 	<dict>
-		<key>BumpSpecularAmount</key>
+		<key>bumpSpecularAmount</key>
 		<real>0.1</real>
 	</dict>
 	<key>meshSplitters</key>

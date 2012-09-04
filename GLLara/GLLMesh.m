@@ -11,6 +11,7 @@
 #import "GLLASCIIScanner.h"
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
+#import "GLLModelParams.h"
 #import "TRInDataStream.h"
 
 float vec_dot(float *a, float *b)
@@ -72,6 +73,11 @@ void vec_addTo(float *a, float *b)
 	
 	_countOfElements = 3 * [stream readUint32]; // File saves number of triangles
 	_elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
+	
+	NSString *programName = nil;
+	[_model.parameters getShader:&programName alpha:&_isAlphaPiece forMesh:_name];
+	_programName = programName;
+	_renderParameters = [_model.parameters renderParametersForMesh:_name];
 	
 	return self;
 }
@@ -210,6 +216,10 @@ void vec_addTo(float *a, float *b)
 - (BOOL)hasBoneWeights
 {
 	return self.model.hasBones;
+}
+- (NSURL *)baseURL
+{
+	return self.model.baseURL;
 }
 
 #pragma mark -
