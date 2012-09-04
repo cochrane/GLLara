@@ -10,6 +10,14 @@
 
 #import "GLLItem.h"
 #import "GLLModel.h"
+#import "GLLScene.h"
+
+@interface GLLDocument ()
+{
+	GLLScene *scene;
+}
+
+@end
 
 @implementation GLLDocument
 
@@ -18,6 +26,8 @@
     self = [super init];
     if (self) {
 		// Add your subclass-specific initialization here.
+		
+		scene = [[GLLScene alloc] init];
     }
     return self;
 }
@@ -72,6 +82,8 @@
 		
 		GLLItem *item = [[GLLItem alloc] initWithModel:model];
 		NSLog(@"got item %@", item);
+		
+		[[scene mutableArrayValueForKey:@"items"] addObject:item];
 	}];
 }
 
