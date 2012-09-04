@@ -54,6 +54,7 @@
 		5296944915F565D100DF2FA3 /* GLLResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296944815F565D100DF2FA3 /* GLLResourceManager.m */; };
 		5296944E15F5F1BB00DF2FA3 /* shaders.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5296944D15F5F1BB00DF2FA3 /* shaders.plist */; };
 		5296945115F5F36E00DF2FA3 /* GLLShaderList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945015F5F36B00DF2FA3 /* GLLShaderList.m */; };
+		5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945315F60F3C00DF2FA3 /* GLLView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +155,8 @@
 		5296944D15F5F1BB00DF2FA3 /* shaders.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = shaders.plist; sourceTree = "<group>"; };
 		5296944F15F5F36A00DF2FA3 /* GLLShaderList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLShaderList.h; sourceTree = "<group>"; };
 		5296945015F5F36B00DF2FA3 /* GLLShaderList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLShaderList.m; sourceTree = "<group>"; };
+		5296945215F60F3900DF2FA3 /* GLLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLView.h; sourceTree = "<group>"; };
+		5296945315F60F3C00DF2FA3 /* GLLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +250,8 @@
 				529693F415F2B58B00DF2FA3 /* GLLASCIIScanner.m */,
 				5296944F15F5F36A00DF2FA3 /* GLLShaderList.h */,
 				5296945015F5F36B00DF2FA3 /* GLLShaderList.m */,
+				5296945215F60F3900DF2FA3 /* GLLView.h */,
+				5296945315F60F3C00DF2FA3 /* GLLView.m */,
 			);
 			path = GLLara;
 			sourceTree = "<group>";
@@ -562,6 +567,7 @@
 				5296943A15F4CC3400DF2FA3 /* GLLMeshSplitter.m in Sources */,
 				5296944915F565D100DF2FA3 /* GLLResourceManager.m in Sources */,
 				5296945115F5F36E00DF2FA3 /* GLLShaderList.m in Sources */,
+				5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
