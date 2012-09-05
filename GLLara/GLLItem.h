@@ -25,6 +25,7 @@
 
 @property (nonatomic, copy, readonly) NSString *itemName;
 @property (nonatomic, copy, readonly) NSString *itemDirectory;
+@property (nonatomic, copy, readonly) NSString *displayName;
 
 @property (nonatomic, retain, readonly) GLLModel *model;
 

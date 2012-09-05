@@ -80,6 +80,22 @@
 	
 }
 
+- (NSString *)displayName
+{
+	NSMutableString *basicName = [[NSMutableString alloc] initWithString:self.model.baseURL.lastPathComponent];
+	
+	if ([basicName hasSuffix:@".ascii"])
+		[basicName deleteCharactersInRange:NSMakeRange(basicName.length - @".ascii".length, @".ascii".length)];
+	if ([basicName hasSuffix:@".mesh"])
+		[basicName deleteCharactersInRange:NSMakeRange(basicName.length - @".mesh".length, @".mesh".length)];
+	
+	[basicName replaceOccurrencesOfString:@"_" withString:@" " options:0 range:NSMakeRange(0, basicName.length)];
+	
+	CFStringTransform((__bridge CFMutableStringRef) basicName, NULL, CFSTR("Title"), NO);
+	
+	return [basicName copy];
+}
+
 - (NSArray *)rootBones
 {
 	return [self.boneTransformations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(GLLBoneTransformation *bone, NSDictionary *bindings){
