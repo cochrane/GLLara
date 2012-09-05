@@ -36,6 +36,9 @@
 	}
 	_boneTransformations = [bones copy];
 	
+	//for (GLLBoneTransformation *transform in _boneTransformations)
+	//	[transform calculateLocalPositions];
+	
 	return self;
 }
 - (id)initFromDataStream:(TRInDataStream *)stream baseURL:(NSURL *)url version:(GLLSceneVersion)version;

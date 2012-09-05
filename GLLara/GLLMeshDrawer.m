@@ -68,16 +68,15 @@
 		glBindBuffer(GL_UNIFORM_BUFFER, renderParametersBuffer);
 		glBufferData(GL_UNIFORM_BUFFER, bufferLength, data, GL_STATIC_DRAW);
 		
-		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 		free(data);
 	}
 	
 	// Create the element and vertex buffers, and spend a lot of time setting up the vertex attribute arrays and pointers.
-	GLuint buffers[2];
-	glGenBuffers(2, buffers);
-	
 	glGenVertexArrays(1, &vertexArray);
 	glBindVertexArray(vertexArray);
+	
+	GLuint buffers[2];
+	glGenBuffers(2, buffers);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 	glBufferData(GL_ARRAY_BUFFER, mesh.vertexData.length, mesh.vertexData.bytes, GL_STATIC_DRAW);

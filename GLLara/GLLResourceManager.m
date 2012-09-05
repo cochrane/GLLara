@@ -97,6 +97,11 @@
 	return result;
 }
 
+- (NSArray *)alLLoadedPrograms
+{
+	return programs.allValues;
+}
+
 #pragma mark -
 #pragma mark Private methods
 

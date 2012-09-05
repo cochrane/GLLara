@@ -11,9 +11,11 @@
 #import <OpenGL/gl3.h>
 
 #import "GLLItemDrawer.h"
+#import "GLLUniformBlockBindings.h"
+#import "GLLProgram.h"
 #import "GLLScene.h"
-#import "GLLResourceManager.h"
 #import "simd_matrix.h"
+#import "simd_project.h"
 
 struct GLLLight
 {
@@ -66,6 +68,33 @@ struct GLLTransform
 	[_scene addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
 	
 	glClearColor(0.2, 0.2, 0.2, 1);
+	
+	// Light buffer
+	glGenBuffers(1, &lightBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
+	struct GLLLightBlock lightBlock;
+	bzero(&lightBlock, sizeof(lightBlock));
+	lightBlock.cameraLocation = simd_make(0.0, 0.0, 5.0, 1.0);
+	lightBlock.lights[0].color = simd_make(1.0, 1.0, 1.0, 0.0);
+	lightBlock.lights[0].direction = simd_make(-0.57735, -0.57735, -0.57735, 0.0);
+	lightBlock.lights[0].shadowDepth = 1;
+	
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(lightBlock), &lightBlock, GL_STATIC_DRAW);
+	
+	// Transform buffer
+	glGenBuffers(1, &transformBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
+	
+	mat_float16 lookAt = simd_mat_lookat(simd_make(0.0, 0.0, -1.0, 0.0), lightBlock.cameraLocation);
+	mat_float16 projection = simd_frustumMatrix(65.0, 1.0, 0.1, 10.0);
+	struct GLLTransform transformBlock;
+	transformBlock.modelViewProjection = simd_mat_mul(projection, lookAt);
+	transformBlock.model = simd_mat_identity();
+	
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(transformBlock), &transformBlock, GL_STATIC_DRAW);
+	
+	// Other necessary render state. Thanks to Core Profile, that got cut down a lot.
+	glEnable(GL_DEPTH_TEST);
 }
 
 - (void)dealloc
@@ -101,13 +130,16 @@ struct GLLTransform
 
 - (void)draw;
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
+	
 	for (GLLItemDrawer *drawer in itemDrawers)
 	{
 		[drawer drawAlpha];
 		[drawer drawNormal];
 	}
-	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 @end

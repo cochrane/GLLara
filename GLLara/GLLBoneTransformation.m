@@ -100,7 +100,7 @@
 
 - (mat_float16)globalTransform
 {
-	if (!self.parent) return self.relativeTransform;
+	if (!self.hasParent) return self.relativeTransform;
 	
 	return simd_mat_mul(self.parent.globalTransform, self.relativeTransform);
 }

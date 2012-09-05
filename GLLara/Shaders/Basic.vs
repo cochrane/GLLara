@@ -34,7 +34,7 @@ void main()
 {
 	// Transform
 	mat4 bone = boneTransform();
-	gl_Position = transform.modelViewProjection * (bone * vec4(position, 1.0));
+	gl_Position = transform.modelViewProjection * bone * vec4(position, 1.0);
 	normalWorld = mat3(transform.model) * (mat3(bone) * normal);
 	
 	// Pass through

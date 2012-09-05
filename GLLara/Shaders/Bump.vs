@@ -26,10 +26,10 @@ out mat3 tangentToWorld;
 
 mat4 boneTransform()
 {
-	return boneMatrices[boneIndices.x] * boneWeights[0] +
-		boneMatrices[boneIndices.y] * boneWeights[1] +
-		boneMatrices[boneIndices.z] * boneWeights[2] +
-		boneMatrices[boneIndices.w] * boneWeights[3];
+	return boneMatrices[boneIndices[0]] * boneWeights[0] +
+		boneMatrices[boneIndices[1]] * boneWeights[1] +
+		boneMatrices[boneIndices[2]] * boneWeights[2] +
+		boneMatrices[boneIndices[3]] * boneWeights[3];
 }
 
 void main()

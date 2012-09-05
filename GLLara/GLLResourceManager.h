@@ -24,5 +24,6 @@
 - (GLLTexture *)textureForName:(NSString *)textureName baseURL:(NSURL *)baseURL;
 - (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL;
 
+@property (nonatomic, copy, readonly) NSArray *alLLoadedPrograms;
 
 @end

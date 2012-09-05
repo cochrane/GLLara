@@ -55,13 +55,15 @@
 	}
 	
 	_boneMatricesUniformLocation = glGetUniformLocation(_programID, "boneMatrices");
-	_lightsUniformBlockIndex = glGetUniformBlockIndex(_programID, "lights");
-	_renderParametersUniformBlockIndex = glGetUniformBlockIndex(_programID, "renderParameters");
-	_transformUniformBlockIndex = glGetUniformBlockIndex(_programID, "transform");
 	
-	glUniformBlockBinding(_programID, _renderParametersUniformBlockIndex, GLLUniformBlockBindingRenderParameters);
-	glUniformBlockBinding(_programID, _lightsUniformBlockIndex, GLLUniformBlockBindingLights);
-	glUniformBlockBinding(_programID, _transformUniformBlockIndex, GLLUniformBlockBindingTransforms);
+	_lightsUniformBlockIndex = glGetUniformBlockIndex(_programID, "LightData");
+	if (_lightsUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(_programID, _lightsUniformBlockIndex, GLLUniformBlockBindingLights);
+
+	_renderParametersUniformBlockIndex = glGetUniformBlockIndex(_programID, "RenderParameters");
+	if (_renderParametersUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(_programID, _renderParametersUniformBlockIndex, GLLUniformBlockBindingRenderParameters);
+
+	_transformUniformBlockIndex = glGetUniformBlockIndex(_programID, "Transform");
+	if (_transformUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(_programID, _transformUniformBlockIndex, GLLUniformBlockBindingTransforms);
 	
 	// Set up textures. Uniforms for textures need to be set up once and then never change, because uniforms bind to texture units, not texture objects. I really, really wish I knew whom that is supposed to help, but whatever.
 	glUseProgram(_programID);
