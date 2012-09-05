@@ -1,6 +1,12 @@
 GLLara
 ======
 
+[XNALara][xnalara] is an open-source tool to pose 3D models and render high-quality images. Sadly, it's Windows only. GLLara does the same as XNALara and tries to be as compatible as possible, but runs only on Mac OS X.
+
+This thing is still a work in progress. Right now, you can't actually do anything useful with it, and almost all models will fail to load, guaranteed. That is why there is no download yet. However, if you feel like hacking, you can clone or fork the source. Most of the basic infrastructure is there, I'm just lacking an UI for posing, most of the shaders and some matrix code for the bone transformations that I am absolutely not looking forward to.
+
+[xnalara]: 
+
 Some license stuff
 ------------------
 
