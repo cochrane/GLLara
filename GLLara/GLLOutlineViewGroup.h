@@ -1,13 +1,13 @@
 //
-//  GLLOutlineViewGroup.m
+//  GLLOutlineViewGroup.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 05.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLOutlineViewGroup.h"
+#import <Foundation/Foundation.h>
 
-@implementation GLLOutlineViewGroup
+@interface GLLOutlineViewGroup : NSObject
 
 @end
