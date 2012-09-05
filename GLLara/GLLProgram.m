@@ -11,25 +11,24 @@
 #import <OpenGL/gl3.h>
 
 #import "GLLShader.h"
+#import "GLLShaderDescriptor.h"
 #import "GLLVertexFormat.h"
 #import "GLLUniformBlockBindings.h"
+#import "GLLResourceManager.h"
 
 @implementation GLLProgram
 
-- (id)initWithVertexShader:(GLLShader *)vertex geometryShader:(GLLShader *)geometry fragmentShader:(GLLShader *)fragment;
+- (id)initWithDescriptor:(GLLShaderDescriptor *)descriptor resourceManager:(GLLResourceManager *)manager;
 {
 	if (!(self = [super init])) return nil;
 	
-	if (!vertex && !geometry && !fragment)
-		[NSException raise:NSInvalidArgumentException format:@"No shader at all for program"];
-	
 	_programID = glCreateProgram();
-	if (vertex)
-		glAttachShader(_programID, vertex.shaderID);
-	if (geometry)
-		glAttachShader(_programID, geometry.shaderID);
-	if (fragment)
-		glAttachShader(_programID, fragment.shaderID);
+	if (descriptor.vertexName)
+		glAttachShader(_programID, [manager shaderForName:descriptor.vertexName type:GL_VERTEX_SHADER baseURL:descriptor.baseURL].shaderID);
+	if (descriptor.geometryName)
+		glAttachShader(_programID, [manager shaderForName:descriptor.geometryName type:GL_GEOMETRY_SHADER baseURL:descriptor.baseURL].shaderID);
+	if (descriptor.fragmentName)
+		glAttachShader(_programID, [manager shaderForName:descriptor.fragmentName type:GL_FRAGMENT_SHADER baseURL:descriptor.baseURL].shaderID);
 	
 	glBindAttribLocation(_programID, GLLVertexAttribPosition, "position");
 	glBindAttribLocation(_programID, GLLVertexAttribNormal, "normal");
@@ -63,6 +62,17 @@
 	glUniformBlockBinding(_programID, _renderParametersUniformBlockIndex, GLLUniformBlockBindingRenderParameters);
 	glUniformBlockBinding(_programID, _lightsUniformBlockIndex, GLLUniformBlockBindingLights);
 	glUniformBlockBinding(_programID, _transformUniformBlockIndex, GLLUniformBlockBindingTransforms);
+	
+	// Set up textures. Uniforms for textures need to be set up once and then never change, because uniforms bind to texture units, not texture objects. I really, really wish I knew whom that is supposed to help, but whatever.
+	glUseProgram(_programID);
+	for (GLint i = 0; i < (GLint) descriptor.textureUniformNames.count; i++)
+	{
+		GLint location = glGetUniformLocation(_programID, [descriptor.textureUniformNames[i] UTF8String]);
+		if (location == -1) continue;
+		glUniform1i(location, i);
+	}
+	
+	glUseProgram(0);
 	
 	return self;
 }

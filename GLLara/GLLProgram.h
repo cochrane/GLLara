@@ -10,10 +10,12 @@
 #import <OpenGL/gltypes.h>
 
 @class GLLShader;
+@class GLLShaderDescriptor;
+@class GLLResourceManager;
 
 @interface GLLProgram : NSObject
 
-- (id)initWithVertexShader:(GLLShader *)vertex geometryShader:(GLLShader *)geometry fragmentShader:(GLLShader *)fragment;
+- (id)initWithDescriptor:(GLLShaderDescriptor *)descriptor resourceManager:(GLLResourceManager *)manager;
 
 - (void)unload;
 

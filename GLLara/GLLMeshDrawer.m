@@ -36,7 +36,7 @@
 	_mesh = mesh;
 	
 	// Set up shader
-	_program = [resourceManager programForName:mesh.programName baseURL:mesh.baseURL];
+	_program = [resourceManager programForDescriptor:mesh.shader];
 	if (!_program) return nil;
 	
 	// Set up textures

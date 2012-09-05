@@ -25,4 +25,6 @@
 - (void)drawNormal;
 - (void)drawAlpha;
 
+@property (nonatomic, retain, readonly) NSArray *usedPrograms;
+
 @end

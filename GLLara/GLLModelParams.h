@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class GLLModel;
+@class GLLShaderDescriptor;
 
 /*!
  * @abstract Encapsulates all the data that is hardcoded into XNALara and stores it in a single place.
@@ -43,9 +44,9 @@
  * Rendering
  */
 - (NSString *)renderableMeshGroupForMesh:(NSString *)mesh;
-- (void)getShader:(NSString *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
+- (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
 
-- (void)getShader:(NSString *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
+- (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
 - (NSDictionary *)renderParametersForMesh:(NSString *)mesh;
 
 /*

@@ -58,4 +58,9 @@
 	}
 }
 
+- (NSArray *)usedPrograms
+{
+	return modelDrawer.usedPrograms;
+}
+
 @end

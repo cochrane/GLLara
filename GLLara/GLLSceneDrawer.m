@@ -13,10 +13,33 @@
 #import "GLLItemDrawer.h"
 #import "GLLScene.h"
 #import "GLLResourceManager.h"
+#import "simd_matrix.h"
+
+struct GLLLight
+{
+	vec_float4 color;
+	vec_float4 direction;
+	float intensity;
+	float shadowDepth;
+};
+
+struct GLLLightBlock
+{
+	vec_float4 cameraLocation;
+	struct GLLLight lights[3];
+};
+
+struct GLLTransform
+{
+	mat_float16 modelViewProjection;
+	mat_float16 model;
+};
 
 @interface GLLSceneDrawer ()
 {
 	NSMutableArray *itemDrawers;
+	GLuint lightBuffer;
+	GLuint transformBuffer;
 }
 
 @end

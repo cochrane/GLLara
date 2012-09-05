@@ -8,16 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
+#import <OpenGL/gltypes.h>
+
 @class GLLProgram;
 @class GLLTexture;
 @class GLLModel;
 @class GLLModelDrawer;
+@class GLLShader;
+@class GLLShaderDescriptor;
 
 @interface GLLResourceManager : NSObject
 
 - (GLLModelDrawer *)drawerForModel:(GLLModel *)model;
-- (GLLProgram *)programForName:(NSString *)programName baseURL:(NSURL *)baseURL;
+- (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor;
 - (GLLTexture *)textureForName:(NSString *)textureName baseURL:(NSURL *)baseURL;
-- (NSArray *)texturesForNames:(NSArray *)textureNames baseURL:(NSURL *)baseURL;
+- (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL;
+
 
 @end

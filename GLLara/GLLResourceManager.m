@@ -14,7 +14,7 @@
 #import "GLLModelDrawer.h"
 #import "GLLProgram.h"
 #import "GLLShader.h"
-#import "GLLShaderList.h"
+#import "GLLShaderDescriptor.h"
 #import "GLLTexture.h"
 
 @interface GLLResourceManager ()
@@ -25,7 +25,6 @@
 	NSMutableDictionary *models;
 }
 
-- (GLLShader *)_shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL;
 - (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL;
 - (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL;
 
@@ -60,19 +59,15 @@
 	return result;
 }
 
-- (GLLProgram *)programForName:(NSString *)programName baseURL:(NSURL *)baseURL
+- (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor;
 {
-	if (!programName) return nil;
+	if (!descriptor) return nil;
 	
-	id result = [programs objectForKey:programName];
+	id result = [programs objectForKey:descriptor.programIdentifier];
 	if (!result)
 	{
-		NSString *vertexName = [[GLLShaderList defaultShaderList] vertexShaderForName:programName];
-		NSString *geometryName = [[GLLShaderList defaultShaderList] geometryShaderForName:programName];
-		NSString *fragmentName = [[GLLShaderList defaultShaderList] fragmentShaderForName:programName];
-		
-		result = [[GLLProgram alloc] initWithVertexShader:[self _shaderForName:vertexName type:GL_VERTEX_SHADER baseURL:baseURL] geometryShader:[self _shaderForName:geometryName type:GL_GEOMETRY_SHADER baseURL:baseURL] fragmentShader:[self _shaderForName:fragmentName type:GL_FRAGMENT_SHADER baseURL:baseURL]];
-		[programs setObject:result forKey:programName];
+		result = [[GLLProgram alloc] initWithDescriptor:descriptor resourceManager:self];
+		[programs setObject:result forKey:descriptor.programIdentifier];
 	}
 	return result;
 }
@@ -89,12 +84,17 @@
 	return result;
 }
 
-- (NSArray *)texturesForNames:(NSArray *)textureNames baseURL:(NSURL *)baseURL
+- (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL;
 {
-	NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:textureNames.count];
-	for (NSString *name in textureNames)
-		[result addObject:[self textureForName:name baseURL:baseURL]];
-	return [result copy];
+	if (!shaderName) return nil;
+	
+	GLLShader *result = [shaders objectForKey:shaderName];
+	if (!result)
+	{
+		result = [[GLLShader alloc] initWithSource:[self _utf8StringForFilename:shaderName baseURL:baseURL] type:type];
+		[shaders setObject:result forKey:shaderName];
+	}
+	return result;
 }
 
 #pragma mark -
@@ -114,19 +114,6 @@
 - (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL;
 {
 	return [[NSString alloc] initWithData:[self _dataForFilename:filename baseURL:baseURL] encoding:NSUTF8StringEncoding];
-}
-
-- (GLLShader *)_shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL;
-{
-	if (!shaderName) return nil;
-	
-	GLLShader *result = [shaders objectForKey:shaderName];
-	if (!result)
-	{
-		result = [[GLLShader alloc] initWithSource:[self _utf8StringForFilename:shaderName baseURL:baseURL] type:type];
-		[shaders setObject:result forKey:shaderName];
-	}
-	return result;
 }
 
 @end

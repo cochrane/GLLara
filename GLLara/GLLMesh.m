@@ -462,15 +462,13 @@ void vec_addTo(float *a, float *b)
 
 - (void)_setRenderParameters;
 {
-	NSString *programName = nil;
-	[_model.parameters getShader:&programName alpha:&_isAlphaPiece forMesh:_name];
-	_programName = programName;
+	GLLShaderDescriptor *shader = nil;
+	[_model.parameters getShader:&shader alpha:&_isAlphaPiece forMesh:_name];
+	_shader = shader;
 	_renderParameters = [_model.parameters renderParametersForMesh:_name];
 	
-	if (!programName)
-	{
-		NSLog(@"No program name for object %@", self.name);
-	}
+	if (!_shader)
+		NSLog(@"No shader for object %@", self.name);
 }
 
 @end

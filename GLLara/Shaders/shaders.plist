@@ -2,8 +2,67 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>StaticTRLShadeless</key>
+	<dict>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup13</string>
+		</array>
+	</dict>
+	<key>StaticTRUDiffuseLightmap</key>
+	<dict>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup19</string>
+		</array>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup17</string>
+		</array>
+	</dict>
+	<key>StaticTRUDiffuse</key>
+	<dict>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup16</string>
+		</array>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup18</string>
+		</array>
+	</dict>
+	<key>StaticTRLBasic</key>
+	<dict>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup15</string>
+		</array>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup14</string>
+		</array>
+	</dict>
+	<key>Shadeless</key>
+	<dict>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup10</string>
+		</array>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup21</string>
+		</array>
+	</dict>
 	<key>DiffuseLightmap</key>
 	<dict>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup9</string>
+		</array>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup3</string>
+		</array>
 		<key>textures</key>
 		<array>
 			<string>diffuseTexture</string>
@@ -16,6 +75,14 @@
 	</dict>
 	<key>Diffuse</key>
 	<dict>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup7</string>
+		</array>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup5</string>
+		</array>
 		<key>textures</key>
 		<array>
 			<string>diffuseTexture</string>
@@ -27,6 +94,14 @@
 	</dict>
 	<key>MetallicBump3</key>
 	<dict>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup28</string>
+		</array>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup29</string>
+		</array>
 		<key>parameters</key>
 		<array>
 			<string>reflectionAmount</string>
@@ -40,6 +115,14 @@
 	</dict>
 	<key>Metallic</key>
 	<dict>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup26</string>
+		</array>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup27</string>
+		</array>
 		<key>parameters</key>
 		<array>
 			<string>reflectionAmount</string>
@@ -51,6 +134,14 @@
 	</dict>
 	<key>StaticTRLNextGen</key>
 	<dict>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup12</string>
+		</array>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup11</string>
+		</array>
 		<key>parameters</key>
 		<array>
 			<string>bumpSpecularAmount</string>
@@ -62,6 +153,15 @@
 	</dict>
 	<key>DiffuseBump</key>
 	<dict>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup4</string>
+		</array>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>HandGuns</string>
+			<string>MeshGroup6</string>
+		</array>
 		<key>textures</key>
 		<array>
 			<string>diffuseTexture</string>
@@ -78,6 +178,15 @@
 	</dict>
 	<key>DiffuseLightmapBump</key>
 	<dict>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup8</string>
+		</array>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>ThorGearAll</string>
+			<string>MeshGroup2</string>
+		</array>
 		<key>textures</key>
 		<array>
 			<string>diffuseTexture</string>
@@ -95,6 +204,14 @@
 	</dict>
 	<key>DiffuseLightmapBump3Specular</key>
 	<dict>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup22</string>
+		</array>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup23</string>
+		</array>
 		<key>parameters</key>
 		<array>
 			<string>bumpSpecularAmount</string>
@@ -108,6 +225,14 @@
 	</dict>
 	<key>DiffuseLightmapBumpSpecular</key>
 	<dict>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup24</string>
+		</array>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup25</string>
+		</array>
 		<key>parameters</key>
 		<array>
 			<string>bumpSpecularAmount</string>
@@ -119,14 +244,22 @@
 	</dict>
 	<key>DiffuseLightmapBump3</key>
 	<dict>
+		<key>alphaMeshGroups</key>
+		<array>
+			<string>MeshGroup20</string>
+		</array>
+		<key>solidMeshGroups</key>
+		<array>
+			<string>MeshGroup1</string>
+		</array>
 		<key>textures</key>
 		<array>
 			<string>diffuseTexture</string>
 			<string>lightmapTexture</string>
 			<string>bumpTexture</string>
+			<string>maskTexture</string>
 			<string>bump1Texture</string>
 			<string>bump2Texture</string>
-			<string>maskTexture</string>
 		</array>
 		<key>parameters</key>
 		<array>

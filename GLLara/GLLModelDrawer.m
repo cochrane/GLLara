@@ -26,7 +26,7 @@
 	for (GLLMesh *mesh in model.meshes)
 	{
 		// Ignore objects that can't be rendered.
-		if (!mesh.programName)
+		if (!mesh.shader)
 			continue;
 		
 		if (mesh.isAlphaPiece)
@@ -38,6 +38,11 @@
 	_alphaMeshDrawers = [mutableAlphaMeshDrawers copy];
 	
 	return self;
+}
+
+- (NSArray *)usedPrograms
+{
+	return [@[ self.normalMeshDrawers, self.alphaMeshDrawers ] valueForKeyPath:@"@distinctUnionOfArrays.program"];
 }
 
 @end

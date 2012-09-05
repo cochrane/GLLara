@@ -10,7 +10,7 @@
 
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
-#import "GLLShaderList.h"
+#import "GLLShaderDescriptor.h"
 
 // Parsing of mesh names for generic item
 static NSString *meshNameRegexpString = @"^(\\d{1,2})_\
@@ -38,8 +38,7 @@ static NSCache *parameterCache;
 {
 	NSDictionary *ownMeshGroups;
 	NSDictionary *ownCameraTargets;
-	NSDictionary *ownShadersForGroups;
-	NSDictionary *ownShadersForGroupsAlpha;
+	NSSet *ownShaders;
 	NSDictionary *ownRenderParameters;
 	NSDictionary *ownDefaultParameters;
 	NSDictionary *ownMeshSplitters;
@@ -95,8 +94,7 @@ static NSCache *parameterCache;
 	
 	// Load the things that are easily to load.
 	ownMeshGroups = propertyList[@"meshGroupNames"];
-	ownShadersForGroups = propertyList[@"shadersForGroups"];
-	ownShadersForGroupsAlpha = propertyList[@"shadersForGroupsAlpha"];
+	ownShaders = propertyList[@"shaders"];
 	ownRenderParameters = propertyList[@"renderParameters"];
 	ownDefaultParameters = propertyList[@"defaultParameters"];
 	ownCameraTargets = propertyList[@"cameratargets"];
@@ -114,6 +112,12 @@ static NSCache *parameterCache;
 	}
 	ownMeshSplitters = [mutableMeshSplitters copy];
 	
+	// Similar for loading shaders
+	NSMutableSet *shaders = [[NSMutableSet alloc] initWithCapacity:[propertyList[@"shaders"] count]];
+	for (NSString *shaderName in propertyList[@"shaders"])
+		[shaders addObject:[[GLLShaderDescriptor alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil]];
+	ownShaders = [shaders copy];
+	
 	return self;
 }
 
@@ -125,8 +129,7 @@ static NSCache *parameterCache;
 	_base = [[self class] parametersForName:@"xnaLaraDefault"];
 	
 	// Objects that the generic_item format does not support.
-	ownShadersForGroups = @{};
-	ownShadersForGroupsAlpha = @{};
+	ownShaders = [NSSet set];
 	ownDefaultParameters = @{};
 	ownMeshSplitters = @{};
 	
@@ -152,10 +155,10 @@ static NSCache *parameterCache;
 		// 2nd match: mesh name - ignored.
 		
 		// 3rd, 4th, 5th match: render parameters
-		NSString *shader;
+		GLLShaderDescriptor *shader;
 		[self getShader:&shader alpha:NULL forMeshGroup:meshGroup];
 		
-		NSArray *renderParameters = [[GLLShaderList defaultShaderList] renderParameterNamesForName:shader];
+		NSArray *renderParameters = shader.parameterUniformNames;
 		
 		if (components.numberOfRanges < renderParameters.count + 3)
 			[NSException raise:NSInvalidArgumentException format:@"Does not specify enough render parameters"];
@@ -247,7 +250,7 @@ static NSCache *parameterCache;
 {
 	for (NSString *meshGroup in [self meshGroupsForMesh:mesh])
 	{
-		NSString *shader = nil;
+		GLLShaderDescriptor *shader = nil;
 		BOOL isAlpha;
 		[self getShader:&shader alpha:&isAlpha forMeshGroup:meshGroup];
 		
@@ -258,36 +261,31 @@ static NSCache *parameterCache;
 	return nil;
 }
 
-- (void)getShader:(NSString *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
+- (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
 {
-	// 1. Look in solid shaders
-	for (NSString *shaderName in ownShadersForGroups)
+	// Try to find shader in own ones.
+	for (GLLShaderDescriptor *descriptor in ownShaders)
 	{
-		if ([ownShadersForGroups[shaderName] containsObject:meshGroup])
+		if ([descriptor.solidMeshGroups containsObject:meshGroup])
 		{
 			if (shaderIsAlpha) *shaderIsAlpha = NO;
-			if (shader) *shader = shaderName;
+			if (shader) *shader = descriptor;
 			return;
 		}
-	}
-	
-	// 2. Look in alpha shaders
-	for (NSString *shaderName in ownShadersForGroupsAlpha)
-	{
-		if ([ownShadersForGroupsAlpha[shaderName] containsObject:meshGroup])
+		else if ([descriptor.alphaMeshGroups containsObject:meshGroup])
 		{
 			if (shaderIsAlpha) *shaderIsAlpha = YES;
-			if (shader) *shader = shaderName;
+			if (shader) *shader = descriptor;
 			return;
 		}
 	}
 	
-	// 3. Look in parent
+	// No luck. Get those from the base.
 	if (self.base)
 		[self.base getShader:shader alpha:shaderIsAlpha forMeshGroup:meshGroup];
 }
 
-- (void)getShader:(NSString *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
+- (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
 {
 	[self getShader:shader alpha:shaderIsAlpha forMeshGroup:[self renderableMeshGroupForMesh:mesh]];
 }

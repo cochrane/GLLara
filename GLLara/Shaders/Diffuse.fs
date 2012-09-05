@@ -13,13 +13,13 @@ uniform sampler2D diffuseTexture;
 
 struct Light {
 	vec4 color;
-	vec3 direction;
+	vec4 direction;
 	float intensity;
 	float shadowDepth;
 };
 
 layout(std140) uniform LightData {
-	vec3 cameraPosition;
+	vec4 cameraPosition;
 	Light lights[3];
 } lightData;
 
@@ -29,7 +29,7 @@ void main()
 	vec4 lightColor = vec4(0);
 	for (int i = 0; i < 3; i++)
 	{
-		float factor = clamp(dot(normalWorld, -lightData.lights[i].direction), 0, 1);
+		float factor = clamp(dot(normalWorld, -lightData.lights[i].direction.xyz), 0, 1);
 		float shading = mix(1, factor, lightData.lights[i].shadowDepth);
 		lightColor += lightData.lights[i].color * shading;
 	}

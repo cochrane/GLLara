@@ -11,6 +11,7 @@
 @class GLLASCIIScanner;
 @class GLLMeshSplitter;
 @class GLLModel;
+@class GLLShaderDescriptor;
 @class TRInDataStream;
 
 /*!
@@ -79,7 +80,7 @@
 /*
  * Drawing information, gained through the model parameters. This information is not stored in the mesh file.
  */
-@property (nonatomic, copy, readonly) NSString *programName;
+@property (nonatomic, copy, readonly) GLLShaderDescriptor *shader;
 @property (nonatomic, assign, readonly) BOOL isAlphaPiece;
 @property (nonatomic, copy, readonly) NSDictionary *renderParameters;
 
