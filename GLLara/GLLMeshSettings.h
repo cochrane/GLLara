@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GLLSourceListItem.h"
+
 @class GLLItem;
 @class GLLMesh;
 
-@interface GLLMeshSettings : NSObject
+@interface GLLMeshSettings : NSObject <GLLSourceListItem>
 
 - (id)initWithItem:(GLLItem *)item mesh:(GLLMesh *)mesh;
 

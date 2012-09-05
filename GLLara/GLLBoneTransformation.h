@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GLLSourceListItem.h"
 #import "GLLVersion.h"
 #import "simd_types.h"
 
@@ -16,7 +17,7 @@
 @class TRInDataStream;
 @class TROutDataStream;
 
-@interface GLLBoneTransformation : NSObject
+@interface GLLBoneTransformation : NSObject <GLLSourceListItem>
 
 - (id)initFromDataStream:(TRInDataStream *)stream version:(GLLSceneVersion)version item:(GLLItem *)item bone:(GLLBone *)bone;
 - (id)initWithItem:(GLLItem *)item bone:(GLLBone *)bone;

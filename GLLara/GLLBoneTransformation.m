@@ -16,6 +16,9 @@
 
 @implementation GLLBoneTransformation
 
+@synthesize parent;
+@synthesize children;
+
 - (id)initFromDataStream:(TRInDataStream *)stream version:(GLLSceneVersion)version item:(GLLItem *)item bone:(GLLBone *)bone;
 {
 	if (!(self = [super init])) return nil;
@@ -83,14 +86,20 @@
 {
 	if (!self.hasParent) return nil;
 	
-	return self.item.boneTransformations[self.bone.parentIndex];
+	if (parent == nil)
+		parent = self.item.boneTransformations[self.bone.parentIndex];
+	
+	return parent;
 }
 
 - (NSArray *)children
 {
-	return [self.item.boneTransformations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(GLLBoneTransformation *bone, NSDictionary *bindings){
-		return bone.parent == self;
-	}]];
+	if (children == nil)
+		children = [self.item.boneTransformations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(GLLBoneTransformation *bone, NSDictionary *bindings){
+			return bone.parent == self;
+		}]];
+	
+	return children;
 }
 
 - (mat_float16)relativeTransform
@@ -103,6 +112,29 @@
 	if (!self.hasParent) return self.relativeTransform;
 	
 	return simd_mat_mul(self.parent.globalTransform, self.relativeTransform);
+}
+
+#pragma mark - Source list item
+
+- (BOOL)isSourceListHeader
+{
+	return NO;
+}
+- (NSString *)sourceListDisplayName
+{
+	return self.bone.name;
+}
+- (BOOL)hasChildrenInSourceList
+{
+	return self.children.count > 0;
+}
+- (NSUInteger)numberOfChildrenInSourceList
+{
+	return self.children.count;
+}
+- (id)childInSourceListAtIndex:(NSUInteger)index;
+{
+	return self.children[index];
 }
 
 @end

@@ -43,4 +43,9 @@
 	drawer = [[GLLSceneDrawer alloc] initWithScene:self.scene view:self.renderView];
 }
 
+- (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName
+{
+	return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view", @"render window title format"), displayName];
+}
+
 @end

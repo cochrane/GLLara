@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "GLLVersion.h"
+#import "GLLSourceListItem.h"
 #import "simd_types.h"
 
 @class TRInDataStream;
@@ -16,7 +17,7 @@
 @class GLLMesh;
 @class GLLModel;
 
-@interface GLLItem : NSObject
+@interface GLLItem : NSObject <GLLSourceListItem>
 
 - (id)initWithModel:(GLLModel *)model;
 - (id)initFromDataStream:(TRInDataStream *)stream baseURL:(NSURL *)url version:(GLLSceneVersion)version;

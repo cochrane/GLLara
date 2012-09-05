@@ -12,7 +12,4 @@
 
 @interface GLLDocument : NSDocument
 
-- (IBAction)loadMesh:(id)sender;
-- (IBAction)openRenderWindow:(id)sender;
-
 @end

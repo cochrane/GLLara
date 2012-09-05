@@ -27,4 +27,27 @@
 	return self.mesh.name;
 }
 
+#pragma mark - Source list item
+
+- (BOOL)isSourceListHeader
+{
+	return NO;
+}
+- (NSString *)sourceListDisplayName
+{
+	return self.mesh.name;
+}
+- (BOOL)hasChildrenInSourceList
+{
+	return NO;
+}
+- (NSUInteger)numberOfChildrenInSourceList
+{
+	return 0;
+}
+- (id)childInSourceListAtIndex:(NSUInteger)index;
+{
+	return nil;
+}
+
 @end

@@ -8,6 +8,7 @@
 
 #import "GLLDocument.h"
 
+#import "GLLDocumentWindowController.h"
 #import "GLLItem.h"
 #import "GLLModel.h"
 #import "GLLRenderWindowController.h"
@@ -18,6 +19,9 @@
 @interface GLLDocument ()
 {
 	GLLScene *scene;
+	
+	GLLDocumentWindowController *documentWindowController;
+	GLLRenderWindowController *renderWindowController;
 }
 
 @end
@@ -35,18 +39,12 @@
     return self;
 }
 
-- (NSString *)windowNibName
+- (void)makeWindowControllers
 {
-	// Override returning the nib file name of the document
-	// If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
-	return @"GLLDocument";
-}
-
-- (void)windowControllerDidLoadNib:(NSWindowController *)aController
-{
-	[super windowControllerDidLoadNib:aController];
-	// Add any code here that needs to be executed once the windowController has loaded the document's window.
-	
+	documentWindowController = [[GLLDocumentWindowController alloc] initWithScene:scene];
+	[self addWindowController:documentWindowController];
+	renderWindowController = [[GLLRenderWindowController alloc] initWithScene:scene];
+	[self addWindowController:renderWindowController];
 }
 
 + (BOOL)autosavesInPlace
@@ -71,31 +69,6 @@
 	NSException *exception = [NSException exceptionWithName:@"UnimplementedMethod" reason:[NSString stringWithFormat:@"%@ is unimplemented", NSStringFromSelector(_cmd)] userInfo:nil];
 	@throw exception;
 	return YES;
-}
-
-- (IBAction)loadMesh:(id)sender
-{
-	NSOpenPanel *panel = [NSOpenPanel openPanel];
-	panel.allowedFileTypes = @[ @"mesh", @"ascii" ];
-	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
-		
-		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL];
-		
-		NSLog(@"Got model %@, with %lu bones and %lu meshes", model, model.bones.count, model.meshes.count);
-		
-		GLLItem *item = [[GLLItem alloc] initWithModel:model];
-		NSLog(@"got item %@", item);
-		
-		[[scene mutableArrayValueForKey:@"items"] addObject:item];
-	}];
-}
-
-- (IBAction)openRenderWindow:(id)sender
-{
-	GLLRenderWindowController *renderWindowController = [[GLLRenderWindowController alloc] initWithScene:scene];
-	[self addWindowController:renderWindowController];
-	[renderWindowController showWindow:self];
 }
 
 @end

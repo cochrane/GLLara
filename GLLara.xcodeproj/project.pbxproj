@@ -58,6 +58,8 @@
 		5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */; };
 		5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */; };
 		5296946615F7B28300DF2FA3 /* GLLRenderWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */; };
+		5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */; };
+		5296947315F7FB3300DF2FA3 /* GLLMeshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,6 +167,11 @@
 		5296946215F7B28300DF2FA3 /* GLLRenderWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderWindowController.h; sourceTree = "<group>"; };
 		5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderWindowController.m; sourceTree = "<group>"; };
 		5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLRenderWindowController.xib; sourceTree = "<group>"; };
+		5296946715F7DAA200DF2FA3 /* GLLDocumentWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDocumentWindowController.h; sourceTree = "<group>"; };
+		5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDocumentWindowController.m; sourceTree = "<group>"; };
+		5296947115F7FB3200DF2FA3 /* GLLMeshSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettings.h; sourceTree = "<group>"; };
+		5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettings.m; sourceTree = "<group>"; };
+		5296947415F807A700DF2FA3 /* GLLSourceListItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLSourceListItem.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -371,6 +378,8 @@
 				529692DC15F2759400DF2FA3 /* GLLBoneTransformation.m */,
 				5296945515F6150200DF2FA3 /* GLLScene.h */,
 				5296945615F6150200DF2FA3 /* GLLScene.m */,
+				5296947115F7FB3200DF2FA3 /* GLLMeshSettings.h */,
+				5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */,
 			);
 			name = "Posed items";
 			sourceTree = "<group>";
@@ -438,6 +447,9 @@
 				5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */,
 				525ACD6015F0F1A700534E7D /* GLLDocument.xib */,
 				525ACD6315F0F1A700534E7D /* MainMenu.xib */,
+				5296946715F7DAA200DF2FA3 /* GLLDocumentWindowController.h */,
+				5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */,
+				5296947415F807A700DF2FA3 /* GLLSourceListItem.h */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -592,6 +604,8 @@
 				5296945715F6150200DF2FA3 /* GLLScene.m in Sources */,
 				5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */,
 				5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */,
+				5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */,
+				5296947315F7FB3300DF2FA3 /* GLLMeshSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
