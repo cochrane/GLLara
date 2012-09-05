@@ -74,7 +74,7 @@ struct GLLTransform
 	glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
 	struct GLLLightBlock lightBlock;
 	bzero(&lightBlock, sizeof(lightBlock));
-	lightBlock.cameraLocation = simd_make(0.0, 0.0, 5.0, 1.0);
+	lightBlock.cameraLocation = simd_make(0.0, 1.0, 2.0, 1.0);
 	lightBlock.lights[0].color = simd_make(1.0, 1.0, 1.0, 0.0);
 	lightBlock.lights[0].direction = simd_make(-0.57735, -0.57735, -0.57735, 0.0);
 	lightBlock.lights[0].shadowDepth = 1;
