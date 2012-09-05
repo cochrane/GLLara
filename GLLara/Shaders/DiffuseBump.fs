@@ -46,7 +46,6 @@ void main()
 	{
 		// Calculate diffuse factor
 		float diffuseFactor = clamp(dot(normalWorld, -lightData.lights[i].direction), 0, 1);
-		float diffuseShading = mix(1, diffuseFactor, lightData.lights[i].shadowDepth);
 		
 		// Calculate specular factor
 		vec3 refLightDir = -reflect(lightData.lights[i].direction, normal);
@@ -55,7 +54,7 @@ void main()
 		
 		// Make diffuse color brighter by specular amount, then apply normal diffuse shading (that means specular highlights are always white).
 		vec4 lightenedColor = diffuseColor + vec4(vec3(specularShading), 1.0);
-		color += lightData.lights[i].color * diffuseShading * lightenedColor;
+		color += lightData.lights[i].color * diffuseFactor * lightenedColor;
 	}
 	
 	color.a = diffuseColor.a;

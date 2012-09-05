@@ -32,8 +32,7 @@ void main()
 	for (int i = 0; i < 3; i++)
 	{
 		float factor = clamp(dot(normalWorld, -lightData.lights[i].direction), 0, 1);
-		float shading = mix(1, factor, lightData.lights[i].shadowDepth);
-		lightColor += lightData.lights[i].color * shading;
+		lightColor += lightData.lights[i].color * factor;
 	}
 	
 	screenColor = diffuseColor * lightmapColor * lightColor;
