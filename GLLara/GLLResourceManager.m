@@ -103,6 +103,25 @@
 }
 
 #pragma mark -
+
+- (void)unload;
+{
+	for (GLLModelDrawer *drawer in models.allValues)
+		[drawer unload];
+	for (GLLTexture *texture in textures.allValues)
+		[texture unload];
+	for (GLLProgram *program in programs.allValues)
+		[program unload];
+	for (GLLShader *shader in shaders.allValues)
+		[shader unload];
+	
+	models = nil;
+	textures = nil;
+	programs = nil;
+	shaders = nil;
+}
+
+#pragma mark -
 #pragma mark Private methods
 
 - (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL;

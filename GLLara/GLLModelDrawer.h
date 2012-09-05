@@ -28,4 +28,6 @@
 
 @property (nonatomic, retain, readonly) NSArray *usedPrograms;
 
+- (void)unload;
+
 @end

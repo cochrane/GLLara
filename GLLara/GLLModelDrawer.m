@@ -45,4 +45,15 @@
 	return [@[ self.normalMeshDrawers, self.alphaMeshDrawers ] valueForKeyPath:@"@distinctUnionOfArrays.program"];
 }
 
+- (void)unload;
+{
+	for (GLLMeshDrawer *drawer in self.normalMeshDrawers)
+		[drawer unload];
+	for (GLLMeshDrawer *drawer in self.alphaMeshDrawers)
+		[drawer unload];
+	
+	_normalMeshDrawers = nil;
+	_alphaMeshDrawers = nil;
+}
+
 @end

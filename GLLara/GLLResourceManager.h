@@ -26,4 +26,6 @@
 
 @property (nonatomic, copy, readonly) NSArray *alLLoadedPrograms;
 
+- (void)unload;
+
 @end
