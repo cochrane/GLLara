@@ -37,6 +37,7 @@
 
 @property (nonatomic, retain, readonly) NSArray *boneTransformations;
 @property (nonatomic, retain, readonly) NSArray *rootBoneTransformations;
+@property (nonatomic, retain, readonly) NSArray *meshSettings;
 
 - (void)getTransforms:(mat_float16 *)matrices maxCount:(NSUInteger)maxCount forMesh:(GLLMesh *)mesh;
 

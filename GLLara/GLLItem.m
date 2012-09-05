@@ -11,6 +11,7 @@
 #import "GLLBoneTransformation.h"
 #import "GLLBone.h"
 #import "GLLMesh.h"
+#import "GLLMeshSettings.h"
 #import "GLLModel.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
@@ -35,6 +36,14 @@
 		[bones addObject:transform];
 	}
 	_boneTransformations = [bones copy];
+	
+	NSMutableArray *meshSettings = [[NSMutableArray alloc] initWithCapacity:model.meshes.count];
+	for (GLLMesh *mesh in model.meshes)
+	{
+		GLLMeshSettings *settings = [[GLLMeshSettings alloc] initWithItem:self mesh:mesh];
+		[meshSettings addObject:settings];
+	}
+	_meshSettings = [meshSettings copy];
 	
 	//for (GLLBoneTransformation *transform in _boneTransformations)
 	//	[transform calculateLocalPositions];
