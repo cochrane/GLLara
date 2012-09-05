@@ -43,8 +43,7 @@ void vec_addTo(float *a, float *b)
 
 @implementation GLLMesh
 
-#pragma mark -
-#pragma mark Mesh loading
+#pragma mark - Mesh loading
 
 - (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
 {
@@ -167,8 +166,7 @@ void vec_addTo(float *a, float *b)
 	return self;
 }
 
-#pragma mark -
-#pragma mark Describe mesh data
+#pragma mark - Describe mesh data
 
 - (NSUInteger)offsetForPosition
 {
@@ -210,8 +208,7 @@ void vec_addTo(float *a, float *b)
 	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [6])*self.countOfUVLayers + (self.hasBoneWeights ? (sizeof(uint16_t [4]) + sizeof(float [4])) : 0);
 }
 
-#pragma mark -
-#pragma mark Properties
+#pragma mark - Properties
 
 - (BOOL)hasBoneWeights
 {
@@ -222,8 +219,7 @@ void vec_addTo(float *a, float *b)
 	return self.model.baseURL;
 }
 
-#pragma mark -
-#pragma mark Splitting
+#pragma mark - Splitting
 
 - (GLLMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
 {
@@ -298,8 +294,7 @@ void vec_addTo(float *a, float *b)
 	return [self partialMeshInBoxMin:splitter.min max:splitter.max name:splitter.splitPartName];
 }
 
-#pragma mark -
-#pragma mark Private methods
+#pragma mark - Private methods
 
 - (NSData *)_postprocessVertices:(NSData *)vertexData;
 {

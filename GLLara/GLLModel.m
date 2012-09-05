@@ -111,8 +111,7 @@ static NSCache *cachedModels;
 	}]];
 }
 
-#pragma mark -
-#pragma mark Private methods
+#pragma mark - Private methods
 
 - (void)_addMesh:(GLLMesh *)mesh toArray:(NSMutableArray *)array;
 {

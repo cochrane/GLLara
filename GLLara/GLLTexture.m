@@ -13,8 +13,7 @@
 #import <OpenGL/gl3ext.h>
 #import "OpenDDSFile.h"
 
-#pragma mark -
-#pragma mark Private DDS loading functions
+#pragma mark - Private DDS loading functions
 
 GLenum _dds_get_compressed_texture_format(const DDSFile *file)
 {
@@ -139,8 +138,7 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 	NSAssert(_textureID == 0, @"did not call unload before dealloc");
 }
 
-#pragma mark -
-#pragma mark Private methods
+#pragma mark - Private methods
 
 - (void)_loadDDSTextureWithData:(NSData *)data;
 {

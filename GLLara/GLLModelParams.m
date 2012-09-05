@@ -186,8 +186,7 @@ static NSCache *parameterCache;
 	return self;
 }
 
-#pragma mark -
-#pragma mark Mesh Groups
+#pragma mark - Mesh Groups
 
 - (NSArray *)meshGroups
 {
@@ -222,8 +221,7 @@ static NSCache *parameterCache;
 	return result;
 }
 
-#pragma mark -
-#pragma mark Camera targets
+#pragma mark - Camera targets
 
 - (NSArray *)cameraTargets
 {
@@ -243,8 +241,7 @@ static NSCache *parameterCache;
 	return result;
 }
 
-#pragma mark -
-#pragma mark Rendering
+#pragma mark - Rendering
 
 - (NSString *)renderableMeshGroupForMesh:(NSString *)mesh;
 {
@@ -308,8 +305,7 @@ static NSCache *parameterCache;
 	return [result copy];
 }
 
-#pragma mark -
-#pragma mark Splitting
+#pragma mark - Splitting
 
 - (NSArray *)meshesToSplit
 {

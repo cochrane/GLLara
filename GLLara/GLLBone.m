@@ -44,8 +44,7 @@
 	return self;
 }
 
-#pragma mark -
-#pragma mark Accessing the bones as a tree
+#pragma mark - Accessing the bones as a tree
 
 // These methods are not the fastest way to do this (the fastest way would be to cache the results or load them explicitly once all bones have been loaded), but they are definitely the shortest way to write the code. Until I see proof that this causes problems, I prefer shorter.
 - (BOOL)hasParent

@@ -44,8 +44,7 @@
 	return self;
 }
 
-#pragma mark -
-#pragma mark Retrieving resources
+#pragma mark - Retrieving resources
 
 - (GLLModelDrawer *)drawerForModel:(GLLModel *)model;
 {
@@ -121,8 +120,7 @@
 	shaders = nil;
 }
 
-#pragma mark -
-#pragma mark Private methods
+#pragma mark - Private methods
 
 - (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL;
 {
