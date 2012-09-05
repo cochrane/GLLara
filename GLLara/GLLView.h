@@ -12,10 +12,11 @@
 
 @class GLLResourceManager;
 @class GLLSceneDrawer;
+@class GLLRenderWindowController;
 
 @interface GLLView : NSOpenGLView
 
-@property (nonatomic, retain, readonly) GLLResourceManager *resourceManager;
+@property (nonatomic, weak) GLLRenderWindowController *windowController;
 
 @property (nonatomic, retain) GLLSceneDrawer *sceneDrawer;
 

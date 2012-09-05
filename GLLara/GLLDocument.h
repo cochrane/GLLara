@@ -12,8 +12,7 @@
 
 @interface GLLDocument : NSDocument
 
-@property (nonatomic, assign) IBOutlet GLLView *renderView;
-
 - (IBAction)loadMesh:(id)sender;
+- (IBAction)openRenderWindow:(id)sender;
 
 @end

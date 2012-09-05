@@ -56,6 +56,8 @@
 		5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945315F60F3C00DF2FA3 /* GLLView.m */; };
 		5296945715F6150200DF2FA3 /* GLLScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945615F6150200DF2FA3 /* GLLScene.m */; };
 		5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */; };
+		5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */; };
+		5296946615F7B28300DF2FA3 /* GLLRenderWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,6 +162,9 @@
 		5296945615F6150200DF2FA3 /* GLLScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLScene.m; sourceTree = "<group>"; };
 		5296945815F6C84900DF2FA3 /* GLLShaderDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLShaderDescriptor.h; sourceTree = "<group>"; };
 		5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLShaderDescriptor.m; sourceTree = "<group>"; };
+		5296946215F7B28300DF2FA3 /* GLLRenderWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderWindowController.h; sourceTree = "<group>"; };
+		5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderWindowController.m; sourceTree = "<group>"; };
+		5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLRenderWindowController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +235,7 @@
 		525ACD5115F0F1A700534E7D /* GLLara */ = {
 			isa = PBXGroup;
 			children = (
+				5296946115F7B22E00DF2FA3 /* Document and UI */,
 				5296942C15F421D800DF2FA3 /* shared_simd */,
 				5296942515F4138100DF2FA3 /* Drawing posed items */,
 				5296942115F4115800DF2FA3 /* Render resources */,
@@ -240,10 +246,6 @@
 				529693F615F2D00200DF2FA3 /* Model Parameters */,
 				529692F115F28D1200DF2FA3 /* From DDSConverter */,
 				529692CF15F1568700DF2FA3 /* From TR Poser */,
-				525ACD5D15F0F1A700534E7D /* GLLDocument.h */,
-				525ACD5E15F0F1A700534E7D /* GLLDocument.m */,
-				525ACD6015F0F1A700534E7D /* GLLDocument.xib */,
-				525ACD6315F0F1A700534E7D /* MainMenu.xib */,
 				525ACD5215F0F1A700534E7D /* Supporting Files */,
 				529692DE15F2795700DF2FA3 /* GLLVersion.h */,
 				529692E415F286E600DF2FA3 /* GLLVertexFormat.h */,
@@ -251,8 +253,6 @@
 				5296942A15F4174F00DF2FA3 /* GLLSceneDrawer.m */,
 				529693F315F2B58A00DF2FA3 /* GLLASCIIScanner.h */,
 				529693F415F2B58B00DF2FA3 /* GLLASCIIScanner.m */,
-				5296945215F60F3900DF2FA3 /* GLLView.h */,
-				5296945315F60F3C00DF2FA3 /* GLLView.m */,
 			);
 			path = GLLara;
 			sourceTree = "<group>";
@@ -426,6 +426,22 @@
 			path = shared_simd;
 			sourceTree = SOURCE_ROOT;
 		};
+		5296946115F7B22E00DF2FA3 /* Document and UI */ = {
+			isa = PBXGroup;
+			children = (
+				5296945215F60F3900DF2FA3 /* GLLView.h */,
+				5296945315F60F3C00DF2FA3 /* GLLView.m */,
+				525ACD5D15F0F1A700534E7D /* GLLDocument.h */,
+				525ACD5E15F0F1A700534E7D /* GLLDocument.m */,
+				5296946215F7B28300DF2FA3 /* GLLRenderWindowController.h */,
+				5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */,
+				5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */,
+				525ACD6015F0F1A700534E7D /* GLLDocument.xib */,
+				525ACD6315F0F1A700534E7D /* MainMenu.xib */,
+			);
+			name = "Document and UI";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -514,6 +530,7 @@
 				5296944515F5385000DF2FA3 /* DiffuseLightmapBump.fs in Resources */,
 				5296944615F5385400DF2FA3 /* DiffuseLightmapBump3.fs in Resources */,
 				5296944E15F5F1BB00DF2FA3 /* shaders.plist in Resources */,
+				5296946615F7B28300DF2FA3 /* GLLRenderWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,6 +591,7 @@
 				5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */,
 				5296945715F6150200DF2FA3 /* GLLScene.m in Sources */,
 				5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */,
+				5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,7 +12,15 @@
 #import <OpenGL/gl3ext.h>
 
 #import "GLLSceneDrawer.h"
+#import "GLLRenderWindowController.h"
 #import "GLLResourceManager.h"
+
+@interface GLLView ()
+{
+	BOOL openGLPrepared;
+}
+
+@end
 
 @implementation GLLView
 
@@ -35,10 +43,24 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[self.openGLContext makeCurrentContext];
+	[self.sceneDrawer unload];
+}
+
 - (void)prepareOpenGL
 {
-	_resourceManager = [[GLLResourceManager alloc] init];
-	self.sceneDrawer.resourceManager = _resourceManager;
+	openGLPrepared = YES;
+	[self.windowController openGLPrepared];
+}
+
+- (void)setWindowController:(GLLRenderWindowController *)windowController
+{
+	NSAssert(!_windowController, @"Can't set window controller twice");
+	
+	_windowController = windowController;
+	if (openGLPrepared) [_windowController openGLPrepared];
 }
 
 - (void)reshape
@@ -49,7 +71,6 @@
 - (void)drawRect:(NSRect)dirtyRect
 {
 	[self.sceneDrawer draw];
-	
 	[self.openGLContext flushBuffer];
 }
 
