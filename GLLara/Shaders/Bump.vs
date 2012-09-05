@@ -48,7 +48,7 @@ void main()
 	vec3 tangentV = normalize(cross(normal, tangentU) * tangent.w);
 	vec3 normal = normalize(normal);
 	
-	tangentToWorld = mat3(worldBone) * transpose(mat3(tangentU, tangentV, normal));
+	tangentToWorld = mat3(worldBone) * mat3(tangentU, tangentV, normal);
 
 	// Pass through
 	outColor = color;
