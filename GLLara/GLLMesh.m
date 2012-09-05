@@ -127,10 +127,10 @@ void vec_addTo(float *a, float *b)
 		}
 		
 		// Leave space for tangents
-		for (NSUInteger j = 0; j < 2*_countOfUVLayers; j++)
+		for (NSUInteger j = 0; j < 4*_countOfUVLayers; j++)
 		{
-			float fourTimesZero[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-			[rawVertexData appendBytes:fourTimesZero length:sizeof(fourTimesZero)];
+			float zero = 0.0f;
+			[rawVertexData appendBytes:&zero length:sizeof(zero)];
 		}
 		
 		if (self.hasBoneWeights)
@@ -176,38 +176,38 @@ void vec_addTo(float *a, float *b)
 }
 - (NSUInteger)offsetForNormal
 {
-	return 12;
+	return sizeof(float [3]);
 }
 - (NSUInteger)offsetForColor
 {
-	return 24;
+	return sizeof(float [6]);
 }
 - (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer
 {
 	NSAssert(layer < self.countOfUVLayers, @"Asking for layer %lu but we only have %lu", layer, self.countOfUVLayers);
 	
-	return 28 + 8*layer;
+	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*layer;
 }
 - (NSUInteger)offsetForTangentLayer:(NSUInteger)layer
 {
 	NSAssert(layer < self.countOfUVLayers, @"Asking for layer %lu but we only have %lu", layer, self.countOfUVLayers);
 	
-	return 28 + 8*self.countOfUVLayers + 16*layer;
+	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + sizeof(float [4])*layer;
 }
 - (NSUInteger)offsetForBoneIndices
 {
 	NSAssert(self.hasBoneWeights, @"Asking for offset for bone indices in mesh that doesn't have any.");
 	
-	return 28 + 24*self.countOfUVLayers;
+	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [6])*self.countOfUVLayers;
 }
 - (NSUInteger)offsetForBoneWeights
 {
 	NSAssert(self.hasBoneWeights, @"Asking for offset for bone indices in mesh that doesn't have any.");
-	return 28 + 24*self.countOfUVLayers + 8;
+	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [6])*self.countOfUVLayers + sizeof(uint16_t [4]);
 }
 - (NSUInteger)stride
 {
-	return 28 + 24*self.countOfUVLayers + (self.hasBoneWeights ? 24 : 0);
+	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [6])*self.countOfUVLayers + (self.hasBoneWeights ? (sizeof(uint16_t [4]) + sizeof(float [4])) : 0);
 }
 
 #pragma mark -
@@ -357,7 +357,7 @@ void vec_addTo(float *a, float *b)
 				localForGlobalIndex[@(index)] = local;
 				[boneIndices addObject:@(index)];
 			}
-			weights[i] = local.unsignedShortValue;
+			indices[i] = local.unsignedShortValue;
 		}
 	}
 	
