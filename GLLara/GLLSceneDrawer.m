@@ -33,8 +33,7 @@ struct GLLLightBlock
 
 struct GLLTransform
 {
-	mat_float16 modelViewProjection;
-	mat_float16 model;
+	mat_float16 viewProjection;
 };
 
 @interface GLLSceneDrawer ()
@@ -42,6 +41,9 @@ struct GLLTransform
 	NSMutableArray *itemDrawers;
 	GLuint lightBuffer;
 	GLuint transformBuffer;
+	
+	mat_float16 view;
+	mat_float16 projection;
 }
 
 @end
@@ -78,7 +80,7 @@ struct GLLTransform
 	lightBlock.cameraLocation = simd_make(0.0, 1.0, 2.0, 1.0);
 	lightBlock.lights[0].color = simd_make(1.0, 1.0, 1.0, 0.0);
 	lightBlock.lights[0].direction = simd_make(-0.57735, -0.57735, -0.57735, 0.0);
-	lightBlock.lights[0].shadowDepth = 1;
+	lightBlock.lights[0].shadowDepth = 0.5;
 	
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(lightBlock), &lightBlock, GL_STATIC_DRAW);
 	
@@ -86,11 +88,10 @@ struct GLLTransform
 	glGenBuffers(1, &transformBuffer);
 	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
 	
-	mat_float16 lookAt = simd_mat_lookat(simd_make(0.0, 0.0, -1.0, 0.0), lightBlock.cameraLocation);
-	mat_float16 projection = simd_frustumMatrix(65.0, 1.0, 0.1, 10.0);
+	view = simd_mat_lookat(simd_make(0.0, 0.0, -1.0, 0.0), lightBlock.cameraLocation);
+	projection = simd_frustumMatrix(65.0, 1.0, 0.1, 10.0);
 	struct GLLTransform transformBlock;
-	transformBlock.modelViewProjection = simd_mat_mul(projection, lookAt);
-	transformBlock.model = simd_mat_identity();
+	transformBlock.viewProjection = simd_mat_mul(projection, view);
 	
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(transformBlock), &transformBlock, GL_STATIC_DRAW);
 	
@@ -127,6 +128,14 @@ struct GLLTransform
 - (void)setWindowSize:(NSSize)size;
 {
 	glViewport(0, 0, size.width, size.height);
+	
+	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
+	
+	projection = simd_frustumMatrix(65.0, size.width / size.height, 0.1, 10.0);
+	struct GLLTransform transformBlock;
+	transformBlock.viewProjection = simd_mat_mul(projection, view);
+	
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(transformBlock), &transformBlock, GL_STATIC_DRAW);
 }
 
 - (void)draw;

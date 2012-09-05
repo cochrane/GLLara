@@ -4,8 +4,7 @@
 #version 150
 
 layout(std140) uniform Transform {
-	mat4 modelViewProjection;
-	mat4 model;
+	mat4 viewProjection;
 } transform;
 
 uniform mat4 boneMatrices[59];
@@ -36,19 +35,18 @@ void main()
 {
 	// Transformation
 	mat4 bone = boneTransform();
-	gl_Position = transform.modelViewProjection * (bone * vec4(position, 1.0));
+	gl_Position = transform.viewProjection * (bone * vec4(position, 1.0));
 	
 	// Relative to world
-	mat4 worldBone = transform.model * bone;
-	positionWorld = vec3(worldBone * vec4(position, 1.0));
-	normalWorld = vec3(worldBone * vec4(normal, 0.0));
+	positionWorld = vec3(bone * vec4(position, 1.0));
+	normalWorld = vec3(bone * vec4(normal, 0.0));
 	
 	// Tangents
 	vec3 tangentU = normalize(tangent.xyz);
 	vec3 tangentV = normalize(cross(normal, tangentU) * tangent.w);
 	vec3 normal = normalize(normal);
 	
-	tangentToWorld = mat3(worldBone) * mat3(tangentU, tangentV, normal);
+	tangentToWorld = mat3(bone) * mat3(tangentU, tangentV, normal);
 
 	// Pass through
 	outColor = color;
