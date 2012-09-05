@@ -67,6 +67,7 @@ struct GLLTransform
 	_resourceManager = resourceManager;
 	[_scene addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
 	
+	glEnable(GL_MULTISAMPLE);
 	glClearColor(0.2, 0.2, 0.2, 1);
 	
 	// Light buffer

@@ -22,6 +22,9 @@
 		NSOpenGLPFADoubleBuffer,
 		NSOpenGLPFADepthSize, 24,
 		NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
+		NSOpenGLPFAMultisample, 1,
+		NSOpenGLPFASampleBuffers, 1,
+		NSOpenGLPFASamples, 8,
 		0
 	};
 	
