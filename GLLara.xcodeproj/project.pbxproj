@@ -61,6 +61,8 @@
 		5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */; };
 		5296947315F7FB3300DF2FA3 /* GLLMeshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */; };
 		5296947815F80F4800DF2FA3 /* GLLBoneTransformViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */; };
+		52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206715F8275E00937450 /* doppelganger.modelparams.plist */; };
+		52BB206A15F82B4200937450 /* Shadeless.fs in Sources */ = {isa = PBXBuildFile; fileRef = 52BB206915F82B4200937450 /* Shadeless.fs */; };
 		52F2BC3915F8198400E3EE75 /* GLLBoneTransformView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */; };
 /* End PBXBuildFile section */
 
@@ -176,6 +178,8 @@
 		5296947415F807A700DF2FA3 /* GLLSourceListItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLSourceListItem.h; sourceTree = "<group>"; };
 		5296947515F80F4500DF2FA3 /* GLLBoneTransformViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneTransformViewController.h; sourceTree = "<group>"; };
 		5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneTransformViewController.m; sourceTree = "<group>"; };
+		52BB206715F8275E00937450 /* doppelganger.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = doppelganger.modelparams.plist; sourceTree = "<group>"; };
+		52BB206915F82B4200937450 /* Shadeless.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Shadeless.fs; sourceTree = "<group>"; };
 		52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLBoneTransformView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -333,9 +337,10 @@
 		529693F615F2D00200DF2FA3 /* Model Parameters */ = {
 			isa = PBXGroup;
 			children = (
+				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
 				529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */,
 				529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */,
-				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
+				52BB206715F8275E00937450 /* doppelganger.modelparams.plist */,
 			);
 			path = "Model Parameters";
 			sourceTree = "<group>";
@@ -351,6 +356,7 @@
 				5296941A15F4049B00DF2FA3 /* DiffuseLightmapBump.fs */,
 				5296941C15F4063500DF2FA3 /* DiffuseLightmapBump3.fs */,
 				5296944D15F5F1BB00DF2FA3 /* shaders.plist */,
+				52BB206915F82B4200937450 /* Shadeless.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -552,6 +558,7 @@
 				5296944E15F5F1BB00DF2FA3 /* shaders.plist in Resources */,
 				5296946615F7B28300DF2FA3 /* GLLRenderWindowController.xib in Resources */,
 				52F2BC3915F8198400E3EE75 /* GLLBoneTransformView.xib in Resources */,
+				52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,6 +623,7 @@
 				5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */,
 				5296947315F7FB3300DF2FA3 /* GLLMeshSettings.m in Sources */,
 				5296947815F80F4800DF2FA3 /* GLLBoneTransformViewController.m in Sources */,
+				52BB206A15F82B4200937450 /* Shadeless.fs in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
