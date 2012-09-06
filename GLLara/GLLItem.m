@@ -172,6 +172,7 @@
 	
 	// Pose
 	
+	// All this code isn't done yet!
 	
 	return self;
 }
@@ -183,7 +184,8 @@
 
 - (NSString *)displayName
 {
-	NSMutableString *basicName = [[NSMutableString alloc] initWithString:self.model.baseURL.lastPathComponent];
+	NSURL *modelDirectory = [self.model.baseURL URLByDeletingLastPathComponent];
+	NSMutableString *basicName = [[NSMutableString alloc] initWithString:modelDirectory.lastPathComponent];
 	
 	if ([basicName hasSuffix:@".ascii"])
 		[basicName deleteCharactersInRange:NSMakeRange(basicName.length - @".ascii".length, @".ascii".length)];
