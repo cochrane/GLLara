@@ -211,6 +211,15 @@
 	}]];
 }
 
+- (GLLMeshSettings *)settingsForMesh:(GLLMesh *)mesh;
+{
+	for (GLLMeshSettings *settings in self.meshSettings)
+		if (settings.mesh == mesh)
+			return settings;
+	
+	return nil;
+}
+
 - (void)getTransforms:(mat_float16 *)matrices maxCount:(NSUInteger)maxCount forMesh:(GLLMesh *)mesh;
 {
 	NSArray *boneIndices = mesh.boneIndices;

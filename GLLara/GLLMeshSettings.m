@@ -8,6 +8,7 @@
 
 #import "GLLMeshSettings.h"
 
+#import "GLLItem.h"
 #import "GLLMesh.h"
 
 @implementation GLLMeshSettings
@@ -16,6 +17,7 @@
 {
 	if (!(self = [super init])) return nil;
 	
+	_item = item;
 	_mesh = mesh;
 	_isVisible = YES;
 	
@@ -25,6 +27,12 @@
 - (NSString *)displayName
 {
 	return self.mesh.name;
+}
+
+- (void)setIsVisible:(BOOL)isVisible
+{
+	_isVisible = isVisible;
+	[self.item changedPosition];
 }
 
 #pragma mark - Source list item

@@ -15,6 +15,7 @@
 @class TRInDataStream;
 @class TROutDataStream;
 @class GLLMesh;
+@class GLLMeshSettings;
 @class GLLModel;
 @class GLLScene;
 
@@ -42,6 +43,8 @@
 @property (nonatomic, retain, readonly) NSArray *boneTransformations;
 @property (nonatomic, retain, readonly) NSArray *rootBoneTransformations;
 @property (nonatomic, retain, readonly) NSArray *meshSettings;
+
+- (GLLMeshSettings *)settingsForMesh:(GLLMesh *)mesh;
 
 - (void)getTransforms:(mat_float16 *)matrices maxCount:(NSUInteger)maxCount forMesh:(GLLMesh *)mesh;
 

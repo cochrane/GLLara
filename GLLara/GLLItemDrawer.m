@@ -9,15 +9,18 @@
 #import "GLLItemDrawer.h"
 
 #import "GLLItem.h"
-#import "GLLModelDrawer.h"
 #import "GLLMeshDrawer.h"
+#import "GLLMeshSettings.h"
+#import "GLLModelDrawer.h"
 #import "GLLSceneDrawer.h"
 #import "GLLResourceManager.h"
+#import "GLLTransformedMeshDrawer.h"
 #import "simd_types.h"
 
 @interface GLLItemDrawer ()
 {
-	GLLModelDrawer *modelDrawer;
+	NSArray *alphaDrawers;
+	NSArray *solidDrawers;
 }
 
 @end
@@ -31,29 +34,36 @@
 	_item = item;
 	_sceneDrawer = sceneDrawer;
 	
+	GLLModelDrawer *modelDrawer = [sceneDrawer.resourceManager drawerForModel:item.model];
+	
+	NSMutableArray *mutableAlphaDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.alphaMeshDrawers.count];
+	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)
+		[mutableAlphaDrawers addObject:[[GLLTransformedMeshDrawer alloc] initWithDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
+	alphaDrawers = [mutableAlphaDrawers copy];
+	
+	NSMutableArray *mutableSolidDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.normalMeshDrawers.count];
+	for (GLLMeshDrawer *drawer in modelDrawer.normalMeshDrawers)
+		[mutableSolidDrawers addObject:[[GLLTransformedMeshDrawer alloc] initWithDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
+	solidDrawers = [mutableSolidDrawers copy];
 	
 	return self;
 }
 
 - (void)drawNormal;
 {
-	if (!modelDrawer) modelDrawer = [_sceneDrawer.resourceManager drawerForModel:_item.model];
-
 	mat_float16 transforms[60];
-	for (GLLMeshDrawer *drawer in modelDrawer.normalMeshDrawers)
+	for (GLLTransformedMeshDrawer *drawer in solidDrawers)
 	{
-		[_item getTransforms:transforms maxCount:60 forMesh:drawer.mesh];
+		[_item getTransforms:transforms maxCount:60 forMesh:drawer.settings.mesh];
 		[drawer drawWithTransforms:transforms];
 	}
 }
 - (void)drawAlpha;
 {
-	if (!modelDrawer) modelDrawer = [_sceneDrawer.resourceManager drawerForModel:_item.model];
-	
 	mat_float16 transforms[60];
-	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)
+	for (GLLTransformedMeshDrawer *drawer in alphaDrawers)
 	{
-		[_item getTransforms:transforms maxCount:60 forMesh:drawer.mesh];
+		[_item getTransforms:transforms maxCount:60 forMesh:drawer.settings.mesh];
 		[drawer drawWithTransforms:transforms];
 	}
 }

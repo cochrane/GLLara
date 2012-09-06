@@ -17,6 +17,7 @@
 
 - (id)initWithItem:(GLLItem *)item mesh:(GLLMesh *)mesh;
 
+@property (nonatomic, weak, readonly) GLLItem *item;
 @property (nonatomic, retain, readonly) GLLMesh *mesh;
 
 @property (nonatomic, assign) BOOL isVisible;
