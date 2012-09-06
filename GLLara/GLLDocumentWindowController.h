@@ -17,6 +17,7 @@
 @property (nonatomic, retain, readonly) GLLScene *scene;
 
 @property (nonatomic, retain) IBOutlet NSOutlineView *sourceView;
+@property (nonatomic, retain) IBOutlet NSView *placeholderView;
 - (IBAction)loadMesh:(id)sender;
 
 @end

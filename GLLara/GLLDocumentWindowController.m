@@ -8,16 +8,19 @@
 
 #import "GLLDocumentWindowController.h"
 
-#import "GLLBone.h"
 #import "GLLBoneTransformation.h"
-#import "GLLMesh.h"
-#import "GLLMeshSettings.h"
+#import "GLLBoneTransformViewController.h"
 #import "GLLModel.h"
 #import "GLLItem.h"
 #import "GLLScene.h"
 #import "GLLSourceListItem.h"
 
 @interface GLLDocumentWindowController ()
+{
+	GLLBoneTransformViewController *boneTransformViewController;
+}
+
+- (void)_setRightHandController:(NSViewController *)controller representedObject:(id)object;
 
 @end
 
@@ -32,6 +35,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
     if (!(self = [super initWithWindowNibName:@"GLLDocument"])) return nil;
     
 	_scene = scene;
+	
+	boneTransformViewController = [[GLLBoneTransformViewController alloc] init];
 	
 	self.shouldCloseDocument = YES;
 	
@@ -130,6 +135,39 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
 {
 	return item == lightsGroupIdentifier || item == itemsGroupIdentifier || item == settingsGroupIdentifier;
+}
+
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification
+{
+	NSUInteger selectedRow = self.sourceView.selectedRow;
+	if (selectedRow == NSNotFound)
+	{
+		[self _setRightHandController:nil representedObject:nil];
+		return;
+	}
+	
+	id selectedObject = [self.sourceView itemAtRow:selectedRow];
+	if ([selectedObject isKindOfClass:[GLLBoneTransformation class]])
+		[self _setRightHandController:boneTransformViewController representedObject:selectedObject];
+	else
+		[self _setRightHandController:nil representedObject:nil];
+}
+
+#pragma mark - Private methods
+
+- (void)_setRightHandController:(NSViewController *)controller representedObject:(id)object;
+{
+	while (self.placeholderView.subviews.count > 0)
+		[self.placeholderView.subviews[0] removeFromSuperview];
+	[self.placeholderView displayIfNeeded];
+	
+	if (controller)
+	{
+		NSView *newView = controller.view;
+		newView.frame = (NSRect) { { 0.0f, 0.0f }, self.placeholderView.frame.size };
+		[self.placeholderView addSubview:controller.view];
+		controller.representedObject = object;
+	}
 }
 
 @end
