@@ -26,8 +26,6 @@
 @property (nonatomic, retain, readonly) NSArray *normalMeshDrawers;
 @property (nonatomic, retain, readonly) NSArray *alphaMeshDrawers;
 
-@property (nonatomic, retain, readonly) NSArray *usedPrograms;
-
 - (void)unload;
 
 @end
