@@ -25,7 +25,7 @@ static NSString *meshNameRegexpString = @"^([0-9P]{1,2})_\
 				_([^_\\n]+)\
 				(?:\
 					_([^_\\n]+)\
-				)+\
+				)*\
 			)?\
 		)?\
 	)?\
