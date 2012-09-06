@@ -19,6 +19,8 @@
 
 - (void)unload;
 
+@property (nonatomic, copy, readonly) NSString *name;
+
 @property (nonatomic, assign, readonly) GLuint programID;
 
 // Uniforms set by mesh

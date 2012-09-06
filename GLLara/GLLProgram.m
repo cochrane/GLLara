@@ -22,6 +22,8 @@
 {
 	if (!(self = [super init])) return nil;
 	
+	_name = descriptor.name;
+	
 	_programID = glCreateProgram();
 	if (descriptor.vertexName)
 		glAttachShader(_programID, [manager shaderForName:descriptor.vertexName type:GL_VERTEX_SHADER baseURL:descriptor.baseURL].shaderID);
