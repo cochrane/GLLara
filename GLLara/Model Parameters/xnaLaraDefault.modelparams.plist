@@ -46,6 +46,14 @@
 		</dict>
 		<key>Shadeless</key>
 		<dict>
+			<key>fragment</key>
+			<string>Shadeless.fs</string>
+			<key>vertex</key>
+			<string>Basic.vs</string>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+			</array>
 			<key>solidMeshGroups</key>
 			<array>
 				<string>MeshGroup10</string>

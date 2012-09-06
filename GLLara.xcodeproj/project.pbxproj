@@ -52,7 +52,6 @@
 		5296944515F5385000DF2FA3 /* DiffuseLightmapBump.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5296941A15F4049B00DF2FA3 /* DiffuseLightmapBump.fs */; };
 		5296944615F5385400DF2FA3 /* DiffuseLightmapBump3.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5296941C15F4063500DF2FA3 /* DiffuseLightmapBump3.fs */; };
 		5296944915F565D100DF2FA3 /* GLLResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296944815F565D100DF2FA3 /* GLLResourceManager.m */; };
-		5296944E15F5F1BB00DF2FA3 /* shaders.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5296944D15F5F1BB00DF2FA3 /* shaders.plist */; };
 		5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945315F60F3C00DF2FA3 /* GLLView.m */; };
 		5296945715F6150200DF2FA3 /* GLLScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945615F6150200DF2FA3 /* GLLScene.m */; };
 		5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */; };
@@ -166,7 +165,6 @@
 		5296943E15F51F2B00DF2FA3 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
 		5296944715F565D000DF2FA3 /* GLLResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLResourceManager.h; sourceTree = "<group>"; };
 		5296944815F565D100DF2FA3 /* GLLResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLResourceManager.m; sourceTree = "<group>"; };
-		5296944D15F5F1BB00DF2FA3 /* shaders.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = shaders.plist; sourceTree = "<group>"; };
 		5296945215F60F3900DF2FA3 /* GLLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLView.h; sourceTree = "<group>"; };
 		5296945315F60F3C00DF2FA3 /* GLLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLView.m; sourceTree = "<group>"; };
 		5296945515F6150200DF2FA3 /* GLLScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLScene.h; sourceTree = "<group>"; };
@@ -370,7 +368,6 @@
 				5296941815F3ED3D00DF2FA3 /* DiffuseBump.fs */,
 				5296941A15F4049B00DF2FA3 /* DiffuseLightmapBump.fs */,
 				5296941C15F4063500DF2FA3 /* DiffuseLightmapBump3.fs */,
-				5296944D15F5F1BB00DF2FA3 /* shaders.plist */,
 				52BB206915F82B4200937450 /* Shadeless.fs */,
 			);
 			path = Shaders;
@@ -570,7 +567,6 @@
 				5296944315F5384500DF2FA3 /* DiffuseLightmap.fs in Resources */,
 				5296944515F5385000DF2FA3 /* DiffuseLightmapBump.fs in Resources */,
 				5296944615F5385400DF2FA3 /* DiffuseLightmapBump3.fs in Resources */,
-				5296944E15F5F1BB00DF2FA3 /* shaders.plist in Resources */,
 				5296946615F7B28300DF2FA3 /* GLLRenderWindowController.xib in Resources */,
 				52F2BC3915F8198400E3EE75 /* GLLBoneTransformView.xib in Resources */,
 				52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */,
