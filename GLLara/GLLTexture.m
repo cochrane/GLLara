@@ -165,7 +165,7 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 	CFNumberGetValue(CFDictionaryGetValue(dict, kCGImagePropertyPixelHeight), kCFNumberCFIndexType, &height);
 	CFRelease(dict);
 	
-	unsigned char *bufferData = malloc(width * height * 4);
+	unsigned char *bufferData = calloc(width * height, 4);
 	CGImageRef cgImage = CGImageSourceCreateImageAtIndex(source, 0, NULL);
 	CFRelease(source);
 	
