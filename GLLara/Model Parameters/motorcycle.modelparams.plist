@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>base</key>
+		<string>xnaLaraDefault</string>
+		<key>meshGroupNames</key>
+		<dict>
+			<key>MeshGroup4</key>
+			<array>
+				<string>mesh1</string>
+				<string>mesh2</string>
+				<string>mesh3</string>
+				<string>mesh6</string>
+			</array>
+			<key>MeshGroup5</key>
+			<array>
+				<string>mesh4</string>
+			</array>
+			<key>MeshGroup6</key>
+			<array>
+				<string>mesh5</string>
+			</array>
+		</dict>
+		<key>cameraTargets</key>
+		<dict>
+			<key>body</key>
+			<array>
+				<string>body</string>
+			</array>
+			<key>headlight</key>
+			<array>
+				<string>fork front</string>
+			</array>
+			<key>wheel front</key>
+			<array>
+				<string>wheel front</string>
+			</array>
+			<key>wheel back</key>
+			<array>
+				<string>wheel back</string>
+			</array>
+		</dict>
+		<key>renderParameters</key>
+		<dict>
+			<key>mesh1</key>
+			<dict>
+				<key>bumpSpecularAmount</key>
+				<real>0.5</real>
+			</dict>
+			<key>mesh2</key>
+			<dict>
+				<key>bumpSpecularAmount</key>
+				<real>0.5</real>
+			</dict>
+			<key>mesh5</key>
+			<dict>
+				<key>bumpSpecularAmount</key>
+				<real>1.0</real>
+			</dict>
+		</dict>
+		<key>defaultRenderParameters</key>
+		<dict>
+			<key>bumpSpecularAmount</key>
+			<real>0.02</real>
+		</dict>
+	</dict>
+</plist>
