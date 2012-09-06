@@ -13,18 +13,23 @@
 #import "GLLModel.h"
 #import "GLLShaderDescriptor.h"
 
-// Parsing of mesh names for generic item
+/*
+ * Parsing of mesh names for generic item
+ * Parts:
+ *	Name - First anything without an underscore. Then (possibly several times) an underscore and an item that does not contain any numbers. This is necessary to parse meshes where someone put an underscore in the mesh name. Might be altered to allow anything that does not consist only of numbers and dots in the future.
+ *	Number - digits and dots. Possibly several; I'll let someone else handle that.
+ */
 static NSString *meshNameRegexpString = @"^([0-9P]{1,2})_\
-([^_\\n]+)\
+([^_\\n]+(?:_[^0-9\\n]+)*)\
 (?:\
 	_([\\d\\.]+)\
 	(?:\
 		_([\\d\\.]+)\
 		(?:_([\\d\\.]+)\
 			(?:\
-				_([^_\\n]+)\
+				_([^_\\n]+(?:_[^0-9\\n]+)*)\
 				(?:\
-					_([^_\\n]+)\
+					_([^_\\n]+(?:_[^0-9\\n]+)*)\
 				)*\
 			)?\
 		)?\
