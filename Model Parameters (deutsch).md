@@ -188,10 +188,50 @@ Ein Shader hier ist immer GLSL mit Version 150. Wie die Shader aussehen kann sic
 *	`fragment`: String, Dateiname eines Fragment-Shaders.
 *	`vertex`: String, Dateiname eines Vertex-Shaders.
 *	`textures`: Array von Strangs. Die Namen der Uniforms der Textursampler, in der Reihenfolge, in der die entsprechenden Texturen im Mesh angegeben sind.
+*	`Parameters`: Die Parameter, die von diesem Shader verwendet werden. Entspricht uniform-Werten. Diese sind für das Generic Item Format vorhanden, und müssen in der Reihenfolge sein, in der die Werte dort definiert werden (dies ist genau die selbe, die auch in `Render parameters.md` verwendet wird).
 *	`solidMeshGroups`: Array von Strangs. Die Namen der Mesh Groups, die mit diesem Shader ohne Alpha Blendung gerändert werden sollen.
 *	`alphaMeshGroups`: Array von Strangs. Die Namen der Mesh Groups, die mit diesem Shader mit Alpha Blendung gerändert werden sollen.
 
 Jede Mesh Group sollte maximal einen Shader haben, egal ob mit oder ohne Alpha. Ansonsten ist das Ergebnis nicht definiert. (Praktisch wird einer der Shader zufällig ausgewählt. Das ist nicht-deterministisch und kann sich auch in einer Mesh-Gruppe vom einem zu anderen Mesh unterscheiden.)
+
+Beispiel:
+
+	…
+	<key>shaders</key>
+	<dict>
+		<key>DiffuseLightmapBump3</key>
+		<dict>
+			<key>alphaMeshGroups</key>
+			<array>
+				<string>MeshGroup20</string>
+			</array>
+			<key>solidMeshGroups</key>
+			<array>
+				<string>MeshGroup1</string>
+			</array>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>lightmapTexture</string>
+				<string>bumpTexture</string>
+				<string>maskTexture</string>
+				<string>bump1Texture</string>
+				<string>bump2Texture</string>
+			</array>
+			<key>parameters</key>
+			<array>
+				<string>bumpSpecularAmount</string>
+				<string>bump1UVScale</string>
+				<string>bump2UVScale</string>
+			</array>
+			<key>fragment</key>
+			<string>DiffuseLightmapBump3.fs</string>
+			<key>vertex</key>
+			<string>Bump.vs</string>
+		</dict>
+		…
+	</dict>
+	…
 
 ### meshSplitters
 
