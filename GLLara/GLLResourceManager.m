@@ -73,7 +73,7 @@
 
 - (GLLTexture *)textureForName:(NSString *)textureName baseURL:(NSURL *)baseURL
 {
-	NSURL *key = [NSURL URLWithString:textureName relativeToURL:baseURL];
+	NSURL *key = [baseURL URLByAppendingPathComponent:textureName];
 	id result = [programs objectForKey:key];
 	if (!result)
 	{
