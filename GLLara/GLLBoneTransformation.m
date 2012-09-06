@@ -63,20 +63,41 @@
 	[stream appendFloat32:self.positionY];
 	[stream appendFloat32:self.positionZ];
 }
-
-- (void)calculateLocalPositions;
-{
-	self.positionX = self.globalPositionX - self.parent.globalPositionX;
-	self.positionX = self.globalPositionY - self.parent.globalPositionY;
-	self.positionX = self.globalPositionZ - self.parent.globalPositionZ;
-	
-	for (GLLBoneTransformation *child in self.children)
-		[child calculateLocalPositions];
-}
-
 - (BOOL)hasParent
 {
 	return self.bone.hasParent;
+}
+
+- (void)setRotationX:(float)rotationX
+{
+	_rotationX = rotationX;
+	[self.item changedPosition];
+}
+- (void)setRotationY:(float)rotationY
+{
+	_rotationY = rotationY;
+	[self.item changedPosition];
+}
+- (void)setRotationZ:(float)rotationZ
+{
+	_rotationZ = rotationZ;
+	[self.item changedPosition];
+}
+
+- (void)setPositionX:(float)positionX
+{
+	_positionX = positionX;
+	[self.item changedPosition];
+}
+- (void)setPositionY:(float)positionY
+{
+	_positionY = positionY;
+	[self.item changedPosition];
+}
+- (void)setPositionZ:(float)positionZ
+{
+	_positionZ = positionZ;
+	[self.item changedPosition];
 }
 
 - (GLLBoneTransformation *)parent

@@ -8,10 +8,12 @@
 
 #import <AppKit/NSWindowController.h>
 
+#import "GLLSceneDelegate.h"
+
 @class GLLScene;
 @class GLLView;
 
-@interface GLLRenderWindowController : NSWindowController
+@interface GLLRenderWindowController : NSWindowController <GLLSceneDelegate>
 
 - (id)initWithScene:(GLLScene *)scene;
 

@@ -8,6 +8,13 @@
 
 #import "GLLScene.h"
 
+@interface GLLScene ()
+{
+	NSHashTable *delegates;
+}
+
+@end
+
 @implementation GLLScene
 
 - (id)init
@@ -16,7 +23,24 @@
 	
 	_items = [[NSMutableArray alloc] init];
 	
+	delegates = [NSHashTable weakObjectsHashTable];
+	
 	return self;
+}
+
+- (void)addDelegate:(id<GLLSceneDelegate>)delegate
+{
+	[delegates addObject:delegate];
+}
+- (void)removeDelegate:(id<GLLSceneDelegate>)delegate
+{
+	[delegates removeObject:delegate];
+}
+
+- (void)updateDelegates;
+{
+	for (id<GLLSceneDelegate> delegate in delegates)
+		[delegate sceneDidChange:self];
 }
 
 @end

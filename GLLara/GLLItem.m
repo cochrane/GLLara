@@ -13,6 +13,7 @@
 #import "GLLMesh.h"
 #import "GLLMeshSettings.h"
 #import "GLLModel.h"
+#import "GLLScene.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
@@ -108,9 +109,11 @@
 
 @implementation GLLItem
 
-- (id)initWithModel:(GLLModel *)model;
+- (id)initWithModel:(GLLModel *)model scene:(GLLScene *)scene;
 {
 	if (!(self = [super init])) return nil;
+	
+	_scene = scene;
 	
 	_model = model;
 	bonesMarker = [[GLLItem_BonesSourceListMarker alloc] initWithItem:self];
@@ -142,9 +145,11 @@
 	
 	return self;
 }
-- (id)initFromDataStream:(TRInDataStream *)stream baseURL:(NSURL *)url version:(GLLSceneVersion)version;
+- (id)initFromDataStream:(TRInDataStream *)stream baseURL:(NSURL *)url version:(GLLSceneVersion)version scene:(GLLScene *)scene;
 {
 	if (!(self = [super init])) return nil;
+	
+	_scene = scene;
 	
 	_itemName = [stream readPascalString];
 	if (version >= GLLSceneVersion_1_5)
@@ -212,6 +217,13 @@
 	NSUInteger max = MIN(maxCount, boneIndices.count);
 	for (NSUInteger i = 0; i < max; i++)
 		matrices[i] = [_boneTransformations[[boneIndices[i] unsignedIntegerValue]] globalTransform];
+}
+
+#pragma mark - Talking with scene
+
+- (void)changedPosition
+{
+	[self.scene updateDelegates];
 }
 
 #pragma mark - Source List Item

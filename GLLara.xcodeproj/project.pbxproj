@@ -67,6 +67,8 @@
 		52BB207015F831C900937450 /* mjolnir.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206F15F831C900937450 /* mjolnir.modelparams.plist */; };
 		52BB207215F8329000937450 /* motorcycle.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB207115F8329000937450 /* motorcycle.modelparams.plist */; };
 		52BB207415F8334E00937450 /* tiger1.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB207315F8334E00937450 /* tiger1.modelparams.plist */; };
+		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
+		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
 		52F2BC3915F8198400E3EE75 /* GLLBoneTransformView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */; };
 /* End PBXBuildFile section */
 
@@ -188,6 +190,10 @@
 		52BB206F15F831C900937450 /* mjolnir.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mjolnir.modelparams.plist; sourceTree = "<group>"; };
 		52BB207115F8329000937450 /* motorcycle.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = motorcycle.modelparams.plist; sourceTree = "<group>"; };
 		52BB207315F8334E00937450 /* tiger1.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tiger1.modelparams.plist; sourceTree = "<group>"; };
+		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
+		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
+		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
+		52D6A09A15F8B6F9002A0BB4 /* GLLSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLSceneDelegate.h; sourceTree = "<group>"; };
 		52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLBoneTransformView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -403,6 +409,7 @@
 				5296945615F6150200DF2FA3 /* GLLScene.m */,
 				5296947115F7FB3200DF2FA3 /* GLLMeshSettings.h */,
 				5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */,
+				52D6A09A15F8B6F9002A0BB4 /* GLLSceneDelegate.h */,
 			);
 			name = "Posed items";
 			sourceTree = "<group>";
@@ -476,6 +483,9 @@
 				5296947515F80F4500DF2FA3 /* GLLBoneTransformViewController.h */,
 				5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */,
 				52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */,
+				52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */,
+				52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */,
+				52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -575,6 +585,7 @@
 				52BB207015F831C900937450 /* mjolnir.modelparams.plist in Resources */,
 				52BB207215F8329000937450 /* motorcycle.modelparams.plist in Resources */,
 				52BB207415F8334E00937450 /* tiger1.modelparams.plist in Resources */,
+				52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,6 +651,7 @@
 				5296947315F7FB3300DF2FA3 /* GLLMeshSettings.m in Sources */,
 				5296947815F80F4800DF2FA3 /* GLLBoneTransformViewController.m in Sources */,
 				52BB206A15F82B4200937450 /* Shadeless.fs in Sources */,
+				52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

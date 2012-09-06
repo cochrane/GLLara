@@ -27,6 +27,7 @@
 		return nil;
 	
 	_scene = scene;
+	[_scene addDelegate:self];
 	
 	return self;
 }
@@ -46,6 +47,11 @@
 - (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName
 {
 	return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view", @"render window title format"), displayName];
+}
+
+- (void)sceneDidChange:(GLLScene *)scene
+{
+	self.renderView.needsDisplay = YES;
 }
 
 @end

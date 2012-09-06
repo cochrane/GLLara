@@ -16,13 +16,16 @@
 @class TROutDataStream;
 @class GLLMesh;
 @class GLLModel;
+@class GLLScene;
 
 @interface GLLItem : NSObject <GLLSourceListItem>
 
-- (id)initWithModel:(GLLModel *)model;
-- (id)initFromDataStream:(TRInDataStream *)stream baseURL:(NSURL *)url version:(GLLSceneVersion)version;
+- (id)initWithModel:(GLLModel *)model scene:(GLLScene *)scene;
+- (id)initFromDataStream:(TRInDataStream *)stream baseURL:(NSURL *)url version:(GLLSceneVersion)version scene:(GLLScene *)scene;
 
 - (void)writeToStream:(TROutDataStream *)stream;
+
+@property (nonatomic, weak, readonly) GLLScene *scene;
 
 @property (nonatomic, copy, readonly) NSString *itemName;
 @property (nonatomic, copy, readonly) NSString *itemDirectory;
@@ -41,5 +44,7 @@
 @property (nonatomic, retain, readonly) NSArray *meshSettings;
 
 - (void)getTransforms:(mat_float16 *)matrices maxCount:(NSUInteger)maxCount forMesh:(GLLMesh *)mesh;
+
+- (void)changedPosition;
 
 @end

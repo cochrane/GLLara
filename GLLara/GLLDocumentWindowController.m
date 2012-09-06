@@ -83,7 +83,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		
 		NSLog(@"Got model %@, with %lu bones and %lu meshes", model, model.bones.count, model.meshes.count);
 		
-		GLLItem *item = [[GLLItem alloc] initWithModel:model];
+		GLLItem *item = [[GLLItem alloc] initWithModel:model scene:self.scene];
 		NSLog(@"got item %@", item);
 		
 		[[self.scene mutableArrayValueForKey:@"items"] addObject:item];

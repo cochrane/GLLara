@@ -34,12 +34,6 @@
 @property (nonatomic, assign) float positionY;
 @property (nonatomic, assign) float positionZ;
 
-// Used only during loading
-@property (nonatomic, assign) float globalPositionX;
-@property (nonatomic, assign) float globalPositionY;
-@property (nonatomic, assign) float globalPositionZ;
-- (void)calculateLocalPositions;
-
 @property (nonatomic, assign, readonly) BOOL hasParent;
 @property (nonatomic, weak, readonly) GLLBoneTransformation *parent;
 @property (nonatomic, retain, readonly) NSArray *children;
