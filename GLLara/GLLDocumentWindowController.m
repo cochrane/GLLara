@@ -43,12 +43,27 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
     return self;
 }
 
+- (void)dealloc
+{
+	[_scene removeObserver:self forKeyPath:@"items"];
+}
+
 - (void)windowDidLoad
 {
     [super windowDidLoad];
 	
 	self.sourceView.dataSource = self;
 	self.sourceView.delegate = self;
+	
+	[_scene addObserver:self forKeyPath:@"items" options:0 context:NULL];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:@"items"])
+		[self.sourceView reloadData];
+	else
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 - (IBAction)loadMesh:(id)sender;
