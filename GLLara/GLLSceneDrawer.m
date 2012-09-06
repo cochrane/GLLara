@@ -77,6 +77,7 @@ struct GLLTransform
 	lightBlock.lights[0].color = simd_make(1.0, 1.0, 1.0, 0.0);
 	lightBlock.lights[0].direction = simd_make(-0.57735, -0.57735, -0.57735, 0.0);
 	lightBlock.lights[0].shadowDepth = 0.5;
+	lightBlock.lights[0].intensity = 0.5;
 	
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(lightBlock), &lightBlock, GL_STATIC_DRAW);
 	

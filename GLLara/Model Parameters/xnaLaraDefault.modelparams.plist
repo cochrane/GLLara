@@ -219,6 +219,16 @@
 		</dict>
 		<key>DiffuseLightmapBump3Specular</key>
 		<dict>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>lightmapTexture</string>
+				<string>bumpTexture</string>
+				<string>maskTexture</string>
+				<string>bump1Texture</string>
+				<string>bump2Texture</string>
+				<string>specularTexture</string>
+			</array>
 			<key>solidMeshGroups</key>
 			<array>
 				<string>MeshGroup22</string>
