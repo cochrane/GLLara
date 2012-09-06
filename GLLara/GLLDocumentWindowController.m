@@ -10,6 +10,8 @@
 
 #import "GLLBoneTransformation.h"
 #import "GLLBoneTransformViewController.h"
+#import "GLLMeshSettings.h"
+#import "GLLMeshSettingsViewController.h"
 #import "GLLModel.h"
 #import "GLLItem.h"
 #import "GLLScene.h"
@@ -18,6 +20,9 @@
 @interface GLLDocumentWindowController ()
 {
 	GLLBoneTransformViewController *boneTransformViewController;
+	GLLMeshSettingsViewController *meshSettingsViewController;
+	
+	NSViewController *currentController;
 }
 
 - (void)_setRightHandController:(NSViewController *)controller representedObject:(id)object;
@@ -37,6 +42,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	_scene = scene;
 	
 	boneTransformViewController = [[GLLBoneTransformViewController alloc] init];
+	meshSettingsViewController = [[GLLMeshSettingsViewController alloc] init];
 	
 	self.shouldCloseDocument = YES;
 	
@@ -164,6 +170,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	id selectedObject = [self.sourceView itemAtRow:selectedRow];
 	if ([selectedObject isKindOfClass:[GLLBoneTransformation class]])
 		[self _setRightHandController:boneTransformViewController representedObject:selectedObject];
+	else if ([selectedObject isKindOfClass:[GLLMeshSettings class]])
+		[self _setRightHandController:meshSettingsViewController representedObject:selectedObject];
 	else
 		[self _setRightHandController:nil representedObject:nil];
 }
@@ -172,9 +180,17 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (void)_setRightHandController:(NSViewController *)controller representedObject:(id)object;
 {
-	while (self.placeholderView.subviews.count > 0)
-		[self.placeholderView.subviews[0] removeFromSuperview];
-	[self.placeholderView displayIfNeeded];
+	if (currentController == controller)
+	{
+		currentController.representedObject = object;
+		return;
+	}
+	
+	if (currentController)
+	{
+		[currentController.view removeFromSuperview];
+		currentController = nil;
+	}
 	
 	if (controller)
 	{
@@ -182,6 +198,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		newView.frame = (NSRect) { { 0.0f, 0.0f }, self.placeholderView.frame.size };
 		[self.placeholderView addSubview:controller.view];
 		controller.representedObject = object;
+		currentController = controller;
 	}
 }
 
