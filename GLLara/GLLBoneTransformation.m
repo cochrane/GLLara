@@ -49,9 +49,6 @@
 	self.rotationX = 0.0;
 	self.rotationY = 0.0;
 	self.rotationZ = 0.0;
-	self.globalPositionX = bone.defaultPositionX;
-	self.globalPositionY = bone.defaultPositionY;
-	self.globalPositionZ = bone.defaultPositionZ;
 	
 	return self;
 }
@@ -104,7 +101,17 @@
 
 - (mat_float16)relativeTransform
 {
-	return simd_mat_euler(simd_make(self.rotationX, self.rotationY, self.rotationZ, 1.0f), simd_make(self.positionX, self.positionY, self.positionZ, 1.0f));
+	/*
+	 * Movement plan:
+	 * 1. Move bone from default to origin
+	 * 2. Rotate bone
+	 * 3. Move bone back to default + own position
+	 */
+	mat_float16 transform = simd_mat_positional(simd_make(-self.bone.positionX, -self.bone.positionY, -self.bone.positionZ, 1.0f));
+	transform = simd_mat_mul(simd_mat_euler(simd_make(self.rotationX, self.rotationY, self.rotationZ, 1.0f), simd_e_w), transform);
+	transform = simd_mat_mul(simd_mat_positional(simd_make(self.bone.positionX - self.positionX, self.bone.positionY - self.positionY, self.bone.positionZ - self.positionZ, 1.0f)), transform);
+	
+	return transform;
 }
 
 - (mat_float16)globalTransform

@@ -22,9 +22,9 @@
 	
 	_name = [stream readPascalString];
 	_parentIndex = [stream readUint16];
-	_defaultPositionX = [stream readFloat32];
-	_defaultPositionY = [stream readFloat32];
-	_defaultPositionZ = [stream readFloat32];
+	_positionX = [stream readFloat32];
+	_positionY = [stream readFloat32];
+	_positionZ = [stream readFloat32];
 	
 	return self;
 }
@@ -37,9 +37,9 @@
 	
 	_name = [scanner readPascalString];
 	_parentIndex = [scanner readUint16];
-	_defaultPositionX = [scanner readFloat32];
-	_defaultPositionY = [scanner readFloat32];
-	_defaultPositionZ = [scanner readFloat32];
+	_positionX = [scanner readFloat32];
+	_positionY = [scanner readFloat32];
+	_positionZ = [scanner readFloat32];
 	
 	return self;
 }

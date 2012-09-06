@@ -25,9 +25,9 @@
 
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, assign, readonly) NSUInteger parentIndex;
-@property (nonatomic, assign, readonly) float defaultPositionX;
-@property (nonatomic, assign, readonly) float defaultPositionY;
-@property (nonatomic, assign, readonly) float defaultPositionZ;
+@property (nonatomic, assign, readonly) float positionX;
+@property (nonatomic, assign, readonly) float positionY;
+@property (nonatomic, assign, readonly) float positionZ;
 
 /*
  * Access the bones as a tree. Right now, these methods do not
