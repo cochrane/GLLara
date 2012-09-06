@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -85,6 +86,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -356,8 +358,8 @@
 		529693F615F2D00200DF2FA3 /* Model Parameters */ = {
 			isa = PBXGroup;
 			children = (
-				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
 				529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */,
+				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
 				529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */,
 				52BB206715F8275E00937450 /* doppelganger.modelparams.plist */,
 				52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */,
@@ -381,6 +383,7 @@
 				5296941C15F4063500DF2FA3 /* DiffuseLightmapBump3.fs */,
 				52BB206915F82B4200937450 /* Shadeless.fs */,
 				52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */,
+				5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -582,6 +585,7 @@
 				5296944115F5384100DF2FA3 /* Bump.vs in Resources */,
 				52BB206A15F82B4200937450 /* Shadeless.fs in Resources */,
 				52D6A0A315F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs in Resources */,
+				5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */,
 				5296944215F5384300DF2FA3 /* Diffuse.fs in Resources */,
 				5296944415F5384800DF2FA3 /* DiffuseBump.fs in Resources */,
 				5296944315F5384500DF2FA3 /* DiffuseLightmap.fs in Resources */,
