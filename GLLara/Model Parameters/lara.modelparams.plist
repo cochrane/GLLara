@@ -7,42 +7,42 @@
 		<key>thorgauntletleft</key>
 		<dict>
 			<key>bumpSpecularAmount</key>
-			<string>0,5</string>
+			<real>0.5</real>
 		</dict>
 		<key>thorgauntletright</key>
 		<dict>
 			<key>bumpSpecularAmount</key>
-			<string>0,5</string>
+			<real>0.5</real>
 		</dict>
 		<key>thorbelt2</key>
 		<dict>
 			<key>bumpSpecularAmount</key>
-			<string>0,5</string>
+			<real>0.5</real>
 		</dict>
 		<key>thorbelt1</key>
 		<dict>
 			<key>bumpSpecularAmount</key>
-			<string>0,5</string>
+			<real>0.5</real>
 		</dict>
 		<key>handgunhandright</key>
 		<dict>
 			<key>bumpSpecularAmount</key>
-			<string>0,4</string>
+			<real>0.4</real>
 		</dict>
 		<key>handgunholsterleft</key>
 		<dict>
 			<key>bumpSpecularAmount</key>
-			<string>0,4</string>
+			<real>0.4</real>
 		</dict>
 		<key>handgunholsterright</key>
 		<dict>
 			<key>bumpSpecularAmount</key>
-			<string>0,4</string>
+			<real>0.4</real>
 		</dict>
 		<key>handgunhandleft</key>
 		<dict>
 			<key>bumpSpecularAmount</key>
-			<string>0,4</string>
+			<real>0.4</real>
 		</dict>
 	</dict>
 	<key>defaultRenderParameters</key>
