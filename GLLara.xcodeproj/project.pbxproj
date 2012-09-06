@@ -65,6 +65,7 @@
 		52BB206A15F82B4200937450 /* Shadeless.fs in Sources */ = {isa = PBXBuildFile; fileRef = 52BB206915F82B4200937450 /* Shadeless.fs */; };
 		52BB206C15F82D9A00937450 /* lara_bathing_suit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */; };
 		52BB206E15F830C400937450 /* albino_spider.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206D15F830C400937450 /* albino_spider.modelparams.plist */; };
+		52BB207015F831C900937450 /* mjolnir.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206F15F831C900937450 /* mjolnir.modelparams.plist */; };
 		52F2BC3915F8198400E3EE75 /* GLLBoneTransformView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */; };
 /* End PBXBuildFile section */
 
@@ -184,6 +185,7 @@
 		52BB206915F82B4200937450 /* Shadeless.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Shadeless.fs; sourceTree = "<group>"; };
 		52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_bathing_suit.modelparams.plist; sourceTree = "<group>"; };
 		52BB206D15F830C400937450 /* albino_spider.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = albino_spider.modelparams.plist; sourceTree = "<group>"; };
+		52BB206F15F831C900937450 /* mjolnir.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mjolnir.modelparams.plist; sourceTree = "<group>"; };
 		52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLBoneTransformView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -347,6 +349,7 @@
 				52BB206715F8275E00937450 /* doppelganger.modelparams.plist */,
 				52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */,
 				52BB206D15F830C400937450 /* albino_spider.modelparams.plist */,
+				52BB206F15F831C900937450 /* mjolnir.modelparams.plist */,
 			);
 			path = "Model Parameters";
 			sourceTree = "<group>";
@@ -567,6 +570,7 @@
 				52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */,
 				52BB206C15F82D9A00937450 /* lara_bathing_suit.modelparams.plist in Resources */,
 				52BB206E15F830C400937450 /* albino_spider.modelparams.plist in Resources */,
+				52BB207015F831C900937450 /* mjolnir.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
