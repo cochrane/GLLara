@@ -54,8 +54,9 @@
 		
 		for (NSString *uniformName in mesh.renderParameters)
 		{
+			NSString *fullName = [@"RenderParameters." stringByAppendingString:uniformName];
 			GLuint uniformIndex;
-			glGetUniformIndices(_program.programID, 1, (const GLchar *[]) { uniformName.UTF8String }, &uniformIndex);
+			glGetUniformIndices(_program.programID, 1, (const GLchar *[]) { fullName.UTF8String }, &uniformIndex);
 			if (uniformIndex == GL_INVALID_INDEX) continue;
 			
 			GLint byteOffset;
