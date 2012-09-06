@@ -45,7 +45,7 @@
 			<key>bumpSpecularAmount</key>
 			<real>0.1</real>
 		</dict>
-		<key>mesh024</key>
+		<key>mesh027</key>
 		<dict>
 			<key>bump1UVScale</key>
 			<integer>12</integer>
