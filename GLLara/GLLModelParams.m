@@ -13,7 +13,7 @@
 #import "GLLShaderDescriptor.h"
 
 // Parsing of mesh names for generic item
-static NSString *meshNameRegexpString = @"^(\\d{1,2})_\
+static NSString *meshNameRegexpString = @"^([0-9P]{1,2})_\
 ([^A-Z_\\n]+)\
 (?:\
 	_([\\d\\.]+)\
