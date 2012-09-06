@@ -20,12 +20,13 @@ static NSString *meshNameRegexpString = @"^([0-9P]{1,2})_\
 	_([\\d\\.]+)\
 	(?:\
 		_([\\d\\.]+)\
-		_([\\d\\.]+)\
-		(?:\
-			_([^_\\n]+)\
+		(?:_([\\d\\.]+)\
 			(?:\
 				_([^_\\n]+)\
-			)+\
+				(?:\
+					_([^_\\n]+)\
+				)+\
+			)?\
 		)?\
 	)?\
 )?$";
@@ -131,7 +132,7 @@ static NSCache *parameterCache;
 {
 	if (!(self = [super init])) return nil;
 	
-	_base = [[self class] parametersForName:@"xnaLaraDefault"];
+	_base = [[self class] parametersForName:@"lara"];
 	model = aModel;
 	
 	// Objects that the generic_item format does not support.
@@ -367,6 +368,28 @@ static NSCache *parameterCache;
 	
 	NSTextCheckingResult *components = [meshNameRegexp firstMatchInString:meshName options:NSMatchingAnchored range:NSMakeRange(0, meshName.length)];
 	
+	if (!components)
+	{
+		// See if we can satisfy that request from above
+		if (meshGroup)
+		{
+			*meshGroup = [self.base renderableMeshGroupForMesh:meshName];
+		}
+		if (renderParameters)
+		{
+			*renderParameters = [self.base renderParametersForMesh:meshName];
+		}
+		if (cameraTargetName)
+		{
+			*cameraTargetName = nil;
+		}
+		if (cameraTargetBones)
+		{
+			*cameraTargetBones = nil;
+		}
+		return;
+	}
+	
 	// 1st match: mesh group
 	// Need this later for render parameters, so this part is always extracted.
 	NSString *group = [@"MeshGroup" stringByAppendingString:[meshName substringWithRange:[components rangeAtIndex:1]]];
@@ -384,11 +407,16 @@ static NSCache *parameterCache;
 		NSArray *renderParameterNames = shader.parameterUniformNames;
 		
 		if (components.numberOfRanges < renderParameterNames.count + 3)
-			[NSException raise:NSInvalidArgumentException format:@"Does not specify enough render parameters"];
+			NSLog(@"Mesh %@ does not have enough render parameters for shader %@ (has %lu, needs %lu). Rest will be set to 0.", meshName, shader.name, renderParameterNames.count, components.numberOfRanges - 3);
 		
 		NSMutableDictionary *renderParameterValues = [[NSMutableDictionary alloc] initWithCapacity:renderParameterNames.count];
 		for (NSUInteger i = 0; i < renderParameterNames.count; i++)
-			renderParameterValues[renderParameterNames[i]] = [englishNumberFormatter numberFromString:[meshName substringWithRange:[components rangeAtIndex:3 + i]]];
+		{
+			if (i + 3 >= components.numberOfRanges)
+				renderParameterValues[renderParameterNames[i]] = @0.0;
+			else
+				renderParameterValues[renderParameterNames[i]] = [englishNumberFormatter numberFromString:[meshName substringWithRange:[components rangeAtIndex:3 + i]]];
+		}
 		
 		*renderParameters = [renderParameterValues copy];
 	}
