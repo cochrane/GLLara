@@ -96,8 +96,8 @@ static NSCache *parameterCache;
 	ownMeshGroups = propertyList[@"meshGroupNames"];
 	ownShaders = propertyList[@"shaders"];
 	ownRenderParameters = propertyList[@"renderParameters"];
-	ownDefaultParameters = propertyList[@"defaultParameters"];
-	ownCameraTargets = propertyList[@"cameratargets"];
+	ownDefaultParameters = propertyList[@"defaultRenderParameters"];
+	ownCameraTargets = propertyList[@"cameraTargets"];
 	
 	// Loading splitters is more complicated, because they are stored in their own class which handles a few nuisances automatically (in particular the fact that a mesh splitter does not usually define the full box).
 	NSMutableDictionary *mutableMeshSplitters = [[NSMutableDictionary alloc] initWithCapacity:[propertyList[@"meshSplitters"] count]];
