@@ -152,7 +152,7 @@ static NSCache *parameterCache;
 
 - (NSArray *)meshGroups
 {
-	if (!ownRenderParameters && model)
+	if (!ownMeshGroups && model)
 	{
 		NSMutableSet *resultSet = [[NSMutableSet alloc] init];
 		for (GLLMesh *mesh in model.meshes)
@@ -162,7 +162,7 @@ static NSCache *parameterCache;
 			[resultSet addObject:mesh.name];
 		}
 		
-		return [resultSet allObjects];
+		return [[resultSet allObjects] arrayByAddingObjectsFromArray:ownMeshGroups.allKeys];
 	}
 	
 	if (self.base)
@@ -172,10 +172,11 @@ static NSCache *parameterCache;
 }
 - (NSArray *)meshGroupsForMesh:(NSString *)meshName;
 {
-	if (!ownRenderParameters && model)
+	if (!ownMeshGroups && model)
 	{
 		NSString *groupName = nil;
 		[self _parseModelName:meshName meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
+		if (!groupName) return nil;
 		return @[ groupName ];
 	}
 	
@@ -194,7 +195,7 @@ static NSCache *parameterCache;
 }
 - (NSArray *)meshesForMeshGroup:(NSString *)meshGroup;
 {
-	if (!ownRenderParameters && model)
+	if (!ownMeshGroups && model)
 	{
 		NSMutableArray *result = [[NSMutableArray alloc] init];
 		for (GLLMesh *mesh in model.meshes)
@@ -222,7 +223,7 @@ static NSCache *parameterCache;
 
 - (NSArray *)cameraTargets
 {
-	if (!ownRenderParameters && model)
+	if (!ownCameraTargets && model)
 	{
 		NSMutableSet *resultSet = [[NSMutableSet alloc] init];
 		for (GLLMesh *mesh in model.meshes)
@@ -242,7 +243,7 @@ static NSCache *parameterCache;
 }
 - (NSArray *)boneNamesForCameraTarget:(NSString *)cameraTarget;
 {
-	if (!ownRenderParameters && model)
+	if (!ownCameraTargets && model)
 	{
 		NSMutableArray *result = [[NSMutableArray alloc] init];
 		for (GLLMesh *mesh in model.meshes)
@@ -315,8 +316,10 @@ static NSCache *parameterCache;
 {
 	if (!ownRenderParameters && model)
 	{
-		NSDictionary *result = nil;
-		[self _parseModelName:mesh meshGroup:NULL renderParameters:&result cameraTargetName:NULL cameraTargetBones:NULL];
+		NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:[self.base renderParametersForMesh:mesh]];
+		NSDictionary *forThisMesh = nil;
+		[self _parseModelName:mesh meshGroup:NULL renderParameters:&forThisMesh cameraTargetName:NULL cameraTargetBones:NULL];
+		[result addEntriesFromDictionary:forThisMesh];
 		return result;
 	}
 	
