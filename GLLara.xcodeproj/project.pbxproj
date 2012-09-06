@@ -63,6 +63,7 @@
 		5296947815F80F4800DF2FA3 /* GLLBoneTransformViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */; };
 		52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206715F8275E00937450 /* doppelganger.modelparams.plist */; };
 		52BB206A15F82B4200937450 /* Shadeless.fs in Sources */ = {isa = PBXBuildFile; fileRef = 52BB206915F82B4200937450 /* Shadeless.fs */; };
+		52BB206C15F82D9A00937450 /* lara_bathing_suit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */; };
 		52F2BC3915F8198400E3EE75 /* GLLBoneTransformView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */; };
 /* End PBXBuildFile section */
 
@@ -180,6 +181,7 @@
 		5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneTransformViewController.m; sourceTree = "<group>"; };
 		52BB206715F8275E00937450 /* doppelganger.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = doppelganger.modelparams.plist; sourceTree = "<group>"; };
 		52BB206915F82B4200937450 /* Shadeless.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Shadeless.fs; sourceTree = "<group>"; };
+		52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_bathing_suit.modelparams.plist; sourceTree = "<group>"; };
 		52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLBoneTransformView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -341,6 +343,7 @@
 				529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */,
 				529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */,
 				52BB206715F8275E00937450 /* doppelganger.modelparams.plist */,
+				52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */,
 			);
 			path = "Model Parameters";
 			sourceTree = "<group>";
@@ -559,6 +562,7 @@
 				5296946615F7B28300DF2FA3 /* GLLRenderWindowController.xib in Resources */,
 				52F2BC3915F8198400E3EE75 /* GLLBoneTransformView.xib in Resources */,
 				52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */,
+				52BB206C15F82D9A00937450 /* lara_bathing_suit.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
