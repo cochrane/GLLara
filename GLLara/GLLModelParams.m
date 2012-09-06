@@ -8,22 +8,23 @@
 
 #import "GLLModelParams.h"
 
+#import "GLLMesh.h"
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "GLLShaderDescriptor.h"
 
 // Parsing of mesh names for generic item
 static NSString *meshNameRegexpString = @"^([0-9P]{1,2})_\
-([^A-Z_\\n]+)\
+([^_\\n]+)\
 (?:\
 	_([\\d\\.]+)\
 	(?:\
 		_([\\d\\.]+)\
 		_([\\d\\.]+)\
 		(?:\
-			_([^A-Z_\\n]+)\
+			_([^_\\n]+)\
 			(?:\
-				_([^A-Z_\\n]+)\
+				_([^_\\n]+)\
 			)+\
 		)?\
 	)?\
@@ -42,7 +43,11 @@ static NSCache *parameterCache;
 	NSDictionary *ownRenderParameters;
 	NSDictionary *ownDefaultParameters;
 	NSDictionary *ownMeshSplitters;
+	
+	GLLModel *model;
 }
+
+- (void)_parseModelName:(NSString *)name meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)parameters cameraTargetName:(NSString *__autoreleasing*)name cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones;
 
 @end
 
@@ -60,7 +65,7 @@ static NSCache *parameterCache;
 + (id)parametersForModel:(GLLModel *)model;
 {
 	NSString *name = [[model.baseURL.lastPathComponent stringByDeletingPathExtension] stringByDeletingPathExtension];
-	if ([name isEqual:@"generic_item"])
+	if ([[name lowercaseString] isEqual:@"generic_item"])
 		return [[self alloc] initWithModel:model];
 	else
 		return [self parametersForName:name];
@@ -122,67 +127,23 @@ static NSCache *parameterCache;
 }
 
 // Generic item format
-- (id)initWithModel:(GLLModel *)model;
+- (id)initWithModel:(GLLModel *)aModel;
 {
 	if (!(self = [super init])) return nil;
 	
 	_base = [[self class] parametersForName:@"xnaLaraDefault"];
+	model = aModel;
 	
 	// Objects that the generic_item format does not support.
 	ownShaders = [NSSet set];
 	ownDefaultParameters = @{};
 	ownMeshSplitters = @{};
 	
-	NSMutableDictionary *mutableMeshGroups = [[NSMutableDictionary alloc] init];
-	NSMutableDictionary *mutableCameraTargets = [[NSMutableDictionary alloc] init];
-	NSMutableDictionary *mutableRenderParameters = [[NSMutableDictionary alloc] init];
-	
-	NSNumberFormatter *englishNumberFormatter = [[NSNumberFormatter alloc] init];
-	englishNumberFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-	englishNumberFormatter.formatterBehavior = NSNumberFormatterDecimalStyle;
-	
-	for (NSString *meshName in [model valueForKeyPath:@"meshes.name"])
-	{
-		NSTextCheckingResult *components = [meshNameRegexp firstMatchInString:meshName options:NSMatchingAnchored range:NSMakeRange(0, meshName.length)];
+	// All others are nil
+	ownCameraTargets = nil;
+	ownMeshGroups = nil;
+	ownRenderParameters = nil;
 		
-		// 1st match: mesh group
-		NSString *meshGroup = [@"MeshGroup" stringByAppendingString:[meshName substringWithRange:[components rangeAtIndex:1]]];
-		
-		if (!mutableMeshGroups[meshGroup])
-			mutableMeshGroups[meshGroup] = [NSMutableArray array];
-		[mutableMeshGroups[meshGroup] addObject:meshName];
-		
-		// 2nd match: mesh name - ignored.
-		
-		// 3rd, 4th, 5th match: render parameters
-		GLLShaderDescriptor *shader;
-		[self getShader:&shader alpha:NULL forMeshGroup:meshGroup];
-		
-		NSArray *renderParameters = shader.parameterUniformNames;
-		
-		if (components.numberOfRanges < renderParameters.count + 3)
-			[NSException raise:NSInvalidArgumentException format:@"Does not specify enough render parameters"];
-		
-		NSMutableDictionary *renderParameterValues = [[NSMutableDictionary alloc] initWithCapacity:renderParameters.count];
-		for (NSUInteger i = 0; i < renderParameters.count; i++)
-			renderParameterValues[renderParameters[i]] = [englishNumberFormatter numberFromString:[meshName substringWithRange:[components rangeAtIndex:3 + i]]];
-		mutableRenderParameters[meshName] = renderParameterValues;
-		
-		// 6th match: Camera name
-		if (components.numberOfRanges <= 6) continue;
-		NSString *cameraName = [meshName substringWithRange:[components rangeAtIndex:6]];
-		
-		NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:components.numberOfRanges - 7];
-		for (NSUInteger i = 7; i < components.numberOfRanges; i++)
-			[bones addObject:[meshName substringWithRange:[components rangeAtIndex:i]]];
-		
-		mutableCameraTargets[cameraName] = bones;
-	}
-	
-	ownMeshGroups = [mutableMeshGroups copy];
-	ownCameraTargets = [mutableCameraTargets copy];
-	ownRenderParameters = [mutableRenderParameters copy];
-	
 	return self;
 }
 
@@ -190,6 +151,19 @@ static NSCache *parameterCache;
 
 - (NSArray *)meshGroups
 {
+	if (!ownRenderParameters && model)
+	{
+		NSMutableSet *resultSet = [[NSMutableSet alloc] init];
+		for (GLLMesh *mesh in model.meshes)
+		{
+			NSString *groupName = nil;
+			[self _parseModelName:mesh.name meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
+			[resultSet addObject:mesh.name];
+		}
+		
+		return [resultSet allObjects];
+	}
+	
 	if (self.base)
 		return [self.base.meshGroups arrayByAddingObjectsFromArray:ownMeshGroups.allKeys];
 	else
@@ -197,6 +171,13 @@ static NSCache *parameterCache;
 }
 - (NSArray *)meshGroupsForMesh:(NSString *)meshName;
 {
+	if (!ownRenderParameters && model)
+	{
+		NSString *groupName = nil;
+		[self _parseModelName:meshName meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
+		return @[ groupName ];
+	}
+	
 	NSMutableArray *result = [[NSMutableArray alloc] init];
 	
 	for (NSString *meshGroupName in ownMeshGroups)
@@ -212,6 +193,21 @@ static NSCache *parameterCache;
 }
 - (NSArray *)meshesForMeshGroup:(NSString *)meshGroup;
 {
+	if (!ownRenderParameters && model)
+	{
+		NSMutableArray *result = [[NSMutableArray alloc] init];
+		for (GLLMesh *mesh in model.meshes)
+		{
+			NSString *groupName = nil;
+			[self _parseModelName:mesh.name meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
+			if ([groupName isEqual:meshGroup])
+				[result addObject:mesh.name];
+		}
+		
+		return [result copy];
+	}
+
+	
 	NSArray *result = ownMeshGroups[meshGroup];
 	if (!result) result = [NSArray array];
 	
@@ -225,6 +221,19 @@ static NSCache *parameterCache;
 
 - (NSArray *)cameraTargets
 {
+	if (!ownRenderParameters && model)
+	{
+		NSMutableSet *resultSet = [[NSMutableSet alloc] init];
+		for (GLLMesh *mesh in model.meshes)
+		{
+			NSString *cameraTargetName = nil;
+			[self _parseModelName:mesh.name meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:NULL];
+			[resultSet addObject:mesh.name];
+		}
+		
+		return [resultSet allObjects];
+	}
+	
 	if (self.base)
 		return [self.base.cameraTargets arrayByAddingObjectsFromArray:ownCameraTargets.allKeys];
 	else
@@ -232,6 +241,21 @@ static NSCache *parameterCache;
 }
 - (NSArray *)boneNamesForCameraTarget:(NSString *)cameraTarget;
 {
+	if (!ownRenderParameters && model)
+	{
+		NSMutableArray *result = [[NSMutableArray alloc] init];
+		for (GLLMesh *mesh in model.meshes)
+		{
+			NSString *cameraTargetName = nil;
+			NSArray *cameraTargetBones;
+			[self _parseModelName:mesh.name meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:&cameraTargetBones];
+			if ([cameraTargetName isEqual:cameraTarget])
+				[result addObjectsFromArray:cameraTargetBones];
+		}
+		
+		return [result copy];
+	}
+	
 	NSArray *result = ownCameraTargets[cameraTarget];
 	if (!result) result = [NSArray array];
 	
@@ -288,18 +312,25 @@ static NSCache *parameterCache;
 }
 - (NSDictionary *)renderParametersForMesh:(NSString *)mesh;
 {
+	if (!ownRenderParameters && model)
+	{
+		NSDictionary *result = nil;
+		[self _parseModelName:mesh meshGroup:NULL renderParameters:&result cameraTargetName:NULL cameraTargetBones:NULL];
+		return result;
+	}
+	
 	// The parameters follow a hierarchy:
 	// 1. anything from parent
 	// 2. own default values
 	// 3. own specific values
 	// If the same parameter is set twice, then the one the highest in the hierarchy wins. E.g. if a value is set by the parent, then here in a default value and finally here specifically, then the specific value here is the one used.
-	
+
 	NSMutableDictionary *result = [NSMutableDictionary dictionary];	
 	if (self.base)
 		[result addEntriesFromDictionary:[self.base renderParametersForMesh:mesh]];
 	if (ownDefaultParameters)
 		[result addEntriesFromDictionary:ownDefaultParameters];
-	
+
 	[result addEntriesFromDictionary:ownRenderParameters[mesh]];
 
 	return [result copy];
@@ -323,6 +354,69 @@ static NSCache *parameterCache;
 		result = [result arrayByAddingObjectsFromArray:[self.base meshSplittersForMesh:mesh]];
 	
 	return result;
+}
+
+#pragma mark - Private methods
+
+- (void)_parseModelName:(NSString *)meshName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones;
+{
+	// Always use english locale, no matter what the user has set, for proper decimal separators.
+	NSNumberFormatter *englishNumberFormatter = [[NSNumberFormatter alloc] init];
+	englishNumberFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+	englishNumberFormatter.formatterBehavior = NSNumberFormatterDecimalStyle;
+	
+	NSTextCheckingResult *components = [meshNameRegexp firstMatchInString:meshName options:NSMatchingAnchored range:NSMakeRange(0, meshName.length)];
+	
+	// 1st match: mesh group
+	// Need this later for render parameters, so this part is always extracted.
+	NSString *group = [@"MeshGroup" stringByAppendingString:[meshName substringWithRange:[components rangeAtIndex:1]]];
+	if (meshGroup)
+		*meshGroup = group;
+	
+	// 2nd match: mesh name - ignored.
+	
+	// 3rd, 4th, 5th match: render parameters
+	if (renderParameters)
+	{
+		GLLShaderDescriptor *shader;
+		[self getShader:&shader alpha:NULL forMeshGroup:group];
+		
+		NSArray *renderParameterNames = shader.parameterUniformNames;
+		
+		if (components.numberOfRanges < renderParameterNames.count + 3)
+			[NSException raise:NSInvalidArgumentException format:@"Does not specify enough render parameters"];
+		
+		NSMutableDictionary *renderParameterValues = [[NSMutableDictionary alloc] initWithCapacity:renderParameterNames.count];
+		for (NSUInteger i = 0; i < renderParameterNames.count; i++)
+			renderParameterValues[renderParameterNames[i]] = [englishNumberFormatter numberFromString:[meshName substringWithRange:[components rangeAtIndex:3 + i]]];
+		
+		*renderParameters = [renderParameterValues copy];
+	}
+	
+	// 6th match: Camera name
+	if (cameraTargetName)
+	{
+		if (components.numberOfRanges <= 6)
+			*cameraTargetName = nil;
+		else
+			*cameraTargetName = [meshName substringWithRange:[components rangeAtIndex:6]];
+	}
+	
+	// Final matches: Camera bones
+	if (cameraTargetBones)
+	{
+		if (components.numberOfRanges <= 7)
+		{
+			*cameraTargetBones = nil;
+		}
+		else
+		{
+			NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:components.numberOfRanges - 7];
+			for (NSUInteger i = 7; i < components.numberOfRanges; i++)
+				[bones addObject:[meshName substringWithRange:[components rangeAtIndex:i]]];
+			*cameraTargetBones = [bones copy];
+		}
+	}
 }
 
 @end
