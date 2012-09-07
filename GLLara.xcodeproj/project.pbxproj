@@ -12,6 +12,7 @@
 		5224C8E915FA5F25002A6C76 /* GLLLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E815FA5F24002A6C76 /* GLLLightViewController.m */; };
 		5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */; };
 		5224C8EE15FA8FB0002A6C76 /* GLLAddPiValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAddPiValueTransformer.m */; };
+		5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -98,6 +99,7 @@
 		5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLLightView.xib; sourceTree = "<group>"; };
 		5224C8EC15FA8FB0002A6C76 /* GLLAddPiValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAddPiValueTransformer.h; sourceTree = "<group>"; };
 		5224C8ED15FA8FB0002A6C76 /* GLLAddPiValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAddPiValueTransformer.m; sourceTree = "<group>"; };
+		5224C8EF15FABC92002A6C76 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -218,6 +220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */,
 				529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */,
 				525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
 				529692E615F289EB00DF2FA3 /* OpenGL.framework in Frameworks */,
@@ -259,6 +262,7 @@
 		525ACD4A15F0F1A700534E7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5224C8EF15FABC92002A6C76 /* Accelerate.framework */,
 				529692D015F2374F00DF2FA3 /* libz.dylib */,
 				525ACD4B15F0F1A700534E7D /* Cocoa.framework */,
 				529692E515F289EB00DF2FA3 /* OpenGL.framework */,
