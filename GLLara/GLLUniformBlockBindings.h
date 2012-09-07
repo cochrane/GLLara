@@ -13,7 +13,8 @@ enum GLLUniformBlockBindings
 {
 	GLLUniformBlockBindingTransforms,
 	GLLUniformBlockBindingLights,
-	GLLUniformBlockBindingRenderParameters
+	GLLUniformBlockBindingRenderParameters,
+	GLLUniformBlockBindingAlphaTest
 };
 
 #endif

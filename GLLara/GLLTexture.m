@@ -8,6 +8,7 @@
 
 #import "GLLTexture.h"
 
+#import <Accelerate/Accelerate.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
@@ -178,13 +179,19 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 	CGContextDrawImage(cgContext, CGRectMake(0.0f, 0.0f, (CGFloat) width, (CGFloat) height), cgImage);
 	CGContextRelease(cgContext);
 	CGImageRelease(cgImage);
+	
+	// Unpremultiply the texture data. I wish I could get it unpremultiplied from the start, but CGImage doesn't allow that. Just using premultiplied sounds swell, but it messes up my blending in OpenGL.
+	unsigned char *unpremultipliedBufferData = calloc(width * height, 4);
+	vImage_Buffer input = { .height = height, .width = width, .rowBytes = 4*width, .data = bufferData };
+	vImage_Buffer output = { .height = height, .width = width, .rowBytes = 4*width, .data = unpremultipliedBufferData };
+	vImageUnpremultiplyData_ARGB8888(&input, &output, 0);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) width, (GLsizei) height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, bufferData);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) width, (GLsizei) height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
 	
 	free(bufferData);
 }

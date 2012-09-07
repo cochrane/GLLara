@@ -30,5 +30,6 @@
 // Uniforms set by scene drawer
 @property (nonatomic, assign, readonly) GLuint lightsUniformBlockIndex;
 @property (nonatomic, assign, readonly) GLuint transformUniformBlockIndex;
+@property (nonatomic, assign, readonly) GLuint alphaTestUniformBlockIndex;
 
 @end

@@ -67,6 +67,9 @@
 	_transformUniformBlockIndex = glGetUniformBlockIndex(_programID, "Transform");
 	if (_transformUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(_programID, _transformUniformBlockIndex, GLLUniformBlockBindingTransforms);
 	
+	_alphaTestUniformBlockIndex = glGetUniformBlockIndex(_programID, "AlphaTest");
+	if (_alphaTestUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(_programID, _alphaTestUniformBlockIndex, GLLUniformBlockBindingAlphaTest);
+	
 	// Set up textures. Uniforms for textures need to be set up once and then never change, because uniforms bind to texture units, not texture objects. I really, really wish I knew whom that is supposed to help, but whatever.
 	glUseProgram(_programID);
 	for (GLint i = 0; i < (GLint) descriptor.textureUniformNames.count; i++)

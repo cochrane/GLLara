@@ -23,7 +23,17 @@ layout(std140) uniform LightData {
 	Light lights[3];
 } lightData;
 
+layout(std140) uniform AlphaTest {
+	uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
+	float reference;
+} alphaTest;
+
 void main()
 {
-	screenColor = texture(diffuseTexture, outTexCoord);
+	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
+	vec4 diffuseColor = diffuseTexColor * outColor;
+	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
+		discard;
+
+	screenColor = vec4(diffuseColor.rgb, diffuseTexColor.a);
 }

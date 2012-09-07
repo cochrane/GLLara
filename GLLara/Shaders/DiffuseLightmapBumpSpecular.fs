@@ -35,9 +35,18 @@ uniform RenderParameters {
 	float bumpSpecularAmount;
 } parameters;
 
+layout(std140) uniform AlphaTest {
+	uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
+	float reference;
+} alphaTest;
+
 void main()
 {
-	vec4 diffuseColor = texture(diffuseTexture, outTexCoord) * outColor;
+	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
+	vec4 diffuseColor = diffuseTexColor * outColor;
+	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
+		discard;
+	
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
 	vec4 lightmapColor = texture(lightmapTexture, outTexCoord);
 	vec4 specularColor = texture(specularTexture, outTexCoord);
@@ -64,7 +73,7 @@ void main()
 		color += lightData.lights[i].color * diffuseFactor * lightenedColor * lightmapColor;
 	}
 	
-	color.a = diffuseColor.a;
+	color.a = diffuseTexColor.a;
 	
 	screenColor = color;
 }

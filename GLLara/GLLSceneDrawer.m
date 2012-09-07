@@ -34,6 +34,12 @@ struct GLLTransform
 	mat_float16 viewProjection;
 };
 
+struct GLLAlphaTestBlock
+{
+	GLuint mode;
+	GLfloat reference;
+};
+
 @interface GLLSceneDrawer ()
 {
 	NSMutableArray *itemDrawers;
@@ -42,6 +48,7 @@ struct GLLTransform
 	
 	GLuint lightBuffer;
 	GLuint transformBuffer;
+	GLuint alphaTestBuffer;
 	
 	mat_float16 lookatMatrix;
 	mat_float16 projectionMatrix;
@@ -172,10 +179,18 @@ struct GLLTransform
 	
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(transformBlock), &transformBlock, GL_STATIC_DRAW);
 	
+	// Alpha test buffer
+	glGenBuffers(1, &alphaTestBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, alphaTestBuffer);
+	struct GLLAlphaTestBlock alphaBlock = { .mode = 0, .reference = 0 };
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
+	
 	// Other necessary render state. Thanks to Core Profile, that got cut down a lot.
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
 	glClearColor(0.2, 0.2, 0.2, 1);
+	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	[self setWindowSize:view.bounds.size];
 	
@@ -243,12 +258,36 @@ struct GLLTransform
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestBuffer);
+	
+	// 1st pass: Draw items that do not need blending, without alpha test
+	glBindBuffer(GL_UNIFORM_BUFFER, alphaTestBuffer);
+	struct GLLAlphaTestBlock alphaBlock = { .mode = 0, .reference = 0.9 };
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
-	{
-		[drawer drawAlpha];
 		[drawer drawNormal];
-	}
+	
+	// 2nd pass: Draw blended items, but only those pixels that are "almost opaque"
+	alphaBlock.mode = 1;
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
+	
+	glEnable(GL_BLEND);
+	
+	for (GLLItemDrawer *drawer in itemDrawers)
+		[drawer drawAlpha];
+	
+	// 3rd pass: Draw blended items, now only those things that are "mostly transparent".
+	alphaBlock.mode = 2;
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
+	
+	glDepthMask(GL_FALSE);
+	for (GLLItemDrawer *drawer in itemDrawers)
+		[drawer drawAlpha];
+	
+	// Special note: Ensure that depthMask is true before doing the next glClear. Otherwise results may be quite funny indeed.
+	glDepthMask(GL_TRUE);
+	glDisable(GL_BLEND);
 }
 
 #pragma mark - Private methods
