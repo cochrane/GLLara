@@ -64,6 +64,7 @@ struct GLLTransform
 	
 	itemDrawers = [[NSMutableArray alloc] init];
 	
+	// Set up loading of future items and destroying items. Also update view.
 	// Store self as weak in the block, so it does not retain this.
 	__block __weak id weakSelf = self;
 	managedObjectContextObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:_managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
@@ -89,8 +90,15 @@ struct GLLTransform
 		view.needsDisplay = YES;
 	}];
 	
-	glEnable(GL_MULTISAMPLE);
-	glClearColor(0.2, 0.2, 0.2, 1);
+	// Load existing items
+	NSFetchRequest *allItemsRequest = [[NSFetchRequest alloc] init];
+	allItemsRequest.entity = [NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
+	allItemsRequest.includesSubentities = YES;
+	allItemsRequest.includesPendingChanges = YES;
+	
+	NSArray *allItems = [self.managedObjectContext executeFetchRequest:allItemsRequest error:NULL];
+	for (GLLItem *item in allItems)
+		[itemDrawers addObject:[[GLLItemDrawer alloc] initWithItem:item sceneDrawer:self]];
 	
 	// Light buffer
 	glGenBuffers(1, &lightBuffer);
@@ -118,6 +126,8 @@ struct GLLTransform
 	
 	// Other necessary render state. Thanks to Core Profile, that got cut down a lot.
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_MULTISAMPLE);
+	glClearColor(0.2, 0.2, 0.2, 1);
 	
 	[self setWindowSize:view.bounds.size];
 	
