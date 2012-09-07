@@ -63,7 +63,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		}];
 		[allItems addObjectsFromArray:newItems.allObjects];
 		
-		[self.sourceView reloadItem:allItems];
+		[self.sourceView reloadItem:allItems reloadChildren:YES];
 	}];
 	
 	self.shouldCloseDocument = YES;
