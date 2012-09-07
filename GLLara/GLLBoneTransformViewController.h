@@ -12,4 +12,6 @@
 
 @interface GLLBoneTransformViewController : NSViewController
 
+- (IBAction)resetAllValues:(id)sender;
+
 @end
