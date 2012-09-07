@@ -84,13 +84,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	self.sourceView.delegate = self;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	if ([keyPath isEqual:@"items"])
-		[self.sourceView reloadData];
-	else
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-}
+#pragma mark - Actions
 
 - (IBAction)loadMesh:(id)sender;
 {
@@ -107,6 +101,26 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
 		newItem.model = model;
 	}];
+}
+- (IBAction)removeSelectedMesh:(id)sender;
+{
+	NSUInteger selectedRow = self.sourceView.selectedRow;
+	if (selectedRow == NSNotFound)
+	{
+		NSBeep();
+		return;
+	}
+	
+	id selectedObject = [self.sourceView itemAtRow:selectedRow];
+	
+	if ([selectedObject isKindOfClass:[GLLItem class]])
+		[self.managedObjectContext deleteObject:selectedObject];
+	else if ([selectedObject isKindOfClass:[GLLBoneTransformation class]])
+		[self.managedObjectContext deleteObject:[selectedObject item]];
+	else if ([selectedObject isKindOfClass:[GLLMeshSettings class]])
+		[self.managedObjectContext deleteObject:[selectedObject item]];
+	else
+		NSBeep();
 }
 
 #pragma mark - Outline view data source
