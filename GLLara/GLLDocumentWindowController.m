@@ -22,6 +22,8 @@
 	GLLMeshSettingsViewController *meshSettingsViewController;
 	
 	NSViewController *currentController;
+	NSMutableArray *allItems;
+	id managedObjectContextObserver;
 }
 
 - (void)_setRightHandController:(NSViewController *)controller representedObject:(id)object;
@@ -29,7 +31,6 @@
 @end
 
 static NSString *lightsGroupIdentifier = @"lights group identifier";
-static NSString *itemsGroupIdentifier = @"items group identifier";
 static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 @implementation GLLDocumentWindowController
@@ -43,9 +44,36 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	boneTransformViewController = [[GLLBoneTransformViewController alloc] init];
 	meshSettingsViewController = [[GLLMeshSettingsViewController alloc] init];
 	
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	request.entity = [NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:_managedObjectContext];
+	allItems = [NSMutableArray arrayWithArray:[_managedObjectContext executeFetchRequest:request error:NULL]];
+	
+	// Set up loading of future items and destroying items. Also update view.
+	// Store self as weak in the block, so it does not retain this.
+	__block __weak id weakSelf = self;
+	managedObjectContextObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:_managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+		GLLDocumentWindowController *self = weakSelf;
+		
+		// Remove old things
+		[allItems removeObjectsInArray:[notification.userInfo[NSDeletedObjectsKey] allObjects]];
+		
+		// Add new things
+		NSSet *newItems = [notification.userInfo[NSInsertedObjectsKey] objectsWithOptions:0 passingTest:^BOOL(NSManagedObject *object, BOOL *stop){
+			return [object.entity isEqual:[NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:_managedObjectContext]];
+		}];
+		[allItems addObjectsFromArray:newItems.allObjects];
+		
+		[self.sourceView reloadItem:allItems];
+	}];
+	
 	self.shouldCloseDocument = YES;
 	
     return self;
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:managedObjectContextObserver];
 }
 
 - (void)windowDidLoad
@@ -87,9 +115,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 {
 	if (item == nil) // Top level
 		return 3;
-	else if (item == itemsGroupIdentifier)
-		return 0;
-	//	return self.scene.items.count;
+	else if (item == allItems)
+		return allItems.count;
 	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
 		return [item numberOfChildrenInSourceList];
 	
@@ -98,9 +125,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-	if (item == itemsGroupIdentifier)
-	//	return YES;
-		return NO;
+	if (item == allItems)
+		return YES;
 	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
 		return [item hasChildrenInSourceList];
 	
@@ -114,15 +140,14 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		switch(index)
 		{
 			case 0: return lightsGroupIdentifier;
-			case 1: return itemsGroupIdentifier;
+			case 1: return allItems;
 			case 2: return settingsGroupIdentifier;
 			default: return nil;
 		}
 	}
-	else if (item == itemsGroupIdentifier)
+	else if (item == allItems)
 	{
-		return nil;
-	//	return self.scene.items[index];
+		return allItems[index];
 	}
 	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
 		return [item childInSourceListAtIndex:index];
@@ -134,7 +159,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 {
 	if (item == lightsGroupIdentifier)
 		return NSLocalizedString(@"Lights", @"lights source list header");
-	else if (item == itemsGroupIdentifier)
+	else if (item == allItems)
 		return NSLocalizedString(@"Items", @"items source list header");
 	else if (item == settingsGroupIdentifier)
 		return NSLocalizedString(@"Settings", @"settings source list header");
@@ -149,7 +174,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
 {
-	return item == lightsGroupIdentifier || item == itemsGroupIdentifier || item == settingsGroupIdentifier;
+	return item == lightsGroupIdentifier || item == allItems || item == settingsGroupIdentifier;
 }
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
