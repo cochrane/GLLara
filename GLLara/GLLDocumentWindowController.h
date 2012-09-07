@@ -12,9 +12,9 @@
 
 @interface GLLDocumentWindowController : NSWindowController <NSOutlineViewDataSource, NSOutlineViewDelegate>
 
-- (id)initWithScene:(GLLScene *)scene;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
-@property (nonatomic, retain, readonly) GLLScene *scene;
+@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, retain) IBOutlet NSOutlineView *sourceView;
 @property (nonatomic, retain) IBOutlet NSView *placeholderView;

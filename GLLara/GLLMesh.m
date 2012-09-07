@@ -219,6 +219,11 @@ void vec_addTo(float *a, float *b)
 	return self.model.baseURL;
 }
 
+- (NSUInteger)meshIndex
+{
+	return [self.model.meshes indexOfObject:self];
+}
+
 #pragma mark - Splitting
 
 - (GLLMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;

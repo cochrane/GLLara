@@ -14,7 +14,6 @@
 #import "GLLMeshSettingsViewController.h"
 #import "GLLModel.h"
 #import "GLLItem.h"
-#import "GLLScene.h"
 #import "GLLSourceListItem.h"
 
 @interface GLLDocumentWindowController ()
@@ -35,11 +34,11 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 @implementation GLLDocumentWindowController
 
-- (id)initWithScene:(GLLScene *)scene;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 {
     if (!(self = [super initWithWindowNibName:@"GLLDocument"])) return nil;
     
-	_scene = scene;
+	_managedObjectContext = managedObjectContext;
 	
 	boneTransformViewController = [[GLLBoneTransformViewController alloc] init];
 	meshSettingsViewController = [[GLLMeshSettingsViewController alloc] init];
@@ -49,19 +48,12 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
     return self;
 }
 
-- (void)dealloc
-{
-	[_scene removeObserver:self forKeyPath:@"items"];
-}
-
 - (void)windowDidLoad
 {
     [super windowDidLoad];
 	
 	self.sourceView.dataSource = self;
 	self.sourceView.delegate = self;
-	
-	[_scene addObserver:self forKeyPath:@"items" options:0 context:NULL];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -83,10 +75,9 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		
 		NSLog(@"Got model %@, with %lu bones and %lu meshes", model, model.bones.count, model.meshes.count);
 		
-		GLLItem *item = [[GLLItem alloc] initWithModel:model scene:self.scene];
-		NSLog(@"got item %@", item);
 		
-		[[self.scene mutableArrayValueForKey:@"items"] addObject:item];
+		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
+		newItem.model = model;
 	}];
 }
 
@@ -97,7 +88,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	if (item == nil) // Top level
 		return 3;
 	else if (item == itemsGroupIdentifier)
-		return self.scene.items.count;
+		return 0;
+	//	return self.scene.items.count;
 	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
 		return [item numberOfChildrenInSourceList];
 	
@@ -107,7 +99,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
 	if (item == itemsGroupIdentifier)
-		return YES;
+	//	return YES;
+		return NO;
 	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
 		return [item hasChildrenInSourceList];
 	
@@ -128,7 +121,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	}
 	else if (item == itemsGroupIdentifier)
 	{
-		return self.scene.items[index];
+		return nil;
+	//	return self.scene.items[index];
 	}
 	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
 		return [item childInSourceListAtIndex:index];

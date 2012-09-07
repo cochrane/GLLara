@@ -7,17 +7,16 @@
 //
 
 #import <AppKit/NSWindowController.h>
-
-#import "GLLSceneDelegate.h"
+#import <CoreData/CoreData.h>
 
 @class GLLScene;
 @class GLLView;
 
-@interface GLLRenderWindowController : NSWindowController <GLLSceneDelegate>
+@interface GLLRenderWindowController : NSWindowController
 
-- (id)initWithScene:(GLLScene *)scene;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
 
-@property (nonatomic, weak, readonly) GLLScene *scene;
+@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, retain) IBOutlet GLLView *renderView;
 

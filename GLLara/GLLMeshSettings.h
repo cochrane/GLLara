@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
 #import "GLLSourceListItem.h"
@@ -13,14 +14,15 @@
 @class GLLItem;
 @class GLLMesh;
 
-@interface GLLMeshSettings : NSObject <GLLSourceListItem>
+@interface GLLMeshSettings : NSManagedObject <GLLSourceListItem>
 
-- (id)initWithItem:(GLLItem *)item mesh:(GLLMesh *)mesh;
+// Core data
+@property (nonatomic) BOOL isVisible;
+@property (nonatomic, retain) GLLItem *item;
 
-@property (nonatomic, weak, readonly) GLLItem *item;
+// Derived
+@property (nonatomic, readonly) NSUInteger meshIndex;
 @property (nonatomic, retain, readonly) GLLMesh *mesh;
-
-@property (nonatomic, assign) BOOL isVisible;
 @property (nonatomic, readonly, copy) NSString *displayName;
 
 @end

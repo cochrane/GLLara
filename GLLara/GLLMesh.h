@@ -28,6 +28,8 @@
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, retain, readonly) NSArray *textures;
 
+@property (nonatomic, assign, readonly) NSUInteger meshIndex;
+
 /*
  * Vertex buffer (format described below)
  */

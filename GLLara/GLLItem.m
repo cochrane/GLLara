@@ -13,7 +13,6 @@
 #import "GLLMesh.h"
 #import "GLLMeshSettings.h"
 #import "GLLModel.h"
-#import "GLLScene.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
@@ -109,83 +108,77 @@
 
 @implementation GLLItem
 
-- (id)initWithModel:(GLLModel *)model scene:(GLLScene *)scene;
+@dynamic itemURLBookmark;
+@dynamic scaleX;
+@dynamic scaleY;
+@dynamic scaleZ;
+@dynamic isVisible;
+@dynamic boneTransformations;
+@dynamic meshSettings;
+
+@dynamic model;
+@dynamic itemURL;
+@dynamic itemName;
+@dynamic itemDirectory;
+@dynamic displayName;
+
+#pragma mark - Non-standard attributes
+
+- (void)awakeFromFetch
 {
-	if (!(self = [super init])) return nil;
-	
-	_scene = scene;
-	
-	_model = model;
-	bonesMarker = [[GLLItem_BonesSourceListMarker alloc] initWithItem:self];
-	meshesMarker = [[GLLItem_MeshesSourceListMarker alloc] initWithItem:self];
-	
-	self.isVisible = YES;
-	self.scaleX = 1.0f;
-	self.scaleY = 1.0f;
-	self.scaleZ = 1.0f;
-	
-	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:model.bones.count];
-	for (GLLBone *bone in model.bones)
+	// Item URL
+	NSData *bookmarkData = self.itemURLBookmark;
+	if (bookmarkData)
 	{
-		GLLBoneTransformation *transform = [[GLLBoneTransformation alloc] initWithItem:self bone:bone];
-		[bones addObject:transform];
+		NSURL *itemURL = [NSURL URLByResolvingBookmarkData:bookmarkData options:0 relativeToURL:nil bookmarkDataIsStale:NULL error:NULL];
+		[self setPrimitiveValue:itemURL forKey:@"itemURL"];
 	}
-	_boneTransformations = [bones copy];
 	
-	NSMutableArray *meshSettings = [[NSMutableArray alloc] initWithCapacity:model.meshes.count];
-	for (GLLMesh *mesh in model.meshes)
+	NSURL *itemURL = self.itemURL;
+	if (itemURL)
 	{
-		GLLMeshSettings *settings = [[GLLMeshSettings alloc] initWithItem:self mesh:mesh];
-		[meshSettings addObject:settings];
+		GLLModel *model = [GLLModel cachedModelFromFile:itemURL];
+		[self setPrimitiveValue:model forKey:@"model"];
 	}
-	_meshSettings = [meshSettings copy];
-	
-	//for (GLLBoneTransformation *transform in _boneTransformations)
-	//	[transform calculateLocalPositions];
-	
-	return self;
-}
-- (id)initFromDataStream:(TRInDataStream *)stream baseURL:(NSURL *)url version:(GLLSceneVersion)version scene:(GLLScene *)scene;
-{
-	if (!(self = [super init])) return nil;
-	
-	_scene = scene;
-	
-	_itemName = [stream readPascalString];
-	if (version >= GLLSceneVersion_1_5)
-		_itemDirectory = [stream readPascalString];
-	else
-		_itemDirectory = [_itemName lowercaseString];
-	
-	self.isVisible = [stream readUint8];
-	
-	if (version >= GLLSceneVersion_1_8)
-	{
-		self.scaleX = [stream readFloat32];
-		self.scaleY = [stream readFloat32];
-		self.scaleZ = [stream readFloat32];
-	}
-	else {
-		float uniformScale = [stream readFloat32];
-		self.scaleX = uniformScale;
-		self.scaleY = uniformScale;
-		self.scaleZ = uniformScale;
-	}
-	
-	// Load model
-	_model = nil;
-	
-	// Pose
-	
-	// All this code isn't done yet!
-	
-	return self;
 }
 
-- (void)writeToStream:(TROutDataStream *)stream;
+- (void)willSave
 {
+	GLLModel *model = [self primitiveValueForKey:@"model"];
+	NSURL *currentPrimitiveURL = [self primitiveValueForKey:@"itemURL"];
+	if (![currentPrimitiveURL isEqual:model.baseURL])
+		[self setPrimitiveValue:model.baseURL forKey:@"itemURL"];
 	
+	NSURL *itemURL = [self primitiveValueForKey:@"itemURL"];
+	if (itemURL)
+	{
+		NSData *bookmark = [itemURL bookmarkDataWithOptions:NSURLBookmarkCreationPreferFileIDResolution includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
+		[self setPrimitiveValue:bookmark forKey:@"itemURLBookmark"];
+	}
+	else
+		[self setPrimitiveValue:nil forKey:@"itemURLBookmark"];
 }
+
+- (void)setModel:(GLLModel *)model
+{
+	[self willChangeValueForKey:@"model"];
+	[self setPrimitiveValue:model forKey:@"model"];
+	[self didChangeValueForKey:@"model"];
+	
+	// Replace all mesh settings and bone transformations
+	// They have appropriate default values, so they need no setting of parameters.
+	NSMutableOrderedSet *meshSettings = [self mutableOrderedSetValueForKey:@"meshSettings"];
+	[meshSettings removeAllObjects];
+	for (NSUInteger i = 0; i < model.meshes.count; i++)
+		[meshSettings addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLMeshSettings" inManagedObjectContext:self.managedObjectContext]];
+	
+	NSMutableOrderedSet *boneTransformations = [self mutableOrderedSetValueForKey:@"boneTransformations"];
+	[boneTransformations removeAllObjects];
+	for (NSUInteger i = 0; i < model.bones.count; i++)
+		[boneTransformations addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLBoneTransformation" inManagedObjectContext:self.managedObjectContext]];
+}
+
+#pragma mark - Derived
 
 - (NSString *)displayName
 {
@@ -206,18 +199,15 @@
 
 - (NSArray *)rootBoneTransformations
 {
-	return [self.boneTransformations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(GLLBoneTransformation *bone, NSDictionary *bindings){
+	NSIndexSet *indices = [self.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLBoneTransformation *bone, NSUInteger idx, BOOL *stop) {
 		return !bone.hasParent;
-	}]];
+	}];
+	return [self.boneTransformations objectsAtIndexes:indices];
 }
 
 - (GLLMeshSettings *)settingsForMesh:(GLLMesh *)mesh;
 {
-	for (GLLMeshSettings *settings in self.meshSettings)
-		if (settings.mesh == mesh)
-			return settings;
-	
-	return nil;
+	return self.meshSettings[mesh.meshIndex];
 }
 
 - (void)getTransforms:(mat_float16 *)matrices maxCount:(NSUInteger)maxCount forMesh:(GLLMesh *)mesh;
@@ -225,14 +215,7 @@
 	NSArray *boneIndices = mesh.boneIndices;
 	NSUInteger max = MIN(maxCount, boneIndices.count);
 	for (NSUInteger i = 0; i < max; i++)
-		matrices[i] = [_boneTransformations[[boneIndices[i] unsignedIntegerValue]] globalTransform];
-}
-
-#pragma mark - Talking with scene
-
-- (void)changedPosition
-{
-	[self.scene updateDelegates];
+		matrices[i] = [self.boneTransformations[[boneIndices[i] unsignedIntegerValue]] globalTransform];
 }
 
 #pragma mark - Source List Item
@@ -255,8 +238,16 @@
 }
 - (id)childInSourceListAtIndex:(NSUInteger)index;
 {
-	if (index == 0) return meshesMarker;
-	else if (index == 1) return bonesMarker;
+	if (index == 0)
+	{
+		if (!meshesMarker) meshesMarker = [[GLLItem_MeshesSourceListMarker alloc] initWithItem:self];
+		return meshesMarker;
+	}
+	else if (index == 1)
+	{
+		if (!bonesMarker) bonesMarker = [[GLLItem_BonesSourceListMarker alloc] initWithItem:self];
+		return bonesMarker;
+	}
 	else return nil;
 }
 

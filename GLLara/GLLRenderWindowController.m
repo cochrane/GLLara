@@ -9,7 +9,6 @@
 #import "GLLRenderWindowController.h"
 
 #import "GLLView.h"
-#import "GLLScene.h"
 #import "GLLSceneDrawer.h"
 
 @interface GLLRenderWindowController ()
@@ -21,13 +20,12 @@
 
 @implementation GLLRenderWindowController
 
-- (id)initWithScene:(GLLScene *)scene;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
 {
 	if (!(self = [super initWithWindowNibName:@"GLLRenderWindowController"]))
 		return nil;
 	
-	_scene = scene;
-	[_scene addDelegate:self];
+	_managedObjectContext = context;
 	
 	return self;
 }
@@ -41,17 +39,12 @@
 
 - (void)openGLPrepared;
 {
-	drawer = [[GLLSceneDrawer alloc] initWithScene:self.scene view:self.renderView];
+	drawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext view:self.renderView];
 }
 
 - (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName
 {
 	return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view", @"render window title format"), displayName];
-}
-
-- (void)sceneDidChange:(GLLScene *)scene
-{
-	self.renderView.needsDisplay = YES;
 }
 
 @end

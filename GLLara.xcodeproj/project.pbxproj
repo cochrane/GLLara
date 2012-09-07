@@ -54,7 +54,6 @@
 		5296944615F5385400DF2FA3 /* DiffuseLightmapBump3.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5296941C15F4063500DF2FA3 /* DiffuseLightmapBump3.fs */; };
 		5296944915F565D100DF2FA3 /* GLLResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296944815F565D100DF2FA3 /* GLLResourceManager.m */; };
 		5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945315F60F3C00DF2FA3 /* GLLView.m */; };
-		5296945715F6150200DF2FA3 /* GLLScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945615F6150200DF2FA3 /* GLLScene.m */; };
 		5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */; };
 		5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */; };
 		5296946615F7B28300DF2FA3 /* GLLRenderWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */; };
@@ -68,6 +67,7 @@
 		52BB207015F831C900937450 /* mjolnir.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206F15F831C900937450 /* mjolnir.modelparams.plist */; };
 		52BB207215F8329000937450 /* motorcycle.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB207115F8329000937450 /* motorcycle.modelparams.plist */; };
 		52BB207415F8334E00937450 /* tiger1.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB207315F8334E00937450 /* tiger1.modelparams.plist */; };
+		52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
 		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */; };
@@ -173,8 +173,6 @@
 		5296944815F565D100DF2FA3 /* GLLResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLResourceManager.m; sourceTree = "<group>"; };
 		5296945215F60F3900DF2FA3 /* GLLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLView.h; sourceTree = "<group>"; };
 		5296945315F60F3C00DF2FA3 /* GLLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLView.m; sourceTree = "<group>"; };
-		5296945515F6150200DF2FA3 /* GLLScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLScene.h; sourceTree = "<group>"; };
-		5296945615F6150200DF2FA3 /* GLLScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLScene.m; sourceTree = "<group>"; };
 		5296945815F6C84900DF2FA3 /* GLLShaderDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLShaderDescriptor.h; sourceTree = "<group>"; };
 		5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLShaderDescriptor.m; sourceTree = "<group>"; };
 		5296946215F7B28300DF2FA3 /* GLLRenderWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderWindowController.h; sourceTree = "<group>"; };
@@ -194,10 +192,10 @@
 		52BB206F15F831C900937450 /* mjolnir.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mjolnir.modelparams.plist; sourceTree = "<group>"; };
 		52BB207115F8329000937450 /* motorcycle.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = motorcycle.modelparams.plist; sourceTree = "<group>"; };
 		52BB207315F8334E00937450 /* tiger1.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tiger1.modelparams.plist; sourceTree = "<group>"; };
+		52BB217C15F972AB00937450 /* GLLSceneModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GLLSceneModel.xcdatamodel; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
 		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
-		52D6A09A15F8B6F9002A0BB4 /* GLLSceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLSceneDelegate.h; sourceTree = "<group>"; };
 		52D6A09B15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTransformedMeshDrawer.h; sourceTree = "<group>"; };
 		52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLTransformedMeshDrawer.m; sourceTree = "<group>"; };
 		52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBump3Specular.fs; sourceTree = "<group>"; };
@@ -290,6 +288,7 @@
 				5296942A15F4174F00DF2FA3 /* GLLSceneDrawer.m */,
 				529693F315F2B58A00DF2FA3 /* GLLASCIIScanner.h */,
 				529693F415F2B58B00DF2FA3 /* GLLASCIIScanner.m */,
+				52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */,
 			);
 			path = GLLara;
 			sourceTree = "<group>";
@@ -414,11 +413,8 @@
 				529692D915F2625200DF2FA3 /* GLLItem.m */,
 				529692DB15F2759400DF2FA3 /* GLLBoneTransformation.h */,
 				529692DC15F2759400DF2FA3 /* GLLBoneTransformation.m */,
-				5296945515F6150200DF2FA3 /* GLLScene.h */,
-				5296945615F6150200DF2FA3 /* GLLScene.m */,
 				5296947115F7FB3200DF2FA3 /* GLLMeshSettings.h */,
 				5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */,
-				52D6A09A15F8B6F9002A0BB4 /* GLLSceneDelegate.h */,
 			);
 			name = "Posed items";
 			sourceTree = "<group>";
@@ -658,7 +654,6 @@
 				5296943A15F4CC3400DF2FA3 /* GLLMeshSplitter.m in Sources */,
 				5296944915F565D100DF2FA3 /* GLLResourceManager.m in Sources */,
 				5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */,
-				5296945715F6150200DF2FA3 /* GLLScene.m in Sources */,
 				5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */,
 				5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */,
 				5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */,
@@ -666,6 +661,7 @@
 				5296947815F80F4800DF2FA3 /* GLLBoneTransformViewController.m in Sources */,
 				52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */,
 				52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */,
+				52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,6 +871,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				52BB217C15F972AB00937450 /* GLLSceneModel.xcdatamodel */,
+			);
+			currentVersion = 52BB217C15F972AB00937450 /* GLLSceneModel.xcdatamodel */;
+			name = GLLSceneModel.xcdatamodeld;
+			path = "Core Data/GLLSceneModel.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 525ACD3E15F0F1A700534E7D /* Project object */;
 }

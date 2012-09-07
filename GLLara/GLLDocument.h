@@ -10,6 +10,6 @@
 
 @class GLLView;
 
-@interface GLLDocument : NSDocument
+@interface GLLDocument : NSPersistentDocument
 
 @end

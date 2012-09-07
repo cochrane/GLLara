@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
 #import "GLLSourceListItem.h"
@@ -17,22 +18,20 @@
 @class TRInDataStream;
 @class TROutDataStream;
 
-@interface GLLBoneTransformation : NSObject <GLLSourceListItem>
+@interface GLLBoneTransformation : NSManagedObject <GLLSourceListItem>
 
-- (id)initFromDataStream:(TRInDataStream *)stream version:(GLLSceneVersion)version item:(GLLItem *)item bone:(GLLBone *)bone;
-- (id)initWithItem:(GLLItem *)item bone:(GLLBone *)bone;
+// From core data
+@property (nonatomic) float positionX;
+@property (nonatomic) float positionY;
+@property (nonatomic) float positionZ;
+@property (nonatomic) float rotationX;
+@property (nonatomic) float rotationY;
+@property (nonatomic) float rotationZ;
+@property (nonatomic, retain) GLLItem *item;
 
-- (void)writeToStream:(TROutDataStream *)stream;
-
+// Derived
+@property (nonatomic, readonly) NSUInteger boneIndex;
 @property (nonatomic, retain, readonly) GLLBone *bone;
-@property (nonatomic, weak, readonly) GLLItem *item;
-
-@property (nonatomic, assign) float rotationX;
-@property (nonatomic, assign) float rotationY;
-@property (nonatomic, assign) float rotationZ;
-@property (nonatomic, assign) float positionX;
-@property (nonatomic, assign) float positionY;
-@property (nonatomic, assign) float positionZ;
 
 @property (nonatomic, assign, readonly) BOOL hasParent;
 @property (nonatomic, weak, readonly) GLLBoneTransformation *parent;

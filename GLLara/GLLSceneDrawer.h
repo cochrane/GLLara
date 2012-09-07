@@ -6,17 +6,17 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
 @class GLLResourceManager;
-@class GLLScene;
 @class GLLView;
 
 @interface GLLSceneDrawer : NSObject
 
-- (id)initWithScene:(GLLScene *)scene view:(GLLView *)view;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context view:(GLLView *)view;
 
-@property (nonatomic, retain, readonly) GLLScene *scene;
+@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) GLLResourceManager *resourceManager;
 @property (nonatomic, weak, readonly) GLLView *view;
 

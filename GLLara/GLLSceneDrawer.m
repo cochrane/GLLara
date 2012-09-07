@@ -13,7 +13,6 @@
 #import "GLLItemDrawer.h"
 #import "GLLProgram.h"
 #import "GLLResourceManager.h"
-#import "GLLScene.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLView.h"
 #import "simd_matrix.h"
@@ -41,6 +40,8 @@ struct GLLTransform
 @interface GLLSceneDrawer ()
 {
 	NSMutableArray *itemDrawers;
+	id managedObjectContextObserver;
+	
 	GLuint lightBuffer;
 	GLuint transformBuffer;
 	
@@ -52,18 +53,41 @@ struct GLLTransform
 
 @implementation GLLSceneDrawer
 
-- (id)initWithScene:(GLLScene *)scene view:(GLLView *)view;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context view:(GLLView *)view;
 {
 	if (!(self = [super init])) return nil;
 
-	_scene = scene;
+	_managedObjectContext = context;
 	_view = view;
 	_view.sceneDrawer = self;
 	_resourceManager = [[GLLResourceManager alloc] init];
 	
 	itemDrawers = [[NSMutableArray alloc] init];
 	
-	[_scene addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+	// Store self as weak in the block, so it does not retain this.
+	__block __weak id weakSelf = self;
+	managedObjectContextObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:_managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+		GLLSceneDrawer *self = weakSelf;
+		
+		// Ensure proper OpenGL context
+		[view.openGLContext makeCurrentContext];
+		
+		NSMutableArray *toRemove = [[NSMutableArray alloc] init];
+		for (GLLItemDrawer *drawer in itemDrawers)
+		{
+			if ([notification.userInfo[NSDeletedObjectsKey] containsObject:drawer.item])
+				[toRemove addObject:drawer];
+		}
+		[itemDrawers removeObjectsInArray:toRemove];
+		
+		for (NSManagedObject *newItem in notification.userInfo[NSInsertedObjectsKey])
+		{
+			if ([newItem.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext]])
+				[itemDrawers addObject:[[GLLItemDrawer alloc] initWithItem:(GLLItem *) newItem sceneDrawer:self]];
+		}
+
+		view.needsDisplay = YES;
+	}];
 	
 	glEnable(GL_MULTISAMPLE);
 	glClearColor(0.2, 0.2, 0.2, 1);
@@ -104,35 +128,12 @@ struct GLLTransform
 
 - (void)dealloc
 {
-	[_scene removeObserver:self forKeyPath:@"items"];
+	[[NSNotificationCenter defaultCenter] removeObserver:managedObjectContextObserver];
 }
 
 - (void)unload
 {
 	[self.resourceManager unload];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	if ([keyPath isEqual:@"items"])
-	{
-		NSMutableArray *toRemove = [[NSMutableArray alloc] init];
-		for (GLLItemDrawer *drawer in itemDrawers)
-		{
-			if ([change[NSKeyValueChangeOldKey] containsObject:drawer.item])
-				[toRemove addObject:drawer];
-		}
-		[itemDrawers removeObjectsInArray:toRemove];
-		
-		for (GLLItem *newItem in change[NSKeyValueChangeNewKey])
-		{
-			[itemDrawers addObject:[[GLLItemDrawer alloc] initWithItem:newItem sceneDrawer:self]];
-		}
-		
-		self.view.needsDisplay = YES;
-	}
-	else
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 - (void)setWindowSize:(NSSize)size;

@@ -10,29 +10,30 @@
 
 #import "GLLItem.h"
 #import "GLLMesh.h"
+#import "GLLModel.h"
 
 @implementation GLLMeshSettings
 
-- (id)initWithItem:(GLLItem *)item mesh:(GLLMesh *)mesh;
+@dynamic isVisible;
+@dynamic item;
+
+@dynamic mesh;
+@dynamic meshIndex;
+@dynamic displayName;
+
+- (NSUInteger)meshIndex
 {
-	if (!(self = [super init])) return nil;
-	
-	_item = item;
-	_mesh = mesh;
-	_isVisible = YES;
-	
-	return self;
+	return [self.item.meshSettings indexOfObject:self];
+}
+
+- (GLLMesh *)mesh
+{
+	return self.item.model.meshes[self.meshIndex];
 }
 
 - (NSString *)displayName
 {
 	return self.mesh.name;
-}
-
-- (void)setIsVisible:(BOOL)isVisible
-{
-	_isVisible = isVisible;
-	[self.item changedPosition];
 }
 
 #pragma mark - Source list item

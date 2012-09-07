@@ -10,94 +10,55 @@
 
 #import "GLLBone.h"
 #import "GLLItem.h"
+#import "GLLModel.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
 @implementation GLLBoneTransformation
 
++ (NSSet *)keyPathsForValuesAffectingBone
+{
+	return [NSSet setWithObjects:@"item.model.bones", @"boneIndex", nil];
+}
++ (NSSet *)keyPathsForValuesAffectingHasParent
+{
+	return [NSSet setWithObjects:@"bone", nil];
+}
++ (NSSet *)keyPathsForValuesAffectingRelativeTransform
+{
+	return [NSSet setWithObjects:@"positionX", @"positionY", @"positionZ", @"rotationX", @"rotationY", @"rotationZ", nil];
+}
++ (NSSet *)keyPathsForValuesAffectingGlobalTransform
+{
+	return [NSSet setWithObjects:@"relativeTransform", @"parent.globalTransform", nil];
+}
+
+@dynamic positionX;
+@dynamic positionY;
+@dynamic positionZ;
+@dynamic rotationX;
+@dynamic rotationY;
+@dynamic rotationZ;
+@dynamic boneIndex;
+@dynamic item;
+
 @synthesize parent;
 @synthesize children;
 
-- (id)initFromDataStream:(TRInDataStream *)stream version:(GLLSceneVersion)version item:(GLLItem *)item bone:(GLLBone *)bone;
+- (NSUInteger)boneIndex
 {
-	if (!(self = [super init])) return nil;
-	
-	_item = item;
-	_bone = bone;
-	
-	self.rotationX = [stream readFloat32];
-	self.rotationY = [stream readFloat32];
-	self.rotationZ = [stream readFloat32];
-	
-	if (version > GLLSceneVersion_1_3)
-	{
-		self.positionX = [stream readFloat32];
-		self.positionY = [stream readFloat32];
-		self.positionZ = [stream readFloat32];
-	}
-	
-	return self;
-}
-- (id)initWithItem:(GLLItem *)item bone:(GLLBone *)bone;
-{
-	if (!(self = [super init])) return nil;
-	
-	_item = item;
-	_bone = bone;
-	
-	self.rotationX = 0.0;
-	self.rotationY = 0.0;
-	self.rotationZ = 0.0;
-	
-	return self;
+	return [self.item.boneTransformations indexOfObject:self];
 }
 
-- (void)writeToStream:(TROutDataStream *)stream;
+- (GLLBone *)bone
 {
-	[stream appendFloat32:self.rotationX];
-	[stream appendFloat32:self.rotationY];
-	[stream appendFloat32:self.rotationZ];
-	
-	[stream appendFloat32:self.positionX];
-	[stream appendFloat32:self.positionY];
-	[stream appendFloat32:self.positionZ];
+	return self.item.model.bones[self.boneIndex];
 }
+
 - (BOOL)hasParent
 {
 	return self.bone.hasParent;
-}
-
-- (void)setRotationX:(float)rotationX
-{
-	_rotationX = rotationX;
-	[self.item changedPosition];
-}
-- (void)setRotationY:(float)rotationY
-{
-	_rotationY = rotationY;
-	[self.item changedPosition];
-}
-- (void)setRotationZ:(float)rotationZ
-{
-	_rotationZ = rotationZ;
-	[self.item changedPosition];
-}
-
-- (void)setPositionX:(float)positionX
-{
-	_positionX = positionX;
-	[self.item changedPosition];
-}
-- (void)setPositionY:(float)positionY
-{
-	_positionY = positionY;
-	[self.item changedPosition];
-}
-- (void)setPositionZ:(float)positionZ
-{
-	_positionZ = positionZ;
-	[self.item changedPosition];
 }
 
 - (GLLBoneTransformation *)parent
@@ -113,9 +74,12 @@
 - (NSArray *)children
 {
 	if (children == nil)
-		children = [self.item.boneTransformations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(GLLBoneTransformation *bone, NSDictionary *bindings){
+	{
+		NSIndexSet *childIndices = [self.item.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLBoneTransformation *bone, NSUInteger idx, BOOL *stop){
 			return bone.parent == self;
-		}]];
+		}];
+		children = [self.item.boneTransformations objectsAtIndexes:childIndices];
+	}
 	
 	return children;
 }
