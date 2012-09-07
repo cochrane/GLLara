@@ -13,6 +13,8 @@
 #import "GLLMeshSettings.h"
 #import "GLLMeshSettingsViewController.h"
 #import "GLLModel.h"
+#import "GLLLight.h"
+#import "GLLLightViewController.h"
 #import "GLLItem.h"
 #import "GLLSourceListItem.h"
 
@@ -20,9 +22,11 @@
 {
 	GLLBoneTransformViewController *boneTransformViewController;
 	GLLMeshSettingsViewController *meshSettingsViewController;
+	GLLLightViewController *lightViewController;
 	
 	NSViewController *currentController;
 	NSMutableArray *allItems;
+	NSMutableArray *allLights;
 	id managedObjectContextObserver;
 }
 
@@ -43,10 +47,16 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	
 	boneTransformViewController = [[GLLBoneTransformViewController alloc] init];
 	meshSettingsViewController = [[GLLMeshSettingsViewController alloc] init];
+	lightViewController = [[GLLLightViewController alloc] init];
 	
-	NSFetchRequest *request = [[NSFetchRequest alloc] init];
-	request.entity = [NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:_managedObjectContext];
-	allItems = [NSMutableArray arrayWithArray:[_managedObjectContext executeFetchRequest:request error:NULL]];
+	NSFetchRequest *itemsRequest = [[NSFetchRequest alloc] init];
+	itemsRequest.entity = [NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:_managedObjectContext];
+	allItems = [NSMutableArray arrayWithArray:[_managedObjectContext executeFetchRequest:itemsRequest error:NULL]];
+	
+	NSFetchRequest *lightsRequest = [[NSFetchRequest alloc] init];
+	lightsRequest.entity = [NSEntityDescription entityForName:@"GLLLight" inManagedObjectContext:_managedObjectContext];
+	lightsRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES] ];
+	allLights = [NSMutableArray arrayWithArray:[_managedObjectContext executeFetchRequest:lightsRequest error:NULL]];
 	
 	// Set up loading of future items and destroying items. Also update view.
 	// Store self as weak in the block, so it does not retain this.
@@ -56,6 +66,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		
 		// Remove old things
 		[allItems removeObjectsInArray:[notification.userInfo[NSDeletedObjectsKey] allObjects]];
+		[allLights removeObjectsInArray:[notification.userInfo[NSDeletedObjectsKey] allObjects]];
 		
 		// Add new things
 		NSSet *newItems = [notification.userInfo[NSInsertedObjectsKey] objectsWithOptions:0 passingTest:^BOOL(NSManagedObject *object, BOOL *stop){
@@ -63,7 +74,15 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		}];
 		[allItems addObjectsFromArray:newItems.allObjects];
 		
+		// Add new things
+		NSSet *newLights = [notification.userInfo[NSInsertedObjectsKey] objectsWithOptions:0 passingTest:^BOOL(NSManagedObject *object, BOOL *stop){
+			return [object.entity isEqual:[NSEntityDescription entityForName:@"GLLLight" inManagedObjectContext:_managedObjectContext]];
+		}];
+		[allLights addObjectsFromArray:newLights.allObjects];
+		[allLights sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES] ]];
+		
 		[self.sourceView reloadItem:allItems reloadChildren:YES];
+		[self.sourceView reloadItem:allLights reloadChildren:YES];
 	}];
 	
 	self.shouldCloseDocument = YES;
@@ -129,6 +148,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 {
 	if (item == nil) // Top level
 		return 3;
+	else if (item == allLights)
+		return allLights.count;
 	else if (item == allItems)
 		return allItems.count;
 	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
@@ -140,6 +161,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
 	if (item == allItems)
+		return YES;
+	else if (item == allLights)
 		return YES;
 	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
 		return [item hasChildrenInSourceList];
@@ -153,11 +176,15 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	{
 		switch(index)
 		{
-			case 0: return lightsGroupIdentifier;
+			case 0: return allLights;
 			case 1: return allItems;
 			case 2: return settingsGroupIdentifier;
 			default: return nil;
 		}
+	}
+	else if (item == allLights)
+	{
+		return allLights[index];
 	}
 	else if (item == allItems)
 	{
@@ -171,7 +198,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
-	if (item == lightsGroupIdentifier)
+	if (item == allLights)
 		return NSLocalizedString(@"Lights", @"lights source list header");
 	else if (item == allItems)
 		return NSLocalizedString(@"Items", @"items source list header");
@@ -188,7 +215,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
 {
-	return item == lightsGroupIdentifier || item == allItems || item == settingsGroupIdentifier;
+	return item == allLights || item == allItems || item == settingsGroupIdentifier;
 }
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
@@ -205,6 +232,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		[self _setRightHandController:boneTransformViewController representedObject:selectedObject];
 	else if ([selectedObject isKindOfClass:[GLLMeshSettings class]])
 		[self _setRightHandController:meshSettingsViewController representedObject:selectedObject];
+	else if ([selectedObject isKindOfClass:[GLLLight class]])
+		[self _setRightHandController:lightViewController representedObject:selectedObject];
 	else
 		[self _setRightHandController:nil representedObject:nil];
 }

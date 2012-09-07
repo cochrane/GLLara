@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
+		5224C8E615FA4F18002A6C76 /* GLLLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLLight.m */; };
+		5224C8E915FA5F25002A6C76 /* GLLLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E815FA5F24002A6C76 /* GLLLightViewController.m */; };
+		5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */; };
+		5224C8EE15FA8FB0002A6C76 /* GLLAddPiValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAddPiValueTransformer.m */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -87,6 +91,13 @@
 
 /* Begin PBXFileReference section */
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
+		5224C8E415FA4F18002A6C76 /* GLLLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLight.h; sourceTree = "<group>"; };
+		5224C8E515FA4F18002A6C76 /* GLLLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLight.m; sourceTree = "<group>"; };
+		5224C8E715FA5F24002A6C76 /* GLLLightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLightViewController.h; sourceTree = "<group>"; };
+		5224C8E815FA5F24002A6C76 /* GLLLightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLightViewController.m; sourceTree = "<group>"; };
+		5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLLightView.xib; sourceTree = "<group>"; };
+		5224C8EC15FA8FB0002A6C76 /* GLLAddPiValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAddPiValueTransformer.h; sourceTree = "<group>"; };
+		5224C8ED15FA8FB0002A6C76 /* GLLAddPiValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAddPiValueTransformer.m; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -409,6 +420,8 @@
 		5296941F15F4112E00DF2FA3 /* Posed items */ = {
 			isa = PBXGroup;
 			children = (
+				5224C8E415FA4F18002A6C76 /* GLLLight.h */,
+				5224C8E515FA4F18002A6C76 /* GLLLight.m */,
 				529692D815F2625200DF2FA3 /* GLLItem.h */,
 				529692D915F2625200DF2FA3 /* GLLItem.m */,
 				529692DB15F2759400DF2FA3 /* GLLBoneTransformation.h */,
@@ -493,6 +506,11 @@
 				52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */,
 				52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */,
 				52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */,
+				5224C8E715FA5F24002A6C76 /* GLLLightViewController.h */,
+				5224C8E815FA5F24002A6C76 /* GLLLightViewController.m */,
+				5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */,
+				5224C8EC15FA8FB0002A6C76 /* GLLAddPiValueTransformer.h */,
+				5224C8ED15FA8FB0002A6C76 /* GLLAddPiValueTransformer.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -596,6 +614,7 @@
 				52BB207215F8329000937450 /* motorcycle.modelparams.plist in Resources */,
 				52BB207415F8334E00937450 /* tiger1.modelparams.plist in Resources */,
 				52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */,
+				5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -662,6 +681,9 @@
 				52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */,
 				52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */,
 				52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */,
+				5224C8E615FA4F18002A6C76 /* GLLLight.m in Sources */,
+				5224C8E915FA5F25002A6C76 /* GLLLightViewController.m in Sources */,
+				5224C8EE15FA8FB0002A6C76 /* GLLAddPiValueTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -48,6 +48,8 @@
 
 - (GLLModelDrawer *)drawerForModel:(GLLModel *)model;
 {
+	if (!model) return nil;
+	
 	id key = model.baseURL;
 	id result = [models objectForKey:key];
 	if (!result)

@@ -64,6 +64,7 @@
 						<string key="NSFrame">{{14, 30}, {137, 32}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="831350796">
@@ -635,8 +636,8 @@
 							<string key="NSContents"/>
 							<string key="NSCellIdentifier">_NS:9</string>
 							<reference key="NSControlView" ref="665967078"/>
-							<double key="NSMaxValue">6.2831853071795898</double>
-							<double key="NSMinValue">-6.2831853071795898</double>
+							<double key="NSMaxValue">3.14159265358979</double>
+							<double key="NSMinValue">-3.14159265358979</double>
 							<double key="NSValue">0.0</double>
 							<double key="NSAltIncValue">0.0</double>
 							<int key="NSNumberOfTickMarks">0</int>
@@ -751,8 +752,8 @@
 							<string key="NSContents"/>
 							<string key="NSCellIdentifier">_NS:9</string>
 							<reference key="NSControlView" ref="146196822"/>
-							<double key="NSMaxValue">6.2831853071795898</double>
-							<double key="NSMinValue">-6.2831853071795898</double>
+							<double key="NSMaxValue">3.14159265358979</double>
+							<double key="NSMinValue">-3.14159265358979</double>
 							<double key="NSValue">0.0</double>
 							<double key="NSAltIncValue">0.0</double>
 							<int key="NSNumberOfTickMarks">0</int>
@@ -867,8 +868,8 @@
 							<string key="NSContents"/>
 							<string key="NSCellIdentifier">_NS:9</string>
 							<reference key="NSControlView" ref="847248228"/>
-							<double key="NSMaxValue">6.2831853071795898</double>
-							<double key="NSMinValue">-6.2831853071795898</double>
+							<double key="NSMaxValue">3.14159265358979</double>
+							<double key="NSMinValue">-3.14159265358979</double>
 							<double key="NSValue">0.0</double>
 							<double key="NSAltIncValue">0.0</double>
 							<int key="NSNumberOfTickMarks">0</int>
@@ -999,10 +1000,14 @@
 							<string key="NSLabel">value: selection.rotationX</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">selection.rotationX</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">GLLAddPiValueTransformer</string>
+							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">71</int>
+					<int key="connectionID">97</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1047,10 +1052,14 @@
 							<string key="NSLabel">value: selection.rotationY</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">selection.rotationY</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">GLLAddPiValueTransformer</string>
+							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">74</int>
+					<int key="connectionID">98</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1095,10 +1104,14 @@
 							<string key="NSLabel">value: selection.rotationZ</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">selection.rotationZ</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">GLLAddPiValueTransformer</string>
+							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">77</int>
+					<int key="connectionID">99</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1842,7 +1855,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">96</int>
+			<int key="maxID">99</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

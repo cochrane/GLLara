@@ -8,6 +8,7 @@
 
 #import "GLLDocument.h"
 
+#import "GLLAddPiValueTransformer.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLItem.h"
 #import "GLLModel.h"
@@ -24,6 +25,11 @@
 @end
 
 @implementation GLLDocument
+
++ (void)initialize
+{
+	[NSValueTransformer setValueTransformer:[[GLLAddPiValueTransformer alloc] init] forName:@"GLLAddPiValueTransformer"];
+}
 
 - (void)makeWindowControllers
 {
