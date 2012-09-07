@@ -11,7 +11,7 @@
     </entity>
     <entity name="GLLItem" representedClassName="GLLItem" syncable="YES">
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
-        <attribute name="itemURL" transient="YES" syncable="YES"/>
+        <attribute name="itemURL" optional="YES" transient="YES" syncable="YES"/>
         <attribute name="itemURLBookmark" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="model" transient="YES" syncable="YES"/>
         <attribute name="scaleX" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
@@ -25,8 +25,8 @@
         <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshSettings" inverseEntity="GLLItem" syncable="YES"/>
     </entity>
     <elements>
+        <element name="GLLBoneTransformation" positionX="160" positionY="192" width="128" height="148"/>
         <element name="GLLItem" positionX="160" positionY="192" width="128" height="180"/>
         <element name="GLLMeshSettings" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="GLLBoneTransformation" positionX="160" positionY="192" width="128" height="150"/>
     </elements>
 </model>
