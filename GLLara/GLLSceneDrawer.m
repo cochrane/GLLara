@@ -10,6 +10,8 @@
 
 #import <OpenGL/gl3.h>
 
+#import "GLLItem.h"
+#import "GLLBoneTransformation.h"
 #import "GLLItemDrawer.h"
 #import "GLLProgram.h"
 #import "GLLResourceManager.h"
@@ -17,6 +19,8 @@
 #import "GLLView.h"
 #import "simd_matrix.h"
 #import "simd_project.h"
+
+static NSString *transformationsKeyPath = @"relativeTransform";
 
 struct GLLLight
 {
@@ -49,6 +53,9 @@ struct GLLTransform
 	mat_float16 projectionMatrix;
 }
 
+- (void)_addDrawerForItem:(GLLItem *)item;
+- (void)_unregisterDrawer:(GLLItemDrawer *)drawer;
+
 @end
 
 @implementation GLLSceneDrawer
@@ -76,15 +83,19 @@ struct GLLTransform
 		NSMutableArray *toRemove = [[NSMutableArray alloc] init];
 		for (GLLItemDrawer *drawer in itemDrawers)
 		{
-			if ([notification.userInfo[NSDeletedObjectsKey] containsObject:drawer.item])
-				[toRemove addObject:drawer];
+			if (![notification.userInfo[NSDeletedObjectsKey] containsObject:drawer.item])
+				continue;
+			
+			[toRemove addObject:drawer];
+			[self _unregisterDrawer:drawer];
 		}
 		[itemDrawers removeObjectsInArray:toRemove];
 		
+		// New objects includes absolutely anything. Restrict this to items.
 		for (NSManagedObject *newItem in notification.userInfo[NSInsertedObjectsKey])
 		{
 			if ([newItem.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext]])
-				[itemDrawers addObject:[[GLLItemDrawer alloc] initWithItem:(GLLItem *) newItem sceneDrawer:self]];
+				[self _addDrawerForItem:(GLLItem *) newItem];
 		}
 
 		view.needsDisplay = YES;
@@ -98,7 +109,7 @@ struct GLLTransform
 	
 	NSArray *allItems = [self.managedObjectContext executeFetchRequest:allItemsRequest error:NULL];
 	for (GLLItem *item in allItems)
-		[itemDrawers addObject:[[GLLItemDrawer alloc] initWithItem:item sceneDrawer:self]];
+		[self _addDrawerForItem:item];
 	
 	// Light buffer
 	glGenBuffers(1, &lightBuffer);
@@ -139,6 +150,21 @@ struct GLLTransform
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:managedObjectContextObserver];
+	
+	for (GLLItemDrawer *drawer in itemDrawers)
+		[self _unregisterDrawer:drawer];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:transformationsKeyPath])
+	{
+		self.view.needsDisplay = YES;
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
 }
 
 - (void)unload
@@ -171,6 +197,22 @@ struct GLLTransform
 		[drawer drawAlpha];
 		[drawer drawNormal];
 	}
+}
+
+#pragma mark - Private methods
+
+- (void)_addDrawerForItem:(GLLItem *)item;
+{
+	GLLItemDrawer *drawer = [[GLLItemDrawer alloc] initWithItem:item sceneDrawer:self];
+	[itemDrawers addObject:drawer];
+
+	for (GLLBoneTransformation *boneTransform in item.boneTransformations)
+		[boneTransform addObserver:self forKeyPath:transformationsKeyPath options:0 context:0];
+}
+- (void)_unregisterDrawer:(GLLItemDrawer *)drawer
+{
+	for (GLLBoneTransformation *boneTransform in drawer.item.boneTransformations)
+		[boneTransform removeObserver:self forKeyPath:transformationsKeyPath];
 }
 
 @end
