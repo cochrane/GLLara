@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
-		5224C8E615FA4F18002A6C76 /* GLLLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLLight.m */; };
+		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
 		5224C8E915FA5F25002A6C76 /* GLLLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E815FA5F24002A6C76 /* GLLLightViewController.m */; };
 		5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */; };
 		5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */; };
@@ -28,6 +28,9 @@
 		525ACD8715F0F3ED00534E7D /* GLLMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8615F0F3ED00534E7D /* GLLMesh.m */; };
 		5291DB8215FBB33400ECDBCA /* MetallicBump3.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */; };
 		5291DB9115FBE51600ECDBCA /* Metallic.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB9015FBE51600ECDBCA /* Metallic.fs */; };
+		5291DB9415FBF7BE00ECDBCA /* GLLAmbientLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5291DB9315FBF7BD00ECDBCA /* GLLAmbientLight.m */; };
+		5291DB9815FBF97000ECDBCA /* GLLAmbientLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5291DB9615FBF97000ECDBCA /* GLLAmbientLightViewController.m */; };
+		5291DB9915FBF97000ECDBCA /* GLLAmbientLightViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB9715FBF97000ECDBCA /* GLLAmbientLightViewController.xib */; };
 		529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692C915F1568200DF2FA3 /* TRInDataStream.m */; };
 		529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692CB15F1568200DF2FA3 /* TROutDataStream.m */; };
 		529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692D015F2374F00DF2FA3 /* libz.dylib */; };
@@ -98,8 +101,8 @@
 
 /* Begin PBXFileReference section */
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
-		5224C8E415FA4F18002A6C76 /* GLLLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLight.h; sourceTree = "<group>"; };
-		5224C8E515FA4F18002A6C76 /* GLLLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLight.m; sourceTree = "<group>"; };
+		5224C8E415FA4F18002A6C76 /* GLLDirectionalLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDirectionalLight.h; sourceTree = "<group>"; };
+		5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDirectionalLight.m; sourceTree = "<group>"; };
 		5224C8E715FA5F24002A6C76 /* GLLLightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLightViewController.h; sourceTree = "<group>"; };
 		5224C8E815FA5F24002A6C76 /* GLLLightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLightViewController.m; sourceTree = "<group>"; };
 		5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLLightView.xib; sourceTree = "<group>"; };
@@ -132,6 +135,11 @@
 		5291DB7F15FB711900ECDBCA /* Model Parameters (english).md */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Model Parameters (english).md"; sourceTree = "<group>"; };
 		5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = MetallicBump3.fs; sourceTree = "<group>"; };
 		5291DB9015FBE51600ECDBCA /* Metallic.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Metallic.fs; sourceTree = "<group>"; };
+		5291DB9215FBF7BC00ECDBCA /* GLLAmbientLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAmbientLight.h; sourceTree = "<group>"; };
+		5291DB9315FBF7BD00ECDBCA /* GLLAmbientLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAmbientLight.m; sourceTree = "<group>"; };
+		5291DB9515FBF96F00ECDBCA /* GLLAmbientLightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAmbientLightViewController.h; sourceTree = "<group>"; };
+		5291DB9615FBF97000ECDBCA /* GLLAmbientLightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAmbientLightViewController.m; sourceTree = "<group>"; };
+		5291DB9715FBF97000ECDBCA /* GLLAmbientLightViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLAmbientLightViewController.xib; sourceTree = "<group>"; };
 		529692C815F1568200DF2FA3 /* TRInDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRInDataStream.h; sourceTree = "<group>"; };
 		529692C915F1568200DF2FA3 /* TRInDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRInDataStream.m; sourceTree = "<group>"; };
 		529692CA15F1568200DF2FA3 /* TROutDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TROutDataStream.h; sourceTree = "<group>"; };
@@ -448,8 +456,10 @@
 		5296941F15F4112E00DF2FA3 /* Posed items */ = {
 			isa = PBXGroup;
 			children = (
-				5224C8E415FA4F18002A6C76 /* GLLLight.h */,
-				5224C8E515FA4F18002A6C76 /* GLLLight.m */,
+				5291DB9215FBF7BC00ECDBCA /* GLLAmbientLight.h */,
+				5291DB9315FBF7BD00ECDBCA /* GLLAmbientLight.m */,
+				5224C8E415FA4F18002A6C76 /* GLLDirectionalLight.h */,
+				5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */,
 				529692D815F2625200DF2FA3 /* GLLItem.h */,
 				529692D915F2625200DF2FA3 /* GLLItem.m */,
 				529692DB15F2759400DF2FA3 /* GLLBoneTransformation.h */,
@@ -539,6 +549,9 @@
 				5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */,
 				5224C8EC15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.h */,
 				5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */,
+				5291DB9515FBF96F00ECDBCA /* GLLAmbientLightViewController.h */,
+				5291DB9615FBF97000ECDBCA /* GLLAmbientLightViewController.m */,
+				5291DB9715FBF97000ECDBCA /* GLLAmbientLightViewController.xib */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -649,6 +662,7 @@
 				5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */,
 				52BB21A215FACF2E00937450 /* croft_manor_hall.modelparams.plist in Resources */,
 				52BB21A915FB45B200937450 /* croft_manor_hall_lq.modelparams.plist in Resources */,
+				5291DB9915FBF97000ECDBCA /* GLLAmbientLightViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -715,9 +729,11 @@
 				52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */,
 				52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */,
 				52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */,
-				5224C8E615FA4F18002A6C76 /* GLLLight.m in Sources */,
+				5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */,
 				5224C8E915FA5F25002A6C76 /* GLLLightViewController.m in Sources */,
 				5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */,
+				5291DB9415FBF7BE00ECDBCA /* GLLAmbientLight.m in Sources */,
+				5291DB9815FBF97000ECDBCA /* GLLAmbientLightViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

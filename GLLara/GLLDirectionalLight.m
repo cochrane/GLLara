@@ -6,26 +6,25 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLLight.h"
+#import "GLLDirectionalLight.h"
 
 #import <AppKit/NSColorSpace.h>
 
 #import "simd_matrix.h"
 
-@implementation GLLLight
+@implementation GLLDirectionalLight
 
 + (NSSet *)keyPathsForValuesAffectingDataAsUniformBlock
 {
-	return [NSSet setWithObjects:@"isEnabled", @"latitude", @"longitude", @"color", @"intensity", @"shadowDepth", nil];
+	return [NSSet setWithObjects:@"isEnabled", @"latitude", @"longitude", @"diffuseColor", @"specularColor", nil];
 }
 
 @dynamic isEnabled;
 @dynamic index;
 @dynamic latitude;
 @dynamic longitude;
-@dynamic color;
-@dynamic intensity;
-@dynamic shadowDepth;
+@dynamic diffuseColor;
+@dynamic specularColor;
 
 - (void)setLongitude:(float)longitude
 {
@@ -45,13 +44,16 @@
 		struct GLLLightUniformBlock block = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, 0.0, 0.0 };
 		return [NSData dataWithBytes:&block length:sizeof(block)];
 	}
-	
-	vec_float4 position = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
+		
+	struct GLLLightUniformBlock block;
+	block.direction = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
 	
 	CGFloat r, g, b, a;
-	[[self.color colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
+	[[self.diffuseColor colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
+	block.diffuseColor = simd_make(r, g, b, a);
+	[[self.specularColor colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
+	block.specularColor = simd_make(r, g, b, a);
 	
-	struct GLLLightUniformBlock block = { .color = simd_make(r, g, b, a), .direction = position, .intensity = self.intensity, .shadowDepth = self.shadowDepth };
 	return [NSData dataWithBytes:&block length:sizeof(block)];
 }
 
@@ -63,7 +65,7 @@
 }
 - (NSString *)sourceListDisplayName
 {
-	return [NSString stringWithFormat:NSLocalizedString(@"Light %lu", @"source list: Light name format"), self.index + 1];
+	return [NSString stringWithFormat:NSLocalizedString(@"Light %lu", @"source list: Light name format"), self.index];
 }
 - (BOOL)hasChildrenInSourceList
 {

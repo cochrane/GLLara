@@ -15,14 +15,14 @@ uniform sampler2D bumpTexture;
 uniform sampler2D reflectionTexture;
 
 struct Light {
-	vec4 color;
+	vec4 diffuseColor;
+	vec4 specularColor;
 	vec4 direction;
-	float intensity;
-	float shadowDepth;
 };
 
 layout(std140) uniform LightData {
-	vec3 cameraPosition;
+	vec4 cameraPosition;
+	vec4 ambientColor;
 	Light lights[3];
 } lightData;
 
@@ -37,26 +37,30 @@ layout(std140) uniform AlphaTest {
 
 void main()
 {
+	// Find diffuse texture and do alpha test.
 	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
 	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
 		discard;
+	
+	// Base diffuse color
 	vec4 diffuseColor = diffuseTexColor * outColor;
 	
+	// Calculate normal
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
-	
 	vec3 normalFromMap = normalMap.rgb * 2 - 1;
 	vec3 normal = normalize(tangentToWorld * normalFromMap);
 	
-	vec3 cameraDirection = normalize(lightData.cameraPosition - positionWorld);
+	vec3 normalFromMap = (normalMap.rgb + detailNormalMap1.rgb * maskColor.r + detailNormalMap2.rgb * maskColor.g) * 2 - 1;
+	vec3 normal = normalize(tangentToWorld * normalFromMap);
 	
-	vec4 color = vec4(0);
+	// Direction to camera
+	vec3 cameraDirection = normalize(lightData.cameraPosition.xyz - positionWorld);
+	
+	vec4 color = lightData.ambientColor * diffuseColor;
 	for (int i = 0; i < 3; i++)
 	{
-		float diffuseFactor = clamp(dot(normal, -lightData.lights[i].direction.xyz), 0, 1);
-		// Apply the shadow depth that is used instead of ambient lighting
-		diffuseFactor = mix(1, diffuseFactor, lightData.lights[i].shadowDepth);
-		
-		color += lightData.lights[i].color * diffuseFactor;
+		// Diffuse term; this version does not use specular
+		color += diffuseTexColor * lightData.lights[i].diffuseColor * clamp(dot(-normalWorld, lightData.lights[i].direction.xyz), 0, 1);
 	}
 	
 	// Apply reflection
@@ -70,4 +74,6 @@ void main()
 	vec4 reflectionColor = texture(reflectionTexture, reflectionTexCoord * 0.5 + 0.5);
 	
 	screenColor = vec4(mix(color.rgb, reflectionColor.rgb, parameters.reflectionAmount), diffuseTexColor.a);
+	
+	screenColor = vec4(color.rgb, diffuseTexColor.a);
 }

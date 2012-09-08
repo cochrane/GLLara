@@ -15,21 +15,19 @@
 
 struct GLLLightUniformBlock
 {
-	vec_float4 color;
+	vec_float4 diffuseColor;
+	vec_float4 specularColor;
 	vec_float4 direction;
-	float intensity;
-	float shadowDepth;
 };
 
-@interface GLLLight : NSManagedObject <GLLSourceListItem>
+@interface GLLDirectionalLight : NSManagedObject <GLLSourceListItem>
 
 @property (nonatomic) BOOL isEnabled;
 @property (nonatomic) NSUInteger index;
 @property (nonatomic) float latitude;
 @property (nonatomic) float longitude;
-@property (nonatomic, retain) NSColor *color;
-@property (nonatomic) float intensity;
-@property (nonatomic) float shadowDepth;
+@property (nonatomic, retain) NSColor *diffuseColor;
+@property (nonatomic, retain) NSColor *specularColor;
 
 @property (nonatomic, readonly) NSData *dataAsUniformBlock;
 

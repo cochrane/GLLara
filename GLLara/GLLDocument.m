@@ -8,13 +8,11 @@
 
 #import "GLLDocument.h"
 
+#import "GLLAmbientLight.h"
 #import "GLLAngleRangeValueTransformer.h"
+#import "GLLDirectionalLight.h"
 #import "GLLDocumentWindowController.h"
-#import "GLLItem.h"
-#import "GLLModel.h"
 #import "GLLRenderWindowController.h"
-#import "GLLSceneDrawer.h"
-#import "GLLView.h"
 
 @interface GLLDocument ()
 {
@@ -29,6 +27,35 @@
 + (void)initialize
 {
 	[NSValueTransformer setValueTransformer:[[GLLAngleRangeValueTransformer alloc] init] forName:@"GLLAngleRangeValueTransformer"];
+}
+
+- (id)initWithType:(NSString *)typeName error:(NSError **)outError
+{
+	if (!(self = [super initWithType:typeName error:outError]))
+		return nil;
+	
+	[self.managedObjectContext processPendingChanges];
+	[self.managedObjectContext.undoManager disableUndoRegistration];
+	// Prepare the default lights
+	
+	// One ambient light
+	GLLAmbientLight *ambientLight = [NSEntityDescription insertNewObjectForEntityForName:@"GLLAmbientLight" inManagedObjectContext:self.managedObjectContext];
+	ambientLight.color = [NSColor darkGrayColor];
+	ambientLight.index = 0;
+	
+	// Three directional lights.
+	for (int i = 0; i < 3; i++)
+	{
+		GLLDirectionalLight *directionalLight = [NSEntityDescription insertNewObjectForEntityForName:@"GLLDirectionalLight" inManagedObjectContext:self.managedObjectContext];
+		directionalLight.isEnabled = (i == 0);
+		directionalLight.diffuseColor = [NSColor whiteColor];
+		directionalLight.specularColor = [NSColor whiteColor];
+		directionalLight.index = i + 1;
+	}
+	[self.managedObjectContext processPendingChanges];
+	[self.managedObjectContext.undoManager enableUndoRegistration];
+	
+	return self;
 }
 
 - (void)makeWindowControllers

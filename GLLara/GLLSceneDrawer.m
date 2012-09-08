@@ -8,12 +8,14 @@
 
 #import "GLLSceneDrawer.h"
 
+#import <AppKit/NSColorSpace.h>
 #import <OpenGL/gl3.h>
 
+#import "GLLAmbientLight.h"
 #import "GLLBoneTransformation.h"
 #import "GLLItem.h"
 #import "GLLItemDrawer.h"
-#import "GLLLight.h"
+#import "GLLDirectionalLight.h"
 #import "GLLProgram.h"
 #import "GLLResourceManager.h"
 #import "GLLUniformBlockBindings.h"
@@ -26,6 +28,7 @@ static NSString *transformationsKeyPath = @"relativeTransform";
 struct GLLLightBlock
 {
 	vec_float4 cameraLocation;
+	vec_float4 ambientColor;
 	struct GLLLightUniformBlock lights[3];
 };
 
@@ -43,7 +46,7 @@ struct GLLAlphaTestBlock
 @interface GLLSceneDrawer ()
 {
 	NSMutableArray *itemDrawers;
-	NSMutableArray *lights;
+	NSArray *lights; // Always one ambient and three directional ones. Don't watch for mutations.
 	id managedObjectContextObserver;
 	
 	GLuint lightBuffer;
@@ -56,9 +59,6 @@ struct GLLAlphaTestBlock
 
 - (void)_addDrawerForItem:(GLLItem *)item;
 - (void)_unregisterDrawer:(GLLItemDrawer *)drawer;
-
-- (void)_addLight:(GLLLight *)light;
-- (void)_unregisterLight:(GLLLight *)light;
 
 @end
 
@@ -74,10 +74,9 @@ struct GLLAlphaTestBlock
 	_resourceManager = [GLLResourceManager sharedResourceManager];
 	
 	itemDrawers = [[NSMutableArray alloc] init];
-	lights = [[NSMutableArray alloc] initWithCapacity:3];
+	lights = [[NSMutableArray alloc] initWithCapacity:4];
 	
 	NSEntityDescription *itemEntity = [NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
-	NSEntityDescription *lightEntity = [NSEntityDescription entityForName:@"GLLLight" inManagedObjectContext:self.managedObjectContext];
 	
 	// Set up loading of future items and destroying items. Also update view.
 	// Store self as weak in the block, so it does not retain this.
@@ -98,23 +97,12 @@ struct GLLAlphaTestBlock
 			[self _unregisterDrawer:drawer];
 		}
 		[itemDrawers removeObjectsInArray:toRemove];
-		
-		for (NSManagedObject *deletedItem in notification.userInfo[NSDeletedObjectsKey])
-		{
-			if ([deletedItem.entity isKindOfEntity:lightEntity])
-			{
-				[self _unregisterLight:(GLLLight *) deletedItem];
-				[lights removeObject:deletedItem];
-			}
-		}
-		
+				
 		// New objects includes absolutely anything. Restrict this to items.
 		for (NSManagedObject *newItem in notification.userInfo[NSInsertedObjectsKey])
 		{
 			if ([newItem.entity isKindOfEntity:itemEntity])
 				[self _addDrawerForItem:(GLLItem *) newItem];
-			else if ([newItem.entity isKindOfEntity:lightEntity])
-				[self _addLight:(GLLLight *) newItem];
 		}
 
 		view.needsDisplay = YES;
@@ -128,45 +116,27 @@ struct GLLAlphaTestBlock
 	for (GLLItem *item in allItems)
 		[self _addDrawerForItem:item];
 	
-	// Prepare light buffer
+	// Prepare light buffer. Set almost all to 0; it will get updated later.
 	glGenBuffers(1, &lightBuffer);
 	glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
 	struct GLLLightBlock lightBlock;
 	bzero(&lightBlock, sizeof(lightBlock));
 	lightBlock.cameraLocation = simd_make(0.0, 1.0, 2.0, 1.0);
-	lightBlock.lights[0].color = simd_make(1.0, 1.0, 1.0, 0.0);
-	lightBlock.lights[0].direction = simd_make(-0.57735, -0.57735, -0.57735, 0.0);
-	lightBlock.lights[0].shadowDepth = 0.5;
-	lightBlock.lights[0].intensity = 0.5;
-	
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(lightBlock), &lightBlock, GL_DYNAMIC_DRAW);
 	
 	// Load existing lights
 	NSFetchRequest *allLightsRequest = [[NSFetchRequest alloc] init];
-	allLightsRequest.entity = lightEntity;
-	NSArray *allLights = [self.managedObjectContext executeFetchRequest:allLightsRequest error:NULL];
-	for (GLLLight *light in allLights)
-		[self _addLight:light];	
+	allLightsRequest.entity = [NSEntityDescription entityForName:@"GLLLight" inManagedObjectContext:self.managedObjectContext];
+	allLightsRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES] ];
+	lights = [self.managedObjectContext executeFetchRequest:allLightsRequest error:NULL];
 	
-	// Set up default lights if there aren't enough.
-	[self.managedObjectContext processPendingChanges];
-	[self.managedObjectContext.undoManager disableUndoRegistration];
-	for (NSUInteger i = allLights.count; i < 3; i++)
-	{
-		GLLLight *light = [NSEntityDescription insertNewObjectForEntityForName:@"GLLLight" inManagedObjectContext:self.managedObjectContext];
-		light.index = i;
-		if (i == 0)
-		{
-			light.isEnabled = YES;
-			light.color = [NSColor whiteColor];
-			light.intensity = 1.0;
-		}
-		else
-			light.isEnabled = NO;
-		[self _addLight:light];
-	}
-	[self.managedObjectContext processPendingChanges];
-	[self.managedObjectContext.undoManager enableUndoRegistration];
+	NSAssert(lights.count == 4, @"There are not four lights.");
+	
+	// Register for ambient light color updates
+	[lights[0] addObserver:self forKeyPath:@"color" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:NULL];
+	// Register for directional light color updates
+	for (int i = 0; i < 3; i++)
+		[lights[i + 1] addObserver:self forKeyPath:@"dataAsUniformBlock" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
 	
 	// Transform buffer
 	glGenBuffers(1, &transformBuffer);
@@ -205,6 +175,12 @@ struct GLLAlphaTestBlock
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[self _unregisterDrawer:drawer];
+	
+	[lights[0] removeObserver:self forKeyPath:@"color"];
+	
+	for (int i = 0; i < 3; i++)
+		[lights[i + 1] removeObserver:@"self" forKeyPath:@"dataAsUniformBlock"];
+
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -220,13 +196,24 @@ struct GLLAlphaTestBlock
 		
 		[self.view.openGLContext makeCurrentContext];
 		
-		NSData *value = [object valueForKey:@"dataAsUniformBlock"];
+		NSData *value = change[NSKeyValueChangeNewKey];
 		struct GLLLightUniformBlock block;
 		[value getBytes:&block length:sizeof(block)];
 		glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
 		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(struct GLLLightBlock, lights[index]), sizeof(block), &block);
 		
 		self.view.needsDisplay = YES;
+	}
+	else if ([keyPath isEqual:@"color"])
+	{
+		[self.view.openGLContext makeCurrentContext];
+		
+		NSColor *value = change[NSKeyValueChangeNewKey];
+		CGFloat r, g, b, a;
+		[[value colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
+		vec_float4 ambientColor = simd_make(r, g, b, a);
+		glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
+		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(struct GLLLightBlock, ambientColor), sizeof(ambientColor), &ambientColor);
 	}
 	else
 	{
@@ -308,17 +295,6 @@ struct GLLAlphaTestBlock
 {
 	for (GLLBoneTransformation *boneTransform in drawer.item.boneTransformations)
 		[boneTransform removeObserver:self forKeyPath:transformationsKeyPath];
-}
-
-- (void)_addLight:(GLLLight *)light
-{
-	[lights addObject:light];
-	[light addObserver:self forKeyPath:@"dataAsUniformBlock" options:NSKeyValueObservingOptionInitial context:0];
-}
-
-- (void)_unregisterLight:(GLLLight *)light
-{
-	[light removeObserver:self forKeyPath:@"dataAsUniformBlock"];
 }
 
 @end

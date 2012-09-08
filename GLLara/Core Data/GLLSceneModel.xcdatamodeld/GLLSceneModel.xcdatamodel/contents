@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1487" systemVersion="12B19" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="GLLAmbientLight" representedClassName="GLLAmbientLight" parentEntity="GLLLight" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
+    </entity>
     <entity name="GLLBoneTransformation" representedClassName="GLLBoneTransformation" syncable="YES">
         <attribute name="positionX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="positionY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -20,6 +23,13 @@
         <attribute name="windowHeight" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="windowWidth" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
     </entity>
+    <entity name="GLLDirectionalLight" representedClassName="GLLDirectionalLight" parentEntity="GLLLight" syncable="YES">
+        <attribute name="diffuseColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="isEnabled" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="latitude" attributeType="Float" minValueString="-1.5707963267949" maxValueString="1.5707963267949" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="specularColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+    </entity>
     <entity name="GLLItem" representedClassName="GLLItem" syncable="YES">
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="itemURL" optional="YES" transient="YES" syncable="YES"/>
@@ -31,24 +41,20 @@
         <relationship name="boneTransformations" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLBoneTransformation" inverseName="item" inverseEntity="GLLBoneTransformation" syncable="YES"/>
         <relationship name="meshSettings" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLMeshSettings" inverseName="item" inverseEntity="GLLMeshSettings" syncable="YES"/>
     </entity>
-    <entity name="GLLLight" representedClassName="GLLLight" syncable="YES">
-        <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="index" optional="YES" attributeType="Integer 64" minValueString="0" maxValueString="2" syncable="YES"/>
-        <attribute name="intensity" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="isEnabled" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
-        <attribute name="latitude" attributeType="Float" minValueString="-1.5707963267949" maxValueString="1.5707963267949" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="longitude" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="shadowDepth" optional="YES" attributeType="Float" minValueString="0" maxValueString="1" defaultValueString="1" syncable="YES"/>
+    <entity name="GLLLight" isAbstract="YES" syncable="YES">
+        <attribute name="index" optional="YES" attributeType="Integer 64" minValueString="0" maxValueString="3" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="GLLMeshSettings" representedClassName="GLLMeshSettings" syncable="YES">
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshSettings" inverseEntity="GLLItem" syncable="YES"/>
     </entity>
     <elements>
-        <element name="GLLBoneTransformation" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLLight" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLMeshSettings" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLCamera" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLBoneTransformation" positionX="160" positionY="192" width="128" height="148"/>
+        <element name="GLLItem" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="GLLDirectionalLight" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="GLLMeshSettings" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="GLLCamera" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="GLLAmbientLight" positionX="160" positionY="192" width="128" height="60"/>
+        <element name="GLLLight" positionX="160" positionY="192" width="128" height="150"/>
     </elements>
 </model>

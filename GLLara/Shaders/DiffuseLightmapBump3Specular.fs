@@ -20,14 +20,14 @@ uniform sampler2D maskTexture;
 uniform sampler2D specularTexture;
 
 struct Light {
-	vec4 color;
+	vec4 diffuseColor;
+	vec4 specularColor;
 	vec4 direction;
-	float intensity;
-	float shadowDepth;
 };
 
 layout(std140) uniform LightData {
-	vec3 cameraPosition;
+	vec4 cameraPosition;
+	vec4 ambientColor;
 	Light lights[3];
 } lightData;
 
@@ -45,48 +45,43 @@ layout(std140) uniform AlphaTest {
 
 void main()
 {
+	// Find diffuse texture and do alpha test.
 	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
 	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
 		discard;
+	
+	// Separate specular color
+	vec4 specularColor = texture(specularTexture, outTexCoord);
+	
+	// Base diffuse color
 	vec4 diffuseColor = diffuseTexColor * outColor;
 	
+	// Calculate normal
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
 	vec4 detailNormalMap1 = texture(bump1Texture, outTexCoord * parameters.bump1UVScale);
 	vec4 detailNormalMap2 = texture(bump2Texture, outTexCoord * parameters.bump2UVScale);
 	vec4 maskColor = texture(maskTexture, outTexCoord);
 	
-	vec4 lightmapColor = texture(lightmapTexture, outTexCoord);
-	vec4 specularColor = texture(specularTexture, outTexCoord);
-	
-	// Combine normal textures
-	vec3 normalColor = normalMap.rgb + (detailNormalMap1.rgb - 0.5) * maskColor.r + (detailNormalMap2.rgb - 0.5) * maskColor.g;
-	
-	// Derive actual normal
-	vec3 normalFromMap = vec3(normalMap.rg * 2 - 1, normalMap.b);
+	vec3 normalFromMap = (normalMap.rgb + detailNormalMap1.rgb * maskColor.r + detailNormalMap2.rgb * maskColor.g) * 2 - 1;
 	vec3 normal = normalize(tangentToWorld * normalFromMap);
 	
-	vec3 cameraDirection = normalize(positionWorld - lightData.cameraPosition);
+	// Direction to camera
+	vec3 cameraDirection = normalize(lightData.cameraPosition.xyz - positionWorld);
 	
-	vec4 color = vec4(0);
+	vec4 color = lightData.ambientColor * diffuseColor;
 	for (int i = 0; i < 3; i++)
 	{
-		// Calculate diffuse factor
-		float diffuseFactor = clamp(dot(normal, -lightData.lights[i].direction.xyz), 0, 1);
-		// Apply the shadow depth that is used instead of ambient lighting
-		diffuseFactor = mix(1, diffuseFactor, lightData.lights[i].shadowDepth);
+		// Diffuse term
+		color += diffuseTexColor * lightData.lights[i].diffuseColor * clamp(dot(-normal, lightData.lights[i].direction.xyz), 0, 1);
 		
-		// Calculate specular factor
-		vec3 refLightDir = -reflect(lightData.lights[i].direction.xyz, normal);
-		float specularFactor = clamp(dot(cameraDirection, refLightDir), 0, 1);
-		float specularShading = diffuseFactor * pow(specularFactor, parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
-		
-		// Add specular color to the color
-		// Include lightmap color, too.
-		vec4 lightenedColor = diffuseColor + specularColor * specularShading * lightData.lights[i].intensity;
-		color += lightData.lights[i].color * diffuseFactor * lightenedColor * lightmapColor;
+		// Specular term
+		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normal);
+		float specularFactor = pow(clamp(dot(cameraDirection, reflectedLightDirection), 0, 1), parameters.bumpSpecularGloss);
+		color += specularColor * lightData.lights[i].specularColor * specularFactor;
 	}
 	
-	color.a = diffuseTexColor.a;
+	// Lightmap
+	color *= texture(lightmapTexture, outTexCoord);
 	
-	screenColor = color;
+	screenColor = vec4(color.rgb, diffuseTexColor.a);
 }

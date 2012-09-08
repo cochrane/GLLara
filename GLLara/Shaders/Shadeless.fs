@@ -12,14 +12,14 @@ out vec4 screenColor;
 uniform sampler2D diffuseTexture;
 
 struct Light {
-	vec4 color;
+	vec4 diffuseColor;
+	vec4 specularColor;
 	vec4 direction;
-	float intensity;
-	float shadowDepth;
 };
 
 layout(std140) uniform LightData {
 	vec4 cameraPosition;
+	vec4 ambientColor;
 	Light lights[3];
 } lightData;
 
@@ -31,9 +31,8 @@ layout(std140) uniform AlphaTest {
 void main()
 {
 	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	vec4 diffuseColor = diffuseTexColor;
 	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
 		discard;
 
-	screenColor = vec4(diffuseColor.rgb, diffuseTexColor.a);
+	screenColor = diffuseTexColor;
 }
