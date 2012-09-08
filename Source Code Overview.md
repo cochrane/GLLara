@@ -17,7 +17,7 @@ Main classes
 
 There are several layers to the code. At the bottom, there is the `GLLModel` with its associated `GLLMesh` and `GLLBone`. A `GLLModel` corresponds to one file, and is immutable. A model gets loaded exactly once, no matter how many scenes include it or how often it is shown in a given scene. A layer up is the `GLLItem`, which is one item and its associated position, pose, scale and so on. A scene can have multiple Items with the same model. The pose is stored in the `GLLBoneTransformation`s, which are owned by the Item. Right now, there is no support for importing OBJs, but that will come in time.
 
-To draw, there is the `GLLModelDrawer` with the associated `GLLMeshDrawer`. You have one per OpenGL Context (this context must be Core Profile). The Model Drawer is basically just a container for the Mesh Drawers, though. To actually draw a full item, you need the `GLLItemDrawer`, which draws the meshes of the model based on the transformations from the Item. Sharing between OpenGL contexts is currently not supported; the main issue is that there are Vertex Array Objects, and in their infinite wisdom, the ARB decided against sharing these things, even though it is fairly obvious how to do so. But shader uniforms are shared, even though there are very good reasons for not doing that. Thanks a lot… You need one `GLLItemDrawer` per context per item.
+To draw, there is the `GLLModelDrawer` with the associated `GLLMeshDrawer`. You have one per OpenGL Context (this context must be Core Profile). The Model Drawer is basically just a container for the Mesh Drawers, though. To actually draw a full item, you need the `GLLItemDrawer`, which draws the meshes of the model based on the transformations from the Item. All data like model drawers, shaders and textures are managed by a resource manager. Right now, only these resources are shared, not the item drawers (this could be done, too, but it would require another layer and not help with anything). As a result, you need one `GLLItemDrawer` per context per item.
 
 Rendering Parameters
 --------------------
@@ -38,7 +38,7 @@ For drawing, there is an explicit container: The `GLLSceneDrawer` (which has exa
 Other resources
 ---------------
 
-The GLLSceneDrawer has a `GLLResourceManager` that manages drawable resources; both the Model and Mesh drawers, and the textures. It also manages the GLSL programs. At least right now, there is no way to specify custom ones (thank goodness…). The ones I'm using are basically GLSL rewrites of the HLSL ones from XNALara.
+The drawable resources like GLSL programs, textures, model and mesh drawers (but not, at the moment, item drawers or light buffers) belong to a `GLLResourceManager`, which stores the resources for all objects in all open windows. It uses OpenGL context sharing for this. Note: It assumes that Vertex Array Objects can be shared between contexts, which they normally can't, but on Mac OS X, it works. I think the `GL_APPLE_container_object_shareable` OpenGL extension is responsible for that, but it isn't documented anywhere.
 
 Utilities, loading, saving
 --------------------------
