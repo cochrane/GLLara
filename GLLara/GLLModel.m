@@ -78,7 +78,15 @@ static NSCache *cachedModels;
 	
 	TRInDataStream *stream = [[TRInDataStream alloc] initWithData:data];
 	
-	NSUInteger numBones = [stream readUint32];
+	NSUInteger header = [stream readUint32];
+	if (header == 323232)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"GLLModel" code:1 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"New-style Generic Item models are not supported.", @"Found magic byte at start of model file"), NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If there is a .mesh.ascii version, try opening that.", @"New-style binary generic item won't work.")}];
+		return nil;
+	}
+	
+	NSUInteger numBones = header;
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
 	for (NSUInteger i = 0; i < numBones; i++)
 		[bones addObject:[[GLLBone alloc] initFromStream:stream partOfModel:self]];
