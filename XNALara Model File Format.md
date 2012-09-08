@@ -14,6 +14,8 @@ Without further ado, the file format:
 	uint32_t numMeshes
 	Mesh meshes[numMeshes]
 
+Beware, though: If the first uint32 has the magic value 323232, it is not the bone count, but instead the header of a file with the Generic Item 2 format. You have to ask `XNAaral` (sorry, I don't know of a homepage for him) for details about this format, I'm afraid I don't know any.
+
 The format for a bone is:
 
 	string name
