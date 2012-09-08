@@ -245,7 +245,7 @@ struct GLLAlphaTestBlock
 	
 	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
 	
-	projectionMatrix = simd_frustumMatrix(65.0, size.width / size.height, 0.1, 10.0);
+	projectionMatrix = simd_frustumMatrix(65.0, size.width / size.height, 0.1, 50.0);
 	struct GLLTransform transformBlock;
 	transformBlock.viewProjection = simd_mat_mul(projectionMatrix, lookatMatrix);
 	
