@@ -52,4 +52,10 @@ All objects know how to load and write themselves from any supported format (cur
 User Interface
 --------------
 
-None so far. Why are you asking?
+The UI is closely linked with its controller layer. The root is the `GLLDocument`, which doesn't actually do much other than create its windows. Everything else is handled by Core Data, through `NSPersistentDocument`.
+
+Every document has one `GLLDocumentWindowController`. This provides the main window, with a source list on the left and varying views (loaded via view controllers) on the right. The view controller is loaded based on what is selected in the source list. It's represented object is the selected object. Right now, there are view controllers for lights, bones and meshes, but there will be more.
+
+The source list does not use an NSTreeController, but is written by hand, and a bit hackish at times. All items that can be displayed there implement the `GLLSourceListItem` protocol.
+
+A document can have any number of render views, including none. Right now, it starts with one as default and there is no way to create new ones, which causes a bit of trouble if you close that one. In the future, I plan to implement arbitrary numbers of render views, with their own cameras, stored in Core Data.
