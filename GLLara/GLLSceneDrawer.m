@@ -71,7 +71,7 @@ struct GLLAlphaTestBlock
 	_managedObjectContext = context;
 	_view = view;
 	_view.sceneDrawer = self;
-	_resourceManager = [[GLLResourceManager alloc] init];
+	_resourceManager = [GLLResourceManager sharedResourceManager];
 	
 	itemDrawers = [[NSMutableArray alloc] init];
 	lights = [[NSMutableArray alloc] initWithCapacity:3];
@@ -232,11 +232,6 @@ struct GLLAlphaTestBlock
 	{
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
-}
-
-- (void)unload
-{
-	[self.resourceManager unload];
 }
 
 - (void)setWindowSize:(NSSize)size;

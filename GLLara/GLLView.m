@@ -26,6 +26,9 @@
 
 - (id)initWithFrame:(NSRect)frame
 {
+	// Not calling initWithFrame:pixelFormat:, because we set up our own context.
+	if (!(self = [super initWithFrame:frame])) return nil;
+	
 	NSOpenGLPixelFormatAttribute attribs[] = {
 		NSOpenGLPFADoubleBuffer,
 		NSOpenGLPFADepthSize, 24,
@@ -37,16 +40,11 @@
 	};
 	
 	NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
-	
-	if (!(self = [super initWithFrame:frame pixelFormat:format])) return nil;
+	NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:format shareContext:[[GLLResourceManager sharedResourceManager] openGLContext]];
+	[self setOpenGLContext:context];
+	[context setView:self];
 	
 	return self;
-}
-
-- (void)dealloc
-{
-	[self.openGLContext makeCurrentContext];
-	[self.sceneDrawer unload];
 }
 
 - (void)prepareOpenGL
