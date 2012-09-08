@@ -11,6 +11,14 @@
 	<dict>
 		<key>StaticTRLShadeless</key>
 		<dict>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+			</array>
+			<key>vertex</key>
+			<string>StaticBasic.vs</string>
+			<key>fragment</key>
+			<string>Shadeless.fs</string>
 			<key>solidMeshGroups</key>
 			<array>
 				<string>MeshGroup13</string>
@@ -40,6 +48,14 @@
 		</dict>
 		<key>StaticTRLBasic</key>
 		<dict>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+			</array>
+			<key>vertex</key>
+			<string>StaticBasic.vs</string>
+			<key>fragment</key>
+			<string>ShadelessVertexColor.fs</string>
 			<key>alphaMeshGroups</key>
 			<array>
 				<string>MeshGroup15</string>
@@ -149,6 +165,11 @@
 		</dict>
 		<key>StaticTRLNextGen</key>
 		<dict>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>bumpTexture</string>
+			</array>
 			<key>alphaMeshGroups</key>
 			<array>
 				<string>MeshGroup12</string>
