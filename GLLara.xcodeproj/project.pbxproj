@@ -82,6 +82,8 @@
 		52BB21B315FB7A6200937450 /* foliage_tree4.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B215FB7A6200937450 /* foliage_tree4.modelparams.plist */; };
 		52BB21B615FB7AE700937450 /* StaticBasic2TexCoords.vs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B515FB7AE700937450 /* StaticBasic2TexCoords.vs */; };
 		52BB21B815FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B715FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs */; };
+		52BB21BA15FB7D0600937450 /* ship.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B915FB7D0500937450 /* ship.modelparams.plist */; };
+		52BB21BC15FB7E4A00937450 /* yacht.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
 		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */; };
@@ -225,6 +227,8 @@
 		52BB21B215FB7A6200937450 /* foliage_tree4.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = foliage_tree4.modelparams.plist; sourceTree = "<group>"; };
 		52BB21B515FB7AE700937450 /* StaticBasic2TexCoords.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = StaticBasic2TexCoords.vs; sourceTree = "<group>"; };
 		52BB21B715FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmap2TexCoords.fs; sourceTree = "<group>"; };
+		52BB21B915FB7D0500937450 /* ship.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ship.modelparams.plist; sourceTree = "<group>"; };
+		52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = yacht.modelparams.plist; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
 		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
@@ -405,6 +409,8 @@
 				52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */,
 				52BB21A815FB45B200937450 /* croft_manor_hall_lq.modelparams.plist */,
 				52BB21B215FB7A6200937450 /* foliage_tree4.modelparams.plist */,
+				52BB21B915FB7D0500937450 /* ship.modelparams.plist */,
+				52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */,
 			);
 			path = "Model Parameters";
 			sourceTree = "<group>";
@@ -657,6 +663,8 @@
 				52BB21A915FB45B200937450 /* croft_manor_hall_lq.modelparams.plist in Resources */,
 				52BB21B315FB7A6200937450 /* foliage_tree4.modelparams.plist in Resources */,
 				52BB21B815FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs in Resources */,
+				52BB21BA15FB7D0600937450 /* ship.modelparams.plist in Resources */,
+				52BB21BC15FB7E4A00937450 /* yacht.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

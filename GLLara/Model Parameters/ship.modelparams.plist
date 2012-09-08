@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>cameraTargets</key>
+	<dict>
+		<key>root</key>
+		<array>
+			<string>root</string>
+		</array>
+	</dict>
+	<key>defaultMeshGroup</key>
+	<string>MeshGroup17</string>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup16</key>
+		<array>
+			<string>part096</string>
+			<string>part151</string>
+			<string>part239</string>
+			<string>part240</string>
+			<string>part242</string>
+			<string>part243</string>
+			<string>part244</string>
+		</array>
+		<key>MeshGroup18</key>
+		<array>
+			<string>part069</string>
+			<string>part081</string>
+			<string>part241</string>
+		</array>
+		<key>MeshGroup19</key>
+		<array>
+			<string>part101</string>
+			<string>part102</string>
+			<string>part104</string>
+			<string>part108</string>
+			<string>part109</string>
+			<string>part112</string>
+			<string>part113</string>
+			<string>part114</string>
+			<string>part117</string>
+			<string>part118</string>
+			<string>part124</string>
+			<string>part125</string>
+			<string>part127</string>
+			<string>part155</string>
+			<string>part156</string>
+			<string>part160</string>
+			<string>part161</string>
+			<string>part165</string>
+			<string>part171</string>
+			<string>part172</string>
+			<string>part189</string>
+			<string>part190</string>
+			<string>part198</string>
+			<string>part199</string>
+			<string>part213</string>
+			<string>part214</string>
+			<string>part226</string>
+		</array>
+	</dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+</dict>
+</plist>
