@@ -1,7 +1,7 @@
 Model parameters-Format
 =======================
 
-Diese Datei auch mal in Deutsch, weil ich weiß, dass es deutschsprachige Leute gibt, die mit diesem Format arbeiten können.
+_There's also an english version of this file available._
 
 In XNALara sind sehr viele Werte fest im Programmcode eingebaut, was es unter anderem sehr schwierig gemacht hat, neue Modelle einzufügen. In GLLara sind diese Werte statt dessen in einzelnen .modelparams.plist-Dateien gespeichert. Im Augenblick ist das Ergebnis praktisch das Selbe, aber es ist in der Zukunft zum Beispiel einfach möglich, dass der Autor eines Modells seine eigene .modelparams.plist beifügt, die vielleicht auch ganz andere Shader haben kann.
 
@@ -12,7 +12,7 @@ Property List
 
 Alle diese Dateien sind Apple Property List-Dateien (kurz Plist) und können mit jedem Plist-Editor bearbeitet werden. Es geht aber auch mit einem beliebigen Texteditor. Wer Plists schon kennt kann diesen Teil überspringen.
 
-Plists tun ziemlich exakt genau das selbe wie JSON, und hatten früher sogar mal ein Format sehr ähnlich wie heutiges JSON, aber das wurde durch "moderneres" und deutlich schreiblastigeres XML ersetzt, lange bevor die JSON-Leute die guten Ideen von damals wiederentdeckt haben.
+Plists tun ziemlich exakt genau das selbe wie JSON (früher hatten sie sogar mal ein Format sehr ähnlich wie heutiges JSON, aber das wurde durch "moderneres" und deutlich schreiblastigeres XML ersetzt, lange bevor die JSON-Leute die guten Ideen von damals wiederentdeckt haben). Es speichert beliebige strukturierte Werte ab.
 
 Der große Vorteil gegenüber JSON ist, dass es für einen OS X Entwickler überaus trivial ist, die Dinger einzulesen. Sie werden automatisch in die Array-, Dictionary-, String- und Number-Klassen umgewandelt.
 
@@ -47,6 +47,8 @@ Ein Array ist einfach eine geordnete Liste von Objekten. Er kann auch weitere Ar
 		<array>…</array>
 		<real>0.8</real>
 	</array>
+
+Meistens ist die Reihenfolge egal. Falls nicht, wird das unten gesondert erwähnt.
 
 Ein Dictionary ist eine Liste von Schlüsselwerten gefolgt von Objekten. Die Schlüssel werden in `<key>Eintrag</key>` gespeichert und sind immer String. Wie beim Array kann ein Objekt hier auch immer ein anderes Dictionary oder ein Array sein.
 
@@ -89,9 +91,9 @@ oder auch:
 
 ### meshGroupNames
 
-Ein Dictionary. Jeder Key ist der Name einer Mesh-Gruppe. Das Objekt ist dann ein Array von Namen von Meshes, die zu dieser Rendergruppe gehören. Ein Mesh kann zu mehreren Rendergruppen gehören, aber nur eine darf einen Shader haben, sonst ist das Ergebnis nicht definiert. Welcher Shader zu welchem Namen einer Rendergruppe gehört, wird im Key `Shakers` festgelegt.
+Ein Dictionary. Jeder Key ist der Name einer Mesh-Gruppe. Das Objekt ist dann ein Array von Namen von Meshes, die zu dieser Rendergruppe gehören. Ein Mesh kann zu mehreren Rendergruppen gehören, aber nur eine darf einen Shader haben, sonst ist das Ergebnis nicht definiert. Welcher Shader zu welchem Namen einer Rendergruppe gehört, wird im Key `shaders` festgelegt.
 
-Wichtig hier ist: Alle Standard Meshgruppen werden unterstützt, aber nicht für alle existieren schon Shader. Nur MeshGroup1 bis MeshGroup7 und MeshGroup10, sowie alle Gruppen, die die selben Shader unterstützen, werden hier unterstützt.
+Wichtig hier ist: Alle Standard Meshgruppen werden unterstützt, aber nicht für alle existieren schon Shader. Die Anzahl der unterstützten Shader steigt aber ständig.
 
 Beispiel:
 
@@ -185,16 +187,16 @@ Beispiel:
 
 ### shaders
 
-**Brauchen normale Modell-Dateien nicht.** Ein Dictionary; die Keys sind die Namen von Shakern, die Werte sind Dictionaries, die die Shader beschreiben.
+**Brauchen normale Modell-Dateien nicht.** Ein Dictionary; die Keys sind die Namen von Shadern, die Werte sind Dictionaries, die die Shader beschreiben.
 
 Ein Shader hier ist immer GLSL mit Version 150. Wie die Shader aussehen kann sich noch ändern, daher gebe ich hier keine Dokumentation dafür. Ein Dictionary für einen Shader aber ist einfach:
 
 *	`fragment`: String, Dateiname eines Fragment-Shaders.
 *	`vertex`: String, Dateiname eines Vertex-Shaders.
 *	`textures`: Array von Strangs. Die Namen der Uniforms der Textursampler, in der Reihenfolge, in der die entsprechenden Texturen im Mesh angegeben sind.
-*	`Parameters`: Die Parameter, die von diesem Shader verwendet werden. Entspricht uniform-Werten. Diese sind für das Generic Item Format vorhanden, und müssen in der Reihenfolge sein, in der die Werte dort definiert werden (dies ist genau die selbe, die auch in `Render parameters.md` verwendet wird).
-*	`solidMeshGroups`: Array von Strangs. Die Namen der Mesh Groups, die mit diesem Shader ohne Alpha Blendung gerändert werden sollen.
-*	`alphaMeshGroups`: Array von Strangs. Die Namen der Mesh Groups, die mit diesem Shader mit Alpha Blendung gerändert werden sollen.
+*	`parameters`: Die Parameter, die von diesem Shader verwendet werden. Entspricht uniform-Werten. Diese sind für das Generic Item Format vorhanden, und müssen in der Reihenfolge sein, in der die Werte dort definiert werden (dies ist genau die selbe, die auch in `Render parameters.md` verwendet wird).
+*	`solidMeshGroups`: Array von Strings. Die Namen der Mesh Groups, die mit diesem Shader ohne Alpha Blendung gerändert werden sollen.
+*	`alphaMeshGroups`: Array von Strings. Die Namen der Mesh Groups, die mit diesem Shader mit Alpha Blendung gerändert werden sollen.
 
 Jede Mesh Group sollte maximal einen Shader haben, egal ob mit oder ohne Alpha. Ansonsten ist das Ergebnis nicht definiert. (Praktisch wird einer der Shader zufällig ausgewählt. Das ist nicht-deterministisch und kann sich auch in einer Mesh-Gruppe vom einem zu anderen Mesh unterscheiden.)
 
