@@ -31,7 +31,9 @@ The generic item format is considered as a special case here; it always inherits
 Containers
 ----------
 
-The `GLLItems` are all part of a `GLLScene`, which also includes e.g. the lights information. Likewise, on the top level, the item drawers and so on belong to a `GLLSceneDrawer` (which is in turn associated with a `GLLView`). A scene might have several scene drawers, each with its own context, but I'd have to change the code some more before that became useful.
+The data for a scene is handled by CoreData, in a managed object context. Specifically, saved in there are the Items, their Bone Transformations and Mesh Settings, the Lights and everything else that needs saving.
+
+For drawing, there is an explicit container: The `GLLSceneDrawer` (which has exactly one `GLLView`). A scene can have several GLLSceneDrawers, although there is currently no code in place for sharing resources between them, so resource usage might grow too large to be useful very quickly.
 
 Other resources
 ---------------

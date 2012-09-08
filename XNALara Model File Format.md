@@ -5,7 +5,7 @@ This describes the binary file format used by XNALara. A few notes:
 
 *	All data is little-endian
 *	In the following, `float` means a 32-bit IEEE 754 single precision value. `uint8_t`, `uint16_t` and so on refer to the formats in stdtype.h.
-*	A `string` here is a pascal string, i.e. first an uint8_t giving the length, then that many uint8_ts with the value. I don't know about the encoding. Right now I'm assuming UTF8, but ASCII (or Windows Latin 1, or whatever the user has as default) are possible choices, too. Such a string is never 0-terminated.
+*	A string is specified as length, then value. The length is encoded with a simple multi-byte scheme. Only the bottom seven bits of a byte are considered. If the top bit is set, the next byte is length too, specifying the next (higher) 7 bits. I don't know about the encoding. Right now I'm assuming UTF8, but ASCII (or Windows Latin 1, or whatever the user has as default) are possible choices, too. Strings are never 0-terminated.
 
 Without further ado, the file format:
 
