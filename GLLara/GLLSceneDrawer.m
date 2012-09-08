@@ -266,7 +266,7 @@ struct GLLAlphaTestBlock
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
-		[drawer drawNormal];
+		[drawer drawSolid];
 	
 	// 2nd pass: Draw blended items, but only those pixels that are "almost opaque"
 	alphaBlock.mode = 1;

@@ -22,7 +22,7 @@
 @property (nonatomic, retain, readonly) GLLItem *item;
 @property (nonatomic, weak, readonly) GLLSceneDrawer *sceneDrawer;
 
-- (void)drawNormal;
+- (void)drawSolid;
 - (void)drawAlpha;
 
 @end

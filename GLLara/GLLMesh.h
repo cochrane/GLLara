@@ -83,7 +83,7 @@
  * Drawing information, gained through the model parameters. This information is not stored in the mesh file.
  */
 @property (nonatomic, copy, readonly) GLLShaderDescriptor *shader;
-@property (nonatomic, assign, readonly) BOOL isAlphaPiece;
+@property (nonatomic, assign, readonly) BOOL usesAlphaBlending;
 @property (nonatomic, copy, readonly) NSDictionary *renderParameters;
 
 @end

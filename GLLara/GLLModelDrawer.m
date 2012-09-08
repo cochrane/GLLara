@@ -21,7 +21,7 @@
 	_model = model;
 	_resourceManager = resourceManager;
 	
-	NSMutableArray *mutableNormalMeshDrawers = [[NSMutableArray alloc] init];
+	NSMutableArray *mutableSolidMeshDrawers = [[NSMutableArray alloc] init];
 	NSMutableArray *mutableAlphaMeshDrawers = [[NSMutableArray alloc] init];
 	for (GLLMesh *mesh in model.meshes)
 	{
@@ -29,12 +29,12 @@
 		if (!mesh.shader)
 			continue;
 		
-		if (mesh.isAlphaPiece)
+		if (mesh.usesAlphaBlending)
 			[mutableAlphaMeshDrawers addObject:[[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager]];
 		else
-			[mutableNormalMeshDrawers addObject:[[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager]];
+			[mutableSolidMeshDrawers addObject:[[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager]];
 	}
-	_normalMeshDrawers = [mutableNormalMeshDrawers copy];
+	_solidMeshDrawers = [mutableSolidMeshDrawers copy];
 	_alphaMeshDrawers = [mutableAlphaMeshDrawers copy];
 	
 	return self;
@@ -42,12 +42,12 @@
 
 - (void)unload;
 {
-	for (GLLMeshDrawer *drawer in self.normalMeshDrawers)
+	for (GLLMeshDrawer *drawer in self.solidMeshDrawers)
 		[drawer unload];
 	for (GLLMeshDrawer *drawer in self.alphaMeshDrawers)
 		[drawer unload];
 	
-	_normalMeshDrawers = nil;
+	_solidMeshDrawers = nil;
 	_alphaMeshDrawers = nil;
 }
 
