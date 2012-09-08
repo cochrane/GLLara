@@ -1,14 +1,14 @@
 //
-//  GLLAddPiValueTransformer.m
+//  GLLAngleRangeValueTransformer.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 07.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLAddPiValueTransformer.h"
+#import "GLLAngleRangeValueTransformer.h"
 
-@implementation GLLAddPiValueTransformer
+@implementation GLLAngleRangeValueTransformer
 
 + (BOOL)allowsReverseTransformation
 {

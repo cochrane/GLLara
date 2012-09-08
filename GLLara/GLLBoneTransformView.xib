@@ -64,6 +64,7 @@
 						<string key="NSFrame">{{14, 30}, {137, 32}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="831350796">
@@ -507,8 +508,8 @@
 					</object>
 					<object class="NSTextField" id="531592468">
 						<reference key="NSNextResponder" ref="1005"/>
-						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 168}, {59, 17}}</string>
+						<int key="NSvFlags">266</int>
+						<string key="NSFrame">{{17, 168}, {479, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="119451416"/>
@@ -943,8 +944,8 @@
 					</object>
 					<object class="NSTextField" id="492253906">
 						<reference key="NSNextResponder" ref="1005"/>
-						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 280}, {61, 17}}</string>
+						<int key="NSvFlags">266</int>
+						<string key="NSFrame">{{17, 280}, {479, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="336827210"/>
@@ -1001,12 +1002,12 @@
 							<string key="NSKeyPath">selection.rotationX</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">GLLAddPiValueTransformer</string>
+								<string key="NS.object.0">GLLAngleRangeValueTransformer</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">97</int>
+					<int key="connectionID">100</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1053,12 +1054,12 @@
 							<string key="NSKeyPath">selection.rotationY</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">GLLAddPiValueTransformer</string>
+								<string key="NS.object.0">GLLAngleRangeValueTransformer</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">98</int>
+					<int key="connectionID">101</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1105,12 +1106,12 @@
 							<string key="NSKeyPath">selection.rotationZ</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">GLLAddPiValueTransformer</string>
+								<string key="NS.object.0">GLLAngleRangeValueTransformer</string>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">99</int>
+					<int key="connectionID">102</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1854,7 +1855,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">99</int>
+			<int key="maxID">102</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

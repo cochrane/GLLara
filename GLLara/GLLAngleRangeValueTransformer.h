@@ -1,5 +1,5 @@
 //
-//  GLLAddPiValueTransformer.h
+//  GLLAngleRangeValueTransformer.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 07.09.12.
@@ -12,6 +12,6 @@
  * Exactly what it says on the tin.
  * The idea is that rotations are stored from 0…2pi here, but for sliders, you really want -pi…+pi instead. This transformer solves that issue.
  */
-@interface GLLAddPiValueTransformer : NSValueTransformer
+@interface GLLAngleRangeValueTransformer : NSValueTransformer
 
 @end
