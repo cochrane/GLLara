@@ -75,6 +75,7 @@
 		52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */; };
 		52BB21A215FACF2E00937450 /* croft_manor_hall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */; };
 		52BB21A515FACFD200937450 /* Model Parameters (deutsch).md in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A415FACFD100937450 /* Model Parameters (deutsch).md */; };
+		52BB21A715FAD30000937450 /* StaticBump.vs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A615FAD30000937450 /* StaticBump.vs */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
 		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */; };
@@ -210,6 +211,7 @@
 		52BB217C15F972AB00937450 /* GLLSceneModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GLLSceneModel.xcdatamodel; sourceTree = "<group>"; };
 		52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = croft_manor_hall.modelparams.plist; sourceTree = "<group>"; };
 		52BB21A415FACFD100937450 /* Model Parameters (deutsch).md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Model Parameters (deutsch).md"; sourceTree = "<group>"; };
+		52BB21A615FAD30000937450 /* StaticBump.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = StaticBump.vs; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
 		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				52BB206915F82B4200937450 /* Shadeless.fs */,
 				52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */,
 				5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */,
+				52BB21A615FAD30000937450 /* StaticBump.vs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				529693FA15F36DDB00DF2FA3 /* lara.modelparams.plist in Resources */,
 				529693FE15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist in Resources */,
 				5296943F15F51F2B00DF2FA3 /* Readme.md in Resources */,
+				52BB21A715FAD30000937450 /* StaticBump.vs in Resources */,
 				5296944015F5383F00DF2FA3 /* Basic.vs in Resources */,
 				5296944115F5384100DF2FA3 /* Bump.vs in Resources */,
 				52BB206A15F82B4200937450 /* Shadeless.fs in Resources */,
