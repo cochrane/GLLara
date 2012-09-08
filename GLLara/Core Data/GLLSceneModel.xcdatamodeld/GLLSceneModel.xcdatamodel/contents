@@ -9,6 +9,17 @@
         <attribute name="rotationZ" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
         <relationship name="item" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="boneTransformations" inverseEntity="GLLItem" syncable="YES"/>
     </entity>
+    <entity name="GLLCamera" syncable="YES">
+        <attribute name="distance" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="fieldOfViewY" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionX" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionY" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionZ" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="windowHeight" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="windowWidth" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+    </entity>
     <entity name="GLLItem" representedClassName="GLLItem" syncable="YES">
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="itemURL" optional="YES" transient="YES" syncable="YES"/>
@@ -34,9 +45,10 @@
         <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshSettings" inverseEntity="GLLItem" syncable="YES"/>
     </entity>
     <elements>
-        <element name="GLLBoneTransformation" positionX="160" positionY="192" width="128" height="148"/>
-        <element name="GLLItem" positionX="160" positionY="192" width="128" height="180"/>
-        <element name="GLLMeshSettings" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="GLLLight" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="GLLBoneTransformation" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLItem" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLLight" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLMeshSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLCamera" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>
