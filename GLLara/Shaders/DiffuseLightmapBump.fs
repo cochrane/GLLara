@@ -5,7 +5,6 @@
 
 in vec4 outColor;
 in vec2 outTexCoord;
-in vec3 normalWorld;
 in vec3 positionWorld;
 in mat3 tangentToWorld;
 
@@ -49,7 +48,7 @@ void main()
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
 	vec4 lightmapColor = texture(lightmapTexture, outTexCoord);
 	
-	vec3 normalFromMap = vec3(normalMap.rg * 2 - 1, normalMap.b);
+	vec3 normalFromMap = normalMap.rgb * 2 - 1;
 	vec3 normal = normalize(tangentToWorld * normalFromMap);
 	
 	vec3 cameraDirection = normalize(positionWorld - lightData.cameraPosition);

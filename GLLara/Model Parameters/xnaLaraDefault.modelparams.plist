@@ -125,6 +125,15 @@
 		</dict>
 		<key>MetallicBump3</key>
 		<dict>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>bumpTexture</string>
+				<string>maskTexture</string>
+				<string>bump1Texture</string>
+				<string>bump2Texture</string>
+				<string>reflectionTexture</string>
+			</array>
 			<key>alphaMeshGroups</key>
 			<array>
 				<string>MeshGroup28</string>

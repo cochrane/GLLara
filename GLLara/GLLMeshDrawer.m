@@ -42,7 +42,12 @@
 	// Set up textures
 	NSMutableArray *textures = [[NSMutableArray alloc] initWithCapacity:mesh.textures.count];
 	for (NSDictionary *textureDescription in mesh.textures)
-		[textures addObject:[resourceManager textureForName:textureDescription[@"name"] baseURL:mesh.baseURL]];
+	{
+		GLLTexture *texture = [resourceManager textureForName:textureDescription[@"name"] baseURL:mesh.baseURL error:error];
+		if (!texture) return nil;
+		[textures addObject:texture];
+		
+	}
 	_textures = [textures copy];
 	
 	// If there are render parameters to be set, create a uniform buffer for them and set their values from the mesh.

@@ -33,7 +33,7 @@
 
 - (GLLModelDrawer *)drawerForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 - (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor error:(NSError *__autoreleasing*)error;
-- (GLLTexture *)textureForName:(NSString *)textureName baseURL:(NSURL *)baseURL;
+- (GLLTexture *)textureForName:(NSString *)textureName baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 - (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 
 @end

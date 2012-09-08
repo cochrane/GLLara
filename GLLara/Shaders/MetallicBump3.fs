@@ -1,5 +1,5 @@
 /*
- * Same as DiffuseBump, except for the lightmap, which is multiplied into the color at every step. Come to think of it, I could multiply it at the end, too, but either way, I'm not 100% certain why this texture exists.
+ * This is essentially identical to DiffuseLightmapBump3, but the specular color is not always white; instead it is read from its own texture.
  */
 #version 150
 
@@ -13,9 +13,12 @@ out vec4 screenColor;
 uniform sampler2D diffuseTexture;
 uniform sampler2D lightmapTexture;
 uniform sampler2D bumpTexture;
-uniform sampler2D specularTexture;
+uniform sampler2D bump1Texture;
+uniform sampler2D bump2Texture;
+uniform sampler2D maskTexture;
+uniform sampler2D reflectionTexture;
 
-uniform vec3 cameraPosition;
+uniform sampler2D specularTexture;
 
 struct Light {
 	vec4 color;
@@ -32,6 +35,8 @@ layout(std140) uniform LightData {
 uniform RenderParameters {
 	float bumpSpecularGloss;
 	float bumpSpecularAmount;
+	float bumpUVScale;
+	float reflectionAmount;
 } parameters;
 
 layout(std140) uniform AlphaTest {
@@ -47,13 +52,21 @@ void main()
 	vec4 diffuseColor = diffuseTexColor * outColor;
 	
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
+	vec4 detailNormalMap1 = texture(bump1Texture, outTexCoord * parameters.bumpUVScale);
+	vec4 detailNormalMap2 = texture(bump2Texture, outTexCoord * parameters.bumpUVScale);
+	vec4 maskColor = texture(maskTexture, outTexCoord);
+	
 	vec4 lightmapColor = texture(lightmapTexture, outTexCoord);
 	vec4 specularColor = texture(specularTexture, outTexCoord);
 	
+	// Combine normal textures
+	vec3 normalColor = normalMap.rgb + (detailNormalMap1.rgb - 0.5) * maskColor.r + (detailNormalMap2.rgb - 0.5) * maskColor.g;
+	
+	// Derive actual normal
 	vec3 normalFromMap = vec3(normalMap.rg * 2 - 1, normalMap.b);
 	vec3 normal = normalize(tangentToWorld * normalFromMap);
 	
-	vec3 cameraDirection = normalize(positionWorld - lightData.cameraPosition);
+	vec3 cameraDirection = normalize(lightData.cameraPosition - positionWorld);
 	
 	vec4 color = vec4(0);
 	for (int i = 0; i < 3; i++)
@@ -64,7 +77,7 @@ void main()
 		diffuseFactor = mix(1, diffuseFactor, lightData.lights[i].shadowDepth);
 		
 		// Calculate specular factor
-		vec3 refLightDir = -reflect(lightData.lights[i].direction.xyz, normal);
+		vec3 refLightDir = reflect(lightData.lights[i].direction.xyz, normal);
 		float specularFactor = clamp(dot(cameraDirection, refLightDir), 0, 1);
 		float specularShading = diffuseFactor * pow(specularFactor, parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
 		
@@ -74,7 +87,15 @@ void main()
 		color += lightData.lights[i].color * diffuseFactor * lightenedColor * lightmapColor;
 	}
 	
-	color.a = diffuseTexColor.a;
+	// Apply reflection
+	vec3 reflectionDir = normalize(reflect(cameraDirection, normal));
 	
-	screenColor = color;
+	// Reflection dir now points at a sphere. We ignore the z component to get a circle. But we still have to scale it to get to the square XNAlara demands.
+	float tanAlpha = reflectionDir.x/reflectionDir.y;
+	float cotAlpha = reflectionDir.y/reflectionDir.x;
+	float scaleFactor = sqrt(min(1, tanAlpha*tanAlpha) + min(1, cotAlpha*cotAlpha));
+	vec2 reflectionTexCoord = scaleFactor * reflectionDir.xy;
+	vec4 reflectionColor = texture(reflectionTexture, reflectionTexCoord);
+	
+	screenColor = vec4(mix(color.rgb, reflectionColor.rgb, parameters.reflectionAmount), diffuseTexColor.a);
 }

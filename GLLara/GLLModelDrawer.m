@@ -30,7 +30,15 @@
 			continue;
 		
 		GLLMeshDrawer *drawer = [[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager error:error];
-		if (!drawer) return nil;
+		if (!drawer)
+		{
+			for (GLLMeshDrawer *drawer in mutableSolidMeshDrawers)
+				[drawer unload];
+			for (GLLMeshDrawer *drawer in mutableAlphaMeshDrawers)
+				[drawer unload];
+			[self unload];
+			return nil;
+		}
 		
 		if (mesh.usesAlphaBlending)
 			[mutableAlphaMeshDrawers addObject:drawer];

@@ -32,6 +32,7 @@ void DDSDestroy(DDSFile *file);
 CFIndex DDSGetWidth(const DDSFile *file);
 CFIndex DDSGetHeight(const DDSFile *file);
 Boolean DDSHasMipmaps(const DDSFile *file);
+CFIndex DDSGetNumMipmaps(const DDSFile *file);
 Boolean DDSIsCompressed(const DDSFile *file);
 enum DDSDataFormat DDSGetDataFormat(const DDSFile *file);
 CFDataRef DDSCreateDataForMipmapLevel(const DDSFile *file, CFIndex level);

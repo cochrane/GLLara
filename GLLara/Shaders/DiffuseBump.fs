@@ -5,7 +5,6 @@
 
 in vec4 outColor;
 in vec2 outTexCoord;
-in vec3 normalWorld;
 in vec3 positionWorld;
 in mat3 tangentToWorld;
 
@@ -45,7 +44,7 @@ void main()
 
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
 	
-	vec3 normalFromMap = vec3(normalMap.rg * 2 - 1, normalMap.b);
+	vec3 normalFromMap = normalMap.rgb * 2 - 1;
 	vec3 normal = normalize(tangentToWorld * normalFromMap);
 	
 	vec3 cameraDirection = normalize(positionWorld - lightData.cameraPosition);
@@ -54,7 +53,7 @@ void main()
 	for (int i = 0; i < 3; i++)
 	{
 		// Calculate diffuse factor
-		float diffuseFactor = clamp(dot(normalWorld, -lightData.lights[i].direction.xyz), 0, 1);
+		float diffuseFactor = clamp(dot(normal, -lightData.lights[i].direction.xyz), 0, 1);
 		// Apply the shadow depth that is used instead of ambient lighting
 		diffuseFactor = mix(1, diffuseFactor, lightData.lights[i].shadowDepth);
 		
@@ -69,6 +68,5 @@ void main()
 	}
 	
 	color.a = diffuseTexColor.a;
-	
 	screenColor = color;
 }

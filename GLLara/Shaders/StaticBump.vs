@@ -19,7 +19,6 @@ in vec4 boneWeights;
 
 out vec4 outColor;
 out vec2 outTexCoord;
-out vec3 normalWorld;
 out vec3 positionWorld;
 out mat3 tangentToWorld;
 
@@ -30,7 +29,6 @@ void main()
 	
 	// Relative to world
 	positionWorld = vec3(boneMatrices[0] * vec4(position, 1.0));
-	normalWorld = vec3(boneMatrices[0] * vec4(normal, 0.0));
 	
 	// Tangents
 	vec3 tangentU = normalize(tangent.xyz);

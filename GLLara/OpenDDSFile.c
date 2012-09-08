@@ -98,7 +98,6 @@ DDSFile *DDSOpenFile(CFURLRef url)
 	
 	if (!data) return NULL;
     DDSFile *result = DDSOpenData(data);
-    CFRelease(data);
     return result;
 }
 
@@ -191,9 +190,7 @@ DDSFile *DDSOpenData(CFDataRef data)
 }
 
 CFDataRef DDSCreateDataForMipmapLevel(const DDSFile *file, CFIndex level)
-{
-    assert(level <= file->numMipmapLevels);
-	
+{	
 	CFIndex size = 0;
 	CFIndex offset = 0;
 	CFIndex height = file->height;
@@ -234,7 +231,15 @@ CFDataRef DDSCreateDataForMipmapLevel(const DDSFile *file, CFIndex level)
 		width  >>= 1; 
 		height >>= 1; 
 	}
-	return CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, CFDataGetBytePtr(file->data) + 4 + sizeof(struct DDSFileHeader) + offset, size, kCFAllocatorNull);
+	UInt8 *newData = malloc(size);
+	CFIndex newDataStart = 4 + sizeof(struct DDSFileHeader) + offset;
+	
+	if (newDataStart + size > CFDataGetLength(file->data))
+		return DDSCreateDataForMipmapLevel(file, level-1);
+	
+	CFDataGetBytes(file->data, CFRangeMake(newDataStart, size), newData);
+	
+	return CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, newData, size, kCFAllocatorMalloc);
 }
 
 CFIndex DDSGetWidth(const DDSFile *file)
@@ -248,6 +253,10 @@ CFIndex DDSGetHeight(const DDSFile *file)
 Boolean DDSHasMipmaps(const DDSFile *file)
 {
 	return (file->numMipmapLevels > 0);
+}
+CFIndex DDSGetNumMipmaps(const DDSFile *file)
+{
+	return file->numMipmapLevels;
 }
 Boolean DDSIsCompressed(const DDSFile *file)
 {

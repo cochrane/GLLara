@@ -25,8 +25,8 @@
 	NSMutableDictionary *models;
 }
 
-- (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL;
-- (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL;
+- (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 
 @end
 
@@ -121,15 +121,18 @@ static GLLResourceManager *sharedManager;
 	return result;
 }
 
-- (GLLTexture *)textureForName:(NSString *)textureName baseURL:(NSURL *)baseURL
+- (GLLTexture *)textureForName:(NSString *)textureName baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
 	NSURL *key = [baseURL URLByAppendingPathComponent:textureName];
 	id result = [programs objectForKey:key];
 	if (!result)
 	{
+		NSData *textureData = [self _dataForFilename:textureName baseURL:baseURL error:error];
+		if (!textureData) return nil;
+		
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLTexture alloc] initWithData:[self _dataForFilename:textureName baseURL:baseURL]];
+		result = [[GLLTexture alloc] initWithData:textureData];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;
@@ -145,9 +148,13 @@ static GLLResourceManager *sharedManager;
 	GLLShader *result = [shaders objectForKey:shaderName];
 	if (!result)
 	{
+		NSString *shaderSource = [self _utf8StringForFilename:shaderName baseURL:baseURL error:error];
+		if (!shaderSource) return nil;
+		
+		// Actual loading
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLShader alloc] initWithSource:[self _utf8StringForFilename:shaderName baseURL:baseURL] name:shaderName type:type error:error];
+		result = [[GLLShader alloc] initWithSource:shaderSource name:shaderName type:type error:error];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;
@@ -158,7 +165,7 @@ static GLLResourceManager *sharedManager;
 
 #pragma mark - Private methods
 
-- (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL;
+- (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
 	NSString *actualFilename = [[filename componentsSeparatedByString:@"\\"] lastObject];
 	
@@ -167,11 +174,14 @@ static GLLResourceManager *sharedManager;
 	if (localData) return localData;
 	
 	NSURL *resourceURL = [NSURL URLWithString:actualFilename relativeToURL:[[NSBundle mainBundle] resourceURL]];
-	return [NSData dataWithContentsOfURL:resourceURL];
+	return [NSData dataWithContentsOfURL:resourceURL options:0 error:error];
 }
-- (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL;
+- (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
-	return [[NSString alloc] initWithData:[self _dataForFilename:filename baseURL:baseURL] encoding:NSUTF8StringEncoding];
+	NSData *data = [self _dataForFilename:filename baseURL:baseURL error:error];
+	if (!data) return nil;
+	
+	return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 @end

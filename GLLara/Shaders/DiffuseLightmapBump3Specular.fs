@@ -5,7 +5,6 @@
 
 in vec4 outColor;
 in vec2 outTexCoord;
-in vec3 normalWorld;
 in vec3 positionWorld;
 in mat3 tangentToWorld;
 
