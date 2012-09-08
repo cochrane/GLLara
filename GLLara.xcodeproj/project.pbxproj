@@ -27,6 +27,7 @@
 		525ACD8415F0F33700534E7D /* GLLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8315F0F33700534E7D /* GLLModel.m */; };
 		525ACD8715F0F3ED00534E7D /* GLLMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8615F0F3ED00534E7D /* GLLMesh.m */; };
 		5291DB8215FBB33400ECDBCA /* MetallicBump3.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */; };
+		5291DB9115FBE51600ECDBCA /* Metallic.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB9015FBE51600ECDBCA /* Metallic.fs */; };
 		529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692C915F1568200DF2FA3 /* TRInDataStream.m */; };
 		529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692CB15F1568200DF2FA3 /* TROutDataStream.m */; };
 		529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692D015F2374F00DF2FA3 /* libz.dylib */; };
@@ -50,7 +51,6 @@
 		5296943515F421D900DF2FA3 /* simd_matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 5296942F15F421D900DF2FA3 /* simd_matrix.c */; };
 		5296943615F421D900DF2FA3 /* simd_project.c in Sources */ = {isa = PBXBuildFile; fileRef = 5296943115F421D900DF2FA3 /* simd_project.c */; };
 		5296943A15F4CC3400DF2FA3 /* GLLMeshSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296943915F4CC3200DF2FA3 /* GLLMeshSplitter.m */; };
-		5296943F15F51F2B00DF2FA3 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 5296943E15F51F2B00DF2FA3 /* Readme.md */; };
 		5296944015F5383F00DF2FA3 /* Basic.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5296940615F3919A00DF2FA3 /* Basic.vs */; };
 		5296944115F5384100DF2FA3 /* Bump.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5296940D15F3935E00DF2FA3 /* Bump.vs */; };
 		5296944215F5384300DF2FA3 /* Diffuse.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5296941615F3EC9B00DF2FA3 /* Diffuse.fs */; };
@@ -75,7 +75,6 @@
 		52BB207415F8334E00937450 /* tiger1.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB207315F8334E00937450 /* tiger1.modelparams.plist */; };
 		52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */; };
 		52BB21A215FACF2E00937450 /* croft_manor_hall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */; };
-		52BB21A515FACFD200937450 /* Model Parameters (deutsch).md in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A415FACFD100937450 /* Model Parameters (deutsch).md */; };
 		52BB21A715FAD30000937450 /* StaticBump.vs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A615FAD30000937450 /* StaticBump.vs */; };
 		52BB21A915FB45B200937450 /* croft_manor_hall_lq.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A815FB45B200937450 /* croft_manor_hall_lq.modelparams.plist */; };
 		52BB21AB15FB4C3200937450 /* StaticBasic.vs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21AA15FB4C3200937450 /* StaticBasic.vs */; };
@@ -132,6 +131,7 @@
 		525ACD8615F0F3ED00534E7D /* GLLMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMesh.m; sourceTree = "<group>"; };
 		5291DB7F15FB711900ECDBCA /* Model Parameters (english).md */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Model Parameters (english).md"; sourceTree = "<group>"; };
 		5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = MetallicBump3.fs; sourceTree = "<group>"; };
+		5291DB9015FBE51600ECDBCA /* Metallic.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Metallic.fs; sourceTree = "<group>"; };
 		529692C815F1568200DF2FA3 /* TRInDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRInDataStream.h; sourceTree = "<group>"; };
 		529692C915F1568200DF2FA3 /* TRInDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRInDataStream.m; sourceTree = "<group>"; };
 		529692CA15F1568200DF2FA3 /* TROutDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TROutDataStream.h; sourceTree = "<group>"; };
@@ -421,6 +421,7 @@
 				52BB21AA15FB4C3200937450 /* StaticBasic.vs */,
 				52BB21AC15FB4CED00937450 /* ShadelessVertexColor.fs */,
 				5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */,
+				5291DB9015FBE51600ECDBCA /* Metallic.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -622,9 +623,9 @@
 				529693F815F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist in Resources */,
 				529693FA15F36DDB00DF2FA3 /* lara.modelparams.plist in Resources */,
 				529693FE15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist in Resources */,
-				5296943F15F51F2B00DF2FA3 /* Readme.md in Resources */,
 				52BB21AB15FB4C3200937450 /* StaticBasic.vs in Resources */,
 				52BB21AD15FB4CED00937450 /* ShadelessVertexColor.fs in Resources */,
+				5291DB9115FBE51600ECDBCA /* Metallic.fs in Resources */,
 				52BB21A715FAD30000937450 /* StaticBump.vs in Resources */,
 				5296944015F5383F00DF2FA3 /* Basic.vs in Resources */,
 				5296944115F5384100DF2FA3 /* Bump.vs in Resources */,
@@ -647,7 +648,6 @@
 				52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */,
 				5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */,
 				52BB21A215FACF2E00937450 /* croft_manor_hall.modelparams.plist in Resources */,
-				52BB21A515FACFD200937450 /* Model Parameters (deutsch).md in Resources */,
 				52BB21A915FB45B200937450 /* croft_manor_hall_lq.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

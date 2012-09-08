@@ -155,6 +155,12 @@
 		</dict>
 		<key>Metallic</key>
 		<dict>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>bumpTexture</string>
+				<string>reflectionTexture</string>
+			</array>
 			<key>solidMeshGroups</key>
 			<array>
 				<string>MeshGroup26</string>
