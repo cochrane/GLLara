@@ -29,14 +29,14 @@
 
 @implementation GLLMeshDrawer
 
-- (id)initWithMesh:(GLLMesh *)mesh resourceManager:(GLLResourceManager *)resourceManager;
+- (id)initWithMesh:(GLLMesh *)mesh resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
 	_mesh = mesh;
 	
 	// Set up shader
-	_program = [resourceManager programForDescriptor:mesh.shader];
+	_program = [resourceManager programForDescriptor:mesh.shader error:error];
 	if (!_program) return nil;
 	
 	// Set up textures

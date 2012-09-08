@@ -16,7 +16,7 @@
 
 @interface GLLMeshDrawer : NSObject
 
-- (id)initWithMesh:(GLLMesh *)mesh resourceManager:(GLLResourceManager *)resourceManager;
+- (id)initWithMesh:(GLLMesh *)mesh resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, retain, readonly) GLLMesh *mesh;
 @property (nonatomic, retain, readonly) GLLProgram *program;

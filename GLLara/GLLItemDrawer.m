@@ -27,14 +27,16 @@
 
 @implementation GLLItemDrawer
 
-- (id)initWithItem:(GLLItem *)item sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
+- (id)initWithItem:(GLLItem *)item sceneDrawer:(GLLSceneDrawer *)sceneDrawer error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
 	_item = item;
 	_sceneDrawer = sceneDrawer;
 	
-	GLLModelDrawer *modelDrawer = [sceneDrawer.resourceManager drawerForModel:item.model];
+	GLLModelDrawer *modelDrawer = [sceneDrawer.resourceManager drawerForModel:item.model error:error];
+	if (!modelDrawer)
+		return nil;
 	
 	NSMutableArray *mutableAlphaDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.alphaMeshDrawers.count];
 	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)

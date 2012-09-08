@@ -19,10 +19,10 @@
 
 @interface GLLResourceManager : NSObject
 
-- (GLLModelDrawer *)drawerForModel:(GLLModel *)model;
-- (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor;
+- (GLLModelDrawer *)drawerForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
+- (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor error:(NSError *__autoreleasing*)error;
 - (GLLTexture *)textureForName:(NSString *)textureName baseURL:(NSURL *)baseURL;
-- (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL;
+- (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, copy, readonly) NSArray *alLLoadedPrograms;
 

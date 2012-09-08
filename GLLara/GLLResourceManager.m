@@ -46,28 +46,30 @@
 
 #pragma mark - Retrieving resources
 
-- (GLLModelDrawer *)drawerForModel:(GLLModel *)model;
+- (GLLModelDrawer *)drawerForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
-	if (!model) return nil;
+	NSAssert(model != nil, @"Empty model passed in. This should never happen.");
 	
 	id key = model.baseURL;
 	id result = [models objectForKey:key];
 	if (!result)
 	{
-		result = [[GLLModelDrawer alloc] initWithModel:model resourceManager:self];
+		result = [[GLLModelDrawer alloc] initWithModel:model resourceManager:self error:error];
+		if (!result) return nil;
 		[models setObject:result forKey:key];
 	}
 	return result;
 }
 
-- (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor;
+- (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor error:(NSError *__autoreleasing*)error;
 {
-	if (!descriptor) return nil;
+	NSAssert(descriptor != nil, @"Empty shader descriptor passed in. This should never happen.");
 	
 	id result = [programs objectForKey:descriptor.programIdentifier];
 	if (!result)
 	{
-		result = [[GLLProgram alloc] initWithDescriptor:descriptor resourceManager:self];
+		result = [[GLLProgram alloc] initWithDescriptor:descriptor resourceManager:self error:error];
+		if (!result) return nil;
 		[programs setObject:result forKey:descriptor.programIdentifier];
 	}
 	return result;
@@ -80,19 +82,21 @@
 	if (!result)
 	{
 		result = [[GLLTexture alloc] initWithData:[self _dataForFilename:textureName baseURL:baseURL]];
+		if (!result) return nil;
 		[programs setObject:result forKey:key];
 	}
 	return result;
 }
 
-- (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL;
+- (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
-	if (!shaderName) return nil;
+	NSAssert(shaderName != nil, @"Empty shader name passed in. This should never happen.");
 	
 	GLLShader *result = [shaders objectForKey:shaderName];
 	if (!result)
 	{
-		result = [[GLLShader alloc] initWithSource:[self _utf8StringForFilename:shaderName baseURL:baseURL] type:type];
+		result = [[GLLShader alloc] initWithSource:[self _utf8StringForFilename:shaderName baseURL:baseURL] name:shaderName type:type error:error];
+		if (!result) return nil;
 		[shaders setObject:result forKey:shaderName];
 	}
 	return result;

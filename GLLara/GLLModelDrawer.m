@@ -14,7 +14,7 @@
 
 @implementation GLLModelDrawer
 
-- (id)initWithModel:(GLLModel *)model resourceManager:(GLLResourceManager *)resourceManager;
+- (id)initWithModel:(GLLModel *)model resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing *)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -29,10 +29,13 @@
 		if (!mesh.shader)
 			continue;
 		
+		GLLMeshDrawer *drawer = [[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager error:error];
+		if (!drawer) return nil;
+		
 		if (mesh.usesAlphaBlending)
-			[mutableAlphaMeshDrawers addObject:[[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager]];
+			[mutableAlphaMeshDrawers addObject:drawer];
 		else
-			[mutableSolidMeshDrawers addObject:[[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager]];
+			[mutableSolidMeshDrawers addObject:drawer];
 	}
 	_solidMeshDrawers = [mutableSolidMeshDrawers copy];
 	_alphaMeshDrawers = [mutableAlphaMeshDrawers copy];

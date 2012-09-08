@@ -19,7 +19,7 @@
  */
 @interface GLLModelDrawer : NSObject
 
-- (id)initWithModel:(GLLModel *)model resourceManager:(GLLResourceManager *)resourceManager;
+- (id)initWithModel:(GLLModel *)model resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, retain, readonly) GLLModel *model;
 @property (nonatomic, weak, readonly) GLLResourceManager *resourceManager;

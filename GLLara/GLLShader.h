@@ -11,10 +11,11 @@
 
 @interface GLLShader : NSObject
 
-- (id)initWithSource:(NSString *)source type:(GLenum)type;
+- (id)initWithSource:(NSString *)sourceString name:(NSString *)name type:(GLenum)type error:(NSError *__autoreleasing*)error;
 
 - (void)unload;
 
+@property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, assign, readonly) GLenum type;
 @property (nonatomic, assign, readonly) GLuint shaderID;
 

@@ -17,7 +17,7 @@
  */
 @interface GLLItemDrawer : NSObject
 
-- (id)initWithItem:(GLLItem *)item sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
+- (id)initWithItem:(GLLItem *)item sceneDrawer:(GLLSceneDrawer *)sceneDrawer error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, retain, readonly) GLLItem *item;
 @property (nonatomic, weak, readonly) GLLSceneDrawer *sceneDrawer;

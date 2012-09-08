@@ -76,6 +76,9 @@
 		52BB21A215FACF2E00937450 /* croft_manor_hall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */; };
 		52BB21A515FACFD200937450 /* Model Parameters (deutsch).md in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A415FACFD100937450 /* Model Parameters (deutsch).md */; };
 		52BB21A715FAD30000937450 /* StaticBump.vs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A615FAD30000937450 /* StaticBump.vs */; };
+		52BB21A915FB45B200937450 /* croft_manor_hall_lq.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A815FB45B200937450 /* croft_manor_hall_lq.modelparams.plist */; };
+		52BB21AB15FB4C3200937450 /* StaticBasic.vs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21AA15FB4C3200937450 /* StaticBasic.vs */; };
+		52BB21AD15FB4CED00937450 /* ShadelessVertexColor.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21AC15FB4CED00937450 /* ShadelessVertexColor.fs */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
 		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */; };
@@ -94,7 +97,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
+		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
 		5224C8E415FA4F18002A6C76 /* GLLLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLight.h; sourceTree = "<group>"; };
 		5224C8E515FA4F18002A6C76 /* GLLLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLight.m; sourceTree = "<group>"; };
 		5224C8E715FA5F24002A6C76 /* GLLLightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLightViewController.h; sourceTree = "<group>"; };
@@ -212,6 +215,9 @@
 		52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = croft_manor_hall.modelparams.plist; sourceTree = "<group>"; };
 		52BB21A415FACFD100937450 /* Model Parameters (deutsch).md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Model Parameters (deutsch).md"; sourceTree = "<group>"; };
 		52BB21A615FAD30000937450 /* StaticBump.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = StaticBump.vs; sourceTree = "<group>"; };
+		52BB21A815FB45B200937450 /* croft_manor_hall_lq.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = croft_manor_hall_lq.modelparams.plist; sourceTree = "<group>"; };
+		52BB21AA15FB4C3200937450 /* StaticBasic.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = StaticBasic.vs; sourceTree = "<group>"; };
+		52BB21AC15FB4CED00937450 /* ShadelessVertexColor.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = ShadelessVertexColor.fs; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
 		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
@@ -389,6 +395,7 @@
 				52BB207115F8329000937450 /* motorcycle.modelparams.plist */,
 				52BB207315F8334E00937450 /* tiger1.modelparams.plist */,
 				52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */,
+				52BB21A815FB45B200937450 /* croft_manor_hall_lq.modelparams.plist */,
 			);
 			path = "Model Parameters";
 			sourceTree = "<group>";
@@ -407,6 +414,8 @@
 				52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */,
 				5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */,
 				52BB21A615FAD30000937450 /* StaticBump.vs */,
+				52BB21AA15FB4C3200937450 /* StaticBasic.vs */,
+				52BB21AC15FB4CED00937450 /* ShadelessVertexColor.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -608,6 +617,8 @@
 				529693FA15F36DDB00DF2FA3 /* lara.modelparams.plist in Resources */,
 				529693FE15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist in Resources */,
 				5296943F15F51F2B00DF2FA3 /* Readme.md in Resources */,
+				52BB21AB15FB4C3200937450 /* StaticBasic.vs in Resources */,
+				52BB21AD15FB4CED00937450 /* ShadelessVertexColor.fs in Resources */,
 				52BB21A715FAD30000937450 /* StaticBump.vs in Resources */,
 				5296944015F5383F00DF2FA3 /* Basic.vs in Resources */,
 				5296944115F5384100DF2FA3 /* Bump.vs in Resources */,
@@ -631,6 +642,7 @@
 				5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */,
 				52BB21A215FACF2E00937450 /* croft_manor_hall.modelparams.plist in Resources */,
 				52BB21A515FACFD200937450 /* Model Parameters (deutsch).md in Resources */,
+				52BB21A915FB45B200937450 /* croft_manor_hall_lq.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

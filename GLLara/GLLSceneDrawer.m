@@ -294,7 +294,15 @@ struct GLLAlphaTestBlock
 
 - (void)_addDrawerForItem:(GLLItem *)item;
 {
-	GLLItemDrawer *drawer = [[GLLItemDrawer alloc] initWithItem:item sceneDrawer:self];
+	NSError *error = nil;
+	GLLItemDrawer *drawer = [[GLLItemDrawer alloc] initWithItem:item sceneDrawer:self error:&error];
+	
+	if (!drawer)
+	{
+		[self.view presentError:error];
+		return;
+	}
+	
 	[itemDrawers addObject:drawer];
 
 	for (GLLBoneTransformation *boneTransform in item.boneTransformations)

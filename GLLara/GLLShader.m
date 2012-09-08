@@ -12,9 +12,20 @@
 
 @implementation GLLShader
 
-- (id)initWithSource:(NSString *)sourceString type:(GLenum)type;
+- (id)initWithSource:(NSString *)sourceString name:(NSString *)name type:(GLenum)type error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
+	
+	if (!sourceString)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"OpenGL" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"The source code shader \"%@\" could not be found", @"GLLShader no source message description"), name],
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Please inform a developer of this problem.", @"No shader there wtf?")
+					  }];
+		return nil;
+	}
+	
+	_name = [name copy];
 	
 	_shaderID = glCreateShader(type);
 	const GLchar *source = [sourceString UTF8String];
@@ -32,7 +43,14 @@
 		glGetShaderInfoLog(_shaderID, length+1, NULL, log);
 		log[length] = '\0';
 		
-		[NSException raise:NSInvalidArgumentException format:@"Could not compile shader. Log: %s", log];
+		if (error)
+			*error = [NSError errorWithDomain:@"OpenGL" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"The shader \"%@\" could not be compiled properly", @"GLLShader error message description"), name],
+			NSLocalizedFailureReasonErrorKey : [NSString stringWithFormat:NSLocalizedString(@"Message from OpenGL driver: %s", log)],
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Please inform a developer of this problem.", @"No shader there wtf?")
+					  }];
+		NSLog(@"compile error in shader %@: %s", _name, log);
+		[self unload];
+		return nil;
 	}
 	
 	return self;

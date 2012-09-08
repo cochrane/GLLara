@@ -18,19 +18,48 @@
 
 @implementation GLLProgram
 
-- (id)initWithDescriptor:(GLLShaderDescriptor *)descriptor resourceManager:(GLLResourceManager *)manager;
+- (id)initWithDescriptor:(GLLShaderDescriptor *)descriptor resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
 	_name = descriptor.name;
 	
+	if (!descriptor.fragmentName)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"OpenGL" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Shader \"%@\" lacks fragment shader", @"GLLShader no source message description"), _name],
+				 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Please inform a developer of this problem.", @"No shader there wtf?")
+									  }];
+		return nil;
+	}
+	if (!descriptor.vertexName)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"OpenGL" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Shader \"%@\" lacks vertex shader", @"GLLShader no source message description"), _name],
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Please inform a developer of this problem.", @"No shader there wtf?")
+					  }];
+		return nil;
+	}
+	
 	_programID = glCreateProgram();
 	if (descriptor.vertexName)
-		glAttachShader(_programID, [manager shaderForName:descriptor.vertexName type:GL_VERTEX_SHADER baseURL:descriptor.baseURL].shaderID);
+	{
+		GLLShader *shader = [manager shaderForName:descriptor.vertexName type:GL_VERTEX_SHADER baseURL:descriptor.baseURL error:error];
+		if (!shader) return nil;
+		glAttachShader(_programID, shader.shaderID);
+	}
 	if (descriptor.geometryName)
-		glAttachShader(_programID, [manager shaderForName:descriptor.geometryName type:GL_GEOMETRY_SHADER baseURL:descriptor.baseURL].shaderID);
+	{
+		GLLShader *shader = [manager shaderForName:descriptor.geometryName type:GL_GEOMETRY_SHADER baseURL:descriptor.baseURL error:error];
+		if (!shader) return nil;
+		glAttachShader(_programID, shader.shaderID);
+	}
 	if (descriptor.fragmentName)
-		glAttachShader(_programID, [manager shaderForName:descriptor.fragmentName type:GL_FRAGMENT_SHADER baseURL:descriptor.baseURL].shaderID);
+	{
+		GLLShader *shader = [manager shaderForName:descriptor.fragmentName type:GL_FRAGMENT_SHADER baseURL:descriptor.baseURL error:error];
+		if (!shader) return nil;
+		glAttachShader(_programID, shader.shaderID);
+	}
 	
 	glBindAttribLocation(_programID, GLLVertexAttribPosition, "position");
 	glBindAttribLocation(_programID, GLLVertexAttribNormal, "normal");
@@ -53,7 +82,14 @@
 		glGetProgramInfoLog(_programID, length+1, NULL, log);
 		log[length] = '\0';
 		
-		[NSException raise:NSInvalidArgumentException format:@"Could not link shaders to program. Log: %s", log];
+		if (error)
+			*error = [NSError errorWithDomain:@"OpenGL" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"The shader \"%@\" Could not be linked", @"GLLShader error message description"), _name],
+			NSLocalizedFailureReasonErrorKey : [NSString stringWithFormat:NSLocalizedString(@"Message from OpenGL driver: %s", log)],
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Please inform a developer of this problem.", @"No shader there wtf?")
+					  }];
+		NSLog(@"link error in shader %@: %s", _name, log);
+		[self unload];
+		return nil;
 	}
 	
 	_boneMatricesUniformLocation = glGetUniformLocation(_programID, "boneMatrices");

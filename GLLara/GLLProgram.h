@@ -15,7 +15,7 @@
 
 @interface GLLProgram : NSObject
 
-- (id)initWithDescriptor:(GLLShaderDescriptor *)descriptor resourceManager:(GLLResourceManager *)manager;
+- (id)initWithDescriptor:(GLLShaderDescriptor *)descriptor resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 
 - (void)unload;
 
