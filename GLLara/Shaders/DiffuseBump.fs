@@ -16,7 +16,7 @@ uniform sampler2D bumpTexture;
 
 struct Light {
 	vec4 color;
-	vec3 direction;
+	vec4 direction;
 	float intensity;
 	float shadowDepth;
 };
@@ -39,9 +39,9 @@ layout(std140) uniform AlphaTest {
 void main()
 {
 	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	vec4 diffuseColor = diffuseTexColor * outColor;
 	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
 		discard;
+	vec4 diffuseColor = diffuseTexColor * outColor;
 
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
 	
@@ -54,10 +54,12 @@ void main()
 	for (int i = 0; i < 3; i++)
 	{
 		// Calculate diffuse factor
-		float diffuseFactor = clamp(dot(normalWorld, -lightData.lights[i].direction), 0, 1);
+		float diffuseFactor = clamp(dot(normalWorld, -lightData.lights[i].direction.xyz), 0, 1);
+		// Apply the shadow depth that is used instead of ambient lighting
+		diffuseFactor = mix(1, diffuseFactor, lightData.lights[i].shadowDepth);
 		
 		// Calculate specular factor
-		vec3 refLightDir = -reflect(lightData.lights[i].direction, normal);
+		vec3 refLightDir = -reflect(lightData.lights[i].direction.xyz, normal);
 		float specularFactor = clamp(dot(cameraDirection, refLightDir), 0, 1);
 		float specularShading = diffuseFactor * pow(specularFactor, parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
 		

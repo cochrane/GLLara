@@ -14,7 +14,7 @@ uniform sampler2D lightmapTexture;
 
 struct Light {
 	vec4 color;
-	vec3 direction;
+	vec4 direction;
 	float intensity;
 	float shadowDepth;
 };
@@ -32,16 +32,19 @@ layout(std140) uniform AlphaTest {
 void main()
 {
 	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	vec4 diffuseColor = diffuseTexColor * outColor;
 	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
 		discard;
+	vec4 diffuseColor = diffuseTexColor * outColor;
 
 	vec4 lightmapColor = texture(lightmapTexture, outTexCoord);
 	vec4 lightColor = vec4(0);
 	for (int i = 0; i < 3; i++)
 	{
-		float factor = clamp(dot(normalWorld, -lightData.lights[i].direction), 0, 1);
-		lightColor += lightData.lights[i].color * factor;
+		float diffuseFactor = clamp(dot(normalWorld, -lightData.lights[i].direction), 0, 1);
+		// Apply the shadow depth that is used instead of ambient lighting
+		diffuseFactor = mix(1, diffuseFactor, lightData.lights[i].shadowDepth);
+		
+		lightColor += lightData.lights[i].color * diffuseFactor;
 	}
 	
 	screenColor = vec4(diffuseColor.rgb * lightColor.rgb * lightmapColor.rgb, diffuseTexColor.a);

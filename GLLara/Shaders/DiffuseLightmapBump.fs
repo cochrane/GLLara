@@ -19,7 +19,7 @@ uniform vec3 cameraPosition;
 
 struct Light {
 	vec4 color;
-	vec3 direction;
+	vec4 direction;
 	float intensity;
 	float shadowDepth;
 };
@@ -42,9 +42,9 @@ layout(std140) uniform AlphaTest {
 void main()
 {
 	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	vec4 diffuseColor = diffuseTexColor * outColor;
 	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
 		discard;
+	vec4 diffuseColor = diffuseTexColor * outColor;
 
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
 	vec4 lightmapColor = texture(lightmapTexture, outTexCoord);
@@ -59,6 +59,9 @@ void main()
 	{
 		// Calculate diffuse factor
 		float diffuseFactor = clamp(dot(normal, -lightData.lights[i].direction), 0, 1);
+		// Apply the shadow depth that is used instead of ambient lighting
+		diffuseFactor = mix(1, diffuseFactor, lightData.lights[i].shadowDepth);
+
 		
 		// Calculate specular factor
 		vec3 refLightDir = -reflect(lightData.lights[i].direction, normal);
