@@ -30,9 +30,7 @@
 /*
  * Organization into groups
  */
-@property (nonatomic, copy, readonly) NSArray *meshGroups;
 - (NSArray *)meshGroupsForMesh:(NSString *)meshName;
-- (NSArray *)meshesForMeshGroup:(NSString *)meshGroup;
 
 /*
  * Camera targets

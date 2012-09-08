@@ -49,6 +49,7 @@ static NSCache *parameterCache;
 	NSDictionary *ownRenderParameters;
 	NSDictionary *ownDefaultParameters;
 	NSDictionary *ownMeshSplitters;
+	NSString *defaultMeshGroup;
 	
 	GLLModel *model;
 }
@@ -93,7 +94,7 @@ static NSCache *parameterCache;
 	return result;
 }
 
-@dynamic meshGroups, cameraTargets, meshesToSplit;
+@dynamic cameraTargets, meshesToSplit;
 
 - (id)initWithPlist:(NSDictionary *)propertyList
 {
@@ -109,6 +110,7 @@ static NSCache *parameterCache;
 	ownRenderParameters = propertyList[@"renderParameters"];
 	ownDefaultParameters = propertyList[@"defaultRenderParameters"];
 	ownCameraTargets = propertyList[@"cameraTargets"];
+	defaultMeshGroup = propertyList[@"defaultMeshGroup"];
 	
 	// Loading splitters is more complicated, because they are stored in their own class which handles a few nuisances automatically (in particular the fact that a mesh splitter does not usually define the full box).
 	NSMutableDictionary *mutableMeshSplitters = [[NSMutableDictionary alloc] initWithCapacity:[propertyList[@"meshSplitters"] count]];
@@ -155,26 +157,6 @@ static NSCache *parameterCache;
 
 #pragma mark - Mesh Groups
 
-- (NSArray *)meshGroups
-{
-	if (!ownMeshGroups && model)
-	{
-		NSMutableSet *resultSet = [[NSMutableSet alloc] init];
-		for (GLLMesh *mesh in model.meshes)
-		{
-			NSString *groupName = nil;
-			[self _parseModelName:mesh.name meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
-			[resultSet addObject:mesh.name];
-		}
-		
-		return [[resultSet allObjects] arrayByAddingObjectsFromArray:ownMeshGroups.allKeys];
-	}
-	
-	if (self.base)
-		return [self.base.meshGroups arrayByAddingObjectsFromArray:ownMeshGroups.allKeys];
-	else
-		return ownMeshGroups.allKeys;
-}
 - (NSArray *)meshGroupsForMesh:(NSString *)meshName;
 {
 	if (!ownMeshGroups && model)
@@ -196,32 +178,10 @@ static NSCache *parameterCache;
 	if (self.base)
 		[result addObjectsFromArray:[self.base meshGroupsForMesh:meshName]];
 	
+	if (result.count == 0 && defaultMeshGroup)
+		[result addObject:defaultMeshGroup];
+	
 	return [result copy];
-}
-- (NSArray *)meshesForMeshGroup:(NSString *)meshGroup;
-{
-	if (!ownMeshGroups && model)
-	{
-		NSMutableArray *result = [[NSMutableArray alloc] init];
-		for (GLLMesh *mesh in model.meshes)
-		{
-			NSString *groupName = nil;
-			[self _parseModelName:mesh.name meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
-			if ([groupName isEqual:meshGroup])
-				[result addObject:mesh.name];
-		}
-		
-		return [result copy];
-	}
-
-	
-	NSArray *result = ownMeshGroups[meshGroup];
-	if (!result) result = [NSArray array];
-	
-	if (self.base)
-		result = [result arrayByAddingObjectsFromArray:[self.base meshesForMeshGroup:meshGroup]];
-	
-	return result;
 }
 
 #pragma mark - Camera targets

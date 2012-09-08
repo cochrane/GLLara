@@ -179,6 +179,10 @@ Beispiel:
 	</dict>
 	…
 
+### defaultMeshGroup
+
+**Eher selten gebraucht.** Ein String; gibt die MeshGroup an, die Meshes erhalten, die sonst noch keine haben.
+
 ### shaders
 
 **Brauchen normale Modell-Dateien nicht.** Ein Dictionary; die Keys sind die Namen von Shakern, die Werte sind Dictionaries, die die Shader beschreiben.

@@ -73,6 +73,8 @@
 		52BB207215F8329000937450 /* motorcycle.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB207115F8329000937450 /* motorcycle.modelparams.plist */; };
 		52BB207415F8334E00937450 /* tiger1.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB207315F8334E00937450 /* tiger1.modelparams.plist */; };
 		52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */; };
+		52BB21A215FACF2E00937450 /* croft_manor_hall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */; };
+		52BB21A515FACFD200937450 /* Model Parameters (deutsch).md in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A415FACFD100937450 /* Model Parameters (deutsch).md */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
 		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */; };
@@ -206,6 +208,8 @@
 		52BB207115F8329000937450 /* motorcycle.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = motorcycle.modelparams.plist; sourceTree = "<group>"; };
 		52BB207315F8334E00937450 /* tiger1.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tiger1.modelparams.plist; sourceTree = "<group>"; };
 		52BB217C15F972AB00937450 /* GLLSceneModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GLLSceneModel.xcdatamodel; sourceTree = "<group>"; };
+		52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = croft_manor_hall.modelparams.plist; sourceTree = "<group>"; };
+		52BB21A415FACFD100937450 /* Model Parameters (deutsch).md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Model Parameters (deutsch).md"; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
 		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
@@ -352,6 +356,7 @@
 		529692D515F258E600DF2FA3 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
+				52BB21A415FACFD100937450 /* Model Parameters (deutsch).md */,
 				529692D615F2590000DF2FA3 /* XNALara Model File Format.md */,
 				529692DF15F27D5900DF2FA3 /* Source Code Overview.md */,
 				529693FB15F3781100DF2FA3 /* Render parameters.md */,
@@ -381,6 +386,7 @@
 				52BB206F15F831C900937450 /* mjolnir.modelparams.plist */,
 				52BB207115F8329000937450 /* motorcycle.modelparams.plist */,
 				52BB207315F8334E00937450 /* tiger1.modelparams.plist */,
+				52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */,
 			);
 			path = "Model Parameters";
 			sourceTree = "<group>";
@@ -619,6 +625,8 @@
 				52BB207415F8334E00937450 /* tiger1.modelparams.plist in Resources */,
 				52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */,
 				5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */,
+				52BB21A215FACF2E00937450 /* croft_manor_hall.modelparams.plist in Resources */,
+				52BB21A515FACFD200937450 /* Model Parameters (deutsch).md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
