@@ -162,9 +162,9 @@
 				<string>bumpSpecularAmount</string>
 			</array>
 			<key>fragment</key>
-			<string>StaticTRLNextGen.fs</string>
+			<string>DiffuseBump.fs</string>
 			<key>vertex</key>
-			<string>Bump.vs</string>
+			<string>StaticBump.vs</string>
 		</dict>
 		<key>DiffuseBump</key>
 		<dict>
