@@ -63,7 +63,7 @@ Die Reihenfolge der Paare in einem Dictionary ist absolut egal. Eine Plist-Datei
 Definieren von Modellen
 -----------------------
 
-Für jedes Modell, welches nicht das Generic Item-Format verwendet, muss es eine `modellname.modelparams.plist`-Datei geben, die von GLLara beim kompilieren eingebaut wird. Diese ist ein Dictionary mit ein bis fünf Keys: `base`, `meshGroupNames`, `defaultRenderParameters`, `renderParameters`, `cameraTargets`, `shaders` und `meshSplitters`.
+Für jedes Modell, welches nicht das Generic Item-Format verwendet, muss es eine `modellname.modelparams.plist`-Datei geben, die von GLLara beim kompilieren eingebaut wird. Diese ist ein Dictionary mit ein bis sechs Keys: `base`, `defaultMeshGroup`, `meshGroupNames`, `defaultRenderParameters`, `renderParameters`, `cameraTargets`, `shaders` und `meshSplitters`.
 
 Meshes oder Bones auf die sich hier bezogen wird müssen in einem Modell nicht existieren; dann werden Werte, die sich darauf beziehen, einfach ignoriert.
 
