@@ -45,19 +45,31 @@
 	if (descriptor.vertexName)
 	{
 		GLLShader *shader = [manager shaderForName:descriptor.vertexName type:GL_VERTEX_SHADER baseURL:descriptor.baseURL error:error];
-		if (!shader) return nil;
+		if (!shader)
+		{
+			[self unload];
+			return nil;
+		}
 		glAttachShader(_programID, shader.shaderID);
 	}
 	if (descriptor.geometryName)
 	{
 		GLLShader *shader = [manager shaderForName:descriptor.geometryName type:GL_GEOMETRY_SHADER baseURL:descriptor.baseURL error:error];
-		if (!shader) return nil;
+		if (!shader)
+		{
+			[self unload];
+			return nil;
+		}
 		glAttachShader(_programID, shader.shaderID);
 	}
 	if (descriptor.fragmentName)
 	{
 		GLLShader *shader = [manager shaderForName:descriptor.fragmentName type:GL_FRAGMENT_SHADER baseURL:descriptor.baseURL error:error];
-		if (!shader) return nil;
+		if (!shader)
+		{
+			[self unload];
+			return nil;
+		}
 		glAttachShader(_programID, shader.shaderID);
 	}
 	

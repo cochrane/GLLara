@@ -72,12 +72,12 @@ void main()
 	for (int i = 0; i < 3; i++)
 	{
 		// Calculate diffuse factor
-		float diffuseFactor = clamp(dot(normal, -lightData.lights[i].direction), 0, 1);
+		float diffuseFactor = clamp(dot(normal, -lightData.lights[i].direction.xyz), 0, 1);
 		// Apply the shadow depth that is used instead of ambient lighting
 		diffuseFactor = mix(1, diffuseFactor, lightData.lights[i].shadowDepth);
 		
 		// Calculate specular factor
-		vec3 refLightDir = -reflect(lightData.lights[i].direction, normal);
+		vec3 refLightDir = -reflect(lightData.lights[i].direction.xyz, normal);
 		float specularFactor = clamp(dot(cameraDirection, refLightDir), 0, 1);
 		float specularShading = diffuseFactor * pow(specularFactor, parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
 		
