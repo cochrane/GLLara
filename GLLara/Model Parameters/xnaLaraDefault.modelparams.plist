@@ -26,6 +26,15 @@
 		</dict>
 		<key>StaticTRUDiffuseLightmap</key>
 		<dict>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>lightmapTexture</string>
+			</array>
+			<key>fragment</key>
+			<string>DiffuseLightmap2TexCoords.fs</string>
+			<key>vertex</key>
+			<string>StaticBasic2TexCoords.vs</string>
 			<key>alphaMeshGroups</key>
 			<array>
 				<string>MeshGroup19</string>
@@ -37,6 +46,14 @@
 		</dict>
 		<key>StaticTRUDiffuse</key>
 		<dict>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+			</array>
+			<key>fragment</key>
+			<string>Diffuse.fs</string>
+			<key>vertex</key>
+			<string>StaticBasic2TexCoords.vs</string>
 			<key>solidMeshGroups</key>
 			<array>
 				<string>MeshGroup16</string>
