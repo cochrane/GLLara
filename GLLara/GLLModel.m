@@ -30,35 +30,53 @@ static NSCache *cachedModels;
 	cachedModels = [[NSCache alloc] init];
 }
 
-+ (id)cachedModelFromFile:(NSURL *)file;
++ (id)cachedModelFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
 {
 	id result = [cachedModels objectForKey:file.absoluteURL];
 	if (!result)
 	{
 		if ([file.path hasSuffix:@".mesh"])
 		{
-			result = [[self alloc] initBinaryFromFile:file];
+			result = [[self alloc] initBinaryFromFile:file error:error];
+			if (!result) return nil;
 		}
 		else if ([file.path hasSuffix:@".mesh.ascii"])
 		{
-			result = [[self alloc] initASCIIFromFile:file];
+			result = [[self alloc] initASCIIFromFile:file error:error];
+			if (!result) return nil;
 		}
 		else
+		{
+			if (error)
+			{
+				// Find display name for this extension
+				CFStringRef fileType = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef) file.pathExtension, NULL);
+				CFStringRef fileTypeDescription = UTTypeCopyDescription(fileType);
+				CFRelease(fileType);
+				
+				*error = [NSError errorWithDomain:@"GLLModel" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Files of type %@ are not supported.", @"Tried to load other than .mesh or .mesh.ascii"), (__bridge NSString *)fileTypeDescription] }];
+				CFRelease(fileTypeDescription);
+			}
 			return nil;
+		}
 		
 		[cachedModels setObject:result forKey:file.absoluteURL];
 	}
 	return result;
 }
 
-- (id)initBinaryFromFile:(NSURL *)file;
+- (id)initBinaryFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
 	_baseURL = file;
-	_parameters = [GLLModelParams parametersForModel:self];
+	_parameters = [GLLModelParams parametersForModel:self error:error];
+	if (!_parameters) return nil;
 	
-	TRInDataStream *stream = [[TRInDataStream alloc] initWithData:[NSData dataWithContentsOfURL:file]];
+	NSData *data = [NSData dataWithContentsOfURL:file options:0 error:error];
+	if (!data) return nil;
+	
+	TRInDataStream *stream = [[TRInDataStream alloc] initWithData:data];
 	
 	NSUInteger numBones = [stream readUint32];
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
@@ -75,14 +93,18 @@ static NSCache *cachedModels;
 	return self;
 }
 
-- (id)initASCIIFromFile:(NSURL *)file;
+- (id)initASCIIFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
 	_baseURL = file;
-	_parameters = [GLLModelParams parametersForModel:self];
+	_parameters = [GLLModelParams parametersForModel:self error:error];
+	if (!_parameters) return nil;
 	
-	GLLASCIIScanner *scanner = [[GLLASCIIScanner alloc] initWithString:[NSString stringWithContentsOfURL:file usedEncoding:NULL error:NULL]];
+	NSString *source = [NSString stringWithContentsOfURL:file usedEncoding:NULL error:error];
+	if (!source) return nil;
+	
+	GLLASCIIScanner *scanner = [[GLLASCIIScanner alloc] initWithString:source];
 	
 	NSUInteger numBones = [scanner readUint32];
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];

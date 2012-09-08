@@ -137,7 +137,7 @@
 	NSURL *itemURL = self.itemURL;
 	if (itemURL)
 	{
-		GLLModel *model = [GLLModel cachedModelFromFile:itemURL];
+		GLLModel *model = [GLLModel cachedModelFromFile:itemURL error:NULL];
 		[self setPrimitiveValue:model forKey:@"model"];
 	}
 }

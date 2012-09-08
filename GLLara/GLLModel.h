@@ -20,11 +20,11 @@
  * @abstract Returns a model with a given URL, returning a cached instance if one exists.
  * @discussion Since a model is immutable here, it can be shared as much as necessary. This method uses an internal cache to share objects. Note that a model can be evicted from this cache again, if nobody is using it.
  */
-+ (id)cachedModelFromFile:(NSURL *)file;
++ (id)cachedModelFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
 
 
-- (id)initBinaryFromFile:(NSURL *)file;
-- (id)initASCIIFromFile:(NSURL *)file;
+- (id)initBinaryFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
+- (id)initASCIIFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, copy, readonly) NSURL *baseURL;
 

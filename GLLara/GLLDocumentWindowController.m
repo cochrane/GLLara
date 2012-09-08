@@ -112,7 +112,14 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
 		if (result != NSOKButton) return;
 		
-		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL];
+		NSError *error = nil;
+		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL error:&error];
+		
+		if (!model)
+		{
+			[self.window presentError:error];
+			return;
+		}
 		
 		NSLog(@"Got model %@, with %lu bones and %lu meshes", model, model.bones.count, model.meshes.count);
 		

@@ -19,10 +19,13 @@
  */
 @interface GLLModelParams : NSObject
 
-+ (id)parametersForModel:(GLLModel *)model;
-+ (id)parametersForName:(NSString *)name;
++ (id)parametersForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
++ (id)parametersForName:(NSString *)name error:(NSError *__autoreleasing*)error;
 
-- (id)initWithPlist:(NSDictionary *)propertyList;
+- (id)initWithPlist:(NSDictionary *)propertyList error:(NSError *__autoreleasing*)error;
+
+// Generic item format
+- (id)initWithModel:(GLLModel *)aModel error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, copy, readonly) NSString *modelName;
 @property (nonatomic, copy, readonly) GLLModelParams *base;
