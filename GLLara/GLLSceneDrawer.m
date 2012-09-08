@@ -238,12 +238,11 @@ struct GLLAlphaTestBlock
 {
 	glViewport(0, 0, size.width, size.height);
 	
-	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
-	
 	projectionMatrix = simd_frustumMatrix(65.0, size.width / size.height, 0.1, 50.0);
 	struct GLLTransform transformBlock;
 	transformBlock.viewProjection = simd_mat_mul(projectionMatrix, lookatMatrix);
 	
+	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(transformBlock), &transformBlock, GL_STATIC_DRAW);
 }
 
@@ -256,16 +255,17 @@ struct GLLAlphaTestBlock
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestBuffer);
 	
 	// 1st pass: Draw items that do not need blending, without alpha test
-	glBindBuffer(GL_UNIFORM_BUFFER, alphaTestBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, alphaTestBuffer);
 	struct GLLAlphaTestBlock alphaBlock = { .mode = 0, .reference = 0.9 };
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[drawer drawSolid];
 	
 	// 2nd pass: Draw blended items, but only those pixels that are "almost opaque"
 	alphaBlock.mode = 1;
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, alphaTestBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
 	
 	glEnable(GL_BLEND);
 	
@@ -274,12 +274,13 @@ struct GLLAlphaTestBlock
 	
 	// 3rd pass: Draw blended items, now only those things that are "mostly transparent".
 	alphaBlock.mode = 2;
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, alphaTestBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
 	
 	glDepthMask(GL_FALSE);
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[drawer drawAlpha];
-	
+		
 	// Special note: Ensure that depthMask is true before doing the next glClear. Otherwise results may be quite funny indeed.
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
