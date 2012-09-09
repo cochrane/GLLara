@@ -418,7 +418,7 @@ static NSCache *parameterCache;
 		NSMutableDictionary *renderParameterValues = [[NSMutableDictionary alloc] initWithCapacity:renderParameterNames.count];
 		for (NSUInteger i = 0; i < renderParameterNames.count; i++)
 		{
-			if (i + 3 >= components.numberOfRanges)
+			if (i + 3 >= components.numberOfRanges || [components rangeAtIndex:i+3].location == NSNotFound)
 				renderParameterValues[renderParameterNames[i]] = @0.0;
 			else
 				renderParameterValues[renderParameterNames[i]] = [englishNumberFormatter numberFromString:[meshName substringWithRange:[components rangeAtIndex:3 + i]]];
@@ -430,7 +430,7 @@ static NSCache *parameterCache;
 	// 6th match: Camera name
 	if (cameraTargetName)
 	{
-		if (components.numberOfRanges <= 6)
+		if (components.numberOfRanges <= 6 || [components rangeAtIndex:6].location == NSNotFound)
 			*cameraTargetName = nil;
 		else
 			*cameraTargetName = [meshName substringWithRange:[components rangeAtIndex:6]];
@@ -439,7 +439,7 @@ static NSCache *parameterCache;
 	// Final matches: Camera bones
 	if (cameraTargetBones)
 	{
-		if (components.numberOfRanges <= 7)
+		if (components.numberOfRanges <= 7 || [components rangeAtIndex:7].location == NSNotFound)
 		{
 			*cameraTargetBones = nil;
 		}
