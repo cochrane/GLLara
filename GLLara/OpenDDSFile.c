@@ -231,12 +231,14 @@ CFDataRef DDSCreateDataForMipmapLevel(const DDSFile *file, CFIndex level)
 		width  >>= 1; 
 		height >>= 1; 
 	}
-	UInt8 *newData = malloc(size);
+	if (size == 0) return NULL;
+	
 	CFIndex newDataStart = 4 + sizeof(struct DDSFileHeader) + offset;
 	
 	if (newDataStart + size > CFDataGetLength(file->data))
 		return DDSCreateDataForMipmapLevel(file, level-1);
 	
+	UInt8 *newData = malloc(size);
 	CFDataGetBytes(file->data, CFRangeMake(newDataStart, size), newData);
 	
 	return CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, newData, size, kCFAllocatorMalloc);
