@@ -217,6 +217,8 @@ struct GLLAlphaTestBlock
 		vec_float4 ambientColor = simd_make(r, g, b, a);
 		glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
 		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(struct GLLLightBlock, ambientColor), sizeof(ambientColor), &ambientColor);
+		
+		self.view.needsDisplay = YES;
 	}
 	else
 	{
