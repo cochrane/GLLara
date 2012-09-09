@@ -74,6 +74,4 @@ void main()
 	vec4 reflectionColor = texture(reflectionTexture, reflectionTexCoord * 0.5 + 0.5);
 	
 	screenColor = vec4(mix(color.rgb, reflectionColor.rgb, parameters.reflectionAmount), diffuseTexColor.a);
-	
-	screenColor = vec4(color.rgb, diffuseTexColor.a);
 }
