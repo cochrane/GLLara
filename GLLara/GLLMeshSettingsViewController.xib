@@ -205,6 +205,7 @@
 								<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 								<reference key="NSSuperview" ref="342988078"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:58</string>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 								<reference key="NSTarget" ref="342988078"/>
@@ -504,7 +505,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="143986435">
 								<int key="NSCellFlags">68157504</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">Bump 1 Specular UV Scale Thingy</string>
+								<string key="NSContents">Bump 1 Specular UV Scale Thingy (do not translate)</string>
 								<reference key="NSSupport" ref="971014279"/>
 								<string key="NSCellIdentifier">_NS:1535</string>
 								<reference key="NSControlView" ref="224766652"/>
