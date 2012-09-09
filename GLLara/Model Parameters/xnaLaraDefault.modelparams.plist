@@ -5,7 +5,7 @@
 	<key>defaultRenderParameters</key>
 	<dict>
 		<key>bumpSpecularGloss</key>
-		<integer>100</integer>
+		<integer>10</integer>
 	</dict>
 	<key>shaders</key>
 	<dict>

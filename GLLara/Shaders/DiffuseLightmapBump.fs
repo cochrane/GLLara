@@ -60,12 +60,13 @@ void main()
 	for (int i = 0; i < 3; i++)
 	{
 		// Diffuse term
-		color += diffuseTexColor * lightData.lights[i].diffuseColor * clamp(dot(-normal, lightData.lights[i].direction.xyz), 0, 1);
+		float diffuseFactor = clamp(dot(-normal, lightData.lights[i].direction.xyz), 0, 1);
+		color += diffuseTexColor * lightData.lights[i].diffuseColor * diffuseFactor;
 		
 		// Specular term
 		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normal);
-		float specularFactor = pow(clamp(dot(cameraDirection, reflectedLightDirection), 0, 1), parameters.bumpSpecularGloss);
-		color += diffuseTexColor * lightData.lights[i].specularColor * specularFactor;
+		float specularFactor = pow(clamp(dot(cameraDirection, reflectedLightDirection), 0, 1), parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
+		color += lightData.lights[i].specularColor * specularFactor;
 	}
 	
 	// Lightmap
