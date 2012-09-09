@@ -58,7 +58,7 @@
 							<array class="NSMutableArray" key="NSSubviews">
 								<object class="NSScrollView" id="267411227">
 									<reference key="NSNextResponder" ref="750055160"/>
-									<int key="NSvFlags">256</int>
+									<int key="NSvFlags">4352</int>
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSClipView" id="398911370">
 											<reference key="NSNextResponder" ref="267411227"/>
@@ -66,9 +66,9 @@
 											<array class="NSMutableArray" key="NSSubviews">
 												<object class="NSOutlineView" id="109434380">
 													<reference key="NSNextResponder" ref="398911370"/>
-													<int key="NSvFlags">256</int>
+													<int key="NSvFlags">4352</int>
 													<array class="NSMutableArray" key="NSSubviews"/>
-													<string key="NSFrameSize">{157, 392}</string>
+													<string key="NSFrameSize">{159, 392}</string>
 													<reference key="NSSuperview" ref="398911370"/>
 													<reference key="NSWindow"/>
 													<reference key="NSNextKeyView" ref="312862634"/>
@@ -85,7 +85,7 @@
 													<array class="NSMutableArray" key="NSTableColumns">
 														<object class="NSTableColumn" id="511774369">
 															<string key="NSIdentifier">AutomaticTableColumnIdentifier.0</string>
-															<double key="NSWidth">154</double>
+															<double key="NSWidth">156</double>
 															<double key="NSMinWidth">16</double>
 															<double key="NSMaxWidth">1000</double>
 															<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -184,7 +184,7 @@
 													<float key="NSOutlineViewIndentationPerLevelKey">14</float>
 												</object>
 											</array>
-											<string key="NSFrame">{{1, 1}, {157, 392}}</string>
+											<string key="NSFrameSize">{159, 392}</string>
 											<reference key="NSSuperview" ref="267411227"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="109434380"/>
@@ -221,12 +221,12 @@
 											<double key="NSPercent">0.99358974358974361</double>
 										</object>
 									</array>
-									<string key="NSFrameSize">{159, 394}</string>
+									<string key="NSFrameSize">{159, 392}</string>
 									<reference key="NSSuperview" ref="750055160"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="398911370"/>
 									<string key="NSReuseIdentifierKey">_NS:9</string>
-									<int key="NSsFlags">133682</int>
+									<int key="NSsFlags">133680</int>
 									<reference key="NSVScroller" ref="312862634"/>
 									<reference key="NSHScroller" ref="87163752"/>
 									<reference key="NSContentView" ref="398911370"/>
@@ -238,7 +238,7 @@
 								<object class="NSCustomView" id="540800738">
 									<reference key="NSNextResponder" ref="750055160"/>
 									<int key="NSvFlags">256</int>
-									<string key="NSFrame">{{160, 0}, {347, 394}}</string>
+									<string key="NSFrame">{{160, 0}, {347, 392}}</string>
 									<reference key="NSSuperview" ref="750055160"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="554967103"/>
@@ -246,7 +246,7 @@
 									<string key="NSClassName">NSView</string>
 								</object>
 							</array>
-							<string key="NSFrame">{{0, 20}, {507, 394}}</string>
+							<string key="NSFrame">{{0, 22}, {507, 392}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="267411227"/>
@@ -256,7 +256,7 @@
 						<object class="NSButton" id="554967103">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">292</int>
-							<string key="NSFrameSize">{18, 19}</string>
+							<string key="NSFrame">{{0, 1}, {18, 19}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="872601105"/>
@@ -289,10 +289,9 @@
 						<object class="NSButton" id="872601105">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">292</int>
-							<string key="NSFrame">{{20, 0}, {18, 19}}</string>
+							<string key="NSFrame">{{20, 1}, {18, 19}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="1070113299">
@@ -324,6 +323,8 @@
 				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
 				<string key="NSMinSize">{94, 108}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
+				<bool key="NSAutorecalculatesContentBorderThicknessMinY">NO</bool>
+				<double key="NSContentBorderThicknessMinY">22</double>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
 			<object class="NSCustomObject" id="796877042">
@@ -414,9 +415,9 @@
 						<int key="objectID">6</int>
 						<reference key="object" ref="568628114"/>
 						<array class="NSMutableArray" key="children">
+							<reference ref="750055160"/>
 							<reference ref="554967103"/>
 							<reference ref="872601105"/>
-							<reference ref="750055160"/>
 						</array>
 						<reference key="parent" ref="275939982"/>
 					</object>

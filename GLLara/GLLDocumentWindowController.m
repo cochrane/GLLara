@@ -95,8 +95,6 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 {
     [super windowDidLoad];
 	
-	[self.window setContentBorderThickness:20.0 forEdge:NSMinYEdge];
-	
 	self.sourceView.dataSource = self;
 	self.sourceView.delegate = self;
 }
