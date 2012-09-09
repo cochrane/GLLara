@@ -50,9 +50,6 @@ void main()
 	vec3 normalFromMap = normalMap.rgb * 2 - 1;
 	vec3 normal = normalize(tangentToWorld * normalFromMap);
 	
-	vec3 normalFromMap = (normalMap.rgb + detailNormalMap1.rgb * maskColor.r + detailNormalMap2.rgb * maskColor.g) * 2 - 1;
-	vec3 normal = normalize(tangentToWorld * normalFromMap);
-	
 	// Direction to camera
 	vec3 cameraDirection = normalize(lightData.cameraPosition.xyz - positionWorld);
 	
@@ -60,7 +57,7 @@ void main()
 	for (int i = 0; i < 3; i++)
 	{
 		// Diffuse term; this version does not use specular
-		color += diffuseTexColor * lightData.lights[i].diffuseColor * clamp(dot(-normalWorld, lightData.lights[i].direction.xyz), 0, 1);
+		color += diffuseTexColor * lightData.lights[i].diffuseColor * max(dot(-normal, lightData.lights[i].direction.xyz), 0);
 	}
 	
 	// Apply reflection

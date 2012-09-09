@@ -43,7 +43,7 @@ void main()
 	for (int i = 0; i < 3; i++)
 	{
 		// Diffuse term; this version does not use specular
-		color += diffuseTexColor * lightData.lights[i].diffuseColor * clamp(dot(-normalWorld, lightData.lights[i].direction.xyz), 0, 1);
+		color += diffuseTexColor * lightData.lights[i].diffuseColor * max(dot(-normalWorld, lightData.lights[i].direction.xyz), 0);
 	}
 	
 	// Lightmap
