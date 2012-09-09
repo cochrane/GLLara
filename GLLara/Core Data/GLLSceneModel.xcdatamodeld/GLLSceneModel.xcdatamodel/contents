@@ -48,6 +48,12 @@
         <attribute name="cullFaceMode" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshSettings" inverseEntity="GLLItem" syncable="YES"/>
+        <relationship name="renderParameters" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLRenderParameter" inverseName="mesh" inverseEntity="GLLRenderParameter" syncable="YES"/>
+    </entity>
+    <entity name="GLLRenderParameter" representedClassName="GLLRenderParameter" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="mesh" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLMeshSettings" inverseName="renderParameters" inverseEntity="GLLMeshSettings" syncable="YES"/>
     </entity>
     <elements>
         <element name="GLLAmbientLight" positionX="160" positionY="192" width="128" height="60"/>
@@ -56,6 +62,7 @@
         <element name="GLLDirectionalLight" positionX="160" positionY="192" width="128" height="120"/>
         <element name="GLLItem" positionX="160" positionY="192" width="128" height="180"/>
         <element name="GLLLight" positionX="160" positionY="192" width="128" height="150"/>
-        <element name="GLLMeshSettings" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="GLLMeshSettings" positionX="-162" positionY="90" width="128" height="103"/>
+        <element name="GLLRenderParameter" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>

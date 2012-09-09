@@ -70,4 +70,14 @@
 	}
 }
 
+- (void)unload;
+{
+	for (GLLTransformedMeshDrawer *drawer in solidDrawers)
+		[drawer unload];
+	
+	for (GLLTransformedMeshDrawer *drawer in alphaDrawers)
+		[drawer unload];
+	
+}
+
 @end

@@ -13,10 +13,12 @@
 
 #import "GLLAmbientLight.h"
 #import "GLLBoneTransformation.h"
+#import "GLLDirectionalLight.h"
 #import "GLLItem.h"
 #import "GLLItemDrawer.h"
-#import "GLLDirectionalLight.h"
+#import "GLLMeshSettings.h"
 #import "GLLProgram.h"
+#import "GLLRenderParameter.h"
 #import "GLLResourceManager.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLView.h"
@@ -24,6 +26,7 @@
 #import "simd_project.h"
 
 static NSString *transformationsKeyPath = @"relativeTransform";
+static NSString *renderSettingsKeyPath = @"renderSettings";
 
 struct GLLLightBlock
 {
@@ -188,7 +191,7 @@ struct GLLAlphaTestBlock
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:transformationsKeyPath])
+	if ([keyPath isEqual:transformationsKeyPath] || [keyPath isEqual:renderSettingsKeyPath] || [keyPath isEqual:@"value"])
 	{
 		self.view.needsDisplay = YES;
 	}
@@ -295,11 +298,29 @@ struct GLLAlphaTestBlock
 
 	for (GLLBoneTransformation *boneTransform in item.boneTransformations)
 		[boneTransform addObserver:self forKeyPath:transformationsKeyPath options:0 context:0];
+	
+	for (GLLMeshSettings *settings in item.meshSettings)
+	{
+		for (GLLRenderParameter *param in settings.renderParameters)
+			[param addObserver:self forKeyPath:@"value" options:0 context:0];
+		
+		[settings addObserver:self forKeyPath:renderSettingsKeyPath options:0 context:0];
+	}
 }
 - (void)_unregisterDrawer:(GLLItemDrawer *)drawer
 {
 	for (GLLBoneTransformation *boneTransform in drawer.item.boneTransformations)
 		[boneTransform removeObserver:self forKeyPath:transformationsKeyPath];
+	
+	for (GLLMeshSettings *settings in drawer.item.meshSettings)
+	{
+		for (GLLRenderParameter *param in settings.renderParameters)
+			[param removeObserver:self forKeyPath:@"value"];
+		
+		[settings removeObserver:self forKeyPath:renderSettingsKeyPath];
+	}
+
+	[drawer unload];
 }
 
 @end

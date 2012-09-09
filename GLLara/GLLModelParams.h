@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class GLLModel;
+@class GLLRenderParameterDescription;
 @class GLLShaderDescriptor;
 
 /*!
@@ -49,6 +50,11 @@
 
 - (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
 - (NSDictionary *)renderParametersForMesh:(NSString *)mesh;
+
+/*
+ * Render parameter descriptions
+ */
+- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
 
 /*
  * Splitting up objects

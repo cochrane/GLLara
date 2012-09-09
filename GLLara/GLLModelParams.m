@@ -11,6 +11,7 @@
 #import "GLLMesh.h"
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
+#import "GLLRenderParameterDescription.h"
 #import "GLLShaderDescriptor.h"
 
 /*
@@ -50,6 +51,7 @@ static NSCache *parameterCache;
 	NSDictionary *ownDefaultParameters;
 	NSDictionary *ownMeshSplitters;
 	NSString *defaultMeshGroup;
+	NSDictionary *ownRenderParameterDescriptions;
 	
 	GLLModel *model;
 }
@@ -145,6 +147,12 @@ static NSCache *parameterCache;
 		[shaders addObject:[[GLLShaderDescriptor alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil]];
 	ownShaders = [shaders copy];
 	
+	// And render parameters
+	NSMutableDictionary *renderParameters = [[NSMutableDictionary alloc] initWithCapacity:[propertyList[@"renderParameterDescriptions"] count]];
+	for (NSString *renderParameterName in propertyList[@"renderParameterDescriptions"])
+		[renderParameters setObject:[[GLLRenderParameterDescription alloc] initWithPlist:propertyList[@"renderParameterDescriptions"][renderParameterName]] forKey:renderParameterName];
+	ownRenderParameterDescriptions = [renderParameters copy];
+	
 	return self;
 }
 
@@ -161,6 +169,7 @@ static NSCache *parameterCache;
 	ownShaders = [NSSet set];
 	ownDefaultParameters = @{};
 	ownMeshSplitters = @{};
+	ownRenderParameterDescriptions = @{};
 	
 	// All others are nil
 	ownCameraTargets = nil;
@@ -318,6 +327,20 @@ static NSCache *parameterCache;
 	[result addEntriesFromDictionary:ownRenderParameters[mesh]];
 
 	return [result copy];
+}
+
+#pragma mark - Render parameter descriptions
+
+- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName
+{
+	GLLRenderParameterDescription *result = ownRenderParameterDescriptions[parameterName];
+	if (!result)
+	{
+		if (self.base) return [self.base descriptionForParameter:parameterName];
+		else return nil;
+	}
+	
+	return result;
 }
 
 #pragma mark - Splitting

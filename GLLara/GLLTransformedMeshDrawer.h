@@ -26,4 +26,6 @@
 
 - (void)drawWithTransforms:(const mat_float16 *)transforms;
 
+- (void)unload;
+
 @end

@@ -11,16 +11,48 @@
 #import "GLLItem.h"
 #import "GLLMesh.h"
 #import "GLLModel.h"
+#import "GLLRenderParameter.h"
+#import "GLLShaderDescriptor.h"
 
 @implementation GLLMeshSettings
+
++ (NSSet *)keyPathsForValuesAffectingRenderSettings
+{
+	return [NSSet setWithObjects:@"isVisible", @"cullFaceMode", nil];
+}
 
 @dynamic cullFaceMode;
 @dynamic isVisible;
 @dynamic item;
+@dynamic renderParameters;
 
 @dynamic mesh;
 @dynamic meshIndex;
 @dynamic displayName;
+
+@synthesize renderSettings;
+
+- (void)setItem:(GLLItem *)item
+{
+	[self willChangeValueForKey:@"item"];
+	[self setPrimitiveValue:item forKey:@"item"];
+	[self didChangeValueForKey:@"item"];
+	
+	// Replace all render parameters
+	NSDictionary *values = self.mesh.renderParameters;
+	NSMutableSet *renderParameters = [self mutableSetValueForKey:@"renderParameters"];
+	[renderParameters removeAllObjects];
+	for (NSString *uniformName in self.mesh.shader.allUniformNames)
+	{
+		GLLRenderParameter *parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLRenderParameter" inManagedObjectContext:self.managedObjectContext];
+		parameter.name = uniformName;
+		[parameter setValue:values[uniformName] forKey:@"value"];
+		
+		[renderParameters addObject:parameter];
+	}
+}
+
+#pragma mark - Derived
 
 - (NSUInteger)meshIndex
 {

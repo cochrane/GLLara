@@ -25,4 +25,6 @@
 - (void)drawSolid;
 - (void)drawAlpha;
 
+- (void)unload;
+
 @end

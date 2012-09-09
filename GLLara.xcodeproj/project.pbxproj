@@ -87,6 +87,9 @@
 		52BB21B815FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B715FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs */; };
 		52BB21BA15FB7D0600937450 /* ship.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B915FB7D0500937450 /* ship.modelparams.plist */; };
 		52BB21BC15FB7E4A00937450 /* yacht.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */; };
+		52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21C715FC732800937450 /* GLLRenderParameter.m */; };
+		52BB21CA15FC75B500937450 /* RenderParameters.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21C915FC75B500937450 /* RenderParameters.strings */; };
+		52BB21CD15FC7B8D00937450 /* GLLRenderParameterDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21CC15FC7B8C00937450 /* GLLRenderParameterDescription.m */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
 		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */; };
@@ -239,6 +242,11 @@
 		52BB21B715FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmap2TexCoords.fs; sourceTree = "<group>"; };
 		52BB21B915FB7D0500937450 /* ship.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ship.modelparams.plist; sourceTree = "<group>"; };
 		52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = yacht.modelparams.plist; sourceTree = "<group>"; };
+		52BB21C615FC732700937450 /* GLLRenderParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderParameter.h; sourceTree = "<group>"; };
+		52BB21C715FC732800937450 /* GLLRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderParameter.m; sourceTree = "<group>"; };
+		52BB21C915FC75B500937450 /* RenderParameters.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = RenderParameters.strings; sourceTree = "<group>"; };
+		52BB21CB15FC7B8C00937450 /* GLLRenderParameterDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderParameterDescription.h; sourceTree = "<group>"; };
+		52BB21CC15FC7B8C00937450 /* GLLRenderParameterDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderParameterDescription.m; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
 		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
@@ -348,6 +356,7 @@
 				525ACD5415F0F1A700534E7D /* InfoPlist.strings */,
 				525ACD5715F0F1A700534E7D /* main.m */,
 				525ACD5A15F0F1A700534E7D /* Credits.rtf */,
+				52BB21C915FC75B500937450 /* RenderParameters.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -464,6 +473,8 @@
 				529692D315F24EF100DF2FA3 /* GLLBone.m */,
 				5296945815F6C84900DF2FA3 /* GLLShaderDescriptor.h */,
 				5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */,
+				52BB21CB15FC7B8C00937450 /* GLLRenderParameterDescription.h */,
+				52BB21CC15FC7B8C00937450 /* GLLRenderParameterDescription.m */,
 			);
 			name = "Model Resources";
 			sourceTree = "<group>";
@@ -481,6 +492,8 @@
 				529692DC15F2759400DF2FA3 /* GLLBoneTransformation.m */,
 				5296947115F7FB3200DF2FA3 /* GLLMeshSettings.h */,
 				5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */,
+				52BB21C615FC732700937450 /* GLLRenderParameter.h */,
+				52BB21C715FC732800937450 /* GLLRenderParameter.m */,
 			);
 			name = "Scene members";
 			sourceTree = "<group>";
@@ -683,6 +696,7 @@
 				52BB21B815FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs in Resources */,
 				52BB21BA15FB7D0600937450 /* ship.modelparams.plist in Resources */,
 				52BB21BC15FB7E4A00937450 /* yacht.modelparams.plist in Resources */,
+				52BB21CA15FC75B500937450 /* RenderParameters.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -754,6 +768,8 @@
 				5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */,
 				5291DB9415FBF7BE00ECDBCA /* GLLAmbientLight.m in Sources */,
 				5291DB9815FBF97000ECDBCA /* GLLAmbientLightViewController.m in Sources */,
+				52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */,
+				52BB21CD15FC7B8D00937450 /* GLLRenderParameterDescription.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

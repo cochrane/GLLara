@@ -30,6 +30,13 @@
 @property (nonatomic, copy, readonly) NSArray *textureUniformNames;
 
 /*
+ * Uniforms that are not specified by models.
+ */
+@property (nonatomic, copy, readonly) NSArray *additionalUniformNames;
+
+@property (nonatomic, copy, readonly) NSArray *allUniformNames;
+
+/*
  * Mesh groups for which this shader should be used.
  */
 @property (nonatomic, copy, readonly) NSSet *solidMeshGroups;

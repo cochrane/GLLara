@@ -21,8 +21,6 @@
 {
 	GLuint vertexArray;
 	GLsizei elementsCount;
-	
-	GLuint renderParametersBuffer;
 }
 
 @end
@@ -49,34 +47,7 @@
 		
 	}
 	_textures = [textures copy];
-	
-	// If there are render parameters to be set, create a uniform buffer for them and set their values from the mesh.
-	if (_program.renderParametersUniformBlockIndex != GL_INVALID_INDEX)
-	{
-		GLint bufferLength;
-		glGetActiveUniformBlockiv(_program.programID, _program.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &bufferLength);
-		void *data = malloc(bufferLength);
 		
-		for (NSString *uniformName in mesh.renderParameters)
-		{
-			NSString *fullName = [@"RenderParameters." stringByAppendingString:uniformName];
-			GLuint uniformIndex;
-			glGetUniformIndices(_program.programID, 1, (const GLchar *[]) { fullName.UTF8String }, &uniformIndex);
-			if (uniformIndex == GL_INVALID_INDEX) continue;
-			
-			GLint byteOffset;
-			glGetActiveUniformsiv(_program.programID, 1, &uniformIndex, GL_UNIFORM_OFFSET, &byteOffset);
-			
-			*((float *) &data[byteOffset]) = [mesh.renderParameters[uniformName] floatValue];
-		}
-		
-		glGenBuffers(1, &renderParametersBuffer);
-		glBindBuffer(GL_UNIFORM_BUFFER, renderParametersBuffer);
-		glBufferData(GL_UNIFORM_BUFFER, bufferLength, data, GL_STATIC_DRAW);
-		
-		free(data);
-	}
-	
 	// Create the element and vertex buffers, and spend a lot of time setting up the vertex attribute arrays and pointers.
 	glGenVertexArrays(1, &vertexArray);
 	glBindVertexArray(vertexArray);
@@ -130,10 +101,6 @@
 	// Use this program, with the correct transformation.
 	glUseProgram(self.program.programID);
 	glUniformMatrix4fv(self.program.boneMatricesUniformLocation, (GLsizei) self.mesh.boneIndices.count, GL_FALSE, (const GLfloat *) transforms);
-	
-	// If there are render parameters, apply them
-	if (renderParametersBuffer != 0)
-		glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingRenderParameters, renderParametersBuffer);
 
 	// And don't forget the textures
 	for (GLuint i = 0; i < self.textures.count; i++)
@@ -150,15 +117,13 @@
 - (void)unload
 {
 	glDeleteVertexArrays(1, &vertexArray);
-	glDeleteBuffers(1, &renderParametersBuffer);
 	vertexArray = 0;
 	elementsCount = 0;
-	renderParametersBuffer = 0;
 }
 
 - (void)dealloc
 {
-	NSAssert(vertexArray == 0 && elementsCount == 0 && renderParametersBuffer == 0, @"Did not call unload before calling dealloc!");
+	NSAssert(vertexArray == 0 && elementsCount == 0, @"Did not call unload before calling dealloc!");
 }
 
 @end

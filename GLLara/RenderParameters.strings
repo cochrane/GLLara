@@ -1,0 +1,30 @@
+/* 
+  RenderParameters.strings
+  GLLara
+
+  Created by Torsten Kammer on 09.09.12.
+  Copyright (c) 2012 Torsten Kammer. All rights reserved.
+*/
+
+/* bump2UVScale */
+
+"Bump Detail UV Scale 2" = "Bump Detail UV Scale 2";
+"How often the second detail texture is repeated over the model. Higher values mean smaller structures." = "How often the second detail texture is repeated over the model. Higher values mean smaller structures.";
+
+/* bump1UVScale */
+"Bump Detail UV Scale 1" = "Bump Detail UV Scale 1";
+
+/* bumpUVScale */
+"Bump Detail UV Scale" = "Bump Detail UV Scale";
+
+/* reflectionAmount */
+"Reflection" = "Reflection";
+"Blends the color with the environment map." = "Blends the color with the environment map.";
+
+/* bumpSpecularGloss */
+"Bump Specular Gloss" = "Bump Specular Gloss";
+"Sharpness of the highlights. Higher values produce smaller, more focused highlights." = "Sharpness of the highlights. Higher values produce smaller, more focused highlights.";
+
+/* bumpSpecularAmount */
+"Bump Specular Amount" = "Bump Specular Amount";
+"Intensity of the highlights." = "Intensity of the highlights.";

@@ -43,4 +43,9 @@
 	return [NSString stringWithFormat:NSLocalizedString(@"%lu vertices, %lu faces, %lu textures", @"mesh settings view: Status bar"), settings.mesh.countOfVertices, settings.mesh.countOfElements / 3, settings.mesh.textures.count];
 }
 
+-(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+	return [tableView makeViewWithIdentifier:@"RenderParameterView" owner:self];
+}
+
 @end

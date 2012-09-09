@@ -2,6 +2,75 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>renderParameterDescriptions</key>
+	<dict>
+		<key>bump2UVScale</key>
+		<dict>
+			<key>title</key>
+			<string>Bump Detail UV Scale 2</string>
+			<key>description</key>
+			<string>How often the second detail texture is repeated over the model. Higher values mean smaller structures.</string>
+			<key>max</key>
+			<integer>32</integer>
+			<key>min</key>
+			<real>0.01</real>
+		</dict>
+		<key>bump1UVScale</key>
+		<dict>
+			<key>title</key>
+			<string>Bump Detail UV Scale 1</string>
+			<key>description</key>
+			<string>How often the first detail texture is repeated over the model. Higher values mean smaller structures.</string>
+			<key>max</key>
+			<integer>32</integer>
+			<key>min</key>
+			<real>0.01</real>
+		</dict>
+		<key>bumpUVScale</key>
+		<dict>
+			<key>title</key>
+			<string>Bump Detail UV Scale</string>
+			<key>description</key>
+			<string>How often the detail texture is repeated over the model. Higher values mean smaller structures.</string>
+			<key>max</key>
+			<integer>32</integer>
+			<key>min</key>
+			<real>0.01</real>
+		</dict>
+		<key>reflectionAmount</key>
+		<dict>
+			<key>title</key>
+			<string>Reflection</string>
+			<key>description</key>
+			<string>Blends the color with the environment map.</string>
+			<key>max</key>
+			<integer>1</integer>
+			<key>min</key>
+			<integer>0</integer>
+		</dict>
+		<key>bumpSpecularGloss</key>
+		<dict>
+			<key>title</key>
+			<string>Bump Specular Gloss</string>
+			<key>description</key>
+			<string>Sharpness of the highlights. Higher values produce smaller, more focused highlights.</string>
+			<key>max</key>
+			<integer>100</integer>
+			<key>min</key>
+			<integer>0</integer>
+		</dict>
+		<key>bumpSpecularAmount</key>
+		<dict>
+			<key>title</key>
+			<string>Bump Specular Amount</string>
+			<key>description</key>
+			<string>Intensity of the highlights.</string>
+			<key>max</key>
+			<integer>1</integer>
+			<key>min</key>
+			<integer>0</integer>
+		</dict>
+	</dict>
 	<key>defaultRenderParameters</key>
 	<dict>
 		<key>bumpSpecularGloss</key>
@@ -142,6 +211,10 @@
 		</dict>
 		<key>MetallicBump3</key>
 		<dict>
+			<key>additionalParameters</key>
+			<array>
+				<string>bumpSpecularGloss</string>
+			</array>
 			<key>textures</key>
 			<array>
 				<string>diffuseTexture</string>
@@ -221,6 +294,10 @@
 		</dict>
 		<key>DiffuseBump</key>
 		<dict>
+			<key>additionalParameters</key>
+			<array>
+				<string>bumpSpecularGloss</string>
+			</array>
 			<key>solidMeshGroups</key>
 			<array>
 				<string>MeshGroup4</string>
@@ -246,6 +323,10 @@
 		</dict>
 		<key>DiffuseLightmapBump</key>
 		<dict>
+			<key>additionalParameters</key>
+			<array>
+				<string>bumpSpecularGloss</string>
+			</array>
 			<key>alphaMeshGroups</key>
 			<array>
 				<string>MeshGroup8</string>
@@ -272,6 +353,10 @@
 		</dict>
 		<key>DiffuseLightmapBump3Specular</key>
 		<dict>
+			<key>additionalParameters</key>
+			<array>
+				<string>bumpSpecularGloss</string>
+			</array>
 			<key>textures</key>
 			<array>
 				<string>diffuseTexture</string>
@@ -303,6 +388,10 @@
 		</dict>
 		<key>DiffuseLightmapBumpSpecular</key>
 		<dict>
+			<key>additionalParameters</key>
+			<array>
+				<string>bumpSpecularGloss</string>
+			</array>
 			<key>textures</key>
 			<array>
 				<string>diffuseTexture</string>
@@ -329,6 +418,10 @@
 		</dict>
 		<key>DiffuseLightmapBump3</key>
 		<dict>
+			<key>additionalParameters</key>
+			<array>
+				<string>bumpSpecularGloss</string>
+			</array>
 			<key>alphaMeshGroups</key>
 			<array>
 				<string>MeshGroup20</string>

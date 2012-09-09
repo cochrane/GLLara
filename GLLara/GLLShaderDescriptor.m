@@ -23,6 +23,7 @@
 	
 	_parameterUniformNames = plist[@"parameters"];
 	_textureUniformNames = plist[@"textures"];
+	_additionalUniformNames = plist[@"additionalParameters"];
 	
 	_alphaMeshGroups = [NSSet setWithArray:plist[@"alphaMeshGroups"]];
 	_solidMeshGroups = [NSSet setWithArray:plist[@"solidMeshGroups"]];
@@ -30,6 +31,14 @@
 	_programIdentifier = [NSString stringWithFormat:@"%@ (%@)", _name, _baseURL.absoluteString];
 	
 	return self;
+}
+
+- (NSArray *)allUniformNames
+{
+	if (!self.parameterUniformNames)
+		return self.additionalUniformNames;
+	else
+		return [self.parameterUniformNames arrayByAddingObjectsFromArray:self.additionalUniformNames];
 }
 
 @end
