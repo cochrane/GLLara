@@ -183,6 +183,7 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 	vImage_Buffer input = { .height = height, .width = width, .rowBytes = 4*width, .data = bufferData };
 	vImage_Buffer output = { .height = height, .width = width, .rowBytes = 4*width, .data = unpremultipliedBufferData };
 	vImageUnpremultiplyData_ARGB8888(&input, &output, 0);
+	free(bufferData);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
