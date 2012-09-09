@@ -8,6 +8,8 @@
 
 #import "GLLTransformedMeshDrawer.h"
 
+#import <OpenGL/gl3.h>
+
 #import "GLLMeshDrawer.h"
 #import "GLLMeshSettings.h"
 
@@ -30,7 +32,28 @@
 	if (!self.settings.isVisible)
 		return;
 	
+	switch (self.settings.cullFaceMode)
+	{
+		case GLLCullBack:
+			glCullFace(GL_BACK);
+			break;
+			
+		case GLLCullFront:
+			glCullFace(GL_FRONT);
+			break;
+			
+		case GLLCullNone:
+			glDisable(GL_CULL_FACE);
+			
+		default:
+			break;
+	}
+	
 	[self.drawer drawWithTransforms:transforms];
+	
+	// Enable it again.
+	if (self.settings.cullFaceMode == GLLCullNone)
+		glEnable(GL_CULL_FACE);
 }
 
 @end

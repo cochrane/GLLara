@@ -14,11 +14,19 @@
 @class GLLItem;
 @class GLLMesh;
 
+typedef enum GLLCullFaceMode
+{
+	GLLCullBack,
+	GLLCullFront,
+	GLLCullNone
+} GLLCullFaceMode;
+
 @interface GLLMeshSettings : NSManagedObject <GLLSourceListItem>
 
 // Core data
 @property (nonatomic) BOOL isVisible;
 @property (nonatomic, retain) GLLItem *item;
+@property (nonatomic) int16_t cullFaceMode;
 
 // Derived
 @property (nonatomic, readonly) NSUInteger meshIndex;

@@ -45,16 +45,17 @@
         <attribute name="index" optional="YES" attributeType="Integer 64" minValueString="0" maxValueString="3" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="GLLMeshSettings" representedClassName="GLLMeshSettings" syncable="YES">
+        <attribute name="cullFaceMode" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshSettings" inverseEntity="GLLItem" syncable="YES"/>
     </entity>
     <elements>
-        <element name="GLLBoneTransformation" positionX="160" positionY="192" width="128" height="148"/>
-        <element name="GLLItem" positionX="160" positionY="192" width="128" height="180"/>
-        <element name="GLLDirectionalLight" positionX="160" positionY="192" width="128" height="120"/>
-        <element name="GLLMeshSettings" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="GLLCamera" positionX="160" positionY="192" width="128" height="180"/>
         <element name="GLLAmbientLight" positionX="160" positionY="192" width="128" height="60"/>
+        <element name="GLLBoneTransformation" positionX="160" positionY="192" width="128" height="148"/>
+        <element name="GLLCamera" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="GLLDirectionalLight" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="GLLItem" positionX="160" positionY="192" width="128" height="180"/>
         <element name="GLLLight" positionX="160" positionY="192" width="128" height="150"/>
+        <element name="GLLMeshSettings" positionX="160" positionY="192" width="128" height="90"/>
     </elements>
 </model>

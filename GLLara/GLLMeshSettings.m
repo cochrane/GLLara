@@ -14,6 +14,7 @@
 
 @implementation GLLMeshSettings
 
+@dynamic cullFaceMode;
 @dynamic isVisible;
 @dynamic item;
 
