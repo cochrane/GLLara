@@ -41,7 +41,8 @@
 {
 	if (!self.isEnabled)
 	{
-		struct GLLLightUniformBlock block = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, 0.0, 0.0 };
+		struct GLLLightUniformBlock block;
+		bzero(&block, sizeof(block));
 		return [NSData dataWithBytes:&block length:sizeof(block)];
 	}
 		
