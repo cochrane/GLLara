@@ -90,6 +90,8 @@
 		52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21C715FC732800937450 /* GLLRenderParameter.m */; };
 		52BB21CA15FC75B500937450 /* RenderParameters.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21C915FC75B500937450 /* RenderParameters.strings */; };
 		52BB21CD15FC7B8D00937450 /* GLLRenderParameterDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21CC15FC7B8C00937450 /* GLLRenderParameterDescription.m */; };
+		52BB21CF15FCA4A000937450 /* amanda_light.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */; };
+		52BB21D115FCA6DC00937450 /* amanda_heavy.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21D015FCA6DC00937450 /* amanda_heavy.modelparams.plist */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
 		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */; };
@@ -247,6 +249,8 @@
 		52BB21C915FC75B500937450 /* RenderParameters.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = RenderParameters.strings; sourceTree = "<group>"; };
 		52BB21CB15FC7B8C00937450 /* GLLRenderParameterDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderParameterDescription.h; sourceTree = "<group>"; };
 		52BB21CC15FC7B8C00937450 /* GLLRenderParameterDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderParameterDescription.m; sourceTree = "<group>"; };
+		52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = amanda_light.modelparams.plist; sourceTree = "<group>"; };
+		52BB21D015FCA6DC00937450 /* amanda_heavy.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = amanda_heavy.modelparams.plist; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
 		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
@@ -430,6 +434,8 @@
 				52BB21B215FB7A6200937450 /* foliage_tree4.modelparams.plist */,
 				52BB21B915FB7D0500937450 /* ship.modelparams.plist */,
 				52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */,
+				52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */,
+				52BB21D015FCA6DC00937450 /* amanda_heavy.modelparams.plist */,
 			);
 			path = "Model Parameters";
 			sourceTree = "<group>";
@@ -697,6 +703,8 @@
 				52BB21BA15FB7D0600937450 /* ship.modelparams.plist in Resources */,
 				52BB21BC15FB7E4A00937450 /* yacht.modelparams.plist in Resources */,
 				52BB21CA15FC75B500937450 /* RenderParameters.strings in Resources */,
+				52BB21CF15FCA4A000937450 /* amanda_light.modelparams.plist in Resources */,
+				52BB21D115FCA6DC00937450 /* amanda_heavy.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
