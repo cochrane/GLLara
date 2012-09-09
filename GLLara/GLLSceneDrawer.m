@@ -49,7 +49,11 @@ struct GLLAlphaTestBlock
 	
 	GLuint lightBuffer;
 	GLuint transformBuffer;
-	GLuint alphaTestBuffer;
+	
+	// Alpha test
+	GLuint alphaTestDisabledBuffer;
+	GLuint alphaTestPassGreaterBuffer;
+	GLuint alphaTestPassLessBuffer;
 	
 	mat_float16 lookatMatrix;
 	mat_float16 projectionMatrix;
@@ -145,10 +149,18 @@ struct GLLAlphaTestBlock
 	[view addObserver:self forKeyPath:@"camera.viewProjectionMatrixData" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:0];
 	
 	// Alpha test buffer
-	glGenBuffers(1, &alphaTestBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, alphaTestBuffer);
-	struct GLLAlphaTestBlock alphaBlock = { .mode = 0, .reference = 0 };
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
+	glGenBuffers(1, &alphaTestDisabledBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, alphaTestDisabledBuffer);
+	struct GLLAlphaTestBlock alphaBlock = { .mode = 0, .reference = .9 };
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
+	glGenBuffers(1, &alphaTestPassGreaterBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, alphaTestPassGreaterBuffer);
+	alphaBlock.mode = 1;
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
+	glGenBuffers(1, &alphaTestPassLessBuffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, alphaTestPassLessBuffer);
+	alphaBlock.mode = 2;
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
 	
 	// Other necessary render state. Thanks to Core Profile, that got cut down a lot.
 	glEnable(GL_DEPTH_TEST);
@@ -240,20 +252,15 @@ struct GLLAlphaTestBlock
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestBuffer);
 	
 	// 1st pass: Draw items that do not need blending, without alpha test
-	glBindBuffer(GL_ARRAY_BUFFER, alphaTestBuffer);
-	struct GLLAlphaTestBlock alphaBlock = { .mode = 0, .reference = 0.9 };
-	glBufferData(GL_ARRAY_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestDisabledBuffer);
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[drawer drawSolid];
 	
 	// 2nd pass: Draw blended items, but only those pixels that are "almost opaque"
-	alphaBlock.mode = 1;
-	glBindBuffer(GL_ARRAY_BUFFER, alphaTestBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestPassGreaterBuffer);
 	
 	glEnable(GL_BLEND);
 	
@@ -261,9 +268,7 @@ struct GLLAlphaTestBlock
 		[drawer drawAlpha];
 	
 	// 3rd pass: Draw blended items, now only those things that are "mostly transparent".
-	alphaBlock.mode = 2;
-	glBindBuffer(GL_ARRAY_BUFFER, alphaTestBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_DYNAMIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestPassLessBuffer);
 	
 	glDepthMask(GL_FALSE);
 	for (GLLItemDrawer *drawer in itemDrawers)
