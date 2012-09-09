@@ -33,6 +33,10 @@
 {
 	return [NSSet setWithObjects:@"relativeTransform", @"parent.globalTransform", nil];
 }
++ (NSSet *)keyPathsForValuesAffectingGlobalPosition
+{
+	return [NSSet setWithObjects:@"globalTransform", @"bone.positionX", @"bone.positionY", @"bone.positionZ", nil];
+}
 
 @dynamic positionX;
 @dynamic positionY;
@@ -104,6 +108,11 @@
 	if (!self.hasParent) return self.relativeTransform;
 	
 	return simd_mat_mul(self.parent.globalTransform, self.relativeTransform);
+}
+
+- (vec_float4)globalPosition
+{
+	return simd_mat_vecmul(self.globalTransform, simd_make(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0));
 }
 
 #pragma mark - Source list item

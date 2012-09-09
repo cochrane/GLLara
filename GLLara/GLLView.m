@@ -11,6 +11,7 @@
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
 
+#import "GLLCamera.h"
 #import "GLLSceneDrawer.h"
 #import "GLLRenderWindowController.h"
 #import "GLLResourceManager.h"
@@ -63,6 +64,8 @@
 
 - (void)reshape
 {
+	self.camera.windowWidth = self.bounds.size.width;
+	self.camera.windowHeight = self.bounds.size.height;
 	[self.sceneDrawer setWindowSize:self.bounds.size];
 }
 

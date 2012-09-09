@@ -11,13 +11,15 @@
 #import <AppKit/NSPopover.h>
 #import <CoreData/CoreData.h>
 
+@class GLLCamera;
 @class GLLScene;
 @class GLLView;
 
 @interface GLLRenderWindowController : NSWindowController <NSPopoverDelegate>
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
+- (id)initWithCamera:(GLLCamera *)camera;
 
+@property (nonatomic, retain, readonly) GLLCamera *camera;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, retain) IBOutlet GLLView *renderView;

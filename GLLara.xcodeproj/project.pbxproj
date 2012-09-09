@@ -96,6 +96,7 @@
 		52BB21CF15FCA4A000937450 /* amanda_light.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */; };
 		52BB21D115FCA6DC00937450 /* amanda_heavy.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21D015FCA6DC00937450 /* amanda_heavy.modelparams.plist */; };
 		52BB21D715FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21D615FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist */; };
+		52BB21DB15FCF02200937450 /* GLLCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21DA15FCF02200937450 /* GLLCamera.m */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
 		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */; };
@@ -261,6 +262,8 @@
 		52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = amanda_light.modelparams.plist; sourceTree = "<group>"; };
 		52BB21D015FCA6DC00937450 /* amanda_heavy.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = amanda_heavy.modelparams.plist; sourceTree = "<group>"; };
 		52BB21D615FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_designer_peoples_choice.modelparams.plist; sourceTree = "<group>"; };
+		52BB21D915FCF02200937450 /* GLLCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLCamera.h; sourceTree = "<group>"; };
+		52BB21DA15FCF02200937450 /* GLLCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLCamera.m; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
 		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
@@ -513,6 +516,8 @@
 				5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */,
 				52BB21C615FC732700937450 /* GLLRenderParameter.h */,
 				52BB21C715FC732800937450 /* GLLRenderParameter.m */,
+				52BB21D915FCF02200937450 /* GLLCamera.h */,
+				52BB21DA15FCF02200937450 /* GLLCamera.m */,
 			);
 			name = "Scene members";
 			sourceTree = "<group>";
@@ -798,6 +803,7 @@
 				52BB21CD15FC7B8D00937450 /* GLLRenderParameterDescription.m in Sources */,
 				52AF114C15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.m in Sources */,
 				52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */,
+				52BB21DB15FCF02200937450 /* GLLCamera.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

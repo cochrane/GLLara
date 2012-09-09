@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import "simd_types.h"
+
 @class GLLBoneTransformation;
 
 @interface GLLCameraTarget : NSManagedObject
@@ -19,6 +21,7 @@
 
 // Derived
 @property (nonatomic, retain, readonly) NSString *displayName;
+@property (nonatomic, assign, readonly) vec_float4 position;
 
 @end
 

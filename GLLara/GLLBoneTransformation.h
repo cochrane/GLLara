@@ -41,4 +41,6 @@
 @property (nonatomic, assign, readonly) mat_float16 relativeTransform;
 @property (nonatomic, assign, readonly) mat_float16 globalTransform;
 
+@property (nonatomic, assign, readonly) vec_float4 globalPosition;
+
 @end

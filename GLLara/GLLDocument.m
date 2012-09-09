@@ -10,6 +10,7 @@
 
 #import "GLLAmbientLight.h"
 #import "GLLAngleRangeValueTransformer.h"
+#import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLRenderWindowController.h"
@@ -17,7 +18,6 @@
 @interface GLLDocument ()
 {
 	GLLDocumentWindowController *documentWindowController;
-	GLLRenderWindowController *renderWindowController;
 }
 
 @end
@@ -52,6 +52,10 @@
 		directionalLight.specularColor = [NSColor whiteColor];
 		directionalLight.index = i + 1;
 	}
+	
+	// Prepare standard camera
+	[NSEntityDescription insertNewObjectForEntityForName:@"GLLCamera" inManagedObjectContext:self.managedObjectContext];
+	
 	[self.managedObjectContext processPendingChanges];
 	[self.managedObjectContext.undoManager enableUndoRegistration];
 	
@@ -62,8 +66,17 @@
 {
 	documentWindowController = [[GLLDocumentWindowController alloc] initWithManagedObjectContext:self.managedObjectContext];
 	[self addWindowController:documentWindowController];
-	renderWindowController = [[GLLRenderWindowController alloc] initWithManagedObjectContext:self.managedObjectContext];
-	[self addWindowController:renderWindowController];
+
+	NSFetchRequest *camerasFetchRequest = [[NSFetchRequest alloc] init];
+	camerasFetchRequest.entity = [NSEntityDescription entityForName:@"GLLCamera" inManagedObjectContext:self.managedObjectContext];
+	camerasFetchRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES] ];
+	NSArray *cameras = [self.managedObjectContext executeFetchRequest:camerasFetchRequest error:NULL];
+	
+	for (GLLCamera *camera in cameras)
+	{
+		GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera];
+		[self addWindowController:controller];
+	}
 }
 
 @end

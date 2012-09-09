@@ -10,12 +10,13 @@
 #import <AppKit/NSOpenGL.h>
 #import <AppKit/NSOpenGLView.h>
 
-@class GLLResourceManager;
+@class GLLCamera;
 @class GLLSceneDrawer;
 @class GLLRenderWindowController;
 
 @interface GLLView : NSOpenGLView
 
+@property (nonatomic, retain) GLLCamera *camera;
 @property (nonatomic, weak) GLLRenderWindowController *windowController;
 
 @property (nonatomic, retain) GLLSceneDrawer *sceneDrawer;

@@ -35,11 +35,6 @@ struct GLLLightBlock
 	struct GLLLightUniformBlock lights[3];
 };
 
-struct GLLTransform
-{
-	mat_float16 viewProjection;
-};
-
 struct GLLAlphaTestBlock
 {
 	GLuint mode;
@@ -145,12 +140,9 @@ struct GLLAlphaTestBlock
 	glGenBuffers(1, &transformBuffer);
 	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
 	
-	lookatMatrix = simd_mat_lookat(simd_make(0.0, 0.0, -1.0, 0.0), lightBlock.cameraLocation);
-	projectionMatrix = simd_frustumMatrix(65.0, 1.0, 0.1, 10.0);
-	struct GLLTransform transformBlock;
-	transformBlock.viewProjection = simd_mat_mul(projectionMatrix, lookatMatrix);
-	
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(transformBlock), &transformBlock, GL_STATIC_DRAW);
+	mat_float16 identity = simd_mat_identity();
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(identity), &identity, GL_STATIC_DRAW);
+	[view addObserver:self forKeyPath:@"camera.viewProjectionMatrixData" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:0];
 	
 	// Alpha test buffer
 	glGenBuffers(1, &alphaTestBuffer);
@@ -185,14 +177,24 @@ struct GLLAlphaTestBlock
 	[lights[0] removeObserver:self forKeyPath:@"color"];
 	
 	for (int i = 0; i < 3; i++)
-		[lights[i + 1] removeObserver:@"self" forKeyPath:@"dataAsUniformBlock"];
-
+		[lights[i + 1] removeObserver:self forKeyPath:@"dataAsUniformBlock"];
+	
+	[self.view removeObserver:self forKeyPath:@"camera.viewProjectionMatrixData"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if ([keyPath isEqual:transformationsKeyPath] || [keyPath isEqual:renderSettingsKeyPath] || [keyPath isEqual:@"value"])
 	{
+		self.view.needsDisplay = YES;
+	}
+	else if ([keyPath isEqual:@"camera.viewProjectionMatrixData"])
+	{
+		[self.view.openGLContext makeCurrentContext];
+		
+		glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
+		glBufferData(GL_UNIFORM_BUFFER, [change[NSKeyValueChangeNewKey] length], [change[NSKeyValueChangeNewKey] bytes], GL_STATIC_DRAW);
+		
 		self.view.needsDisplay = YES;
 	}
 	else if ([keyPath isEqual:@"dataAsUniformBlock"])
@@ -203,10 +205,8 @@ struct GLLAlphaTestBlock
 		[self.view.openGLContext makeCurrentContext];
 		
 		NSData *value = change[NSKeyValueChangeNewKey];
-		struct GLLLightUniformBlock block;
-		[value getBytes:&block length:sizeof(block)];
 		glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(struct GLLLightBlock, lights[index]), sizeof(block), &block);
+		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(struct GLLLightBlock, lights[index]), value.length, value.bytes);
 		
 		self.view.needsDisplay = YES;
 	}
@@ -232,13 +232,6 @@ struct GLLAlphaTestBlock
 - (void)setWindowSize:(NSSize)size;
 {
 	glViewport(0, 0, size.width, size.height);
-	
-	projectionMatrix = simd_frustumMatrix(65.0, size.width / size.height, 0.1, 50.0);
-	struct GLLTransform transformBlock;
-	transformBlock.viewProjection = simd_mat_mul(projectionMatrix, lookatMatrix);
-	
-	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(transformBlock), &transformBlock, GL_STATIC_DRAW);
 }
 
 - (void)draw;
