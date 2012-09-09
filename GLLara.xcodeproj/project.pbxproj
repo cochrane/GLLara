@@ -69,6 +69,9 @@
 		5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */; };
 		5296947315F7FB3300DF2FA3 /* GLLMeshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */; };
 		5296947815F80F4800DF2FA3 /* GLLBoneTransformViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */; };
+		52AF114C15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AF114A15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.m */; };
+		52AF114D15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.xib */; };
+		52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */; };
 		52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206715F8275E00937450 /* doppelganger.modelparams.plist */; };
 		52BB206A15F82B4200937450 /* Shadeless.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206915F82B4200937450 /* Shadeless.fs */; };
 		52BB206C15F82D9A00937450 /* lara_bathing_suit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */; };
@@ -225,6 +228,11 @@
 		5296947415F807A700DF2FA3 /* GLLSourceListItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLSourceListItem.h; sourceTree = "<group>"; };
 		5296947515F80F4500DF2FA3 /* GLLBoneTransformViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneTransformViewController.h; sourceTree = "<group>"; };
 		5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneTransformViewController.m; sourceTree = "<group>"; };
+		52AF114915FCB2D100DF2565 /* GLLWindowSettingsPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLWindowSettingsPopoverViewController.h; sourceTree = "<group>"; };
+		52AF114A15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLWindowSettingsPopoverViewController.m; sourceTree = "<group>"; };
+		52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLWindowSettingsPopoverViewController.xib; sourceTree = "<group>"; };
+		52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLCameraTarget.h; sourceTree = "<group>"; };
+		52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLCameraTarget.m; sourceTree = "<group>"; };
 		52BB206715F8275E00937450 /* doppelganger.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = doppelganger.modelparams.plist; sourceTree = "<group>"; };
 		52BB206915F82B4200937450 /* Shadeless.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Shadeless.fs; sourceTree = "<group>"; };
 		52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_bathing_suit.modelparams.plist; sourceTree = "<group>"; };
@@ -488,6 +496,8 @@
 		5296941F15F4112E00DF2FA3 /* Scene members */ = {
 			isa = PBXGroup;
 			children = (
+				52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */,
+				52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */,
 				5291DB9215FBF7BC00ECDBCA /* GLLAmbientLight.h */,
 				5291DB9315FBF7BD00ECDBCA /* GLLAmbientLight.m */,
 				5224C8E415FA4F18002A6C76 /* GLLDirectionalLight.h */,
@@ -586,6 +596,9 @@
 				5291DB9515FBF96F00ECDBCA /* GLLAmbientLightViewController.h */,
 				5291DB9615FBF97000ECDBCA /* GLLAmbientLightViewController.m */,
 				5291DB9715FBF97000ECDBCA /* GLLAmbientLightViewController.xib */,
+				52AF114915FCB2D100DF2565 /* GLLWindowSettingsPopoverViewController.h */,
+				52AF114A15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.m */,
+				52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.xib */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -705,6 +718,7 @@
 				52BB21CA15FC75B500937450 /* RenderParameters.strings in Resources */,
 				52BB21CF15FCA4A000937450 /* amanda_light.modelparams.plist in Resources */,
 				52BB21D115FCA6DC00937450 /* amanda_heavy.modelparams.plist in Resources */,
+				52AF114D15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -778,6 +792,8 @@
 				5291DB9815FBF97000ECDBCA /* GLLAmbientLightViewController.m in Sources */,
 				52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */,
 				52BB21CD15FC7B8D00937450 /* GLLRenderParameterDescription.m in Sources */,
+				52AF114C15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.m in Sources */,
+				52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

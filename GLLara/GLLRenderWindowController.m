@@ -14,11 +14,17 @@
 @interface GLLRenderWindowController ()
 {
 	GLLSceneDrawer *drawer;
+	BOOL showingPopover;
 }
 
 @end
 
 @implementation GLLRenderWindowController
+
++ (NSSet *)keyPathsForValuesAffectingTargetsFilterPredicate
+{
+	return [NSSet setWithObjects:@"itemsController.arrangedObjects", @"selelctedItemIndex", nil];
+}
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
 {
@@ -35,6 +41,12 @@
     [super windowDidLoad];
     
 	self.renderView.windowController = self;
+	self.popover.delegate = self;
+}
+
+- (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName
+{
+	return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view", @"render window title format"), displayName];
 }
 
 - (void)openGLPrepared;
@@ -42,9 +54,25 @@
 	drawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext view:self.renderView];
 }
 
-- (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName
+- (NSPredicate *)targetsFilterPredicate
 {
-	return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view", @"render window title format"), displayName];
+	return [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:@"bones.item"] rightExpression:[NSExpression expressionForConstantValue:self.selectedObject]  modifier:NSAnyPredicateModifier type:NSEqualToPredicateOperatorType options:0];
+}
+
+- (IBAction)showPopoverFrom:(id)sender;
+{
+	if (showingPopover)
+		[self.popover close];
+	else
+	{
+		[self.popover showRelativeToRect:[sender frame] ofView:sender preferredEdge:NSMaxYEdge];
+		showingPopover = YES;
+	}
+}
+
+- (void)popoverDidClose:(NSNotification *)notification
+{
+	showingPopover = NO;
 }
 
 @end

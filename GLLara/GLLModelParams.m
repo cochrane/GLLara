@@ -225,10 +225,13 @@ static NSCache *parameterCache;
 		return [resultSet allObjects];
 	}
 	
+	NSMutableArray *cameraTargets = [NSMutableArray array];
+	if (ownCameraTargets.count > 0)
+		[cameraTargets addObjectsFromArray:ownCameraTargets.allKeys];
 	if (self.base)
-		return [self.base.cameraTargets arrayByAddingObjectsFromArray:ownCameraTargets.allKeys];
-	else
-		return ownCameraTargets.allKeys;
+		[cameraTargets addObjectsFromArray:self.base.cameraTargets];
+	
+	return [cameraTargets copy];
 }
 - (NSArray *)boneNamesForCameraTarget:(NSString *)cameraTarget;
 {

@@ -141,6 +141,15 @@ static NSCache *cachedModels;
 	}]];
 }
 
+- (NSArray *)cameraTargetNames
+{
+	return self.parameters.cameraTargets;
+}
+- (NSArray *)boneNamesForCameraTarget:(NSString *)target;
+{
+	return [self.parameters boneNamesForCameraTarget:target];
+}
+
 #pragma mark - Private methods
 
 - (void)_addMesh:(GLLMesh *)mesh toArray:(NSMutableArray *)array;

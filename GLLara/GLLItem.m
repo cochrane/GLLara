@@ -176,6 +176,17 @@
 	[boneTransformations removeAllObjects];
 	for (NSUInteger i = 0; i < model.bones.count; i++)
 		[boneTransformations addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLBoneTransformation" inManagedObjectContext:self.managedObjectContext]];
+	
+	for (NSString *cameraTargetName in model.cameraTargetNames)
+	{
+		NSArray *boneNames = [model boneNamesForCameraTarget:cameraTargetName];
+		
+		NSManagedObject *cameraTarget = [NSEntityDescription insertNewObjectForEntityForName:@"GLLCameraTarget" inManagedObjectContext:self.managedObjectContext];
+		[cameraTarget setValue:cameraTargetName forKey:@"name"];
+		for (GLLBoneTransformation *transform in boneTransformations)
+			if ([boneNames containsObject:transform.bone.name])
+				[[cameraTarget mutableSetValueForKey:@"bones"] addObject:transform];
+	}
 }
 
 #pragma mark - Derived

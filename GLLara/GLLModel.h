@@ -37,4 +37,7 @@
 
 @property (nonatomic, copy, readonly) NSArray *rootBones;
 
+@property (nonatomic, copy, readonly) NSArray *cameraTargetNames;
+- (NSArray *)boneNamesForCameraTarget:(NSString *)target;
+
 @end
