@@ -17,30 +17,12 @@
 
 @implementation GLLMeshSettingsViewController
 
-+ (NSSet *)keyPathsForValuesAffectingStatusDisplay
-{
-	return [NSSet setWithObject:@"representedObject"];
-}
-
 - (id)init
 {
 	if (!(self = [super initWithNibName:@"GLLMeshSettingsViewController" bundle:[NSBundle mainBundle]]))
 		return nil;
 	
 	return self;
-}
-
-- (NSString *)statusDisplay
-{
-	if (!self.representedObject)
-		return NSNoSelectionMarker;
-	
-	if (![self.representedObject isKindOfClass:[GLLMeshSettings class]])
-		return NSNotApplicableMarker;
-	
-	GLLMeshSettings *settings = self.representedObject;
-	
-	return [NSString stringWithFormat:NSLocalizedString(@"%lu vertices, %lu faces, %lu textures", @"mesh settings view: Status bar"), settings.mesh.countOfVertices, settings.mesh.countOfElements / 3, settings.mesh.textures.count];
 }
 
 -(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row

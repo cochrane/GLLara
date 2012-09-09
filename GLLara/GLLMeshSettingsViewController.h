@@ -10,7 +10,4 @@
 
 @interface GLLMeshSettingsViewController : NSViewController <NSTableViewDelegate>
 
-// There is no need for a status display, but without, the view looks too damn empty.
-@property (nonatomic, readonly) NSString *statusDisplay;
-
 @end

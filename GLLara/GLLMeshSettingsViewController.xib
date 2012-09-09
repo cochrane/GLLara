@@ -52,11 +52,10 @@
 			</object>
 			<object class="NSObjectController" id="960577429">
 				<array class="NSMutableArray" key="NSDeclaredKeys">
-					<string>statusDisplay</string>
-					<string>representedObject.isVisible</string>
-					<string>representedObject.cullFaceMode</string>
+					<string>isVisible</string>
+					<string>cullFaceMode</string>
 				</array>
-				<string key="NSObjectClassName">GLLMeshSettingsViewController</string>
+				<string key="NSObjectClassName">GLLMeshSettings</string>
 				<bool key="NSEditable">YES</bool>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
 			</object>
@@ -76,7 +75,7 @@
 										<reference key="NSNextResponder" ref="220608875"/>
 										<int key="NSvFlags">256</int>
 										<array class="NSMutableArray" key="NSSubviews"/>
-										<string key="NSFrameSize">{488, 204}</string>
+										<string key="NSFrameSize">{490, 205}</string>
 										<reference key="NSSuperview" ref="220608875"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="633807967"/>
@@ -87,7 +86,7 @@
 										<object class="NSTableHeaderView" key="NSHeaderView" id="475217758">
 											<reference key="NSNextResponder" ref="1012442872"/>
 											<int key="NSvFlags">256</int>
-											<string key="NSFrameSize">{488, 17}</string>
+											<string key="NSFrameSize">{490, 17}</string>
 											<reference key="NSSuperview" ref="1012442872"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="220608875"/>
@@ -104,7 +103,7 @@
 										<array class="NSMutableArray" key="NSTableColumns">
 											<object class="NSTableColumn" id="725159186">
 												<string key="NSIdentifier">RenderParameterView</string>
-												<double key="NSWidth">485</double>
+												<double key="NSWidth">487</double>
 												<double key="NSMinWidth">40</double>
 												<double key="NSMaxWidth">1000</double>
 												<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -190,7 +189,7 @@
 										<int key="NSTableViewGroupRowStyle">1</int>
 									</object>
 								</array>
-								<string key="NSFrame">{{1, 17}, {488, 204}}</string>
+								<string key="NSFrame">{{0, 17}, {490, 205}}</string>
 								<reference key="NSSuperview" ref="342988078"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="777853792"/>
@@ -233,7 +232,7 @@
 								<array class="NSMutableArray" key="NSSubviews">
 									<reference ref="475217758"/>
 								</array>
-								<string key="NSFrame">{{1, 0}, {488, 17}}</string>
+								<string key="NSFrameSize">{490, 17}</string>
 								<reference key="NSSuperview" ref="342988078"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="475217758"/>
@@ -248,7 +247,7 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1012442872"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<int key="NSsFlags">133682</int>
+						<int key="NSsFlags">133680</int>
 						<reference key="NSVScroller" ref="939242733"/>
 						<reference key="NSHScroller" ref="27976400"/>
 						<reference key="NSContentView" ref="220608875"/>
@@ -421,43 +420,51 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.representedObject.isVisible</string>
+						<string key="label">value: selection.isVisible</string>
 						<reference key="source" ref="1017327570"/>
 						<reference key="destination" ref="960577429"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="1017327570"/>
 							<reference key="NSDestination" ref="960577429"/>
-							<string key="NSLabel">value: selection.representedObject.isVisible</string>
+							<string key="NSLabel">value: selection.isVisible</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.representedObject.isVisible</string>
+							<string key="NSKeyPath">selection.isVisible</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">24</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">content</string>
-						<reference key="source" ref="960577429"/>
-						<reference key="destination" ref="1001"/>
-					</object>
-					<int key="connectionID">26</int>
+					<int key="connectionID">279</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">selectedIndex: selection.representedObject.cullFaceMode</string>
+						<string key="label">contentObject: representedObject</string>
+						<reference key="source" ref="960577429"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="960577429"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">contentObject: representedObject</string>
+							<string key="NSBinding">contentObject</string>
+							<string key="NSKeyPath">representedObject</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">278</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">selectedIndex: selection.cullFaceMode</string>
 						<reference key="source" ref="286309238"/>
 						<reference key="destination" ref="960577429"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="286309238"/>
 							<reference key="NSDestination" ref="960577429"/>
-							<string key="NSLabel">selectedIndex: selection.representedObject.cullFaceMode</string>
+							<string key="NSLabel">selectedIndex: selection.cullFaceMode</string>
 							<string key="NSBinding">selectedIndex</string>
-							<string key="NSKeyPath">selection.representedObject.cullFaceMode</string>
+							<string key="NSKeyPath">selection.cullFaceMode</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">53</int>
+					<int key="connectionID">280</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -477,19 +484,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentSet: selection.representedObject.renderParameters</string>
+						<string key="label">contentSet: selection.renderParameters</string>
 						<reference key="source" ref="929407623"/>
 						<reference key="destination" ref="960577429"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="929407623"/>
 							<reference key="NSDestination" ref="960577429"/>
-							<string key="NSLabel">contentSet: selection.representedObject.renderParameters</string>
+							<string key="NSLabel">contentSet: selection.renderParameters</string>
 							<string key="NSBinding">contentSet</string>
-							<string key="NSKeyPath">selection.representedObject.renderParameters</string>
+							<string key="NSKeyPath">selection.renderParameters</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">259</int>
+					<int key="connectionID">282</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -497,7 +504,7 @@
 						<object class="NSTextField" key="source" id="224766652">
 							<reference key="NSNextResponder" ref="633807967"/>
 							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{0, 62}, {485, 17}}</string>
+							<string key="NSFrame">{{0, 62}, {487, 17}}</string>
 							<reference key="NSSuperview" ref="633807967"/>
 							<reference key="NSNextKeyView" ref="964386303"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
@@ -522,7 +529,7 @@
 								<object class="NSTextField" id="835427654">
 									<reference key="NSNextResponder" ref="633807967"/>
 									<int key="NSvFlags">265</int>
-									<string key="NSFrame">{{386, 34}, {96, 22}}</string>
+									<string key="NSFrame">{{388, 34}, {96, 22}}</string>
 									<reference key="NSSuperview" ref="633807967"/>
 									<reference key="NSNextKeyView" ref="50148663"/>
 									<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -598,7 +605,7 @@
 								<object class="NSSlider" id="964386303">
 									<reference key="NSNextResponder" ref="633807967"/>
 									<int key="NSvFlags">266</int>
-									<string key="NSFrame">{{1, 35}, {379, 21}}</string>
+									<string key="NSFrame">{{1, 35}, {381, 21}}</string>
 									<reference key="NSSuperview" ref="633807967"/>
 									<reference key="NSNextKeyView" ref="835427654"/>
 									<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -623,7 +630,7 @@
 								<object class="NSTextField" id="50148663">
 									<reference key="NSNextResponder" ref="633807967"/>
 									<int key="NSvFlags">274</int>
-									<string key="NSFrame">{{0, 3}, {456, 26}}</string>
+									<string key="NSFrame">{{0, 3}, {458, 26}}</string>
 									<reference key="NSSuperview" ref="633807967"/>
 									<reference key="NSNextKeyView" ref="27976400"/>
 									<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -647,7 +654,7 @@
 									<bool key="NSControlAutosetMaxLayoutWidth">YES</bool>
 								</object>
 							</array>
-							<string key="NSFrame">{{1, 1}, {485, 82}}</string>
+							<string key="NSFrame">{{1, 1}, {487, 82}}</string>
 							<reference key="NSNextKeyView" ref="224766652"/>
 						</object>
 						<object class="NSNibBindingConnector" key="connector">
@@ -1026,7 +1033,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">277</int>
+			<int key="maxID">282</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
