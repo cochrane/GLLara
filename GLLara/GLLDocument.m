@@ -49,7 +49,7 @@
 		GLLDirectionalLight *directionalLight = [NSEntityDescription insertNewObjectForEntityForName:@"GLLDirectionalLight" inManagedObjectContext:self.managedObjectContext];
 		directionalLight.isEnabled = (i == 0);
 		directionalLight.diffuseColor = [NSColor whiteColor];
-		directionalLight.specularColor = [NSColor darkGrayColor];
+		directionalLight.specularColor = [NSColor whiteColor];
 		directionalLight.index = i + 1;
 	}
 	[self.managedObjectContext processPendingChanges];
