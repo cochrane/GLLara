@@ -323,7 +323,7 @@
 				5296942515F4138100DF2FA3 /* Drawing posed items */,
 				5296942115F4115800DF2FA3 /* Render resources */,
 				5296942015F4114600DF2FA3 /* Drawing parts */,
-				5296941F15F4112E00DF2FA3 /* Posed items */,
+				5296941F15F4112E00DF2FA3 /* Scene members */,
 				5296941E15F4111A00DF2FA3 /* Model Resources */,
 				5296940515F38FFA00DF2FA3 /* Shaders */,
 				529693F615F2D00200DF2FA3 /* Model Parameters */,
@@ -468,7 +468,7 @@
 			name = "Model Resources";
 			sourceTree = "<group>";
 		};
-		5296941F15F4112E00DF2FA3 /* Posed items */ = {
+		5296941F15F4112E00DF2FA3 /* Scene members */ = {
 			isa = PBXGroup;
 			children = (
 				5291DB9215FBF7BC00ECDBCA /* GLLAmbientLight.h */,
@@ -482,7 +482,7 @@
 				5296947115F7FB3200DF2FA3 /* GLLMeshSettings.h */,
 				5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */,
 			);
-			name = "Posed items";
+			name = "Scene members";
 			sourceTree = "<group>";
 		};
 		5296942015F4114600DF2FA3 /* Drawing parts */ = {
