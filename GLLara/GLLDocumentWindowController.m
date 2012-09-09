@@ -116,10 +116,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 			[self.window presentError:error];
 			return;
 		}
-		
-		NSLog(@"Got model %@, with %lu bones and %lu meshes", model, model.bones.count, model.meshes.count);
-		
-		
+				
 		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
 		newItem.model = model;
 	}];
