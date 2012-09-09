@@ -70,6 +70,11 @@
 {
 	if ([keyPath isEqual:@"value"])
 	{
+		if ([object valueForKey:@"name"] == nil)
+		{
+			[object removeObserver:self forKeyPath:@"value"];
+			return;
+		}
 		if (self.drawer.program.renderParametersUniformBlockIndex == GL_INVALID_INDEX) return;
 		
 		// Can ignore the OpenGL Context here, because all contexts will share all buffers with the one we need, so the right value is going to get there, definitely.
@@ -132,6 +137,8 @@
 {
 	glDeleteBuffers(1, &renderParametersBuffer);
 	renderParametersBuffer = 0;
+	for (GLLRenderParameter *parameter in self.settings.renderParameters)
+		[parameter removeObserver:self forKeyPath:@"value"];
 }
 
 @end
