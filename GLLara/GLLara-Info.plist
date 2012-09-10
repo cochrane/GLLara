@@ -7,20 +7,18 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>scene</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string></string>
 			<key>CFBundleTypeName</key>
-			<string>DocumentType</string>
+			<string>Scene</string>
 			<key>CFBundleTypeOSTypes</key>
 			<array>
 				<string>????</string>
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>de.ferroequinologist.gllara.scene</string>
+			</array>
 			<key>NSDocumentClass</key>
 			<string>GLLDocument</string>
 		</dict>
@@ -53,5 +51,48 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.composite-content</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>GLLara Scene</string>
+			<key>UTTypeIdentifier</key>
+			<string>de.ferroequinologist.gllara.scene</string>
+			<key>UTTypeReferenceURL</key>
+			<string>https://github.com/cochrane/GLLara</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>gllsc</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>XNALara Mesh</string>
+			<key>UTTypeIdentifier</key>
+			<string>net.sourceforge.xnalara.mesh</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>mesh</string>
+					<string>ascii</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
