@@ -20,8 +20,6 @@
 @property (nonatomic, retain, readonly) GLLResourceManager *resourceManager;
 @property (nonatomic, weak, readonly) GLLView *view;
 
-- (void)setWindowSize:(NSSize)size;
-
 - (void)draw;
 
 @end

@@ -172,8 +172,6 @@ struct GLLAlphaTestBlock
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
 	
-	[self setWindowSize:view.bounds.size];
-	
 	self.view.needsDisplay = YES;
 	
 	return self;
@@ -242,11 +240,6 @@ struct GLLAlphaTestBlock
 	{
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
-}
-
-- (void)setWindowSize:(NSSize)size;
-{
-	glViewport(0, 0, size.width, size.height);
 }
 
 - (void)draw;

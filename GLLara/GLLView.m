@@ -44,6 +44,7 @@
 	NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:format shareContext:[[GLLResourceManager sharedResourceManager] openGLContext]];
 	[self setOpenGLContext:context];
 	[context setView:self];
+	[self setWantsBestResolutionOpenGLSurface:YES];
 	
 	return self;
 }
@@ -64,9 +65,13 @@
 
 - (void)reshape
 {
+	// Set height and width for camera.
+	// Note: This is points, not pixels. Pixels are used for glViewport exclusively.
 	self.camera.actualWindowWidth = self.bounds.size.width;
 	self.camera.actualWindowHeight = self.bounds.size.height;
-	[self.sceneDrawer setWindowSize:self.bounds.size];
+	
+	NSRect actualPixels = [self convertRectToBacking:[self bounds]];
+	glViewport(0, 0, actualPixels.size.width, actualPixels.size.height);
 }
 
 - (void)drawRect:(NSRect)dirtyRect
