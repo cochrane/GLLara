@@ -1202,22 +1202,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">maxValue: selection.longitude</string>
-						<reference key="source" ref="871857418"/>
-						<reference key="destination" ref="1016586200"/>
-						<object class="NSNibBindingConnector" key="connector" id="244482209">
-							<reference key="NSSource" ref="871857418"/>
-							<reference key="NSDestination" ref="1016586200"/>
-							<string key="NSLabel">maxValue: selection.longitude</string>
-							<string key="NSBinding">maxValue</string>
-							<string key="NSKeyPath">selection.longitude</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">531</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.longitude</string>
 						<reference key="source" ref="871857418"/>
 						<reference key="destination" ref="1016586200"/>
@@ -1227,11 +1211,10 @@
 							<string key="NSLabel">value: selection.longitude</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">selection.longitude</string>
-							<reference key="NSPreviousConnector" ref="244482209"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">552</int>
+					<int key="connectionID">557</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1283,22 +1266,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">maxValue: selection.longitude</string>
-						<reference key="source" ref="788512875"/>
-						<reference key="destination" ref="1016586200"/>
-						<object class="NSNibBindingConnector" key="connector" id="740795052">
-							<reference key="NSSource" ref="788512875"/>
-							<reference key="NSDestination" ref="1016586200"/>
-							<string key="NSLabel">maxValue: selection.longitude</string>
-							<string key="NSBinding">maxValue</string>
-							<string key="NSKeyPath">selection.longitude</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">515</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: selection.longitude</string>
 						<reference key="source" ref="788512875"/>
 						<reference key="destination" ref="1016586200"/>
@@ -1308,27 +1275,10 @@
 							<string key="NSLabel">value: selection.longitude</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">selection.longitude</string>
-							<reference key="NSPreviousConnector" ref="740795052"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">553</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">maxValue: selection.longitude</string>
-						<reference key="source" ref="678413015"/>
-						<reference key="destination" ref="1016586200"/>
-						<object class="NSNibBindingConnector" key="connector" id="384738133">
-							<reference key="NSSource" ref="678413015"/>
-							<reference key="NSDestination" ref="1016586200"/>
-							<string key="NSLabel">maxValue: selection.longitude</string>
-							<string key="NSBinding">maxValue</string>
-							<string key="NSKeyPath">selection.longitude</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">514</int>
+					<int key="connectionID">555</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1341,11 +1291,10 @@
 							<string key="NSLabel">value: selection.longitude</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">selection.longitude</string>
-							<reference key="NSPreviousConnector" ref="384738133"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">554</int>
+					<int key="connectionID">556</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3543,7 +3492,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">554</int>
+			<int key="maxID">557</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

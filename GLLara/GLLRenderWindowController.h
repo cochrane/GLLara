@@ -7,6 +7,7 @@
 //
 
 #import <AppKit/NSArrayController.h>
+#import <AppKit/NSWindow.h>
 #import <AppKit/NSWindowController.h>
 #import <AppKit/NSPopover.h>
 #import <CoreData/CoreData.h>
@@ -15,7 +16,7 @@
 @class GLLScene;
 @class GLLView;
 
-@interface GLLRenderWindowController : NSWindowController <NSPopoverDelegate>
+@interface GLLRenderWindowController : NSWindowController <NSPopoverDelegate, NSWindowDelegate>
 
 - (id)initWithCamera:(GLLCamera *)camera;
 

@@ -202,6 +202,9 @@ struct GLLAlphaTestBlock
 	}
 	else if ([keyPath isEqual:@"camera.viewProjectionMatrixData"])
 	{
+		if ([change[NSKeyValueChangeNewKey] isKindOfClass:[NSNull class]])
+			return;
+		
 		[self.view.openGLContext makeCurrentContext];
 		
 		glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);

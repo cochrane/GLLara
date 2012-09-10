@@ -8,7 +8,6 @@
 
 #import "GLLRenderWindowController.h"
 
-#import <AppKit/NSWindow.h>
 #import <AppKit/NSView.h>
 #import <AppKit/NSViewController.h>
 
@@ -44,6 +43,8 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+	
+	self.window.delegate = self;
     
 	self.renderView.camera = self.camera;
 	self.renderView.windowController = self;
@@ -63,21 +64,37 @@
 	
 	if ([keyPath isEqual:@"windowWidth"])
 	{
+		if ([change[NSKeyValueChangeNewKey] isKindOfClass:[NSNull class]])
+		{
+			[self close];
+			return;
+		}
 		[self.window setContentSize:NSMakeSize([change[NSKeyValueChangeNewKey] doubleValue], contentSize.height)];
 	}
 	else if ([keyPath isEqual:@"windowHeight"])
 	{
+		if ([change[NSKeyValueChangeNewKey] isKindOfClass:[NSNull class]])
+		{
+			[self close];
+			return;
+		}
 		[self.window setContentSize:NSMakeSize(contentSize.width, [change[NSKeyValueChangeNewKey] doubleValue])];
 	}
 	else if ([keyPath isEqual:@"windowSizeLocked"])
 	{
+		if ([change[NSKeyValueChangeNewKey] isKindOfClass:[NSNull class]])
+		{
+			[self close];
+			return;
+		}
 		NSUInteger styleMask = self.window.styleMask;
 		styleMask = styleMask & ~NSResizableWindowMask; // Clear resizable window mask bit (if it was set)
 		if (![change[NSKeyValueChangeNewKey] boolValue])
 			styleMask = styleMask | NSResizableWindowMask; // Set it
 		self.window.styleMask = styleMask;
 	}
-	
+	else
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:0];
 }
 
 - (NSManagedObjectContext *)managedObjectContext
@@ -100,6 +117,8 @@
 	return [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:@"bones.item"] rightExpression:[NSExpression expressionForConstantValue:self.selectedObject]  modifier:NSAnyPredicateModifier type:NSEqualToPredicateOperatorType options:0];
 }
 
+#pragma mark - Popover
+
 - (IBAction)showPopoverFrom:(id)sender;
 {
 	if (showingPopover)
@@ -115,6 +134,31 @@
 - (void)popoverDidClose:(NSNotification *)notification
 {
 	showingPopover = NO;
+}
+
+#pragma mark - Window delegate
+
+- (BOOL)windowShouldClose:(id)sender
+{
+	[self.camera removeObserver:self forKeyPath:@"windowWidth"];
+	[self.camera removeObserver:self forKeyPath:@"windowHeight"];
+	[self.camera removeObserver:self forKeyPath:@"windowSizeLocked"];
+	self.renderView.camera = nil;
+	
+	[self.managedObjectContext deleteObject:self.camera];
+	
+	_camera = nil;
+	
+	return YES;
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+	[self.camera removeObserver:self forKeyPath:@"windowWidth"];
+	[self.camera removeObserver:self forKeyPath:@"windowHeight"];
+	[self.camera removeObserver:self forKeyPath:@"windowSizeLocked"];
+	self.renderView.camera = nil;
+	_camera = nil;
 }
 
 @end

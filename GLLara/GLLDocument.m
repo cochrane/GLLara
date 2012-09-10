@@ -79,4 +79,28 @@
 	}
 }
 
+- (IBAction)openNewRenderView:(id)sender
+{
+	// 1st: Find an index for the new render view.
+	NSFetchRequest *highestIndexRequest = [[NSFetchRequest alloc] init];
+	highestIndexRequest.entity = [NSEntityDescription entityForName:@"GLLCamera" inManagedObjectContext:self.managedObjectContext];
+	highestIndexRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:NO] ];
+	highestIndexRequest.fetchLimit = 1;
+	NSArray *highestCameras = [self.managedObjectContext executeFetchRequest:highestIndexRequest error:NULL];
+	NSUInteger index;
+	if (highestCameras.count > 0)
+		index = [[highestCameras objectAtIndex:0] index] + 1;
+	else
+		index = 0;
+	
+	// 2nd: Create that camera object
+	GLLCamera *camera = [NSEntityDescription insertNewObjectForEntityForName:@"GLLCamera" inManagedObjectContext:self.managedObjectContext];
+	camera.index = index;
+	
+	// 3rd: Create its window controller
+	GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera];
+	[self addWindowController:controller];
+	[controller showWindow:sender];
+}
+
 @end
