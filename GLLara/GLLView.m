@@ -19,6 +19,7 @@
 @interface GLLView ()
 {
 	BOOL openGLPrepared;
+	BOOL inGesture;
 }
 
 @end
@@ -61,6 +62,32 @@
 	
 	_windowController = windowController;
 	if (openGLPrepared) [_windowController openGLPrepared];
+}
+
+- (void)rotateWithEvent:(NSEvent *)event
+{
+	float angle = event.rotation * M_PI / 180.0;
+	self.camera.longitude -= angle;
+}
+
+- (void)magnifyWithEvent:(NSEvent *)event
+{
+	self.camera.distance *= 1 + event.magnification;
+}
+
+- (void)beginGestureWithEvent:(NSEvent *)event
+{
+	inGesture = YES;
+}
+- (void)endGestureWithEvent:(NSEvent *)event
+{
+	inGesture = NO;
+}
+
+- (void)scrollWheel:(NSEvent *)theEvent
+{
+	self.camera.currentPositionX += theEvent.deltaX / self.bounds.size.width;
+	self.camera.currentPositionZ += theEvent.deltaY / self.bounds.size.height;
 }
 
 - (void)reshape

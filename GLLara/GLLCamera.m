@@ -12,6 +12,13 @@
 #import "simd_matrix.h"
 #import "simd_project.h"
 
+@interface GLLCamera ()
+
+// Clears the target and sets camera position to the targets last position
+- (void)_clearTarget;
+
+@end
+
 /*
  * To avoid infinite recursion, the window position are a bit odd. There are three sets: normal (or specified), actual and latest. specified are the ones saved in Core Data. When they change, the window gets resized. actual is set as the result of window resizes. It triggers a redraw. latest is meant for the UI. It returns actual, but on setting, sets specified (actual will get updated through the resize).
  */
@@ -89,7 +96,7 @@
 
 - (void)setCurrentPositionX:(double)currentPositionX
 {
-	if (self.target) self.target = nil;
+	[self _clearTarget];
 	self.positionX = currentPositionX;
 }
 - (double)currentPositionX
@@ -99,8 +106,8 @@
 }
 
 - (void)setCurrentPositionY:(double)currentPositionY
-{
-	if (self.target) self.target = nil;
+{	
+	[self _clearTarget];
 	self.positionY = currentPositionY;
 }
 - (double)currentPositionY
@@ -111,7 +118,7 @@
 
 - (void)setCurrentPositionZ:(double)currentPositionZ
 {
-	if (self.target) self.target = nil;
+	[self _clearTarget];
 	self.positionZ = currentPositionZ;
 }
 - (double)currentPositionZ
@@ -138,6 +145,19 @@
 {
 	mat_float16 viewProjection = self.viewProjectionMatrix;
 	return [NSData dataWithBytes:&viewProjection length:sizeof(viewProjection)];
+}
+
+#pragma mark - Private methods
+
+- (void)_clearTarget;
+{
+	if (!self.target) return;
+	
+	vec_float4 targetPosition = self.target.position;
+	self.positionX = simd_extract(targetPosition, 0);
+	self.positionY = simd_extract(targetPosition, 1);
+	self.positionZ = simd_extract(targetPosition, 2);
+	self.target = nil;
 }
 
 @end
