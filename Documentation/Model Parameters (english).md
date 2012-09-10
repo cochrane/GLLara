@@ -65,7 +65,7 @@ The order of pairs in a dictionary is completely irrelevant. A plist file here a
 Defining Models
 ---------------
 
-For every model that does not use the Generic Item format, there has to be one `modellname.modelparams.plist` file. GLLara includes it into the app when compiling (it ends up in the resources directory). It is always a dictionary, with any or all of six keys: `base`, `defaultMeshGroup`, `meshGroupNames`, `defaultRenderParameters`, `renderParameters`, `cameraTargets`, `shaders` und `meshSplitters`.
+For every model that does not use the Generic Item format, there has to be one `modellname.modelparams.plist` file. GLLara includes it into the app when compiling (it ends up in the resources directory). It is always a dictionary, with any or all of the following keys: `base`, `defaultMeshGroup`, `meshGroupNames`, `defaultRenderParameters`, `renderParameters`, `cameraTargets`, `shaders`, `renderParameterDescriptions` und `meshSplitters`.
 
 ### base
 
@@ -230,6 +230,41 @@ Example:
 			<string>DiffuseLightmapBump3.fs</string>
 			<key>vertex</key>
 			<string>Bump.vs</string>
+		</dict>
+		…
+	</dict>
+	…
+
+### renderParameterDescriptions
+
+**Normal model files don't need this.** A dictionary; the keys are the names of render parameters, while the dictionaries describe them for display in a user interface.
+
+This part has no corresponding feature in XNALara. In GLLara, you can set render parameters per mesh, no matter what was originally specified. The program determines which render parameters are used by the mesh, and then offers a nice UI for them.
+
+A side effect is that each render parameter has to have the same meaning if it has the same name, across all shaders (at least within a model). I'm assuming that anyway, though, otherwise `defaultRenderParameters` wouldn't make any sense at all.
+
+The contents are:
+
+*	`title`: String, the name the user sees.
+*	`description`: String, a short description of what this slider does.
+*	`max`: Number, the maximum value e.g. for a slider. Users can still specify values outside the allowed range via a text field.
+*	`min`: Number, the corresponding minimum value.
+
+Example:
+
+	…
+	<key>renderParameterDescriptions</key>
+	<dict>
+		<key>bumpSpecularGloss</key>
+		<dict>
+			<key>title</key>
+			<string>Bump Specular Gloss</string>
+			<key>description</key>
+			<string>Sharpness of the highlights. Higher values produce smaller, more focused highlights.</string>
+			<key>max</key>
+			<real>100</real>
+			<key>min</key>
+			<real>0</real>
 		</dict>
 		…
 	</dict>

@@ -65,7 +65,7 @@ Die Reihenfolge der Paare in einem Dictionary ist absolut egal. Eine Plist-Datei
 Definieren von Modellen
 -----------------------
 
-Für jedes Modell, welches nicht das Generic Item-Format verwendet, muss es eine `modellname.modelparams.plist`-Datei geben, die von GLLara beim kompilieren eingebaut wird. Diese ist ein Dictionary mit ein bis sechs Keys: `base`, `defaultMeshGroup`, `meshGroupNames`, `defaultRenderParameters`, `renderParameters`, `cameraTargets`, `shaders` und `meshSplitters`.
+Für jedes Modell, welches nicht das Generic Item-Format verwendet, muss es eine `modellname.modelparams.plist`-Datei geben, die von GLLara beim kompilieren eingebaut wird. Diese ist ein Dictionary mit einem, mehreren oder allen der folgenden Keys: `base`, `defaultMeshGroup`, `meshGroupNames`, `defaultRenderParameters`, `renderParameters`, `cameraTargets`, `shaders`, `renderParameterDescriptions` und `meshSplitters`.
 
 Meshes oder Bones auf die sich hier bezogen wird müssen in einem Modell nicht existieren; dann werden Werte, die sich darauf beziehen, einfach ignoriert.
 
@@ -234,6 +234,43 @@ Beispiel:
 			<string>DiffuseLightmapBump3.fs</string>
 			<key>vertex</key>
 			<string>Bump.vs</string>
+		</dict>
+		…
+	</dict>
+	…
+
+### renderParameterDescriptions
+
+**Brauchen normale Modell-Dateien nicht.** Ein Dictionary; die Keys sind die Namen Render Parametern; die Werte sind Dictionaries, die Beschreibungen für die UI liefern.
+
+Dies ist wirklich rein für GLLara und hat kein Äquivalent in XNALara. Bei GLLara kann man pro Mesh die verschiedenen Renderparameter in der Szene einstellen. Das Programm bestimmt, welche Render Parameter ein Mesh verwendet, und nimmt dann die Werte aus diesem Dictionary, um die UI für den Wert zu konfigurieren.
+
+Ein Seiteneffekt ist, dass jeder Render Parameter (zumindest in einem Modell) immer in allen Shadern die selbe Bedeutung haben muss, wenn der Name der uniform-Variable gleich ist. Davon gehe ich aber sowieso aus, sonst würde z.B. auch `defaultRenderParameters` weiter oben nicht gehen.
+
+Die Inhalte des Dictionaries sind:
+
+*	`title`: String, der Name, den der Benutzer sieht.
+*	`description`: String, eine kurze Beschreibung für den Benutzer.
+*	`max`: Nummer, der maximale Wert, den z.B. ein Schieberegler für diesen Parameter annehmen sollte. Nutzer können per Hand immer noch größere Werte eingeben.
+*	`min`: Nummer, entsprechend der minimale Wert.
+
+Die Felder `title` und `description` sollten englisch sein. Lokalisierte Werte werden aus der RenderParameters.strings-Datei geholt.
+
+Beispiel:
+
+	…
+	<key>renderParameterDescriptions</key>
+	<dict>
+		<key>bumpSpecularGloss</key>
+		<dict>
+			<key>title</key>
+			<string>Bump Specular Gloss</string>
+			<key>description</key>
+			<string>Sharpness of the highlights. Higher values produce smaller, more focused highlights.</string>
+			<key>max</key>
+			<real>100</real>
+			<key>min</key>
+			<real>0</real>
 		</dict>
 		…
 	</dict>
