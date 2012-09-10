@@ -300,6 +300,7 @@
 		525ACD3C15F0F1A700534E7D = {
 			isa = PBXGroup;
 			children = (
+				5296943E15F51F2B00DF2FA3 /* Readme.md */,
 				529692D515F258E600DF2FA3 /* Documentation */,
 				525ACD5115F0F1A700534E7D /* GLLara */,
 				525ACD7115F0F1A700534E7D /* GLLaraTests */,
@@ -415,10 +416,9 @@
 				529692D615F2590000DF2FA3 /* XNALara Model File Format.md */,
 				529692DF15F27D5900DF2FA3 /* Source Code Overview.md */,
 				529693FB15F3781100DF2FA3 /* Render parameters.md */,
-				5296943E15F51F2B00DF2FA3 /* Readme.md */,
 				5291DB7F15FB711900ECDBCA /* Model Parameters (english).md */,
 			);
-			name = Documentation;
+			path = Documentation;
 			sourceTree = "<group>";
 		};
 		529692F115F28D1200DF2FA3 /* From DDSConverter */ = {
