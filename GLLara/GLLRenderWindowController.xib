@@ -85,6 +85,7 @@
 							<string key="NSFrame">{{344, 2}, {199, 17}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSPopUpButtonCell" key="NSCell" id="632704157">
@@ -110,11 +111,11 @@
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<int key="NSState">1</int>
-									<object class="NSCustomResource" key="NSOnImage" id="387000872">
+									<object class="NSCustomResource" key="NSOnImage" id="724757861">
 										<string key="NSClassName">NSImage</string>
 										<string key="NSResourceName">NSMenuCheckmark</string>
 									</object>
-									<object class="NSCustomResource" key="NSMixedImage" id="612540876">
+									<object class="NSCustomResource" key="NSMixedImage" id="46376591">
 										<string key="NSClassName">NSImage</string>
 										<string key="NSResourceName">NSMenuMixedState</string>
 									</object>
@@ -133,8 +134,8 @@
 											<string key="NSTitle"/>
 											<string key="NSKeyEquiv"/>
 											<int key="NSMnemonicLoc">2147483647</int>
-											<reference key="NSOnImage" ref="387000872"/>
-											<reference key="NSMixedImage" ref="612540876"/>
+											<reference key="NSOnImage" ref="724757861"/>
+											<reference key="NSMixedImage" ref="46376591"/>
 											<string key="NSAction">_popUpItemAction:</string>
 											<reference key="NSTarget" ref="632704157"/>
 										</object>
@@ -145,8 +146,8 @@
 											<int key="NSKeyEquivModMask">1048576</int>
 											<int key="NSMnemonicLoc">2147483647</int>
 											<int key="NSState">1</int>
-											<reference key="NSOnImage" ref="387000872"/>
-											<reference key="NSMixedImage" ref="612540876"/>
+											<reference key="NSOnImage" ref="724757861"/>
+											<reference key="NSMixedImage" ref="46376591"/>
 											<string key="NSAction">_popUpItemAction:</string>
 											<int key="NSTag">100</int>
 											<reference key="NSTarget" ref="632704157"/>
@@ -313,20 +314,20 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">selectedObject: selectedObject</string>
+						<string key="label">selectedObject: camera.target</string>
 						<reference key="source" ref="259234258"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="259234258"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">selectedObject: selectedObject</string>
+							<string key="NSLabel">selectedObject: camera.target</string>
 							<string key="NSBinding">selectedObject</string>
-							<string key="NSKeyPath">selectedObject</string>
+							<string key="NSKeyPath">camera.target</string>
 							<reference key="NSPreviousConnector" ref="49308950"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">158</int>
+					<int key="connectionID">162</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -715,7 +716,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">161</int>
+			<int key="maxID">162</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -735,12 +736,17 @@
 					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="popover">NSPopover</string>
+						<string key="popoverButton">NSButton</string>
 						<string key="renderView">GLLView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="popover">
 							<string key="name">popover</string>
 							<string key="candidateClassName">NSPopover</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="popoverButton">
+							<string key="name">popoverButton</string>
+							<string key="candidateClassName">NSButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="renderView">
 							<string key="name">renderView</string>
