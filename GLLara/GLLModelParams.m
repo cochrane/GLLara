@@ -28,9 +28,9 @@ static NSString *meshNameRegexpString = @"^([0-9P]{1,2})_\
 		_([\\d\\.]+)\
 		(?:_([\\d\\.]+)\
 			(?:\
-				_([^_\\n]+(?:_[^0-9\\n]+)*)\
+				_([^_\\n]+)\
 				(?:\
-					_([^_\\n]+(?:_[^0-9\\n]+)*)\
+					_([^_\\n]+)\
 				)*\
 			)?\
 		)?\
@@ -219,7 +219,8 @@ static NSCache *parameterCache;
 		{
 			NSString *cameraTargetName = nil;
 			[self _parseModelName:mesh.name meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:NULL];
-			[resultSet addObject:mesh.name];
+			if (cameraTargetName != nil)
+				[resultSet addObject:cameraTargetName];
 		}
 		
 		return [resultSet allObjects];
