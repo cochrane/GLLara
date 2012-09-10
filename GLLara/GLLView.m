@@ -78,10 +78,14 @@
 - (void)beginGestureWithEvent:(NSEvent *)event
 {
 	inGesture = YES;
+	[self.camera.managedObjectContext.undoManager beginUndoGrouping];
+	[self.camera.managedObjectContext.undoManager setActionIsDiscardable:YES];
 }
 - (void)endGestureWithEvent:(NSEvent *)event
 {
 	inGesture = NO;
+	[self.camera.managedObjectContext.undoManager setActionName:NSLocalizedString(@"Camera changed", @"Undo: data of camera has changed.")];
+	[self.camera.managedObjectContext.undoManager endUndoGrouping];
 }
 
 - (void)scrollWheel:(NSEvent *)theEvent
