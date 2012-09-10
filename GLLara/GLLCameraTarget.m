@@ -58,12 +58,12 @@ static void *contextMarker = (void *) 0xdeadbeef;
 	if (context == contextMarker && [keyPath isEqual:@"bones"])
 	{
 		for (GLLBoneTransformation *transform in change[NSKeyValueChangeOldKey])
-			[transform removeObserver:self forKeyPath:@"relativeTransform"];
+			[transform removeObserver:self forKeyPath:@"globalTransform"];
 		
 		for (GLLBoneTransformation *transform in change[NSKeyValueChangeNewKey])
-			[transform addObserver:self forKeyPath:@"relativeTransform" options: NSKeyValueObservingOptionInitial context:contextMarker];
+			[transform addObserver:self forKeyPath:@"globalTransform" options: NSKeyValueObservingOptionInitial context:contextMarker];
 	}
-	else if (context == contextMarker && [keyPath isEqual:@"relativeTransform"])
+	else if (context == contextMarker && [keyPath isEqual:@"globalTransform"])
 	{
 		[self _updatePosition];
 	}
@@ -82,7 +82,9 @@ static void *contextMarker = (void *) 0xdeadbeef;
 	for (GLLBoneTransformation *transform in self.bones)
 		newPosition += transform.globalPosition;
 	
+	[self willChangeValueForKey:@"position"];
 	self.position = newPosition / simd_splatf(self.bones.count);
+	[self didChangeValueForKey:@"position"];
 }
 
 @end
