@@ -8,8 +8,7 @@
 
 #import "GLLRenderWindowController.h"
 
-#import <AppKit/NSView.h>
-#import <AppKit/NSViewController.h>
+#import <AppKit/AppKit.h>
 
 #import "GLLCamera.h"
 #import "GLLView.h"
@@ -43,6 +42,8 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+	
+	[self.popoverButton.image setTemplate:YES];
 	
 	self.window.delegate = self;
     

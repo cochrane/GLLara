@@ -25,6 +25,7 @@
 
 @property (nonatomic, retain) IBOutlet GLLView *renderView;
 @property (nonatomic, retain) IBOutlet NSPopover *popover;
+@property (nonatomic, retain) IBOutlet NSButton *popoverButton;
 
 
 @property (nonatomic, retain) NSArrayController *itemsController;

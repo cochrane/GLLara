@@ -85,7 +85,6 @@
 							<string key="NSFrame">{{344, 2}, {199, 17}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSPopUpButtonCell" key="NSCell" id="632704157">
@@ -104,41 +103,29 @@
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">400</int>
 								<int key="NSPeriodicInterval">75</int>
-								<object class="NSMenuItem" key="NSMenuItem" id="830363268">
+								<object class="NSMenuItem" key="NSMenuItem" id="656315972">
 									<reference key="NSMenu" ref="925626807"/>
-									<string key="NSTitle">items go here (do not localize)</string>
+									<string key="NSTitle">No item</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<int key="NSState">1</int>
-									<object class="NSCustomResource" key="NSOnImage" id="583227448">
+									<object class="NSCustomResource" key="NSOnImage" id="387000872">
 										<string key="NSClassName">NSImage</string>
 										<string key="NSResourceName">NSMenuCheckmark</string>
 									</object>
-									<object class="NSCustomResource" key="NSMixedImage" id="694250163">
+									<object class="NSCustomResource" key="NSMixedImage" id="612540876">
 										<string key="NSClassName">NSImage</string>
 										<string key="NSResourceName">NSMenuMixedState</string>
 									</object>
 									<string key="NSAction">_popUpItemAction:</string>
-									<int key="NSTag">100</int>
 									<reference key="NSTarget" ref="632704157"/>
 								</object>
 								<bool key="NSMenuItemRespectAlignment">YES</bool>
 								<object class="NSMenu" key="NSMenu" id="925626807">
 									<string key="NSTitle">OtherViews</string>
 									<array class="NSMutableArray" key="NSMenuItems">
-										<object class="NSMenuItem" id="656315972">
-											<reference key="NSMenu" ref="925626807"/>
-											<string key="NSTitle">No item</string>
-											<string key="NSKeyEquiv"/>
-											<int key="NSKeyEquivModMask">1048576</int>
-											<int key="NSMnemonicLoc">2147483647</int>
-											<int key="NSState">1</int>
-											<reference key="NSOnImage" ref="583227448"/>
-											<reference key="NSMixedImage" ref="694250163"/>
-											<string key="NSAction">_popUpItemAction:</string>
-											<reference key="NSTarget" ref="632704157"/>
-										</object>
+										<reference ref="656315972"/>
 										<object class="NSMenuItem" id="1020938726">
 											<reference key="NSMenu" ref="925626807"/>
 											<bool key="NSIsDisabled">YES</bool>
@@ -146,12 +133,24 @@
 											<string key="NSTitle"/>
 											<string key="NSKeyEquiv"/>
 											<int key="NSMnemonicLoc">2147483647</int>
-											<reference key="NSOnImage" ref="583227448"/>
-											<reference key="NSMixedImage" ref="694250163"/>
+											<reference key="NSOnImage" ref="387000872"/>
+											<reference key="NSMixedImage" ref="612540876"/>
 											<string key="NSAction">_popUpItemAction:</string>
 											<reference key="NSTarget" ref="632704157"/>
 										</object>
-										<reference ref="830363268"/>
+										<object class="NSMenuItem" id="830363268">
+											<reference key="NSMenu" ref="925626807"/>
+											<string key="NSTitle">items go here (do not localize)</string>
+											<string key="NSKeyEquiv"/>
+											<int key="NSKeyEquivModMask">1048576</int>
+											<int key="NSMnemonicLoc">2147483647</int>
+											<int key="NSState">1</int>
+											<reference key="NSOnImage" ref="387000872"/>
+											<reference key="NSMixedImage" ref="612540876"/>
+											<string key="NSAction">_popUpItemAction:</string>
+											<int key="NSTag">100</int>
+											<reference key="NSTarget" ref="632704157"/>
+										</object>
 									</array>
 									<object class="NSFont" key="NSMenuFont">
 										<string key="NSName">LucidaGrande</string>
@@ -170,7 +169,7 @@
 						<object class="NSButton" id="480589112">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{3, 2}, {101, 17}}</string>
+							<string key="NSFrame">{{3, 2}, {25, 17}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="259234258"/>
@@ -179,12 +178,16 @@
 							<object class="NSButtonCell" key="NSCell" id="434343922">
 								<int key="NSCellFlags">67108864</int>
 								<int key="NSCellFlags2">134348800</int>
-								<string key="NSContents">Camera settings</string>
+								<string key="NSContents"/>
 								<reference key="NSSupport" ref="26"/>
 								<string key="NSCellIdentifier">_NS:9</string>
 								<reference key="NSControlView" ref="480589112"/>
-								<int key="NSButtonFlags">-1232846848</int>
+								<int key="NSButtonFlags">-1228652544</int>
 								<int key="NSButtonFlags2">173</int>
+								<object class="NSCustomResource" key="NSNormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">cameratemplate</string>
+								</object>
 								<string key="NSAlternateContents"/>
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">400</int>
@@ -250,6 +253,14 @@
 						<reference key="destination" ref="480589112"/>
 					</object>
 					<int key="connectionID">89</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">popoverButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="480589112"/>
+					</object>
+					<int key="connectionID">161</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -704,7 +715,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">158</int>
+			<int key="maxID">161</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -774,6 +785,7 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="NSMenuCheckmark">{11, 11}</string>
 			<string key="NSMenuMixedState">{10, 3}</string>
+			<string key="cameratemplate">{15, 10}</string>
 		</dictionary>
 		<bool key="IBDocument.UseAutolayout">YES</bool>
 	</data>
