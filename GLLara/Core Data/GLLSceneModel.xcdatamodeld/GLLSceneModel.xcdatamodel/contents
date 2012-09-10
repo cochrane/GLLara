@@ -17,7 +17,7 @@
         <attribute name="cameraLocked" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="distance" attributeType="Double" defaultValueString="2" syncable="YES"/>
         <attribute name="farDistance" attributeType="Double" defaultValueString="20" syncable="YES"/>
-        <attribute name="fieldOfViewY" attributeType="Double" defaultValueString="65" syncable="YES"/>
+        <attribute name="fieldOfViewY" attributeType="Double" minValueString="1" maxValueString="179" defaultValueString="65" syncable="YES"/>
         <attribute name="index" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="latitude" attributeType="Double" minValueString="-1.5707963267949" maxValueString="1.5707963267949" defaultValueString="0.0" syncable="YES"/>
         <attribute name="longitude" attributeType="Double" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
@@ -73,7 +73,7 @@
     <elements>
         <element name="GLLAmbientLight" positionX="160" positionY="192" width="128" height="60"/>
         <element name="GLLBoneTransformation" positionX="160" positionY="192" width="128" height="148"/>
-        <element name="GLLCamera" positionX="160" positionY="192" width="128" height="268"/>
+        <element name="GLLCamera" positionX="160" positionY="192" width="128" height="270"/>
         <element name="GLLCameraTarget" positionX="198" positionY="290" width="128" height="88"/>
         <element name="GLLDirectionalLight" positionX="160" positionY="192" width="128" height="120"/>
         <element name="GLLItem" positionX="160" positionY="192" width="128" height="180"/>

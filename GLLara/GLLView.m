@@ -64,8 +64,8 @@
 
 - (void)reshape
 {
-	self.camera.windowWidth = self.bounds.size.width;
-	self.camera.windowHeight = self.bounds.size.height;
+	self.camera.actualWindowWidth = self.bounds.size.width;
+	self.camera.actualWindowHeight = self.bounds.size.height;
 	[self.sceneDrawer setWindowSize:self.bounds.size];
 }
 

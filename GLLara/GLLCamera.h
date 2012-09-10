@@ -31,6 +31,14 @@
 @property (nonatomic) double windowWidth;
 @property (nonatomic, retain) GLLCameraTarget *target;
 
+// Transient
+@property (nonatomic) double actualWindowHeight;
+@property (nonatomic) double actualWindowWidth;
+
+// Completely independent
+@property (nonatomic) double latestWindowHeight;
+@property (nonatomic) double latestWindowWidth;
+
 // Derived
 @property (nonatomic) double currentPositionX;
 @property (nonatomic) double currentPositionY;

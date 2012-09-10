@@ -74,7 +74,7 @@
 		NSUInteger styleMask = self.window.styleMask;
 		styleMask = styleMask & ~NSResizableWindowMask; // Clear resizable window mask bit (if it was set)
 		if (![change[NSKeyValueChangeNewKey] boolValue])
-			styleMask = styleMask & NSResizableWindowMask; // Set it
+			styleMask = styleMask | NSResizableWindowMask; // Set it
 		self.window.styleMask = styleMask;
 	}
 	
@@ -87,7 +87,7 @@
 
 - (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName
 {
-	return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view", @"render window title format"), displayName];
+	return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view %lu", @"render window title format"), displayName, self.camera.index + 1];
 }
 
 - (void)openGLPrepared;

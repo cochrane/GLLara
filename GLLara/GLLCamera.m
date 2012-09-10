@@ -12,11 +12,14 @@
 #import "simd_matrix.h"
 #import "simd_project.h"
 
+/*
+ * To avoid infinite recursion, the window position are a bit odd. There are three sets: normal (or specified), actual and latest. specified are the ones saved in Core Data. When they change, the window gets resized. actual is set as the result of window resizes. It triggers a redraw. latest is meant for the UI. It returns actual, but on setting, sets specified (actual will get updated through the resize).
+ */
 @implementation GLLCamera
 
 + (NSSet *)keyPathsForValuesAffectingViewProjectionMatrix
 {
-	return [NSSet setWithObjects:@"distance", @"fieldOfViewY", @"latitude", @"longitude", @"positionX", @"positionY", @"positionZ", @"target.position", @"windowWidth", @"windowHeight", @"nearDistance", @"farDistance", nil];
+	return [NSSet setWithObjects:@"distance", @"fieldOfViewY", @"latitude", @"longitude", @"positionX", @"positionY", @"positionZ", @"target.position", @"actualWindowWidth", @"actualWindowHeight", @"nearDistance", @"farDistance", nil];
 }
 + (NSSet *)keyPathsForValuesAffectingViewProjectionMatrixData
 {
@@ -34,7 +37,17 @@
 {
 	return [NSSet setWithObjects:@"target.position", @"positionZ", nil];
 }
++ (NSSet *)keyPathsForValuesAffectingLatestWindowHeight
+{
+	return [NSSet setWithObject:@"actualWindowHeight"];
+}
++ (NSSet *)keyPathsForValuesAffectingLatestWindowWidth
+{
+	return [NSSet setWithObject:@"actualWindowWidth"];
+}
 
+@synthesize actualWindowHeight;
+@synthesize actualWindowWidth;
 @dynamic cameraLocked;
 @dynamic distance;
 @dynamic farDistance;
@@ -50,6 +63,29 @@
 @dynamic windowSizeLocked;
 @dynamic windowWidth;
 @dynamic target;
+
+- (void)willSave
+{
+	[self setPrimitiveValue:[self valueForKey:@"actualWindowWidth"] forKey:@"windowWidth"];
+	[self setPrimitiveValue:[self valueForKey:@"actualWindowHeight"] forKey:@"windowHeight"];
+}
+
+- (double)latestWindowWidth
+{
+	return self.actualWindowWidth;
+}
+- (void)setLatestWindowWidth:(double)latestWindowWidth
+{
+	self.windowWidth = latestWindowWidth;
+}
+- (double)latestWindowHeight
+{
+	return self.actualWindowHeight;
+}
+- (void)setLatestWindowHeight:(double)latestWindowHeight
+{
+	self.windowHeight = latestWindowHeight;
+}
 
 - (void)setCurrentPositionX:(double)currentPositionX
 {
@@ -86,7 +122,7 @@
 
 - (mat_float16)viewProjectionMatrix
 {
-	mat_float16 projection = simd_frustumMatrix(self.fieldOfViewY, self.windowWidth / self.windowHeight, self.nearDistance, self.farDistance);
+	mat_float16 projection = simd_frustumMatrix(self.fieldOfViewY, self.actualWindowWidth / self.actualWindowHeight, self.nearDistance, self.farDistance);
 	
 	vec_float4 targetPosition = self.target ? self.target.position : simd_make( self.positionX, self.positionY, self.positionZ, 1.0f );
 	
