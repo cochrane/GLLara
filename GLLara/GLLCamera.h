@@ -45,6 +45,8 @@
 @property (nonatomic) double currentPositionZ;
 
 @property (nonatomic, readonly) mat_float16 viewProjectionMatrix;
+@property (nonatomic, readonly) vec_float4 cameraWorldPosition;
+@property (nonatomic, readonly) NSData *cameraWorldPositionData;
 @property (nonatomic, readonly) NSData *viewProjectionMatrixData;
 
 @end

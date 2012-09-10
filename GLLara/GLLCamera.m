@@ -26,7 +26,15 @@
 
 + (NSSet *)keyPathsForValuesAffectingViewProjectionMatrix
 {
-	return [NSSet setWithObjects:@"distance", @"fieldOfViewY", @"latitude", @"longitude", @"positionX", @"positionY", @"positionZ", @"target.position", @"actualWindowWidth", @"actualWindowHeight", @"nearDistance", @"farDistance", nil];
+	return [NSSet setWithObjects:@"fieldOfViewY", @"actualWindowWidth", @"actualWindowHeight", @"nearDistance", @"farDistance", @"cameraWorldPosition", nil];
+}
++ (NSSet *)keyPathsForValuesAffectingCameraWorldPosition
+{
+	return [NSSet setWithObjects:@"distance", @"latitude", @"longitude", @"positionX", @"positionY", @"positionZ", @"target.position", nil];
+}
++ (NSSet *)keyPathsForValuesAffectingCameraWorldPositionData
+{
+	return [NSSet setWithObject:@"cameraWorldPosition"];
 }
 + (NSSet *)keyPathsForValuesAffectingViewProjectionMatrixData
 {
@@ -127,6 +135,15 @@
 	else return self.positionZ;
 }
 
+- (vec_float4)cameraWorldPosition
+{
+	vec_float4 targetPosition = self.target ? self.target.position : simd_make( self.positionX, self.positionY, self.positionZ, 1.0f );
+	
+	vec_float4 viewDirection = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
+	
+	return targetPosition - viewDirection * simd_splatf(self.distance);
+}
+
 - (mat_float16)viewProjectionMatrix
 {
 	mat_float16 projection = simd_frustumMatrix(self.fieldOfViewY, self.actualWindowWidth / self.actualWindowHeight, self.nearDistance, self.farDistance);
@@ -145,6 +162,11 @@
 {
 	mat_float16 viewProjection = self.viewProjectionMatrix;
 	return [NSData dataWithBytes:&viewProjection length:sizeof(viewProjection)];
+}
+- (NSData *)cameraWorldPositionData
+{
+	vec_float4 cameraWorldPosition = self.cameraWorldPosition;
+	return [NSData dataWithBytes:&cameraWorldPosition length:sizeof(cameraWorldPosition)];
 }
 
 #pragma mark - Private methods
