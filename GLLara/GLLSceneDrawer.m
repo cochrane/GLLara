@@ -13,6 +13,7 @@
 
 #import "GLLAmbientLight.h"
 #import "GLLBoneTransformation.h"
+#import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
 #import "GLLItem.h"
 #import "GLLItemDrawer.h"
@@ -207,6 +208,11 @@ struct GLLAlphaTestBlock
 		
 		glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
 		glBufferData(GL_UNIFORM_BUFFER, [change[NSKeyValueChangeNewKey] length], [change[NSKeyValueChangeNewKey] bytes], GL_STATIC_DRAW);
+		
+		// Apply position to lighting data
+		glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
+		vec_float4 position = [[object camera] cameraWorldPosition];
+		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(struct GLLLightBlock, cameraLocation), sizeof(position), &position);
 		
 		self.view.needsDisplay = YES;
 	}
