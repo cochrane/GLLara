@@ -161,7 +161,7 @@
 	for (NSUInteger i = 0; i < count; i++)
 		matrices[i] = [[self.item.boneTransformations objectAtIndex:i] globalTransform];
 	
-	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_STATIC_DRAW);
 }
 
 @end
