@@ -89,6 +89,23 @@
 				</array>
 			</dict>
 		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.plain-text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>XNALara Pose</string>
+			<key>UTTypeIdentifier</key>
+			<string>net.sourceforge.xnalara.pose</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>pose</string>
+				</array>
+			</dict>
+		</dict>
 	</array>
 </dict>
 </plist>

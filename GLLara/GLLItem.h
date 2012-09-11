@@ -45,6 +45,9 @@
 
 - (GLLMeshSettings *)settingsForMesh:(GLLMesh *)mesh;
 
+// Poses
+- (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error;
+
 @end
 
 @interface GLLItem (CoreDataGeneratedAccessors)

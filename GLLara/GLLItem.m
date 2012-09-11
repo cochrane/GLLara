@@ -232,6 +232,71 @@
 	return self.meshSettings[mesh.meshIndex];
 }
 
+#pragma mark - Poses I/O
+
+- (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error
+{
+	NSArray *lines = [poseDescription componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+	if ([poseDescription rangeOfString:@":"].location == NSNotFound)
+	{
+		// Old-style loading: Same number of lines as bones, sequentally stored, no names.
+		if (lines.count != self.boneTransformations.count)
+		{
+			if (error)
+				*error = [NSError errorWithDomain:@"poses" code:1 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Pose file does not contain the right amount of bones", @"error loading pose old-style")}];
+			return NO;
+		}
+		
+		for (NSUInteger i = 0; i < lines.count; i++)
+		{
+			NSScanner *scanner = [NSScanner scannerWithString:lines[i]];
+			float x = 0, y = 0, z = 0;
+			if ([scanner scanFloat:&x])
+				[self.boneTransformations[i] setRotationX:x];
+			if ([scanner scanFloat:&y])
+				[self.boneTransformations[i] setRotationY:y];
+			if ([scanner scanFloat:&z])
+				[self.boneTransformations[i] setRotationZ:z];
+		}
+	}
+	else
+	{
+		for (NSString *line in lines)
+		{
+			NSScanner *scanner = [NSScanner scannerWithString:line];
+			NSString *name;
+			[scanner scanUpToString:@":" intoString:&name];
+			[scanner scanString:@":" intoString:NULL];
+			
+			NSIndexSet *indices = [self.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLBoneTransformation *bone, NSUInteger idx, BOOL *stop) {
+				return [bone.bone.name isEqual:@"name"];
+			}];
+			if (indices.count == 0)
+			{
+				NSLog(@"Skipping unknown bone %@", name);
+				continue;
+			}
+			GLLBoneTransformation *transform = self.boneTransformations[indices.firstIndex];
+			
+			float x = 0, y = 0, z = 0;
+			if ([scanner scanFloat:&x])
+				[transform setRotationX:x];
+			if ([scanner scanFloat:&y])
+				[transform setRotationY:y];
+			if ([scanner scanFloat:&z])
+				[transform setRotationZ:z];
+			if ([scanner scanFloat:&x])
+				
+				[transform setPositionX:x];
+			if ([scanner scanFloat:&y])
+				[transform setPositionY:y];
+			if ([scanner scanFloat:&z])
+				[transform setPositionZ:z];
+		}
+	}
+	return YES;
+}
+
 #pragma mark - Source List Item
 
 - (BOOL)isSourceListHeader
