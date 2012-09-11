@@ -13,7 +13,9 @@
 
 /*!
  * @abstract Draw a posed instance of a model.
- * @discussion The GLLItemDrawer handles the transformations, applies them to the meshes, and tells the meshes to draw themselves (if they are visible). 
+ * @discussion The GLLItemDrawer handles the transformations, applies them to the meshes, and tells the meshes to draw themselves (if they are visible).
+ *
+ * To see whether it needs drawing, observe the needsRedraw key. This is only sends notifications when changing from NO to YES, so ignore the value and simply schedule a draw.
  */
 @interface GLLItemDrawer : NSObject
 
