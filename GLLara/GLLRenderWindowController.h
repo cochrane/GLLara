@@ -12,6 +12,10 @@
 @class GLLScene;
 @class GLLView;
 
+/*!
+ * @abstract Controls a render view.
+ * @discussion The Render View controller handles the window for a render view. It shows popups for features, holds the camera, provides sources for the controllers and does some general management.
+ */
 @interface GLLRenderWindowController : NSWindowController <NSPopoverDelegate, NSWindowDelegate>
 
 - (id)initWithCamera:(GLLCamera *)camera;

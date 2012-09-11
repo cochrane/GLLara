@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+/*
+ * @abstract A protocol to simplify dealing with the source list.
+ * @discussion The source list in this app (like any good source list) includes a lot of very different elements, something that apparently did not occur to Apple. This protocol ensures that there is a standard way to build a tree and navigate through it. It is implemented by model objects that need to be shown in the source list; which is arguably a layering violation, but what can you do?
+ */
 @protocol GLLSourceListItem <NSObject>
 
 @required
