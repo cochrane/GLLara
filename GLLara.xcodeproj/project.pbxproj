@@ -598,20 +598,11 @@
 				5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */,
 				5224C8EC15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.h */,
 				5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */,
-<<<<<<< HEAD
-				5291DB9715FBF97000ECDBCA /* GLLAmbientLightView.xib */,
-				52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib */,
-=======
-				5291DB9515FBF96F00ECDBCA /* GLLAmbientLightViewController.h */,
-				5291DB9615FBF97000ECDBCA /* GLLAmbientLightViewController.m */,
-				5291DB9715FBF97000ECDBCA /* GLLAmbientLightViewController.xib */,
-				52AF114915FCB2D100DF2565 /* GLLWindowSettingsPopoverViewController.h */,
-				52AF114A15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.m */,
-				52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverViewController.xib */,
 				52C9F60B15FF1752003272E1 /* GLLItemViewController.h */,
 				52C9F60C15FF1752003272E1 /* GLLItemViewController.m */,
 				52C9F60D15FF1753003272E1 /* GLLItemViewController.xib */,
->>>>>>> Support for loading poses.
+				5291DB9715FBF97000ECDBCA /* GLLAmbientLightView.xib */,
+				52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
