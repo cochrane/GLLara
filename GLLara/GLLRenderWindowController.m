@@ -20,6 +20,8 @@
 	BOOL showingPopover;
 }
 
+@property (nonatomic, retain, readwrite) GLLCamera *camera;
+
 @end
 
 @implementation GLLRenderWindowController
@@ -148,7 +150,7 @@
 	
 	[self.managedObjectContext deleteObject:self.camera];
 	
-	_camera = nil;
+	self.camera = nil;
 	
 	return YES;
 }
@@ -159,7 +161,7 @@
 	[self.camera removeObserver:self forKeyPath:@"windowHeight"];
 	[self.camera removeObserver:self forKeyPath:@"windowSizeLocked"];
 	self.renderView.camera = nil;
-	_camera = nil;
+	self.camera = nil;
 }
 
 @end
