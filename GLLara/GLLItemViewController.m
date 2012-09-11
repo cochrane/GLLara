@@ -16,9 +16,9 @@
 
 @implementation GLLItemViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:@"GLLItemView" bundle:nil];
     if (self) {
         // Initialization code here.
     }

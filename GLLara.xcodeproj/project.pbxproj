@@ -96,7 +96,7 @@
 		52BB21D715FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21D615FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist */; };
 		52BB21DB15FCF02200937450 /* GLLCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21DA15FCF02200937450 /* GLLCamera.m */; };
 		52C9F60E15FF1753003272E1 /* GLLItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F60C15FF1752003272E1 /* GLLItemViewController.m */; };
-		52C9F60F15FF1753003272E1 /* GLLItemViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52C9F60D15FF1753003272E1 /* GLLItemViewController.xib */; };
+		52C9F60F15FF1753003272E1 /* GLLItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52C9F60D15FF1753003272E1 /* GLLItemView.xib */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
 		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */; };
@@ -261,7 +261,7 @@
 		52BB21DA15FCF02200937450 /* GLLCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLCamera.m; sourceTree = "<group>"; };
 		52C9F60B15FF1752003272E1 /* GLLItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemViewController.h; sourceTree = "<group>"; };
 		52C9F60C15FF1752003272E1 /* GLLItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemViewController.m; sourceTree = "<group>"; };
-		52C9F60D15FF1753003272E1 /* GLLItemViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLItemViewController.xib; sourceTree = "<group>"; };
+		52C9F60D15FF1753003272E1 /* GLLItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLItemView.xib; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
 		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
@@ -600,7 +600,7 @@
 				5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */,
 				52C9F60B15FF1752003272E1 /* GLLItemViewController.h */,
 				52C9F60C15FF1752003272E1 /* GLLItemViewController.m */,
-				52C9F60D15FF1753003272E1 /* GLLItemViewController.xib */,
+				52C9F60D15FF1753003272E1 /* GLLItemView.xib */,
 				5291DB9715FBF97000ECDBCA /* GLLAmbientLightView.xib */,
 				52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib */,
 			);
@@ -725,7 +725,7 @@
 				52AF114D15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib in Resources */,
 				52BB21D715FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist in Resources */,
 				52919A1515FDF0A7004ACBA5 /* cameratemplate.pdf in Resources */,
-				52C9F60F15FF1753003272E1 /* GLLItemViewController.xib in Resources */,
+				52C9F60F15FF1753003272E1 /* GLLItemView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
