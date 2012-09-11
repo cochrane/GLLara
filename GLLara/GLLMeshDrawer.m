@@ -96,13 +96,12 @@
 	return self;
 }
 
-- (void)drawWithTransforms:(const mat_float16 *)transforms;
+- (void)draw;
 {
 	// Use this program, with the correct transformation.
 	glUseProgram(self.program.programID);
-	glUniformMatrix4fv(self.program.boneMatricesUniformLocation, (GLsizei) self.mesh.boneIndices.count, GL_FALSE, (const GLfloat *) transforms);
 
-	// And don't forget the textures
+	// Setup textures
 	for (GLuint i = 0; i < self.textures.count; i++)
 	{
 		glActiveTexture(GL_TEXTURE0 + i);

@@ -45,8 +45,6 @@
 
 - (GLLMeshSettings *)settingsForMesh:(GLLMesh *)mesh;
 
-- (void)getTransforms:(mat_float16 *)matrices maxCount:(NSUInteger)maxCount forMesh:(GLLMesh *)mesh;
-
 @end
 
 @interface GLLItem (CoreDataGeneratedAccessors)

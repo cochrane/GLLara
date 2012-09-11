@@ -232,14 +232,6 @@
 	return self.meshSettings[mesh.meshIndex];
 }
 
-- (void)getTransforms:(mat_float16 *)matrices maxCount:(NSUInteger)maxCount forMesh:(GLLMesh *)mesh;
-{
-	NSArray *boneIndices = mesh.boneIndices;
-	NSUInteger max = MIN(maxCount, boneIndices.count);
-	for (NSUInteger i = 0; i < max; i++)
-		matrices[i] = [self.boneTransformations[[boneIndices[i] unsignedIntegerValue]] globalTransform];
-}
-
 #pragma mark - Source List Item
 
 - (BOOL)isSourceListHeader

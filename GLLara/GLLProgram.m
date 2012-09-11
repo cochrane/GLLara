@@ -104,8 +104,6 @@
 		return nil;
 	}
 	
-	_boneMatricesUniformLocation = glGetUniformLocation(_programID, "boneMatrices");
-	
 	_lightsUniformBlockIndex = glGetUniformBlockIndex(_programID, "LightData");
 	if (_lightsUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(_programID, _lightsUniformBlockIndex, GLLUniformBlockBindingLights);
 
@@ -117,6 +115,9 @@
 	
 	_alphaTestUniformBlockIndex = glGetUniformBlockIndex(_programID, "AlphaTest");
 	if (_alphaTestUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(_programID, _alphaTestUniformBlockIndex, GLLUniformBlockBindingAlphaTest);
+	
+	_boneMatricesUniformBlockIndex = glGetUniformBlockIndex(_programID, "Bones");
+	if (_boneMatricesUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(_programID, _boneMatricesUniformBlockIndex, GLLUniformBlockBindingBoneMatrices);
 	
 	// Set up textures. Uniforms for textures need to be set up once and then never change, because uniforms bind to texture units, not texture objects. I really, really wish I knew whom that is supposed to help, but whatever.
 	glUseProgram(_programID);

@@ -7,7 +7,9 @@ layout(std140) uniform Transform {
 	mat4 viewProjection;
 } transform;
 
-uniform mat4 boneMatrices[59];
+layout(std140) uniform Bones {
+	mat4 transforms[512];
+} bones;
 
 in vec3 position;
 in vec3 normal;
@@ -25,7 +27,7 @@ out mat3 tangentToWorld;
 void main()
 {
 	// Transformation
-	gl_Position = transform.viewProjection * (boneMatrices[0] * vec4(position, 1.0));
+	gl_Position = transform.viewProjection * (bones.transforms[0] * vec4(position, 1.0));
 	
 	// Relative to world
 	positionWorld = vec3(boneMatrices[0] * vec4(position, 1.0));

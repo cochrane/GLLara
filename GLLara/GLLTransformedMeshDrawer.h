@@ -24,7 +24,7 @@
 @property (nonatomic, retain, readonly) GLLMeshDrawer *drawer;
 @property (nonatomic, retain, readonly) GLLMeshSettings *settings;
 
-- (void)drawWithTransforms:(const mat_float16 *)transforms;
+- (void)draw;
 
 - (void)unload;
 

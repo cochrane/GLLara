@@ -23,8 +23,10 @@
 
 @property (nonatomic, assign, readonly) GLuint programID;
 
+// Uniforms set by model
+@property (nonatomic, assign, readonly) GLuint boneMatricesUniformBlockIndex;
+
 // Uniforms set by mesh
-@property (nonatomic, assign, readonly) GLint boneMatricesUniformLocation;
 @property (nonatomic, assign, readonly) GLuint renderParametersUniformBlockIndex;
 
 // Uniforms set by scene drawer

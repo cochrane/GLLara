@@ -285,7 +285,6 @@ void vec_addTo(float *a, float *b)
 	result->_vertexData = [newVertices copy];
 	result->_elementData = [newElements copy];
 	
-	result->_boneIndices = [self.boneIndices copy];
 	result->_countOfUVLayers = self.countOfUVLayers;
 	result->_model = self.model;
 	result->_name = [name copy];
@@ -308,17 +307,12 @@ void vec_addTo(float *a, float *b)
 	
 	NSMutableData *mutableVertices = [vertexData mutableCopy];
 	void *bytes = mutableVertices.mutableBytes;
-	const NSUInteger boneIndexOffset = self.offsetForBoneIndices;
 	const NSUInteger boneWeightOffset = self.offsetForBoneWeights;
 	const NSUInteger stride = self.stride;
-	
-	NSMutableDictionary *localForGlobalIndex = [[NSMutableDictionary alloc] init];
-	NSMutableArray *boneIndices = [[NSMutableArray alloc] init];
-	
+		
 	for (NSUInteger i = 0; i < self.countOfVertices; i++)
 	{
 		float *weights = &bytes[boneWeightOffset + i*stride];
-		uint16_t *indices = &bytes[boneIndexOffset + i*stride];
 		
 		// Normalize weights. If no weights, use first bone.
 		float weightSum = 0.0f;
@@ -332,36 +326,7 @@ void vec_addTo(float *a, float *b)
 			for (int i = 0; i < 4; i++)
 				weights[i] /= weightSum;
 		}
-		
-		// Find the first index with non-null weight (i.e. the first this mesh absolutely has to have). Used later.
-		uint16_t firstUsedIndex = UINT16_MAX;
-		for (int i = 0; i < 4; i++)
-		{
-			if (weights[i] > 0.0f)
-			{
-				firstUsedIndex = indices[i];
-				break;
-			}
-		}
-		
-		// Convert global to local index.
-		for (int i = 0; i < 4; i++)
-		{
-			// If it doesn't matter what bone is used (because weight is 0), use one that is already required for this mesh.
-			uint16_t index = weights[i] > 0.0f ? indices[i] : firstUsedIndex;
-			
-			NSNumber *local = localForGlobalIndex[@(index)];
-			if (!local)
-			{
-				local = @(boneIndices.count);
-				localForGlobalIndex[@(index)] = local;
-				[boneIndices addObject:@(index)];
-			}
-			indices[i] = local.unsignedShortValue;
-		}
 	}
-	
-	_boneIndices = [boneIndices copy];
 	
 	return mutableVertices;
 }

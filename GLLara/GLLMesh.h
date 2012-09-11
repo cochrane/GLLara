@@ -64,7 +64,6 @@
 /*
  * Bone indices. A mesh can use at most 59 bones, but a model can have much more than that. Each element of this array is an NSNumber index into the total number of bones the model has.
  */
-@property (nonatomic, copy, readonly) NSArray *boneIndices;
 
 /*
  * Other important properties.

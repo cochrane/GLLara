@@ -22,7 +22,7 @@
 @property (nonatomic, retain, readonly) GLLProgram *program;
 @property (nonatomic, copy, readonly) NSArray *textures;
 
-- (void)drawWithTransforms:(const mat_float16 *)transforms;
+- (void)draw;
 
 - (void)unload;
 

@@ -26,9 +26,6 @@
 #import "simd_matrix.h"
 #import "simd_project.h"
 
-static NSString *transformationsKeyPath = @"relativeTransform";
-static NSString *renderSettingsKeyPath = @"renderSettings";
-
 struct GLLLightBlock
 {
 	vec_float4 cameraLocation;
@@ -195,7 +192,7 @@ struct GLLAlphaTestBlock
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:transformationsKeyPath] || [keyPath isEqual:renderSettingsKeyPath] || [keyPath isEqual:@"value"])
+	if ([keyPath isEqual:@"needsRedraw"])
 	{
 		self.view.needsDisplay = YES;
 	}
@@ -295,31 +292,11 @@ struct GLLAlphaTestBlock
 	}
 	
 	[itemDrawers addObject:drawer];
-
-	for (GLLBoneTransformation *boneTransform in item.boneTransformations)
-		[boneTransform addObserver:self forKeyPath:transformationsKeyPath options:0 context:0];
-	
-	for (GLLMeshSettings *settings in item.meshSettings)
-	{
-		for (GLLRenderParameter *param in settings.renderParameters)
-			[param addObserver:self forKeyPath:@"value" options:0 context:0];
-		
-		[settings addObserver:self forKeyPath:renderSettingsKeyPath options:0 context:0];
-	}
+	[drawer addObserver:self forKeyPath:@"needsRedraw" options:0 context:0];
 }
 - (void)_unregisterDrawer:(GLLItemDrawer *)drawer
 {
-	for (GLLBoneTransformation *boneTransform in drawer.item.boneTransformations)
-		[boneTransform removeObserver:self forKeyPath:transformationsKeyPath];
-	
-	for (GLLMeshSettings *settings in drawer.item.meshSettings)
-	{
-		for (GLLRenderParameter *param in settings.renderParameters)
-			[param removeObserver:self forKeyPath:@"value"];
-		
-		[settings removeObserver:self forKeyPath:renderSettingsKeyPath];
-	}
-
+	[drawer removeObserver:self forKeyPath:@"needsRedraw"];
 	[drawer unload];
 }
 

@@ -7,7 +7,9 @@ layout(std140) uniform Transform {
 	mat4 viewProjection;
 } transform;
 
-uniform mat4 boneMatrices[59];
+layout(std140) uniform Bones {
+	mat4 transforms[512];
+} bones;
 
 in vec3 position;
 in vec3 normal;
@@ -23,10 +25,10 @@ out vec3 normalWorld;
 
 mat4 boneTransform()
 {
-	return boneMatrices[boneIndices[0]] * boneWeights[0] +
-		boneMatrices[boneIndices[1]] * boneWeights[1] +
-		boneMatrices[boneIndices[2]] * boneWeights[2] +
-		boneMatrices[boneIndices[3]] * boneWeights[3];
+	return bones.transforms[boneIndices[0]] * boneWeights[0] +
+		bones.transforms[boneIndices[1]] * boneWeights[1] +
+		bones.transforms[boneIndices[2]] * boneWeights[2] +
+		bones.transforms[boneIndices[3]] * boneWeights[3];
 }
 
 void main()

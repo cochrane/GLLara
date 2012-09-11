@@ -95,7 +95,7 @@
 		[super observeValueForKeyPath:@"keyPath" ofObject:object change:change context:context];
 }
 
-- (void)drawWithTransforms:(const mat_float16 *)transforms;
+- (void)draw;
 {
 	if (!self.settings.isVisible)
 		return;
@@ -121,7 +121,7 @@
 	if (renderParametersBuffer != 0)
 		glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingRenderParameters, renderParametersBuffer);
 	
-	[self.drawer drawWithTransforms:transforms];
+	[self.drawer draw];
 	
 	// Enable it again.
 	if (self.settings.cullFaceMode == GLLCullNone)
