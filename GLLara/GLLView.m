@@ -66,12 +66,16 @@
 
 - (void)rotateWithEvent:(NSEvent *)event
 {
+	if (self.camera.cameraLocked) return;
+	
 	float angle = event.rotation * M_PI / 180.0;
 	self.camera.longitude -= angle;
 }
 
 - (void)magnifyWithEvent:(NSEvent *)event
 {
+	if (self.camera.cameraLocked) return;
+	
 	self.camera.distance *= 1 + event.magnification;
 }
 
@@ -90,6 +94,8 @@
 
 - (void)scrollWheel:(NSEvent *)theEvent
 {
+	if (self.camera.cameraLocked) return;
+	
 	self.camera.currentPositionX += theEvent.deltaX / self.bounds.size.width;
 	self.camera.currentPositionZ += theEvent.deltaY / self.bounds.size.height;
 }
