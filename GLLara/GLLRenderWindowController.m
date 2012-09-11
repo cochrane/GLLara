@@ -115,11 +115,6 @@
 	drawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext view:self.renderView];
 }
 
-- (NSPredicate *)targetsFilterPredicate
-{
-	return [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:@"bones.item"] rightExpression:[NSExpression expressionForConstantValue:self.selectedObject]  modifier:NSAnyPredicateModifier type:NSEqualToPredicateOperatorType options:0];
-}
-
 #pragma mark - Popover
 
 - (IBAction)showPopoverFrom:(id)sender;

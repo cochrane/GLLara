@@ -29,8 +29,6 @@
 
 
 @property (nonatomic, retain) NSArrayController *itemsController;
-@property (nonatomic) id selectedObject;
-@property (nonatomic, retain, readonly) NSPredicate *targetsFilterPredicate;
 
 
 - (IBAction)showPopoverFrom:(id)sender;
