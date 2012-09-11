@@ -43,6 +43,7 @@
         <attribute name="specularColor" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="GLLItem" representedClassName="GLLItem" syncable="YES">
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="itemURL" optional="YES" transient="YES" syncable="YES"/>
         <attribute name="itemURLBookmark" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -76,7 +77,7 @@
         <element name="GLLCamera" positionX="160" positionY="192" width="128" height="270"/>
         <element name="GLLCameraTarget" positionX="198" positionY="290" width="128" height="88"/>
         <element name="GLLDirectionalLight" positionX="160" positionY="192" width="128" height="120"/>
-        <element name="GLLItem" positionX="160" positionY="192" width="128" height="180"/>
+        <element name="GLLItem" positionX="160" positionY="192" width="128" height="224"/>
         <element name="GLLLight" positionX="160" positionY="192" width="128" height="150"/>
         <element name="GLLMeshSettings" positionX="-162" positionY="90" width="128" height="103"/>
         <element name="GLLRenderParameter" positionX="160" positionY="192" width="128" height="90"/>

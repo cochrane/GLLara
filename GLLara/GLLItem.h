@@ -31,13 +31,13 @@
 @property (nonatomic) BOOL isVisible;
 @property (nonatomic, retain) NSOrderedSet *boneTransformations;
 @property (nonatomic, retain) NSOrderedSet *meshSettings;
+@property (nonatomic, retain) NSString *displayName;
 
 // Derived
 @property (nonatomic, retain) NSURL *itemURL;
 
 @property (nonatomic, copy, readonly) NSString *itemName;
 @property (nonatomic, copy, readonly) NSString *itemDirectory;
-@property (nonatomic, copy, readonly) NSString *displayName;
 
 @property (nonatomic, retain) GLLModel *model;
 

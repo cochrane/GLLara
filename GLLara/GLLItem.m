@@ -108,6 +108,7 @@
 
 @implementation GLLItem
 
+@dynamic displayName;
 @dynamic itemURLBookmark;
 @dynamic scaleX;
 @dynamic scaleY;
@@ -120,7 +121,6 @@
 @dynamic itemURL;
 @dynamic itemName;
 @dynamic itemDirectory;
-@dynamic displayName;
 
 #pragma mark - Non-standard attributes
 
@@ -187,26 +187,37 @@
 			if ([boneNames containsObject:transform.bone.name])
 				[[cameraTarget mutableSetValueForKey:@"bones"] addObject:transform];
 	}
-}
-
-#pragma mark - Derived
-
-- (NSString *)displayName
-{
+	
+	// Display name!
+	
+	// Get a base name
 	NSURL *modelDirectory = [self.model.baseURL URLByDeletingLastPathComponent];
 	NSMutableString *basicName = [[NSMutableString alloc] initWithString:modelDirectory.lastPathComponent];
 	
+	// Remove extensions
 	if ([basicName hasSuffix:@".ascii"])
 		[basicName deleteCharactersInRange:NSMakeRange(basicName.length - @".ascii".length, @".ascii".length)];
 	if ([basicName hasSuffix:@".mesh"])
 		[basicName deleteCharactersInRange:NSMakeRange(basicName.length - @".mesh".length, @".mesh".length)];
 	
+	// Replace underscores
 	[basicName replaceOccurrencesOfString:@"_" withString:@" " options:0 range:NSMakeRange(0, basicName.length)];
 	
+	// Use title case
 	CFStringTransform((__bridge CFMutableStringRef) basicName, NULL, CFSTR("Title"), NO);
 	
-	return [basicName copy];
+	// Find out how many others with the same name exist
+	NSFetchRequest *sameNameRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
+	sameNameRequest.predicate = [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:@"displayName"] rightExpression:[NSExpression expressionForConstantValue:basicName] modifier:0 type:NSEqualToPredicateOperatorType options:NSCaseInsensitivePredicateOption | NSDiacriticInsensitivePredicateOption];
+	NSUInteger count = [self.managedObjectContext countForFetchRequest:sameNameRequest error:NULL];
+	if (count > 0)
+		[basicName appendFormat:NSLocalizedString(@" (%lu)", @"same item display name suffix format"), count + 1];
+	
+	// And assign to self.
+	self.displayName = [basicName copy];
 }
+
+#pragma mark - Derived
 
 - (NSArray *)rootBoneTransformations
 {
