@@ -14,7 +14,7 @@
 
 @implementation GLLDirectionalLight
 
-+ (NSSet *)keyPathsForValuesAffectingDataAsUniformBlock
++ (NSSet *)keyPathsForValuesAffectingUniformBlock
 {
 	return [NSSet setWithObjects:@"isEnabled", @"latitude", @"longitude", @"diffuseColor", @"specularColor", nil];
 }
@@ -37,13 +37,13 @@
 	[self didChangeValueForKey:@"longitude"];
 }
 
-- (NSData *)dataAsUniformBlock
+- (struct GLLLightUniformBlock)uniformBlock
 {
 	if (!self.isEnabled)
 	{
 		struct GLLLightUniformBlock block;
 		bzero(&block, sizeof(block));
-		return [NSData dataWithBytes:&block length:sizeof(block)];
+		return block;
 	}
 		
 	struct GLLLightUniformBlock block;
@@ -55,7 +55,7 @@
 	[[self.specularColor colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
 	block.specularColor = simd_make(r, g, b, a);
 	
-	return [NSData dataWithBytes:&block length:sizeof(block)];
+	return block;
 }
 
 #pragma mark - Source list item

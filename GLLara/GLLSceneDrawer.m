@@ -53,12 +53,14 @@ struct GLLAlphaTestBlock
 	GLuint alphaTestPassGreaterBuffer;
 	GLuint alphaTestPassLessBuffer;
 	
-	mat_float16 lookatMatrix;
-	mat_float16 projectionMatrix;
+	BOOL needsUpdateMatrices;
+	BOOL needsUpdateLights;
 }
 
 - (void)_addDrawerForItem:(GLLItem *)item;
 - (void)_unregisterDrawer:(GLLItemDrawer *)drawer;
+- (void)_updateMatrices;
+- (void)_updateLights;
 
 @end
 
@@ -115,13 +117,8 @@ struct GLLAlphaTestBlock
 	for (GLLItem *item in allItems)
 		[self _addDrawerForItem:item];
 	
-	// Prepare light buffer. Set almost all to 0; it will get updated later.
+	// Prepare light buffer.
 	glGenBuffers(1, &lightBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
-	struct GLLLightBlock lightBlock;
-	bzero(&lightBlock, sizeof(lightBlock));
-	lightBlock.cameraLocation = simd_make(0.0, 1.0, 2.0, 1.0);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(lightBlock), &lightBlock, GL_DYNAMIC_DRAW);
 	
 	// Load existing lights
 	NSFetchRequest *allLightsRequest = [[NSFetchRequest alloc] init];
@@ -132,18 +129,14 @@ struct GLLAlphaTestBlock
 	NSAssert(lights.count == 4, @"There are not four lights.");
 	
 	// Register for ambient light color updates
-	[lights[0] addObserver:self forKeyPath:@"color" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:NULL];
+	[lights[0] addObserver:self forKeyPath:@"color" options:0 context:NULL];
 	// Register for directional light color updates
 	for (int i = 0; i < 3; i++)
-		[lights[i + 1] addObserver:self forKeyPath:@"dataAsUniformBlock" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
+		[lights[i + 1] addObserver:self forKeyPath:@"uniformBlock" options:0 context:NULL];
 	
 	// Transform buffer
 	glGenBuffers(1, &transformBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
-	
-	mat_float16 identity = simd_mat_identity();
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(identity), &identity, GL_STATIC_DRAW);
-	[view addObserver:self forKeyPath:@"camera.viewProjectionMatrixData" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:0];
+	[view addObserver:self forKeyPath:@"camera.viewProjectionMatrix" options:0 context:0];
 	
 	// Alpha test buffer
 	glGenBuffers(1, &alphaTestDisabledBuffer);
@@ -170,6 +163,8 @@ struct GLLAlphaTestBlock
 	glFrontFace(GL_CW);
 	
 	self.view.needsDisplay = YES;
+	needsUpdateMatrices = YES;
+	needsUpdateLights = YES;
 	
 	return self;
 }
@@ -184,9 +179,9 @@ struct GLLAlphaTestBlock
 	[lights[0] removeObserver:self forKeyPath:@"color"];
 	
 	for (int i = 0; i < 3; i++)
-		[lights[i + 1] removeObserver:self forKeyPath:@"dataAsUniformBlock"];
+		[lights[i + 1] removeObserver:self forKeyPath:@"uniformBlock"];
 	
-	[self.view removeObserver:self forKeyPath:@"camera.viewProjectionMatrixData"];
+	[self.view removeObserver:self forKeyPath:@"camera.viewProjectionMatrix"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -195,47 +190,15 @@ struct GLLAlphaTestBlock
 	{
 		self.view.needsDisplay = YES;
 	}
-	else if ([keyPath isEqual:@"camera.viewProjectionMatrixData"])
+	else if ([keyPath isEqual:@"camera.viewProjectionMatrix"])
 	{
-		if ([change[NSKeyValueChangeNewKey] isKindOfClass:[NSNull class]])
-			return;
-		
-		[self.view.openGLContext makeCurrentContext];
-		
-		glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
-		glBufferData(GL_UNIFORM_BUFFER, [change[NSKeyValueChangeNewKey] length], [change[NSKeyValueChangeNewKey] bytes], GL_STATIC_DRAW);
-		
-		// Apply position to lighting data
-		glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
-		vec_float4 position = [[object camera] cameraWorldPosition];
-		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(struct GLLLightBlock, cameraLocation), sizeof(position), &position);
-		
+		needsUpdateMatrices = YES;
+		needsUpdateLights = YES;
 		self.view.needsDisplay = YES;
 	}
-	else if ([keyPath isEqual:@"dataAsUniformBlock"])
+	else if ([keyPath isEqual:@"uniformBlock"] || [keyPath isEqual:@"color"])
 	{
-		NSUInteger index = [[object valueForKey:@"index"] unsignedIntegerValue];
-		if (index >= 3) return;
-		
-		[self.view.openGLContext makeCurrentContext];
-		
-		NSData *value = change[NSKeyValueChangeNewKey];
-		glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(struct GLLLightBlock, lights[index]), value.length, value.bytes);
-		
-		self.view.needsDisplay = YES;
-	}
-	else if ([keyPath isEqual:@"color"])
-	{
-		[self.view.openGLContext makeCurrentContext];
-		
-		NSColor *value = change[NSKeyValueChangeNewKey];
-		CGFloat r, g, b, a;
-		[[value colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
-		vec_float4 ambientColor = simd_make(r, g, b, a);
-		glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
-		glBufferSubData(GL_UNIFORM_BUFFER, offsetof(struct GLLLightBlock, ambientColor), sizeof(ambientColor), &ambientColor);
-		
+		needsUpdateLights = YES;
 		self.view.needsDisplay = YES;
 	}
 	else
@@ -247,6 +210,9 @@ struct GLLAlphaTestBlock
 - (void)draw;
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	if (needsUpdateMatrices) [self _updateMatrices];
+	if (needsUpdateLights) [self _updateLights];
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
@@ -278,6 +244,45 @@ struct GLLAlphaTestBlock
 }
 
 #pragma mark - Private methods
+
+- (void)_updateMatrices
+{
+	GLLCamera *camera = self.view.camera;
+	
+	mat_float16 viewProjection = camera.viewProjectionMatrix;
+	
+	// Set the view projection matrix.
+	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(viewProjection), &viewProjection, GL_STATIC_DRAW);
+	
+	needsUpdateMatrices = NO;
+}
+- (void)_updateLights;
+{
+	struct GLLLightBlock lightData;
+	
+	// Camera position
+	lightData.cameraLocation = self.view.camera.cameraWorldPosition;
+	
+	// Ambient
+	GLLAmbientLight *ambient = lights[0];
+	CGFloat r, g, b, a;
+	[[ambient.color colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
+	lightData.ambientColor = simd_make(r, g, b, a);
+	
+	// Diffuse + Specular
+	for (NSUInteger i = 0; i < 3; i++)
+	{
+		GLLDirectionalLight *light = lights[i+1];
+		lightData.lights[i] = light.uniformBlock;
+	}
+	
+	// Upload
+	glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(lightData), &lightData, GL_STATIC_DRAW);
+	
+	needsUpdateLights = NO;
+}
 
 - (void)_addDrawerForItem:(GLLItem *)item;
 {

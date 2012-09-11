@@ -32,14 +32,6 @@
 {
 	return [NSSet setWithObjects:@"distance", @"latitude", @"longitude", @"positionX", @"positionY", @"positionZ", @"target.position", nil];
 }
-+ (NSSet *)keyPathsForValuesAffectingCameraWorldPositionData
-{
-	return [NSSet setWithObject:@"cameraWorldPosition"];
-}
-+ (NSSet *)keyPathsForValuesAffectingViewProjectionMatrixData
-{
-	return [NSSet setWithObject:@"viewProjectionMatrix"];
-}
 + (NSSet *)keyPathsForValuesAffectingCurrentPositionX
 {
 	return [NSSet setWithObjects:@"target.position", @"positionX", nil];
@@ -157,16 +149,6 @@
 	mat_float16 lookat = simd_mat_lookat(viewDirection, position);
 	
 	return simd_mat_mul(projection, lookat);
-}
-- (NSData *)viewProjectionMatrixData
-{
-	mat_float16 viewProjection = self.viewProjectionMatrix;
-	return [NSData dataWithBytes:&viewProjection length:sizeof(viewProjection)];
-}
-- (NSData *)cameraWorldPositionData
-{
-	vec_float4 cameraWorldPosition = self.cameraWorldPosition;
-	return [NSData dataWithBytes:&cameraWorldPosition length:sizeof(cameraWorldPosition)];
 }
 
 #pragma mark - Private methods

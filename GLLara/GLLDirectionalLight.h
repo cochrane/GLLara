@@ -29,6 +29,6 @@ struct GLLLightUniformBlock
 @property (nonatomic, retain) NSColor *diffuseColor;
 @property (nonatomic, retain) NSColor *specularColor;
 
-@property (nonatomic, readonly) NSData *dataAsUniformBlock;
+@property (nonatomic, readonly) struct GLLLightUniformBlock uniformBlock;
 
 @end
