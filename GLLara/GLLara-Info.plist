@@ -9,10 +9,6 @@
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>Scene</string>
-			<key>CFBundleTypeOSTypes</key>
-			<array>
-				<string>????</string>
-			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSItemContentTypes</key>
@@ -56,7 +52,7 @@
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
-				<string>public.composite-content</string>
+				<string>public.data</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>GLLara Scene</string>
