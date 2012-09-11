@@ -82,6 +82,11 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 	if (!data) return 0;
     const void *byteData = CFDataGetBytePtr(data);
     size = CFDataGetLength(data);
+	if (size == 0)
+	{
+		CFRelease(data);
+		return 0;
+	}
     
 	if (DDSIsCompressed(file))
 		glCompressedTexImage2D(GL_TEXTURE_2D, (GLsizei) mipmapLevel, _dds_get_compressed_texture_format(file), (GLsizei) width, (GLsizei) height, 0, (GLsizei) size, byteData);

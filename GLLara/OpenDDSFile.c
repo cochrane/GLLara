@@ -236,7 +236,7 @@ CFDataRef DDSCreateDataForMipmapLevel(const DDSFile *file, CFIndex level)
 	CFIndex newDataStart = 4 + sizeof(struct DDSFileHeader) + offset;
 	
 	if (newDataStart + size > CFDataGetLength(file->data))
-		return DDSCreateDataForMipmapLevel(file, level-1);
+		return NULL;
 	
 	UInt8 *newData = malloc(size);
 	CFDataGetBytes(file->data, CFRangeMake(newDataStart, size), newData);
