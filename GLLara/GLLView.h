@@ -12,13 +12,11 @@
 
 @class GLLCamera;
 @class GLLSceneDrawer;
-@class GLLRenderWindowController;
 
 @interface GLLView : NSOpenGLView
 
 @property (nonatomic, retain) GLLCamera *camera;
-@property (nonatomic, weak) GLLRenderWindowController *windowController;
 
-@property (nonatomic, retain) GLLSceneDrawer *sceneDrawer;
+@property (nonatomic, retain, readonly) GLLSceneDrawer *sceneDrawer;
 
 @end

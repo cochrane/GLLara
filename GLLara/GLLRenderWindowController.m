@@ -8,15 +8,12 @@
 
 #import "GLLRenderWindowController.h"
 
-#import <AppKit/AppKit.h>
-
 #import "GLLCamera.h"
 #import "GLLView.h"
 #import "GLLSceneDrawer.h"
 
 @interface GLLRenderWindowController ()
 {
-	GLLSceneDrawer *drawer;
 	BOOL showingPopover;
 }
 
@@ -25,11 +22,6 @@
 @end
 
 @implementation GLLRenderWindowController
-
-+ (NSSet *)keyPathsForValuesAffectingTargetsFilterPredicate
-{
-	return [NSSet setWithObjects:@"itemsController.arrangedObjects", @"selelctedItemIndex", nil];
-}
 
 - (id)initWithCamera:(GLLCamera *)camera;
 {
@@ -50,7 +42,6 @@
 	self.window.delegate = self;
     
 	self.renderView.camera = self.camera;
-	self.renderView.windowController = self;
 	self.popover.delegate = self;
 	
 	[self.camera addObserver:self forKeyPath:@"windowWidth" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
@@ -108,11 +99,6 @@
 - (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName
 {
 	return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view %lu", @"render window title format"), displayName, self.camera.index + 1];
-}
-
-- (void)openGLPrepared;
-{
-	drawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext view:self.renderView];
 }
 
 #pragma mark - Popover

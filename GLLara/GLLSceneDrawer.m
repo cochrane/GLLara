@@ -70,7 +70,6 @@ struct GLLAlphaTestBlock
 
 	_managedObjectContext = context;
 	_view = view;
-	_view.sceneDrawer = self;
 	_resourceManager = [GLLResourceManager sharedResourceManager];
 	
 	itemDrawers = [[NSMutableArray alloc] init];

@@ -13,12 +13,10 @@
 
 #import "GLLCamera.h"
 #import "GLLSceneDrawer.h"
-#import "GLLRenderWindowController.h"
 #import "GLLResourceManager.h"
 
 @interface GLLView ()
 {
-	BOOL openGLPrepared;
 	BOOL inGesture;
 }
 
@@ -52,16 +50,16 @@
 
 - (void)prepareOpenGL
 {
-	openGLPrepared = YES;
-	[self.windowController openGLPrepared];
+	if (self.camera)
+		_sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.camera.managedObjectContext view:self];
 }
 
-- (void)setWindowController:(GLLRenderWindowController *)windowController
+- (void)setCamera:(GLLCamera *)camera
 {
-	NSAssert(!_windowController, @"Can't set window controller twice");
+	_camera = camera;
 	
-	_windowController = windowController;
-	if (openGLPrepared) [_windowController openGLPrepared];
+	if (!_sceneDrawer && camera)
+		_sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.camera.managedObjectContext view:self];
 }
 
 - (void)rotateWithEvent:(NSEvent *)event

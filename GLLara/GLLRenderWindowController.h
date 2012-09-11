@@ -6,11 +6,7 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import <AppKit/NSArrayController.h>
-#import <AppKit/NSWindow.h>
-#import <AppKit/NSWindowController.h>
-#import <AppKit/NSPopover.h>
-#import <CoreData/CoreData.h>
+#import <Cocoa/Cocoa.h>
 
 @class GLLCamera;
 @class GLLScene;
@@ -27,13 +23,6 @@
 @property (nonatomic, retain) IBOutlet NSPopover *popover;
 @property (nonatomic, retain) IBOutlet NSButton *popoverButton;
 
-
-@property (nonatomic, retain) NSArrayController *itemsController;
-
-
 - (IBAction)showPopoverFrom:(id)sender;
-
-// Called by the GLLView once it's context is ready and set up.
-- (void)openGLPrepared;
 
 @end
