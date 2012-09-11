@@ -202,6 +202,14 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	return nil;
 }
 
+- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{
+	if ([item isKindOfClass:[GLLItem class]])
+		[item setValue:object forKey:@"displayName"];
+	else
+		[NSException raise:NSInvalidArgumentException format:@"Item %@ is not editable, can't set new value %@", item, object];
+}
+
 #pragma mark - Outline view delegate
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
@@ -231,6 +239,14 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		[self _setRightHandController:itemViewController representedObject:selectedObject];
 	else
 		[self _setRightHandController:nil representedObject:nil];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+	if ([item isKindOfClass:[GLLItem class]])
+		return YES;
+	
+	return NO;
 }
 
 #pragma mark - Private methods
