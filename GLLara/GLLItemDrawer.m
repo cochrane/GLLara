@@ -78,6 +78,11 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	NSAssert(transformsBuffer == 0, @"Have to call unload first!");
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if ([keyPath isEqual:@"drawer.mesh.renderSettings"])
@@ -144,6 +149,7 @@
 	}
 	
 	glDeleteBuffers(1, &transformsBuffer);
+	transformsBuffer = 0;
 }
 
 - (void)_updateTransforms
