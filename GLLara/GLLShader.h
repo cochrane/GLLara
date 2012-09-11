@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <OpenGL/gltypes.h>
 
+/*!
+ * @abstract A single shader.
+ * @discussion Exactly what you'd expect.
+ */
 @interface GLLShader : NSObject
 
 - (id)initWithSource:(NSString *)sourceString name:(NSString *)name type:(GLenum)type error:(NSError *__autoreleasing*)error;

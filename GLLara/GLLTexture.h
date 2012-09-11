@@ -10,6 +10,10 @@
 
 #import <OpenGL/gltypes.h>
 
+/*!
+ * @abstract A texture.
+ * @discussion Nothing much to see here. This uses hand-written code to load DDS files and ImageIO to load everything else, and vImage to unpremultiply whatever comes from ImageIO.
+ */
 @interface GLLTexture : NSObject
 
 - (id)initWithData:(NSData *)data;
