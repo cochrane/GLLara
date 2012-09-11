@@ -194,9 +194,7 @@ static NSCache *cachedModels;
 
 - (NSArray *)rootBones
 {
-	return [self.bones filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(GLLBone *bone, NSDictionary *bindings){
-		return !bone.hasParent;
-	}]];
+	return [self.bones filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"hasParent == NO"]];
 }
 
 - (NSArray *)cameraTargetNames

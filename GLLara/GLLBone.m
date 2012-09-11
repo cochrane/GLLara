@@ -60,9 +60,7 @@
 }
 - (NSArray *)children
 {
-	return [self.model.bones filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(GLLBone *bone, NSDictionary *bindings){
-		return bone.parent == self;
-	}]];
+	return [self.model.bones filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"parent == %@", self]];
 }
 
 @end
