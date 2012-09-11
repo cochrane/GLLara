@@ -4,9 +4,12 @@
         <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="GLLBoneTransformation" representedClassName="GLLBoneTransformation" syncable="YES">
+        <attribute name="globalPosition" transient="YES" syncable="YES"/>
+        <attribute name="globalTransform" transient="YES" syncable="YES"/>
         <attribute name="positionX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="positionY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="positionZ" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="relativeTransform" transient="YES" syncable="YES"/>
         <attribute name="rotationX" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
         <attribute name="rotationY" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
         <attribute name="rotationZ" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
@@ -43,11 +46,17 @@
         <attribute name="specularColor" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
     <entity name="GLLItem" representedClassName="GLLItem" syncable="YES">
-        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="itemURL" optional="YES" transient="YES" syncable="YES"/>
         <attribute name="itemURLBookmark" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="model" transient="YES" syncable="YES"/>
+        <attribute name="positionX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionZ" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationZ" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="scaleX" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="scaleY" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="scaleZ" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
@@ -73,7 +82,7 @@
     </entity>
     <elements>
         <element name="GLLAmbientLight" positionX="160" positionY="192" width="128" height="60"/>
-        <element name="GLLBoneTransformation" positionX="160" positionY="192" width="128" height="148"/>
+        <element name="GLLBoneTransformation" positionX="160" positionY="192" width="128" height="210"/>
         <element name="GLLCamera" positionX="160" positionY="192" width="128" height="270"/>
         <element name="GLLCameraTarget" positionX="198" positionY="290" width="128" height="88"/>
         <element name="GLLDirectionalLight" positionX="160" positionY="192" width="128" height="120"/>
