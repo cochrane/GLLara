@@ -15,27 +15,19 @@
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
+@interface GLLBoneTransformation ()
+
+- (void)_standardSetValue:(id)value forKey:(NSString *)key;
+- (void)_updateRelativeTransform;
+- (void)_updateGlobalTransform;
+
+@end
+
 @implementation GLLBoneTransformation
 
 + (NSSet *)keyPathsForValuesAffectingBone
 {
 	return [NSSet setWithObjects:@"item.model.bones", @"boneIndex", nil];
-}
-+ (NSSet *)keyPathsForValuesAffectingHasParent
-{
-	return [NSSet setWithObjects:@"bone", nil];
-}
-+ (NSSet *)keyPathsForValuesAffectingRelativeTransform
-{
-	return [NSSet setWithObjects:@"positionX", @"positionY", @"positionZ", @"rotationX", @"rotationY", @"rotationZ", nil];
-}
-+ (NSSet *)keyPathsForValuesAffectingGlobalTransform
-{
-	return [NSSet setWithObjects:@"relativeTransform", @"parent.globalTransform", nil];
-}
-+ (NSSet *)keyPathsForValuesAffectingGlobalPosition
-{
-	return [NSSet setWithObjects:@"globalTransform", @"bone.positionX", @"bone.positionY", @"bone.positionZ", nil];
 }
 
 @dynamic positionX;
@@ -46,9 +38,73 @@
 @dynamic rotationZ;
 @dynamic boneIndex;
 @dynamic item;
+@dynamic relativeTransform;
+@dynamic globalTransform;
+@dynamic globalPosition;
 
 @synthesize parent;
 @synthesize children;
+
+- (void)awakeFromFetch
+{
+	[super awakeFromFetch];
+	[self _updateRelativeTransform];
+}
+- (void)awakeFromInsert
+{
+	[super awakeFromInsert];
+	[self _updateRelativeTransform];
+}
+- (void)awakeFromSnapshotEvents:(NSSnapshotEventType)flags
+{
+	[super awakeFromSnapshotEvents:flags];
+	[self _updateRelativeTransform];
+}
+- (void)willTurnIntoFault
+{
+	[self removeObserver:self forKeyPath:@"parent.globalTransform"];
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:@"parent.globalTransform"])
+		[self _updateGlobalTransform];
+	else
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+}
+
+- (void)setPositionX:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"positionX"];
+	[self _updateRelativeTransform];
+}
+- (void)setPositionY:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"positionY"];
+	[self _updateRelativeTransform];
+}
+- (void)setPositionZ:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"positionZ"];
+	[self _updateRelativeTransform];
+}
+
+- (void)setRotationX:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"rotationX"];
+	[self _updateRelativeTransform];
+}
+- (void)setRotationY:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"rotationY"];
+	[self _updateRelativeTransform];
+}
+- (void)setRotationZ:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"rotationZ"];
+	[self _updateRelativeTransform];
+}
+
+#pragma mark - Tree structure
 
 - (NSUInteger)boneIndex
 {
@@ -60,14 +116,9 @@
 	return self.item.model.bones[self.boneIndex];
 }
 
-- (BOOL)hasParent
-{
-	return self.bone.hasParent;
-}
-
 - (GLLBoneTransformation *)parent
 {
-	if (!self.hasParent) return nil;
+	if (!self.bone.parent) return nil;
 	
 	if (parent == nil)
 		parent = self.item.boneTransformations[self.bone.parentIndex];
@@ -86,33 +137,6 @@
 	}
 	
 	return children;
-}
-
-- (mat_float16)relativeTransform
-{
-	/*
-	 * Movement plan:
-	 * 1. Move bone from default to origin
-	 * 2. Rotate bone
-	 * 3. Move bone back to default + own position
-	 */
-	mat_float16 transform = simd_mat_positional(simd_make(-self.bone.positionX, -self.bone.positionY, -self.bone.positionZ, 1.0f));
-	transform = simd_mat_mul(simd_mat_euler(simd_make(self.rotationX, self.rotationY, self.rotationZ, 1.0f), simd_e_w), transform);
-	transform = simd_mat_mul(simd_mat_positional(simd_make(self.bone.positionX - self.positionX, self.bone.positionY - self.positionY, self.bone.positionZ - self.positionZ, 1.0f)), transform);
-	
-	return transform;
-}
-
-- (mat_float16)globalTransform
-{
-	if (!self.hasParent) return self.relativeTransform;
-	
-	return simd_mat_mul(self.parent.globalTransform, self.relativeTransform);
-}
-
-- (vec_float4)globalPosition
-{
-	return simd_mat_vecmul(self.globalTransform, simd_make(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0));
 }
 
 #pragma mark - Source list item
@@ -136,6 +160,57 @@
 - (id)childInSourceListAtIndex:(NSUInteger)index;
 {
 	return self.children[index];
+}
+
+#pragma mark - Private methods
+
+- (void)_standardSetValue:(id)value forKey:(NSString *)key;
+{
+	[self willChangeValueForKey:key];
+	[self setPrimitiveValue:value forKey:key];
+	[self didChangeValueForKey:key];
+}
+
+- (void)_updateRelativeTransform
+{
+	mat_float16 transform = simd_mat_positional(simd_make(self.positionX, self.positionY, self.positionZ, 1.0f));
+	transform = simd_mat_mul(transform, simd_mat_rotate(self.rotationY, simd_e_y));
+	transform = simd_mat_mul(transform, simd_mat_rotate(self.rotationX, simd_e_x));
+	transform = simd_mat_mul(transform, simd_mat_rotate(self.rotationZ, simd_e_z));
+	
+	self.relativeTransform = [NSValue valueWithBytes:&transform objCType:@encode(float [16])];
+	
+	[self _updateGlobalTransform];
+}
+- (void)_updateGlobalTransform
+{
+	if (!self.parent)
+	{
+		self.globalTransform = self.relativeTransform;
+		for (GLLBoneTransformation *child in self.children)
+			[child _updateGlobalTransform];
+		
+		return;
+	}
+	
+	mat_float16 parentGlobalTransform;
+	[self.parent.globalTransform getValue:&parentGlobalTransform];
+
+	mat_float16 ownLocalTransform;
+	[self.relativeTransform getValue:&ownLocalTransform];
+	
+	mat_float16 transform = self.bone.inversePositionMatrix;
+	transform = simd_mat_mul(ownLocalTransform, transform);
+	transform = simd_mat_mul(self.bone.positionMatrix, transform);
+	transform = simd_mat_mul(parentGlobalTransform, transform);
+
+	self.globalTransform = [NSValue valueWithBytes:&transform objCType:@encode(float [16])];
+	
+	vec_float4 position = simd_mat_vecmul(transform, simd_make(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0f));
+	self.globalPosition = [NSValue valueWithBytes:&position objCType:@encode(float [4])];
+	
+	for (GLLBoneTransformation *child in self.children)
+		[child _updateGlobalTransform];
 }
 
 @end

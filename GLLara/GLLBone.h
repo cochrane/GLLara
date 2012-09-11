@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "simd_types.h"
+
 @class GLLASCIIScanner;
 @class GLLModel;
 @class TRInDataStream;
@@ -18,8 +20,8 @@
  */
 @interface GLLBone : NSObject
 
-- (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
-- (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model;
+// Stream must be either a GLLASCIIScanner or a TRInDataStream.
+- (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model;
 
 @property (nonatomic, weak, readonly) GLLModel *model;
 
@@ -30,11 +32,21 @@
 @property (nonatomic, assign, readonly) float positionZ;
 
 /*
+ * Transformations for the bone.
+ */
+@property (nonatomic, assign) mat_float16 inversePositionMatrix;
+@property (nonatomic, assign) mat_float16 positionMatrix;
+
+/*
  * Access the bones as a tree. Right now, these methods do not
  * cache their results in any way.
  */
-@property (nonatomic, assign, readonly) BOOL hasParent;
-@property (nonatomic, retain, readonly) GLLBone *parent;
+@property (nonatomic, weak, readonly) GLLBone *parent;
 @property (nonatomic, retain, readonly) NSArray *children;
+
+/*
+ * Called as part of the model loading process;
+ */
+- (void)setupParent;
 
 @end

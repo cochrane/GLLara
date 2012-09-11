@@ -11,7 +11,6 @@
 
 #import "GLLSourceListItem.h"
 #import "GLLVersion.h"
-#import "simd_types.h"
 
 @class GLLBone;
 @class GLLItem;
@@ -28,19 +27,15 @@
 @property (nonatomic) float rotationY;
 @property (nonatomic) float rotationZ;
 @property (nonatomic, retain) GLLItem *item;
+@property (nonatomic) NSValue *relativeTransform;
+@property (nonatomic) NSValue *globalTransform;
+@property (nonatomic) NSValue *globalPosition;
 
 // Derived
 @property (nonatomic, readonly) NSUInteger boneIndex;
 @property (nonatomic, retain, readonly) GLLBone *bone;
 
-@property (nonatomic, assign, readonly) BOOL hasParent;
 @property (nonatomic, weak, readonly) GLLBoneTransformation *parent;
 @property (nonatomic, retain, readonly) NSArray *children;
-
-// Transformations
-@property (nonatomic, assign, readonly) mat_float16 relativeTransform;
-@property (nonatomic, assign, readonly) mat_float16 globalTransform;
-
-@property (nonatomic, assign, readonly) vec_float4 globalPosition;
 
 @end

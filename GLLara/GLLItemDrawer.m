@@ -92,6 +92,7 @@
 	}
 	else if ([keyPath isEqual:@"globalTransform"])
 	{
+		needToUpdateTransforms = YES;
 		self.needsRedraw = YES;
 	}
 	else [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -160,9 +161,11 @@
 	NSUInteger count = self.item.boneTransformations.count;
 	mat_float16 *matrices = malloc(count * sizeof(mat_float16));
 	for (NSUInteger i = 0; i < count; i++)
-		matrices[i] = [[self.item.boneTransformations objectAtIndex:i] globalTransform];
+		[[[self.item.boneTransformations objectAtIndex:i] globalTransform] getValue:&matrices[i]];
 	
 	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_STATIC_DRAW);
+	
+	needToUpdateTransforms = NO;
 }
 
 @end

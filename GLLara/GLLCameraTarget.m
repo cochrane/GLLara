@@ -80,7 +80,11 @@ static void *contextMarker = (void *) 0xdeadbeef;
 {
 	vec_float4 newPosition;
 	for (GLLBoneTransformation *transform in self.bones)
-		newPosition += transform.globalPosition;
+	{
+		vec_float4 transformPosition;
+		[transform.globalPosition getValue:&transformPosition];
+		newPosition += transformPosition;
+	}
 	
 	[self willChangeValueForKey:@"position"];
 	self.position = newPosition / simd_splatf(self.bones.count);

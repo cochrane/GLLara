@@ -133,8 +133,9 @@ static NSCache *cachedModels;
 	NSUInteger numBones = header;
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
 	for (NSUInteger i = 0; i < numBones; i++)
-		[bones addObject:[[GLLBone alloc] initFromStream:stream partOfModel:self]];
+		[bones addObject:[[GLLBone alloc] initFromSequentialData:stream partOfModel:self]];
 	_bones = [bones copy];
+	for (GLLBone *bone in _bones) [bone setupParent];
 	
 	NSUInteger numMeshes = [stream readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
@@ -175,8 +176,9 @@ static NSCache *cachedModels;
 	NSUInteger numBones = [scanner readUint32];
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
 	for (NSUInteger i = 0; i < numBones; i++)
-		[bones addObject:[[GLLBone alloc] initFromScanner:scanner partOfModel:self]];
+		[bones addObject:[[GLLBone alloc] initFromSequentialData:scanner partOfModel:self]];
 	_bones = [bones copy];
+	for (GLLBone *bone in _bones) [bone setupParent];
 	
 	NSUInteger numMeshes = [scanner readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];

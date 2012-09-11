@@ -10,11 +10,12 @@
 
 #import "GLLASCIIScanner.h"
 #import "GLLModel.h"
+#import "simd_matrix.h"
 #import "TRInDataStream.h"
 
 @implementation GLLBone
 
-- (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
+- (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -26,41 +27,18 @@
 	_positionY = [stream readFloat32];
 	_positionZ = [stream readFloat32];
 	
-	return self;
-}
-
-- (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model;
-{
-	if (!(self = [super init])) return nil;
-	
-	_model = model;
-	
-	_name = [scanner readPascalString];
-	_parentIndex = [scanner readUint16];
-	_positionX = [scanner readFloat32];
-	_positionY = [scanner readFloat32];
-	_positionZ = [scanner readFloat32];
+	_positionMatrix = simd_mat_positional(simd_make(_positionX, _positionY, _positionZ, 1.0f));
+	_inversePositionMatrix = simd_mat_positional(simd_make(-_positionX, -_positionY, -_positionZ, 1.0f));
 	
 	return self;
 }
 
-#pragma mark - Accessing the bones as a tree
+#pragma mark - Finishing loading
 
-// These methods are not the fastest way to do this (the fastest way would be to cache the results or load them explicitly once all bones have been loaded), but they are definitely the shortest way to write the code. Until I see proof that this causes problems, I prefer shorter.
-- (BOOL)hasParent
+- (void)setupParent
 {
-	return self.parentIndex != UINT16_MAX;
-}
-- (GLLBone *)parent
-{
-	if (self.hasParent)
-		return self.model.bones[self.parentIndex];
-	else
-		return nil;
-}
-- (NSArray *)children
-{
-	return [self.model.bones filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"parent == %@", self]];
+	_parent = self.parentIndex != UINT16_MAX ? self.model.bones[self.parentIndex] : nil;
+	_children = [self.model.bones filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"parent == %@", self]];
 }
 
 @end

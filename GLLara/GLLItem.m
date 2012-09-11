@@ -126,7 +126,7 @@
 
 - (void)awakeFromFetch
 {
-	// Item URL
+	// Get URL from bookmark and load that model.
 	NSData *bookmarkData = self.itemURLBookmark;
 	if (bookmarkData)
 	{
@@ -144,6 +144,7 @@
 
 - (void)willSave
 {
+	// Get URL from model, and put that URL in a bookmark.
 	GLLModel *model = [self primitiveValueForKey:@"model"];
 	NSURL *currentPrimitiveURL = [self primitiveValueForKey:@"itemURL"];
 	if (![currentPrimitiveURL isEqual:model.baseURL])
@@ -165,7 +166,7 @@
 	[self setPrimitiveValue:model forKey:@"model"];
 	[self didChangeValueForKey:@"model"];
 	
-	// Replace all mesh settings and bone transformations
+	// Replace all mesh settings, bone transformations and camera targets
 	// They have appropriate default values, so they need no setting of parameters.
 	NSMutableOrderedSet *meshSettings = [self mutableOrderedSetValueForKey:@"meshSettings"];
 	[meshSettings removeAllObjects];
@@ -176,6 +177,9 @@
 	[boneTransformations removeAllObjects];
 	for (NSUInteger i = 0; i < model.bones.count; i++)
 		[boneTransformations addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLBoneTransformation" inManagedObjectContext:self.managedObjectContext]];
+	
+	// -- Trigger a rebuild of the matrices
+	[[boneTransformations objectAtIndex:0] setPositionX:0];
 	
 	for (NSString *cameraTargetName in model.cameraTargetNames)
 	{
@@ -190,30 +194,32 @@
 	
 	// Display name!
 	
-	// Get a base name
+	// -- Get a base name
 	NSURL *modelDirectory = [self.model.baseURL URLByDeletingLastPathComponent];
 	NSMutableString *basicName = [[NSMutableString alloc] initWithString:modelDirectory.lastPathComponent];
 	
-	// Remove extensions
+	// -- Remove extensions
 	if ([basicName hasSuffix:@".ascii"])
 		[basicName deleteCharactersInRange:NSMakeRange(basicName.length - @".ascii".length, @".ascii".length)];
 	if ([basicName hasSuffix:@".mesh"])
 		[basicName deleteCharactersInRange:NSMakeRange(basicName.length - @".mesh".length, @".mesh".length)];
 	
-	// Replace underscores
+	// -- Replace underscores
 	[basicName replaceOccurrencesOfString:@"_" withString:@" " options:0 range:NSMakeRange(0, basicName.length)];
 	
-	// Use title case
+	// -- Use title case
 	CFStringTransform((__bridge CFMutableStringRef) basicName, NULL, CFSTR("Title"), NO);
 	
-	// Find out how many others with the same name exist
+	// -- Find out how many others with the same name exist
 	NSFetchRequest *sameNameRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 	sameNameRequest.predicate = [NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForKeyPath:@"displayName"] rightExpression:[NSExpression expressionForConstantValue:basicName] modifier:0 type:NSEqualToPredicateOperatorType options:NSCaseInsensitivePredicateOption | NSDiacriticInsensitivePredicateOption];
 	NSUInteger count = [self.managedObjectContext countForFetchRequest:sameNameRequest error:NULL];
+	
+	// -- Append number if one exists with the same name
 	if (count > 0)
 		[basicName appendFormat:NSLocalizedString(@" (%lu)", @"same item display name suffix format"), count + 1];
 	
-	// And assign to self.
+	// -- And assign to self.
 	self.displayName = [basicName copy];
 }
 
@@ -222,7 +228,7 @@
 - (NSArray *)rootBoneTransformations
 {
 	NSIndexSet *indices = [self.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLBoneTransformation *bone, NSUInteger idx, BOOL *stop) {
-		return !bone.hasParent;
+		return !bone.parent;
 	}];
 	return [self.boneTransformations objectsAtIndexes:indices];
 }
@@ -263,13 +269,15 @@
 	{
 		for (NSString *line in lines)
 		{
+			if (line.length == 0) continue; // May insert empty lines due to Windows line endings.
+			
 			NSScanner *scanner = [NSScanner scannerWithString:line];
 			NSString *name;
 			[scanner scanUpToString:@":" intoString:&name];
 			[scanner scanString:@":" intoString:NULL];
 			
 			NSIndexSet *indices = [self.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLBoneTransformation *bone, NSUInteger idx, BOOL *stop) {
-				return [bone.bone.name isEqual:@"name"];
+				return [bone.bone.name isEqual:name];
 			}];
 			if (indices.count == 0)
 			{
@@ -280,13 +288,13 @@
 			
 			float x = 0, y = 0, z = 0;
 			if ([scanner scanFloat:&x])
-				[transform setRotationX:x];
+				[transform setRotationX:x * M_PI / 180.0];
 			if ([scanner scanFloat:&y])
-				[transform setRotationY:y];
+				[transform setRotationY:y * M_PI / 180.0];
 			if ([scanner scanFloat:&z])
-				[transform setRotationZ:z];
+				[transform setRotationZ:z * M_PI / 180.0];
+			
 			if ([scanner scanFloat:&x])
-				
 				[transform setPositionX:x];
 			if ([scanner scanFloat:&y])
 				[transform setPositionY:y];
