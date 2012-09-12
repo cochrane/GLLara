@@ -24,7 +24,7 @@
 	NSViewController *ambientLightViewController;
 	GLLBoneViewController *boneTransformViewController;
 	GLLItemViewController *itemViewController;
-	GLLMeshViewController *meshSettingsViewController;
+	GLLMeshViewController *meshViewController;
 	NSViewController *lightViewController;
 	
 	NSViewController *currentController;
@@ -50,7 +50,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	ambientLightViewController = [[NSViewController alloc] initWithNibName:@"GLLAmbientLightView" bundle:[NSBundle mainBundle]];
 	boneTransformViewController = [[GLLBoneViewController alloc] init];
 	itemViewController = [[GLLItemViewController alloc] init];
-	meshSettingsViewController = [[GLLMeshViewController alloc] init];
+	meshViewController = [[GLLMeshViewController alloc] init];
 	lightViewController = [[NSViewController alloc] initWithNibName:@"GLLLightView" bundle:[NSBundle mainBundle]];
 	
 	
@@ -230,7 +230,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	if ([selectedObject isKindOfClass:[GLLItemBone class]])
 		[self _setRightHandController:boneTransformViewController representedObject:selectedObject];
 	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
-		[self _setRightHandController:meshSettingsViewController representedObject:selectedObject];
+		[self _setRightHandController:meshViewController representedObject:selectedObject];
 	else if ([selectedObject isKindOfClass:[GLLDirectionalLight class]])
 		[self _setRightHandController:lightViewController representedObject:selectedObject];
 	else if ([selectedObject isKindOfClass:[GLLAmbientLight class]])

@@ -54,7 +54,7 @@
         <attribute name="scaleY" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="scaleZ" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <relationship name="boneTransformations" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemBone" inverseName="item" inverseEntity="GLLItemBone" syncable="YES"/>
-        <relationship name="meshSettings" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemMesh" inverseName="item" inverseEntity="GLLItemMesh" syncable="YES"/>
+        <relationship name="meshes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemMesh" inverseName="item" inverseEntity="GLLItemMesh" syncable="YES"/>
         <fetchedProperty name="cameraTargets" optional="YES" syncable="YES">
             <fetchRequest name="fetchedPropertyFetchRequest" entity="GLLCameraTarget" predicateString="boneTransformations.item == $FETCH_SOURCE"/>
         </fetchedProperty>
@@ -75,7 +75,7 @@
     <entity name="GLLItemMesh" representedClassName="GLLItemMesh" syncable="YES">
         <attribute name="cullFaceMode" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
-        <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshSettings" inverseEntity="GLLItem" syncable="YES"/>
+        <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshes" inverseEntity="GLLItem" syncable="YES"/>
         <relationship name="renderParameters" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLRenderParameter" inverseName="mesh" inverseEntity="GLLRenderParameter" syncable="YES"/>
     </entity>
     <entity name="GLLLight" isAbstract="YES" syncable="YES">
@@ -94,8 +94,8 @@
         <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="0" height="0"/>
         <element name="GLLItem" positionX="0" positionY="0" width="0" height="0"/>
         <element name="GLLItemBone" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLLight" positionX="0" positionY="0" width="0" height="0"/>
         <element name="GLLItemMesh" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLLight" positionX="0" positionY="0" width="0" height="0"/>
         <element name="GLLRenderParameter" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

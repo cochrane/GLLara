@@ -31,7 +31,7 @@
 @property (nonatomic) float scaleZ;
 @property (nonatomic) BOOL isVisible;
 @property (nonatomic, retain) NSOrderedSet *boneTransformations;
-@property (nonatomic, retain) NSOrderedSet *meshSettings;
+@property (nonatomic, retain) NSOrderedSet *meshes;
 @property (nonatomic, retain) NSString *displayName;
 
 // Derived
@@ -65,15 +65,15 @@
 - (void)removeBoneTransformationsObject:(GLLItemBone *)value;
 - (void)addBoneTransformations:(NSOrderedSet *)values;
 - (void)removeBoneTransformations:(NSOrderedSet *)values;
-- (void)insertObject:(GLLItemMesh *)value inMeshSettingsAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromMeshSettingsAtIndex:(NSUInteger)idx;
-- (void)insertMeshSettings:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeMeshSettingsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInMeshSettingsAtIndex:(NSUInteger)idx withObject:(GLLItemMesh *)value;
-- (void)replaceMeshSettingsAtIndexes:(NSIndexSet *)indexes withMeshSettings:(NSArray *)values;
-- (void)addMeshSettingsObject:(GLLItemMesh *)value;
-- (void)removeMeshSettingsObject:(GLLItemMesh *)value;
-- (void)addMeshSettings:(NSOrderedSet *)values;
-- (void)removeMeshSettings:(NSOrderedSet *)values;
+- (void)insertObject:(GLLItemMesh *)value inMeshesAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromMeshesAtIndex:(NSUInteger)idx;
+- (void)insertMeshes:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeMeshesAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInMeshesAtIndex:(NSUInteger)idx withObject:(GLLItemMesh *)value;
+- (void)replaceMeshesAtIndexes:(NSIndexSet *)indexes withMeshes:(NSArray *)values;
+- (void)addMeshesObject:(GLLItemMesh *)value;
+- (void)removeMeshesObject:(GLLItemMesh *)value;
+- (void)addMeshes:(NSOrderedSet *)values;
+- (void)removeMeshes:(NSOrderedSet *)values;
 
 @end

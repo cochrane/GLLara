@@ -68,7 +68,7 @@
 
 - (NSUInteger)meshIndex
 {
-	return [self.item.meshSettings indexOfObject:self];
+	return [self.item.meshes indexOfObject:self];
 }
 
 - (GLLModelMesh *)mesh

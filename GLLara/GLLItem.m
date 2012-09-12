@@ -48,11 +48,11 @@
 }
 - (NSUInteger)numberOfChildrenInSourceList
 {
-	return self.item.meshSettings.count;
+	return self.item.meshes.count;
 }
 - (id)childInSourceListAtIndex:(NSUInteger)index;
 {
-	return self.item.meshSettings[index];
+	return self.item.meshes[index];
 }
 
 @end
@@ -115,7 +115,7 @@
 @dynamic scaleZ;
 @dynamic isVisible;
 @dynamic boneTransformations;
-@dynamic meshSettings;
+@dynamic meshes;
 
 @dynamic model;
 @dynamic itemURL;
@@ -168,10 +168,10 @@
 	
 	// Replace all mesh settings, bone transformations and camera targets
 	// They have appropriate default values, so they need no setting of parameters.
-	NSMutableOrderedSet *meshSettings = [self mutableOrderedSetValueForKey:@"meshSettings"];
-	[meshSettings removeAllObjects];
+	NSMutableOrderedSet *meshes = [self mutableOrderedSetValueForKey:@"meshes"];
+	[meshes removeAllObjects];
 	for (NSUInteger i = 0; i < model.meshes.count; i++)
-		[meshSettings addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext]];
+		[meshes addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext]];
 	
 	NSMutableOrderedSet *boneTransformations = [self mutableOrderedSetValueForKey:@"boneTransformations"];
 	[boneTransformations removeAllObjects];
@@ -235,7 +235,7 @@
 
 - (GLLItemMesh *)settingsForMesh:(GLLModelMesh *)mesh;
 {
-	return self.meshSettings[mesh.meshIndex];
+	return self.meshes[mesh.meshIndex];
 }
 - (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
 {
