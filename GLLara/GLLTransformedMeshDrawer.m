@@ -114,7 +114,6 @@
 	GLint bufferLength;
 	glGetActiveUniformBlockiv(self.meshDrawer.program.programID, self.meshDrawer.program.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &bufferLength);
 	void *data = malloc(bufferLength);
-	NSLog(@"update");
 	
 	for (GLLRenderParameter *parameter in self.settings.renderParameters)
 	{
