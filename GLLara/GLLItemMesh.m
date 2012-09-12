@@ -14,7 +14,7 @@
 #import "GLLModelParams.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
-#import "GLLShaderDescriptor.h"
+#import "GLLShaderDescription.h"
 
 @implementation GLLItemMesh
 

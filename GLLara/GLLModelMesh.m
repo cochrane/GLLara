@@ -437,7 +437,7 @@ void vec_addTo(float *a, float *b)
 
 - (void)_setRenderParameters;
 {
-	GLLShaderDescriptor *shader = nil;
+	GLLShaderDescription *shader = nil;
 	[_model.parameters getShader:&shader alpha:&_usesAlphaBlending forMesh:_name];
 	_shader = shader;
 	_renderParameters = [_model.parameters renderParametersForMesh:_name];

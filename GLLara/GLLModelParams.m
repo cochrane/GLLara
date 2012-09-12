@@ -12,7 +12,7 @@
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "GLLRenderParameterDescription.h"
-#import "GLLShaderDescriptor.h"
+#import "GLLShaderDescription.h"
 
 /*
  * Parsing of mesh names for generic item
@@ -144,7 +144,7 @@ static NSCache *parameterCache;
 	// Similar for loading shaders
 	NSMutableSet *shaders = [[NSMutableSet alloc] initWithCapacity:[propertyList[@"shaders"] count]];
 	for (NSString *shaderName in propertyList[@"shaders"])
-		[shaders addObject:[[GLLShaderDescriptor alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil]];
+		[shaders addObject:[[GLLShaderDescription alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil]];
 	ownShaders = [shaders copy];
 	
 	// And render parameters
@@ -266,7 +266,7 @@ static NSCache *parameterCache;
 {
 	for (NSString *meshGroup in [self meshGroupsForMesh:mesh])
 	{
-		GLLShaderDescriptor *shader = nil;
+		GLLShaderDescription *shader = nil;
 		BOOL isAlpha;
 		[self getShader:&shader alpha:&isAlpha forMeshGroup:meshGroup];
 		
@@ -277,10 +277,10 @@ static NSCache *parameterCache;
 	return nil;
 }
 
-- (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
+- (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
 {
 	// Try to find shader in own ones.
-	for (GLLShaderDescriptor *descriptor in ownShaders)
+	for (GLLShaderDescription *descriptor in ownShaders)
 	{
 		if ([descriptor.solidMeshGroups containsObject:meshGroup])
 		{
@@ -301,7 +301,7 @@ static NSCache *parameterCache;
 		[self.base getShader:shader alpha:shaderIsAlpha forMeshGroup:meshGroup];
 }
 
-- (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
+- (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
 {
 	[self getShader:shader alpha:shaderIsAlpha forMeshGroup:[self renderableMeshGroupForMesh:mesh]];
 }
@@ -411,7 +411,7 @@ static NSCache *parameterCache;
 	// 3rd, 4th, 5th match: render parameters
 	if (renderParameters)
 	{
-		GLLShaderDescriptor *shader;
+		GLLShaderDescription *shader;
 		[self getShader:&shader alpha:NULL forMeshGroup:group];
 		
 		NSArray *renderParameterNames = shader.parameterUniformNames;

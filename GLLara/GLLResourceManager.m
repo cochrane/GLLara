@@ -14,7 +14,7 @@
 #import "GLLModelDrawer.h"
 #import "GLLProgram.h"
 #import "GLLShader.h"
-#import "GLLShaderDescriptor.h"
+#import "GLLShaderDescription.h"
 #import "GLLTexture.h"
 
 @interface GLLResourceManager ()
@@ -103,7 +103,7 @@ static GLLResourceManager *sharedManager;
 	return result;
 }
 
-- (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor error:(NSError *__autoreleasing*)error;
+- (GLLProgram *)programForDescriptor:(GLLShaderDescription *)descriptor error:(NSError *__autoreleasing*)error;
 {
 	NSAssert(descriptor != nil, @"Empty shader descriptor passed in. This should never happen.");
 	

@@ -62,7 +62,7 @@
 		5296944615F5385400DF2FA3 /* DiffuseLightmapBump3.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5296941C15F4063500DF2FA3 /* DiffuseLightmapBump3.fs */; };
 		5296944915F565D100DF2FA3 /* GLLResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296944815F565D100DF2FA3 /* GLLResourceManager.m */; };
 		5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945315F60F3C00DF2FA3 /* GLLView.m */; };
-		5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */; };
+		5296945A15F6C84900DF2FA3 /* GLLShaderDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945915F6C84900DF2FA3 /* GLLShaderDescription.m */; };
 		5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */; };
 		5296946615F7B28300DF2FA3 /* GLLRenderWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */; };
 		5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */; };
@@ -220,8 +220,8 @@
 		5296944815F565D100DF2FA3 /* GLLResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLResourceManager.m; sourceTree = "<group>"; };
 		5296945215F60F3900DF2FA3 /* GLLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLView.h; sourceTree = "<group>"; };
 		5296945315F60F3C00DF2FA3 /* GLLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLView.m; sourceTree = "<group>"; };
-		5296945815F6C84900DF2FA3 /* GLLShaderDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLShaderDescriptor.h; sourceTree = "<group>"; };
-		5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLShaderDescriptor.m; sourceTree = "<group>"; };
+		5296945815F6C84900DF2FA3 /* GLLShaderDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLShaderDescription.h; sourceTree = "<group>"; };
+		5296945915F6C84900DF2FA3 /* GLLShaderDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLShaderDescription.m; sourceTree = "<group>"; };
 		5296946215F7B28300DF2FA3 /* GLLRenderWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderWindowController.h; sourceTree = "<group>"; };
 		5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderWindowController.m; sourceTree = "<group>"; };
 		5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLRenderWindowController.xib; sourceTree = "<group>"; };
@@ -505,8 +505,8 @@
 				525ACD8615F0F3ED00534E7D /* GLLModelMesh.m */,
 				529692D215F24EF000DF2FA3 /* GLLModelBone.h */,
 				529692D315F24EF100DF2FA3 /* GLLModelBone.m */,
-				5296945815F6C84900DF2FA3 /* GLLShaderDescriptor.h */,
-				5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */,
+				5296945815F6C84900DF2FA3 /* GLLShaderDescription.h */,
+				5296945915F6C84900DF2FA3 /* GLLShaderDescription.m */,
 				52BB21CB15FC7B8C00937450 /* GLLRenderParameterDescription.h */,
 				52BB21CC15FC7B8C00937450 /* GLLRenderParameterDescription.m */,
 				52C9F6141600022B003272E1 /* GLLModelObj.h */,
@@ -809,7 +809,7 @@
 				5296943A15F4CC3400DF2FA3 /* GLLMeshSplitter.m in Sources */,
 				5296944915F565D100DF2FA3 /* GLLResourceManager.m in Sources */,
 				5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */,
-				5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */,
+				5296945A15F6C84900DF2FA3 /* GLLShaderDescription.m in Sources */,
 				5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */,
 				5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */,
 				5296947315F7FB3300DF2FA3 /* GLLItemMesh.m in Sources */,

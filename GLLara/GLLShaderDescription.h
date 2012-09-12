@@ -1,5 +1,5 @@
 //
-//  GLLShaderDescriptor.h
+//  GLLShaderDescription.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 05.09.12.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface GLLShaderDescriptor : NSObject
+@interface GLLShaderDescription : NSObject
 
 - (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL;
 

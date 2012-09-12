@@ -11,14 +11,14 @@
 #import <OpenGL/gl3.h>
 
 #import "GLLShader.h"
-#import "GLLShaderDescriptor.h"
+#import "GLLShaderDescription.h"
 #import "GLLVertexFormat.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLResourceManager.h"
 
 @implementation GLLProgram
 
-- (id)initWithDescriptor:(GLLShaderDescriptor *)descriptor resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
+- (id)initWithDescriptor:(GLLShaderDescription *)descriptor resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
