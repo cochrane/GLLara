@@ -201,14 +201,14 @@
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="516609186"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {2560, 1418}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSAutorecalculatesContentBorderThicknessMinY">NO</bool>
 				<double key="NSContentBorderThicknessMinY">22</double>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
 			<object class="NSViewController" id="179878175">
-				<string key="NSNibName">GLLWindowSettingsPopoverViewController</string>
+				<string key="NSNibName">GLLWindowSettingsPopoverView</string>
 				<string key="NSTitle">Window Settings Popover Controller</string>
 			</object>
 			<object class="NSPopover" id="617757003">
