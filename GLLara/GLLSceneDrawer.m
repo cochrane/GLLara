@@ -140,15 +140,15 @@ struct GLLAlphaTestBlock
 	
 	// Alpha test buffer
 	glGenBuffers(1, &alphaTestDisabledBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, alphaTestDisabledBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestDisabledBuffer);
 	struct GLLAlphaTestBlock alphaBlock = { .mode = 0, .reference = .9 };
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
 	glGenBuffers(1, &alphaTestPassGreaterBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, alphaTestPassGreaterBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestPassGreaterBuffer);
 	alphaBlock.mode = 1;
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
 	glGenBuffers(1, &alphaTestPassLessBuffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, alphaTestPassLessBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestPassLessBuffer);
 	alphaBlock.mode = 2;
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
 	
@@ -252,8 +252,8 @@ struct GLLAlphaTestBlock
 	mat_float16 viewProjection = camera.viewProjectionMatrix;
 	
 	// Set the view projection matrix.
-	glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(viewProjection), &viewProjection, GL_STATIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(viewProjection), &viewProjection, GL_STREAM_DRAW);
 	
 	needsUpdateMatrices = NO;
 }
@@ -278,8 +278,8 @@ struct GLLAlphaTestBlock
 	}
 	
 	// Upload
-	glBindBuffer(GL_UNIFORM_BUFFER, lightBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(lightData), &lightData, GL_STATIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(lightData), &lightData, GL_STREAM_DRAW);
 	
 	needsUpdateLights = NO;
 }
