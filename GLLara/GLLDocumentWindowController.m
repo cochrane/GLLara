@@ -47,7 +47,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
     
 	_managedObjectContext = managedObjectContext;
 	
-	ambientLightViewController = [[NSViewController alloc] initWithNibName:@"GLLAmbientView" bundle:[NSBundle mainBundle]];
+	ambientLightViewController = [[NSViewController alloc] initWithNibName:@"GLLAmbientLightView" bundle:[NSBundle mainBundle]];
 	boneTransformViewController = [[GLLBoneTransformViewController alloc] init];
 	itemViewController = [[GLLItemViewController alloc] init];
 	meshSettingsViewController = [[GLLMeshSettingsViewController alloc] init];
