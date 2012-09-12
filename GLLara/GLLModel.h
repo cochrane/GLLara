@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class GLLModelParams;
+@class GLLRenderParameterDescription;
 
 /*!
  * @abstract A renderable object.
@@ -39,5 +40,7 @@
 
 @property (nonatomic, copy) NSArray *cameraTargetNames;
 - (NSArray *)boneNamesForCameraTarget:(NSString *)target;
+
+- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
 
 @end

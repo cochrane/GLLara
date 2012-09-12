@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class GLLItem;
 @class GLLMeshSettings;
 @class GLLRenderParameterDescription;
 
@@ -20,5 +21,8 @@
 @property (nonatomic, retain, readonly) GLLRenderParameterDescription *parameterDescription;
 
 @property (nonatomic, readonly) NSData *uniformValue;
+
+// The corresponding item
+@property (nonatomic, readonly) GLLItem *item;
 
 @end

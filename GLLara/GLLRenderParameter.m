@@ -8,11 +8,8 @@
 
 #import "GLLRenderParameter.h"
 
-#import "GLLMesh.h"
+#import "GLLItem.h"
 #import "GLLMeshSettings.h"
-#import "GLLModel.h"
-#import "GLLModelParams.h"
-#import "GLLRenderParameterDescription.h"
 
 @implementation GLLRenderParameter
 
@@ -24,10 +21,14 @@
 @dynamic name;
 @dynamic mesh;
 
+- (GLLItem *)item
+{
+	return self.mesh.item;
+}
+
 - (GLLRenderParameterDescription *)parameterDescription
 {
-	// That's ugly.
-	return [self.mesh.mesh.model.parameters descriptionForParameter:self.name];
+	return [self.item descriptionForParameter:self.name];
 }
 
 - (NSData *)uniformValue

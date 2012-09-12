@@ -237,6 +237,10 @@
 {
 	return self.meshSettings[mesh.meshIndex];
 }
+- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
+{
+	return [self.model descriptionForParameter:parameterName];
+}
 
 #pragma mark - Poses I/O
 

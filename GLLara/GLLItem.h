@@ -20,6 +20,7 @@
 @class GLLMeshSettings;
 @class GLLModel;
 @class GLLScene;
+@class GLLRenderParameterDescription;
 
 @interface GLLItem : NSManagedObject <GLLSourceListItem>
 
@@ -44,6 +45,8 @@
 @property (nonatomic, retain, readonly) NSArray *rootBoneTransformations;
 
 - (GLLMeshSettings *)settingsForMesh:(GLLMesh *)mesh;
+- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
+
 
 // Poses
 - (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error;

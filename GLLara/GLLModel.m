@@ -207,6 +207,10 @@ static NSCache *cachedModels;
 {
 	return [self.parameters boneNamesForCameraTarget:target];
 }
+- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
+{
+	return [self.parameters descriptionForParameter:parameterName];
+}
 
 #pragma mark - Private methods
 
