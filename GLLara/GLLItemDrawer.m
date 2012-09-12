@@ -154,6 +154,8 @@
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_STREAM_DRAW);
 	
+	free(matrices);
+	
 	needToUpdateTransforms = NO;
 }
 
