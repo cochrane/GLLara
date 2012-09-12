@@ -10,10 +10,9 @@
 
 #import <OpenGL/gl3.h>
 
-#import "GLLBoneTransformation.h"
 #import "GLLItem.h"
+#import "GLLItemBone.h"
 #import "GLLMeshDrawer.h"
-#import "GLLMeshSettings.h"
 #import "GLLModelDrawer.h"
 #import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"

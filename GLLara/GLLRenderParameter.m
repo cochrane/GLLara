@@ -9,7 +9,7 @@
 #import "GLLRenderParameter.h"
 
 #import "GLLItem.h"
-#import "GLLMeshSettings.h"
+#import "GLLItemMesh.h"
 
 @implementation GLLRenderParameter
 

@@ -9,9 +9,9 @@
 #import "GLLDocumentWindowController.h"
 
 #import "GLLAmbientLight.h"
-#import "GLLBoneTransformation.h"
+#import "GLLItemBone.h"
 #import "GLLBoneTransformViewController.h"
-#import "GLLMeshSettings.h"
+#import "GLLItemMesh.h"
 #import "GLLMeshSettingsViewController.h"
 #import "GLLModel.h"
 #import "GLLDirectionalLight.h"
@@ -135,9 +135,9 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	
 	if ([selectedObject isKindOfClass:[GLLItem class]])
 		[self.managedObjectContext deleteObject:selectedObject];
-	else if ([selectedObject isKindOfClass:[GLLBoneTransformation class]])
+	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
 		[self.managedObjectContext deleteObject:[selectedObject item]];
-	else if ([selectedObject isKindOfClass:[GLLMeshSettings class]])
+	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
 		[self.managedObjectContext deleteObject:[selectedObject item]];
 	else
 		NSBeep();
@@ -227,9 +227,9 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	}
 	
 	id selectedObject = [self.sourceView itemAtRow:selectedRow];
-	if ([selectedObject isKindOfClass:[GLLBoneTransformation class]])
+	if ([selectedObject isKindOfClass:[GLLItemBone class]])
 		[self _setRightHandController:boneTransformViewController representedObject:selectedObject];
-	else if ([selectedObject isKindOfClass:[GLLMeshSettings class]])
+	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
 		[self _setRightHandController:meshSettingsViewController representedObject:selectedObject];
 	else if ([selectedObject isKindOfClass:[GLLDirectionalLight class]])
 		[self _setRightHandController:lightViewController representedObject:selectedObject];

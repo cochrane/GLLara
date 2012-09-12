@@ -12,7 +12,7 @@
 
 #import "GLLItemDrawer.h"
 #import "GLLMeshDrawer.h"
-#import "GLLMeshSettings.h"
+#import "GLLItemMesh.h"
 #import "GLLProgram.h"
 #import "GLLRenderParameter.h"
 #import "GLLUniformBlockBindings.h"
@@ -28,7 +28,7 @@
 
 @implementation GLLTransformedMeshDrawer
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer settings:(GLLMeshSettings *)settings;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer settings:(GLLItemMesh *)settings;
 {
 	if (!(self = [super init])) return nil;
 	

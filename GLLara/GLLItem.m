@@ -8,8 +8,8 @@
 
 #import "GLLItem.h"
 
-#import "GLLBoneTransformation.h"
-#import "GLLMeshSettings.h"
+#import "GLLItemBone.h"
+#import "GLLItemMesh.h"
 #import "GLLModel.h"
 #import "GLLModelBone.h"
 #import "GLLModelMesh.h"
@@ -171,12 +171,12 @@
 	NSMutableOrderedSet *meshSettings = [self mutableOrderedSetValueForKey:@"meshSettings"];
 	[meshSettings removeAllObjects];
 	for (NSUInteger i = 0; i < model.meshes.count; i++)
-		[meshSettings addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLMeshSettings" inManagedObjectContext:self.managedObjectContext]];
+		[meshSettings addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext]];
 	
 	NSMutableOrderedSet *boneTransformations = [self mutableOrderedSetValueForKey:@"boneTransformations"];
 	[boneTransformations removeAllObjects];
 	for (NSUInteger i = 0; i < model.bones.count; i++)
-		[boneTransformations addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLBoneTransformation" inManagedObjectContext:self.managedObjectContext]];
+		[boneTransformations addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLItemBone" inManagedObjectContext:self.managedObjectContext]];
 	
 	// -- Trigger a rebuild of the matrices
 	[[boneTransformations objectAtIndex:0] setPositionX:0];
@@ -187,7 +187,7 @@
 		
 		NSManagedObject *cameraTarget = [NSEntityDescription insertNewObjectForEntityForName:@"GLLCameraTarget" inManagedObjectContext:self.managedObjectContext];
 		[cameraTarget setValue:cameraTargetName forKey:@"name"];
-		for (GLLBoneTransformation *transform in boneTransformations)
+		for (GLLItemBone *transform in boneTransformations)
 			if ([boneNames containsObject:transform.bone.name])
 				[[cameraTarget mutableSetValueForKey:@"bones"] addObject:transform];
 	}
@@ -227,13 +227,13 @@
 
 - (NSArray *)rootBoneTransformations
 {
-	NSIndexSet *indices = [self.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLBoneTransformation *bone, NSUInteger idx, BOOL *stop) {
+	NSIndexSet *indices = [self.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop) {
 		return !bone.parent;
 	}];
 	return [self.boneTransformations objectsAtIndexes:indices];
 }
 
-- (GLLMeshSettings *)settingsForMesh:(GLLModelMesh *)mesh;
+- (GLLItemMesh *)settingsForMesh:(GLLModelMesh *)mesh;
 {
 	return self.meshSettings[mesh.meshIndex];
 }
@@ -280,7 +280,7 @@
 			[scanner scanUpToString:@":" intoString:&name];
 			[scanner scanString:@":" intoString:NULL];
 			
-			NSIndexSet *indices = [self.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLBoneTransformation *bone, NSUInteger idx, BOOL *stop) {
+			NSIndexSet *indices = [self.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop) {
 				return [bone.bone.name isEqual:name];
 			}];
 			if (indices.count == 0)
@@ -288,7 +288,7 @@
 				NSLog(@"Skipping unknown bone %@", name);
 				continue;
 			}
-			GLLBoneTransformation *transform = self.boneTransformations[indices.firstIndex];
+			GLLItemBone *transform = self.boneTransformations[indices.firstIndex];
 			
 			float x = 0, y = 0, z = 0;
 			if ([scanner scanFloat:&x])

@@ -7,7 +7,7 @@
 //
 
 #import "GLLCameraTarget.h"
-#import "GLLBoneTransformation.h"
+#import "GLLItemBone.h"
 
 #import "GLLItem.h"
 #import "simd_functions.h"
@@ -57,10 +57,10 @@ static void *contextMarker = (void *) 0xdeadbeef;
 {
 	if (context == contextMarker && [keyPath isEqual:@"bones"])
 	{
-		for (GLLBoneTransformation *transform in change[NSKeyValueChangeOldKey])
+		for (GLLItemBone *transform in change[NSKeyValueChangeOldKey])
 			[transform removeObserver:self forKeyPath:@"globalTransform"];
 		
-		for (GLLBoneTransformation *transform in change[NSKeyValueChangeNewKey])
+		for (GLLItemBone *transform in change[NSKeyValueChangeNewKey])
 			[transform addObserver:self forKeyPath:@"globalTransform" options: NSKeyValueObservingOptionInitial context:contextMarker];
 	}
 	else if (context == contextMarker && [keyPath isEqual:@"globalTransform"])
@@ -79,7 +79,7 @@ static void *contextMarker = (void *) 0xdeadbeef;
 - (void)_updatePosition
 {
 	vec_float4 newPosition;
-	for (GLLBoneTransformation *transform in self.bones)
+	for (GLLItemBone *transform in self.bones)
 	{
 		vec_float4 transformPosition;
 		[transform.globalPosition getValue:&transformPosition];

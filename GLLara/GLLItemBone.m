@@ -1,12 +1,12 @@
 //
-//  GLLBoneTransformation.m
+//  GLLItemBone.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 01.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLBoneTransformation.h"
+#import "GLLItemBone.h"
 
 #import "GLLItem.h"
 #import "GLLModel.h"
@@ -15,7 +15,7 @@
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
-@interface GLLBoneTransformation ()
+@interface GLLItemBone ()
 
 - (void)_standardSetValue:(id)value forKey:(NSString *)key;
 - (void)_updateRelativeTransform;
@@ -23,7 +23,7 @@
 
 @end
 
-@implementation GLLBoneTransformation
+@implementation GLLItemBone
 
 + (NSSet *)keyPathsForValuesAffectingBone
 {
@@ -116,7 +116,7 @@
 	return self.item.model.bones[self.boneIndex];
 }
 
-- (GLLBoneTransformation *)parent
+- (GLLItemBone *)parent
 {
 	if (!self.bone.parent) return nil;
 	
@@ -130,7 +130,7 @@
 {
 	if (children == nil)
 	{
-		NSIndexSet *childIndices = [self.item.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLBoneTransformation *bone, NSUInteger idx, BOOL *stop){
+		NSIndexSet *childIndices = [self.item.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
 			return bone.parent == self;
 		}];
 		children = [self.item.boneTransformations objectsAtIndexes:childIndices];
@@ -187,7 +187,7 @@
 	if (!self.parent)
 	{
 		self.globalTransform = self.relativeTransform;
-		for (GLLBoneTransformation *child in self.children)
+		for (GLLItemBone *child in self.children)
 			[child _updateGlobalTransform];
 		
 		return;
@@ -209,7 +209,7 @@
 	vec_float4 position = simd_mat_vecmul(transform, simd_make(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0f));
 	self.globalPosition = [NSValue valueWithBytes:&position objCType:@encode(float [4])];
 	
-	for (GLLBoneTransformation *child in self.children)
+	for (GLLItemBone *child in self.children)
 		[child _updateGlobalTransform];
 }
 

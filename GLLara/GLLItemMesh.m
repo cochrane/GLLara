@@ -1,12 +1,12 @@
 //
-//  GLLMeshSettings.m
+//  GLLItemMesh.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 05.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLMeshSettings.h"
+#import "GLLItemMesh.h"
 
 #import "GLLItem.h"
 #import "GLLModel.h"
@@ -16,7 +16,7 @@
 #import "GLLRenderParameterDescription.h"
 #import "GLLShaderDescriptor.h"
 
-@implementation GLLMeshSettings
+@implementation GLLItemMesh
 
 + (NSSet *)keyPathsForValuesAffectingRenderSettings
 {

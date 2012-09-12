@@ -12,7 +12,7 @@
 
 @class GLLItemDrawer;
 @class GLLMeshDrawer;
-@class GLLMeshSettings;
+@class GLLItemMesh;
 
 /*!
  * @abstract Draws a mesh that is part of an item.
@@ -20,11 +20,11 @@
  */
 @interface GLLTransformedMeshDrawer : NSObject
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)drawer settings:(GLLMeshSettings *)settings;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)drawer settings:(GLLItemMesh *)settings;
 
 @property (nonatomic, weak, readonly) GLLItemDrawer *itemDrawer;
 @property (nonatomic, retain, readonly) GLLMeshDrawer *meshDrawer;
-@property (nonatomic, retain, readonly) GLLMeshSettings *settings;
+@property (nonatomic, retain, readonly) GLLItemMesh *settings;
 
 - (void)draw;
 

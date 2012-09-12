@@ -12,7 +12,7 @@
  * @abstract View controller for a bone.
  * @discussion As you can see, it's mostly empty, but it does reset the bones of an object.
  */
-@class GLLBoneTransformation;
+@class GLLItemBone;
 
 @interface GLLBoneTransformViewController : NSViewController
 

@@ -1,5 +1,5 @@
 //
-//  GLLMeshSettings.h
+//  GLLItemMesh.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 05.09.12.
@@ -22,7 +22,7 @@ typedef enum GLLCullFaceMode
 	GLLCullNone
 } GLLCullFaceMode;
 
-@interface GLLMeshSettings : NSManagedObject <GLLSourceListItem>
+@interface GLLItemMesh : NSManagedObject <GLLSourceListItem>
 
 // Core data
 @property (nonatomic) BOOL isVisible;
@@ -40,7 +40,7 @@ typedef enum GLLCullFaceMode
 
 @end
 
-@interface GLLMeshSettings (CoreDataGeneratedAccessors)
+@interface GLLItemMesh (CoreDataGeneratedAccessors)
 
 - (void)addRenderParametersObject:(GLLRenderParameter *)value;
 - (void)removeRenderParametersObject:(GLLRenderParameter *)value;

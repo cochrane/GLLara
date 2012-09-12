@@ -15,8 +15,8 @@
 
 @class TRInDataStream;
 @class TROutDataStream;
-@class GLLBoneTransformation;
-@class GLLMeshSettings;
+@class GLLItemBone;
+@class GLLItemMesh;
 @class GLLModel;
 @class GLLModelMesh;
 @class GLLScene;
@@ -44,7 +44,7 @@
 
 @property (nonatomic, retain, readonly) NSArray *rootBoneTransformations;
 
-- (GLLMeshSettings *)settingsForMesh:(GLLModelMesh *)mesh;
+- (GLLItemMesh *)settingsForMesh:(GLLModelMesh *)mesh;
 - (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
 
 
@@ -55,24 +55,24 @@
 
 @interface GLLItem (CoreDataGeneratedAccessors)
 
-- (void)insertObject:(GLLBoneTransformation *)value inBoneTransformationsAtIndex:(NSUInteger)idx;
+- (void)insertObject:(GLLItemBone *)value inBoneTransformationsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromBoneTransformationsAtIndex:(NSUInteger)idx;
 - (void)insertBoneTransformations:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
 - (void)removeBoneTransformationsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInBoneTransformationsAtIndex:(NSUInteger)idx withObject:(GLLBoneTransformation *)value;
+- (void)replaceObjectInBoneTransformationsAtIndex:(NSUInteger)idx withObject:(GLLItemBone *)value;
 - (void)replaceBoneTransformationsAtIndexes:(NSIndexSet *)indexes withBoneTransformations:(NSArray *)values;
-- (void)addBoneTransformationsObject:(GLLBoneTransformation *)value;
-- (void)removeBoneTransformationsObject:(GLLBoneTransformation *)value;
+- (void)addBoneTransformationsObject:(GLLItemBone *)value;
+- (void)removeBoneTransformationsObject:(GLLItemBone *)value;
 - (void)addBoneTransformations:(NSOrderedSet *)values;
 - (void)removeBoneTransformations:(NSOrderedSet *)values;
-- (void)insertObject:(GLLMeshSettings *)value inMeshSettingsAtIndex:(NSUInteger)idx;
+- (void)insertObject:(GLLItemMesh *)value inMeshSettingsAtIndex:(NSUInteger)idx;
 - (void)removeObjectFromMeshSettingsAtIndex:(NSUInteger)idx;
 - (void)insertMeshSettings:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
 - (void)removeMeshSettingsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInMeshSettingsAtIndex:(NSUInteger)idx withObject:(GLLMeshSettings *)value;
+- (void)replaceObjectInMeshSettingsAtIndex:(NSUInteger)idx withObject:(GLLItemMesh *)value;
 - (void)replaceMeshSettingsAtIndexes:(NSIndexSet *)indexes withMeshSettings:(NSArray *)values;
-- (void)addMeshSettingsObject:(GLLMeshSettings *)value;
-- (void)removeMeshSettingsObject:(GLLMeshSettings *)value;
+- (void)addMeshSettingsObject:(GLLItemMesh *)value;
+- (void)removeMeshSettingsObject:(GLLItemMesh *)value;
 - (void)addMeshSettings:(NSOrderedSet *)values;
 - (void)removeMeshSettings:(NSOrderedSet *)values;
 
