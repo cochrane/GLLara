@@ -12,7 +12,7 @@
 #import "GLLSourceListItem.h"
 
 @class GLLItem;
-@class GLLMesh;
+@class GLLModelMesh;
 @class GLLRenderParameter;
 
 typedef enum GLLCullFaceMode
@@ -32,7 +32,7 @@ typedef enum GLLCullFaceMode
 
 // Derived
 @property (nonatomic, readonly) NSUInteger meshIndex;
-@property (nonatomic, retain, readonly) GLLMesh *mesh;
+@property (nonatomic, retain, readonly) GLLModelMesh *mesh;
 @property (nonatomic, readonly, copy) NSString *displayName;
 
 // This key is just for observing. Don't try to actually read it.

@@ -10,9 +10,9 @@
 
 #import "GLLBoneTransformation.h"
 #import "GLLBone.h"
-#import "GLLMesh.h"
 #import "GLLMeshSettings.h"
 #import "GLLModel.h"
+#import "GLLModelMesh.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
@@ -233,7 +233,7 @@
 	return [self.boneTransformations objectsAtIndexes:indices];
 }
 
-- (GLLMeshSettings *)settingsForMesh:(GLLMesh *)mesh;
+- (GLLMeshSettings *)settingsForMesh:(GLLModelMesh *)mesh;
 {
 	return self.meshSettings[mesh.meshIndex];
 }

@@ -1,5 +1,5 @@
 //
-//  GLLMesh.h
+//  GLLModelMesh.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 31.08.12.
@@ -18,7 +18,7 @@
  * @abstract Vertex and element data.
  * @discussion A GLLMesh stores a set of vertices that belong together, along with the necessary information for rendering it (especially the indices and the names of the textures used). In XNALara, it corresponds to a MeshDesc.
  */
-@interface GLLMesh : NSObject
+@interface GLLModelMesh : NSObject
 
 // For subclasses
 - (id)initAsPartOfModel:(GLLModel *)model;
@@ -78,8 +78,8 @@
 /*
  * XNALara insists that some meshes need to be split; apparently only for cosmetic reasons. I shall oblige, but in a way that is not specific to exactly one thing, thank you very much. Note that this mesh keeps the bone indices of the original.
  */
-- (GLLMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
-- (GLLMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
+- (GLLModelMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
+- (GLLModelMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
 
 /*
  * Drawing information, gained through the model parameters. This information is not stored in the mesh file.

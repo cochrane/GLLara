@@ -16,9 +16,9 @@
 @class TRInDataStream;
 @class TROutDataStream;
 @class GLLBoneTransformation;
-@class GLLMesh;
 @class GLLMeshSettings;
 @class GLLModel;
+@class GLLModelMesh;
 @class GLLScene;
 @class GLLRenderParameterDescription;
 
@@ -44,7 +44,7 @@
 
 @property (nonatomic, retain, readonly) NSArray *rootBoneTransformations;
 
-- (GLLMeshSettings *)settingsForMesh:(GLLMesh *)mesh;
+- (GLLMeshSettings *)settingsForMesh:(GLLModelMesh *)mesh;
 - (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
 
 

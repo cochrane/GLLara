@@ -8,7 +8,6 @@
 
 #import "GLLMeshSettingsViewController.h"
 
-#import "GLLMesh.h"
 #import "GLLMeshSettings.h"
 #import "GLLRenderParameterDescription.h"
 

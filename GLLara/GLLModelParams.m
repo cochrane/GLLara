@@ -8,7 +8,7 @@
 
 #import "GLLModelParams.h"
 
-#import "GLLMesh.h"
+#import "GLLModelMesh.h"
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "GLLRenderParameterDescription.h"
@@ -215,7 +215,7 @@ static NSCache *parameterCache;
 	if (!ownCameraTargets && model)
 	{
 		NSMutableSet *resultSet = [[NSMutableSet alloc] init];
-		for (GLLMesh *mesh in model.meshes)
+		for (GLLModelMesh *mesh in model.meshes)
 		{
 			NSString *cameraTargetName = nil;
 			[self _parseModelName:mesh.name meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:NULL];
@@ -239,7 +239,7 @@ static NSCache *parameterCache;
 	if (!ownCameraTargets && model)
 	{
 		NSMutableArray *result = [[NSMutableArray alloc] init];
-		for (GLLMesh *mesh in model.meshes)
+		for (GLLModelMesh *mesh in model.meshes)
 		{
 			NSString *cameraTargetName = nil;
 			NSArray *cameraTargetBones;

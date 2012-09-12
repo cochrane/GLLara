@@ -1,12 +1,12 @@
 //
-//  GLLMesh.m
+//  GLLModelMesh.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 31.08.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLMesh.h"
+#import "GLLModelMesh.h"
 
 #import "GLLASCIIScanner.h"
 #import "GLLMeshSplitter.h"
@@ -33,14 +33,14 @@ void vec_addTo(float *a, float *b)
 	a[2] += b[2];
 }
 
-@interface GLLMesh ()
+@interface GLLModelMesh ()
 
 - (NSData *)_postprocessVertices:(NSData *)vertexData;
 - (void)_setRenderParameters;
 
 @end
 
-@implementation GLLMesh
+@implementation GLLModelMesh
 
 #pragma mark - Mesh loading
 
@@ -234,7 +234,7 @@ void vec_addTo(float *a, float *b)
 
 #pragma mark - Splitting
 
-- (GLLMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
+- (GLLModelMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
 {
 	NSMutableData *newVertices = [[NSMutableData alloc] init];
 	NSMutableData *newElements = [[NSMutableData alloc] init];
@@ -289,7 +289,7 @@ void vec_addTo(float *a, float *b)
 		}
 	}
 	
-	GLLMesh *result = [[GLLMesh alloc] init];
+	GLLModelMesh *result = [[GLLModelMesh alloc] init];
 	result->_vertexData = [newVertices copy];
 	result->_elementData = [newElements copy];
 	
@@ -301,7 +301,7 @@ void vec_addTo(float *a, float *b)
 	
 	return result;
 }
-- (GLLMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
+- (GLLModelMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
 {
 	return [self partialMeshInBoxMin:splitter.min max:splitter.max name:splitter.splitPartName];
 }

@@ -9,8 +9,8 @@
 #import "GLLMeshSettings.h"
 
 #import "GLLItem.h"
-#import "GLLMesh.h"
 #import "GLLModel.h"
+#import "GLLModelMesh.h"
 #import "GLLModelParams.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
@@ -71,7 +71,7 @@
 	return [self.item.meshSettings indexOfObject:self];
 }
 
-- (GLLMesh *)mesh
+- (GLLModelMesh *)mesh
 {
 	return self.item.model.meshes[self.meshIndex];
 }

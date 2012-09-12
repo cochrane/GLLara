@@ -9,7 +9,7 @@
 #import "GLLModelObj.h"
 
 #import "GLLBone.h"
-#import "GLLMeshObj.h"
+#import "GLLModelMeshObj.h"
 #import "GLLObjFile.h"
 
 @interface GLLModelObj ()
@@ -40,7 +40,7 @@
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:file->getMaterialRanges().size()];
 	for (auto &range : file->getMaterialRanges())
 	{
-		[meshes addObject:[[GLLMeshObj alloc] initWithObjFile:file range:range]];
+		[meshes addObject:[[GLLModelMeshObj alloc] initWithObjFile:file range:range]];
 	}
 	
 	return self;

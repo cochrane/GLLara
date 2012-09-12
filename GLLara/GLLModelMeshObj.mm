@@ -1,14 +1,14 @@
 //
-//  GLLMeshObj.m
+//  GLLModelMeshObj.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 12.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLMeshObj.h"
+#import "GLLModelMeshObj.h"
 
-@implementation GLLMeshObj
+@implementation GLLModelMeshObj
 
 - (id)initWithObjFile:(GLLObjFile *)file range:(const GLLObjFile::MaterialRange &)range;
 {
