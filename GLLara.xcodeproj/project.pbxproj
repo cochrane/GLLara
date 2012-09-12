@@ -33,7 +33,7 @@
 		529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692C915F1568200DF2FA3 /* TRInDataStream.m */; };
 		529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692CB15F1568200DF2FA3 /* TROutDataStream.m */; };
 		529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692D015F2374F00DF2FA3 /* libz.dylib */; };
-		529692D415F24EF100DF2FA3 /* GLLBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D315F24EF100DF2FA3 /* GLLBone.m */; };
+		529692D415F24EF100DF2FA3 /* GLLModelBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D315F24EF100DF2FA3 /* GLLModelBone.m */; };
 		529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D915F2625200DF2FA3 /* GLLItem.m */; };
 		529692DD15F2759400DF2FA3 /* GLLBoneTransformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692DC15F2759400DF2FA3 /* GLLBoneTransformation.m */; };
 		529692E315F2861E00DF2FA3 /* GLLMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692E215F2861E00DF2FA3 /* GLLMeshDrawer.m */; };
@@ -162,8 +162,8 @@
 		529692CA15F1568200DF2FA3 /* TROutDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TROutDataStream.h; sourceTree = "<group>"; };
 		529692CB15F1568200DF2FA3 /* TROutDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TROutDataStream.m; sourceTree = "<group>"; };
 		529692D015F2374F00DF2FA3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		529692D215F24EF000DF2FA3 /* GLLBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBone.h; sourceTree = "<group>"; };
-		529692D315F24EF100DF2FA3 /* GLLBone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBone.m; sourceTree = "<group>"; };
+		529692D215F24EF000DF2FA3 /* GLLModelBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelBone.h; sourceTree = "<group>"; };
+		529692D315F24EF100DF2FA3 /* GLLModelBone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelBone.m; sourceTree = "<group>"; };
 		529692D615F2590000DF2FA3 /* XNALara Model File Format.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "XNALara Model File Format.md"; sourceTree = "<group>"; };
 		529692D815F2625200DF2FA3 /* GLLItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItem.h; sourceTree = "<group>"; };
 		529692D915F2625200DF2FA3 /* GLLItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItem.m; sourceTree = "<group>"; };
@@ -503,8 +503,8 @@
 				525ACD8315F0F33700534E7D /* GLLModel.m */,
 				525ACD8515F0F3ED00534E7D /* GLLModelMesh.h */,
 				525ACD8615F0F3ED00534E7D /* GLLModelMesh.m */,
-				529692D215F24EF000DF2FA3 /* GLLBone.h */,
-				529692D315F24EF100DF2FA3 /* GLLBone.m */,
+				529692D215F24EF000DF2FA3 /* GLLModelBone.h */,
+				529692D315F24EF100DF2FA3 /* GLLModelBone.m */,
 				5296945815F6C84900DF2FA3 /* GLLShaderDescriptor.h */,
 				5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */,
 				52BB21CB15FC7B8C00937450 /* GLLRenderParameterDescription.h */,
@@ -791,7 +791,7 @@
 				525ACD8715F0F3ED00534E7D /* GLLModelMesh.m in Sources */,
 				529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */,
 				529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */,
-				529692D415F24EF100DF2FA3 /* GLLBone.m in Sources */,
+				529692D415F24EF100DF2FA3 /* GLLModelBone.m in Sources */,
 				529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */,
 				529692DD15F2759400DF2FA3 /* GLLBoneTransformation.m in Sources */,
 				529692E315F2861E00DF2FA3 /* GLLMeshDrawer.m in Sources */,

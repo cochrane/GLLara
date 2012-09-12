@@ -9,7 +9,7 @@
 #import "GLLModel.h"
 
 #import "GLLASCIIScanner.h"
-#import "GLLBone.h"
+#import "GLLModelBone.h"
 #import "GLLModelMesh.h"
 #import "GLLModelParams.h"
 #import "TRInDataStream.h"
@@ -133,9 +133,9 @@ static NSCache *cachedModels;
 	NSUInteger numBones = header;
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
 	for (NSUInteger i = 0; i < numBones; i++)
-		[bones addObject:[[GLLBone alloc] initFromSequentialData:stream partOfModel:self]];
+		[bones addObject:[[GLLModelBone alloc] initFromSequentialData:stream partOfModel:self]];
 	_bones = [bones copy];
-	for (GLLBone *bone in _bones) [bone setupParent];
+	for (GLLModelBone *bone in _bones) [bone setupParent];
 	
 	NSUInteger numMeshes = [stream readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
@@ -176,9 +176,9 @@ static NSCache *cachedModels;
 	NSUInteger numBones = [scanner readUint32];
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
 	for (NSUInteger i = 0; i < numBones; i++)
-		[bones addObject:[[GLLBone alloc] initFromSequentialData:scanner partOfModel:self]];
+		[bones addObject:[[GLLModelBone alloc] initFromSequentialData:scanner partOfModel:self]];
 	_bones = [bones copy];
-	for (GLLBone *bone in _bones) [bone setupParent];
+	for (GLLModelBone *bone in _bones) [bone setupParent];
 	
 	NSUInteger numMeshes = [scanner readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];

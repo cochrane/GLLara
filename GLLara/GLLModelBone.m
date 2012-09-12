@@ -1,19 +1,19 @@
 //
-//  GLLBone.m
+//  GLLModelBone.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 01.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLBone.h"
+#import "GLLModelBone.h"
 
 #import "GLLASCIIScanner.h"
 #import "GLLModel.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 
-@implementation GLLBone
+@implementation GLLModelBone
 
 - (id)initWithModel:(GLLModel *)model;
 {

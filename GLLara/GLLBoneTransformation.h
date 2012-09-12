@@ -12,8 +12,8 @@
 #import "GLLSourceListItem.h"
 #import "GLLVersion.h"
 
-@class GLLBone;
 @class GLLItem;
+@class GLLModelBone;
 @class TRInDataStream;
 @class TROutDataStream;
 
@@ -33,7 +33,7 @@
 
 // Derived
 @property (nonatomic, readonly) NSUInteger boneIndex;
-@property (nonatomic, retain, readonly) GLLBone *bone;
+@property (nonatomic, retain, readonly) GLLModelBone *bone;
 
 @property (nonatomic, weak, readonly) GLLBoneTransformation *parent;
 @property (nonatomic, retain, readonly) NSArray *children;

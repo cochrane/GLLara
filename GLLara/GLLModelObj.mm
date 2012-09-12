@@ -8,7 +8,7 @@
 
 #import "GLLModelObj.h"
 
-#import "GLLBone.h"
+#import "GLLModelBone.h"
 #import "GLLModelMeshObj.h"
 #import "GLLObjFile.h"
 
@@ -34,7 +34,7 @@
 	}
 	
 	// 1. Set up bones. We only have the one.
-	self.bones = @[ [[GLLBone alloc] initWithModel:self] ];
+	self.bones = @[ [[GLLModelBone alloc] initWithModel:self] ];
 	
 	// 2. Set up meshes. We use one mesh per material group.
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:file->getMaterialRanges().size()];

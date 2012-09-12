@@ -9,9 +9,9 @@
 #import "GLLItem.h"
 
 #import "GLLBoneTransformation.h"
-#import "GLLBone.h"
 #import "GLLMeshSettings.h"
 #import "GLLModel.h"
+#import "GLLModelBone.h"
 #import "GLLModelMesh.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"

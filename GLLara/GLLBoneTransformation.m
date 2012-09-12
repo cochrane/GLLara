@@ -8,9 +8,9 @@
 
 #import "GLLBoneTransformation.h"
 
-#import "GLLBone.h"
 #import "GLLItem.h"
 #import "GLLModel.h"
+#import "GLLModelBone.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
@@ -111,7 +111,7 @@
 	return [self.item.boneTransformations indexOfObject:self];
 }
 
-- (GLLBone *)bone
+- (GLLModelBone *)bone
 {
 	return self.item.model.bones[self.boneIndex];
 }
