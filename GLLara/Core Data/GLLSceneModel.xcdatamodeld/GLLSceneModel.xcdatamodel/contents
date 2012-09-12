@@ -38,12 +38,18 @@
         <relationship name="bones" optional="YES" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="GLLBoneTransformation" inverseName="cameraTargets" inverseEntity="GLLBoneTransformation" syncable="YES"/>
         <relationship name="cameras" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GLLCamera" inverseName="target" inverseEntity="GLLCamera" syncable="YES"/>
     </entity>
+    <entity name="GLLColorRenderParameter" representedClassName="GLLColorRenderParameter" parentEntity="GLLRenderParameter" syncable="YES">
+        <attribute name="value" attributeType="Transformable" syncable="YES"/>
+    </entity>
     <entity name="GLLDirectionalLight" representedClassName="GLLDirectionalLight" parentEntity="GLLLight" syncable="YES">
         <attribute name="diffuseColor" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="isEnabled" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="latitude" attributeType="Float" minValueString="-1.5707963267949" maxValueString="1.5707963267949" defaultValueString="0.0" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
         <attribute name="specularColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+    </entity>
+    <entity name="GLLFloatRenderParameter" representedClassName="GLLFloatRenderParameter" parentEntity="GLLRenderParameter" syncable="YES">
+        <attribute name="value" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
     </entity>
     <entity name="GLLItem" representedClassName="GLLItem" syncable="YES">
         <attribute name="displayName" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES"/>
@@ -75,20 +81,21 @@
         <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshSettings" inverseEntity="GLLItem" syncable="YES"/>
         <relationship name="renderParameters" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLRenderParameter" inverseName="mesh" inverseEntity="GLLRenderParameter" syncable="YES"/>
     </entity>
-    <entity name="GLLRenderParameter" representedClassName="GLLRenderParameter" syncable="YES">
+    <entity name="GLLRenderParameter" representedClassName="GLLRenderParameter" isAbstract="YES" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="mesh" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLMeshSettings" inverseName="renderParameters" inverseEntity="GLLMeshSettings" syncable="YES"/>
     </entity>
     <elements>
-        <element name="GLLAmbientLight" positionX="160" positionY="192" width="128" height="60"/>
-        <element name="GLLBoneTransformation" positionX="160" positionY="192" width="128" height="210"/>
-        <element name="GLLCamera" positionX="160" positionY="192" width="128" height="270"/>
-        <element name="GLLCameraTarget" positionX="198" positionY="290" width="128" height="88"/>
-        <element name="GLLDirectionalLight" positionX="160" positionY="192" width="128" height="120"/>
-        <element name="GLLItem" positionX="160" positionY="192" width="128" height="224"/>
-        <element name="GLLLight" positionX="160" positionY="192" width="128" height="150"/>
-        <element name="GLLMeshSettings" positionX="-162" positionY="90" width="128" height="103"/>
-        <element name="GLLRenderParameter" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="GLLAmbientLight" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLBoneTransformation" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLCamera" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLCameraTarget" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLDirectionalLight" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLItem" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLLight" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLMeshSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLRenderParameter" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLColorRenderParameter" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

@@ -26,18 +26,18 @@
 - (id)initBinaryFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
 - (id)initASCIIFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
 
-@property (nonatomic, copy, readonly) NSURL *baseURL;
+@property (nonatomic, copy) NSURL *baseURL;
 
-@property (nonatomic, retain, readonly) GLLModelParams *parameters;
+@property (nonatomic, retain) GLLModelParams *parameters;
 
 @property (nonatomic, assign, readonly) BOOL hasBones;
 
-@property (nonatomic, copy, readonly) NSArray *bones;
-@property (nonatomic, copy, readonly) NSArray *meshes;
+@property (nonatomic, copy) NSArray *bones;
+@property (nonatomic, copy) NSArray *meshes;
 
-@property (nonatomic, copy, readonly) NSArray *rootBones;
+@property (nonatomic, copy) NSArray *rootBones;
 
-@property (nonatomic, copy, readonly) NSArray *cameraTargetNames;
+@property (nonatomic, copy) NSArray *cameraTargetNames;
 - (NSArray *)boneNamesForCameraTarget:(NSString *)target;
 
 @end

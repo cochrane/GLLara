@@ -10,6 +10,7 @@
 
 #import "simd_types.h"
 
+@class GLLItemDrawer;
 @class GLLMeshDrawer;
 @class GLLMeshSettings;
 
@@ -19,9 +20,10 @@
  */
 @interface GLLTransformedMeshDrawer : NSObject
 
-- (id)initWithDrawer:(GLLMeshDrawer *)drawer settings:(GLLMeshSettings *)settings;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)drawer settings:(GLLMeshSettings *)settings;
 
-@property (nonatomic, retain, readonly) GLLMeshDrawer *drawer;
+@property (nonatomic, weak, readonly) GLLItemDrawer *itemDrawer;
+@property (nonatomic, retain, readonly) GLLMeshDrawer *meshDrawer;
 @property (nonatomic, retain, readonly) GLLMeshSettings *settings;
 
 - (void)draw;

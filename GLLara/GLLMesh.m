@@ -36,7 +36,6 @@ void vec_addTo(float *a, float *b)
 @interface GLLMesh ()
 
 - (NSData *)_postprocessVertices:(NSData *)vertexData;
-- (void)_calculateTangents:(NSMutableData *)vertexData;
 - (void)_setRenderParameters;
 
 @end
@@ -44,6 +43,15 @@ void vec_addTo(float *a, float *b)
 @implementation GLLMesh
 
 #pragma mark - Mesh loading
+
+- (id)initAsPartOfModel:(GLLModel *)model;
+{
+	if (!(self = [super init])) return nil;
+	
+	_model = model;
+	
+	return self;
+}
 
 - (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
 {
@@ -158,7 +166,7 @@ void vec_addTo(float *a, float *b)
 	}
 	_elementData = [elementData copy];
 	
-	[self _calculateTangents:rawVertexData];
+	[self calculateTangents:rawVertexData];
 	_vertexData = [[self _postprocessVertices:rawVertexData] copy];
 	
 	[self _setRenderParameters];
@@ -298,40 +306,9 @@ void vec_addTo(float *a, float *b)
 	return [self partialMeshInBoxMin:splitter.min max:splitter.max name:splitter.splitPartName];
 }
 
-#pragma mark - Private methods
+#pragma mark - Tangents
 
-- (NSData *)_postprocessVertices:(NSData *)vertexData;
-{
-	if (!self.hasBoneWeights)
-		return vertexData; // No processing necessary
-	
-	NSMutableData *mutableVertices = [vertexData mutableCopy];
-	void *bytes = mutableVertices.mutableBytes;
-	const NSUInteger boneWeightOffset = self.offsetForBoneWeights;
-	const NSUInteger stride = self.stride;
-		
-	for (NSUInteger i = 0; i < self.countOfVertices; i++)
-	{
-		float *weights = &bytes[boneWeightOffset + i*stride];
-		
-		// Normalize weights. If no weights, use first bone.
-		float weightSum = 0.0f;
-		for (int i = 0; i < 4; i++)
-			weightSum += weights[i];
-		
-		if (weightSum == 0.0f)
-			weights[0] = 1.0f;
-		else if (weightSum != 1.0f)
-		{
-			for (int i = 0; i < 4; i++)
-				weights[i] /= weightSum;
-		}
-	}
-	
-	return mutableVertices;
-}
-
-- (void)_calculateTangents:(NSMutableData *)vertexData;
+- (void)calculateTangents:(NSMutableData *)vertexData;
 {
 	const NSUInteger stride = self.stride;
 	const NSUInteger positionOffset = self.offsetForPosition;
@@ -423,6 +400,39 @@ void vec_addTo(float *a, float *b)
 			target[3] = w > 0.0f ? 1.0f : -1.0f;
 		}
 	}
+}
+
+#pragma mark - Private methods
+
+- (NSData *)_postprocessVertices:(NSData *)vertexData;
+{
+	if (!self.hasBoneWeights)
+		return vertexData; // No processing necessary
+	
+	NSMutableData *mutableVertices = [vertexData mutableCopy];
+	void *bytes = mutableVertices.mutableBytes;
+	const NSUInteger boneWeightOffset = self.offsetForBoneWeights;
+	const NSUInteger stride = self.stride;
+		
+	for (NSUInteger i = 0; i < self.countOfVertices; i++)
+	{
+		float *weights = &bytes[boneWeightOffset + i*stride];
+		
+		// Normalize weights. If no weights, use first bone.
+		float weightSum = 0.0f;
+		for (int i = 0; i < 4; i++)
+			weightSum += weights[i];
+		
+		if (weightSum == 0.0f)
+			weights[0] = 1.0f;
+		else if (weightSum != 1.0f)
+		{
+			for (int i = 0; i < 4; i++)
+				weights[i] /= weightSum;
+		}
+	}
+	
+	return mutableVertices;
 }
 
 - (void)_setRenderParameters;

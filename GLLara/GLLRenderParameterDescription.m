@@ -8,6 +8,9 @@
 
 #import "GLLRenderParameterDescription.h"
 
+NSString *GLLRenderParameterTypeFloat = @"float";
+NSString *GLLRenderParameterTypeColor = @"color";
+
 @implementation GLLRenderParameterDescription
 
 - (id)initWithPlist:(NSDictionary *)plist;
@@ -18,6 +21,9 @@
 	_max = [plist[@"max"] floatValue];
 	_localizedTitle = [[NSBundle mainBundle] localizedStringForKey:plist[@"title"] value:nil table:@"RenderParameters"];
 	_localizedDescription = [[NSBundle mainBundle] localizedStringForKey:plist[@"description"] value:nil table:@"RenderParameters"];
+	
+	_type = plist[@"type"];
+	if (!_type) _type = GLLRenderParameterTypeFloat;
 	
 	return self;
 }

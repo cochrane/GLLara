@@ -57,18 +57,14 @@
 	NSMutableArray *mutableAlphaDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.alphaMeshDrawers.count];
 	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)
 	{
-		GLLTransformedMeshDrawer *transformedDrawer = [[GLLTransformedMeshDrawer alloc] initWithDrawer:drawer settings:[item settingsForMesh:drawer.mesh]];
-		[transformedDrawer addObserver:self forKeyPath:@"drawer.mesh.renderSettings" options:0 context:0];
-		[mutableAlphaDrawers addObject:transformedDrawer];
+		[mutableAlphaDrawers addObject:[[GLLTransformedMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
 	}
 	alphaDrawers = [mutableAlphaDrawers copy];
 	
 	NSMutableArray *mutableSolidDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.solidMeshDrawers.count];
 	for (GLLMeshDrawer *drawer in modelDrawer.solidMeshDrawers)
 	{
-		GLLTransformedMeshDrawer *transformedDrawer = [[GLLTransformedMeshDrawer alloc] initWithDrawer:drawer settings:[item settingsForMesh:drawer.mesh]];
-		[transformedDrawer addObserver:self forKeyPath:@"drawer.mesh.renderSettings" options:0 context:0];
-		[mutableSolidDrawers addObject:transformedDrawer];
+		[mutableSolidDrawers addObject:[[GLLTransformedMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
 	}
 	solidDrawers = [mutableSolidDrawers copy];
 	
@@ -139,31 +135,24 @@
 		[bone removeObserver:self forKeyPath:@"globalTransform"];
 	
 	for (GLLTransformedMeshDrawer *drawer in solidDrawers)
-	{
-		[drawer removeObserver:self forKeyPath:@"drawer.mesh.renderSettings"];
 		[drawer unload];
-	}
 	
 	for (GLLTransformedMeshDrawer *drawer in alphaDrawers)
-	{
-		[drawer removeObserver:self forKeyPath:@"drawer.mesh.renderSettings"];
 		[drawer unload];
-	}
 	
 	glDeleteBuffers(1, &transformsBuffer);
 	transformsBuffer = 0;
 }
 
 - (void)_updateTransforms
-{
-	glBindBuffer(GL_UNIFORM_BUFFER, transformsBuffer);
-	
+{	
 	NSUInteger count = self.item.boneTransformations.count;
 	mat_float16 *matrices = malloc(count * sizeof(mat_float16));
 	for (NSUInteger i = 0; i < count; i++)
 		[[[self.item.boneTransformations objectAtIndex:i] globalTransform] getValue:&matrices[i]];
 	
-	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_STATIC_DRAW);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_STREAM_DRAW);
 	
 	needToUpdateTransforms = NO;
 }

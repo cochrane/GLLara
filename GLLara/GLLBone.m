@@ -15,6 +15,27 @@
 
 @implementation GLLBone
 
+- (id)initWithModel:(GLLModel *)model;
+{
+	if (!(self = [super init])) return nil;
+	
+	_model = model;
+	
+	_parentIndex = UINT16_MAX;
+	_parent = nil;
+	_children = @[];
+	
+	_positionX = 0;
+	_positionY = 0;
+	_positionZ = 0;
+	
+	_positionMatrix = simd_mat_identity();
+	_inversePositionMatrix = simd_mat_identity();
+	
+	return self;
+
+}
+
 - (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model;
 {
 	if (!(self = [super init])) return nil;

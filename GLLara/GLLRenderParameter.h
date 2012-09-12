@@ -14,10 +14,11 @@
 
 @interface GLLRenderParameter : NSManagedObject
 
-@property (nonatomic) float value;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) GLLMeshSettings *mesh;
 
-@property (nonatomic, retain, readonly) GLLRenderParameterDescription *description;
+@property (nonatomic, retain, readonly) GLLRenderParameterDescription *parameterDescription;
+
+@property (nonatomic, readonly) NSData *uniformValue;
 
 @end

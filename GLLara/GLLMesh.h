@@ -20,21 +20,24 @@
  */
 @interface GLLMesh : NSObject
 
+// For subclasses
+- (id)initAsPartOfModel:(GLLModel *)model;
+
 - (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
 - (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model;
 
-@property (nonatomic, weak, readonly) GLLModel *model;
+@property (nonatomic, weak) GLLModel *model;
 
-@property (nonatomic, copy, readonly) NSString *name;
-@property (nonatomic, retain, readonly) NSArray *textures;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, retain) NSArray *textures;
 
-@property (nonatomic, assign, readonly) NSUInteger meshIndex;
+@property (nonatomic, assign) NSUInteger meshIndex;
 
 /*
  * Vertex buffer (format described below)
  */
-@property (nonatomic, retain, readonly) NSData *vertexData;
-@property (nonatomic, assign, readonly) NSUInteger countOfVertices;
+@property (nonatomic, retain) NSData *vertexData;
+@property (nonatomic, assign) NSUInteger countOfVertices;
 
 /*
  * Description of vertex buffer.
@@ -58,8 +61,8 @@
 /*
  * Element buffer (format always uint32_ts arranged as triangles)
  */
-@property (nonatomic, retain, readonly) NSData *elementData;
-@property (nonatomic, assign, readonly) NSUInteger countOfElements;
+@property (nonatomic, retain) NSData *elementData;
+@property (nonatomic, assign) NSUInteger countOfElements;
 
 /*
  * Bone indices. A mesh can use at most 59 bones, but a model can have much more than that. Each element of this array is an NSNumber index into the total number of bones the model has.
@@ -68,7 +71,7 @@
 /*
  * Other important properties.
  */
-@property (nonatomic, assign, readonly) NSUInteger countOfUVLayers;
+@property (nonatomic, assign) NSUInteger countOfUVLayers;
 @property (nonatomic, assign, readonly) BOOL hasBoneWeights;
 @property (nonatomic, copy, readonly) NSURL *baseURL;
 
@@ -84,5 +87,8 @@
 @property (nonatomic, copy, readonly) GLLShaderDescriptor *shader;
 @property (nonatomic, assign, readonly) BOOL usesAlphaBlending;
 @property (nonatomic, copy, readonly) NSDictionary *renderParameters;
+
+// To be used by subclasses. Calculates the tangents based on the texture coordinates, and fills them in the correct fields of the data, using the offsets and strides of the file
+- (void)calculateTangents:(NSMutableData *)vertexData;
 
 @end

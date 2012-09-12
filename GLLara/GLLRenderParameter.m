@@ -21,14 +21,19 @@
 	return [NSSet setWithObject:@"name"];
 }
 
-@dynamic value;
 @dynamic name;
 @dynamic mesh;
 
-- (GLLRenderParameterDescription *)description
+- (GLLRenderParameterDescription *)parameterDescription
 {
 	// That's ugly.
 	return [self.mesh.mesh.model.parameters descriptionForParameter:self.name];
+}
+
+- (NSData *)uniformValue
+{
+	[self doesNotRecognizeSelector:_cmd];
+	return nil;
 }
 
 @end

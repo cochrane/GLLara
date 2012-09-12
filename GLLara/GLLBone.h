@@ -20,6 +20,9 @@
  */
 @interface GLLBone : NSObject
 
+// Bone without parent, children at position 0, 0, 0. No need to call setupParent afterwards.
+- (id)initWithModel:(GLLModel *)model;
+
 // Stream must be either a GLLASCIIScanner or a TRInDataStream.
 - (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model;
 

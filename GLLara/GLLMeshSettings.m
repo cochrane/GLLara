@@ -11,7 +11,9 @@
 #import "GLLItem.h"
 #import "GLLMesh.h"
 #import "GLLModel.h"
+#import "GLLModelParams.h"
 #import "GLLRenderParameter.h"
+#import "GLLRenderParameterDescription.h"
 #import "GLLShaderDescriptor.h"
 
 @implementation GLLMeshSettings
@@ -44,7 +46,17 @@
 	[renderParameters removeAllObjects];
 	for (NSString *uniformName in self.mesh.shader.allUniformNames)
 	{
-		GLLRenderParameter *parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLRenderParameter" inManagedObjectContext:self.managedObjectContext];
+		GLLRenderParameterDescription *description = [self.mesh.model.parameters descriptionForParameter:uniformName];
+
+		GLLRenderParameter *parameter;
+		
+		if ([description.type isEqual:GLLRenderParameterTypeFloat])
+			parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLFloatRenderParameter" inManagedObjectContext:self.managedObjectContext];
+		else if ([description.type isEqual:GLLRenderParameterTypeColor])
+			parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLColorRenderParameter" inManagedObjectContext:self.managedObjectContext];
+		else
+			continue; // Skip this param
+		
 		parameter.name = uniformName;
 		[parameter setValue:values[uniformName] forKey:@"value"];
 		
