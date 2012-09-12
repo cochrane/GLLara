@@ -10,9 +10,9 @@
 
 #import "GLLAmbientLight.h"
 #import "GLLItemBone.h"
-#import "GLLBoneTransformViewController.h"
+#import "GLLBoneViewController.h"
 #import "GLLItemMesh.h"
-#import "GLLMeshSettingsViewController.h"
+#import "GLLMeshViewController.h"
 #import "GLLModel.h"
 #import "GLLDirectionalLight.h"
 #import "GLLItem.h"
@@ -22,9 +22,9 @@
 @interface GLLDocumentWindowController ()
 {
 	NSViewController *ambientLightViewController;
-	GLLBoneTransformViewController *boneTransformViewController;
+	GLLBoneViewController *boneTransformViewController;
 	GLLItemViewController *itemViewController;
-	GLLMeshSettingsViewController *meshSettingsViewController;
+	GLLMeshViewController *meshSettingsViewController;
 	NSViewController *lightViewController;
 	
 	NSViewController *currentController;
@@ -48,9 +48,9 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	_managedObjectContext = managedObjectContext;
 	
 	ambientLightViewController = [[NSViewController alloc] initWithNibName:@"GLLAmbientLightView" bundle:[NSBundle mainBundle]];
-	boneTransformViewController = [[GLLBoneTransformViewController alloc] init];
+	boneTransformViewController = [[GLLBoneViewController alloc] init];
 	itemViewController = [[GLLItemViewController alloc] init];
-	meshSettingsViewController = [[GLLMeshSettingsViewController alloc] init];
+	meshSettingsViewController = [[GLLMeshViewController alloc] init];
 	lightViewController = [[NSViewController alloc] initWithNibName:@"GLLLightView" bundle:[NSBundle mainBundle]];
 	
 	

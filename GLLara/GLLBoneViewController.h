@@ -14,7 +14,7 @@
  */
 @class GLLItemBone;
 
-@interface GLLBoneTransformViewController : NSViewController
+@interface GLLBoneViewController : NSViewController
 
 - (IBAction)resetAllValues:(id)sender;
 

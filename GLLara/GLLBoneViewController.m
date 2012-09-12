@@ -6,17 +6,17 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLBoneTransformViewController.h"
+#import "GLLBoneViewController.h"
 
-@interface GLLBoneTransformViewController ()
+@interface GLLBoneViewController ()
 
 @end
 
-@implementation GLLBoneTransformViewController
+@implementation GLLBoneViewController
 
 - (id)init
 {
-	if (!(self = [super initWithNibName:@"GLLBoneTransformView" bundle:[NSBundle mainBundle]]))
+	if (!(self = [super initWithNibName:@"GLLBoneView" bundle:[NSBundle mainBundle]]))
 		return nil;
 	
 	return self;
