@@ -49,7 +49,7 @@
 		return nil;
 	
 	// Observe all the bones
-	for (id transform in item.boneTransformations)
+	for (id transform in item.bones)
 		[transform addObserver:self forKeyPath:@"globalTransform" options:0 context:0];
 	
 	// Observe settings of all item
@@ -130,7 +130,7 @@
 
 - (void)unload;
 {
-	for (id bone in self.item.boneTransformations)
+	for (id bone in self.item.bones)
 		[bone removeObserver:self forKeyPath:@"globalTransform"];
 	
 	for (GLLItemMeshDrawer *drawer in solidDrawers)
@@ -145,10 +145,10 @@
 
 - (void)_updateTransforms
 {	
-	NSUInteger count = self.item.boneTransformations.count;
+	NSUInteger count = self.item.bones.count;
 	mat_float16 *matrices = malloc(count * sizeof(mat_float16));
 	for (NSUInteger i = 0; i < count; i++)
-		[[[self.item.boneTransformations objectAtIndex:i] globalTransform] getValue:&matrices[i]];
+		[[[self.item.bones objectAtIndex:i] globalTransform] getValue:&matrices[i]];
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_STREAM_DRAW);

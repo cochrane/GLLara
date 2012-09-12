@@ -108,7 +108,7 @@
 
 - (NSUInteger)boneIndex
 {
-	return [self.item.boneTransformations indexOfObject:self];
+	return [self.item.bones indexOfObject:self];
 }
 
 - (GLLModelBone *)bone
@@ -121,7 +121,7 @@
 	if (!self.bone.parent) return nil;
 	
 	if (parent == nil)
-		parent = self.item.boneTransformations[self.bone.parentIndex];
+		parent = self.item.bones[self.bone.parentIndex];
 	
 	return parent;
 }
@@ -130,10 +130,10 @@
 {
 	if (children == nil)
 	{
-		NSIndexSet *childIndices = [self.item.boneTransformations indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
+		NSIndexSet *childIndices = [self.item.bones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
 			return bone.parent == self;
 		}];
-		children = [self.item.boneTransformations objectsAtIndexes:childIndices];
+		children = [self.item.bones objectsAtIndexes:childIndices];
 	}
 	
 	return children;
