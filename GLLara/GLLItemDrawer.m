@@ -16,7 +16,7 @@
 #import "GLLModelDrawer.h"
 #import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"
-#import "GLLTransformedMeshDrawer.h"
+#import "GLLItemMeshDrawer.h"
 #import "GLLUniformBlockBindings.h"
 #import "simd_types.h"
 
@@ -56,14 +56,14 @@
 	NSMutableArray *mutableAlphaDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.alphaMeshDrawers.count];
 	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)
 	{
-		[mutableAlphaDrawers addObject:[[GLLTransformedMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
+		[mutableAlphaDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
 	}
 	alphaDrawers = [mutableAlphaDrawers copy];
 	
 	NSMutableArray *mutableSolidDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.solidMeshDrawers.count];
 	for (GLLMeshDrawer *drawer in modelDrawer.solidMeshDrawers)
 	{
-		[mutableSolidDrawers addObject:[[GLLTransformedMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
+		[mutableSolidDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
 	}
 	solidDrawers = [mutableSolidDrawers copy];
 	
@@ -111,7 +111,7 @@
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
 	
-	for (GLLTransformedMeshDrawer *drawer in solidDrawers)
+	for (GLLItemMeshDrawer *drawer in solidDrawers)
 		[drawer draw];
 	
 	self.needsRedraw = NO;
@@ -122,7 +122,7 @@
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
 	
-	for (GLLTransformedMeshDrawer *drawer in alphaDrawers)
+	for (GLLItemMeshDrawer *drawer in alphaDrawers)
 		[drawer draw];
 	
 	self.needsRedraw = NO;
@@ -133,10 +133,10 @@
 	for (id bone in self.item.boneTransformations)
 		[bone removeObserver:self forKeyPath:@"globalTransform"];
 	
-	for (GLLTransformedMeshDrawer *drawer in solidDrawers)
+	for (GLLItemMeshDrawer *drawer in solidDrawers)
 		[drawer unload];
 	
-	for (GLLTransformedMeshDrawer *drawer in alphaDrawers)
+	for (GLLItemMeshDrawer *drawer in alphaDrawers)
 		[drawer unload];
 	
 	glDeleteBuffers(1, &transformsBuffer);

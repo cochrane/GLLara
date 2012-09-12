@@ -1,12 +1,12 @@
 //
-//  GLLTransformedMeshDrawer.m
+//  GLLItemMeshDrawer.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 06.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLTransformedMeshDrawer.h"
+#import "GLLItemMeshDrawer.h"
 
 #import <OpenGL/gl3.h>
 
@@ -17,7 +17,7 @@
 #import "GLLRenderParameter.h"
 #import "GLLUniformBlockBindings.h"
 
-@interface GLLTransformedMeshDrawer ()
+@interface GLLItemMeshDrawer ()
 {
 	GLuint renderParametersBuffer;
 	BOOL needsParameterBufferUpdate;
@@ -26,7 +26,7 @@
 
 @end
 
-@implementation GLLTransformedMeshDrawer
+@implementation GLLItemMeshDrawer
 
 - (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer settings:(GLLItemMesh *)settings;
 {
