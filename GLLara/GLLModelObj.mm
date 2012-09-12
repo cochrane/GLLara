@@ -21,11 +21,17 @@
 
 @implementation GLLModelObj
 
-- (id)initWithContentsOfURL:(NSURL *)url;
+- (id)initWithContentsOfURL:(NSURL *)url error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 
-	file = new GLLObjFile((__bridge CFURLRef) url);
+	try {
+		file = new GLLObjFile((__bridge CFURLRef) url);
+	} catch (std::exception e) {
+		if (error)
+			*error = [NSError errorWithDomain:@"GLLModelObj" code:1 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"There was an error loading the file.", @"couldn't load obj file")}];
+		return nil;
+	}
 	
 	// 1. Set up bones. We only have the one.
 	self.bones = @[ [[GLLBone alloc] initWithModel:self] ];

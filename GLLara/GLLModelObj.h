@@ -10,6 +10,6 @@
 
 @interface GLLModelObj : GLLModel
 
-- (id)initWithContentsOfURL:(NSURL *)url;
+- (id)initWithContentsOfURL:(NSURL *)url error:(NSError *__autoreleasing*)error;
 
 @end
