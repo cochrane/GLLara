@@ -144,7 +144,7 @@ static NSCache *parameterCache;
 	// Similar for loading shaders
 	NSMutableDictionary *shaders = [[NSMutableDictionary alloc] initWithCapacity:[propertyList[@"shaders"] count]];
 	for (NSString *shaderName in propertyList[@"shaders"])
-		[shaders setObject:[[GLLShaderDescriptor alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil] forKey:shaderName];
+		[shaders setObject:[[GLLShaderDescriptor alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil modelParameters:self] forKey:shaderName];
 	ownShaders = [shaders copy];
 	
 	// And render parameters

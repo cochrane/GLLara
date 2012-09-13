@@ -70,6 +70,8 @@
 		5296947815F80F4800DF2FA3 /* GLLBoneTransformViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */; };
 		52AF114D15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib */; };
 		52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */; };
+		52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */; };
+		52B9E07D16020A8300641518 /* DiffuseOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E07C16020A8300641518 /* DiffuseOBJ.fs */; };
 		52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206715F8275E00937450 /* doppelganger.modelparams.plist */; };
 		52BB206A15F82B4200937450 /* Shadeless.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206915F82B4200937450 /* Shadeless.fs */; };
 		52BB206C15F82D9A00937450 /* lara_bathing_suit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */; };
@@ -235,6 +237,8 @@
 		52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLWindowSettingsPopoverView.xib; sourceTree = "<group>"; };
 		52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLCameraTarget.h; sourceTree = "<group>"; };
 		52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLCameraTarget.m; sourceTree = "<group>"; };
+		52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = objFileParameters.modelparams.plist; path = ../Shaders/objFileParameters.modelparams.plist; sourceTree = "<group>"; };
+		52B9E07C16020A8300641518 /* DiffuseOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseOBJ.fs; sourceTree = "<group>"; };
 		52BB206715F8275E00937450 /* doppelganger.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = doppelganger.modelparams.plist; sourceTree = "<group>"; };
 		52BB206915F82B4200937450 /* Shadeless.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Shadeless.fs; sourceTree = "<group>"; };
 		52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_bathing_suit.modelparams.plist; sourceTree = "<group>"; };
@@ -447,6 +451,7 @@
 		529693F615F2D00200DF2FA3 /* Model Parameters */ = {
 			isa = PBXGroup;
 			children = (
+				52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */,
 				529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */,
 				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
 				529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */,
@@ -488,6 +493,7 @@
 				5291DB9015FBE51600ECDBCA /* Metallic.fs */,
 				52BB21B515FB7AE700937450 /* StaticBasic2TexCoords.vs */,
 				52BB21B715FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs */,
+				52B9E07C16020A8300641518 /* DiffuseOBJ.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -704,6 +710,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52B9E07D16020A8300641518 /* DiffuseOBJ.fs in Resources */,
 				5291DB8215FBB33400ECDBCA /* MetallicBump3.fs in Resources */,
 				525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */,
 				525ACD5C15F0F1A700534E7D /* Credits.rtf in Resources */,
@@ -751,6 +758,7 @@
 				52BB21D715FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist in Resources */,
 				52919A1515FDF0A7004ACBA5 /* cameratemplate.pdf in Resources */,
 				52C9F60F15FF1753003272E1 /* GLLItemView.xib in Resources */,
+				52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

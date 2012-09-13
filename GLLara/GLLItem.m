@@ -171,7 +171,11 @@
 	NSMutableOrderedSet *meshSettings = [self mutableOrderedSetValueForKey:@"meshSettings"];
 	[meshSettings removeAllObjects];
 	for (NSUInteger i = 0; i < model.meshes.count; i++)
-		[meshSettings addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLMeshSettings" inManagedObjectContext:self.managedObjectContext]];
+	{
+		GLLMeshSettings *mesh = [NSEntityDescription insertNewObjectForEntityForName:@"GLLMeshSettings" inManagedObjectContext:self.managedObjectContext];
+		mesh.cullFaceMode = [(GLLMesh *) model.meshes[i] cullFaceMode];
+		[meshSettings addObject:mesh];
+	}
 	
 	NSMutableOrderedSet *boneTransformations = [self mutableOrderedSetValueForKey:@"boneTransformations"];
 	[boneTransformations removeAllObjects];
@@ -236,10 +240,6 @@
 - (GLLMeshSettings *)settingsForMesh:(GLLMesh *)mesh;
 {
 	return self.meshSettings[mesh.meshIndex];
-}
-- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
-{
-	return [self.model descriptionForParameter:parameterName];
 }
 
 #pragma mark - Poses I/O

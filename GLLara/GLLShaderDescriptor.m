@@ -8,9 +8,11 @@
 
 #import "GLLShaderDescriptor.h"
 
+#import "GLLModelParams.h"
+
 @implementation GLLShaderDescriptor
 
-- (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL;
+- (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL modelParameters:(GLLModelParams *)parameters;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -30,6 +32,8 @@
 
 	_programIdentifier = [NSString stringWithFormat:@"%@ (%@)", _name, _baseURL.absoluteString];
 	
+	_parameters = parameters;
+	
 	return self;
 }
 
@@ -39,6 +43,11 @@
 		return self.additionalUniformNames;
 	else
 		return [self.parameterUniformNames arrayByAddingObjectsFromArray:self.additionalUniformNames];
+}
+
+- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
+{
+	return [self.parameters descriptionForParameter:parameterName];
 }
 
 @end

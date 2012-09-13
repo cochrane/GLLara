@@ -302,6 +302,11 @@ void vec_addTo(float *a, float *b)
 	return [self partialMeshInBoxMin:splitter.min max:splitter.max name:splitter.splitPartName];
 }
 
+- (GLLCullFaceMode)cullFaceMode
+{
+	return GLLCullCounterClockWise;
+}
+
 #pragma mark - Tangents
 
 - (void)calculateTangents:(NSMutableData *)vertexData;

@@ -11,6 +11,7 @@
 #import <OpenGL/gl3.h>
 
 #import "GLLItemDrawer.h"
+#import "GLLMesh.h"
 #import "GLLMeshDrawer.h"
 #import "GLLMeshSettings.h"
 #import "GLLProgram.h"
@@ -68,12 +69,12 @@
 	
 	switch (self.settings.cullFaceMode)
 	{
-		case GLLCullBack:
-			glCullFace(GL_BACK);
+		case GLLCullCounterClockWise:
+			glFrontFace(GL_CW);
 			break;
 			
-		case GLLCullFront:
-			glCullFace(GL_FRONT);
+		case GLLCullClockWise:
+			glFrontFace(GL_CCW);
 			break;
 			
 		case GLLCullNone:

@@ -20,27 +20,32 @@
 	
 	// Procedure: Go through the indices in the range. For each index, load the vertex data from the file and put it in the vertex buffer here. Adjust the index, too.
 	
+	self.countOfUVLayers = 1;
+	
 	std::map<unsigned, uint32_t> globalToLocalVertices;
 	NSMutableData *vertices = [NSMutableData data];
 	NSMutableData *elements = [[NSMutableData alloc] initWithCapacity:sizeof(uint32_t) * (range.end - range.start)];
 	
 	for (unsigned i = range.start; i < range.end; i++)
 	{
+		unsigned globalIndex = file->getIndices()[i + range.start];
 		uint32_t index = 0;
-		auto localIndexIter = globalToLocalVertices.find(i);
+		auto localIndexIter = globalToLocalVertices.find(globalIndex);
 		if (localIndexIter == globalToLocalVertices.end())
 		{
 			// Add adjusted element
 			index = (uint32_t) globalToLocalVertices.size();
-			globalToLocalVertices[i] = index;
+			globalToLocalVertices[globalIndex] = index;
 			
 			// Add vertex
-			const GLLObjFile::VertexData &vertex = file->getVertexData()[i];
+			const GLLObjFile::VertexData &vertex = file->getVertexData()[globalIndex];
 			
 			[vertices appendBytes:vertex.vert length:sizeof(float [3])];
 			[vertices appendBytes:vertex.norm length:sizeof(float [3])];
 			[vertices appendBytes:vertex.color length:sizeof(uint8_t [4])];
-			[vertices appendBytes:vertex.tex length:sizeof(float [2])];
+			float texCoordY = 1.0f - vertex.tex[1]; // Turn tex coords around (because I don't want to swap the whole image)
+			[vertices appendBytes:vertex.tex length:sizeof(float)];
+			[vertices appendBytes:&texCoordY length:sizeof(float)];
 			
 			// Space for tangents
 			float zero[4] = { 0, 0, 0, 0 };
@@ -48,6 +53,8 @@
 			
 			// No bone weights or indices here; OBJs use special shaders that don't use them.
 		}
+		else
+			index = localIndexIter->second;
 		
 		// Add to element buffer
 		[elements appendBytes:&index length:sizeof(index)];
@@ -105,6 +112,11 @@
 - (BOOL)hasBoneWeights
 {
 	return NO; // OBJ files don't use them. They do use one bone matrix, for the model position, but that's it.
+}
+
+- (GLLCullFaceMode)cullFaceMode
+{
+	return GLLCullClockWise;
 }
 
 @end

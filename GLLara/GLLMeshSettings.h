@@ -15,13 +15,6 @@
 @class GLLMesh;
 @class GLLRenderParameter;
 
-typedef enum GLLCullFaceMode
-{
-	GLLCullBack,
-	GLLCullFront,
-	GLLCullNone
-} GLLCullFaceMode;
-
 @interface GLLMeshSettings : NSManagedObject <GLLSourceListItem>
 
 // Core data

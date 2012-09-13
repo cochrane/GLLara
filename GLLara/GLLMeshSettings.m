@@ -46,7 +46,7 @@
 	[renderParameters removeAllObjects];
 	for (NSString *uniformName in self.mesh.shader.allUniformNames)
 	{
-		GLLRenderParameterDescription *description = [self.item descriptionForParameter:uniformName];
+		GLLRenderParameterDescription *description = [self.mesh.shader descriptionForParameter:uniformName];
 
 		GLLRenderParameter *parameter;
 		

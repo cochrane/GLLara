@@ -14,6 +14,13 @@
 @class GLLShaderDescriptor;
 @class TRInDataStream;
 
+typedef enum GLLCullFaceMode
+{
+	GLLCullCounterClockWise,
+	GLLCullClockWise,
+	GLLCullNone
+} GLLCullFaceMode;
+
 /*!
  * @abstract Vertex and element data.
  * @discussion A GLLMesh stores a set of vertices that belong together, along with the necessary information for rendering it (especially the indices and the names of the textures used). In XNALara, it corresponds to a MeshDesc.
@@ -84,11 +91,13 @@
 /*
  * Drawing information, gained through the model parameters. This information is not stored in the mesh file.
  */
-@property (nonatomic, copy) GLLShaderDescriptor *shader;
+@property (nonatomic, retain) GLLShaderDescriptor *shader;
 @property (nonatomic, assign) BOOL usesAlphaBlending;
 @property (nonatomic, copy) NSDictionary *renderParameterValues;
 
 // To be used by subclasses. Calculates the tangents based on the texture coordinates, and fills them in the correct fields of the data, using the offsets and strides of the file
 - (void)calculateTangents:(NSMutableData *)vertexData;
+
+@property (nonatomic, assign, readonly) GLLCullFaceMode cullFaceMode;
 
 @end

@@ -8,12 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLLModelParams;
+@class GLLRenderParameterDescription;
+
 @interface GLLShaderDescriptor : NSObject
 
-- (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL;
+- (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL modelParameters:(GLLModelParams *)parameters;
 
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, copy, readonly) NSURL *baseURL;
+@property (nonatomic, weak, readonly) GLLModelParams *parameters;
 
 /*
  * Names of the shaders to be used.
@@ -46,5 +50,10 @@
  * Unique identifier for this shader. Used to put the shader in a collection.
  */
 @property (nonatomic, retain, readonly) id<NSCopying> programIdentifier;
+
+/*
+ * Description for a parameter, to set up an UI around it.
+ */
+- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
 
 @end
