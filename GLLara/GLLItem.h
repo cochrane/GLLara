@@ -44,7 +44,7 @@
 
 @property (nonatomic, retain, readonly) NSArray *rootBones;
 
-- (GLLItemMesh *)settingsForMesh:(GLLModelMesh *)mesh;
+- (GLLItemMesh *)itemMeshForModelMesh:(GLLModelMesh *)mesh;
 - (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
 
 

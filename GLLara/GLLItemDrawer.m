@@ -56,14 +56,14 @@
 	NSMutableArray *mutableAlphaDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.alphaMeshDrawers.count];
 	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)
 	{
-		[mutableAlphaDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
+		[mutableAlphaDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]]];
 	}
 	alphaDrawers = [mutableAlphaDrawers copy];
 	
 	NSMutableArray *mutableSolidDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.solidMeshDrawers.count];
 	for (GLLMeshDrawer *drawer in modelDrawer.solidMeshDrawers)
 	{
-		[mutableSolidDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
+		[mutableSolidDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]]];
 	}
 	solidDrawers = [mutableSolidDrawers copy];
 	

@@ -233,7 +233,7 @@
 	return [self.bones objectsAtIndexes:indices];
 }
 
-- (GLLItemMesh *)settingsForMesh:(GLLModelMesh *)mesh;
+- (GLLItemMesh *)itemMeshForModelMesh:(GLLModelMesh *)mesh;
 {
 	return self.meshes[mesh.meshIndex];
 }

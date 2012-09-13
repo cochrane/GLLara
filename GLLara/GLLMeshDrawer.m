@@ -31,7 +31,7 @@
 {
 	if (!(self = [super init])) return nil;
 	
-	_mesh = mesh;
+	_modelMesh = mesh;
 	
 	// Set up shader
 	_program = [resourceManager programForDescriptor:mesh.shader error:error];

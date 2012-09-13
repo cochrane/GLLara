@@ -22,7 +22,7 @@
 
 - (id)initWithMesh:(GLLModelMesh *)mesh resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 
-@property (nonatomic, retain, readonly) GLLModelMesh *mesh;
+@property (nonatomic, retain, readonly) GLLModelMesh *modelMesh;
 @property (nonatomic, retain, readonly) GLLProgram *program;
 @property (nonatomic, copy, readonly) NSArray *textures;
 

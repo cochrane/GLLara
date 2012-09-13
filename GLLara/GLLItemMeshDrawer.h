@@ -20,11 +20,11 @@
  */
 @interface GLLItemMeshDrawer : NSObject
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)drawer settings:(GLLItemMesh *)settings;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)drawer itemMesh:(GLLItemMesh *)itemMesh;
 
 @property (nonatomic, weak, readonly) GLLItemDrawer *itemDrawer;
 @property (nonatomic, retain, readonly) GLLMeshDrawer *meshDrawer;
-@property (nonatomic, retain, readonly) GLLItemMesh *settings;
+@property (nonatomic, retain, readonly) GLLItemMesh *itemMesh;
 
 - (void)draw;
 

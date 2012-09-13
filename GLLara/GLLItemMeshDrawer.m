@@ -28,20 +28,20 @@
 
 @implementation GLLItemMeshDrawer
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer settings:(GLLItemMesh *)settings;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer itemMesh:(GLLItemMesh *)itemMesh;
 {
 	if (!(self = [super init])) return nil;
 	
 	_itemDrawer = itemDrawer;
 	_meshDrawer = meshDrawer;
-	_settings = settings;
+	_itemMesh = itemMesh;
 	
 	// If there are render parameters to be set, create a uniform buffer for them and set their values from the mesh.
 	if (meshDrawer.program.renderParametersUniformBlockIndex != GL_INVALID_INDEX)
 	{
 		glGenBuffers(1, &renderParametersBuffer);
 		needsParameterBufferUpdate = YES;
-		for (GLLRenderParameter *parameter in settings.renderParameters)
+		for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
 			[parameter addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
 	}
 	
@@ -61,12 +61,12 @@
 
 - (void)draw;
 {
-	if (!self.settings.isVisible)
+	if (!self.itemMesh.isVisible)
 		return;
 	if (needsParameterBufferUpdate)
 		[self _updateParameterBuffer];
 	
-	switch (self.settings.cullFaceMode)
+	switch (self.itemMesh.cullFaceMode)
 	{
 		case GLLCullBack:
 			glCullFace(GL_BACK);
@@ -90,7 +90,7 @@
 	[self.meshDrawer draw];
 	
 	// Enable it again.
-	if (self.settings.cullFaceMode == GLLCullNone)
+	if (self.itemMesh.cullFaceMode == GLLCullNone)
 		glEnable(GL_CULL_FACE);
 }
 
@@ -103,7 +103,7 @@
 {
 	glDeleteBuffers(1, &renderParametersBuffer);
 	renderParametersBuffer = 0;
-	for (GLLRenderParameter *parameter in self.settings.renderParameters)
+	for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
 		[parameter removeObserver:self forKeyPath:@"uniformValue"];
 }
 
@@ -115,7 +115,7 @@
 	glGetActiveUniformBlockiv(self.meshDrawer.program.programID, self.meshDrawer.program.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &bufferLength);
 	void *data = malloc(bufferLength);
 	
-	for (GLLRenderParameter *parameter in self.settings.renderParameters)
+	for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
 	{
 		NSString *fullName = [@"RenderParameters." stringByAppendingString:parameter.name];
 		GLuint uniformIndex;
