@@ -1,0 +1,15 @@
+/* Class = "NSWindow"; title = "Window"; ObjectID = "1"; */
+"Window" = "Window";
+
+/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "57"; */
+"OtherViews" = "OtherViews";
+
+/* Class = "NSMenuItem"; title = "items go here (do not localize)"; ObjectID = "58"; */
+"items go here (do not localize)" = "items go here (do not localize)";
+
+/* Class = "NSMenuItem"; title = "No item"; ObjectID = "60"; */
+"No item" = "No item";
+
+/* Class = "NSViewController"; title = "Window Settings Popover Controller"; ObjectID = "83"; */
+"Window Settings Popover Controller" = "Window Settings Popover Controller";
+

@@ -1,0 +1,3 @@
+[submodule "DMLocalizedNibBundle"]
+	path = DMLocalizedNibBundle
+	url = https://github.com/incbee/DMLocalizedNibBundle.git
