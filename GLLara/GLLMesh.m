@@ -67,11 +67,9 @@ void vec_addTo(float *a, float *b)
 	for (NSUInteger i = 0; i < numTextures; i++)
 	{
 		NSString *textureName = [stream readPascalString];
-		NSUInteger uvLayer = [stream readUint32];
-		[textures addObject:@{
-			@"name" : textureName,
-			@"layer" : @(uvLayer)
-		 }];
+		[stream readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
+		NSString *finalPathComponent = [[textureName componentsSeparatedByString:@"\\"] lastObject];
+		[textures addObject:[NSURL URLWithString:finalPathComponent relativeToURL:model.baseURL]];
 	}
 	_textures = [textures copy];
 	
@@ -101,11 +99,9 @@ void vec_addTo(float *a, float *b)
 	for (NSUInteger i = 0; i < numTextures; i++)
 	{
 		NSString *textureName = [scanner readPascalString];
-		NSUInteger uvLayer = [scanner readUint32];
-		[textures addObject:@{
-		 @"name" : textureName,
-		 @"layer" : @(uvLayer)
-		 }];
+		[scanner readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
+		NSString *finalPathComponent = [[textureName componentsSeparatedByString:@"\\"] lastObject];
+		[textures addObject:[NSURL URLWithString:finalPathComponent relativeToURL:model.baseURL]];
 	}
 	_textures = [textures copy];
 	

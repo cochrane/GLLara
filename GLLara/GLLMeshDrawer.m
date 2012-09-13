@@ -39,9 +39,9 @@
 	
 	// Set up textures
 	NSMutableArray *textures = [[NSMutableArray alloc] initWithCapacity:mesh.textures.count];
-	for (NSDictionary *textureDescription in mesh.textures)
+	for (NSURL *textureLocation in mesh.textures)
 	{
-		GLLTexture *texture = [resourceManager textureForName:textureDescription[@"name"] baseURL:mesh.baseURL error:error];
+		GLLTexture *texture = [resourceManager textureForURL:textureLocation error:error];
 		if (!texture) return nil;
 		[textures addObject:texture];
 		
