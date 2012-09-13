@@ -32,6 +32,8 @@
 	_positionMatrix = simd_mat_identity();
 	_inversePositionMatrix = simd_mat_identity();
 	
+	_name = NSLocalizedString(@"Root bone", @"Only bone in a boneless format");
+	
 	return self;
 
 }

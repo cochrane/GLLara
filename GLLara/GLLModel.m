@@ -12,6 +12,7 @@
 #import "GLLBone.h"
 #import "GLLMesh.h"
 #import "GLLModelParams.h"
+#import "GLLModelObj.h"
 #import "TRInDataStream.h"
 
 @interface GLLModel ()
@@ -43,6 +44,11 @@ static NSCache *cachedModels;
 		else if ([file.path hasSuffix:@".mesh.ascii"])
 		{
 			result = [[self alloc] initASCIIFromFile:file error:error];
+			if (!result) return nil;
+		}
+		else if ([file.path hasSuffix:@".obj"])
+		{
+			result = [[GLLModelObj alloc] initWithContentsOfURL:file error:error];
 			if (!result) return nil;
 		}
 		else

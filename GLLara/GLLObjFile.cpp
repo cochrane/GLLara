@@ -17,7 +17,9 @@
 std::string stringFromFileURL(CFURLRef fileURL)
 {
 	// Not using CFURLGetFileSystemRepresentation here, because there is no function to find the maximum needed buffer size for CFURL.
-	CFStringRef fsPath = CFURLCopyFileSystemPath(fileURL, kCFURLPOSIXPathStyle);
+	CFURLRef absolute = CFURLCopyAbsoluteURL(fileURL);
+	CFStringRef fsPath = CFURLCopyFileSystemPath(absolute, kCFURLPOSIXPathStyle);
+	CFRelease(absolute);
 	CFIndex length = CFStringGetMaximumSizeOfFileSystemRepresentation(fsPath);
 	char *buffer = new char[length];
 	CFStringGetFileSystemRepresentation(fsPath, buffer, length);
@@ -51,13 +53,10 @@ GLLObjFile::Material::~Material()
 
 template<class T> void GLLObjFile::parseFloatVector(const char *line, std::vector<T> &values, unsigned number) throw()
 {
-	if (number == 2)
-	{
-		float vals[4];
-		int scanned = sscanf(line, "%*s %f %f %f %f", &vals[0], &vals[1], &vals[2], &vals[3]);
-		for (int i = 0; i < std::min(scanned, (int) number); i++)
-			values.push_back((T) vals[i]);
-	}
+	float vals[4];
+	int scanned = sscanf(line, "%*s %f %f %f %f", &vals[0], &vals[1], &vals[2], &vals[3]);
+	for (int i = 0; i < std::min(scanned, (int) number); i++)
+		values.push_back((T) vals[i]);
 }
 
 void GLLObjFile::parseFace(std::istream &stream)
@@ -164,6 +163,10 @@ void GLLObjFile::parseMaterialLibrary(CFURLRef location)
 			currentMaterial->normalTexture = CFURLCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)textureName.c_str(), (CFIndex) textureName.size(), kCFStringEncodingUTF8, location);
 		}
 	}
+	
+	// Wrap up final material
+	currentMaterial->ambient[3] = currentMaterial->diffuse[3] = currentMaterial->specular[3] = 1.0f;
+	materials[materialName] = currentMaterial;
 }
 
 unsigned GLLObjFile::unifiedIndex(const IndexSet &indexSet)
@@ -173,13 +176,21 @@ unsigned GLLObjFile::unifiedIndex(const IndexSet &indexSet)
 	{
 		VertexData data;
 		
-		if (indexSet.vertex >= vertices.size()) throw std::range_error("Vertex index out of range.");
-		if (indexSet.normal >= normals.size()) throw std::range_error("Surface normal index out of range.");
-		if (indexSet.texCoord >= texCoords.size()) throw std::range_error("Texture coordinate index out of range.");
+		if (indexSet.vertex >= vertices.size())
+			throw std::range_error("Vertex index out of range.");
+		if (indexSet.normal >= normals.size())
+			throw std::range_error("Surface normal index out of range.");
+		if (indexSet.texCoord >= texCoords.size())
+			throw std::range_error("Texture coordinate index out of range.");
 		
 		memcpy(data.vert, &(vertices[indexSet.vertex*3]), sizeof(float [3]));
 		memcpy(data.norm, &(normals[indexSet.normal*3]), sizeof(float [3]));
 		memcpy(data.tex, &(texCoords[indexSet.texCoord*2]), sizeof(float [2]));
+		if (indexSet.color < colors.size())
+			memcpy(data.color, &(colors[indexSet.color*4]), 4);
+		else
+			data.color[0] = data.color[1] = data.color[2] = data.color[3] = 255;
+		
 		unsigned dataSoFar = (unsigned) vertexData.size();
 		vertexData.push_back(data);
 		
@@ -257,6 +268,9 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 			activeMaterialStart = (unsigned) originalIndices.size();
 		}
 	}
+	
+	// Wrap up final material group
+	materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), materials[activeMaterial]));
 	
 	fillIndices();
 }

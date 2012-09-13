@@ -105,7 +105,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 - (IBAction)loadMesh:(id)sender;
 {
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
-	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh" ];
+	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj" ];
 	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
 		if (result != NSOKButton) return;
 		

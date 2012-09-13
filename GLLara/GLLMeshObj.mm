@@ -8,9 +8,13 @@
 
 #import "GLLMeshObj.h"
 
+#import <AppKit/NSColor.h>
+
+#import "GLLModelParams.h"
+
 @implementation GLLMeshObj
 
-- (id)initWithObjFile:(GLLObjFile *)file range:(const GLLObjFile::MaterialRange &)range;
+- (id)initWithObjFile:(GLLObjFile *)file range:(const GLLObjFile::MaterialRange &)range error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -38,6 +42,7 @@
 			[vertices appendBytes:vertex.color length:sizeof(uint8_t [4])];
 			[vertices appendBytes:vertex.tex length:sizeof(float [2])];
 			
+			// Space for tangents
 			float zero[4] = { 0, 0, 0, 0 };
 			[vertices appendBytes:&zero length:sizeof(zero)];
 			
@@ -48,7 +53,7 @@
 		[elements appendBytes:&index length:sizeof(index)];
 	}
 	
-	// Calculate tangents
+	// Necessary postprocessing
 	[self calculateTangents:vertices];
 	
 	// Set up other attributes
@@ -58,7 +63,41 @@
 	self.countOfElements = range.end - range.start;
 	
 	// Setup material
-//#error Setup material
+	// Three options: Diffuse, DiffuseSpecular, DiffuseNormal, DiffuseSpecularNormal
+	GLLModelParams *objModelParams = [GLLModelParams parametersForName:@"objFileParameters" error:error];
+	if (!objModelParams)
+		return nil;
+	
+	if (range.material->specularTexture == NULL && range.material->normalTexture == NULL)
+	{
+		self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture ];
+		self.shader = [objModelParams shaderNamed:@"DiffuseOBJ"];
+
+	}
+	else if (range.material->specularTexture != NULL && range.material->normalTexture == NULL)
+	{
+		self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture, (__bridge NSURL *) range.material->specularTexture ];
+		self.shader = [objModelParams shaderNamed:@"DiffuseSpecularOBJ"];
+
+	}
+	else if (range.material->specularTexture == NULL && range.material->normalTexture != NULL)
+	{
+		self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture, (__bridge NSURL *) range.material->normalTexture ];
+		self.shader = [objModelParams shaderNamed:@"DiffuseNormalOBJ"];
+	}
+	else if (range.material->specularTexture != NULL && range.material->normalTexture != NULL)
+	{
+		self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture, (__bridge NSURL *) range.material->specularTexture, (__bridge NSURL *) range.material->normalTexture ];
+		self.shader = [objModelParams shaderNamed:@"DiffuseSpecularNormalOBJ"];
+	}
+	self.renderParameterValues = @{ @"ambientColor" : [NSColor colorWithCalibratedRed:range.material->ambient[0] green:range.material->ambient[1] blue:range.material->ambient[2] alpha:range.material->ambient[3]],
+	@"diffuseColor" : [NSColor colorWithCalibratedRed:range.material->diffuse[0] green:range.material->diffuse[1] blue:range.material->diffuse[2] alpha:range.material->diffuse[3]],
+	@"specularColor" : [NSColor colorWithCalibratedRed:range.material->specular[0] green:range.material->specular[1] blue:range.material->specular[2] alpha:range.material->specular[3]],
+	@"specularExponent": @(range.material->shininess)
+	};
+	
+	// Always use blending, since I can't prove that it doesn't otherwise.
+	self.usesAlphaBlending = YES;
 	
 	return self;
 }

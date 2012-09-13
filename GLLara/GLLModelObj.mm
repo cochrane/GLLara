@@ -25,11 +25,14 @@
 {
 	if (!(self = [super init])) return nil;
 
+	self.baseURL = url;
+	
 	try {
 		file = new GLLObjFile((__bridge CFURLRef) url);
-	} catch (std::exception e) {
+	} catch (std::exception &e) {
 		if (error)
 			*error = [NSError errorWithDomain:@"GLLModelObj" code:1 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"There was an error loading the file.", @"couldn't load obj file")}];
+		NSLog(@"Exception: %s", e.what());
 		return nil;
 	}
 	
@@ -40,8 +43,11 @@
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:file->getMaterialRanges().size()];
 	for (auto &range : file->getMaterialRanges())
 	{
-		[meshes addObject:[[GLLMeshObj alloc] initWithObjFile:file range:range]];
+		GLLMeshObj *mesh = [[GLLMeshObj alloc] initWithObjFile:file range:range error:error];
+		if (!mesh) return nil;
+		[meshes addObject:mesh];
 	}
+	self.meshes = [meshes copy];
 	
 	return self;
 }
