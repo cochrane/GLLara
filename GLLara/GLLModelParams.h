@@ -51,6 +51,8 @@
 - (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
 - (NSDictionary *)renderParametersForMesh:(NSString *)mesh;
 
+- (GLLShaderDescriptor *)shaderNamed:(NSString *)name;
+
 /*
  * Render parameter descriptions
  */

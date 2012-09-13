@@ -46,7 +46,7 @@ static NSCache *parameterCache;
 {
 	NSDictionary *ownMeshGroups;
 	NSDictionary *ownCameraTargets;
-	NSSet *ownShaders;
+	NSDictionary *ownShaders;
 	NSDictionary *ownRenderParameters;
 	NSDictionary *ownDefaultParameters;
 	NSDictionary *ownMeshSplitters;
@@ -142,9 +142,9 @@ static NSCache *parameterCache;
 	ownMeshSplitters = [mutableMeshSplitters copy];
 	
 	// Similar for loading shaders
-	NSMutableSet *shaders = [[NSMutableSet alloc] initWithCapacity:[propertyList[@"shaders"] count]];
+	NSMutableDictionary *shaders = [[NSMutableDictionary alloc] initWithCapacity:[propertyList[@"shaders"] count]];
 	for (NSString *shaderName in propertyList[@"shaders"])
-		[shaders addObject:[[GLLShaderDescriptor alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil]];
+		[shaders setObject:[[GLLShaderDescriptor alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil] forKey:shaderName];
 	ownShaders = [shaders copy];
 	
 	// And render parameters
@@ -166,7 +166,7 @@ static NSCache *parameterCache;
 	model = aModel;
 	
 	// Objects that the generic_item format does not support.
-	ownShaders = [NSSet set];
+	ownShaders = @{};
 	ownDefaultParameters = @{};
 	ownMeshSplitters = @{};
 	ownRenderParameterDescriptions = @{};
@@ -280,8 +280,9 @@ static NSCache *parameterCache;
 - (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
 {
 	// Try to find shader in own ones.
-	for (GLLShaderDescriptor *descriptor in ownShaders)
+	for (NSString *shaderName in ownShaders)
 	{
+		GLLShaderDescriptor *descriptor = ownShaders[shaderName];
 		if ([descriptor.solidMeshGroups containsObject:meshGroup])
 		{
 			if (shaderIsAlpha) *shaderIsAlpha = NO;
@@ -331,6 +332,15 @@ static NSCache *parameterCache;
 	[result addEntriesFromDictionary:ownRenderParameters[mesh]];
 
 	return [result copy];
+}
+
+- (GLLShaderDescriptor *)shaderNamed:(NSString *)name;
+{
+	GLLShaderDescriptor *result = [ownShaders objectForKey:name];
+	if (!result && self.base)
+		return [self.base shaderNamed:name];
+	
+	return result;
 }
 
 #pragma mark - Render parameter descriptions
