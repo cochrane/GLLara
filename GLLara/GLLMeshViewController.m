@@ -1,26 +1,21 @@
 //
-//  GLLMeshSettingsViewController.m
+//  GLLMeshViewController.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 06.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLMeshSettingsViewController.h"
+#import "GLLMeshViewController.h"
 
-#import "GLLMesh.h"
-#import "GLLMeshSettings.h"
+#import "GLLItemMesh.h"
 #import "GLLRenderParameterDescription.h"
 
-@interface GLLMeshSettingsViewController ()
-
-@end
-
-@implementation GLLMeshSettingsViewController
+@implementation GLLMeshViewController
 
 - (id)init
 {
-	if (!(self = [super initWithNibName:@"GLLMeshSettingsViewController" bundle:[NSBundle mainBundle]]))
+	if (!(self = [super initWithNibName:@"GLLMeshView" bundle:[NSBundle mainBundle]]))
 		return nil;
 	
 	return self;
@@ -28,7 +23,7 @@
 
 -(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	NSArray *renderParameters = [[(GLLMeshSettings *) self.representedObject renderParameters] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ]];
+	NSArray *renderParameters = [[(GLLItemMesh *) self.representedObject renderParameters] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ]];
 	if ((NSUInteger) row >= renderParameters.count)
 		return nil;
 	
@@ -53,7 +48,7 @@
 }
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	NSArray *renderParameters = [[(GLLMeshSettings *) self.representedObject renderParameters] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ]];
+	NSArray *renderParameters = [[(GLLItemMesh *) self.representedObject renderParameters] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ]];
 	
 	return [renderParameters objectAtIndex:row];
 }

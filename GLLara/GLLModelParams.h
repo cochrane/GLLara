@@ -10,7 +10,7 @@
 
 @class GLLModel;
 @class GLLRenderParameterDescription;
-@class GLLShaderDescriptor;
+@class GLLShaderDescription;
 
 /*!
  * @abstract Encapsulates all the data that is hardcoded into XNALara and stores it in a single place.
@@ -46,12 +46,12 @@
  * Rendering
  */
 - (NSString *)renderableMeshGroupForMesh:(NSString *)mesh;
-- (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
+- (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
 
-- (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
+- (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
 - (NSDictionary *)renderParametersForMesh:(NSString *)mesh;
 
-- (GLLShaderDescriptor *)shaderNamed:(NSString *)name;
+- (GLLShaderDescription *)shaderNamed:(NSString *)name;
 
 /*
  * Render parameter descriptions

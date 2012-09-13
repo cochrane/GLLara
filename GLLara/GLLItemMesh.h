@@ -1,5 +1,5 @@
 //
-//  GLLMeshSettings.h
+//  GLLItemMesh.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 05.09.12.
@@ -12,10 +12,10 @@
 #import "GLLSourceListItem.h"
 
 @class GLLItem;
-@class GLLMesh;
+@class GLLModelMesh;
 @class GLLRenderParameter;
 
-@interface GLLMeshSettings : NSManagedObject <GLLSourceListItem>
+@interface GLLItemMesh : NSManagedObject <GLLSourceListItem>
 
 // Core data
 @property (nonatomic) BOOL isVisible;
@@ -25,7 +25,7 @@
 
 // Derived
 @property (nonatomic, readonly) NSUInteger meshIndex;
-@property (nonatomic, retain, readonly) GLLMesh *mesh;
+@property (nonatomic, retain, readonly) GLLModelMesh *mesh;
 @property (nonatomic, readonly, copy) NSString *displayName;
 
 // This key is just for observing. Don't try to actually read it.
@@ -33,7 +33,7 @@
 
 @end
 
-@interface GLLMeshSettings (CoreDataGeneratedAccessors)
+@interface GLLItemMesh (CoreDataGeneratedAccessors)
 
 - (void)addRenderParametersObject:(GLLRenderParameter *)value;
 - (void)removeRenderParametersObject:(GLLRenderParameter *)value;

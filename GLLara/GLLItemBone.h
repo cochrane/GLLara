@@ -1,5 +1,5 @@
 //
-//  GLLBoneTransformation.h
+//  GLLItemBone.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 01.09.12.
@@ -12,12 +12,12 @@
 #import "GLLSourceListItem.h"
 #import "GLLVersion.h"
 
-@class GLLBone;
 @class GLLItem;
+@class GLLModelBone;
 @class TRInDataStream;
 @class TROutDataStream;
 
-@interface GLLBoneTransformation : NSManagedObject <GLLSourceListItem>
+@interface GLLItemBone : NSManagedObject <GLLSourceListItem>
 
 // From core data
 @property (nonatomic) float positionX;
@@ -33,9 +33,9 @@
 
 // Derived
 @property (nonatomic, readonly) NSUInteger boneIndex;
-@property (nonatomic, retain, readonly) GLLBone *bone;
+@property (nonatomic, retain, readonly) GLLModelBone *bone;
 
-@property (nonatomic, weak, readonly) GLLBoneTransformation *parent;
+@property (nonatomic, weak, readonly) GLLItemBone *parent;
 @property (nonatomic, retain, readonly) NSArray *children;
 
 @end

@@ -3,19 +3,6 @@
     <entity name="GLLAmbientLight" representedClassName="GLLAmbientLight" parentEntity="GLLLight" syncable="YES">
         <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
-    <entity name="GLLBoneTransformation" representedClassName="GLLBoneTransformation" syncable="YES">
-        <attribute name="globalPosition" transient="YES" syncable="YES"/>
-        <attribute name="globalTransform" transient="YES" syncable="YES"/>
-        <attribute name="positionX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="positionY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="positionZ" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="relativeTransform" transient="YES" syncable="YES"/>
-        <attribute name="rotationX" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="rotationY" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="rotationZ" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="cameraTargets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLCameraTarget" inverseName="bones" inverseEntity="GLLCameraTarget" syncable="YES"/>
-        <relationship name="item" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="boneTransformations" inverseEntity="GLLItem" syncable="YES"/>
-    </entity>
     <entity name="GLLCamera" representedClassName="GLLCamera" syncable="YES">
         <attribute name="cameraLocked" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="distance" attributeType="Double" defaultValueString="2" syncable="YES"/>
@@ -35,7 +22,7 @@
     </entity>
     <entity name="GLLCameraTarget" representedClassName="GLLCameraTarget" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="bones" optional="YES" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="GLLBoneTransformation" inverseName="cameraTargets" inverseEntity="GLLBoneTransformation" syncable="YES"/>
+        <relationship name="bones" optional="YES" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="GLLItemBone" inverseName="cameraTargets" inverseEntity="GLLItemBone" syncable="YES"/>
         <relationship name="cameras" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GLLCamera" inverseName="target" inverseEntity="GLLCamera" syncable="YES"/>
     </entity>
     <entity name="GLLColorRenderParameter" representedClassName="GLLColorRenderParameter" parentEntity="GLLRenderParameter" syncable="YES">
@@ -66,36 +53,49 @@
         <attribute name="scaleX" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="scaleY" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="scaleZ" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
-        <relationship name="boneTransformations" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLBoneTransformation" inverseName="item" inverseEntity="GLLBoneTransformation" syncable="YES"/>
-        <relationship name="meshSettings" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLMeshSettings" inverseName="item" inverseEntity="GLLMeshSettings" syncable="YES"/>
+        <relationship name="bones" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemBone" inverseName="item" inverseEntity="GLLItemBone" syncable="YES"/>
+        <relationship name="meshes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemMesh" inverseName="item" inverseEntity="GLLItemMesh" syncable="YES"/>
         <fetchedProperty name="cameraTargets" optional="YES" syncable="YES">
             <fetchRequest name="fetchedPropertyFetchRequest" entity="GLLCameraTarget" predicateString="boneTransformations.item == $FETCH_SOURCE"/>
         </fetchedProperty>
     </entity>
+    <entity name="GLLItemBone" representedClassName="GLLItemBone" syncable="YES">
+        <attribute name="globalPosition" transient="YES" syncable="YES"/>
+        <attribute name="globalTransform" transient="YES" syncable="YES"/>
+        <attribute name="positionX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionZ" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="relativeTransform" transient="YES" syncable="YES"/>
+        <attribute name="rotationX" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationY" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationZ" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="cameraTargets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLCameraTarget" inverseName="bones" inverseEntity="GLLCameraTarget" syncable="YES"/>
+        <relationship name="item" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="bones" inverseEntity="GLLItem" syncable="YES"/>
+    </entity>
+    <entity name="GLLItemMesh" representedClassName="GLLItemMesh" syncable="YES">
+        <attribute name="cullFaceMode" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
+        <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshes" inverseEntity="GLLItem" syncable="YES"/>
+        <relationship name="renderParameters" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLRenderParameter" inverseName="mesh" inverseEntity="GLLRenderParameter" syncable="YES"/>
+    </entity>
     <entity name="GLLLight" isAbstract="YES" syncable="YES">
         <attribute name="index" optional="YES" attributeType="Integer 64" minValueString="0" maxValueString="3" defaultValueString="0" syncable="YES"/>
     </entity>
-    <entity name="GLLMeshSettings" representedClassName="GLLMeshSettings" syncable="YES">
-        <attribute name="cullFaceMode" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
-        <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
-        <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshSettings" inverseEntity="GLLItem" syncable="YES"/>
-        <relationship name="renderParameters" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLRenderParameter" inverseName="mesh" inverseEntity="GLLRenderParameter" syncable="YES"/>
-    </entity>
     <entity name="GLLRenderParameter" representedClassName="GLLRenderParameter" isAbstract="YES" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="mesh" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLMeshSettings" inverseName="renderParameters" inverseEntity="GLLMeshSettings" syncable="YES"/>
+        <relationship name="mesh" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItemMesh" inverseName="renderParameters" inverseEntity="GLLItemMesh" syncable="YES"/>
     </entity>
     <elements>
         <element name="GLLAmbientLight" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLBoneTransformation" positionX="0" positionY="0" width="0" height="0"/>
         <element name="GLLCamera" positionX="0" positionY="0" width="0" height="0"/>
         <element name="GLLCameraTarget" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLDirectionalLight" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLLight" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLMeshSettings" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLRenderParameter" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="0" height="0"/>
         <element name="GLLColorRenderParameter" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLDirectionalLight" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLItem" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLItemBone" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLItemMesh" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLLight" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="GLLRenderParameter" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

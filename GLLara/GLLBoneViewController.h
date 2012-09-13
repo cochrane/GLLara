@@ -1,5 +1,5 @@
 //
-//  GLLBoneTransformViewController.h
+//  GLLBoneViewController.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 06.09.12.
@@ -12,9 +12,9 @@
  * @abstract View controller for a bone.
  * @discussion As you can see, it's mostly empty, but it does reset the bones of an object.
  */
-@class GLLBoneTransformation;
+@class GLLItemBone;
 
-@interface GLLBoneTransformViewController : NSViewController
+@interface GLLBoneViewController : NSViewController
 
 - (IBAction)resetAllValues:(id)sender;
 

@@ -12,12 +12,10 @@
 #import <OpenGL/gl3.h>
 
 #import "GLLAmbientLight.h"
-#import "GLLBoneTransformation.h"
 #import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
 #import "GLLItem.h"
 #import "GLLItemDrawer.h"
-#import "GLLMeshSettings.h"
 #import "GLLProgram.h"
 #import "GLLRenderParameter.h"
 #import "GLLResourceManager.h"

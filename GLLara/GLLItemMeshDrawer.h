@@ -1,5 +1,5 @@
 //
-//  GLLTransformedMeshDrawer.h
+//  GLLItemMeshDrawer.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 06.09.12.
@@ -12,19 +12,19 @@
 
 @class GLLItemDrawer;
 @class GLLMeshDrawer;
-@class GLLMeshSettings;
+@class GLLItemMesh;
 
 /*!
  * @abstract Draws a mesh that is part of an item.
  * @discussion This uses a mesh drawer to draw the mesh, but taking into account all the various settings the item has for this mesh - specifically, whether it is visible or not, and the render parameters that can be overriden here.
  */
-@interface GLLTransformedMeshDrawer : NSObject
+@interface GLLItemMeshDrawer : NSObject
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)drawer settings:(GLLMeshSettings *)settings;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)drawer itemMesh:(GLLItemMesh *)itemMesh;
 
 @property (nonatomic, weak, readonly) GLLItemDrawer *itemDrawer;
 @property (nonatomic, retain, readonly) GLLMeshDrawer *meshDrawer;
-@property (nonatomic, retain, readonly) GLLMeshSettings *settings;
+@property (nonatomic, retain, readonly) GLLItemMesh *itemMesh;
 
 - (void)draw;
 

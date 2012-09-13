@@ -14,7 +14,7 @@
 #import "GLLModelDrawer.h"
 #import "GLLProgram.h"
 #import "GLLShader.h"
-#import "GLLShaderDescriptor.h"
+#import "GLLShaderDescription.h"
 #import "GLLTexture.h"
 
 @interface GLLResourceManager ()
@@ -103,20 +103,20 @@ static GLLResourceManager *sharedManager;
 	return result;
 }
 
-- (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor error:(NSError *__autoreleasing*)error;
+- (GLLProgram *)programForDescriptor:(GLLShaderDescription *)description error:(NSError *__autoreleasing*)error;
 {
-	NSAssert(descriptor != nil, @"Empty shader descriptor passed in. This should never happen.");
+	NSAssert(description != nil, @"Empty shader descriptor passed in. This should never happen.");
 	
-	id result = [programs objectForKey:descriptor.programIdentifier];
+	id result = [programs objectForKey:description.programIdentifier];
 	if (!result)
 	{
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLProgram alloc] initWithDescriptor:descriptor resourceManager:self error:error];
+		result = [[GLLProgram alloc] initWithDescriptor:description resourceManager:self error:error];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;
-		[programs setObject:result forKey:descriptor.programIdentifier];
+		[programs setObject:result forKey:description.programIdentifier];
 	}
 	return result;
 }

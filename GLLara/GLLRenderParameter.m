@@ -9,9 +9,9 @@
 #import "GLLRenderParameter.h"
 
 #import "GLLItem.h"
-#import "GLLMeshSettings.h"
-#import "GLLMesh.h"
-#import "GLLShaderDescriptor.h"
+#import "GLLItemMesh.h"
+#import "GLLModelMesh.h"
+#import "GLLShaderDescription.h"
 
 @implementation GLLRenderParameter
 

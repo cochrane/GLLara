@@ -1,5 +1,5 @@
 //
-//  GLLShaderDescriptor.h
+//  GLLShaderDescription.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 05.09.12.
@@ -11,7 +11,7 @@
 @class GLLModelParams;
 @class GLLRenderParameterDescription;
 
-@interface GLLShaderDescriptor : NSObject
+@interface GLLShaderDescription : NSObject
 
 - (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL modelParameters:(GLLModelParams *)parameters;
 

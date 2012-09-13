@@ -8,11 +8,11 @@
 
 #import "GLLModelParams.h"
 
-#import "GLLMesh.h"
+#import "GLLModelMesh.h"
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "GLLRenderParameterDescription.h"
-#import "GLLShaderDescriptor.h"
+#import "GLLShaderDescription.h"
 
 /*
  * Parsing of mesh names for generic item
@@ -144,7 +144,7 @@ static NSCache *parameterCache;
 	// Similar for loading shaders
 	NSMutableDictionary *shaders = [[NSMutableDictionary alloc] initWithCapacity:[propertyList[@"shaders"] count]];
 	for (NSString *shaderName in propertyList[@"shaders"])
-		[shaders setObject:[[GLLShaderDescriptor alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil modelParameters:self] forKey:shaderName];
+		[shaders setObject:[[GLLShaderDescription alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil modelParameters:self] forKey:shaderName];
 	ownShaders = [shaders copy];
 	
 	// And render parameters
@@ -215,7 +215,7 @@ static NSCache *parameterCache;
 	if (!ownCameraTargets && model)
 	{
 		NSMutableSet *resultSet = [[NSMutableSet alloc] init];
-		for (GLLMesh *mesh in model.meshes)
+		for (GLLModelMesh *mesh in model.meshes)
 		{
 			NSString *cameraTargetName = nil;
 			[self _parseModelName:mesh.name meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:NULL];
@@ -239,7 +239,7 @@ static NSCache *parameterCache;
 	if (!ownCameraTargets && model)
 	{
 		NSMutableArray *result = [[NSMutableArray alloc] init];
-		for (GLLMesh *mesh in model.meshes)
+		for (GLLModelMesh *mesh in model.meshes)
 		{
 			NSString *cameraTargetName = nil;
 			NSArray *cameraTargetBones;
@@ -266,7 +266,7 @@ static NSCache *parameterCache;
 {
 	for (NSString *meshGroup in [self meshGroupsForMesh:mesh])
 	{
-		GLLShaderDescriptor *shader = nil;
+		GLLShaderDescription *shader = nil;
 		BOOL isAlpha;
 		[self getShader:&shader alpha:&isAlpha forMeshGroup:meshGroup];
 		
@@ -277,12 +277,12 @@ static NSCache *parameterCache;
 	return nil;
 }
 
-- (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
+- (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
 {
 	// Try to find shader in own ones.
 	for (NSString *shaderName in ownShaders)
 	{
-		GLLShaderDescriptor *descriptor = ownShaders[shaderName];
+		GLLShaderDescription *descriptor = ownShaders[shaderName];
 		if ([descriptor.solidMeshGroups containsObject:meshGroup])
 		{
 			if (shaderIsAlpha) *shaderIsAlpha = NO;
@@ -302,7 +302,7 @@ static NSCache *parameterCache;
 		[self.base getShader:shader alpha:shaderIsAlpha forMeshGroup:meshGroup];
 }
 
-- (void)getShader:(GLLShaderDescriptor *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
+- (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
 {
 	[self getShader:shader alpha:shaderIsAlpha forMeshGroup:[self renderableMeshGroupForMesh:mesh]];
 }
@@ -334,9 +334,9 @@ static NSCache *parameterCache;
 	return [result copy];
 }
 
-- (GLLShaderDescriptor *)shaderNamed:(NSString *)name;
+- (GLLShaderDescription *)shaderNamed:(NSString *)name;
 {
-	GLLShaderDescriptor *result = [ownShaders objectForKey:name];
+	GLLShaderDescription *result = [ownShaders objectForKey:name];
 	if (!result && self.base)
 		return [self.base shaderNamed:name];
 	
@@ -421,7 +421,7 @@ static NSCache *parameterCache;
 	// 3rd, 4th, 5th match: render parameters
 	if (renderParameters)
 	{
-		GLLShaderDescriptor *shader;
+		GLLShaderDescription *shader;
 		[self getShader:&shader alpha:NULL forMeshGroup:group];
 		
 		NSArray *renderParameterNames = shader.parameterUniformNames;

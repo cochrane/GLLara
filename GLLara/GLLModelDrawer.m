@@ -8,9 +8,9 @@
 
 #import "GLLModelDrawer.h"
 
-#import "GLLMesh.h"
 #import "GLLMeshDrawer.h"
 #import "GLLModel.h"
+#import "GLLModelMesh.h"
 
 @implementation GLLModelDrawer
 
@@ -23,7 +23,7 @@
 	
 	NSMutableArray *mutableSolidMeshDrawers = [[NSMutableArray alloc] init];
 	NSMutableArray *mutableAlphaMeshDrawers = [[NSMutableArray alloc] init];
-	for (GLLMesh *mesh in model.meshes)
+	for (GLLModelMesh *mesh in model.meshes)
 	{
 		// Ignore objects that can't be rendered.
 		if (!mesh.shader)

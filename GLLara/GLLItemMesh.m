@@ -1,22 +1,22 @@
 //
-//  GLLMeshSettings.m
+//  GLLItemMesh.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 05.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLMeshSettings.h"
+#import "GLLItemMesh.h"
 
 #import "GLLItem.h"
-#import "GLLMesh.h"
 #import "GLLModel.h"
+#import "GLLModelMesh.h"
 #import "GLLModelParams.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
-#import "GLLShaderDescriptor.h"
+#import "GLLShaderDescription.h"
 
-@implementation GLLMeshSettings
+@implementation GLLItemMesh
 
 + (NSSet *)keyPathsForValuesAffectingRenderSettings
 {
@@ -68,10 +68,10 @@
 
 - (NSUInteger)meshIndex
 {
-	return [self.item.meshSettings indexOfObject:self];
+	return [self.item.meshes indexOfObject:self];
 }
 
-- (GLLMesh *)mesh
+- (GLLModelMesh *)mesh
 {
 	return self.item.model.meshes[self.meshIndex];
 }

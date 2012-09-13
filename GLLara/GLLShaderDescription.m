@@ -1,16 +1,16 @@
 //
-//  GLLShaderDescriptor.m
+//  GLLShaderDescription.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 05.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLShaderDescriptor.h"
+#import "GLLShaderDescription.h"
 
 #import "GLLModelParams.h"
 
-@implementation GLLShaderDescriptor
+@implementation GLLShaderDescription
 
 - (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL modelParameters:(GLLModelParams *)parameters;
 {

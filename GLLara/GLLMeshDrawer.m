@@ -10,7 +10,7 @@
 
 #import <OpenGL/gl3.h>
 
-#import "GLLMesh.h"
+#import "GLLModelMesh.h"
 #import "GLLProgram.h"
 #import "GLLVertexFormat.h"
 #import "GLLUniformBlockBindings.h"
@@ -27,11 +27,11 @@
 
 @implementation GLLMeshDrawer
 
-- (id)initWithMesh:(GLLMesh *)mesh resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
+- (id)initWithMesh:(GLLModelMesh *)mesh resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
-	_mesh = mesh;
+	_modelMesh = mesh;
 	
 	// Set up shader
 	_program = [resourceManager programForDescriptor:mesh.shader error:error];
