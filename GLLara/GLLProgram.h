@@ -10,7 +10,7 @@
 #import <OpenGL/gltypes.h>
 
 @class GLLShader;
-@class GLLShaderDescriptor;
+@class GLLShaderDescription;
 @class GLLResourceManager;
 
 /*!
@@ -19,7 +19,7 @@
  */
 @interface GLLProgram : NSObject
 
-- (id)initWithDescriptor:(GLLShaderDescriptor *)descriptor resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
+- (id)initWithDescriptor:(GLLShaderDescription *)descriptor resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 
 - (void)unload;
 

@@ -9,15 +9,16 @@
 #import "GLLModel.h"
 
 #import "GLLASCIIScanner.h"
-#import "GLLBone.h"
-#import "GLLMesh.h"
+#import "GLLModelBone.h"
+#import "GLLModelMesh.h"
 #import "GLLModelParams.h"
+#import "GLLModelObj.h"
 #import "TRInDataStream.h"
 
 @interface GLLModel ()
 
 // Adds a single mesh to the object, splitting it up into multiple parts if necessary (as specified by the model parameters). Also takes care to add it to the mesh groups and so on.
-- (void)_addMesh:(GLLMesh *)mesh toArray:(NSMutableArray *)array;
+- (void)_addMesh:(GLLModelMesh *)mesh toArray:(NSMutableArray *)array;
 
 @end
 
@@ -43,6 +44,11 @@ static NSCache *cachedModels;
 		else if ([file.path hasSuffix:@".mesh.ascii"])
 		{
 			result = [[self alloc] initASCIIFromFile:file error:error];
+			if (!result) return nil;
+		}
+		else if ([file.path hasSuffix:@".obj"])
+		{
+			result = [[GLLModelObj alloc] initWithContentsOfURL:file error:error];
 			if (!result) return nil;
 		}
 		else
@@ -133,14 +139,14 @@ static NSCache *cachedModels;
 	NSUInteger numBones = header;
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
 	for (NSUInteger i = 0; i < numBones; i++)
-		[bones addObject:[[GLLBone alloc] initFromSequentialData:stream partOfModel:self]];
+		[bones addObject:[[GLLModelBone alloc] initFromSequentialData:stream partOfModel:self]];
 	_bones = [bones copy];
-	for (GLLBone *bone in _bones) [bone setupParent];
+	for (GLLModelBone *bone in _bones) [bone setupParent];
 	
 	NSUInteger numMeshes = [stream readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
 	for (NSUInteger i = 0; i < numMeshes; i++)
-		[self _addMesh:[[GLLMesh alloc] initFromStream:stream partOfModel:self] toArray:meshes];
+		[self _addMesh:[[GLLModelMesh alloc] initFromStream:stream partOfModel:self] toArray:meshes];
 	_meshes = meshes;
 	
 	if (isGenericItem2)
@@ -176,14 +182,14 @@ static NSCache *cachedModels;
 	NSUInteger numBones = [scanner readUint32];
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
 	for (NSUInteger i = 0; i < numBones; i++)
-		[bones addObject:[[GLLBone alloc] initFromSequentialData:scanner partOfModel:self]];
+		[bones addObject:[[GLLModelBone alloc] initFromSequentialData:scanner partOfModel:self]];
 	_bones = [bones copy];
-	for (GLLBone *bone in _bones) [bone setupParent];
+	for (GLLModelBone *bone in _bones) [bone setupParent];
 	
 	NSUInteger numMeshes = [scanner readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
 	for (NSUInteger i = 0; i < numMeshes; i++)
-		[self _addMesh:[[GLLMesh alloc] initFromScanner:scanner partOfModel:self] toArray:meshes];
+		[self _addMesh:[[GLLModelMesh alloc] initFromScanner:scanner partOfModel:self] toArray:meshes];
 	_meshes = meshes;
 	
 	return self;
@@ -207,14 +213,10 @@ static NSCache *cachedModels;
 {
 	return [self.parameters boneNamesForCameraTarget:target];
 }
-- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
-{
-	return [self.parameters descriptionForParameter:parameterName];
-}
 
 #pragma mark - Private methods
 
-- (void)_addMesh:(GLLMesh *)mesh toArray:(NSMutableArray *)array;
+- (void)_addMesh:(GLLModelMesh *)mesh toArray:(NSMutableArray *)array;
 {
 	if ([self.parameters.meshesToSplit containsObject:mesh.name])
 	{

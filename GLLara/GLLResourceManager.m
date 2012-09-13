@@ -14,7 +14,7 @@
 #import "GLLModelDrawer.h"
 #import "GLLProgram.h"
 #import "GLLShader.h"
-#import "GLLShaderDescriptor.h"
+#import "GLLShaderDescription.h"
 #import "GLLTexture.h"
 
 @interface GLLResourceManager ()
@@ -103,32 +103,38 @@ static GLLResourceManager *sharedManager;
 	return result;
 }
 
-- (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor error:(NSError *__autoreleasing*)error;
+- (GLLProgram *)programForDescriptor:(GLLShaderDescription *)description error:(NSError *__autoreleasing*)error;
 {
-	NSAssert(descriptor != nil, @"Empty shader descriptor passed in. This should never happen.");
+	NSAssert(description != nil, @"Empty shader descriptor passed in. This should never happen.");
 	
-	id result = [programs objectForKey:descriptor.programIdentifier];
+	id result = [programs objectForKey:description.programIdentifier];
 	if (!result)
 	{
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLProgram alloc] initWithDescriptor:descriptor resourceManager:self error:error];
+		result = [[GLLProgram alloc] initWithDescriptor:description resourceManager:self error:error];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;
-		[programs setObject:result forKey:descriptor.programIdentifier];
+		[programs setObject:result forKey:description.programIdentifier];
 	}
 	return result;
 }
 
-- (GLLTexture *)textureForName:(NSString *)textureName baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error;
 {
-	NSURL *key = [baseURL URLByAppendingPathComponent:textureName];
-	id result = [programs objectForKey:key];
+	id result = [textures objectForKey:textureURL];
 	if (!result)
 	{
-		NSData *textureData = [self _dataForFilename:textureName baseURL:baseURL error:error];
-		if (!textureData) return nil;
+		NSData *textureData = [NSData dataWithContentsOfURL:textureURL options:NSDataReadingUncached error:error];
+		if (!textureData)
+		{
+			// Second attempt: Maybe there is a default version of that in the bundle.
+			// If not, then keep error from first read.
+			NSURL *resourceURL = [[NSBundle mainBundle] URLForResource:textureURL.lastPathComponent withExtension:nil];
+			if (!resourceURL)
+				return nil;
+		}
 		
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
@@ -136,7 +142,7 @@ static GLLResourceManager *sharedManager;
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;
-		[programs setObject:result forKey:key];
+		[textures setObject:result forKey:textureURL];
 	}
 	return result;
 }

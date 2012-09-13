@@ -10,14 +10,13 @@
 
 #import <OpenGL/gl3.h>
 
-#import "GLLBoneTransformation.h"
 #import "GLLItem.h"
+#import "GLLItemBone.h"
 #import "GLLMeshDrawer.h"
-#import "GLLMeshSettings.h"
 #import "GLLModelDrawer.h"
 #import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"
-#import "GLLTransformedMeshDrawer.h"
+#import "GLLItemMeshDrawer.h"
 #import "GLLUniformBlockBindings.h"
 #import "simd_types.h"
 
@@ -50,21 +49,21 @@
 		return nil;
 	
 	// Observe all the bones
-	for (id transform in item.boneTransformations)
+	for (id transform in item.bones)
 		[transform addObserver:self forKeyPath:@"globalTransform" options:0 context:0];
 	
 	// Observe settings of all item
 	NSMutableArray *mutableAlphaDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.alphaMeshDrawers.count];
 	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)
 	{
-		[mutableAlphaDrawers addObject:[[GLLTransformedMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
+		[mutableAlphaDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]]];
 	}
 	alphaDrawers = [mutableAlphaDrawers copy];
 	
 	NSMutableArray *mutableSolidDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.solidMeshDrawers.count];
 	for (GLLMeshDrawer *drawer in modelDrawer.solidMeshDrawers)
 	{
-		[mutableSolidDrawers addObject:[[GLLTransformedMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer settings:[item settingsForMesh:drawer.mesh]]];
+		[mutableSolidDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]]];
 	}
 	solidDrawers = [mutableSolidDrawers copy];
 	
@@ -112,7 +111,7 @@
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
 	
-	for (GLLTransformedMeshDrawer *drawer in solidDrawers)
+	for (GLLItemMeshDrawer *drawer in solidDrawers)
 		[drawer draw];
 	
 	self.needsRedraw = NO;
@@ -123,7 +122,7 @@
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
 	
-	for (GLLTransformedMeshDrawer *drawer in alphaDrawers)
+	for (GLLItemMeshDrawer *drawer in alphaDrawers)
 		[drawer draw];
 	
 	self.needsRedraw = NO;
@@ -131,13 +130,13 @@
 
 - (void)unload;
 {
-	for (id bone in self.item.boneTransformations)
+	for (id bone in self.item.bones)
 		[bone removeObserver:self forKeyPath:@"globalTransform"];
 	
-	for (GLLTransformedMeshDrawer *drawer in solidDrawers)
+	for (GLLItemMeshDrawer *drawer in solidDrawers)
 		[drawer unload];
 	
-	for (GLLTransformedMeshDrawer *drawer in alphaDrawers)
+	for (GLLItemMeshDrawer *drawer in alphaDrawers)
 		[drawer unload];
 	
 	glDeleteBuffers(1, &transformsBuffer);
@@ -146,10 +145,10 @@
 
 - (void)_updateTransforms
 {	
-	NSUInteger count = self.item.boneTransformations.count;
+	NSUInteger count = self.item.bones.count;
 	mat_float16 *matrices = malloc(count * sizeof(mat_float16));
 	for (NSUInteger i = 0; i < count; i++)
-		[[[self.item.boneTransformations objectAtIndex:i] globalTransform] getValue:&matrices[i]];
+		[[[self.item.bones objectAtIndex:i] globalTransform] getValue:&matrices[i]];
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_STREAM_DRAW);

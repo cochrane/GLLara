@@ -30,14 +30,14 @@ void main()
 	gl_Position = transform.viewProjection * (bones.transforms[0] * vec4(position, 1.0));
 	
 	// Relative to world
-	positionWorld = vec3(boneMatrices[0] * vec4(position, 1.0));
+	positionWorld = vec3(bones.transforms[0] * vec4(position, 1.0));
 	
 	// Tangents
 	vec3 tangentU = normalize(tangent.xyz);
 	vec3 tangentV = normalize(cross(normal, tangentU) * tangent.w);
 	vec3 normal = normalize(normal);
 	
-	tangentToWorld = mat3(boneMatrices[0]) * mat3(tangentU, tangentV, normal);
+	tangentToWorld = mat3(bones.transforms[0]) * mat3(tangentU, tangentV, normal);
 	
 	// Pass through
 	outColor = color;

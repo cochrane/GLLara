@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>renderParameterDescriptions</key>
+	<dict>
+		<key>specularExponent</key>
+		<dict>
+			<key>max</key>
+			<string>1000</string>
+			<key>min</key>
+			<string>0</string>
+			<key>title</key>
+			<string>Specular Gloss</string>
+			<key>type</key>
+			<string>float</string>
+			<key>description</key>
+			<string>Sharpness of the highlights. Higher values produce smaller, more focused highlights.</string>
+		</dict>
+		<key>specularColor</key>
+		<dict>
+			<key>title</key>
+			<string>Specular Color</string>
+			<key>type</key>
+			<string>color</string>
+			<key>description</key>
+			<string>Color of the highlights.</string>
+		</dict>
+		<key>diffuseColor</key>
+		<dict>
+			<key>title</key>
+			<string>Diffuse Color</string>
+			<key>type</key>
+			<string>color</string>
+			<key>description</key>
+			<string>Color of the lit parts</string>
+		</dict>
+		<key>ambientColor</key>
+		<dict>
+			<key>title</key>
+			<string>Ambient Color</string>
+			<key>type</key>
+			<string>color</string>
+			<key>description</key>
+			<string>Color of the unlit parts</string>
+		</dict>
+	</dict>
+	<key>shaders</key>
+	<dict>
+		<key>DiffuseSpecularNormalOBJ</key>
+		<dict>
+			<key>vertex</key>
+			<string>StaticBump.vs</string>
+			<key>fragment</key>
+			<string>DiffuseSpecularNormalOBJ.fs</string>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>specularTexture</string>
+				<string>normalTexture</string>
+			</array>
+			<key>additionalParameters</key>
+			<array>
+				<string>specularExponent</string>
+				<string>specularColor</string>
+				<string>diffuseColor</string>
+				<string>ambientColor</string>
+			</array>
+		</dict>
+		<key>DiffuseNormalOBJ</key>
+		<dict>
+			<key>fragment</key>
+			<string>DiffuseNormalOBJ.fs</string>
+			<key>vertex</key>
+			<string>StaticBump.vs</string>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>specularTexture</string>
+			</array>
+			<key>additionalParameters</key>
+			<array>
+				<string>specularExponent</string>
+				<string>specularColor</string>
+				<string>diffuseColor</string>
+				<string>ambientColor</string>
+			</array>
+		</dict>
+		<key>DiffuseSpecularOBJ</key>
+		<dict>
+			<key>fragment</key>
+			<string>DiffuseSpecularOBJ.fs</string>
+			<key>vertex</key>
+			<string>StaticBasic.vs</string>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>specularTexture</string>
+			</array>
+			<key>additionalParameters</key>
+			<array>
+				<string>specularExponent</string>
+				<string>specularColor</string>
+				<string>diffuseColor</string>
+				<string>ambientColor</string>
+			</array>
+		</dict>
+		<key>DiffuseOBJ</key>
+		<dict>
+			<key>fragment</key>
+			<string>DiffuseOBJ.fs</string>
+			<key>vertex</key>
+			<string>StaticBasic.vs</string>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+			</array>
+			<key>additionalParameters</key>
+			<array>
+				<string>specularExponent</string>
+				<string>specularColor</string>
+				<string>diffuseColor</string>
+				<string>ambientColor</string>
+			</array>
+		</dict>
+	</dict>
+</dict>
+</plist>

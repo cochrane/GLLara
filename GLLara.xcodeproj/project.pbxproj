@@ -17,14 +17,12 @@
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
 		525ACD5C15F0F1A700534E7D /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5A15F0F1A700534E7D /* Credits.rtf */; };
 		525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5E15F0F1A700534E7D /* GLLDocument.m */; };
-		525ACD6215F0F1A700534E7D /* GLLDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD6015F0F1A700534E7D /* GLLDocument.xib */; };
-		525ACD6515F0F1A700534E7D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD6315F0F1A700534E7D /* MainMenu.xib */; };
 		525ACD6D15F0F1A700534E7D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD6C15F0F1A700534E7D /* SenTestingKit.framework */; };
 		525ACD6E15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD7415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD7915F0F1A700534E7D /* GLLaraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD7815F0F1A700534E7D /* GLLaraTests.m */; };
 		525ACD8415F0F33700534E7D /* GLLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8315F0F33700534E7D /* GLLModel.m */; };
-		525ACD8715F0F3ED00534E7D /* GLLMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8615F0F3ED00534E7D /* GLLMesh.m */; };
+		525ACD8715F0F3ED00534E7D /* GLLModelMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8615F0F3ED00534E7D /* GLLModelMesh.m */; };
 		52919A1515FDF0A7004ACBA5 /* cameratemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */; };
 		5291DB8215FBB33400ECDBCA /* MetallicBump3.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */; };
 		5291DB9115FBE51600ECDBCA /* Metallic.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB9015FBE51600ECDBCA /* Metallic.fs */; };
@@ -33,9 +31,9 @@
 		529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692C915F1568200DF2FA3 /* TRInDataStream.m */; };
 		529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692CB15F1568200DF2FA3 /* TROutDataStream.m */; };
 		529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692D015F2374F00DF2FA3 /* libz.dylib */; };
-		529692D415F24EF100DF2FA3 /* GLLBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D315F24EF100DF2FA3 /* GLLBone.m */; };
+		529692D415F24EF100DF2FA3 /* GLLModelBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D315F24EF100DF2FA3 /* GLLModelBone.m */; };
 		529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D915F2625200DF2FA3 /* GLLItem.m */; };
-		529692DD15F2759400DF2FA3 /* GLLBoneTransformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692DC15F2759400DF2FA3 /* GLLBoneTransformation.m */; };
+		529692DD15F2759400DF2FA3 /* GLLItemBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692DC15F2759400DF2FA3 /* GLLItemBone.m */; };
 		529692E315F2861E00DF2FA3 /* GLLMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692E215F2861E00DF2FA3 /* GLLMeshDrawer.m */; };
 		529692E615F289EB00DF2FA3 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692E515F289EB00DF2FA3 /* OpenGL.framework */; };
 		529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692E815F28BFB00DF2FA3 /* GLLTexture.m */; };
@@ -62,14 +60,34 @@
 		5296944615F5385400DF2FA3 /* DiffuseLightmapBump3.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5296941C15F4063500DF2FA3 /* DiffuseLightmapBump3.fs */; };
 		5296944915F565D100DF2FA3 /* GLLResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296944815F565D100DF2FA3 /* GLLResourceManager.m */; };
 		5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945315F60F3C00DF2FA3 /* GLLView.m */; };
-		5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */; };
+		5296945A15F6C84900DF2FA3 /* GLLShaderDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945915F6C84900DF2FA3 /* GLLShaderDescription.m */; };
 		5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */; };
 		5296946615F7B28300DF2FA3 /* GLLRenderWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */; };
 		5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */; };
-		5296947315F7FB3300DF2FA3 /* GLLMeshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */; };
-		5296947815F80F4800DF2FA3 /* GLLBoneTransformViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */; };
+		5296947315F7FB3300DF2FA3 /* GLLItemMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947215F7FB3200DF2FA3 /* GLLItemMesh.m */; };
+		5296947815F80F4800DF2FA3 /* GLLBoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */; };
 		52AF114D15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib */; };
 		52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */; };
+		52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */; };
+		52B9E07D16020A8300641518 /* DiffuseOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E07C16020A8300641518 /* DiffuseOBJ.fs */; };
+		52B9E07F16021ECD00641518 /* DiffuseNormalOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */; };
+		52B9E09716027FC800641518 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B9E09616027FC800641518 /* Foundation.framework */; };
+		52B9E0A416027FEE00641518 /* xibLocalizationPostprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B9E0A316027FEE00641518 /* xibLocalizationPostprocessor.m */; };
+		52B9E0A61602800300641518 /* DMLocalizedNibBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		52B9E0AC1602811E00641518 /* GLLDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0AA1602811D00641518 /* GLLDocument.xib */; };
+		52B9E0AD1602811E00641518 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0AB1602811D00641518 /* MainMenu.xib */; };
+		52B9E0AE1602815800641518 /* RenderParameters.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B01602815800641518 /* RenderParameters.strings */; };
+		52B9E0BC1602817000641518 /* GLLAmbientLightView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B11602816F00641518 /* GLLAmbientLightView.strings */; };
+		52B9E0BD1602817000641518 /* GLLBoneView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B21602816F00641518 /* GLLBoneView.strings */; };
+		52B9E0BE1602817000641518 /* GLLDocument.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B31602816F00641518 /* GLLDocument.strings */; };
+		52B9E0BF1602817000641518 /* GLLItemView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B41602817000641518 /* GLLItemView.strings */; };
+		52B9E0C01602817000641518 /* GLLLightView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B51602817000641518 /* GLLLightView.strings */; };
+		52B9E0C11602817000641518 /* GLLMeshView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B61602817000641518 /* GLLMeshView.strings */; };
+		52B9E0C21602817000641518 /* GLLRenderWindowController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B71602817000641518 /* GLLRenderWindowController.strings */; };
+		52B9E0C31602817000641518 /* GLLWindowSettingsPopoverView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B81602817000641518 /* GLLWindowSettingsPopoverView.strings */; };
+		52B9E0C41602817000641518 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B91602817000641518 /* InfoPlist.strings */; };
+		52B9E0C51602817000641518 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0BA1602817000641518 /* Localizable.strings */; };
+		52B9E0C61602817000641518 /* MainMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0BB1602817000641518 /* MainMenu.strings */; };
 		52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206715F8275E00937450 /* doppelganger.modelparams.plist */; };
 		52BB206A15F82B4200937450 /* Shadeless.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206915F82B4200937450 /* Shadeless.fs */; };
 		52BB206C15F82D9A00937450 /* lara_bathing_suit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */; };
@@ -89,7 +107,6 @@
 		52BB21BA15FB7D0600937450 /* ship.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B915FB7D0500937450 /* ship.modelparams.plist */; };
 		52BB21BC15FB7E4A00937450 /* yacht.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */; };
 		52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21C715FC732800937450 /* GLLRenderParameter.m */; };
-		52BB21CA15FC75B500937450 /* RenderParameters.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21C915FC75B500937450 /* RenderParameters.strings */; };
 		52BB21CD15FC7B8D00937450 /* GLLRenderParameterDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21CC15FC7B8C00937450 /* GLLRenderParameterDescription.m */; };
 		52BB21CF15FCA4A000937450 /* amanda_light.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */; };
 		52BB21D115FCA6DC00937450 /* amanda_heavy.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21D015FCA6DC00937450 /* amanda_heavy.modelparams.plist */; };
@@ -99,14 +116,14 @@
 		52C9F60F15FF1753003272E1 /* GLLItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52C9F60D15FF1753003272E1 /* GLLItemView.xib */; };
 		52C9F6161600022B003272E1 /* GLLModelObj.mm in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F6151600022B003272E1 /* GLLModelObj.mm */; };
 		52C9F61A160004E3003272E1 /* GLLObjFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F618160004E3003272E1 /* GLLObjFile.cpp */; };
-		52C9F61D1600A8D3003272E1 /* GLLMeshObj.mm in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F61C1600A8D3003272E1 /* GLLMeshObj.mm */; };
+		52C9F61D1600A8D3003272E1 /* GLLModelMeshObj.mm in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F61C1600A8D3003272E1 /* GLLModelMeshObj.mm */; };
 		52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.m */; };
 		52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.m */; };
-		52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */; };
-		52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */; };
-		52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */; };
+		52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */; };
+		52D6A09815F8B0F7002A0BB4 /* GLLMeshView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshView.xib */; };
+		52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m */; };
 		52D6A0A315F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */; };
-		52F2BC3915F8198400E3EE75 /* GLLBoneTransformView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */; };
+		52F2BC3915F8198400E3EE75 /* GLLBoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F2BC3815F8198400E3EE75 /* GLLBoneView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,7 +134,26 @@
 			remoteGlobalIDString = 525ACD4615F0F1A700534E7D;
 			remoteInfo = GLLara;
 		};
+		52B9E0A71602801F00641518 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 525ACD3E15F0F1A700534E7D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52B9E09316027FC800641518;
+			remoteInfo = xibLocalizationPostprocessor;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		52B9E09216027FC800641518 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
@@ -138,8 +174,6 @@
 		525ACD5B15F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		525ACD5D15F0F1A700534E7D /* GLLDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLDocument.h; sourceTree = "<group>"; };
 		525ACD5E15F0F1A700534E7D /* GLLDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLDocument.m; sourceTree = "<group>"; };
-		525ACD6115F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLDocument.xib; sourceTree = "<group>"; };
-		525ACD6415F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLLaraTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD6C15F0F1A700534E7D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		525ACD7315F0F1A700534E7D /* GLLaraTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GLLaraTests-Info.plist"; sourceTree = "<group>"; };
@@ -148,8 +182,8 @@
 		525ACD7815F0F1A700534E7D /* GLLaraTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLaraTests.m; sourceTree = "<group>"; };
 		525ACD8215F0F33700534E7D /* GLLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModel.h; sourceTree = "<group>"; };
 		525ACD8315F0F33700534E7D /* GLLModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModel.m; sourceTree = "<group>"; };
-		525ACD8515F0F3ED00534E7D /* GLLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMesh.h; sourceTree = "<group>"; };
-		525ACD8615F0F3ED00534E7D /* GLLMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMesh.m; sourceTree = "<group>"; };
+		525ACD8515F0F3ED00534E7D /* GLLModelMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelMesh.h; sourceTree = "<group>"; };
+		525ACD8615F0F3ED00534E7D /* GLLModelMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelMesh.m; sourceTree = "<group>"; };
 		52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = cameratemplate.pdf; sourceTree = SOURCE_ROOT; };
 		5291DB7F15FB711900ECDBCA /* Model Parameters (english).md */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Model Parameters (english).md"; sourceTree = "<group>"; };
 		5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = MetallicBump3.fs; sourceTree = "<group>"; };
@@ -162,13 +196,13 @@
 		529692CA15F1568200DF2FA3 /* TROutDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TROutDataStream.h; sourceTree = "<group>"; };
 		529692CB15F1568200DF2FA3 /* TROutDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TROutDataStream.m; sourceTree = "<group>"; };
 		529692D015F2374F00DF2FA3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		529692D215F24EF000DF2FA3 /* GLLBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBone.h; sourceTree = "<group>"; };
-		529692D315F24EF100DF2FA3 /* GLLBone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBone.m; sourceTree = "<group>"; };
+		529692D215F24EF000DF2FA3 /* GLLModelBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelBone.h; sourceTree = "<group>"; };
+		529692D315F24EF100DF2FA3 /* GLLModelBone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelBone.m; sourceTree = "<group>"; };
 		529692D615F2590000DF2FA3 /* XNALara Model File Format.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "XNALara Model File Format.md"; sourceTree = "<group>"; };
 		529692D815F2625200DF2FA3 /* GLLItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItem.h; sourceTree = "<group>"; };
 		529692D915F2625200DF2FA3 /* GLLItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItem.m; sourceTree = "<group>"; };
-		529692DB15F2759400DF2FA3 /* GLLBoneTransformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneTransformation.h; sourceTree = "<group>"; };
-		529692DC15F2759400DF2FA3 /* GLLBoneTransformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneTransformation.m; sourceTree = "<group>"; };
+		529692DB15F2759400DF2FA3 /* GLLItemBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemBone.h; sourceTree = "<group>"; };
+		529692DC15F2759400DF2FA3 /* GLLItemBone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemBone.m; sourceTree = "<group>"; };
 		529692DE15F2795700DF2FA3 /* GLLVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLVersion.h; sourceTree = "<group>"; };
 		529692DF15F27D5900DF2FA3 /* Source Code Overview.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Source Code Overview.md"; sourceTree = "<group>"; };
 		529692E115F2861E00DF2FA3 /* GLLMeshDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshDrawer.h; sourceTree = "<group>"; };
@@ -220,21 +254,43 @@
 		5296944815F565D100DF2FA3 /* GLLResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLResourceManager.m; sourceTree = "<group>"; };
 		5296945215F60F3900DF2FA3 /* GLLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLView.h; sourceTree = "<group>"; };
 		5296945315F60F3C00DF2FA3 /* GLLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLView.m; sourceTree = "<group>"; };
-		5296945815F6C84900DF2FA3 /* GLLShaderDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLShaderDescriptor.h; sourceTree = "<group>"; };
-		5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLShaderDescriptor.m; sourceTree = "<group>"; };
+		5296945815F6C84900DF2FA3 /* GLLShaderDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLShaderDescription.h; sourceTree = "<group>"; };
+		5296945915F6C84900DF2FA3 /* GLLShaderDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLShaderDescription.m; sourceTree = "<group>"; };
 		5296946215F7B28300DF2FA3 /* GLLRenderWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderWindowController.h; sourceTree = "<group>"; };
 		5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderWindowController.m; sourceTree = "<group>"; };
 		5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLRenderWindowController.xib; sourceTree = "<group>"; };
 		5296946715F7DAA200DF2FA3 /* GLLDocumentWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDocumentWindowController.h; sourceTree = "<group>"; };
 		5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDocumentWindowController.m; sourceTree = "<group>"; };
-		5296947115F7FB3200DF2FA3 /* GLLMeshSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettings.h; sourceTree = "<group>"; };
-		5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettings.m; sourceTree = "<group>"; };
+		5296947115F7FB3200DF2FA3 /* GLLItemMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemMesh.h; sourceTree = "<group>"; };
+		5296947215F7FB3200DF2FA3 /* GLLItemMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemMesh.m; sourceTree = "<group>"; };
 		5296947415F807A700DF2FA3 /* GLLSourceListItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLSourceListItem.h; sourceTree = "<group>"; };
-		5296947515F80F4500DF2FA3 /* GLLBoneTransformViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneTransformViewController.h; sourceTree = "<group>"; };
-		5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneTransformViewController.m; sourceTree = "<group>"; };
+		5296947515F80F4500DF2FA3 /* GLLBoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneViewController.h; sourceTree = "<group>"; };
+		5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneViewController.m; sourceTree = "<group>"; };
 		52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLWindowSettingsPopoverView.xib; sourceTree = "<group>"; };
 		52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLCameraTarget.h; sourceTree = "<group>"; };
 		52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLCameraTarget.m; sourceTree = "<group>"; };
+		52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = objFileParameters.modelparams.plist; path = ../Shaders/objFileParameters.modelparams.plist; sourceTree = "<group>"; };
+		52B9E07C16020A8300641518 /* DiffuseOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseOBJ.fs; sourceTree = "<group>"; };
+		52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseNormalOBJ.fs; sourceTree = "<group>"; };
+		52B9E09416027FC800641518 /* xibLocalizationPostprocessor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = xibLocalizationPostprocessor; sourceTree = BUILT_PRODUCTS_DIR; };
+		52B9E09616027FC800641518 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		52B9E09C16027FC800641518 /* xibLocalizationPostprocessor-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "xibLocalizationPostprocessor-Prefix.pch"; sourceTree = "<group>"; };
+		52B9E0A316027FEE00641518 /* xibLocalizationPostprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = xibLocalizationPostprocessor.m; path = DMLocalizedNibBundle/xibLocalizationPostprocessor.m; sourceTree = SOURCE_ROOT; };
+		52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DMLocalizedNibBundle.m; path = DMLocalizedNibBundle/DMLocalizedNibBundle.m; sourceTree = SOURCE_ROOT; };
+		52B9E0AA1602811D00641518 /* GLLDocument.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLDocument.xib; sourceTree = "<group>"; };
+		52B9E0AB1602811D00641518 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		52B9E0AF1602815800641518 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RenderParameters.strings; sourceTree = "<group>"; };
+		52B9E0B11602816F00641518 /* GLLAmbientLightView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLAmbientLightView.strings; sourceTree = "<group>"; };
+		52B9E0B21602816F00641518 /* GLLBoneView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLBoneView.strings; sourceTree = "<group>"; };
+		52B9E0B31602816F00641518 /* GLLDocument.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLDocument.strings; sourceTree = "<group>"; };
+		52B9E0B41602817000641518 /* GLLItemView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLItemView.strings; sourceTree = "<group>"; };
+		52B9E0B51602817000641518 /* GLLLightView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLLightView.strings; sourceTree = "<group>"; };
+		52B9E0B61602817000641518 /* GLLMeshView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLMeshView.strings; sourceTree = "<group>"; };
+		52B9E0B71602817000641518 /* GLLRenderWindowController.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLRenderWindowController.strings; sourceTree = "<group>"; };
+		52B9E0B81602817000641518 /* GLLWindowSettingsPopoverView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLWindowSettingsPopoverView.strings; sourceTree = "<group>"; };
+		52B9E0B91602817000641518 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
+		52B9E0BA1602817000641518 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		52B9E0BB1602817000641518 /* MainMenu.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = MainMenu.strings; sourceTree = "<group>"; };
 		52BB206715F8275E00937450 /* doppelganger.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = doppelganger.modelparams.plist; sourceTree = "<group>"; };
 		52BB206915F82B4200937450 /* Shadeless.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Shadeless.fs; sourceTree = "<group>"; };
 		52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_bathing_suit.modelparams.plist; sourceTree = "<group>"; };
@@ -256,7 +312,6 @@
 		52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = yacht.modelparams.plist; sourceTree = "<group>"; };
 		52BB21C615FC732700937450 /* GLLRenderParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderParameter.h; sourceTree = "<group>"; };
 		52BB21C715FC732800937450 /* GLLRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderParameter.m; sourceTree = "<group>"; };
-		52BB21C915FC75B500937450 /* RenderParameters.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = RenderParameters.strings; sourceTree = "<group>"; };
 		52BB21CB15FC7B8C00937450 /* GLLRenderParameterDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderParameterDescription.h; sourceTree = "<group>"; };
 		52BB21CC15FC7B8C00937450 /* GLLRenderParameterDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderParameterDescription.m; sourceTree = "<group>"; };
 		52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = amanda_light.modelparams.plist; sourceTree = "<group>"; };
@@ -271,19 +326,19 @@
 		52C9F6151600022B003272E1 /* GLLModelObj.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLLModelObj.mm; sourceTree = "<group>"; };
 		52C9F618160004E3003272E1 /* GLLObjFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLLObjFile.cpp; sourceTree = "<group>"; };
 		52C9F619160004E3003272E1 /* GLLObjFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLObjFile.h; sourceTree = "<group>"; };
-		52C9F61B1600A8D3003272E1 /* GLLMeshObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshObj.h; sourceTree = "<group>"; };
-		52C9F61C1600A8D3003272E1 /* GLLMeshObj.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLLMeshObj.mm; sourceTree = "<group>"; };
+		52C9F61B1600A8D3003272E1 /* GLLModelMeshObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelMeshObj.h; sourceTree = "<group>"; };
+		52C9F61C1600A8D3003272E1 /* GLLModelMeshObj.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLLModelMeshObj.mm; sourceTree = "<group>"; };
 		52C9F61E1600CCFB003272E1 /* GLLFloatRenderParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLFloatRenderParameter.h; sourceTree = "<group>"; };
 		52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLFloatRenderParameter.m; sourceTree = "<group>"; };
 		52C9F6211600CCFC003272E1 /* GLLColorRenderParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLColorRenderParameter.h; sourceTree = "<group>"; };
 		52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLColorRenderParameter.m; sourceTree = "<group>"; };
-		52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSettingsViewController.h; sourceTree = "<group>"; };
-		52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSettingsViewController.m; sourceTree = "<group>"; };
-		52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshSettingsViewController.xib; sourceTree = "<group>"; };
-		52D6A09B15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTransformedMeshDrawer.h; sourceTree = "<group>"; };
-		52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLTransformedMeshDrawer.m; sourceTree = "<group>"; };
+		52D6A09415F8B0F7002A0BB4 /* GLLMeshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshViewController.h; sourceTree = "<group>"; };
+		52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshViewController.m; sourceTree = "<group>"; };
+		52D6A09615F8B0F7002A0BB4 /* GLLMeshView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshView.xib; sourceTree = "<group>"; };
+		52D6A09B15F8BAB0002A0BB4 /* GLLItemMeshDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemMeshDrawer.h; sourceTree = "<group>"; };
+		52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemMeshDrawer.m; sourceTree = "<group>"; };
 		52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBump3Specular.fs; sourceTree = "<group>"; };
-		52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLBoneTransformView.xib; sourceTree = "<group>"; };
+		52F2BC3815F8198400E3EE75 /* GLLBoneView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLBoneView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -307,6 +362,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		52B9E09116027FC800641518 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				52B9E09716027FC800641518 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -317,6 +380,7 @@
 				529692D515F258E600DF2FA3 /* Documentation */,
 				525ACD5115F0F1A700534E7D /* GLLara */,
 				525ACD7115F0F1A700534E7D /* GLLaraTests */,
+				52B9E09816027FC800641518 /* xibLocalizationPostprocessor */,
 				525ACD4A15F0F1A700534E7D /* Frameworks */,
 				525ACD4815F0F1A700534E7D /* Products */,
 			);
@@ -327,6 +391,7 @@
 			children = (
 				525ACD4715F0F1A700534E7D /* GLLara.app */,
 				525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */,
+				52B9E09416027FC800641518 /* xibLocalizationPostprocessor */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -339,6 +404,7 @@
 				525ACD4B15F0F1A700534E7D /* Cocoa.framework */,
 				529692E515F289EB00DF2FA3 /* OpenGL.framework */,
 				525ACD6C15F0F1A700534E7D /* SenTestingKit.framework */,
+				52B9E09616027FC800641518 /* Foundation.framework */,
 				525ACD4D15F0F1A700534E7D /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -383,12 +449,24 @@
 		525ACD5215F0F1A700534E7D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				52B9E0B11602816F00641518 /* GLLAmbientLightView.strings */,
+				52B9E0B21602816F00641518 /* GLLBoneView.strings */,
+				52B9E0B31602816F00641518 /* GLLDocument.strings */,
+				52B9E0B41602817000641518 /* GLLItemView.strings */,
+				52B9E0B51602817000641518 /* GLLLightView.strings */,
+				52B9E0B61602817000641518 /* GLLMeshView.strings */,
+				52B9E0B71602817000641518 /* GLLRenderWindowController.strings */,
+				52B9E0B81602817000641518 /* GLLWindowSettingsPopoverView.strings */,
+				52B9E0B91602817000641518 /* InfoPlist.strings */,
+				52B9E0BA1602817000641518 /* Localizable.strings */,
+				52B9E0BB1602817000641518 /* MainMenu.strings */,
+				52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */,
 				52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */,
 				525ACD5315F0F1A700534E7D /* GLLara-Info.plist */,
 				525ACD5415F0F1A700534E7D /* InfoPlist.strings */,
 				525ACD5715F0F1A700534E7D /* main.m */,
 				525ACD5A15F0F1A700534E7D /* Credits.rtf */,
-				52BB21C915FC75B500937450 /* RenderParameters.strings */,
+				52B9E0B01602815800641518 /* RenderParameters.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -447,6 +525,7 @@
 		529693F615F2D00200DF2FA3 /* Model Parameters */ = {
 			isa = PBXGroup;
 			children = (
+				52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */,
 				529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */,
 				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
 				529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */,
@@ -488,6 +567,8 @@
 				5291DB9015FBE51600ECDBCA /* Metallic.fs */,
 				52BB21B515FB7AE700937450 /* StaticBasic2TexCoords.vs */,
 				52BB21B715FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs */,
+				52B9E07C16020A8300641518 /* DiffuseOBJ.fs */,
+				52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -501,20 +582,20 @@
 				5296943915F4CC3200DF2FA3 /* GLLMeshSplitter.m */,
 				525ACD8215F0F33700534E7D /* GLLModel.h */,
 				525ACD8315F0F33700534E7D /* GLLModel.m */,
-				525ACD8515F0F3ED00534E7D /* GLLMesh.h */,
-				525ACD8615F0F3ED00534E7D /* GLLMesh.m */,
-				529692D215F24EF000DF2FA3 /* GLLBone.h */,
-				529692D315F24EF100DF2FA3 /* GLLBone.m */,
-				5296945815F6C84900DF2FA3 /* GLLShaderDescriptor.h */,
-				5296945915F6C84900DF2FA3 /* GLLShaderDescriptor.m */,
+				525ACD8515F0F3ED00534E7D /* GLLModelMesh.h */,
+				525ACD8615F0F3ED00534E7D /* GLLModelMesh.m */,
+				529692D215F24EF000DF2FA3 /* GLLModelBone.h */,
+				529692D315F24EF100DF2FA3 /* GLLModelBone.m */,
+				5296945815F6C84900DF2FA3 /* GLLShaderDescription.h */,
+				5296945915F6C84900DF2FA3 /* GLLShaderDescription.m */,
 				52BB21CB15FC7B8C00937450 /* GLLRenderParameterDescription.h */,
 				52BB21CC15FC7B8C00937450 /* GLLRenderParameterDescription.m */,
 				52C9F6141600022B003272E1 /* GLLModelObj.h */,
 				52C9F6151600022B003272E1 /* GLLModelObj.mm */,
 				52C9F619160004E3003272E1 /* GLLObjFile.h */,
 				52C9F618160004E3003272E1 /* GLLObjFile.cpp */,
-				52C9F61B1600A8D3003272E1 /* GLLMeshObj.h */,
-				52C9F61C1600A8D3003272E1 /* GLLMeshObj.mm */,
+				52C9F61B1600A8D3003272E1 /* GLLModelMeshObj.h */,
+				52C9F61C1600A8D3003272E1 /* GLLModelMeshObj.mm */,
 			);
 			name = "Model Resources";
 			sourceTree = "<group>";
@@ -530,10 +611,10 @@
 				5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */,
 				529692D815F2625200DF2FA3 /* GLLItem.h */,
 				529692D915F2625200DF2FA3 /* GLLItem.m */,
-				529692DB15F2759400DF2FA3 /* GLLBoneTransformation.h */,
-				529692DC15F2759400DF2FA3 /* GLLBoneTransformation.m */,
-				5296947115F7FB3200DF2FA3 /* GLLMeshSettings.h */,
-				5296947215F7FB3200DF2FA3 /* GLLMeshSettings.m */,
+				529692DB15F2759400DF2FA3 /* GLLItemBone.h */,
+				529692DC15F2759400DF2FA3 /* GLLItemBone.m */,
+				5296947115F7FB3200DF2FA3 /* GLLItemMesh.h */,
+				5296947215F7FB3200DF2FA3 /* GLLItemMesh.m */,
 				52BB21C615FC732700937450 /* GLLRenderParameter.h */,
 				52BB21C715FC732800937450 /* GLLRenderParameter.m */,
 				52C9F61E1600CCFB003272E1 /* GLLFloatRenderParameter.h */,
@@ -578,8 +659,8 @@
 			children = (
 				5296942615F4139300DF2FA3 /* GLLItemDrawer.h */,
 				5296942715F4139300DF2FA3 /* GLLItemDrawer.m */,
-				52D6A09B15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.h */,
-				52D6A09C15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m */,
+				52D6A09B15F8BAB0002A0BB4 /* GLLItemMeshDrawer.h */,
+				52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m */,
 			);
 			name = "Drawing posed items";
 			sourceTree = "<group>";
@@ -602,6 +683,8 @@
 		5296946115F7B22E00DF2FA3 /* Document and UI */ = {
 			isa = PBXGroup;
 			children = (
+				52B9E0AA1602811D00641518 /* GLLDocument.xib */,
+				52B9E0AB1602811D00641518 /* MainMenu.xib */,
 				5296945215F60F3900DF2FA3 /* GLLView.h */,
 				5296945315F60F3C00DF2FA3 /* GLLView.m */,
 				525ACD5D15F0F1A700534E7D /* GLLDocument.h */,
@@ -609,17 +692,15 @@
 				5296946215F7B28300DF2FA3 /* GLLRenderWindowController.h */,
 				5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */,
 				5296946415F7B28300DF2FA3 /* GLLRenderWindowController.xib */,
-				525ACD6015F0F1A700534E7D /* GLLDocument.xib */,
-				525ACD6315F0F1A700534E7D /* MainMenu.xib */,
 				5296946715F7DAA200DF2FA3 /* GLLDocumentWindowController.h */,
 				5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */,
 				5296947415F807A700DF2FA3 /* GLLSourceListItem.h */,
-				5296947515F80F4500DF2FA3 /* GLLBoneTransformViewController.h */,
-				5296947615F80F4500DF2FA3 /* GLLBoneTransformViewController.m */,
-				52F2BC3815F8198400E3EE75 /* GLLBoneTransformView.xib */,
-				52D6A09415F8B0F7002A0BB4 /* GLLMeshSettingsViewController.h */,
-				52D6A09515F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m */,
-				52D6A09615F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib */,
+				5296947515F80F4500DF2FA3 /* GLLBoneViewController.h */,
+				5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */,
+				52F2BC3815F8198400E3EE75 /* GLLBoneView.xib */,
+				52D6A09415F8B0F7002A0BB4 /* GLLMeshViewController.h */,
+				52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */,
+				52D6A09615F8B0F7002A0BB4 /* GLLMeshView.xib */,
 				5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */,
 				5224C8EC15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.h */,
 				5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */,
@@ -632,6 +713,23 @@
 			name = "Document and UI";
 			sourceTree = "<group>";
 		};
+		52B9E09816027FC800641518 /* xibLocalizationPostprocessor */ = {
+			isa = PBXGroup;
+			children = (
+				52B9E0A316027FEE00641518 /* xibLocalizationPostprocessor.m */,
+				52B9E09B16027FC800641518 /* Supporting Files */,
+			);
+			path = xibLocalizationPostprocessor;
+			sourceTree = "<group>";
+		};
+		52B9E09B16027FC800641518 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				52B9E09C16027FC800641518 /* xibLocalizationPostprocessor-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -642,10 +740,12 @@
 				525ACD4315F0F1A700534E7D /* Sources */,
 				525ACD4415F0F1A700534E7D /* Frameworks */,
 				525ACD4515F0F1A700534E7D /* Resources */,
+				52B9E0A91602802500641518 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				52B9E0A81602801F00641518 /* PBXTargetDependency */,
 			);
 			name = GLLara;
 			productName = GLLara;
@@ -671,6 +771,23 @@
 			productReference = 525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
+		52B9E09316027FC800641518 /* xibLocalizationPostprocessor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 52B9E0A116027FC800641518 /* Build configuration list for PBXNativeTarget "xibLocalizationPostprocessor" */;
+			buildPhases = (
+				52B9E09016027FC800641518 /* Sources */,
+				52B9E09116027FC800641518 /* Frameworks */,
+				52B9E09216027FC800641518 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = xibLocalizationPostprocessor;
+			productName = xibLocalizationPostprocessor;
+			productReference = 52B9E09416027FC800641518 /* xibLocalizationPostprocessor */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -695,6 +812,7 @@
 			targets = (
 				525ACD4615F0F1A700534E7D /* GLLara */,
 				525ACD6A15F0F1A700534E7D /* GLLaraTests */,
+				52B9E09316027FC800641518 /* xibLocalizationPostprocessor */,
 			);
 		};
 /* End PBXProject section */
@@ -704,11 +822,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52B9E07D16020A8300641518 /* DiffuseOBJ.fs in Resources */,
+				52B9E07F16021ECD00641518 /* DiffuseNormalOBJ.fs in Resources */,
 				5291DB8215FBB33400ECDBCA /* MetallicBump3.fs in Resources */,
 				525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */,
 				525ACD5C15F0F1A700534E7D /* Credits.rtf in Resources */,
-				525ACD6215F0F1A700534E7D /* GLLDocument.xib in Resources */,
-				525ACD6515F0F1A700534E7D /* MainMenu.xib in Resources */,
 				529693F815F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist in Resources */,
 				529693FA15F36DDB00DF2FA3 /* lara.modelparams.plist in Resources */,
 				529693FE15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist in Resources */,
@@ -728,14 +846,14 @@
 				5296944515F5385000DF2FA3 /* DiffuseLightmapBump.fs in Resources */,
 				5296944615F5385400DF2FA3 /* DiffuseLightmapBump3.fs in Resources */,
 				5296946615F7B28300DF2FA3 /* GLLRenderWindowController.xib in Resources */,
-				52F2BC3915F8198400E3EE75 /* GLLBoneTransformView.xib in Resources */,
+				52F2BC3915F8198400E3EE75 /* GLLBoneView.xib in Resources */,
 				52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */,
 				52BB206C15F82D9A00937450 /* lara_bathing_suit.modelparams.plist in Resources */,
 				52BB206E15F830C400937450 /* albino_spider.modelparams.plist in Resources */,
 				52BB207015F831C900937450 /* mjolnir.modelparams.plist in Resources */,
 				52BB207215F8329000937450 /* motorcycle.modelparams.plist in Resources */,
 				52BB207415F8334E00937450 /* tiger1.modelparams.plist in Resources */,
-				52D6A09815F8B0F7002A0BB4 /* GLLMeshSettingsViewController.xib in Resources */,
+				52D6A09815F8B0F7002A0BB4 /* GLLMeshView.xib in Resources */,
 				5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */,
 				52BB21A215FACF2E00937450 /* croft_manor_hall.modelparams.plist in Resources */,
 				52BB21A915FB45B200937450 /* croft_manor_hall_lq.modelparams.plist in Resources */,
@@ -744,13 +862,27 @@
 				52BB21B815FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs in Resources */,
 				52BB21BA15FB7D0600937450 /* ship.modelparams.plist in Resources */,
 				52BB21BC15FB7E4A00937450 /* yacht.modelparams.plist in Resources */,
-				52BB21CA15FC75B500937450 /* RenderParameters.strings in Resources */,
+				52B9E0AE1602815800641518 /* RenderParameters.strings in Resources */,
 				52BB21CF15FCA4A000937450 /* amanda_light.modelparams.plist in Resources */,
 				52BB21D115FCA6DC00937450 /* amanda_heavy.modelparams.plist in Resources */,
 				52AF114D15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib in Resources */,
 				52BB21D715FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist in Resources */,
 				52919A1515FDF0A7004ACBA5 /* cameratemplate.pdf in Resources */,
 				52C9F60F15FF1753003272E1 /* GLLItemView.xib in Resources */,
+				52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */,
+				52B9E0AC1602811E00641518 /* GLLDocument.xib in Resources */,
+				52B9E0AD1602811E00641518 /* MainMenu.xib in Resources */,
+				52B9E0BC1602817000641518 /* GLLAmbientLightView.strings in Resources */,
+				52B9E0BD1602817000641518 /* GLLBoneView.strings in Resources */,
+				52B9E0BE1602817000641518 /* GLLDocument.strings in Resources */,
+				52B9E0BF1602817000641518 /* GLLItemView.strings in Resources */,
+				52B9E0C01602817000641518 /* GLLLightView.strings in Resources */,
+				52B9E0C11602817000641518 /* GLLMeshView.strings in Resources */,
+				52B9E0C21602817000641518 /* GLLRenderWindowController.strings in Resources */,
+				52B9E0C31602817000641518 /* GLLWindowSettingsPopoverView.strings in Resources */,
+				52B9E0C41602817000641518 /* InfoPlist.strings in Resources */,
+				52B9E0C51602817000641518 /* Localizable.strings in Resources */,
+				52B9E0C61602817000641518 /* MainMenu.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -778,6 +910,19 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		52B9E0A91602802500641518 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/zsh;
+			shellScript = "DEVELOPMENT_LANGUAGE=en\n${SRCROOT}/DMLocalizedNibBundle/slurpLocalizableStrings.zsh";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -788,12 +933,12 @@
 				525ACD5815F0F1A700534E7D /* main.m in Sources */,
 				525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */,
 				525ACD8415F0F33700534E7D /* GLLModel.m in Sources */,
-				525ACD8715F0F3ED00534E7D /* GLLMesh.m in Sources */,
+				525ACD8715F0F3ED00534E7D /* GLLModelMesh.m in Sources */,
 				529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */,
 				529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */,
-				529692D415F24EF100DF2FA3 /* GLLBone.m in Sources */,
+				529692D415F24EF100DF2FA3 /* GLLModelBone.m in Sources */,
 				529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */,
-				529692DD15F2759400DF2FA3 /* GLLBoneTransformation.m in Sources */,
+				529692DD15F2759400DF2FA3 /* GLLItemBone.m in Sources */,
 				529692E315F2861E00DF2FA3 /* GLLMeshDrawer.m in Sources */,
 				529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */,
 				529692F015F28D0F00DF2FA3 /* OpenDDSFile.c in Sources */,
@@ -809,13 +954,13 @@
 				5296943A15F4CC3400DF2FA3 /* GLLMeshSplitter.m in Sources */,
 				5296944915F565D100DF2FA3 /* GLLResourceManager.m in Sources */,
 				5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */,
-				5296945A15F6C84900DF2FA3 /* GLLShaderDescriptor.m in Sources */,
+				5296945A15F6C84900DF2FA3 /* GLLShaderDescription.m in Sources */,
 				5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */,
 				5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */,
-				5296947315F7FB3300DF2FA3 /* GLLMeshSettings.m in Sources */,
-				5296947815F80F4800DF2FA3 /* GLLBoneTransformViewController.m in Sources */,
-				52D6A09715F8B0F7002A0BB4 /* GLLMeshSettingsViewController.m in Sources */,
-				52D6A09D15F8BAB0002A0BB4 /* GLLTransformedMeshDrawer.m in Sources */,
+				5296947315F7FB3300DF2FA3 /* GLLItemMesh.m in Sources */,
+				5296947815F80F4800DF2FA3 /* GLLBoneViewController.m in Sources */,
+				52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */,
+				52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m in Sources */,
 				52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */,
 				5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */,
 				5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */,
@@ -827,9 +972,10 @@
 				52C9F60E15FF1753003272E1 /* GLLItemViewController.m in Sources */,
 				52C9F6161600022B003272E1 /* GLLModelObj.mm in Sources */,
 				52C9F61A160004E3003272E1 /* GLLObjFile.cpp in Sources */,
-				52C9F61D1600A8D3003272E1 /* GLLMeshObj.mm in Sources */,
+				52C9F61D1600A8D3003272E1 /* GLLModelMeshObj.mm in Sources */,
 				52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */,
 				52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */,
+				52B9E0A61602800300641518 /* DMLocalizedNibBundle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -841,6 +987,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		52B9E09016027FC800641518 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				52B9E0A416027FEE00641518 /* xibLocalizationPostprocessor.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -848,6 +1002,11 @@
 			isa = PBXTargetDependency;
 			target = 525ACD4615F0F1A700534E7D /* GLLara */;
 			targetProxy = 525ACD6F15F0F1A700534E7D /* PBXContainerItemProxy */;
+		};
+		52B9E0A81602801F00641518 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52B9E09316027FC800641518 /* xibLocalizationPostprocessor */;
+			targetProxy = 52B9E0A71602801F00641518 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -868,28 +1027,20 @@
 			name = Credits.rtf;
 			sourceTree = "<group>";
 		};
-		525ACD6015F0F1A700534E7D /* GLLDocument.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				525ACD6115F0F1A700534E7D /* en */,
-			);
-			name = GLLDocument.xib;
-			sourceTree = "<group>";
-		};
-		525ACD6315F0F1A700534E7D /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				525ACD6415F0F1A700534E7D /* en */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
 		525ACD7415F0F1A700534E7D /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				525ACD7515F0F1A700534E7D /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		52B9E0B01602815800641518 /* RenderParameters.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				52B9E0AF1602815800641518 /* en */,
+			);
+			name = RenderParameters.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1004,6 +1155,26 @@
 			};
 			name = Release;
 		};
+		52B9E09F16027FC800641518 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "xibLocalizationPostprocessor/xibLocalizationPostprocessor-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		52B9E0A016027FC800641518 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "xibLocalizationPostprocessor/xibLocalizationPostprocessor-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1033,6 +1204,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		52B9E0A116027FC800641518 /* Build configuration list for PBXNativeTarget "xibLocalizationPostprocessor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52B9E09F16027FC800641518 /* Debug */,
+				52B9E0A016027FC800641518 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 

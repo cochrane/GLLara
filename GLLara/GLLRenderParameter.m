@@ -9,7 +9,9 @@
 #import "GLLRenderParameter.h"
 
 #import "GLLItem.h"
-#import "GLLMeshSettings.h"
+#import "GLLItemMesh.h"
+#import "GLLModelMesh.h"
+#import "GLLShaderDescription.h"
 
 @implementation GLLRenderParameter
 
@@ -28,7 +30,7 @@
 
 - (GLLRenderParameterDescription *)parameterDescription
 {
-	return [self.item descriptionForParameter:self.name];
+	return [self.mesh.mesh.shader descriptionForParameter:self.name];
 }
 
 - (NSData *)uniformValue

@@ -8,8 +8,8 @@
 
 #import "GLLModelObj.h"
 
-#import "GLLBone.h"
-#import "GLLMeshObj.h"
+#import "GLLModelBone.h"
+#import "GLLModelMeshObj.h"
 #import "GLLObjFile.h"
 
 @interface GLLModelObj ()
@@ -25,23 +25,31 @@
 {
 	if (!(self = [super init])) return nil;
 
+	self.baseURL = url;
+	
 	try {
 		file = new GLLObjFile((__bridge CFURLRef) url);
-	} catch (std::exception e) {
+	} catch (std::exception &e) {
 		if (error)
 			*error = [NSError errorWithDomain:@"GLLModelObj" code:1 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"There was an error loading the file.", @"couldn't load obj file")}];
+		NSLog(@"Exception: %s", e.what());
 		return nil;
 	}
 	
 	// 1. Set up bones. We only have the one.
-	self.bones = @[ [[GLLBone alloc] initWithModel:self] ];
+	self.bones = @[ [[GLLModelBone alloc] initWithModel:self] ];
 	
 	// 2. Set up meshes. We use one mesh per material group.
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:file->getMaterialRanges().size()];
+	NSUInteger meshNumber = 1;
 	for (auto &range : file->getMaterialRanges())
 	{
-		[meshes addObject:[[GLLMeshObj alloc] initWithObjFile:file range:range]];
+		GLLModelMeshObj *mesh = [[GLLModelMeshObj alloc] initWithObjFile:file range:range inModel:self error:error];
+		if (!mesh) return nil;
+		mesh.name = [NSString stringWithFormat:NSLocalizedString(@"Mesh %lu", "Mesh name for obj format"), meshNumber++];
+		[meshes addObject:mesh];
 	}
+	self.meshes = [meshes copy];
 	
 	return self;
 }

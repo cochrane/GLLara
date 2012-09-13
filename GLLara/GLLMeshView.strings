@@ -1,0 +1,36 @@
+/* Class = "NSButtonCell"; title = "Is visible"; ObjectID = "4"; */
+"Is visible" = "Is visible";
+
+/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "35"; */
+"OtherViews" = "OtherViews";
+
+/* Class = "NSMenuItem"; title = "Counter-clockwise orientation"; ObjectID = "36"; */
+"Counter-clockwise orientation" = "Counter-clockwise orientation";
+
+/* Class = "NSMenuItem"; title = "Clockwise orientation"; ObjectID = "37"; */
+"Clockwise orientation" = "Clockwise orientation";
+
+/* Class = "NSMenuItem"; title = "None"; ObjectID = "38"; */
+"None" = "None";
+
+/* Class = "NSTextFieldCell"; title = "Faces to cull:"; ObjectID = "44"; */
+"Faces to cull:" = "Faces to cull:";
+
+/* Class = "NSTableColumn"; headerCell.title = "Render parameters"; ObjectID = "73"; */
+"Render parameters" = "Render parameters";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "76"; */
+"Text Cell" = "Text Cell";
+
+/* Class = "NSTextFieldCell"; title = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!"; ObjectID = "223"; */
+"This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
+
+/* Class = "NSTextFieldCell"; title = "Bump 1 Specular UV Scale Thingy (do not translate)"; ObjectID = "228"; */
+"Bump 1 Specular UV Scale Thingy (do not translate)" = "Bump 1 Specular UV Scale Thingy (do not translate)";
+
+/* Class = "NSTextFieldCell"; title = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!"; ObjectID = "298"; */
+"This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
+
+/* Class = "NSTextFieldCell"; title = "Bump 1 Specular UV Scale Thingy (do not translate)"; ObjectID = "300"; */
+"Bump 1 Specular UV Scale Thingy (do not translate)" = "Bump 1 Specular UV Scale Thingy (do not translate)";
+

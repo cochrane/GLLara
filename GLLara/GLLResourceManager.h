@@ -16,7 +16,7 @@
 @class GLLModel;
 @class GLLModelDrawer;
 @class GLLShader;
-@class GLLShaderDescriptor;
+@class GLLShaderDescription;
 
 /*
  * Stores all resources for the program.
@@ -32,8 +32,8 @@
 @property (nonatomic, readonly) NSOpenGLContext *openGLContext;
 
 - (GLLModelDrawer *)drawerForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
-- (GLLProgram *)programForDescriptor:(GLLShaderDescriptor *)descriptor error:(NSError *__autoreleasing*)error;
-- (GLLTexture *)textureForName:(NSString *)textureName baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (GLLProgram *)programForDescriptor:(GLLShaderDescription *)descriptor error:(NSError *__autoreleasing*)error;
+- (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error;
 - (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 
 @end

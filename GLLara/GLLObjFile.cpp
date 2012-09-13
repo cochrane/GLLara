@@ -9,6 +9,7 @@
 #include "GLLObjFile.h"
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -17,7 +18,11 @@
 std::string stringFromFileURL(CFURLRef fileURL)
 {
 	// Not using CFURLGetFileSystemRepresentation here, because there is no function to find the maximum needed buffer size for CFURL.
-	CFStringRef fsPath = CFURLCopyFileSystemPath(fileURL, kCFURLPOSIXPathStyle);
+	CFURLRef absolute = CFURLCopyAbsoluteURL(fileURL);
+	CFStringRef fsPath = CFURLCopyFileSystemPath(absolute, kCFURLPOSIXPathStyle);
+	if (!fsPath)
+		throw std::runtime_error("Could not convert file path to URL");
+	CFRelease(absolute);
 	CFIndex length = CFStringGetMaximumSizeOfFileSystemRepresentation(fsPath);
 	char *buffer = new char[length];
 	CFStringGetFileSystemRepresentation(fsPath, buffer, length);
@@ -49,15 +54,20 @@ GLLObjFile::Material::~Material()
 	CFRelease(normalTexture);
 }
 
+void GLLObjFile::normalizeTexCoords(float *texCoords)
+{
+	texCoords[0] = std::fmod(texCoords[0], 1);
+	if (texCoords[0] < 0.0f) texCoords[0] += 1.0f;
+	texCoords[1] = std::fmod(texCoords[1], 1);
+	if (texCoords[1] < 0.0f) texCoords[1] += 1.0f;
+}
+
 template<class T> void GLLObjFile::parseFloatVector(const char *line, std::vector<T> &values, unsigned number) throw()
 {
-	if (number == 2)
-	{
-		float vals[4];
-		int scanned = sscanf(line, "%*s %f %f %f %f", &vals[0], &vals[1], &vals[2], &vals[3]);
-		for (int i = 0; i < std::min(scanned, (int) number); i++)
-			values.push_back((T) vals[i]);
-	}
+	float vals[4];
+	int scanned = sscanf(line, "%*s %f %f %f %f", &vals[0], &vals[1], &vals[2], &vals[3]);
+	for (int i = 0; i < std::min(scanned, (int) number); i++)
+		values.push_back((T) vals[i]);
 }
 
 void GLLObjFile::parseFace(std::istream &stream)
@@ -69,7 +79,7 @@ void GLLObjFile::parseFace(std::istream &stream)
 		std::string indices;
 		stream >> indices;
 		
-		int scanned = sscanf(indices.c_str(), "%u/%u/%u/%u", &set[i].vertex, &set[i].texCoord, &set[i].normal, &set[i].color);
+		int scanned = sscanf(indices.c_str(), "%d/%d/%d/%d", &set[i].vertex, &set[i].texCoord, &set[i].normal, &set[i].color);
 		
 		if (scanned < 3) throw std::invalid_argument("Only OBJ files with vertices, normals and texture coordinates are supported.");
 		
@@ -87,7 +97,7 @@ void GLLObjFile::parseFace(std::istream &stream)
 			if (set[i].color > 0) set[i].color -= 1;
 			else set[i].color += colors.size() / 4;
 		}
-		else set[i].color = UINT_MAX;
+		else set[i].color = INT_MAX;
 		
 		originalIndices.push_back(set[i]);
 	}
@@ -120,6 +130,7 @@ void GLLObjFile::parseMaterialLibrary(CFURLRef location)
 				// This is the first material. Just save the name.
 				linestream >> materialName;
 				hasFirstMaterial = true;
+				currentMaterial->name = materialName;
 			}
 			else
 			{
@@ -132,14 +143,27 @@ void GLLObjFile::parseMaterialLibrary(CFURLRef location)
 				
 				// Save new name
 				linestream >> materialName;
+				currentMaterial->name = materialName;
 			}
 		}
 		else if (token == "Ka")
-			sscanf(line.c_str(), "Ka %f %f %f", &currentMaterial->ambient[0], &currentMaterial->ambient[1], &currentMaterial->ambient[2]);
+		{
+			int scanned = sscanf(line.c_str(), "Ka %f %f %f", &currentMaterial->ambient[0], &currentMaterial->ambient[1], &currentMaterial->ambient[2]);
+			if (scanned == 1)
+				currentMaterial->ambient[1] = currentMaterial->ambient[2] = currentMaterial->ambient[0];
+		}
 		else if (token == "Kd")
-			sscanf(line.c_str(), "Kd %f %f %f", &currentMaterial->diffuse[0], &currentMaterial->diffuse[1], &currentMaterial->diffuse[2]);
+		{
+			int scanned = sscanf(line.c_str(), "Kd %f %f %f", &currentMaterial->diffuse[0], &currentMaterial->diffuse[1], &currentMaterial->diffuse[2]);
+			if (scanned == 1)
+				currentMaterial->diffuse[1] = currentMaterial->diffuse[2] = currentMaterial->diffuse[0];
+		}
 		else if (token == "Ks")
-			sscanf(line.c_str(), "Ks %f %f %f", &currentMaterial->specular[0], &currentMaterial->specular[1], &currentMaterial->specular[2]);
+		{
+			int scanned = sscanf(line.c_str(), "Ks %f %f %f", &currentMaterial->specular[0], &currentMaterial->specular[1], &currentMaterial->specular[2]);
+			if (scanned == 1)
+				currentMaterial->specular[1] = currentMaterial->specular[2] = currentMaterial->specular[0];
+		}
 		else if (token == "Ns")
 			sscanf(line.c_str(), "Ns %f", &currentMaterial->shininess);
 		else if (token == "map_Kd")
@@ -164,6 +188,10 @@ void GLLObjFile::parseMaterialLibrary(CFURLRef location)
 			currentMaterial->normalTexture = CFURLCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)textureName.c_str(), (CFIndex) textureName.size(), kCFStringEncodingUTF8, location);
 		}
 	}
+	
+	// Wrap up final material
+	currentMaterial->ambient[3] = currentMaterial->diffuse[3] = currentMaterial->specular[3] = 1.0f;
+	materials[materialName] = currentMaterial;
 }
 
 unsigned GLLObjFile::unifiedIndex(const IndexSet &indexSet)
@@ -173,13 +201,21 @@ unsigned GLLObjFile::unifiedIndex(const IndexSet &indexSet)
 	{
 		VertexData data;
 		
-		if (indexSet.vertex >= vertices.size()) throw std::range_error("Vertex index out of range.");
-		if (indexSet.normal >= normals.size()) throw std::range_error("Surface normal index out of range.");
-		if (indexSet.texCoord >= texCoords.size()) throw std::range_error("Texture coordinate index out of range.");
+		if (indexSet.vertex >= (int) vertices.size())
+			throw std::range_error("Vertex index out of range.");
+		if (indexSet.normal >= (int) normals.size())
+			throw std::range_error("Surface normal index out of range.");
+		if (indexSet.texCoord >= (int) texCoords.size())
+			throw std::range_error("Texture coordinate index out of range.");
 		
 		memcpy(data.vert, &(vertices[indexSet.vertex*3]), sizeof(float [3]));
 		memcpy(data.norm, &(normals[indexSet.normal*3]), sizeof(float [3]));
 		memcpy(data.tex, &(texCoords[indexSet.texCoord*2]), sizeof(float [2]));
+		if (indexSet.color < (int) colors.size())
+			memcpy(data.color, &(colors[indexSet.color*4]), 4);
+		else
+			data.color[0] = data.color[1] = data.color[2] = data.color[3] = 255;
+		
 		unsigned dataSoFar = (unsigned) vertexData.size();
 		vertexData.push_back(data);
 		
@@ -209,6 +245,7 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 	
 	std::string activeMaterial("");
 	unsigned activeMaterialStart = 0;
+	bool hasFirstMaterial = false;
 	while(stream.good())
 	{
 		std::string line;
@@ -223,7 +260,10 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 		else if (token == "vn")
 			parseFloatVector(line.c_str(), normals, 3);
 		else if (token == "vt")
+		{
 			parseFloatVector(line.c_str(), texCoords, 2);
+			normalizeTexCoords(&texCoords[texCoords.size() - 2]);
+		}
 		else if (token == "vc")
 			parseFloatVector(line.c_str(), colors, 4);
 		else if (token == "f")
@@ -247,16 +287,42 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 		}
 		else if (token == "usemtl")
 		{
-			if (activeMaterial.size() > 0)
+			if (materials.size() == 0)
+			{
+				// Try to find an mtllib of the same name as the obj in the same directory as the obj
+				CFStringRef lastPathComponent = CFURLCopyLastPathComponent(location);
+				CFMutableStringRef mtlLibName = CFStringCreateMutableCopy(kCFAllocatorDefault, CFStringGetLength(lastPathComponent), lastPathComponent);
+				CFStringReplace(mtlLibName, CFRangeMake(CFStringGetLength(mtlLibName) - 3, 3), CFSTR("mtl"));
+				
+				CFURLRef mtlLibURL = CFURLCreateWithString(kCFAllocatorDefault, mtlLibName, location);
+				
+				CFRelease(lastPathComponent);
+				CFRelease(mtlLibName);
+				
+				try {
+					parseMaterialLibrary(mtlLibURL);
+				} catch (std::exception &e) {
+					CFRelease(mtlLibURL);
+					throw e;
+				}
+				CFRelease(mtlLibURL);
+			}
+				
+			if (hasFirstMaterial)
 			{
 				// End previous material run
 				materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), materials[activeMaterial]));
 			}
+			else
+				hasFirstMaterial = true;
 			
 			linestream >> activeMaterial;
 			activeMaterialStart = (unsigned) originalIndices.size();
 		}
 	}
+	
+	// Wrap up final material group
+	materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), materials[activeMaterial]));
 	
 	fillIndices();
 }

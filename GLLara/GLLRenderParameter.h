@@ -10,13 +10,13 @@
 #import <CoreData/CoreData.h>
 
 @class GLLItem;
-@class GLLMeshSettings;
+@class GLLItemMesh;
 @class GLLRenderParameterDescription;
 
 @interface GLLRenderParameter : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) GLLMeshSettings *mesh;
+@property (nonatomic, retain) GLLItemMesh *mesh;
 
 @property (nonatomic, retain, readonly) GLLRenderParameterDescription *parameterDescription;
 

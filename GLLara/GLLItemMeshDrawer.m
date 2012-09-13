@@ -1,23 +1,24 @@
 //
-//  GLLTransformedMeshDrawer.m
+//  GLLItemMeshDrawer.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 06.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLTransformedMeshDrawer.h"
+#import "GLLItemMeshDrawer.h"
 
 #import <OpenGL/gl3.h>
 
 #import "GLLItemDrawer.h"
 #import "GLLMeshDrawer.h"
-#import "GLLMeshSettings.h"
+#import "GLLModelMesh.h"
+#import "GLLItemMesh.h"
 #import "GLLProgram.h"
 #import "GLLRenderParameter.h"
 #import "GLLUniformBlockBindings.h"
 
-@interface GLLTransformedMeshDrawer ()
+@interface GLLItemMeshDrawer ()
 {
 	GLuint renderParametersBuffer;
 	BOOL needsParameterBufferUpdate;
@@ -26,22 +27,24 @@
 
 @end
 
-@implementation GLLTransformedMeshDrawer
+@implementation GLLItemMeshDrawer
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer settings:(GLLMeshSettings *)settings;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer itemMesh:(GLLItemMesh *)itemMesh;
 {
 	if (!(self = [super init])) return nil;
 	
+	NSAssert(itemDrawer != nil && meshDrawer != nil && itemMesh != nil, @"None of this can be nil");
+	
 	_itemDrawer = itemDrawer;
 	_meshDrawer = meshDrawer;
-	_settings = settings;
+	_itemMesh = itemMesh;
 	
 	// If there are render parameters to be set, create a uniform buffer for them and set their values from the mesh.
 	if (meshDrawer.program.renderParametersUniformBlockIndex != GL_INVALID_INDEX)
 	{
 		glGenBuffers(1, &renderParametersBuffer);
 		needsParameterBufferUpdate = YES;
-		for (GLLRenderParameter *parameter in settings.renderParameters)
+		for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
 			[parameter addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
 	}
 	
@@ -61,19 +64,19 @@
 
 - (void)draw;
 {
-	if (!self.settings.isVisible)
+	if (!self.itemMesh.isVisible)
 		return;
 	if (needsParameterBufferUpdate)
 		[self _updateParameterBuffer];
 	
-	switch (self.settings.cullFaceMode)
+	switch (self.itemMesh.cullFaceMode)
 	{
-		case GLLCullBack:
-			glCullFace(GL_BACK);
+		case GLLCullCounterClockWise:
+			glFrontFace(GL_CW);
 			break;
 			
-		case GLLCullFront:
-			glCullFace(GL_FRONT);
+		case GLLCullClockWise:
+			glFrontFace(GL_CCW);
 			break;
 			
 		case GLLCullNone:
@@ -90,7 +93,7 @@
 	[self.meshDrawer draw];
 	
 	// Enable it again.
-	if (self.settings.cullFaceMode == GLLCullNone)
+	if (self.itemMesh.cullFaceMode == GLLCullNone)
 		glEnable(GL_CULL_FACE);
 }
 
@@ -103,7 +106,7 @@
 {
 	glDeleteBuffers(1, &renderParametersBuffer);
 	renderParametersBuffer = 0;
-	for (GLLRenderParameter *parameter in self.settings.renderParameters)
+	for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
 		[parameter removeObserver:self forKeyPath:@"uniformValue"];
 }
 
@@ -115,7 +118,7 @@
 	glGetActiveUniformBlockiv(self.meshDrawer.program.programID, self.meshDrawer.program.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &bufferLength);
 	void *data = malloc(bufferLength);
 	
-	for (GLLRenderParameter *parameter in self.settings.renderParameters)
+	for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
 	{
 		NSString *fullName = [@"RenderParameters." stringByAppendingString:parameter.name];
 		GLuint uniformIndex;

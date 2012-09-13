@@ -1,5 +1,5 @@
 //
-//  GLLBone.h
+//  GLLModelBone.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 01.09.12.
@@ -18,7 +18,7 @@
  * @abstract Description of a bone in a model.
  * @discussion A bone is a transformable entity; vertices belong to one or several bones, with different weights. The bone here is purely a static description and with default values. It does not contain any transformation information.
  */
-@interface GLLBone : NSObject
+@interface GLLModelBone : NSObject
 
 // Bone without parent, children at position 0, 0, 0. No need to call setupParent afterwards.
 - (id)initWithModel:(GLLModel *)model;
@@ -44,7 +44,7 @@
  * Access the bones as a tree. Right now, these methods do not
  * cache their results in any way.
  */
-@property (nonatomic, weak, readonly) GLLBone *parent;
+@property (nonatomic, weak, readonly) GLLModelBone *parent;
 @property (nonatomic, retain, readonly) NSArray *children;
 
 /*

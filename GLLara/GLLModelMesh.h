@@ -1,5 +1,5 @@
 //
-//  GLLMesh.h
+//  GLLModelMesh.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 31.08.12.
@@ -11,14 +11,21 @@
 @class GLLASCIIScanner;
 @class GLLMeshSplitter;
 @class GLLModel;
-@class GLLShaderDescriptor;
+@class GLLShaderDescription;
 @class TRInDataStream;
+
+typedef enum GLLCullFaceMode
+{
+	GLLCullCounterClockWise,
+	GLLCullClockWise,
+	GLLCullNone
+} GLLCullFaceMode;
 
 /*!
  * @abstract Vertex and element data.
  * @discussion A GLLMesh stores a set of vertices that belong together, along with the necessary information for rendering it (especially the indices and the names of the textures used). In XNALara, it corresponds to a MeshDesc.
  */
-@interface GLLMesh : NSObject
+@interface GLLModelMesh : NSObject
 
 // For subclasses
 - (id)initAsPartOfModel:(GLLModel *)model;
@@ -78,17 +85,19 @@
 /*
  * XNALara insists that some meshes need to be split; apparently only for cosmetic reasons. I shall oblige, but in a way that is not specific to exactly one thing, thank you very much. Note that this mesh keeps the bone indices of the original.
  */
-- (GLLMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
-- (GLLMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
+- (GLLModelMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
+- (GLLModelMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
 
 /*
  * Drawing information, gained through the model parameters. This information is not stored in the mesh file.
  */
-@property (nonatomic, copy, readonly) GLLShaderDescriptor *shader;
-@property (nonatomic, assign, readonly) BOOL usesAlphaBlending;
-@property (nonatomic, copy, readonly) NSDictionary *renderParameters;
+@property (nonatomic, retain) GLLShaderDescription *shader;
+@property (nonatomic, assign) BOOL usesAlphaBlending;
+@property (nonatomic, copy) NSDictionary *renderParameterValues;
 
 // To be used by subclasses. Calculates the tangents based on the texture coordinates, and fills them in the correct fields of the data, using the offsets and strides of the file
 - (void)calculateTangents:(NSMutableData *)vertexData;
+
+@property (nonatomic, assign, readonly) GLLCullFaceMode cullFaceMode;
 
 @end

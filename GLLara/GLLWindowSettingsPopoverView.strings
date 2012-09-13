@@ -1,0 +1,60 @@
+/* Class = "NSTextFieldCell"; title = "Camera"; ObjectID = "4"; */
+"Camera" = "Camera";
+
+/* Class = "NSTextFieldCell"; title = "Window"; ObjectID = "8"; */
+"Window" = "Window";
+
+/* Class = "NSButtonCell"; title = "Lock settings"; ObjectID = "15"; */
+"Lock settings" = "Lock settings";
+
+/* Class = "NSTextFieldCell"; title = "Field of view:"; ObjectID = "20"; */
+"Field of view:" = "Field of view:";
+
+/* Class = "NSTextFieldCell"; title = "Distance to target:"; ObjectID = "24"; */
+"Distance to target:" = "Distance to target:";
+
+/* Class = "NSTextFieldCell"; title = "Position:"; ObjectID = "33"; */
+"Position:" = "Position:";
+
+/* Class = "NSTextFieldCell"; title = "180,99 °"; ObjectID = "38"; */
+"180,99 °" = "180,99 °";
+
+/* Class = "NSTextFieldCell"; title = "180,99 °"; ObjectID = "71"; */
+"180,99 °" = "180,99 °";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Z"; ObjectID = "83"; */
+"Z" = "Z";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Y"; ObjectID = "88"; */
+"Y" = "Y";
+
+/* Class = "NSTextFieldCell"; placeholderString = "X"; ObjectID = "94"; */
+"X" = "X";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Width"; ObjectID = "114"; */
+"Width" = "Width";
+
+/* Class = "NSTextFieldCell"; placeholderString = "Height"; ObjectID = "120"; */
+"Height" = "Height";
+
+/* Class = "NSTextFieldCell"; title = "Size:"; ObjectID = "132"; */
+"Size:" = "Size:";
+
+/* Class = "NSTextFieldCell"; title = "Angle above ground:"; ObjectID = "233"; */
+"Angle above ground:" = "Angle above ground:";
+
+/* Class = "NSTextFieldCell"; title = "180,99 °"; ObjectID = "249"; */
+"180,99 °" = "180,99 °";
+
+/* Class = "NSTextFieldCell"; title = "Rotation:"; ObjectID = "251"; */
+"Rotation:" = "Rotation:";
+
+/* Class = "NSButtonCell"; title = "Lock settings"; ObjectID = "306"; */
+"Lock settings" = "Lock settings";
+
+/* Class = "NSTextFieldCell"; title = "x"; ObjectID = "314"; */
+"x" = "x";
+
+/* Class = "NSTextFieldCell"; title = "180°"; ObjectID = "512"; */
+"180°" = "180°";
+

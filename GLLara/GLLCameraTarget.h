@@ -11,7 +11,7 @@
 
 #import "simd_types.h"
 
-@class GLLBoneTransformation;
+@class GLLItemBone;
 
 @interface GLLCameraTarget : NSManagedObject
 
@@ -27,8 +27,8 @@
 
 @interface GLLCameraTarget (CoreDataGeneratedAccessors)
 
-- (void)addBonesObject:(GLLBoneTransformation *)value;
-- (void)removeBonesObject:(GLLBoneTransformation *)value;
+- (void)addBonesObject:(GLLItemBone *)value;
+- (void)removeBonesObject:(GLLItemBone *)value;
 - (void)addBones:(NSSet *)values;
 - (void)removeBones:(NSSet *)values;
 

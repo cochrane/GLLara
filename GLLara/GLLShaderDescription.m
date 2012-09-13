@@ -1,16 +1,18 @@
 //
-//  GLLShaderDescriptor.m
+//  GLLShaderDescription.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 05.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLShaderDescriptor.h"
+#import "GLLShaderDescription.h"
 
-@implementation GLLShaderDescriptor
+#import "GLLModelParams.h"
 
-- (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL;
+@implementation GLLShaderDescription
+
+- (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL modelParameters:(GLLModelParams *)parameters;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -30,6 +32,8 @@
 
 	_programIdentifier = [NSString stringWithFormat:@"%@ (%@)", _name, _baseURL.absoluteString];
 	
+	_parameters = parameters;
+	
 	return self;
 }
 
@@ -39,6 +43,11 @@
 		return self.additionalUniformNames;
 	else
 		return [self.parameterUniformNames arrayByAddingObjectsFromArray:self.additionalUniformNames];
+}
+
+- (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
+{
+	return [self.parameters descriptionForParameter:parameterName];
 }
 
 @end
