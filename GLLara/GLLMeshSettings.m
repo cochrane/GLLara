@@ -41,7 +41,7 @@
 	[self didChangeValueForKey:@"item"];
 	
 	// Replace all render parameters
-	NSDictionary *values = self.mesh.renderParameters;
+	NSDictionary *values = self.mesh.renderParameterValues;
 	NSMutableSet *renderParameters = [self mutableSetValueForKey:@"renderParameters"];
 	[renderParameters removeAllObjects];
 	for (NSString *uniformName in self.mesh.shader.allUniformNames)

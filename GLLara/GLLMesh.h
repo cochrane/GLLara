@@ -86,7 +86,7 @@
  */
 @property (nonatomic, copy, readonly) GLLShaderDescriptor *shader;
 @property (nonatomic, assign, readonly) BOOL usesAlphaBlending;
-@property (nonatomic, copy, readonly) NSDictionary *renderParameters;
+@property (nonatomic, copy, readonly) NSDictionary *renderParameterValues;
 
 // To be used by subclasses. Calculates the tangents based on the texture coordinates, and fills them in the correct fields of the data, using the offsets and strides of the file
 - (void)calculateTangents:(NSMutableData *)vertexData;

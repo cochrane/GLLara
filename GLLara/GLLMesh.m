@@ -440,7 +440,7 @@ void vec_addTo(float *a, float *b)
 	GLLShaderDescriptor *shader = nil;
 	[_model.parameters getShader:&shader alpha:&_usesAlphaBlending forMesh:_name];
 	_shader = shader;
-	_renderParameters = [_model.parameters renderParametersForMesh:_name];
+	_renderParameterValues = [_model.parameters renderParametersForMesh:_name];
 	
 	if (!_shader)
 		NSLog(@"No shader for object %@", self.name);
