@@ -22,4 +22,8 @@
 
 - (void)draw;
 
+// Basic support for render to file
+// bpp can be 8, for normal 24-bit rendering, or 32, which returns float pixels. The depth buffer is always 24 bit deep.
+- (void)renderImageOfSize:(CGSize)size floatComponents:(BOOL)useFloatComponents multisampling:(NSUInteger)samples toColorBuffer:(void *)colorData;
+
 @end

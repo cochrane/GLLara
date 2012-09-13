@@ -10,6 +10,7 @@
 
 #import <AppKit/NSColorSpace.h>
 #import <OpenGL/gl3.h>
+#import <OpenGL/gl3ext.h>
 
 #import "GLLAmbientLight.h"
 #import "GLLBoneTransformation.h"
@@ -241,6 +242,97 @@ struct GLLAlphaTestBlock
 	// Special note: Ensure that depthMask is true before doing the next glClear. Otherwise results may be quite funny indeed.
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
+}
+
+#pragma mark - Image rendering
+
+- (void)renderImageOfSize:(CGSize)size floatComponents:(BOOL)useFloatComponents multisampling:(NSUInteger)samples toColorBuffer:(void *)colorData;
+{
+	// What is the largest tile that can be rendered?
+	[self.view.openGLContext makeCurrentContext];
+	GLint maxTextureSize, maxRenderbufferSize;
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+	glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &maxRenderbufferSize);
+	GLint maxSize = MIN(maxTextureSize, maxRenderbufferSize);
+	
+	// Prepare framebuffer (without texture; a new one is created for every tile)
+	GLuint framebuffer;
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	
+	GLuint depthRenderbuffer;
+	glGenRenderbuffers(1, &depthRenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+	
+	// Pepare background thread. This waits until textures are done, then loads them into colorData.
+	GLuint numTextures = ceil(size.width / maxSize) * ceil(size.height / maxSize);
+	GLuint *textureNames = calloc(sizeof(GLuint), numTextures);
+	glGenTextures(numTextures, textureNames);
+	__block NSUInteger finishedTextures = 0;
+	__block dispatch_semaphore_t texturesReady = dispatch_semaphore_create(0);
+	__block dispatch_semaphore_t downloadReady = dispatch_semaphore_create(0);
+	NSOpenGLContext *backgroundLoadingContext = [[NSOpenGLContext alloc] initWithFormat:self.view.pixelFormat shareContext:self.view.openGLContext];
+	
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		[backgroundLoadingContext makeCurrentContext];
+		NSUInteger downloadedTextures = 0;
+		while (downloadedTextures < numTextures)
+		{
+			dispatch_semaphore_wait(texturesReady, DISPATCH_TIME_FOREVER);
+			
+			GLint row = (GLint) downloadedTextures / (GLint) ceil(size.width / maxSize);
+			GLint column = (GLint) downloadedTextures % (GLint) ceil(size.width / maxSize);
+			
+			glPixelStorei(GL_PACK_ROW_LENGTH, size.width);
+			glPixelStorei(GL_PACK_SKIP_ROWS, row * size.width * maxSize);
+			glPixelStorei(GL_PACK_SKIP_PIXELS, column * maxSize);
+			
+			glBindTexture(GL_TEXTURE_2D, textureNames[downloadedTextures]);
+			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, useFloatComponents ? GL_FLOAT : GL_UNSIGNED_BYTE, colorData);
+			
+			downloadedTextures += 1;
+		}
+		dispatch_semaphore_signal(downloadReady);
+		
+	});
+
+	mat_float16 cameraMatrix = self.view.camera.viewProjectionMatrix;
+	
+	// Render
+	for (NSUInteger y = 0; y < size.height; y += maxSize)
+	{
+		for (NSUInteger x = 0; x < size.height; x += maxSize)
+		{
+			// Setup size
+			GLuint width = MIN(size.width - x, maxSize);
+			GLuint height = MIN(size.height - y, maxSize);
+			glViewport(0, 0, width, height);
+			
+			// Setup buffers + textures
+			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, textureNames[finishedTextures]);
+			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, (GLuint) samples, GL_RGBA, width, height, GL_TRUE);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, textureNames[finishedTextures], 0);
+			
+			glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+			glRenderbufferStorageMultisample(GL_RENDERBUFFER, (GLuint) samples, GL_DEPTH_COMPONENT24, width, height);
+			glFramebufferRenderbuffer(GL_RENDERBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+			
+			// Setup matrix.
+			mat_float16 partOfCameraMatrix = simd_orthoMatrix((x/size.width)*2.0-1.0, ((x+width)/size.width)*2.0-1.0, (y/size.height)*2.0-1.0, ((y+height)/size.height)*2.0-1.0, -1, 1);
+			mat_float16 combinedMatrix = simd_mat_mul(partOfCameraMatrix, cameraMatrix);
+			
+			glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
+			glBufferData(GL_UNIFORM_BUFFER, sizeof(combinedMatrix), &combinedMatrix, GL_STREAM_DRAW);
+			
+			finishedTextures += 1;
+			dispatch_semaphore_signal(texturesReady);
+		}
+	}
+	
+	dispatch_semaphore_wait(downloadReady, DISPATCH_TIME_FOREVER);
+	glDeleteTextures(numTextures, textureNames);
+	glDeleteFramebuffers(1, &framebuffer);
+	glDeleteRenderbuffers(1, &depthRenderbuffer);
 }
 
 #pragma mark - Private methods
