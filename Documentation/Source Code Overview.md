@@ -15,9 +15,9 @@ All class names start with `GLL` (for GL Lara, duh). The `CFBundleIdentifier` is
 Main classes
 ------------
 
-There are several layers to the code. At the bottom, there is the `GLLModel` with its associated `GLLMesh` and `GLLBone`. A `GLLModel` corresponds to one file, and is immutable. A model gets loaded exactly once, no matter how many scenes include it or how often it is shown in a given scene. A layer up is the `GLLItem`, which is one item and its associated position, pose, scale and so on. A scene can have multiple Items with the same model. The pose is stored in the `GLLBoneTransformation`s, which are owned by the Item. Right now, there is no support for importing OBJs, but that will come in time.
+There are several layers to the code. At the bottom, there is the `GLLModel` with its associated `GLLModelMesh` and `GLLModelBone`. A `GLLModel` corresponds to one file, and is immutable. A model gets loaded exactly once, no matter how many scenes include it or how often it is shown in a given scene. A layer up is the `GLLItem`, which is one item and its associated position, pose, scale and so on. A scene can have multiple Items with the same model. The pose is stored in the `GLLItemBone`s, which are owned by the Item. Similarly, data for the meshes is stored in a `GLLItemMesh`; this includes render parameters, cull mode, disabling and in the future any other parameters the user might be able to set (blend mode is a candidate).
 
-To draw, there is the `GLLModelDrawer` with the associated `GLLMeshDrawer`. You have one per OpenGL Context (this context must be Core Profile). The Model Drawer is basically just a container for the Mesh Drawers, though. To actually draw a full item, you need the `GLLItemDrawer`, which draws the meshes of the model based on the transformations from the Item. All data like model drawers, shaders and textures are managed by a resource manager. Right now, only these resources are shared, not the item drawers (this could be done, too, but it would require another layer and not help with anything). As a result, you need one `GLLItemDrawer` per context per item.
+To draw, there is the `GLLModelDrawer` with the associated `GLLMeshDrawer`. You have one per OpenGL Context (this context must be Core Profile). The Model Drawer is basically just a container for the Mesh Drawers, though. To actually draw a full item, you need the `GLLItemDrawer`, which draws the meshes of the model based on the transformations from the Item. It uses the `GLLItemMeshDrawer` to set the user-set attributes and then draw with the Mesh Drawer. All data like model drawers, shaders and textures are managed by a resource manager. Right now, only these resources are shared, not the item drawers (this could be done, too, but it would require another layer and not help with anything). As a result, you need one `GLLItemDrawer` per context per item.
 
 Rendering Parameters
 --------------------
@@ -26,14 +26,14 @@ In XNALara, basically anything is hardcoded. What shader to use, what parameters
 
 This is a hierarchical system; each file can specify a "base" file from which it inherits. An actual item will thus most likely inherit all the data from `xnaLaraDefault` and possibly others, too.
 
-The generic item format is considered as a special case here; it always inherits from `xnaLaraDefault`, and the parameters are retrieved from the model by parsing the mesh names.
+The generic item format is considered as a special case here; it always inherits from `xnaLaraDefault`, and the parameters are retrieved from the model by parsing the mesh names. OBJ files use the facilities of the render parameter system, too, to select the right shader and provide a UI for it, but all render data is stored in the MTL files, the way it is always done for OBJs.
 
 Containers
 ----------
 
 The data for a scene is handled by CoreData, in a managed object context. Specifically, saved in there are the Items, their Bone Transformations and Mesh Settings, the Lights and everything else that needs saving.
 
-For drawing, there is an explicit container: The `GLLSceneDrawer` (which has exactly one `GLLView`). A scene can have several GLLSceneDrawers, although there is currently no code in place for sharing resources between them, so resource usage might grow too large to be useful very quickly.
+For drawing, there is an explicit container: The `GLLSceneDrawer` (which has exactly one `GLLView`). A scene can have several GLLSceneDrawers. That is how multiple render views are implemented. They all use a GLLView, and they all share their contexts.
 
 Other resources
 ---------------
