@@ -12,6 +12,6 @@
 
 @interface GLLMeshObj : GLLMesh
 
-- (id)initWithObjFile:(GLLObjFile *)file range:(const GLLObjFile::MaterialRange &)range error:(NSError *__autoreleasing*)error;
+- (id)initWithObjFile:(GLLObjFile *)file range:(const GLLObjFile::MaterialRange &)range inModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 
 @end

@@ -44,7 +44,7 @@
 	NSUInteger meshNumber = 1;
 	for (auto &range : file->getMaterialRanges())
 	{
-		GLLMeshObj *mesh = [[GLLMeshObj alloc] initWithObjFile:file range:range error:error];
+		GLLMeshObj *mesh = [[GLLMeshObj alloc] initWithObjFile:file range:range inModel:self error:error];
 		if (!mesh) return nil;
 		mesh.name = [NSString stringWithFormat:NSLocalizedString(@"Mesh %lu", "Mesh name for obj format"), meshNumber++];
 		[meshes addObject:mesh];

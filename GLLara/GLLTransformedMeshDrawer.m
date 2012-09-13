@@ -33,6 +33,8 @@
 {
 	if (!(self = [super init])) return nil;
 	
+	NSAssert(itemDrawer != nil && meshDrawer != nil && settings != nil, @"None of this can be nil");
+	
 	_itemDrawer = itemDrawer;
 	_meshDrawer = meshDrawer;
 	_settings = settings;

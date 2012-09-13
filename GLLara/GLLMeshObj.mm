@@ -14,21 +14,29 @@
 
 @implementation GLLMeshObj
 
-- (id)initWithObjFile:(GLLObjFile *)file range:(const GLLObjFile::MaterialRange &)range error:(NSError *__autoreleasing*)error;
+- (id)initWithObjFile:(GLLObjFile *)file range:(const GLLObjFile::MaterialRange &)range inModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
-	if (!(self = [super init])) return nil;
+	if (!(self = [super initAsPartOfModel:model])) return nil;
 	
 	// Procedure: Go through the indices in the range. For each index, load the vertex data from the file and put it in the vertex buffer here. Adjust the index, too.
 	
 	self.countOfUVLayers = 1;
 	
+	if (range.material == 0)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"GLLMeshObj" code:1 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Some parts of the model have no material", @"error description: material for range is null"),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"This model is not supported.", @"error description: material for range is null") }];
+		return nil;
+	}
+	
 	std::map<unsigned, uint32_t> globalToLocalVertices;
-	NSMutableData *vertices = [NSMutableData data];
+	NSMutableData *vertices = [[NSMutableData alloc] init];
 	NSMutableData *elements = [[NSMutableData alloc] initWithCapacity:sizeof(uint32_t) * (range.end - range.start)];
 	
 	for (unsigned i = range.start; i < range.end; i++)
 	{
-		unsigned globalIndex = file->getIndices()[i + range.start];
+		unsigned globalIndex = file->getIndices().at(i);
 		uint32_t index = 0;
 		auto localIndexIter = globalToLocalVertices.find(globalIndex);
 		if (localIndexIter == globalToLocalVertices.end())
@@ -38,7 +46,7 @@
 			globalToLocalVertices[globalIndex] = index;
 			
 			// Add vertex
-			const GLLObjFile::VertexData &vertex = file->getVertexData()[globalIndex];
+			const GLLObjFile::VertexData &vertex = file->getVertexData().at(globalIndex);
 			
 			[vertices appendBytes:vertex.vert length:sizeof(float [3])];
 			[vertices appendBytes:vertex.norm length:sizeof(float [3])];
@@ -79,13 +87,11 @@
 	{
 		self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture ];
 		self.shader = [objModelParams shaderNamed:@"DiffuseOBJ"];
-
 	}
 	else if (range.material->specularTexture != NULL && range.material->normalTexture == NULL)
 	{
 		self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture, (__bridge NSURL *) range.material->specularTexture ];
 		self.shader = [objModelParams shaderNamed:@"DiffuseSpecularOBJ"];
-
 	}
 	else if (range.material->specularTexture == NULL && range.material->normalTexture != NULL)
 	{

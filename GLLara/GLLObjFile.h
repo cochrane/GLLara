@@ -39,8 +39,9 @@ public:
 		CFURLRef diffuseTexture;
 		CFURLRef specularTexture;
 		CFURLRef normalTexture;
+		std::string name;
 		
-		Material() : ambient{0, 0, 0, 0}, diffuse{0, 0, 0, 0}, specular{0, 0, 0, 0}, shininess(0), diffuseTexture(0), specularTexture(0), normalTexture(0) {}
+		Material() : ambient{1, 1, 1, 1}, diffuse{1, 1, 1, 1}, specular{0, 0, 0, 0}, shininess(0), diffuseTexture(0), specularTexture(0), normalTexture(0) {}
 		~Material();
 		
 		const float *getAmbient() const { return ambient; }
@@ -68,10 +69,10 @@ private:
 	// Indices as saved in the OBJ-file.
 	struct IndexSet
 	{
-		unsigned vertex;
-		unsigned normal;
-		unsigned texCoord;
-		unsigned color; // Color is an XNA-Lara extension
+		int vertex;
+		int normal;
+		int texCoord;
+		int color; // Color is an XNA-Lara extension
 		
 		bool operator<(const GLLObjFile::IndexSet &other) const;
 		bool operator>(const GLLObjFile::IndexSet &other) const
@@ -91,6 +92,9 @@ private:
 	// Support for material handling.
 	std::map<std::string, Material *> materials;
 	std::vector<MaterialRange> materialRanges;
+	
+	// Brings texture coordinates in the 0…1 range, assuming repeat semantics are in place. Necessary if you want to do something fun with them later (like change orientation).
+	void normalizeTexCoords(float *coords);
 	
 	// Parsing
 	template <class T> void parseFloatVector(const char *line, std::vector<T> &values, unsigned number) throw();
