@@ -15,7 +15,7 @@
 
 - (id)init
 {
-	if (!(self = [super initWithNibName:@"GLLMeshViewController" bundle:[NSBundle mainBundle]]))
+	if (!(self = [super initWithNibName:@"GLLMeshView" bundle:[NSBundle mainBundle]]))
 		return nil;
 	
 	return self;
