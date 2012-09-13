@@ -5,7 +5,17 @@ GLLara
 
 This thing is still a work in progress. Right now, you can't actually do anything useful with it, and almost all models will fail to load, guaranteed. That is why there is no download yet. However, if you feel like hacking, you can clone or fork the source. Most of the basic infrastructure is there, I'm just lacking an UI for posing, most of the shaders and some matrix code for the bone transformations that I am absolutely not looking forward to.
 
-[xnalara]: 
+[xnalara]: http://www.tombraiderforums.com/showthread.php?t=147100
+
+Note for developers
+-------------------
+
+This project uses submodules. So after cloning, you have to do
+
+	git submodule init
+	git submodule update
+
+to get all the code needed to build the program.
 
 Some license stuff
 ------------------
