@@ -22,7 +22,7 @@
 @interface GLLDocumentWindowController ()
 {
 	NSViewController *ambientLightViewController;
-	GLLBoneViewController *boneTransformViewController;
+	GLLBoneViewController *boneViewController;
 	GLLItemViewController *itemViewController;
 	GLLMeshViewController *meshViewController;
 	NSViewController *lightViewController;
@@ -48,7 +48,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	_managedObjectContext = managedObjectContext;
 	
 	ambientLightViewController = [[NSViewController alloc] initWithNibName:@"GLLAmbientLightView" bundle:[NSBundle mainBundle]];
-	boneTransformViewController = [[GLLBoneViewController alloc] init];
+	boneViewController = [[GLLBoneViewController alloc] init];
 	itemViewController = [[GLLItemViewController alloc] init];
 	meshViewController = [[GLLMeshViewController alloc] init];
 	lightViewController = [[NSViewController alloc] initWithNibName:@"GLLLightView" bundle:[NSBundle mainBundle]];
@@ -228,7 +228,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	
 	id selectedObject = [self.sourceView itemAtRow:selectedRow];
 	if ([selectedObject isKindOfClass:[GLLItemBone class]])
-		[self _setRightHandController:boneTransformViewController representedObject:selectedObject];
+		[self _setRightHandController:boneViewController representedObject:selectedObject];
 	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
 		[self _setRightHandController:meshViewController representedObject:selectedObject];
 	else if ([selectedObject isKindOfClass:[GLLDirectionalLight class]])

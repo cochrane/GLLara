@@ -1,5 +1,5 @@
 //
-//  GLLBoneTransformViewController.h
+//  GLLBoneViewController.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 06.09.12.
