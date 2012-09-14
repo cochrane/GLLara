@@ -63,13 +63,6 @@ struct GLLAlphaTestBlock
 
 @end
 
-static void checkError()
-{
-	GLenum error = glGetError();
-	if (error != GL_NO_ERROR)
-		NSLog(@"error %x", error);
-}
-
 @implementation GLLSceneDrawer
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context view:(GLLView *)view;
@@ -161,9 +154,11 @@ static void checkError()
 	// Other necessary render state. Thanks to Core Profile, that got cut down a lot.
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
-	glClearColor(0.2, 0.2, 0.2, 1);
+	glClearColor(0.2, 0.2, 0.2, 0);
 	
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendColor(0, 0, 0, 1.0);
+	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
+	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
 	
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
@@ -240,6 +235,8 @@ static void checkError()
 	// 3rd pass: Draw blended items, now only those things that are "mostly transparent".
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestPassLessBuffer);
 	
+	glEnable(GL_BLEND);
+	
 	glDepthMask(GL_FALSE);
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[drawer drawAlpha];
@@ -253,7 +250,6 @@ static void checkError()
 
 - (void)renderImageOfSize:(CGSize)size floatComponents:(BOOL)useFloatComponents toColorBuffer:(void *)colorData;
 {
-	checkError();
 	// What is the largest tile that can be rendered?
 	[self.view.openGLContext makeCurrentContext];
 	GLint maxTextureSize, maxRenderbufferSize;
@@ -266,12 +262,10 @@ static void checkError()
 	GLuint framebuffer;
 	glGenFramebuffers(1, &framebuffer);
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-	checkError();
 	
 	GLuint depthRenderbuffer;
 	glGenRenderbuffers(1, &depthRenderbuffer);
 	glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
-	checkError();
 	
 	// Prepare textures
 	GLuint numTextures = ceil(size.width / maxSize) * ceil(size.height / maxSize);
@@ -284,7 +278,6 @@ static void checkError()
 	__block dispatch_semaphore_t downloadReady = dispatch_semaphore_create(0);
 
 	NSOpenGLContext *backgroundLoadingContext = [[NSOpenGLContext alloc] initWithFormat:self.view.pixelFormat shareContext:self.view.openGLContext];
-	checkError();
 
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[backgroundLoadingContext makeCurrentContext];
@@ -299,12 +292,9 @@ static void checkError()
 			glPixelStorei(GL_PACK_ROW_LENGTH, size.width);
 			glPixelStorei(GL_PACK_SKIP_ROWS, row * maxSize);
 			glPixelStorei(GL_PACK_SKIP_PIXELS, column * maxSize);
-			checkError();
 			
 			glBindTexture(GL_TEXTURE_2D, textureNames[downloadedTextures]);
-			checkError();
 			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, useFloatComponents ? GL_FLOAT : GL_UNSIGNED_BYTE, colorData);
-			checkError();
 			
 			glDeleteTextures(1, &textureNames[downloadedTextures]);
 			
@@ -315,7 +305,10 @@ static void checkError()
 
 	mat_float16 cameraMatrix = self.view.camera.viewProjectionMatrix;
 	
+	// Set up state for rendering
+	// We invert drawing here so it comes out right in the file. That makes it necessary to turn cull face around.
 	glCullFace(GL_FRONT);
+	glDisable(GL_MULTISAMPLE);
 	
 	// Render
 	for (NSUInteger y = 0; y < size.height; y += maxSize)
@@ -326,33 +319,19 @@ static void checkError()
 			GLuint width = MIN(size.width - x, maxSize);
 			GLuint height = MIN(size.height - y, maxSize);
 			glViewport(0, 0, width, height);
-			checkError();
 			
 			glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-			checkError();
 			
 			// Setup buffers + textures
 			glBindTexture(GL_TEXTURE_2D, textureNames[finishedTextures]);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, useFloatComponents ? GL_FLOAT : GL_UNSIGNED_BYTE, NULL);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureNames[finishedTextures], 0);
-
-			checkError();
 			
 			glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
 			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
-			checkError();
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
-			checkError();
-			
-			GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-			if (status != GL_FRAMEBUFFER_COMPLETE)
-				NSLog(@"status: %x", status);
-			
-			glDepthMask(GL_TRUE);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			checkError();
-			
-			// Setup matrix.
+									
+			// Setup matrix. First, flip the y direction because OpenGL textures are not the same way around as CGImages. Then, use ortho to select the part that corresponds to the current tile.
 			mat_float16 flipMatrix = (mat_float16) { {1,0,0,0},{0, -1, 0,0}, {0,0,1,0}, {0,0,0,1} };
 			mat_float16 combinedMatrix = simd_mat_mul(flipMatrix, cameraMatrix);
 			mat_float16 partOfCameraMatrix = simd_orthoMatrix((x/size.width)*2.0-1.0, ((x+width)/size.width)*2.0-1.0, (y/size.height)*2.0-1.0, ((y+height)/size.height)*2.0-1.0, 1, -1);
@@ -360,21 +339,19 @@ static void checkError()
 			
 			glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
 			glBufferData(GL_UNIFORM_BUFFER, sizeof(combinedMatrix), &combinedMatrix, GL_STREAM_DRAW);
-			checkError();
+			
+			// Enable blend for entire scene. That way, new alpha are correctly combined with values in the buffer (instead of stupidly overwriting them), giving the rendered image a correct alpha channel. 
+			glEnable(GL_BLEND);
 			
 			[self draw];
-			checkError();
 			
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			glEnable(GL_MULTISAMPLE);
-			checkError();
 
 			glFlush();
 			
 			// Clean up and inform background thread to start loading.
 			finishedTextures += 1;
 			dispatch_semaphore_signal(texturesReady);
-			checkError();
 		}
 	}
 	
@@ -382,6 +359,7 @@ static void checkError()
 	glDeleteFramebuffers(1, &framebuffer);
 	glDeleteRenderbuffers(1, &depthRenderbuffer);
 	glCullFace(GL_BACK);
+	glEnable(GL_MULTISAMPLE);
 	
 	needsUpdateMatrices = YES;
 	self.view.needsDisplay = YES;
