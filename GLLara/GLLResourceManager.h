@@ -12,6 +12,7 @@
 #import <OpenGL/gltypes.h>
 
 @class GLLProgram;
+@class GLLModelProgram;
 @class GLLTexture;
 @class GLLModel;
 @class GLLModelDrawer;
@@ -32,8 +33,12 @@
 @property (nonatomic, readonly) NSOpenGLContext *openGLContext;
 
 - (GLLModelDrawer *)drawerForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
-- (GLLProgram *)programForDescriptor:(GLLShaderDescription *)descriptor error:(NSError *__autoreleasing*)error;
+- (GLLModelProgram *)programForDescriptor:(GLLShaderDescription *)descriptor error:(NSError *__autoreleasing*)error;
 - (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error;
 - (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+
+// Shared programs and buffers that everyone needs sometime
+@property (nonatomic) GLLProgram *squareProgram;
+@property (nonatomic) GLuint squareVertexArray;
 
 @end

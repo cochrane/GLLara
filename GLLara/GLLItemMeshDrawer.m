@@ -14,7 +14,7 @@
 #import "GLLMeshDrawer.h"
 #import "GLLModelMesh.h"
 #import "GLLItemMesh.h"
-#import "GLLProgram.h"
+#import "GLLModelProgram.h"
 #import "GLLRenderParameter.h"
 #import "GLLUniformBlockBindings.h"
 

@@ -11,7 +11,7 @@
 #import <OpenGL/gl3.h>
 
 #import "GLLModelMesh.h"
-#import "GLLProgram.h"
+#import "GLLModelProgram.h"
 #import "GLLVertexFormat.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLResourceManager.h"

@@ -10,10 +10,12 @@
 
 #import "GLLCamera.h"
 #import "GLLView.h"
+#import "GLLRenderAccessoryViewController.h"
 #import "GLLSceneDrawer.h"
 
 @interface GLLRenderWindowController ()
 {
+	GLLRenderAccessoryViewController *savePanelAccessoryViewController;
 	BOOL showingPopover;
 }
 
@@ -29,6 +31,7 @@
 		return nil;
 	
 	_camera = camera;
+	savePanelAccessoryViewController = [[GLLRenderAccessoryViewController alloc] init];
 	
 	return self;
 }
@@ -143,6 +146,61 @@
 	[self.camera removeObserver:self forKeyPath:@"windowSizeLocked"];
 	self.renderView.camera = nil;
 	self.camera = nil;
+}
+
+- (IBAction)renderToFile:(id)sender
+{
+	NSMutableDictionary *saveData = [NSMutableDictionary dictionaryWithDictionary:@{
+									 @"width" : @(self.camera.actualWindowWidth),
+									 @"height" : @(self.camera.actualWindowHeight),
+									 @"maxSamples" : @8,
+									 @"samples": @4,
+									 @"floatPixels" : @NO
+									 }];
+	
+	NSSavePanel *savePanel = [NSSavePanel savePanel];
+	savePanelAccessoryViewController.representedObject = saveData;
+	savePanelAccessoryViewController.savePanel = savePanel;
+	savePanel.accessoryView = savePanelAccessoryViewController.view;
+	
+	savePanel.allowedFileTypes = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
+	
+	[savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+		if (result != NSOKButton) return;
+		
+		NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
+		NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
+		NSUInteger samples = [saveData[@"samples"] unsignedIntegerValue];
+		BOOL floatPixels = [saveData[@"floatPixels"] boolValue];
+		
+		void *data = malloc(width * height * (floatPixels ? 16 : 4));
+		[self.renderView.sceneDrawer renderImageOfSize:CGSizeMake(width, height) floatComponents:floatPixels multisampling:samples toColorBuffer:data];
+		
+		CFDataRef imageData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, data, width * height * (floatPixels ? 16 : 4), kCFAllocatorMalloc);
+		CGDataProviderRef dataProvider = CGDataProviderCreateWithCFData(imageData);
+		CFRelease(imageData);
+		
+		CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+		CGImageRef image = CGImageCreate(width,
+										 height,
+										 floatPixels ? 32 : 8,
+										 floatPixels ? 128 : 32,
+										 floatPixels ? 16 * width : 4 * width,
+										 colorSpace,
+										 kCGImageAlphaLast | (floatPixels ? kCGBitmapFloatComponents : 0),
+										 dataProvider,
+										 NULL,
+										 YES,
+										 kCGRenderingIntentDefault);
+		CGDataProviderRelease(dataProvider);
+		
+		CGImageDestinationRef imageDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef) savePanel.URL, (__bridge CFStringRef) savePanelAccessoryViewController.selectedTypeIdentifier, 1, NULL);
+		CGImageDestinationAddImage(imageDestination, image, NULL);
+		CGImageDestinationFinalize(imageDestination);
+		
+		CGImageRelease(image);
+		CFRelease(imageDestination);
+	}];
 }
 
 @end

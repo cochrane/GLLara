@@ -11,7 +11,7 @@
 #import "simd_types.h"
 
 @class GLLModelMesh;
-@class GLLProgram;
+@class GLLModelProgram;
 @class GLLResourceManager;
 
 /*!
@@ -23,7 +23,7 @@
 - (id)initWithMesh:(GLLModelMesh *)mesh resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, retain, readonly) GLLModelMesh *modelMesh;
-@property (nonatomic, retain, readonly) GLLProgram *program;
+@property (nonatomic, retain, readonly) GLLModelProgram *program;
 @property (nonatomic, copy, readonly) NSArray *textures;
 
 - (void)draw;

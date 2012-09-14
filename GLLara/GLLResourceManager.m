@@ -12,9 +12,10 @@
 
 #import "GLLModel.h"
 #import "GLLModelDrawer.h"
-#import "GLLProgram.h"
+#import "GLLModelProgram.h"
 #import "GLLShader.h"
 #import "GLLShaderDescription.h"
+#import "GLLSquareProgram.h"
 #import "GLLTexture.h"
 
 @interface GLLResourceManager ()
@@ -71,7 +72,7 @@ static GLLResourceManager *sharedManager;
 		[drawer unload];
 	for (GLLTexture *texture in textures.allValues)
 		[texture unload];
-	for (GLLProgram *program in programs.allValues)
+	for (GLLModelProgram *program in programs.allValues)
 		[program unload];
 	for (GLLShader *shader in shaders.allValues)
 		[shader unload];
@@ -103,7 +104,7 @@ static GLLResourceManager *sharedManager;
 	return result;
 }
 
-- (GLLProgram *)programForDescriptor:(GLLShaderDescription *)description error:(NSError *__autoreleasing*)error;
+- (GLLModelProgram *)programForDescriptor:(GLLShaderDescription *)description error:(NSError *__autoreleasing*)error;
 {
 	NSAssert(description != nil, @"Empty shader descriptor passed in. This should never happen.");
 	
@@ -112,7 +113,7 @@ static GLLResourceManager *sharedManager;
 	{
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLProgram alloc] initWithDescriptor:description resourceManager:self error:error];
+		result = [[GLLModelProgram alloc] initWithDescriptor:description resourceManager:self error:error];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;
@@ -167,6 +168,49 @@ static GLLResourceManager *sharedManager;
 		[shaders setObject:result forKey:shaderName];
 	}
 	return result;
+}
+
+- (GLLProgram *)squareProgram
+{
+	if (!_squareProgram)
+	{
+		NSError *error = nil;
+		
+		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
+		[self.openGLContext makeCurrentContext];
+		_squareProgram = [[GLLSquareProgram alloc] initWithResourceManager:self error:&error];
+		[previous makeCurrentContext];
+		
+		NSAssert(_squareProgram, @"Could not load square program because of %@", error);
+	}
+	return _squareProgram;
+}
+
+- (GLuint)squareVertexArray
+{
+	if (!_squareVertexArray)
+	{
+		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
+		[self.openGLContext makeCurrentContext];
+		
+		glGenVertexArrays(1, &_squareVertexArray);
+		glBindVertexArray(_squareVertexArray);
+		GLuint squareVBO;
+		glGenBuffers(1, &squareVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, squareVBO);
+		float coords[] = {
+			-1.0f, -1.0f,
+			1.0f, -1.0f,
+			-1.0f, 1.0f,
+			1.0f, 1.0f
+		};
+		glBufferData(GL_ARRAY_BUFFER, sizeof(coords), coords, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat [2]), NULL);
+		
+		[previous makeCurrentContext];
+	}
+	return _squareVertexArray;
 }
 
 #pragma mark - Private methods

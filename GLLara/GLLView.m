@@ -41,6 +41,7 @@
 	
 	NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
 	NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:format shareContext:[[GLLResourceManager sharedResourceManager] openGLContext]];
+	[self setPixelFormat:format];
 	[self setOpenGLContext:context];
 	[context setView:self];
 	[self setWantsBestResolutionOpenGLSurface:YES];

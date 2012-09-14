@@ -28,5 +28,6 @@
 @property (nonatomic, retain) IBOutlet NSButton *popoverButton;
 
 - (IBAction)showPopoverFrom:(id)sender;
+- (IBAction)renderToFile:(id)sender;
 
 @end

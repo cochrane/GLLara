@@ -17,7 +17,7 @@
 #import "GLLDirectionalLight.h"
 #import "GLLItem.h"
 #import "GLLItemDrawer.h"
-#import "GLLProgram.h"
+#import "GLLModelProgram.h"
 #import "GLLRenderParameter.h"
 #import "GLLResourceManager.h"
 #import "GLLUniformBlockBindings.h"
@@ -62,6 +62,13 @@ struct GLLAlphaTestBlock
 - (void)_updateLights;
 
 @end
+
+static void checkError()
+{
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR)
+		NSLog(@"error %x", error);
+}
 
 @implementation GLLSceneDrawer
 
@@ -246,31 +253,44 @@ struct GLLAlphaTestBlock
 
 - (void)renderImageOfSize:(CGSize)size floatComponents:(BOOL)useFloatComponents multisampling:(NSUInteger)samples toColorBuffer:(void *)colorData;
 {
+	checkError();
 	// What is the largest tile that can be rendered?
 	[self.view.openGLContext makeCurrentContext];
 	GLint maxTextureSize, maxRenderbufferSize;
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
 	glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &maxRenderbufferSize);
-	GLint maxSize = MIN(maxTextureSize, maxRenderbufferSize);
+	// Divide max size by 2; it seems some GPUs run out of steam otherwise.
+	GLint maxSize = MIN(maxTextureSize, maxRenderbufferSize) / 2;
 	
 	// Prepare framebuffer (without texture; a new one is created for every tile)
-	GLuint framebuffer;
-	glGenFramebuffers(1, &framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	GLuint multisampleFramebuffer;
+	glGenFramebuffers(1, &multisampleFramebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, multisampleFramebuffer);
+	checkError();
 	
 	GLuint depthRenderbuffer;
 	glGenRenderbuffers(1, &depthRenderbuffer);
 	glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+	checkError();
 	
-	// Pepare background thread. This waits until textures are done, then loads them into colorData.
+	GLuint secondPassFramebuffer;
+	glGenFramebuffers(1, &secondPassFramebuffer);
+	
+	// Prepare textures
 	GLuint numTextures = ceil(size.width / maxSize) * ceil(size.height / maxSize);
 	GLuint *textureNames = calloc(sizeof(GLuint), numTextures);
 	glGenTextures(numTextures, textureNames);
+	GLuint multisampledTexture;
+	glGenTextures(1, &multisampledTexture);
+		
+	// Pepare background thread. This waits until textures are done, then loads them into colorData.
 	__block NSUInteger finishedTextures = 0;
 	__block dispatch_semaphore_t texturesReady = dispatch_semaphore_create(0);
 	__block dispatch_semaphore_t downloadReady = dispatch_semaphore_create(0);
+
 	NSOpenGLContext *backgroundLoadingContext = [[NSOpenGLContext alloc] initWithFormat:self.view.pixelFormat shareContext:self.view.openGLContext];
-	
+	checkError();
+
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[backgroundLoadingContext makeCurrentContext];
 		NSUInteger downloadedTextures = 0;
@@ -282,11 +302,14 @@ struct GLLAlphaTestBlock
 			GLint column = (GLint) downloadedTextures % (GLint) ceil(size.width / maxSize);
 			
 			glPixelStorei(GL_PACK_ROW_LENGTH, size.width);
-			glPixelStorei(GL_PACK_SKIP_ROWS, row * size.width * maxSize);
+			glPixelStorei(GL_PACK_SKIP_ROWS, row * maxSize);
 			glPixelStorei(GL_PACK_SKIP_PIXELS, column * maxSize);
+			checkError();
 			
 			glBindTexture(GL_TEXTURE_2D, textureNames[downloadedTextures]);
+			checkError();
 			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, useFloatComponents ? GL_FLOAT : GL_UNSIGNED_BYTE, colorData);
+			checkError();
 			
 			downloadedTextures += 1;
 		}
@@ -295,6 +318,7 @@ struct GLLAlphaTestBlock
 	});
 
 	mat_float16 cameraMatrix = self.view.camera.viewProjectionMatrix;
+	glDisable(GL_MULTISAMPLE);
 	
 	// Render
 	for (NSUInteger y = 0; y < size.height; y += maxSize)
@@ -305,32 +329,106 @@ struct GLLAlphaTestBlock
 			GLuint width = MIN(size.width - x, maxSize);
 			GLuint height = MIN(size.height - y, maxSize);
 			glViewport(0, 0, width, height);
+			checkError();
+			
+			glBindFramebuffer(GL_FRAMEBUFFER, multisampleFramebuffer);
+			checkError();
 			
 			// Setup buffers + textures
-			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, textureNames[finishedTextures]);
-			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, (GLuint) samples, GL_RGBA, width, height, GL_TRUE);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, textureNames[finishedTextures], 0);
+			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, multisampledTexture);
+		//	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, (GLuint) samples, GL_RGBA, width, height, GL_TRUE);
+		//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, multisampledTexture, 0);
+
+			glBindTexture(GL_TEXTURE_2D, textureNames[finishedTextures]);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureNames[finishedTextures], 0);
+
+			checkError();
 			
 			glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
-			glRenderbufferStorageMultisample(GL_RENDERBUFFER, (GLuint) samples, GL_DEPTH_COMPONENT24, width, height);
-			glFramebufferRenderbuffer(GL_RENDERBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+		//	glRenderbufferStorageMultisample(GL_RENDERBUFFER, (GLuint) samples, GL_DEPTH_COMPONENT24, width, height);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+			checkError();
+			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+			checkError();
+			
+			GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+			if (status != GL_FRAMEBUFFER_COMPLETE)
+				NSLog(@"status: %x", status);
+			
+			glDepthMask(GL_TRUE);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			checkError();
 			
 			// Setup matrix.
+			mat_float16 flipMatrix = (mat_float16) { {-1,0,0,0},{0, -1, 0,0}, {0,0,-1,0}, {0,0,0,1} };
+			mat_float16 combinedMatrix = simd_mat_mul(flipMatrix, cameraMatrix);
 			mat_float16 partOfCameraMatrix = simd_orthoMatrix((x/size.width)*2.0-1.0, ((x+width)/size.width)*2.0-1.0, (y/size.height)*2.0-1.0, ((y+height)/size.height)*2.0-1.0, -1, 1);
-			mat_float16 combinedMatrix = simd_mat_mul(partOfCameraMatrix, cameraMatrix);
+			combinedMatrix = simd_mat_mul(partOfCameraMatrix, combinedMatrix);
 			
 			glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
 			glBufferData(GL_UNIFORM_BUFFER, sizeof(combinedMatrix), &combinedMatrix, GL_STREAM_DRAW);
+			checkError();
 			
+			[self draw];
+			checkError();
+			
+			// Second pass: Draw into single buffer
+//			glBindTexture(GL_TEXTURE_2D, textureNames[finishedTextures]);
+//			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+//			
+//			glBindFramebuffer(GL_FRAMEBUFFER, secondPassFramebuffer);
+//			checkError();
+//			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureNames[finishedTextures], 0);
+//			checkError();
+//			glDepthMask(GL_FALSE);
+//			checkError();
+//			glDisable(GL_DEPTH_TEST);
+//			checkError();
+//			
+//			glUseProgram(self.resourceManager.squareProgram.programID);
+//			checkError();
+//			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, multisampledTexture);
+//			checkError();
+//			glBindVertexArray(self.resourceManager.squareVertexArray);
+//			checkError();
+//			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+//			checkError();
+			
+			glDepthMask(GL_TRUE);
+			glEnable(GL_DEPTH_TEST);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			checkError();
+			
+//			glPixelStorei(GL_PACK_ROW_LENGTH, size.width);
+//			checkError();
+//			glPixelStorei(GL_PACK_SKIP_ROWS, (GLint) y);
+//			checkError();
+//			glPixelStorei(GL_PACK_SKIP_PIXELS, (GLint) x);
+//			checkError();
+//
+//			glBindTexture(GL_TEXTURE_2D, textureNames[finishedTextures]);
+//			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, useFloatComponents ? GL_FLOAT : GL_UNSIGNED_BYTE, colorData);
+//			checkError();
+
+			glFlush();
+			
+			// Clean up and inform background thread to start loading.
 			finishedTextures += 1;
 			dispatch_semaphore_signal(texturesReady);
+			checkError();
 		}
 	}
 	
 	dispatch_semaphore_wait(downloadReady, DISPATCH_TIME_FOREVER);
 	glDeleteTextures(numTextures, textureNames);
-	glDeleteFramebuffers(1, &framebuffer);
+	glDeleteTextures(1, &multisampledTexture);
+	glDeleteFramebuffers(1, &multisampleFramebuffer);
 	glDeleteRenderbuffers(1, &depthRenderbuffer);
+	glEnable(GL_MULTISAMPLE);
+	
+	needsUpdateMatrices = YES;
+	self.view.needsDisplay = YES;
 }
 
 #pragma mark - Private methods

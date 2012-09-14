@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		521326351602ACBE00787AA1 /* GLLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 521326341602ACBE00787AA1 /* GLLProgram.m */; };
+		521326391602B19700787AA1 /* Square.fs in Resources */ = {isa = PBXBuildFile; fileRef = 521326381602B19700787AA1 /* Square.fs */; };
+		5213263B1602B1AA00787AA1 /* Square.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5213263A1602B1AA00787AA1 /* Square.vs */; };
+		5213263E1602BB8000787AA1 /* GLLSquareProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213263D1602BB8000787AA1 /* GLLSquareProgram.m */; };
 		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
 		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
 		5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */; };
@@ -43,7 +47,7 @@
 		529693F815F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */; };
 		529693FA15F36DDB00DF2FA3 /* lara.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */; };
 		529693FE15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */; };
-		5296940115F3881B00DF2FA3 /* GLLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296940015F3881B00DF2FA3 /* GLLProgram.m */; };
+		5296940115F3881B00DF2FA3 /* GLLModelProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296940015F3881B00DF2FA3 /* GLLModelProgram.m */; };
 		5296940415F3893200DF2FA3 /* GLLShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296940315F3893200DF2FA3 /* GLLShader.m */; };
 		5296942415F411CC00DF2FA3 /* GLLModelDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296942315F411CC00DF2FA3 /* GLLModelDrawer.m */; };
 		5296942815F4139300DF2FA3 /* GLLItemDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296942715F4139300DF2FA3 /* GLLItemDrawer.m */; };
@@ -119,6 +123,8 @@
 		52C9F61D1600A8D3003272E1 /* GLLModelMeshObj.mm in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F61C1600A8D3003272E1 /* GLLModelMeshObj.mm */; };
 		52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.m */; };
 		52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.m */; };
+		52D3D72516029699006CB743 /* GLLRenderAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D3D72316029699006CB743 /* GLLRenderAccessoryView.xib */; };
+		52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */; };
 		52D6A09815F8B0F7002A0BB4 /* GLLMeshView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A09615F8B0F7002A0BB4 /* GLLMeshView.xib */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m */; };
@@ -156,6 +162,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		521326331602ACBE00787AA1 /* GLLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = GLLProgram.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
+		521326341602ACBE00787AA1 /* GLLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GLLProgram.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
+		521326381602B19700787AA1 /* Square.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Square.fs; sourceTree = "<group>"; };
+		5213263A1602B1AA00787AA1 /* Square.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Square.vs; sourceTree = "<group>"; };
+		5213263C1602BB8000787AA1 /* GLLSquareProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSquareProgram.h; sourceTree = "<group>"; };
+		5213263D1602BB8000787AA1 /* GLLSquareProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSquareProgram.m; sourceTree = "<group>"; };
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
 		5224C8E415FA4F18002A6C76 /* GLLDirectionalLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDirectionalLight.h; sourceTree = "<group>"; };
 		5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDirectionalLight.m; sourceTree = "<group>"; };
@@ -221,8 +233,8 @@
 		529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara.modelparams.plist; sourceTree = "<group>"; };
 		529693FB15F3781100DF2FA3 /* Render parameters.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Render parameters.md"; sourceTree = "<group>"; };
 		529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_bikini_blue.modelparams.plist; sourceTree = "<group>"; };
-		529693FF15F3881A00DF2FA3 /* GLLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLProgram.h; sourceTree = "<group>"; };
-		5296940015F3881B00DF2FA3 /* GLLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLProgram.m; sourceTree = "<group>"; };
+		529693FF15F3881A00DF2FA3 /* GLLModelProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelProgram.h; sourceTree = "<group>"; };
+		5296940015F3881B00DF2FA3 /* GLLModelProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelProgram.m; sourceTree = "<group>"; };
 		5296940215F3893100DF2FA3 /* GLLShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLShader.h; sourceTree = "<group>"; };
 		5296940315F3893200DF2FA3 /* GLLShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLShader.m; sourceTree = "<group>"; };
 		5296940615F3919A00DF2FA3 /* Basic.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Basic.vs; sourceTree = "<group>"; };
@@ -332,6 +344,9 @@
 		52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLFloatRenderParameter.m; sourceTree = "<group>"; };
 		52C9F6211600CCFC003272E1 /* GLLColorRenderParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLColorRenderParameter.h; sourceTree = "<group>"; };
 		52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLColorRenderParameter.m; sourceTree = "<group>"; };
+		52D3D72316029699006CB743 /* GLLRenderAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLRenderAccessoryView.xib; sourceTree = "<group>"; };
+		52D3D72716029BD8006CB743 /* GLLRenderAccessoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderAccessoryViewController.h; sourceTree = "<group>"; };
+		52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderAccessoryViewController.m; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshViewController.m; sourceTree = "<group>"; };
 		52D6A09615F8B0F7002A0BB4 /* GLLMeshView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLMeshView.xib; sourceTree = "<group>"; };
@@ -373,6 +388,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		521326371602B17800787AA1 /* Internal use only */ = {
+			isa = PBXGroup;
+			children = (
+				521326381602B19700787AA1 /* Square.fs */,
+				5213263A1602B1AA00787AA1 /* Square.vs */,
+			);
+			name = "Internal use only";
+			sourceTree = "<group>";
+		};
 		525ACD3C15F0F1A700534E7D = {
 			isa = PBXGroup;
 			children = (
@@ -550,6 +574,7 @@
 		5296940515F38FFA00DF2FA3 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				521326371602B17800787AA1 /* Internal use only */,
 				5296940615F3919A00DF2FA3 /* Basic.vs */,
 				5296940D15F3935E00DF2FA3 /* Bump.vs */,
 				5296941615F3EC9B00DF2FA3 /* Diffuse.fs */,
@@ -643,13 +668,17 @@
 			children = (
 				529692E715F28BFB00DF2FA3 /* GLLTexture.h */,
 				529692E815F28BFB00DF2FA3 /* GLLTexture.m */,
-				529693FF15F3881A00DF2FA3 /* GLLProgram.h */,
-				5296940015F3881B00DF2FA3 /* GLLProgram.m */,
+				521326331602ACBE00787AA1 /* GLLProgram.h */,
+				521326341602ACBE00787AA1 /* GLLProgram.m */,
+				529693FF15F3881A00DF2FA3 /* GLLModelProgram.h */,
+				5296940015F3881B00DF2FA3 /* GLLModelProgram.m */,
 				5296940215F3893100DF2FA3 /* GLLShader.h */,
 				5296940315F3893200DF2FA3 /* GLLShader.m */,
 				5296943715F4285500DF2FA3 /* GLLUniformBlockBindings.h */,
 				5296944715F565D000DF2FA3 /* GLLResourceManager.h */,
 				5296944815F565D100DF2FA3 /* GLLResourceManager.m */,
+				5213263C1602BB8000787AA1 /* GLLSquareProgram.h */,
+				5213263D1602BB8000787AA1 /* GLLSquareProgram.m */,
 			);
 			name = "Render resources";
 			sourceTree = "<group>";
@@ -709,6 +738,9 @@
 				52C9F60D15FF1753003272E1 /* GLLItemView.xib */,
 				5291DB9715FBF97000ECDBCA /* GLLAmbientLightView.xib */,
 				52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib */,
+				52D3D72316029699006CB743 /* GLLRenderAccessoryView.xib */,
+				52D3D72716029BD8006CB743 /* GLLRenderAccessoryViewController.h */,
+				52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -822,6 +854,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				521326391602B19700787AA1 /* Square.fs in Resources */,
+				5213263B1602B1AA00787AA1 /* Square.vs in Resources */,
 				52B9E07D16020A8300641518 /* DiffuseOBJ.fs in Resources */,
 				52B9E07F16021ECD00641518 /* DiffuseNormalOBJ.fs in Resources */,
 				5291DB8215FBB33400ECDBCA /* MetallicBump3.fs in Resources */,
@@ -883,6 +917,7 @@
 				52B9E0C41602817000641518 /* InfoPlist.strings in Resources */,
 				52B9E0C51602817000641518 /* Localizable.strings in Resources */,
 				52B9E0C61602817000641518 /* MainMenu.strings in Resources */,
+				52D3D72516029699006CB743 /* GLLRenderAccessoryView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -944,7 +979,7 @@
 				529692F015F28D0F00DF2FA3 /* OpenDDSFile.c in Sources */,
 				529693F215F2A77F00DF2FA3 /* GLLModelParams.m in Sources */,
 				529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */,
-				5296940115F3881B00DF2FA3 /* GLLProgram.m in Sources */,
+				5296940115F3881B00DF2FA3 /* GLLModelProgram.m in Sources */,
 				5296940415F3893200DF2FA3 /* GLLShader.m in Sources */,
 				5296942415F411CC00DF2FA3 /* GLLModelDrawer.m in Sources */,
 				5296942815F4139300DF2FA3 /* GLLItemDrawer.m in Sources */,
@@ -976,6 +1011,9 @@
 				52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */,
 				52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */,
 				52B9E0A61602800300641518 /* DMLocalizedNibBundle.m in Sources */,
+				52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */,
+				521326351602ACBE00787AA1 /* GLLProgram.m in Sources */,
+				5213263E1602BB8000787AA1 /* GLLSquareProgram.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1212,6 +1250,7 @@
 				52B9E0A016027FC800641518 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
