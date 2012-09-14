@@ -24,7 +24,7 @@
 
 @property (nonatomic, retain) IBOutlet NSOutlineView *sourceView;
 @property (nonatomic, retain) IBOutlet NSView *placeholderView;
-- (IBAction)loadMesh:(id)sender;
+
 - (IBAction)removeSelectedMesh:(id)sender;
 
 @end

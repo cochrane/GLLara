@@ -13,6 +13,8 @@
 #import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
 #import "GLLDocumentWindowController.h"
+#import "GLLItem.h"
+#import "GLLModel.h"
 #import "GLLRenderWindowController.h"
 
 @interface GLLDocument ()
@@ -101,6 +103,26 @@
 	GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera];
 	[self addWindowController:controller];
 	[controller showWindow:sender];
+}
+- (IBAction)loadMesh:(id)sender;
+{
+	NSOpenPanel *panel = [NSOpenPanel openPanel];
+	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj" ];
+	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
+		if (result != NSOKButton) return;
+		
+		NSError *error = nil;
+		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL error:&error];
+		
+		if (!model)
+		{
+			[self.windowForSheet presentError:error];
+			return;
+		}
+		
+		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
+		newItem.model = model;
+	}];
 }
 
 @end

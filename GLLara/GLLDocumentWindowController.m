@@ -102,26 +102,6 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 #pragma mark - Actions
 
-- (IBAction)loadMesh:(id)sender;
-{
-	NSOpenPanel *panel = [NSOpenPanel openPanel];
-	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj" ];
-	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
-		
-		NSError *error = nil;
-		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL error:&error];
-		
-		if (!model)
-		{
-			[self.window presentError:error];
-			return;
-		}
-				
-		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
-		newItem.model = model;
-	}];
-}
 - (IBAction)removeSelectedMesh:(id)sender;
 {
 	NSUInteger selectedRow = self.sourceView.selectedRow;

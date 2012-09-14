@@ -18,5 +18,6 @@
 @interface GLLDocument : NSPersistentDocument
 
 - (IBAction)openNewRenderView:(id)sender;
+- (IBAction)loadMesh:(id)sender;
 
 @end
