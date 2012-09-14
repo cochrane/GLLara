@@ -169,34 +169,7 @@
 		NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
 		NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
 		
-		void *data = malloc(width * height * 4);
-		[self.renderView.sceneDrawer renderImageOfSize:CGSizeMake(width, height) toColorBuffer:data];
-		
-		CFDataRef imageData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, data, width * height * 4, kCFAllocatorMalloc);
-		CGDataProviderRef dataProvider = CGDataProviderCreateWithCFData(imageData);
-		CFRelease(imageData);
-		
-		CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
-		CGImageRef image = CGImageCreate(width,
-										 height,
-										 8,
-										 32,
-										 4 * width,
-										 colorSpace,
-										 kCGImageAlphaLast,
-										 dataProvider,
-										 NULL,
-										 YES,
-										 kCGRenderingIntentDefault);
-		
-		CGDataProviderRelease(dataProvider);
-		
-		CGImageDestinationRef imageDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef) savePanel.URL, (__bridge CFStringRef) savePanelAccessoryViewController.selectedTypeIdentifier, 1, NULL);
-		CGImageDestinationAddImage(imageDestination, image, NULL);
-		CGImageDestinationFinalize(imageDestination);
-		
-		CGImageRelease(image);
-		CFRelease(imageDestination);
+		[self.renderView.sceneDrawer writeImageToURL:savePanel.URL fileType:savePanelAccessoryViewController.selectedTypeIdentifier size:CGSizeMake(width, height)];
 	}];
 }
 

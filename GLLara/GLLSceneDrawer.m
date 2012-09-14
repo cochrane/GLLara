@@ -248,6 +248,41 @@ struct GLLAlphaTestBlock
 
 #pragma mark - Image rendering
 
+- (void)writeImageToURL:(NSURL *)url fileType:(NSString *)type size:(CGSize)size;
+{
+	NSUInteger dataSize = size.width * size.height * 4;
+	void *data = malloc(dataSize);
+	[self renderImageOfSize:size toColorBuffer:data];
+	
+	CFDataRef imageData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, data, dataSize, kCFAllocatorMalloc);
+	CGDataProviderRef dataProvider = CGDataProviderCreateWithCFData(imageData);
+	CFRelease(imageData);
+	
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
+	CGImageRef image = CGImageCreate(size.width,
+									 size.height,
+									 8,
+									 32,
+									 4 * size.width,
+									 colorSpace,
+									 kCGImageAlphaLast,
+									 dataProvider,
+									 NULL,
+									 YES,
+									 kCGRenderingIntentDefault);
+	
+	CGDataProviderRelease(dataProvider);
+	CGColorSpaceRelease(colorSpace);
+	
+	CGImageDestinationRef imageDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef) url, (__bridge CFStringRef) type, 1, NULL);
+	CGImageDestinationAddImage(imageDestination, image, NULL);
+	CGImageDestinationFinalize(imageDestination);
+	
+	CGImageRelease(image);
+	CFRelease(imageDestination);
+
+}
+
 - (void)renderImageOfSize:(CGSize)size toColorBuffer:(void *)colorData;
 {
 	// What is the largest tile that can be rendered?
