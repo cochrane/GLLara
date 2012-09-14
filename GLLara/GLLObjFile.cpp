@@ -33,6 +33,21 @@ std::string stringFromFileURL(CFURLRef fileURL)
 	return result;
 }
 
+CFURLRef urlFromString(const std::string &string, CFURLRef relativeTo)
+{
+	std::string path = string;
+	
+	// Is this possibly a windows path?
+	if (string.size() > 2 && string[1] == ':' && string[2] == '\\')
+	{
+		// It is! Take only the last component
+		size_t lastBackslash = string.find_last_of('\\');
+		path = string.substr(lastBackslash+1);
+	}
+	path.erase(path.find_last_not_of(" \n\r\t")+1);
+	return CFURLCreateWithBytes(kCFAllocatorDefault, (UInt8 *)path.c_str(), path.size(), kCFStringEncodingUTF8, relativeTo);
+}
+
 bool GLLObjFile::IndexSet::operator<(const GLLObjFile::IndexSet &other) const
 {
 	if (vertex < other.vertex) return true;
@@ -167,26 +182,11 @@ void GLLObjFile::parseMaterialLibrary(CFURLRef location)
 		else if (token == "Ns")
 			sscanf(line.c_str(), "Ns %f", &currentMaterial->shininess);
 		else if (token == "map_Kd")
-		{
-			std::string textureName;
-			linestream >> textureName;
-			
-			currentMaterial->diffuseTexture = CFURLCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)textureName.c_str(), (CFIndex) textureName.size(), kCFStringEncodingUTF8, location);
-		}
+			currentMaterial->diffuseTexture = urlFromString(line.substr(token.size() + 1), location);
 		else if (token == "map_Ks")
-		{
-			std::string textureName;
-			linestream >> textureName;
-			
-			currentMaterial->specularTexture = CFURLCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)textureName.c_str(), (CFIndex) textureName.size(), kCFStringEncodingUTF8, location);
-		}
+			currentMaterial->specularTexture = urlFromString(line.substr(token.size() + 1), location);
 		else if (token == "map_Kn" || token == "bump" || token == "map_bump")
-		{
-			std::string textureName;
-			linestream >> textureName;
-			
-			currentMaterial->normalTexture = CFURLCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)textureName.c_str(), (CFIndex) textureName.size(), kCFStringEncodingUTF8, location);
-		}
+			currentMaterial->normalTexture = urlFromString(line.substr(token.size() + 1), location);
 	}
 	
 	// Wrap up final material
@@ -272,11 +272,7 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 		{
 			try
 			{
-				std::string filename;
-				linestream >> filename;
-				
-				CFURLRef mtllibLocation = CFURLCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)filename.c_str(), (CFIndex) filename.size(), kCFStringEncodingUTF8, location);
-				
+				CFURLRef mtllibLocation = urlFromString(line.substr(token.size() + 1), location);
 				parseMaterialLibrary(mtllibLocation);
 				CFRelease(mtllibLocation);
 			}
