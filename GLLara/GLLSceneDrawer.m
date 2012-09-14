@@ -338,7 +338,7 @@ struct GLLAlphaTestBlock
 		dispatch_semaphore_signal(downloadReady);
 	});
 
-	mat_float16 cameraMatrix = self.view.camera.viewProjectionMatrix;
+	mat_float16 cameraMatrix = [self.view.camera viewProjectionMtrixForAspectRatio:size.width / size.height];
 	
 	// Set up state for rendering
 	// We invert drawing here so it comes out right in the file. That makes it necessary to turn cull face around.
@@ -391,6 +391,7 @@ struct GLLAlphaTestBlock
 	}
 	
 	dispatch_semaphore_wait(downloadReady, DISPATCH_TIME_FOREVER);
+	glViewport(0, 0, self.view.camera.actualWindowWidth, self.view.camera.actualWindowHeight);
 	glDeleteFramebuffers(1, &framebuffer);
 	glDeleteRenderbuffers(1, &depthRenderbuffer);
 	glCullFace(GL_BACK);

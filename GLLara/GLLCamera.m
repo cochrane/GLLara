@@ -77,6 +77,17 @@
 	[self setPrimitiveValue:[self valueForKey:@"actualWindowHeight"] forKey:@"windowHeight"];
 }
 
+- (void)setLongitude:(double)longitude
+{
+	[self willChangeValueForKey:@"longitude"];
+	
+	double inRange = fmod(longitude, 2*M_PI);
+	if (inRange < 0.0) inRange += 2*M_PI;
+	
+	[self setPrimitiveValue:@(inRange) forKey:@"longitude"];
+	[self didChangeValueForKey:@"longitude"];
+}
+
 - (double)latestWindowWidth
 {
 	return self.actualWindowWidth;
@@ -136,19 +147,24 @@
 	return targetPosition - viewDirection * simd_splatf(self.distance);
 }
 
-- (mat_float16)viewProjectionMatrix
+- (mat_float16)viewProjectionMtrixForAspectRatio:(float)aspect;
 {
-	mat_float16 projection = simd_frustumMatrix(self.fieldOfViewY, self.actualWindowWidth / self.actualWindowHeight, self.nearDistance, self.farDistance);
+	mat_float16 projection = simd_frustumMatrix(self.fieldOfViewY, aspect, self.nearDistance, self.farDistance);
 	
 	vec_float4 targetPosition = self.target ? self.target.position : simd_make( self.positionX, self.positionY, self.positionZ, 1.0f );
 	
 	vec_float4 viewDirection = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
-
+	
 	vec_float4 position = targetPosition - viewDirection * simd_splatf(self.distance);
 	
 	mat_float16 lookat = simd_mat_lookat(viewDirection, position);
 	
 	return simd_mat_mul(projection, lookat);
+}
+
+- (mat_float16)viewProjectionMatrix
+{
+	return [self viewProjectionMtrixForAspectRatio:self.actualWindowWidth / self.actualWindowHeight];
 }
 
 #pragma mark - Private methods

@@ -47,4 +47,7 @@
 @property (nonatomic, readonly) mat_float16 viewProjectionMatrix;
 @property (nonatomic, readonly) vec_float4 cameraWorldPosition;
 
+// Used by the render to image functionality
+- (mat_float16)viewProjectionMtrixForAspectRatio:(float)aspect;
+
 @end
