@@ -154,7 +154,6 @@
 									 @"width" : @(self.camera.actualWindowWidth),
 									 @"height" : @(self.camera.actualWindowHeight),
 									 @"maxSamples" : @8,
-									 @"floatPixels" : @NO
 									 }];
 	
 	NSSavePanel *savePanel = [NSSavePanel savePanel];
@@ -169,27 +168,27 @@
 		
 		NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
 		NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
-		BOOL floatPixels = [saveData[@"floatPixels"] boolValue];
 		
-		void *data = malloc(width * height * (floatPixels ? 16 : 4));
-		[self.renderView.sceneDrawer renderImageOfSize:CGSizeMake(width, height) floatComponents:floatPixels toColorBuffer:data];
+		void *data = malloc(width * height * 4);
+		[self.renderView.sceneDrawer renderImageOfSize:CGSizeMake(width, height) toColorBuffer:data];
 		
-		CFDataRef imageData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, data, width * height * (floatPixels ? 16 : 4), kCFAllocatorMalloc);
+		CFDataRef imageData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, data, width * height * 4, kCFAllocatorMalloc);
 		CGDataProviderRef dataProvider = CGDataProviderCreateWithCFData(imageData);
 		CFRelease(imageData);
 		
 		CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
 		CGImageRef image = CGImageCreate(width,
 										 height,
-										 floatPixels ? 32 : 8,
-										 floatPixels ? 128 : 32,
-										 floatPixels ? 16 * width : 4 * width,
+										 8,
+										 32,
+										 4 * width,
 										 colorSpace,
-										 kCGImageAlphaLast | (floatPixels ? kCGBitmapFloatComponents : 0),
+										 kCGImageAlphaLast,
 										 dataProvider,
 										 NULL,
 										 YES,
 										 kCGRenderingIntentDefault);
+		
 		CGDataProviderRelease(dataProvider);
 		
 		CGImageDestinationRef imageDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef) savePanel.URL, (__bridge CFStringRef) savePanelAccessoryViewController.selectedTypeIdentifier, 1, NULL);

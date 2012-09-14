@@ -23,6 +23,6 @@
 - (void)draw;
 
 // Basic support for render to file
-- (void)renderImageOfSize:(CGSize)size floatComponents:(BOOL)useFloatComponents toColorBuffer:(void *)colorData;
+- (void)renderImageOfSize:(CGSize)size toColorBuffer:(void *)colorData;
 
 @end

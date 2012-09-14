@@ -248,7 +248,7 @@ struct GLLAlphaTestBlock
 
 #pragma mark - Image rendering
 
-- (void)renderImageOfSize:(CGSize)size floatComponents:(BOOL)useFloatComponents toColorBuffer:(void *)colorData;
+- (void)renderImageOfSize:(CGSize)size toColorBuffer:(void *)colorData;
 {
 	// What is the largest tile that can be rendered?
 	[self.view.openGLContext makeCurrentContext];
@@ -294,7 +294,7 @@ struct GLLAlphaTestBlock
 			glPixelStorei(GL_PACK_SKIP_PIXELS, column * maxSize);
 			
 			glBindTexture(GL_TEXTURE_2D, textureNames[downloadedTextures]);
-			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, useFloatComponents ? GL_FLOAT : GL_UNSIGNED_BYTE, colorData);
+			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, colorData);
 			
 			glDeleteTextures(1, &textureNames[downloadedTextures]);
 			
@@ -324,7 +324,7 @@ struct GLLAlphaTestBlock
 			
 			// Setup buffers + textures
 			glBindTexture(GL_TEXTURE_2D, textureNames[finishedTextures]);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, useFloatComponents ? GL_FLOAT : GL_UNSIGNED_BYTE, NULL);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureNames[finishedTextures], 0);
 			
 			glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
