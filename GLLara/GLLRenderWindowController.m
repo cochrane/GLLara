@@ -154,7 +154,6 @@
 									 @"width" : @(self.camera.actualWindowWidth),
 									 @"height" : @(self.camera.actualWindowHeight),
 									 @"maxSamples" : @8,
-									 @"samples": @4,
 									 @"floatPixels" : @NO
 									 }];
 	
@@ -170,17 +169,16 @@
 		
 		NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
 		NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
-		NSUInteger samples = [saveData[@"samples"] unsignedIntegerValue];
 		BOOL floatPixels = [saveData[@"floatPixels"] boolValue];
 		
 		void *data = malloc(width * height * (floatPixels ? 16 : 4));
-		[self.renderView.sceneDrawer renderImageOfSize:CGSizeMake(width, height) floatComponents:floatPixels multisampling:samples toColorBuffer:data];
+		[self.renderView.sceneDrawer renderImageOfSize:CGSizeMake(width, height) floatComponents:floatPixels toColorBuffer:data];
 		
 		CFDataRef imageData = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, data, width * height * (floatPixels ? 16 : 4), kCFAllocatorMalloc);
 		CGDataProviderRef dataProvider = CGDataProviderCreateWithCFData(imageData);
 		CFRelease(imageData);
 		
-		CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+		CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
 		CGImageRef image = CGImageCreate(width,
 										 height,
 										 floatPixels ? 32 : 8,

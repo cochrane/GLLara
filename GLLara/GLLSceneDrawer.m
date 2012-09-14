@@ -251,7 +251,7 @@ static void checkError()
 
 #pragma mark - Image rendering
 
-- (void)renderImageOfSize:(CGSize)size floatComponents:(BOOL)useFloatComponents multisampling:(NSUInteger)samples toColorBuffer:(void *)colorData;
+- (void)renderImageOfSize:(CGSize)size floatComponents:(BOOL)useFloatComponents toColorBuffer:(void *)colorData;
 {
 	checkError();
 	// What is the largest tile that can be rendered?
@@ -260,12 +260,12 @@ static void checkError()
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
 	glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &maxRenderbufferSize);
 	// Divide max size by 2; it seems some GPUs run out of steam otherwise.
-	GLint maxSize = MIN(maxTextureSize, maxRenderbufferSize) / 2;
+	GLint maxSize = MIN(maxTextureSize, maxRenderbufferSize) / 4;
 	
 	// Prepare framebuffer (without texture; a new one is created for every tile)
-	GLuint multisampleFramebuffer;
-	glGenFramebuffers(1, &multisampleFramebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, multisampleFramebuffer);
+	GLuint framebuffer;
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 	checkError();
 	
 	GLuint depthRenderbuffer;
@@ -273,16 +273,11 @@ static void checkError()
 	glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
 	checkError();
 	
-	GLuint secondPassFramebuffer;
-	glGenFramebuffers(1, &secondPassFramebuffer);
-	
 	// Prepare textures
 	GLuint numTextures = ceil(size.width / maxSize) * ceil(size.height / maxSize);
 	GLuint *textureNames = calloc(sizeof(GLuint), numTextures);
 	glGenTextures(numTextures, textureNames);
-	GLuint multisampledTexture;
-	glGenTextures(1, &multisampledTexture);
-		
+	
 	// Pepare background thread. This waits until textures are done, then loads them into colorData.
 	__block NSUInteger finishedTextures = 0;
 	__block dispatch_semaphore_t texturesReady = dispatch_semaphore_create(0);
@@ -311,19 +306,21 @@ static void checkError()
 			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, useFloatComponents ? GL_FLOAT : GL_UNSIGNED_BYTE, colorData);
 			checkError();
 			
+			glDeleteTextures(1, &textureNames[downloadedTextures]);
+			
 			downloadedTextures += 1;
 		}
 		dispatch_semaphore_signal(downloadReady);
-		
 	});
 
 	mat_float16 cameraMatrix = self.view.camera.viewProjectionMatrix;
-	glDisable(GL_MULTISAMPLE);
+	
+	glCullFace(GL_FRONT);
 	
 	// Render
 	for (NSUInteger y = 0; y < size.height; y += maxSize)
 	{
-		for (NSUInteger x = 0; x < size.height; x += maxSize)
+		for (NSUInteger x = 0; x < size.width; x += maxSize)
 		{
 			// Setup size
 			GLuint width = MIN(size.width - x, maxSize);
@@ -331,22 +328,17 @@ static void checkError()
 			glViewport(0, 0, width, height);
 			checkError();
 			
-			glBindFramebuffer(GL_FRAMEBUFFER, multisampleFramebuffer);
+			glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 			checkError();
 			
 			// Setup buffers + textures
-			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, multisampledTexture);
-		//	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, (GLuint) samples, GL_RGBA, width, height, GL_TRUE);
-		//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, multisampledTexture, 0);
-
 			glBindTexture(GL_TEXTURE_2D, textureNames[finishedTextures]);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, useFloatComponents ? GL_FLOAT : GL_UNSIGNED_BYTE, NULL);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureNames[finishedTextures], 0);
 
 			checkError();
 			
 			glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
-		//	glRenderbufferStorageMultisample(GL_RENDERBUFFER, (GLuint) samples, GL_DEPTH_COMPONENT24, width, height);
 			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
 			checkError();
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
@@ -361,9 +353,9 @@ static void checkError()
 			checkError();
 			
 			// Setup matrix.
-			mat_float16 flipMatrix = (mat_float16) { {-1,0,0,0},{0, -1, 0,0}, {0,0,-1,0}, {0,0,0,1} };
+			mat_float16 flipMatrix = (mat_float16) { {1,0,0,0},{0, -1, 0,0}, {0,0,1,0}, {0,0,0,1} };
 			mat_float16 combinedMatrix = simd_mat_mul(flipMatrix, cameraMatrix);
-			mat_float16 partOfCameraMatrix = simd_orthoMatrix((x/size.width)*2.0-1.0, ((x+width)/size.width)*2.0-1.0, (y/size.height)*2.0-1.0, ((y+height)/size.height)*2.0-1.0, -1, 1);
+			mat_float16 partOfCameraMatrix = simd_orthoMatrix((x/size.width)*2.0-1.0, ((x+width)/size.width)*2.0-1.0, (y/size.height)*2.0-1.0, ((y+height)/size.height)*2.0-1.0, 1, -1);
 			combinedMatrix = simd_mat_mul(partOfCameraMatrix, combinedMatrix);
 			
 			glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
@@ -373,43 +365,9 @@ static void checkError()
 			[self draw];
 			checkError();
 			
-			// Second pass: Draw into single buffer
-//			glBindTexture(GL_TEXTURE_2D, textureNames[finishedTextures]);
-//			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-//			
-//			glBindFramebuffer(GL_FRAMEBUFFER, secondPassFramebuffer);
-//			checkError();
-//			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureNames[finishedTextures], 0);
-//			checkError();
-//			glDepthMask(GL_FALSE);
-//			checkError();
-//			glDisable(GL_DEPTH_TEST);
-//			checkError();
-//			
-//			glUseProgram(self.resourceManager.squareProgram.programID);
-//			checkError();
-//			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, multisampledTexture);
-//			checkError();
-//			glBindVertexArray(self.resourceManager.squareVertexArray);
-//			checkError();
-//			glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//			checkError();
-			
-			glDepthMask(GL_TRUE);
-			glEnable(GL_DEPTH_TEST);
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glEnable(GL_MULTISAMPLE);
 			checkError();
-			
-//			glPixelStorei(GL_PACK_ROW_LENGTH, size.width);
-//			checkError();
-//			glPixelStorei(GL_PACK_SKIP_ROWS, (GLint) y);
-//			checkError();
-//			glPixelStorei(GL_PACK_SKIP_PIXELS, (GLint) x);
-//			checkError();
-//
-//			glBindTexture(GL_TEXTURE_2D, textureNames[finishedTextures]);
-//			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, useFloatComponents ? GL_FLOAT : GL_UNSIGNED_BYTE, colorData);
-//			checkError();
 
 			glFlush();
 			
@@ -421,11 +379,9 @@ static void checkError()
 	}
 	
 	dispatch_semaphore_wait(downloadReady, DISPATCH_TIME_FOREVER);
-	glDeleteTextures(numTextures, textureNames);
-	glDeleteTextures(1, &multisampledTexture);
-	glDeleteFramebuffers(1, &multisampleFramebuffer);
+	glDeleteFramebuffers(1, &framebuffer);
 	glDeleteRenderbuffers(1, &depthRenderbuffer);
-	glEnable(GL_MULTISAMPLE);
+	glCullFace(GL_BACK);
 	
 	needsUpdateMatrices = YES;
 	self.view.needsDisplay = YES;
