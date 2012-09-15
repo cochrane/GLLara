@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+	<key>cameraTargets</key>
+	<dict>
+		<key>hair</key>
+		<array>
+			<string>head neck upper</string>
+		</array>
+	</dict>
+	<key>defaultRenderParameters</key>
+	<dict>
+		<key>bumpSpecularAmount</key>
+		<real>0.10000000000000001</real>
+	</dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup5</key>
+		<array>
+			<string>hair1</string>
+		</array>
+		<key>MeshGroup6</key>
+		<array>
+			<string>hair2</string>
+			<string>hair3</string>
+		</array>
+	</dict>
+	<key>renderParameters</key>
+	<dict/>
+</dict>
+</plist>

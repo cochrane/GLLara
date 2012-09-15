@@ -21,6 +21,22 @@
 		523DE0E31604A5ED00BB9F61 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523DE0E21604A5ED00BB9F61 /* main.m */; };
 		523DE0E71604A5ED00BB9F61 /* parseItems.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 523DE0E61604A5ED00BB9F61 /* parseItems.1 */; };
 		523DE0EC1604CE8600BB9F61 /* natla.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */; };
+		523DE0EE1604D7A300BB9F61 /* alister.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0ED1604D7A300BB9F61 /* alister.modelparams.plist */; };
+		523DE0F01604D7D600BB9F61 /* amelia.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0EF1604D7D600BB9F61 /* amelia.modelparams.plist */; };
+		523DE0F21604D80A00BB9F61 /* braid.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0F11604D80A00BB9F61 /* braid.modelparams.plist */; };
+		523DE0F41604D84100BB9F61 /* diver_captain.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0F31604D84100BB9F61 /* diver_captain.modelparams.plist */; };
+		523DE0F61604D86100BB9F61 /* dummy.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0F51604D86100BB9F61 /* dummy.modelparams.plist */; };
+		523DE0F81604D87B00BB9F61 /* excalibur.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0F71604D87B00BB9F61 /* excalibur.modelparams.plist */; };
+		523DE0FA1604D8B300BB9F61 /* foliage_tree1.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0F91604D8B300BB9F61 /* foliage_tree1.modelparams.plist */; };
+		523DE0FC1604D8CF00BB9F61 /* foliage_tree3.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0FB1604D8CF00BB9F61 /* foliage_tree3.modelparams.plist */; };
+		523DE0FE1604D8DE00BB9F61 /* foliage_tree2.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0FD1604D8DE00BB9F61 /* foliage_tree2.modelparams.plist */; };
+		523DE1001604D8FA00BB9F61 /* glass_cage.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0FF1604D8FA00BB9F61 /* glass_cage.modelparams.plist */; };
+		523DE1041604D9B300BB9F61 /* hair_alister.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1011604D9B200BB9F61 /* hair_alister.modelparams.plist */; };
+		523DE1051604D9B300BB9F61 /* hair_amanda.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1021604D9B200BB9F61 /* hair_amanda.modelparams.plist */; };
+		523DE1061604D9B300BB9F61 /* hair_natla.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1031604D9B200BB9F61 /* hair_natla.modelparams.plist */; };
+		523DE10A1604D9F000BB9F61 /* helicopter.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1071604D9EF00BB9F61 /* helicopter.modelparams.plist */; };
+		523DE10B1604D9F000BB9F61 /* jellyfish.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1081604D9F000BB9F61 /* jellyfish.modelparams.plist */; };
+		523DE10C1604D9F000BB9F61 /* kraken.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1091604D9F000BB9F61 /* kraken.modelparams.plist */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -196,6 +212,22 @@
 		523DE0E51604A5ED00BB9F61 /* parseItems-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "parseItems-Prefix.pch"; sourceTree = "<group>"; };
 		523DE0E61604A5ED00BB9F61 /* parseItems.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = parseItems.1; sourceTree = "<group>"; };
 		523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = natla.modelparams.plist; sourceTree = "<group>"; };
+		523DE0ED1604D7A300BB9F61 /* alister.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = alister.modelparams.plist; sourceTree = "<group>"; };
+		523DE0EF1604D7D600BB9F61 /* amelia.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = amelia.modelparams.plist; sourceTree = "<group>"; };
+		523DE0F11604D80A00BB9F61 /* braid.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = braid.modelparams.plist; sourceTree = "<group>"; };
+		523DE0F31604D84100BB9F61 /* diver_captain.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = diver_captain.modelparams.plist; sourceTree = "<group>"; };
+		523DE0F51604D86100BB9F61 /* dummy.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = dummy.modelparams.plist; sourceTree = "<group>"; };
+		523DE0F71604D87B00BB9F61 /* excalibur.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = excalibur.modelparams.plist; sourceTree = "<group>"; };
+		523DE0F91604D8B300BB9F61 /* foliage_tree1.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = foliage_tree1.modelparams.plist; sourceTree = "<group>"; };
+		523DE0FB1604D8CF00BB9F61 /* foliage_tree3.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = foliage_tree3.modelparams.plist; sourceTree = "<group>"; };
+		523DE0FD1604D8DE00BB9F61 /* foliage_tree2.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = foliage_tree2.modelparams.plist; sourceTree = "<group>"; };
+		523DE0FF1604D8FA00BB9F61 /* glass_cage.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = glass_cage.modelparams.plist; sourceTree = "<group>"; };
+		523DE1011604D9B200BB9F61 /* hair_alister.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = hair_alister.modelparams.plist; sourceTree = "<group>"; };
+		523DE1021604D9B200BB9F61 /* hair_amanda.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = hair_amanda.modelparams.plist; sourceTree = "<group>"; };
+		523DE1031604D9B200BB9F61 /* hair_natla.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = hair_natla.modelparams.plist; sourceTree = "<group>"; };
+		523DE1071604D9EF00BB9F61 /* helicopter.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = helicopter.modelparams.plist; sourceTree = "<group>"; };
+		523DE1081604D9F000BB9F61 /* jellyfish.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = jellyfish.modelparams.plist; sourceTree = "<group>"; };
+		523DE1091604D9F000BB9F61 /* kraken.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = kraken.modelparams.plist; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -598,26 +630,42 @@
 		529693F615F2D00200DF2FA3 /* Model Parameters */ = {
 			isa = PBXGroup;
 			children = (
-				52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */,
-				529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */,
-				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
-				529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */,
-				523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */,
-				52BB206715F8275E00937450 /* doppelganger.modelparams.plist */,
-				52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */,
 				52BB206D15F830C400937450 /* albino_spider.modelparams.plist */,
-				52BB206F15F831C900937450 /* mjolnir.modelparams.plist */,
-				52BB207115F8329000937450 /* motorcycle.modelparams.plist */,
-				52BB207315F8334E00937450 /* tiger1.modelparams.plist */,
+				523DE0ED1604D7A300BB9F61 /* alister.modelparams.plist */,
+				52BB21D015FCA6DC00937450 /* amanda_heavy.modelparams.plist */,
+				52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */,
+				523DE0EF1604D7D600BB9F61 /* amelia.modelparams.plist */,
+				523DE0F11604D80A00BB9F61 /* braid.modelparams.plist */,
 				52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */,
 				52BB21A815FB45B200937450 /* croft_manor_hall_lq.modelparams.plist */,
+				523DE0F31604D84100BB9F61 /* diver_captain.modelparams.plist */,
+				52BB206715F8275E00937450 /* doppelganger.modelparams.plist */,
+				523DE0F51604D86100BB9F61 /* dummy.modelparams.plist */,
+				523DE0F71604D87B00BB9F61 /* excalibur.modelparams.plist */,
+				523DE0F91604D8B300BB9F61 /* foliage_tree1.modelparams.plist */,
+				523DE0FD1604D8DE00BB9F61 /* foliage_tree2.modelparams.plist */,
+				523DE0FB1604D8CF00BB9F61 /* foliage_tree3.modelparams.plist */,
 				52BB21B215FB7A6200937450 /* foliage_tree4.modelparams.plist */,
-				52BB21B915FB7D0500937450 /* ship.modelparams.plist */,
-				52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */,
-				52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */,
-				52BB21D015FCA6DC00937450 /* amanda_heavy.modelparams.plist */,
-				52BB21D615FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist */,
+				523DE0FF1604D8FA00BB9F61 /* glass_cage.modelparams.plist */,
 				523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */,
+				523DE1011604D9B200BB9F61 /* hair_alister.modelparams.plist */,
+				523DE1021604D9B200BB9F61 /* hair_amanda.modelparams.plist */,
+				523DE1031604D9B200BB9F61 /* hair_natla.modelparams.plist */,
+				523DE1071604D9EF00BB9F61 /* helicopter.modelparams.plist */,
+				523DE1081604D9F000BB9F61 /* jellyfish.modelparams.plist */,
+				523DE1091604D9F000BB9F61 /* kraken.modelparams.plist */,
+				529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */,
+				52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */,
+				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
+				52BB21D615FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist */,
+				52BB206F15F831C900937450 /* mjolnir.modelparams.plist */,
+				52BB207115F8329000937450 /* motorcycle.modelparams.plist */,
+				523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */,
+				52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */,
+				52BB21B915FB7D0500937450 /* ship.modelparams.plist */,
+				52BB207315F8334E00937450 /* tiger1.modelparams.plist */,
+				529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */,
+				52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */,
 			);
 			path = "Model Parameters";
 			sourceTree = "<group>";
@@ -989,6 +1037,22 @@
 				52D3D72516029699006CB743 /* GLLRenderAccessoryView.xib in Resources */,
 				523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */,
 				523DE0EC1604CE8600BB9F61 /* natla.modelparams.plist in Resources */,
+				523DE0EE1604D7A300BB9F61 /* alister.modelparams.plist in Resources */,
+				523DE0F01604D7D600BB9F61 /* amelia.modelparams.plist in Resources */,
+				523DE0F21604D80A00BB9F61 /* braid.modelparams.plist in Resources */,
+				523DE0F41604D84100BB9F61 /* diver_captain.modelparams.plist in Resources */,
+				523DE0F61604D86100BB9F61 /* dummy.modelparams.plist in Resources */,
+				523DE0F81604D87B00BB9F61 /* excalibur.modelparams.plist in Resources */,
+				523DE0FA1604D8B300BB9F61 /* foliage_tree1.modelparams.plist in Resources */,
+				523DE0FC1604D8CF00BB9F61 /* foliage_tree3.modelparams.plist in Resources */,
+				523DE0FE1604D8DE00BB9F61 /* foliage_tree2.modelparams.plist in Resources */,
+				523DE1001604D8FA00BB9F61 /* glass_cage.modelparams.plist in Resources */,
+				523DE1041604D9B300BB9F61 /* hair_alister.modelparams.plist in Resources */,
+				523DE1051604D9B300BB9F61 /* hair_amanda.modelparams.plist in Resources */,
+				523DE1061604D9B300BB9F61 /* hair_natla.modelparams.plist in Resources */,
+				523DE10A1604D9F000BB9F61 /* helicopter.modelparams.plist in Resources */,
+				523DE10B1604D9F000BB9F61 /* jellyfish.modelparams.plist in Resources */,
+				523DE10C1604D9F000BB9F61 /* kraken.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
