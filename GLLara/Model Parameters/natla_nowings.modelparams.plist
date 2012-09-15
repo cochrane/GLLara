@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+	<key>cameraTargets</key>
+	<dict>
+		<key>body lower</key>
+		<array>
+			<string>pelvis</string>
+		</array>
+		<key>body upper</key>
+		<array>
+			<string>unused007</string>
+		</array>
+		<key>foot left</key>
+		<array>
+			<string>leg left ankle</string>
+		</array>
+		<key>foot right</key>
+		<array>
+			<string>leg right ankle</string>
+		</array>
+		<key>hand left</key>
+		<array>
+			<string>arm left wrist</string>
+		</array>
+		<key>hand right</key>
+		<array>
+			<string>arm right wrist</string>
+		</array>
+		<key>head</key>
+		<array>
+			<string>head jaw</string>
+		</array>
+		<key>knee left</key>
+		<array>
+			<string>leg left knee</string>
+		</array>
+		<key>knee right</key>
+		<array>
+			<string>leg right knee</string>
+		</array>
+	</dict>
+	<key>defaultRenderParameters</key>
+	<dict>
+		<key>bumpSpecularAmount</key>
+		<real>0.1</real>
+	</dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup1</key>
+		<array>
+			<string>arms</string>
+			<string>detail3</string>
+			<string>jacket</string>
+			<string>trousers</string>
+		</array>
+		<key>MeshGroup2</key>
+		<array>
+			<string>detail1</string>
+			<string>detail2</string>
+			<string>detail4</string>
+			<string>detail5</string>
+			<string>face</string>
+			<string>feet</string>
+			<string>hair1</string>
+			<string>handleft</string>
+			<string>handright</string>
+		</array>
+		<key>MeshGroup4</key>
+		<array>
+			<string>mouth</string>
+			<string>zipper1</string>
+			<string>zipper2</string>
+		</array>
+		<key>MeshGroup5</key>
+		<array>
+			<string>eyes</string>
+			<string>label</string>
+		</array>
+		<key>MeshGroup7</key>
+		<array>
+			<string>eyebrows</string>
+			<string>eyelashes</string>
+			<string>eyeshading</string>
+			<string>hair2</string>
+		</array>
+		<key>MeshGroup8</key>
+		<array>
+			<string>hair3</string>
+			<string>hair4</string>
+		</array>
+		<key>MeshGroup9</key>
+		<array>
+			<string>hair5</string>
+		</array>
+	</dict>
+	<key>renderParameters</key>
+	<dict>
+		<key>arms</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>12</real>
+			<key>bump2UVScale</key>
+			<real>12</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.1</real>
+		</dict>
+		<key>detail3</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>12</real>
+			<key>bump2UVScale</key>
+			<real>12</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.1</real>
+		</dict>
+		<key>jacket</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>12</real>
+			<key>bump2UVScale</key>
+			<real>12</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.1</real>
+		</dict>
+		<key>trousers</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>12</real>
+			<key>bump2UVScale</key>
+			<real>12</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.1</real>
+		</dict>
+	</dict>
+</dict>
+</plist>

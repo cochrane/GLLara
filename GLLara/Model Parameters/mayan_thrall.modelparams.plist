@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+	<key>cameraTargets</key>
+	<dict>
+		<key>body lower</key>
+		<array>
+			<string>pelvis</string>
+		</array>
+		<key>body upper</key>
+		<array>
+			<string>arm left shoulder 1</string>
+			<string>arm right shoulder 1</string>
+		</array>
+		<key>foot left</key>
+		<array>
+			<string>leg left ankle</string>
+		</array>
+		<key>foot right</key>
+		<array>
+			<string>leg right ankle</string>
+		</array>
+		<key>hand left</key>
+		<array>
+			<string>arm left wrist</string>
+		</array>
+		<key>hand right</key>
+		<array>
+			<string>arm right wrist</string>
+		</array>
+		<key>head</key>
+		<array>
+			<string>head jaw 2</string>
+		</array>
+		<key>knee left</key>
+		<array>
+			<string>leg left knee</string>
+		</array>
+		<key>knee right</key>
+		<array>
+			<string>leg right knee</string>
+		</array>
+	</dict>
+	<key>defaultRenderParameters</key>
+	<dict>
+		<key>bumpSpecularAmount</key>
+		<real>0.20000000000000001</real>
+	</dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup2</key>
+		<array>
+			<string>mesh1a</string>
+			<string>mesh1b</string>
+			<string>mesh2</string>
+			<string>mesh5</string>
+			<string>mesh6</string>
+			<string>mesh8</string>
+		</array>
+		<key>MeshGroup4</key>
+		<array>
+			<string>mesh3</string>
+		</array>
+		<key>MeshGroup6</key>
+		<array>
+			<string>mesh7</string>
+		</array>
+		<key>MeshGroup7</key>
+		<array>
+			<string>mesh4</string>
+		</array>
+	</dict>
+	<key>renderParameters</key>
+	<dict/>
+</dict>
+</plist>

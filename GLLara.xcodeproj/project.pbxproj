@@ -39,7 +39,7 @@
 		523DE10E1604E00700BB9F61 /* zip.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE10D1604E00700BB9F61 /* zip.modelparams.plist */; };
 		523DE1131604E04300BB9F61 /* winston.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE10F1604E04200BB9F61 /* winston.modelparams.plist */; };
 		523DE1141604E04300BB9F61 /* wraith_stone.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1101604E04200BB9F61 /* wraith_stone.modelparams.plist */; };
-		523DE1151604E04300BB9F61 /* yeti_thrall_no_chains.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1111604E04200BB9F61 /* yeti_thrall_no_chains.modelparams.plist */; };
+		523DE1151604E04300BB9F61 /* yeti_thrall_nochains.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1111604E04200BB9F61 /* yeti_thrall_nochains.modelparams.plist */; };
 		523DE1161604E04300BB9F61 /* yeti_thrall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1121604E04300BB9F61 /* yeti_thrall.modelparams.plist */; };
 		523DE1201604E06600BB9F61 /* viking_thrall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1171604E06400BB9F61 /* viking_thrall.modelparams.plist */; };
 		523DE1211604E06600BB9F61 /* weapon_ak_rifle.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1181604E06400BB9F61 /* weapon_ak_rifle.modelparams.plist */; };
@@ -53,6 +53,64 @@
 		523DE12A1604E0C700BB9F61 /* tiger2.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1291604E0C500BB9F61 /* tiger2.modelparams.plist */; };
 		523DE12D1604E10D00BB9F61 /* thailand_mirror_statue_left.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */; };
 		523DE12E1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */; };
+		52423AF41604EB35009F5753 /* panther_thrall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AE91604EB35009F5753 /* panther_thrall.modelparams.plist */; };
+		52423AF51604EB35009F5753 /* panther.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AEA1604EB35009F5753 /* panther.modelparams.plist */; };
+		52423AF61604EB35009F5753 /* poacher.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AEB1604EB35009F5753 /* poacher.modelparams.plist */; };
+		52423AF71604EB35009F5753 /* ponytail.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AEC1604EB35009F5753 /* ponytail.modelparams.plist */; };
+		52423AF81604EB35009F5753 /* recorder.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AED1604EB35009F5753 /* recorder.modelparams.plist */; };
+		52423AF91604EB35009F5753 /* scion1.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AEE1604EB35009F5753 /* scion1.modelparams.plist */; };
+		52423AFA1604EB35009F5753 /* scion2.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AEF1604EB35009F5753 /* scion2.modelparams.plist */; };
+		52423AFB1604EB35009F5753 /* scion3.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AF01604EB35009F5753 /* scion3.modelparams.plist */; };
+		52423AFC1604EB35009F5753 /* shark_blue.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AF11604EB35009F5753 /* shark_blue.modelparams.plist */; };
+		52423AFD1604EB35009F5753 /* shark_greenland.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AF21604EB35009F5753 /* shark_greenland.modelparams.plist */; };
+		52423AFE1604EB35009F5753 /* ship_natla_room.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AF31604EB35009F5753 /* ship_natla_room.modelparams.plist */; };
+		52423B011604EB48009F5753 /* natla_nowings.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B001604EB48009F5753 /* natla_nowings.modelparams.plist */; };
+		52423B061604EB99009F5753 /* mayan_thrall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B021604EB98009F5753 /* mayan_thrall.modelparams.plist */; };
+		52423B071604EB99009F5753 /* mercenary.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B031604EB98009F5753 /* mercenary.modelparams.plist */; };
+		52423B081604EB99009F5753 /* naga_green.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B041604EB99009F5753 /* naga_green.modelparams.plist */; };
+		52423B091604EB99009F5753 /* naga_red.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B051604EB99009F5753 /* naga_red.modelparams.plist */; };
+		52423B1E1604EBFE009F5753 /* lara_bathing_suit_nogear.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0A1604EBFB009F5753 /* lara_bathing_suit_nogear.modelparams.plist */; };
+		52423B1F1604EBFE009F5753 /* lara_casual.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0B1604EBFB009F5753 /* lara_casual.modelparams.plist */; };
+		52423B201604EBFE009F5753 /* lara_dlc_bikini_black_white.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0C1604EBFB009F5753 /* lara_dlc_bikini_black_white.modelparams.plist */; };
+		52423B211604EBFE009F5753 /* lara_dlc_bikini_camo.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0D1604EBFB009F5753 /* lara_dlc_bikini_camo.modelparams.plist */; };
+		52423B221604EBFE009F5753 /* lara_dlc_bikini_yellow.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0E1604EBFB009F5753 /* lara_dlc_bikini_yellow.modelparams.plist */; };
+		52423B231604EBFE009F5753 /* lara_dlc_casual_explorer.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0F1604EBFB009F5753 /* lara_dlc_casual_explorer.modelparams.plist */; };
+		52423B241604EBFE009F5753 /* lara_dlc_classic.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B101604EBFB009F5753 /* lara_dlc_classic.modelparams.plist */; };
+		52423B251604EBFE009F5753 /* lara_dlc_designer_fashion_winner.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B111604EBFB009F5753 /* lara_dlc_designer_fashion_winner.modelparams.plist */; };
+		52423B261604EBFE009F5753 /* lara_dlc_dry_suit_red.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B121604EBFC009F5753 /* lara_dlc_dry_suit_red.modelparams.plist */; };
+		52423B271604EBFE009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B131604EBFC009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist */; };
+		52423B281604EBFE009F5753 /* lara_dlc_legend.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B141604EBFC009F5753 /* lara_dlc_legend.modelparams.plist */; };
+		52423B291604EBFE009F5753 /* lara_dlc_wet_suit_blue.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B151604EBFC009F5753 /* lara_dlc_wet_suit_blue.modelparams.plist */; };
+		52423B2A1604EBFE009F5753 /* lara_dry_suit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B161604EBFC009F5753 /* lara_dry_suit.modelparams.plist */; };
+		52423B2B1604EBFE009F5753 /* lara_jungle_heavy.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B171604EBFD009F5753 /* lara_jungle_heavy.modelparams.plist */; };
+		52423B2C1604EBFE009F5753 /* lara_jungle_pants.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B181604EBFD009F5753 /* lara_jungle_pants.modelparams.plist */; };
+		52423B2D1604EBFE009F5753 /* lara_jungle_shorts.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B191604EBFD009F5753 /* lara_jungle_shorts.modelparams.plist */; };
+		52423B2E1604EBFE009F5753 /* lara_snow_heavy.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B1A1604EBFD009F5753 /* lara_snow_heavy.modelparams.plist */; };
+		52423B2F1604EBFE009F5753 /* lara_snow_light.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B1B1604EBFD009F5753 /* lara_snow_light.modelparams.plist */; };
+		52423B301604EBFE009F5753 /* lara_wetsuit_nogear.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B1C1604EBFD009F5753 /* lara_wetsuit_nogear.modelparams.plist */; };
+		52423B311604EBFE009F5753 /* lara_wetsuit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B1D1604EBFD009F5753 /* lara_wetsuit.modelparams.plist */; };
+		52423B471604EC5B009F5753 /* gol_brute_minion.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B321604EC58009F5753 /* gol_brute_minion.modelparams.plist */; };
+		52423B481604EC5B009F5753 /* gol_chompy.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B331604EC59009F5753 /* gol_chompy.modelparams.plist */; };
+		52423B491604EC5B009F5753 /* gol_doppelganger.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B341604EC59009F5753 /* gol_doppelganger.modelparams.plist */; };
+		52423B4A1604EC5B009F5753 /* gol_fire_lizard.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B351604EC59009F5753 /* gol_fire_lizard.modelparams.plist */; };
+		52423B4B1604EC5B009F5753 /* gol_fire_shaman.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B361604EC59009F5753 /* gol_fire_shaman.modelparams.plist */; };
+		52423B4C1604EC5B009F5753 /* gol_lara_biker.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B371604EC59009F5753 /* gol_lara_biker.modelparams.plist */; };
+		52423B4D1604EC5B009F5753 /* gol_lara_jungle_heavy.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B381604EC59009F5753 /* gol_lara_jungle_heavy.modelparams.plist */; };
+		52423B4E1604EC5B009F5753 /* gol_lara_jungle_shorts.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B391604EC59009F5753 /* gol_lara_jungle_shorts.modelparams.plist */; };
+		52423B4F1604EC5B009F5753 /* gol_lara_legend.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B3A1604EC5A009F5753 /* gol_lara_legend.modelparams.plist */; };
+		52423B501604EC5B009F5753 /* gol_lara.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B3B1604EC5A009F5753 /* gol_lara.modelparams.plist */; };
+		52423B511604EC5B009F5753 /* gol_poison_gatekeeper.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B3C1604EC5A009F5753 /* gol_poison_gatekeeper.modelparams.plist */; };
+		52423B521604EC5B009F5753 /* gol_poison_lizard.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B3D1604EC5A009F5753 /* gol_poison_lizard.modelparams.plist */; };
+		52423B531604EC5B009F5753 /* gol_poison_minion.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B3E1604EC5A009F5753 /* gol_poison_minion.modelparams.plist */; };
+		52423B541604EC5B009F5753 /* gol_poison_shaman.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B3F1604EC5A009F5753 /* gol_poison_shaman.modelparams.plist */; };
+		52423B551604EC5B009F5753 /* gol_shield_demon.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B401604EC5A009F5753 /* gol_shield_demon.modelparams.plist */; };
+		52423B561604EC5B009F5753 /* gol_shield_gatekeeper.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B411604EC5B009F5753 /* gol_shield_gatekeeper.modelparams.plist */; };
+		52423B571604EC5B009F5753 /* gol_skeleton.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B421604EC5B009F5753 /* gol_skeleton.modelparams.plist */; };
+		52423B581604EC5B009F5753 /* gol_small_minion.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B431604EC5B009F5753 /* gol_small_minion.modelparams.plist */; };
+		52423B591604EC5B009F5753 /* gol_t_rex.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B441604EC5B009F5753 /* gol_t_rex.modelparams.plist */; };
+		52423B5A1604EC5B009F5753 /* gol_totec.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B451604EC5B009F5753 /* gol_totec.modelparams.plist */; };
+		52423B5B1604EC5B009F5753 /* gol_xolotl.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B461604EC5B009F5753 /* gol_xolotl.modelparams.plist */; };
+		52423B5D1604ED48009F5753 /* wings.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B5C1604ED47009F5753 /* wings.modelparams.plist */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -245,7 +303,7 @@
 		523DE10D1604E00700BB9F61 /* zip.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = zip.modelparams.plist; sourceTree = "<group>"; };
 		523DE10F1604E04200BB9F61 /* winston.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = winston.modelparams.plist; sourceTree = "<group>"; };
 		523DE1101604E04200BB9F61 /* wraith_stone.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = wraith_stone.modelparams.plist; sourceTree = "<group>"; };
-		523DE1111604E04200BB9F61 /* yeti_thrall_no_chains.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = yeti_thrall_no_chains.modelparams.plist; sourceTree = "<group>"; };
+		523DE1111604E04200BB9F61 /* yeti_thrall_nochains.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = yeti_thrall_nochains.modelparams.plist; sourceTree = "<group>"; };
 		523DE1121604E04300BB9F61 /* yeti_thrall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = yeti_thrall.modelparams.plist; sourceTree = "<group>"; };
 		523DE1171604E06400BB9F61 /* viking_thrall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = viking_thrall.modelparams.plist; sourceTree = "<group>"; };
 		523DE1181604E06400BB9F61 /* weapon_ak_rifle.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weapon_ak_rifle.modelparams.plist; sourceTree = "<group>"; };
@@ -259,6 +317,64 @@
 		523DE1291604E0C500BB9F61 /* tiger2.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tiger2.modelparams.plist; sourceTree = "<group>"; };
 		523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = thailand_mirror_statue_left.modelparams.plist; sourceTree = "<group>"; };
 		523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = thailand_mirror_statue_right.modelparams.plist; sourceTree = "<group>"; };
+		52423AE91604EB35009F5753 /* panther_thrall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = panther_thrall.modelparams.plist; sourceTree = "<group>"; };
+		52423AEA1604EB35009F5753 /* panther.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = panther.modelparams.plist; sourceTree = "<group>"; };
+		52423AEB1604EB35009F5753 /* poacher.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = poacher.modelparams.plist; sourceTree = "<group>"; };
+		52423AEC1604EB35009F5753 /* ponytail.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ponytail.modelparams.plist; sourceTree = "<group>"; };
+		52423AED1604EB35009F5753 /* recorder.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = recorder.modelparams.plist; sourceTree = "<group>"; };
+		52423AEE1604EB35009F5753 /* scion1.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = scion1.modelparams.plist; sourceTree = "<group>"; };
+		52423AEF1604EB35009F5753 /* scion2.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = scion2.modelparams.plist; sourceTree = "<group>"; };
+		52423AF01604EB35009F5753 /* scion3.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = scion3.modelparams.plist; sourceTree = "<group>"; };
+		52423AF11604EB35009F5753 /* shark_blue.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = shark_blue.modelparams.plist; sourceTree = "<group>"; };
+		52423AF21604EB35009F5753 /* shark_greenland.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = shark_greenland.modelparams.plist; sourceTree = "<group>"; };
+		52423AF31604EB35009F5753 /* ship_natla_room.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ship_natla_room.modelparams.plist; sourceTree = "<group>"; };
+		52423B001604EB48009F5753 /* natla_nowings.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = natla_nowings.modelparams.plist; sourceTree = "<group>"; };
+		52423B021604EB98009F5753 /* mayan_thrall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mayan_thrall.modelparams.plist; sourceTree = "<group>"; };
+		52423B031604EB98009F5753 /* mercenary.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mercenary.modelparams.plist; sourceTree = "<group>"; };
+		52423B041604EB99009F5753 /* naga_green.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = naga_green.modelparams.plist; sourceTree = "<group>"; };
+		52423B051604EB99009F5753 /* naga_red.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = naga_red.modelparams.plist; sourceTree = "<group>"; };
+		52423B0A1604EBFB009F5753 /* lara_bathing_suit_nogear.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_bathing_suit_nogear.modelparams.plist; sourceTree = "<group>"; };
+		52423B0B1604EBFB009F5753 /* lara_casual.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_casual.modelparams.plist; sourceTree = "<group>"; };
+		52423B0C1604EBFB009F5753 /* lara_dlc_bikini_black_white.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_bikini_black_white.modelparams.plist; sourceTree = "<group>"; };
+		52423B0D1604EBFB009F5753 /* lara_dlc_bikini_camo.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_bikini_camo.modelparams.plist; sourceTree = "<group>"; };
+		52423B0E1604EBFB009F5753 /* lara_dlc_bikini_yellow.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_bikini_yellow.modelparams.plist; sourceTree = "<group>"; };
+		52423B0F1604EBFB009F5753 /* lara_dlc_casual_explorer.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_casual_explorer.modelparams.plist; sourceTree = "<group>"; };
+		52423B101604EBFB009F5753 /* lara_dlc_classic.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_classic.modelparams.plist; sourceTree = "<group>"; };
+		52423B111604EBFB009F5753 /* lara_dlc_designer_fashion_winner.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_designer_fashion_winner.modelparams.plist; sourceTree = "<group>"; };
+		52423B121604EBFC009F5753 /* lara_dlc_dry_suit_red.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_dry_suit_red.modelparams.plist; sourceTree = "<group>"; };
+		52423B131604EBFC009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_jungle_shorts_grey.modelparams.plist; sourceTree = "<group>"; };
+		52423B141604EBFC009F5753 /* lara_dlc_legend.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_legend.modelparams.plist; sourceTree = "<group>"; };
+		52423B151604EBFC009F5753 /* lara_dlc_wet_suit_blue.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_wet_suit_blue.modelparams.plist; sourceTree = "<group>"; };
+		52423B161604EBFC009F5753 /* lara_dry_suit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dry_suit.modelparams.plist; sourceTree = "<group>"; };
+		52423B171604EBFD009F5753 /* lara_jungle_heavy.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_jungle_heavy.modelparams.plist; sourceTree = "<group>"; };
+		52423B181604EBFD009F5753 /* lara_jungle_pants.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_jungle_pants.modelparams.plist; sourceTree = "<group>"; };
+		52423B191604EBFD009F5753 /* lara_jungle_shorts.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_jungle_shorts.modelparams.plist; sourceTree = "<group>"; };
+		52423B1A1604EBFD009F5753 /* lara_snow_heavy.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_snow_heavy.modelparams.plist; sourceTree = "<group>"; };
+		52423B1B1604EBFD009F5753 /* lara_snow_light.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_snow_light.modelparams.plist; sourceTree = "<group>"; };
+		52423B1C1604EBFD009F5753 /* lara_wetsuit_nogear.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_wetsuit_nogear.modelparams.plist; sourceTree = "<group>"; };
+		52423B1D1604EBFD009F5753 /* lara_wetsuit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_wetsuit.modelparams.plist; sourceTree = "<group>"; };
+		52423B321604EC58009F5753 /* gol_brute_minion.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_brute_minion.modelparams.plist; sourceTree = "<group>"; };
+		52423B331604EC59009F5753 /* gol_chompy.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_chompy.modelparams.plist; sourceTree = "<group>"; };
+		52423B341604EC59009F5753 /* gol_doppelganger.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_doppelganger.modelparams.plist; sourceTree = "<group>"; };
+		52423B351604EC59009F5753 /* gol_fire_lizard.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_fire_lizard.modelparams.plist; sourceTree = "<group>"; };
+		52423B361604EC59009F5753 /* gol_fire_shaman.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_fire_shaman.modelparams.plist; sourceTree = "<group>"; };
+		52423B371604EC59009F5753 /* gol_lara_biker.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_lara_biker.modelparams.plist; sourceTree = "<group>"; };
+		52423B381604EC59009F5753 /* gol_lara_jungle_heavy.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_lara_jungle_heavy.modelparams.plist; sourceTree = "<group>"; };
+		52423B391604EC59009F5753 /* gol_lara_jungle_shorts.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_lara_jungle_shorts.modelparams.plist; sourceTree = "<group>"; };
+		52423B3A1604EC5A009F5753 /* gol_lara_legend.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_lara_legend.modelparams.plist; sourceTree = "<group>"; };
+		52423B3B1604EC5A009F5753 /* gol_lara.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_lara.modelparams.plist; sourceTree = "<group>"; };
+		52423B3C1604EC5A009F5753 /* gol_poison_gatekeeper.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_poison_gatekeeper.modelparams.plist; sourceTree = "<group>"; };
+		52423B3D1604EC5A009F5753 /* gol_poison_lizard.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_poison_lizard.modelparams.plist; sourceTree = "<group>"; };
+		52423B3E1604EC5A009F5753 /* gol_poison_minion.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_poison_minion.modelparams.plist; sourceTree = "<group>"; };
+		52423B3F1604EC5A009F5753 /* gol_poison_shaman.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_poison_shaman.modelparams.plist; sourceTree = "<group>"; };
+		52423B401604EC5A009F5753 /* gol_shield_demon.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_shield_demon.modelparams.plist; sourceTree = "<group>"; };
+		52423B411604EC5B009F5753 /* gol_shield_gatekeeper.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_shield_gatekeeper.modelparams.plist; sourceTree = "<group>"; };
+		52423B421604EC5B009F5753 /* gol_skeleton.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_skeleton.modelparams.plist; sourceTree = "<group>"; };
+		52423B431604EC5B009F5753 /* gol_small_minion.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_small_minion.modelparams.plist; sourceTree = "<group>"; };
+		52423B441604EC5B009F5753 /* gol_t_rex.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_t_rex.modelparams.plist; sourceTree = "<group>"; };
+		52423B451604EC5B009F5753 /* gol_totec.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_totec.modelparams.plist; sourceTree = "<group>"; };
+		52423B461604EC5B009F5753 /* gol_xolotl.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_xolotl.modelparams.plist; sourceTree = "<group>"; };
+		52423B5C1604ED47009F5753 /* wings.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = wings.modelparams.plist; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -678,6 +794,27 @@
 				52BB21B215FB7A6200937450 /* foliage_tree4.modelparams.plist */,
 				523DE0FF1604D8FA00BB9F61 /* glass_cage.modelparams.plist */,
 				523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */,
+				52423B321604EC58009F5753 /* gol_brute_minion.modelparams.plist */,
+				52423B331604EC59009F5753 /* gol_chompy.modelparams.plist */,
+				52423B341604EC59009F5753 /* gol_doppelganger.modelparams.plist */,
+				52423B351604EC59009F5753 /* gol_fire_lizard.modelparams.plist */,
+				52423B361604EC59009F5753 /* gol_fire_shaman.modelparams.plist */,
+				52423B3B1604EC5A009F5753 /* gol_lara.modelparams.plist */,
+				52423B371604EC59009F5753 /* gol_lara_biker.modelparams.plist */,
+				52423B381604EC59009F5753 /* gol_lara_jungle_heavy.modelparams.plist */,
+				52423B391604EC59009F5753 /* gol_lara_jungle_shorts.modelparams.plist */,
+				52423B3A1604EC5A009F5753 /* gol_lara_legend.modelparams.plist */,
+				52423B3C1604EC5A009F5753 /* gol_poison_gatekeeper.modelparams.plist */,
+				52423B3D1604EC5A009F5753 /* gol_poison_lizard.modelparams.plist */,
+				52423B3E1604EC5A009F5753 /* gol_poison_minion.modelparams.plist */,
+				52423B3F1604EC5A009F5753 /* gol_poison_shaman.modelparams.plist */,
+				52423B401604EC5A009F5753 /* gol_shield_demon.modelparams.plist */,
+				52423B411604EC5B009F5753 /* gol_shield_gatekeeper.modelparams.plist */,
+				52423B421604EC5B009F5753 /* gol_skeleton.modelparams.plist */,
+				52423B431604EC5B009F5753 /* gol_small_minion.modelparams.plist */,
+				52423B441604EC5B009F5753 /* gol_t_rex.modelparams.plist */,
+				52423B451604EC5B009F5753 /* gol_totec.modelparams.plist */,
+				52423B461604EC5B009F5753 /* gol_xolotl.modelparams.plist */,
 				523DE1011604D9B200BB9F61 /* hair_alister.modelparams.plist */,
 				523DE1021604D9B200BB9F61 /* hair_amanda.modelparams.plist */,
 				523DE1031604D9B200BB9F61 /* hair_natla.modelparams.plist */,
@@ -686,13 +823,49 @@
 				523DE1091604D9F000BB9F61 /* kraken.modelparams.plist */,
 				529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */,
 				52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */,
+				52423B0A1604EBFB009F5753 /* lara_bathing_suit_nogear.modelparams.plist */,
+				52423B0B1604EBFB009F5753 /* lara_casual.modelparams.plist */,
+				52423B0C1604EBFB009F5753 /* lara_dlc_bikini_black_white.modelparams.plist */,
 				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
+				52423B0D1604EBFB009F5753 /* lara_dlc_bikini_camo.modelparams.plist */,
+				52423B0E1604EBFB009F5753 /* lara_dlc_bikini_yellow.modelparams.plist */,
+				52423B0F1604EBFB009F5753 /* lara_dlc_casual_explorer.modelparams.plist */,
+				52423B101604EBFB009F5753 /* lara_dlc_classic.modelparams.plist */,
+				52423B111604EBFB009F5753 /* lara_dlc_designer_fashion_winner.modelparams.plist */,
 				52BB21D615FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist */,
+				52423B121604EBFC009F5753 /* lara_dlc_dry_suit_red.modelparams.plist */,
+				52423B131604EBFC009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist */,
+				52423B141604EBFC009F5753 /* lara_dlc_legend.modelparams.plist */,
+				52423B151604EBFC009F5753 /* lara_dlc_wet_suit_blue.modelparams.plist */,
+				52423B161604EBFC009F5753 /* lara_dry_suit.modelparams.plist */,
+				52423B171604EBFD009F5753 /* lara_jungle_heavy.modelparams.plist */,
+				52423B181604EBFD009F5753 /* lara_jungle_pants.modelparams.plist */,
+				52423B191604EBFD009F5753 /* lara_jungle_shorts.modelparams.plist */,
+				52423B1A1604EBFD009F5753 /* lara_snow_heavy.modelparams.plist */,
+				52423B1B1604EBFD009F5753 /* lara_snow_light.modelparams.plist */,
+				52423B1D1604EBFD009F5753 /* lara_wetsuit.modelparams.plist */,
+				52423B1C1604EBFD009F5753 /* lara_wetsuit_nogear.modelparams.plist */,
+				52423B021604EB98009F5753 /* mayan_thrall.modelparams.plist */,
+				52423B031604EB98009F5753 /* mercenary.modelparams.plist */,
 				52BB206F15F831C900937450 /* mjolnir.modelparams.plist */,
 				52BB207115F8329000937450 /* motorcycle.modelparams.plist */,
+				52423B041604EB99009F5753 /* naga_green.modelparams.plist */,
+				52423B051604EB99009F5753 /* naga_red.modelparams.plist */,
 				523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */,
+				52423B001604EB48009F5753 /* natla_nowings.modelparams.plist */,
 				52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */,
+				52423AEA1604EB35009F5753 /* panther.modelparams.plist */,
+				52423AE91604EB35009F5753 /* panther_thrall.modelparams.plist */,
+				52423AEB1604EB35009F5753 /* poacher.modelparams.plist */,
+				52423AEC1604EB35009F5753 /* ponytail.modelparams.plist */,
+				52423AED1604EB35009F5753 /* recorder.modelparams.plist */,
+				52423AEE1604EB35009F5753 /* scion1.modelparams.plist */,
+				52423AEF1604EB35009F5753 /* scion2.modelparams.plist */,
+				52423AF01604EB35009F5753 /* scion3.modelparams.plist */,
+				52423AF11604EB35009F5753 /* shark_blue.modelparams.plist */,
+				52423AF21604EB35009F5753 /* shark_greenland.modelparams.plist */,
 				52BB21B915FB7D0500937450 /* ship.modelparams.plist */,
+				52423AF31604EB35009F5753 /* ship_natla_room.modelparams.plist */,
 				523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */,
 				523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */,
 				52BB207315F8334E00937450 /* tiger1.modelparams.plist */,
@@ -706,12 +879,13 @@
 				523DE11D1604E06500BB9F61 /* weapon_speargun.modelparams.plist */,
 				523DE11E1604E06500BB9F61 /* weapon_tranquilizer.modelparams.plist */,
 				523DE11F1604E06600BB9F61 /* weapon_uzi.modelparams.plist */,
+				52423B5C1604ED47009F5753 /* wings.modelparams.plist */,
 				523DE10F1604E04200BB9F61 /* winston.modelparams.plist */,
 				523DE1101604E04200BB9F61 /* wraith_stone.modelparams.plist */,
 				529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */,
 				52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */,
 				523DE1121604E04300BB9F61 /* yeti_thrall.modelparams.plist */,
-				523DE1111604E04200BB9F61 /* yeti_thrall_no_chains.modelparams.plist */,
+				523DE1111604E04200BB9F61 /* yeti_thrall_nochains.modelparams.plist */,
 				523DE10D1604E00700BB9F61 /* zip.modelparams.plist */,
 			);
 			path = "Model Parameters";
@@ -1103,7 +1277,7 @@
 				523DE10E1604E00700BB9F61 /* zip.modelparams.plist in Resources */,
 				523DE1131604E04300BB9F61 /* winston.modelparams.plist in Resources */,
 				523DE1141604E04300BB9F61 /* wraith_stone.modelparams.plist in Resources */,
-				523DE1151604E04300BB9F61 /* yeti_thrall_no_chains.modelparams.plist in Resources */,
+				523DE1151604E04300BB9F61 /* yeti_thrall_nochains.modelparams.plist in Resources */,
 				523DE1161604E04300BB9F61 /* yeti_thrall.modelparams.plist in Resources */,
 				523DE1201604E06600BB9F61 /* viking_thrall.modelparams.plist in Resources */,
 				523DE1211604E06600BB9F61 /* weapon_ak_rifle.modelparams.plist in Resources */,
@@ -1117,6 +1291,64 @@
 				523DE12A1604E0C700BB9F61 /* tiger2.modelparams.plist in Resources */,
 				523DE12D1604E10D00BB9F61 /* thailand_mirror_statue_left.modelparams.plist in Resources */,
 				523DE12E1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist in Resources */,
+				52423AF41604EB35009F5753 /* panther_thrall.modelparams.plist in Resources */,
+				52423AF51604EB35009F5753 /* panther.modelparams.plist in Resources */,
+				52423AF61604EB35009F5753 /* poacher.modelparams.plist in Resources */,
+				52423AF71604EB35009F5753 /* ponytail.modelparams.plist in Resources */,
+				52423AF81604EB35009F5753 /* recorder.modelparams.plist in Resources */,
+				52423AF91604EB35009F5753 /* scion1.modelparams.plist in Resources */,
+				52423AFA1604EB35009F5753 /* scion2.modelparams.plist in Resources */,
+				52423AFB1604EB35009F5753 /* scion3.modelparams.plist in Resources */,
+				52423AFC1604EB35009F5753 /* shark_blue.modelparams.plist in Resources */,
+				52423AFD1604EB35009F5753 /* shark_greenland.modelparams.plist in Resources */,
+				52423AFE1604EB35009F5753 /* ship_natla_room.modelparams.plist in Resources */,
+				52423B011604EB48009F5753 /* natla_nowings.modelparams.plist in Resources */,
+				52423B061604EB99009F5753 /* mayan_thrall.modelparams.plist in Resources */,
+				52423B071604EB99009F5753 /* mercenary.modelparams.plist in Resources */,
+				52423B081604EB99009F5753 /* naga_green.modelparams.plist in Resources */,
+				52423B091604EB99009F5753 /* naga_red.modelparams.plist in Resources */,
+				52423B1E1604EBFE009F5753 /* lara_bathing_suit_nogear.modelparams.plist in Resources */,
+				52423B1F1604EBFE009F5753 /* lara_casual.modelparams.plist in Resources */,
+				52423B201604EBFE009F5753 /* lara_dlc_bikini_black_white.modelparams.plist in Resources */,
+				52423B211604EBFE009F5753 /* lara_dlc_bikini_camo.modelparams.plist in Resources */,
+				52423B221604EBFE009F5753 /* lara_dlc_bikini_yellow.modelparams.plist in Resources */,
+				52423B231604EBFE009F5753 /* lara_dlc_casual_explorer.modelparams.plist in Resources */,
+				52423B241604EBFE009F5753 /* lara_dlc_classic.modelparams.plist in Resources */,
+				52423B251604EBFE009F5753 /* lara_dlc_designer_fashion_winner.modelparams.plist in Resources */,
+				52423B261604EBFE009F5753 /* lara_dlc_dry_suit_red.modelparams.plist in Resources */,
+				52423B271604EBFE009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist in Resources */,
+				52423B281604EBFE009F5753 /* lara_dlc_legend.modelparams.plist in Resources */,
+				52423B291604EBFE009F5753 /* lara_dlc_wet_suit_blue.modelparams.plist in Resources */,
+				52423B2A1604EBFE009F5753 /* lara_dry_suit.modelparams.plist in Resources */,
+				52423B2B1604EBFE009F5753 /* lara_jungle_heavy.modelparams.plist in Resources */,
+				52423B2C1604EBFE009F5753 /* lara_jungle_pants.modelparams.plist in Resources */,
+				52423B2D1604EBFE009F5753 /* lara_jungle_shorts.modelparams.plist in Resources */,
+				52423B2E1604EBFE009F5753 /* lara_snow_heavy.modelparams.plist in Resources */,
+				52423B2F1604EBFE009F5753 /* lara_snow_light.modelparams.plist in Resources */,
+				52423B301604EBFE009F5753 /* lara_wetsuit_nogear.modelparams.plist in Resources */,
+				52423B311604EBFE009F5753 /* lara_wetsuit.modelparams.plist in Resources */,
+				52423B471604EC5B009F5753 /* gol_brute_minion.modelparams.plist in Resources */,
+				52423B481604EC5B009F5753 /* gol_chompy.modelparams.plist in Resources */,
+				52423B491604EC5B009F5753 /* gol_doppelganger.modelparams.plist in Resources */,
+				52423B4A1604EC5B009F5753 /* gol_fire_lizard.modelparams.plist in Resources */,
+				52423B4B1604EC5B009F5753 /* gol_fire_shaman.modelparams.plist in Resources */,
+				52423B4C1604EC5B009F5753 /* gol_lara_biker.modelparams.plist in Resources */,
+				52423B4D1604EC5B009F5753 /* gol_lara_jungle_heavy.modelparams.plist in Resources */,
+				52423B4E1604EC5B009F5753 /* gol_lara_jungle_shorts.modelparams.plist in Resources */,
+				52423B4F1604EC5B009F5753 /* gol_lara_legend.modelparams.plist in Resources */,
+				52423B501604EC5B009F5753 /* gol_lara.modelparams.plist in Resources */,
+				52423B511604EC5B009F5753 /* gol_poison_gatekeeper.modelparams.plist in Resources */,
+				52423B521604EC5B009F5753 /* gol_poison_lizard.modelparams.plist in Resources */,
+				52423B531604EC5B009F5753 /* gol_poison_minion.modelparams.plist in Resources */,
+				52423B541604EC5B009F5753 /* gol_poison_shaman.modelparams.plist in Resources */,
+				52423B551604EC5B009F5753 /* gol_shield_demon.modelparams.plist in Resources */,
+				52423B561604EC5B009F5753 /* gol_shield_gatekeeper.modelparams.plist in Resources */,
+				52423B571604EC5B009F5753 /* gol_skeleton.modelparams.plist in Resources */,
+				52423B581604EC5B009F5753 /* gol_small_minion.modelparams.plist in Resources */,
+				52423B591604EC5B009F5753 /* gol_t_rex.modelparams.plist in Resources */,
+				52423B5A1604EC5B009F5753 /* gol_totec.modelparams.plist in Resources */,
+				52423B5B1604EC5B009F5753 /* gol_xolotl.modelparams.plist in Resources */,
+				52423B5D1604ED48009F5753 /* wings.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

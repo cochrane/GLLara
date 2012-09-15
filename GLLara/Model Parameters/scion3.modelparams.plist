@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>base</key>
+	<string></string>
+	<key>cameraTargets</key>
+	<dict/>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup5</key>
+		<array>
+			<string>scion3a</string>
+			<string>scion3b</string>
+			<string>scion3c</string>
+		</array>
+		<key>MeshGroup7</key>
+		<array>
+			<string>scion3d</string>
+		</array>
+	</dict>
+	<key>renderParameters</key>
+	<dict/>
+</dict>
+</plist>

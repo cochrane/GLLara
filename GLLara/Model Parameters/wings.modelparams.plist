@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+	<key>cameraTargets</key>
+	<dict>
+		<key>wing left</key>
+		<array>
+			<string>wing left 7c</string>
+		</array>
+		<key>wing right</key>
+		<array>
+			<string>wing right 7c</string>
+		</array>
+	</dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup1</key>
+		<array>
+			<string>wingbonesleft</string>
+			<string>wingbonesright</string>
+			<string>wingleft</string>
+			<string>wingright</string>
+		</array>
+	</dict>
+	<key>renderParameters</key>
+	<dict>
+		<key>wingbonesleft</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>16</real>
+			<key>bump2UVScale</key>
+			<real>16</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.10000000000000001</real>
+		</dict>
+		<key>wingbonesright</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>16</real>
+			<key>bump2UVScale</key>
+			<real>16</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.10000000000000001</real>
+		</dict>
+		<key>wingleft</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>16</real>
+			<key>bump2UVScale</key>
+			<real>16</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.10000000000000001</real>
+		</dict>
+		<key>wingright</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>16</real>
+			<key>bump2UVScale</key>
+			<real>16</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.10000000000000001</real>
+		</dict>
+	</dict>
+</dict>
+</plist>

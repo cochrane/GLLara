@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+	<key>cameraTargets</key>
+	<dict>
+		<key>body</key>
+		<array>
+			<string>spine 4</string>
+		</array>
+		<key>fin back</key>
+		<array>
+			<string>fin back root</string>
+		</array>
+		<key>fin left</key>
+		<array>
+			<string>fin left 2</string>
+		</array>
+		<key>fin right</key>
+		<array>
+			<string>fin right 2</string>
+		</array>
+		<key>head</key>
+		<array>
+			<string>head jaw</string>
+		</array>
+	</dict>
+	<key>defaultRenderParameters</key>
+	<dict>
+		<key>bumpSpecularAmount</key>
+		<real>0.20000000000000001</real>
+	</dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup1</key>
+		<array>
+			<string>body</string>
+		</array>
+		<key>MeshGroup4</key>
+		<array>
+			<string>eyes</string>
+		</array>
+		<key>MeshGroup5</key>
+		<array>
+			<string>teeth</string>
+		</array>
+	</dict>
+	<key>renderParameters</key>
+	<dict>
+		<key>body</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>12</real>
+			<key>bump2UVScale</key>
+			<real>12</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.20000000000000001</real>
+		</dict>
+		<key>eyes</key>
+		<dict>
+			<key>bumpSpecularAmount</key>
+			<real>0.40000000000000002</real>
+		</dict>
+	</dict>
+</dict>
+</plist>
