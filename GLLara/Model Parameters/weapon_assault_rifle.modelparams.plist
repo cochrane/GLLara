@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+	<key>cameraTargets</key>
+	<dict>
+		<key>root</key>
+		<array>
+			<string>root</string>
+		</array>
+	</dict>
+	<key>defaultRenderParameters</key>
+	<dict>
+		<key>bumpSpecularAmount</key>
+		<real>0.40000000000000002</real>
+	</dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup4</key>
+		<array>
+			<string>part2</string>
+		</array>
+	</dict>
+	<key>renderParameters</key>
+	<dict/>
+</dict>
+</plist>

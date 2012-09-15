@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+	<key>cameraTargets</key>
+	<dict>
+		<key>body lower</key>
+		<array>
+			<string>pelvis</string>
+		</array>
+		<key>body upper</key>
+		<array>
+			<string>arm left shoulder 1</string>
+			<string>arm right shoulder 1</string>
+		</array>
+		<key>foot left</key>
+		<array>
+			<string>leg left ankle</string>
+		</array>
+		<key>foot right</key>
+		<array>
+			<string>leg right ankle</string>
+		</array>
+		<key>hand left</key>
+		<array>
+			<string>arm left wrist</string>
+		</array>
+		<key>hand right</key>
+		<array>
+			<string>arm right wrist</string>
+		</array>
+		<key>head</key>
+		<array>
+			<string>head jaw</string>
+		</array>
+		<key>knee left</key>
+		<array>
+			<string>leg left knee</string>
+		</array>
+		<key>knee right</key>
+		<array>
+			<string>leg right knee</string>
+		</array>
+	</dict>
+	<key>defaultRenderParameters</key>
+	<dict>
+		<key>bumpSpecularAmount</key>
+		<real>0.10000000000000001</real>
+	</dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup1</key>
+		<array>
+			<string>trousers</string>
+			<string>vest</string>
+			<string>suitleft</string>
+			<string>suitright</string>
+			<string>shoes</string>
+			<string>hands</string>
+			<string>shirt</string>
+			<string>sleeves</string>
+		</array>
+		<key>MeshGroup2</key>
+		<array>
+			<string>mouth</string>
+			<string>hair1</string>
+		</array>
+		<key>MeshGroup3</key>
+		<array>
+			<string>face</string>
+		</array>
+		<key>MeshGroup4</key>
+		<array>
+			<string>eyes</string>
+		</array>
+		<key>MeshGroup7</key>
+		<array>
+			<string>eyeshading</string>
+			<string>eyebrows</string>
+			<string>eyelashes</string>
+		</array>
+		<key>MeshGroup9</key>
+		<array>
+			<string>hair2</string>
+		</array>
+	</dict>
+	<key>renderParameters</key>
+	<dict>
+		<key>hands</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>8</real>
+			<key>bump2UVScale</key>
+			<real>8</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.10000000000000001</real>
+		</dict>
+		<key>shirt</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>8</real>
+			<key>bump2UVScale</key>
+			<real>8</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.050000000000000003</real>
+		</dict>
+		<key>shoes</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>4</real>
+			<key>bump2UVScale</key>
+			<real>4</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.10000000000000001</real>
+		</dict>
+		<key>sleeves</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>12</real>
+			<key>bump2UVScale</key>
+			<real>12</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.050000000000000003</real>
+		</dict>
+		<key>suitleft</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>16</real>
+			<key>bump2UVScale</key>
+			<real>16</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.050000000000000003</real>
+		</dict>
+		<key>suitright</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>16</real>
+			<key>bump2UVScale</key>
+			<real>16</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.050000000000000003</real>
+		</dict>
+		<key>trousers</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>16</real>
+			<key>bump2UVScale</key>
+			<real>16</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.050000000000000003</real>
+		</dict>
+		<key>vest</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>8</real>
+			<key>bump2UVScale</key>
+			<real>8</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.050000000000000003</real>
+		</dict>
+	</dict>
+</dict>
+</plist>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+	<key>cameraTargets</key>
+	<dict>
+		<key>body lower</key>
+		<array>
+			<string>pelvis</string>
+		</array>
+		<key>body upper</key>
+		<array>
+			<string>arm left shoulder 1</string>
+			<string>arm right shoulder 1</string>
+		</array>
+		<key>foot left</key>
+		<array>
+			<string>leg left ankle</string>
+		</array>
+		<key>foot right</key>
+		<array>
+			<string>leg right ankle</string>
+		</array>
+		<key>hand left</key>
+		<array>
+			<string>arm left wrist</string>
+		</array>
+		<key>hand right</key>
+		<array>
+			<string>arm right wrist</string>
+		</array>
+		<key>head</key>
+		<array>
+			<string>head jaw 2</string>
+		</array>
+		<key>knee left</key>
+		<array>
+			<string>leg left knee</string>
+		</array>
+		<key>knee right</key>
+		<array>
+			<string>leg right knee</string>
+		</array>
+	</dict>
+	<key>defaultRenderParameters</key>
+	<dict>
+		<key>bumpSpecularAmount</key>
+		<real>0.10000000000000001</real>
+	</dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup1</key>
+		<array>
+			<string>part3</string>
+			<string>part4</string>
+			<string>part5a</string>
+			<string>part5b</string>
+			<string>part6</string>
+		</array>
+		<key>MeshGroup2</key>
+		<array>
+			<string>part2</string>
+			<string>part7</string>
+		</array>
+		<key>MeshGroup8</key>
+		<array>
+			<string>part1a</string>
+			<string>part1b</string>
+		</array>
+	</dict>
+	<key>renderParameters</key>
+	<dict>
+		<key>part2</key>
+		<dict>
+			<key>bumpSpecularAmount</key>
+			<real>0.29999999999999999</real>
+		</dict>
+		<key>part3</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>12</real>
+			<key>bump2UVScale</key>
+			<real>12</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.14999999999999999</real>
+		</dict>
+		<key>part4</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>8</real>
+			<key>bump2UVScale</key>
+			<real>8</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.5</real>
+		</dict>
+		<key>part5a</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>12</real>
+			<key>bump2UVScale</key>
+			<real>12</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.14999999999999999</real>
+		</dict>
+		<key>part5b</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>12</real>
+			<key>bump2UVScale</key>
+			<real>12</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.14999999999999999</real>
+		</dict>
+		<key>part6</key>
+		<dict>
+			<key>bump1UVScale</key>
+			<real>12</real>
+			<key>bump2UVScale</key>
+			<real>12</real>
+			<key>bumpSpecularAmount</key>
+			<real>0.14999999999999999</real>
+		</dict>
+	</dict>
+</dict>
+</plist>

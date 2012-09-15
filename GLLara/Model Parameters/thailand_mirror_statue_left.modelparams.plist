@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+	<key>cameraTargets</key>
+	<dict>
+		<key>root</key>
+		<array>
+			<string>root</string>
+		</array>
+	</dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>MeshGroup17</key>
+		<array>
+			<string>body</string>
+			<string>fan1</string>
+			<string>fan2</string>
+			<string>cloth</string>
+			<string>deco</string>
+			<string>block</string>
+		</array>
+	</dict>
+	<key>renderParameters</key>
+	<dict/>
+</dict>
+</plist>

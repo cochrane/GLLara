@@ -37,6 +37,23 @@
 		523DE10A1604D9F000BB9F61 /* helicopter.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1071604D9EF00BB9F61 /* helicopter.modelparams.plist */; };
 		523DE10B1604D9F000BB9F61 /* jellyfish.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1081604D9F000BB9F61 /* jellyfish.modelparams.plist */; };
 		523DE10C1604D9F000BB9F61 /* kraken.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1091604D9F000BB9F61 /* kraken.modelparams.plist */; };
+		523DE10E1604E00700BB9F61 /* zip.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE10D1604E00700BB9F61 /* zip.modelparams.plist */; };
+		523DE1131604E04300BB9F61 /* winston.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE10F1604E04200BB9F61 /* winston.modelparams.plist */; };
+		523DE1141604E04300BB9F61 /* wraith_stone.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1101604E04200BB9F61 /* wraith_stone.modelparams.plist */; };
+		523DE1151604E04300BB9F61 /* yeti_thrall_no_chains.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1111604E04200BB9F61 /* yeti_thrall_no_chains.modelparams.plist */; };
+		523DE1161604E04300BB9F61 /* yeti_thrall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1121604E04300BB9F61 /* yeti_thrall.modelparams.plist */; };
+		523DE1201604E06600BB9F61 /* viking_thrall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1171604E06400BB9F61 /* viking_thrall.modelparams.plist */; };
+		523DE1211604E06600BB9F61 /* weapon_ak_rifle.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1181604E06400BB9F61 /* weapon_ak_rifle.modelparams.plist */; };
+		523DE1221604E06600BB9F61 /* weapon_assault_rifle.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1191604E06400BB9F61 /* weapon_assault_rifle.modelparams.plist */; };
+		523DE1231604E06600BB9F61 /* weapon_grenade.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE11A1604E06400BB9F61 /* weapon_grenade.modelparams.plist */; };
+		523DE1241604E06600BB9F61 /* weapon_handgun.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE11B1604E06500BB9F61 /* weapon_handgun.modelparams.plist */; };
+		523DE1251604E06600BB9F61 /* weapon_shotgun.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE11C1604E06500BB9F61 /* weapon_shotgun.modelparams.plist */; };
+		523DE1261604E06600BB9F61 /* weapon_speargun.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE11D1604E06500BB9F61 /* weapon_speargun.modelparams.plist */; };
+		523DE1271604E06600BB9F61 /* weapon_tranquilizer.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE11E1604E06500BB9F61 /* weapon_tranquilizer.modelparams.plist */; };
+		523DE1281604E06600BB9F61 /* weapon_uzi.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE11F1604E06600BB9F61 /* weapon_uzi.modelparams.plist */; };
+		523DE12A1604E0C700BB9F61 /* tiger2.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1291604E0C500BB9F61 /* tiger2.modelparams.plist */; };
+		523DE12D1604E10D00BB9F61 /* thailand_mirror_statue_left.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */; };
+		523DE12E1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -228,6 +245,23 @@
 		523DE1071604D9EF00BB9F61 /* helicopter.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = helicopter.modelparams.plist; sourceTree = "<group>"; };
 		523DE1081604D9F000BB9F61 /* jellyfish.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = jellyfish.modelparams.plist; sourceTree = "<group>"; };
 		523DE1091604D9F000BB9F61 /* kraken.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = kraken.modelparams.plist; sourceTree = "<group>"; };
+		523DE10D1604E00700BB9F61 /* zip.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = zip.modelparams.plist; sourceTree = "<group>"; };
+		523DE10F1604E04200BB9F61 /* winston.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = winston.modelparams.plist; sourceTree = "<group>"; };
+		523DE1101604E04200BB9F61 /* wraith_stone.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = wraith_stone.modelparams.plist; sourceTree = "<group>"; };
+		523DE1111604E04200BB9F61 /* yeti_thrall_no_chains.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = yeti_thrall_no_chains.modelparams.plist; sourceTree = "<group>"; };
+		523DE1121604E04300BB9F61 /* yeti_thrall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = yeti_thrall.modelparams.plist; sourceTree = "<group>"; };
+		523DE1171604E06400BB9F61 /* viking_thrall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = viking_thrall.modelparams.plist; sourceTree = "<group>"; };
+		523DE1181604E06400BB9F61 /* weapon_ak_rifle.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weapon_ak_rifle.modelparams.plist; sourceTree = "<group>"; };
+		523DE1191604E06400BB9F61 /* weapon_assault_rifle.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weapon_assault_rifle.modelparams.plist; sourceTree = "<group>"; };
+		523DE11A1604E06400BB9F61 /* weapon_grenade.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weapon_grenade.modelparams.plist; sourceTree = "<group>"; };
+		523DE11B1604E06500BB9F61 /* weapon_handgun.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weapon_handgun.modelparams.plist; sourceTree = "<group>"; };
+		523DE11C1604E06500BB9F61 /* weapon_shotgun.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weapon_shotgun.modelparams.plist; sourceTree = "<group>"; };
+		523DE11D1604E06500BB9F61 /* weapon_speargun.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weapon_speargun.modelparams.plist; sourceTree = "<group>"; };
+		523DE11E1604E06500BB9F61 /* weapon_tranquilizer.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weapon_tranquilizer.modelparams.plist; sourceTree = "<group>"; };
+		523DE11F1604E06600BB9F61 /* weapon_uzi.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = weapon_uzi.modelparams.plist; sourceTree = "<group>"; };
+		523DE1291604E0C500BB9F61 /* tiger2.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tiger2.modelparams.plist; sourceTree = "<group>"; };
+		523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = thailand_mirror_statue_left.modelparams.plist; sourceTree = "<group>"; };
+		523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = thailand_mirror_statue_right.modelparams.plist; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -663,9 +697,26 @@
 				523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */,
 				52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */,
 				52BB21B915FB7D0500937450 /* ship.modelparams.plist */,
+				523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */,
+				523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */,
 				52BB207315F8334E00937450 /* tiger1.modelparams.plist */,
+				523DE1291604E0C500BB9F61 /* tiger2.modelparams.plist */,
+				523DE1171604E06400BB9F61 /* viking_thrall.modelparams.plist */,
+				523DE1181604E06400BB9F61 /* weapon_ak_rifle.modelparams.plist */,
+				523DE1191604E06400BB9F61 /* weapon_assault_rifle.modelparams.plist */,
+				523DE11A1604E06400BB9F61 /* weapon_grenade.modelparams.plist */,
+				523DE11B1604E06500BB9F61 /* weapon_handgun.modelparams.plist */,
+				523DE11C1604E06500BB9F61 /* weapon_shotgun.modelparams.plist */,
+				523DE11D1604E06500BB9F61 /* weapon_speargun.modelparams.plist */,
+				523DE11E1604E06500BB9F61 /* weapon_tranquilizer.modelparams.plist */,
+				523DE11F1604E06600BB9F61 /* weapon_uzi.modelparams.plist */,
+				523DE10F1604E04200BB9F61 /* winston.modelparams.plist */,
+				523DE1101604E04200BB9F61 /* wraith_stone.modelparams.plist */,
 				529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */,
 				52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */,
+				523DE1121604E04300BB9F61 /* yeti_thrall.modelparams.plist */,
+				523DE1111604E04200BB9F61 /* yeti_thrall_no_chains.modelparams.plist */,
+				523DE10D1604E00700BB9F61 /* zip.modelparams.plist */,
 			);
 			path = "Model Parameters";
 			sourceTree = "<group>";
@@ -1053,6 +1104,23 @@
 				523DE10A1604D9F000BB9F61 /* helicopter.modelparams.plist in Resources */,
 				523DE10B1604D9F000BB9F61 /* jellyfish.modelparams.plist in Resources */,
 				523DE10C1604D9F000BB9F61 /* kraken.modelparams.plist in Resources */,
+				523DE10E1604E00700BB9F61 /* zip.modelparams.plist in Resources */,
+				523DE1131604E04300BB9F61 /* winston.modelparams.plist in Resources */,
+				523DE1141604E04300BB9F61 /* wraith_stone.modelparams.plist in Resources */,
+				523DE1151604E04300BB9F61 /* yeti_thrall_no_chains.modelparams.plist in Resources */,
+				523DE1161604E04300BB9F61 /* yeti_thrall.modelparams.plist in Resources */,
+				523DE1201604E06600BB9F61 /* viking_thrall.modelparams.plist in Resources */,
+				523DE1211604E06600BB9F61 /* weapon_ak_rifle.modelparams.plist in Resources */,
+				523DE1221604E06600BB9F61 /* weapon_assault_rifle.modelparams.plist in Resources */,
+				523DE1231604E06600BB9F61 /* weapon_grenade.modelparams.plist in Resources */,
+				523DE1241604E06600BB9F61 /* weapon_handgun.modelparams.plist in Resources */,
+				523DE1251604E06600BB9F61 /* weapon_shotgun.modelparams.plist in Resources */,
+				523DE1261604E06600BB9F61 /* weapon_speargun.modelparams.plist in Resources */,
+				523DE1271604E06600BB9F61 /* weapon_tranquilizer.modelparams.plist in Resources */,
+				523DE1281604E06600BB9F61 /* weapon_uzi.modelparams.plist in Resources */,
+				523DE12A1604E0C700BB9F61 /* tiger2.modelparams.plist in Resources */,
+				523DE12D1604E10D00BB9F61 /* thailand_mirror_statue_left.modelparams.plist in Resources */,
+				523DE12E1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
