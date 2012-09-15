@@ -30,7 +30,7 @@ void main()
 {
 	// Transform
 	gl_Position = transform.viewProjection * bones.transforms[0] * vec4(position, 1.0);
-	normalWorld = mat3(boneMatrices[0]) * normal;
+	normalWorld = mat3(bones.transforms[0]) * normal;
 	
 	// Pass through
 	outColor = color;
