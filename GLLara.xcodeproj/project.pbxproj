@@ -19,7 +19,6 @@
 		523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */; };
 		523DE0E01604A5ED00BB9F61 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B9E09616027FC800641518 /* Foundation.framework */; };
 		523DE0E31604A5ED00BB9F61 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523DE0E21604A5ED00BB9F61 /* main.m */; };
-		523DE0E71604A5ED00BB9F61 /* parseItems.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 523DE0E61604A5ED00BB9F61 /* parseItems.1 */; };
 		523DE0EC1604CE8600BB9F61 /* natla.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */; };
 		523DE0EE1604D7A300BB9F61 /* alister.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0ED1604D7A300BB9F61 /* alister.modelparams.plist */; };
 		523DE0F01604D7D600BB9F61 /* amelia.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0EF1604D7D600BB9F61 /* amelia.modelparams.plist */; };
@@ -194,7 +193,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				523DE0E71604A5ED00BB9F61 /* parseItems.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -227,7 +225,6 @@
 		523DE0DE1604A5ED00BB9F61 /* parseItems */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = parseItems; sourceTree = BUILT_PRODUCTS_DIR; };
 		523DE0E21604A5ED00BB9F61 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		523DE0E51604A5ED00BB9F61 /* parseItems-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "parseItems-Prefix.pch"; sourceTree = "<group>"; };
-		523DE0E61604A5ED00BB9F61 /* parseItems.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = parseItems.1; sourceTree = "<group>"; };
 		523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = natla.modelparams.plist; sourceTree = "<group>"; };
 		523DE0ED1604D7A300BB9F61 /* alister.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = alister.modelparams.plist; sourceTree = "<group>"; };
 		523DE0EF1604D7D600BB9F61 /* amelia.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = amelia.modelparams.plist; sourceTree = "<group>"; };
@@ -496,7 +493,6 @@
 			isa = PBXGroup;
 			children = (
 				523DE0E21604A5ED00BB9F61 /* main.m */,
-				523DE0E61604A5ED00BB9F61 /* parseItems.1 */,
 				523DE0E41604A5ED00BB9F61 /* Supporting Files */,
 			);
 			path = parseItems;
@@ -1452,6 +1448,7 @@
 				523DE0EA1604A5ED00BB9F61 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		525ACD4115F0F1A700534E7D /* Build configuration list for PBXProject "GLLara" */ = {
 			isa = XCConfigurationList;
