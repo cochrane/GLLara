@@ -135,6 +135,7 @@
 	[self.managedObjectContext deleteObject:self.camera];
 	
 	self.camera = nil;
+	self.popover.delegate = nil;
 	
 	return YES;
 }
@@ -146,6 +147,7 @@
 	[self.camera removeObserver:self forKeyPath:@"windowSizeLocked"];
 	self.renderView.camera = nil;
 	self.camera = nil;
+	self.popover.delegate = nil;
 }
 
 - (IBAction)renderToFile:(id)sender
