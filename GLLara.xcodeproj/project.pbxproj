@@ -17,6 +17,10 @@
 		5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */; };
 		5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
 		523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */; };
+		523DE0E01604A5ED00BB9F61 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B9E09616027FC800641518 /* Foundation.framework */; };
+		523DE0E31604A5ED00BB9F61 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523DE0E21604A5ED00BB9F61 /* main.m */; };
+		523DE0E71604A5ED00BB9F61 /* parseItems.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 523DE0E61604A5ED00BB9F61 /* parseItems.1 */; };
+		523DE0EC1604CE8600BB9F61 /* natla.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -151,6 +155,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		523DE0DC1604A5ED00BB9F61 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				523DE0E71604A5ED00BB9F61 /* parseItems.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		52B9E09216027FC800641518 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -177,6 +191,11 @@
 		5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAngleRangeValueTransformer.m; sourceTree = "<group>"; };
 		5224C8EF15FABC92002A6C76 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = glasses.modelparams.plist; sourceTree = "<group>"; };
+		523DE0DE1604A5ED00BB9F61 /* parseItems */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = parseItems; sourceTree = BUILT_PRODUCTS_DIR; };
+		523DE0E21604A5ED00BB9F61 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		523DE0E51604A5ED00BB9F61 /* parseItems-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "parseItems-Prefix.pch"; sourceTree = "<group>"; };
+		523DE0E61604A5ED00BB9F61 /* parseItems.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = parseItems.1; sourceTree = "<group>"; };
+		523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = natla.modelparams.plist; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -359,6 +378,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		523DE0DB1604A5ED00BB9F61 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				523DE0E01604A5ED00BB9F61 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		525ACD4415F0F1A700534E7D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -399,6 +426,24 @@
 			name = "Internal use only";
 			sourceTree = "<group>";
 		};
+		523DE0E11604A5ED00BB9F61 /* parseItems */ = {
+			isa = PBXGroup;
+			children = (
+				523DE0E21604A5ED00BB9F61 /* main.m */,
+				523DE0E61604A5ED00BB9F61 /* parseItems.1 */,
+				523DE0E41604A5ED00BB9F61 /* Supporting Files */,
+			);
+			path = parseItems;
+			sourceTree = "<group>";
+		};
+		523DE0E41604A5ED00BB9F61 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				523DE0E51604A5ED00BB9F61 /* parseItems-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		525ACD3C15F0F1A700534E7D = {
 			isa = PBXGroup;
 			children = (
@@ -407,6 +452,7 @@
 				525ACD5115F0F1A700534E7D /* GLLara */,
 				525ACD7115F0F1A700534E7D /* GLLaraTests */,
 				52B9E09816027FC800641518 /* xibLocalizationPostprocessor */,
+				523DE0E11604A5ED00BB9F61 /* parseItems */,
 				525ACD4A15F0F1A700534E7D /* Frameworks */,
 				525ACD4815F0F1A700534E7D /* Products */,
 			);
@@ -418,6 +464,7 @@
 				525ACD4715F0F1A700534E7D /* GLLara.app */,
 				525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */,
 				52B9E09416027FC800641518 /* xibLocalizationPostprocessor */,
+				523DE0DE1604A5ED00BB9F61 /* parseItems */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -555,6 +602,7 @@
 				529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */,
 				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
 				529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */,
+				523DE0EB1604CE8600BB9F61 /* natla.modelparams.plist */,
 				52BB206715F8275E00937450 /* doppelganger.modelparams.plist */,
 				52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */,
 				52BB206D15F830C400937450 /* albino_spider.modelparams.plist */,
@@ -768,6 +816,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		523DE0DD1604A5ED00BB9F61 /* parseItems */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 523DE0E81604A5ED00BB9F61 /* Build configuration list for PBXNativeTarget "parseItems" */;
+			buildPhases = (
+				523DE0DA1604A5ED00BB9F61 /* Sources */,
+				523DE0DB1604A5ED00BB9F61 /* Frameworks */,
+				523DE0DC1604A5ED00BB9F61 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = parseItems;
+			productName = parseItems;
+			productReference = 523DE0DE1604A5ED00BB9F61 /* parseItems */;
+			productType = "com.apple.product-type.tool";
+		};
 		525ACD4615F0F1A700534E7D /* GLLara */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 525ACD7C15F0F1A700534E7D /* Build configuration list for PBXNativeTarget "GLLara" */;
@@ -848,6 +913,7 @@
 				525ACD4615F0F1A700534E7D /* GLLara */,
 				525ACD6A15F0F1A700534E7D /* GLLaraTests */,
 				52B9E09316027FC800641518 /* xibLocalizationPostprocessor */,
+				523DE0DD1604A5ED00BB9F61 /* parseItems */,
 			);
 		};
 /* End PBXProject section */
@@ -922,6 +988,7 @@
 				52B9E0C61602817000641518 /* MainMenu.strings in Resources */,
 				52D3D72516029699006CB743 /* GLLRenderAccessoryView.xib in Resources */,
 				523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */,
+				523DE0EC1604CE8600BB9F61 /* natla.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -965,6 +1032,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		523DE0DA1604A5ED00BB9F61 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				523DE0E31604A5ED00BB9F61 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		525ACD4315F0F1A700534E7D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1088,6 +1163,24 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		523DE0E91604A5ED00BB9F61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "parseItems/parseItems-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		523DE0EA1604A5ED00BB9F61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "parseItems/parseItems-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		525ACD7A15F0F1A700534E7D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1220,6 +1313,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		523DE0E81604A5ED00BB9F61 /* Build configuration list for PBXNativeTarget "parseItems" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				523DE0E91604A5ED00BB9F61 /* Debug */,
+				523DE0EA1604A5ED00BB9F61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		525ACD4115F0F1A700534E7D /* Build configuration list for PBXProject "GLLara" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
