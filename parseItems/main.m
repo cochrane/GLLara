@@ -164,7 +164,7 @@ int main(int argc, const char * argv[])
 		data[@"renderParameters"] = [renderParameters copy];
 		
 		// Find camera targets
-		NSRegularExpression *cameraTargetsRegexp = [NSRegularExpression regularExpressionWithPattern:@"AddCameraTarget\\(\"([a-z ]+)\", (\"[a-zA-Z0-9_ ]+\",? ?)\\);" options:0 error:&error];
+		NSRegularExpression *cameraTargetsRegexp = [NSRegularExpression regularExpressionWithPattern:@"AddCameraTarget\\(\"([a-z ]+)\", ((?:\"[a-zA-Z0-9_ ]+\",? ?)+)\\);" options:0 error:&error];
 		NSAssert(cameraTargetsRegexp, @"Couldn't compile regexp: %@", error);
 		
 		NSMutableDictionary *cameraTargets = [[NSMutableDictionary alloc] init];
