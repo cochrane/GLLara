@@ -80,8 +80,8 @@
 		52423B261604EBFE009F5753 /* lara_dlc_dry_suit_red.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B121604EBFC009F5753 /* lara_dlc_dry_suit_red.modelparams.plist */; };
 		52423B271604EBFE009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B131604EBFC009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist */; };
 		52423B281604EBFE009F5753 /* lara_dlc_legend.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B141604EBFC009F5753 /* lara_dlc_legend.modelparams.plist */; };
-		52423B291604EBFE009F5753 /* lara_dlc_wet_suit_blue.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B151604EBFC009F5753 /* lara_dlc_wet_suit_blue.modelparams.plist */; };
-		52423B2A1604EBFE009F5753 /* lara_dry_suit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B161604EBFC009F5753 /* lara_dry_suit.modelparams.plist */; };
+		52423B291604EBFE009F5753 /* lara_dlc_wetsuit_blue.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B151604EBFC009F5753 /* lara_dlc_wetsuit_blue.modelparams.plist */; };
+		52423B2A1604EBFE009F5753 /* lara_drysuit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B161604EBFC009F5753 /* lara_drysuit.modelparams.plist */; };
 		52423B2B1604EBFE009F5753 /* lara_jungle_heavy.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B171604EBFD009F5753 /* lara_jungle_heavy.modelparams.plist */; };
 		52423B2C1604EBFE009F5753 /* lara_jungle_pants.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B181604EBFD009F5753 /* lara_jungle_pants.modelparams.plist */; };
 		52423B2D1604EBFE009F5753 /* lara_jungle_shorts.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B191604EBFD009F5753 /* lara_jungle_shorts.modelparams.plist */; };
@@ -344,8 +344,8 @@
 		52423B121604EBFC009F5753 /* lara_dlc_dry_suit_red.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_dry_suit_red.modelparams.plist; sourceTree = "<group>"; };
 		52423B131604EBFC009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_jungle_shorts_grey.modelparams.plist; sourceTree = "<group>"; };
 		52423B141604EBFC009F5753 /* lara_dlc_legend.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_legend.modelparams.plist; sourceTree = "<group>"; };
-		52423B151604EBFC009F5753 /* lara_dlc_wet_suit_blue.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_wet_suit_blue.modelparams.plist; sourceTree = "<group>"; };
-		52423B161604EBFC009F5753 /* lara_dry_suit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dry_suit.modelparams.plist; sourceTree = "<group>"; };
+		52423B151604EBFC009F5753 /* lara_dlc_wetsuit_blue.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_wetsuit_blue.modelparams.plist; sourceTree = "<group>"; };
+		52423B161604EBFC009F5753 /* lara_drysuit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_drysuit.modelparams.plist; sourceTree = "<group>"; };
 		52423B171604EBFD009F5753 /* lara_jungle_heavy.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_jungle_heavy.modelparams.plist; sourceTree = "<group>"; };
 		52423B181604EBFD009F5753 /* lara_jungle_pants.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_jungle_pants.modelparams.plist; sourceTree = "<group>"; };
 		52423B191604EBFD009F5753 /* lara_jungle_shorts.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_jungle_shorts.modelparams.plist; sourceTree = "<group>"; };
@@ -836,8 +836,8 @@
 				52423B121604EBFC009F5753 /* lara_dlc_dry_suit_red.modelparams.plist */,
 				52423B131604EBFC009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist */,
 				52423B141604EBFC009F5753 /* lara_dlc_legend.modelparams.plist */,
-				52423B151604EBFC009F5753 /* lara_dlc_wet_suit_blue.modelparams.plist */,
-				52423B161604EBFC009F5753 /* lara_dry_suit.modelparams.plist */,
+				52423B151604EBFC009F5753 /* lara_dlc_wetsuit_blue.modelparams.plist */,
+				52423B161604EBFC009F5753 /* lara_drysuit.modelparams.plist */,
 				52423B171604EBFD009F5753 /* lara_jungle_heavy.modelparams.plist */,
 				52423B181604EBFD009F5753 /* lara_jungle_pants.modelparams.plist */,
 				52423B191604EBFD009F5753 /* lara_jungle_shorts.modelparams.plist */,
@@ -1318,8 +1318,8 @@
 				52423B261604EBFE009F5753 /* lara_dlc_dry_suit_red.modelparams.plist in Resources */,
 				52423B271604EBFE009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist in Resources */,
 				52423B281604EBFE009F5753 /* lara_dlc_legend.modelparams.plist in Resources */,
-				52423B291604EBFE009F5753 /* lara_dlc_wet_suit_blue.modelparams.plist in Resources */,
-				52423B2A1604EBFE009F5753 /* lara_dry_suit.modelparams.plist in Resources */,
+				52423B291604EBFE009F5753 /* lara_dlc_wetsuit_blue.modelparams.plist in Resources */,
+				52423B2A1604EBFE009F5753 /* lara_drysuit.modelparams.plist in Resources */,
 				52423B2B1604EBFE009F5753 /* lara_jungle_heavy.modelparams.plist in Resources */,
 				52423B2C1604EBFE009F5753 /* lara_jungle_pants.modelparams.plist in Resources */,
 				52423B2D1604EBFE009F5753 /* lara_jungle_shorts.modelparams.plist in Resources */,
