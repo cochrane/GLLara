@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>meshGroupNames</key>
+	<dict>
+		<key>Clouds</key>
+		<array>
+			<string>dome1</string>
+			<string>dome2</string>
+			<string>dome3</string>
+			<string>dome4</string>
+		</array>
+		<key>Dome</key>
+		<array>
+			<string>clouds</string>
+		</array>
+	</dict>
+	<key>base</key>
+	<string>xnaLaraDefault</string>
+</dict>
+</plist>
