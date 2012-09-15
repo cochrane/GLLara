@@ -101,10 +101,22 @@ int main(int argc, const char * argv[])
 	SEL _cmd = NULL;
 	
 	@autoreleasepool {
-		NSAssert(argc == 3, @"Usage: %s infile outfile", argv[0]);
+		NSAssert(argc == 3, @"Usage: %s inFile outDirectory", argv[0]);
 		
 		NSString *inPath = [NSString stringWithCString:argv[1] encoding:NSMacOSRomanStringEncoding];
-		NSString *outPath =[NSString stringWithCString:argv[2] encoding:NSMacOSRomanStringEncoding];
+		
+		
+		NSString *baseModelName = [NSMutableString stringWithString:inPath.lastPathComponent.stringByDeletingPathExtension];
+		NSRegularExpression *nameComponentsExpression = [NSRegularExpression regularExpressionWithPattern:@"(GoL)|([A-Z][a-z0-9]+)|(([A-Z]+)(?=[A-Z][a-z]+))" options:0 error:NULL];
+		NSArray *matches = [nameComponentsExpression matchesInString:baseModelName options:0 range:NSMakeRange(0, baseModelName.length)];
+		
+		NSMutableArray *transformed = [NSMutableArray arrayWithCapacity:matches.count];
+		for (NSTextCheckingResult *match in matches)
+			[transformed addObject:[[baseModelName substringWithRange:[match rangeAtIndex:0]] lowercaseString]];
+		NSString *underscoredName = [transformed componentsJoinedByString:@"_"];
+		
+		NSString *outDir =[NSString stringWithCString:argv[2] encoding:NSMacOSRomanStringEncoding];
+		NSString *outPath = [outDir stringByAppendingPathComponent:[underscoredName stringByAppendingPathExtension:@"modelparams.plist"]];
 		
 		NSError *error = nil;
 		NSString *itemFile = [NSString stringWithContentsOfFile:inPath encoding:NSUTF8StringEncoding error:&error];
@@ -125,7 +137,7 @@ int main(int argc, const char * argv[])
 			data[@"base"] = baseClass.lowercaseString;
 		
 		// Find mesh groups
-		NSRegularExpression *meshGroupRegexp = [NSRegularExpression regularExpressionWithPattern:@"model\\.DefineMeshGroup\\(MeshGroupNames\\.([A-Za-z0-9]+), ((?:\"[a-zA-Z0-9]+\",? ?)+)\\);" options:0 error:&error];
+		NSRegularExpression *meshGroupRegexp = [NSRegularExpression regularExpressionWithPattern:@"model\\.DefineMeshGroup\\(MeshGroupNames\\.([A-Za-z0-9]+),\\s*((?:\"[a-zA-Z0-9]+\",?\\s*)+)\\);" options:0 error:&error];
 		NSAssert(meshGroupRegexp, @"couldn't compile regexp: %@", error);
 		
 		NSMutableDictionary *meshGroups = [[NSMutableDictionary alloc] init];
@@ -139,7 +151,7 @@ int main(int argc, const char * argv[])
 		data[@"meshGroupNames"] = [meshGroups copy];
 		
 		// Find default render parameters
-		NSRegularExpression *defaultParamsRegexp = [NSRegularExpression regularExpressionWithPattern:@"mesh\\.RenderParams = new object\\[\\] \\{ ((?:[0-9.]+f,?  ?)+)\\};" options:0 error:&error];
+		NSRegularExpression *defaultParamsRegexp = [NSRegularExpression regularExpressionWithPattern:@"mesh\\.RenderParams = new object\\[\\] \\{ ((?:[0-9.]+f,?\\s*)+)\\};" options:0 error:&error];
 		NSAssert(defaultParamsRegexp, @"couldn't compile regexp: %@", error);
 		
 		NSTextCheckingResult *defaultParamsMatch = [defaultParamsRegexp firstMatchInString:itemFile options:0 range:full];
@@ -150,7 +162,7 @@ int main(int argc, const char * argv[])
 		}
 		
 		// Find render parameters
-		NSRegularExpression *renderParamsRegexp = [NSRegularExpression regularExpressionWithPattern:@"model\\.GetMesh\\(\"([a-zA-Z0-9]+)\"\\).RenderParams = new object\\[\\] \\{ ((?:[0-9.]+f,?  ?)+)\\}" options:0 error:&error];
+		NSRegularExpression *renderParamsRegexp = [NSRegularExpression regularExpressionWithPattern:@"model\\.GetMesh\\(\"([a-zA-Z0-9]+)\"\\).RenderParams = new object\\[\\] \\{ ((?:[0-9.]+f,?\\s*)+)\\}" options:0 error:&error];
 		NSAssert(renderParamsRegexp, @"couldn't compile regexp: %@", error);
 		
 		NSArray *renderParameterMatches = [renderParamsRegexp matchesInString:itemFile options:0 range:full];
@@ -164,7 +176,7 @@ int main(int argc, const char * argv[])
 		data[@"renderParameters"] = [renderParameters copy];
 		
 		// Find camera targets
-		NSRegularExpression *cameraTargetsRegexp = [NSRegularExpression regularExpressionWithPattern:@"AddCameraTarget\\(\"([a-z ]+)\", ((?:\"[a-zA-Z0-9_ ]+\",? ?)+)\\);" options:0 error:&error];
+		NSRegularExpression *cameraTargetsRegexp = [NSRegularExpression regularExpressionWithPattern:@"AddCameraTarget\\(\"([a-z ]+)\",\\s*((?:\"[a-zA-Z0-9_ ]+\",?\\s*)+)\\);" options:0 error:&error];
 		NSAssert(cameraTargetsRegexp, @"Couldn't compile regexp: %@", error);
 		
 		NSMutableDictionary *cameraTargets = [[NSMutableDictionary alloc] init];
