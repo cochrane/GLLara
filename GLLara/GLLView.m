@@ -105,6 +105,20 @@ const double unitsPerSecond = 0.2;
 	self.camera.currentPositionZ += theEvent.deltaY / self.bounds.size.height;
 }
 
+- (void)mouseDragged:(NSEvent *)theEvent
+{
+	if (theEvent.modifierFlags & NSShiftKeyMask)
+	{
+		// This is a move event
+	}
+	else
+	{
+		// This is a rotate event
+		self.camera.longitude -= theEvent.deltaX * M_PI / self.bounds.size.width;
+		self.camera.latitude -= theEvent.deltaY * M_PI / self.bounds.size.height;
+	}
+}
+
 - (void)reshape
 {
 	// Set height and width for camera.
