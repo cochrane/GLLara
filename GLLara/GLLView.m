@@ -20,6 +20,7 @@
 {
 	BOOL inGesture;
 	BOOL shiftIsDown;
+	BOOL inWASDMove;
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
@@ -107,9 +108,13 @@ const double unitsPerSecond = 0.2;
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-	if (theEvent.modifierFlags & NSShiftKeyMask)
+	if (theEvent.modifierFlags & NSShiftKeyMask && !inWASDMove)
 	{
 		// This is a move event
+		float deltaX = -theEvent.deltaX / self.bounds.size.width;
+		float deltaY = theEvent.deltaY / self.bounds.size.height;
+		
+		[self.camera moveLocalX:deltaX y:deltaY z:0.0f];
 	}
 	else
 	{
@@ -222,6 +227,7 @@ const double unitsPerSecond = 0.2;
 				break;
 		}
 		if (!wDown && !aDown && !sDown && !dDown && !mouseDown && !shiftIsDown) break;
+		inWASDMove = wDown || aDown || sDown || dDown;
 		
 		// Perform actions
 		float deltaX = 0, deltaY = 0, deltaZ = 0;
@@ -238,6 +244,7 @@ const double unitsPerSecond = 0.2;
 		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDownMask | NSLeftMouseUpMask | NSLeftMouseDraggedMask | NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSApplicationDeactivatedEventType untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
 	}
 	[NSEvent stopPeriodicEvents];
+	inWASDMove = NO;
 	
 	self.needsDisplay = YES;
 }
