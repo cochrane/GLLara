@@ -60,17 +60,6 @@
 	[super awakeFromSnapshotEvents:flags];
 	[self _updateRelativeTransform];
 }
-- (void)willTurnIntoFault
-{
-	[self removeObserver:self forKeyPath:@"parent.globalTransform"];
-}
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	if ([keyPath isEqual:@"parent.globalTransform"])
-		[self _updateGlobalTransform];
-	else
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-}
 
 - (void)setPositionX:(float)position
 {
