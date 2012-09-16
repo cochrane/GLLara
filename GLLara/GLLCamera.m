@@ -147,7 +147,7 @@
 	return targetPosition - viewDirection * simd_splatf(self.distance);
 }
 
-- (mat_float16)viewProjectionMtrixForAspectRatio:(float)aspect;
+- (mat_float16)viewProjectionMatrixForAspectRatio:(float)aspect;
 {
 	mat_float16 projection = simd_frustumMatrix(self.fieldOfViewY, aspect, self.nearDistance, self.farDistance);
 	
@@ -164,7 +164,7 @@
 
 - (mat_float16)viewProjectionMatrix
 {
-	return [self viewProjectionMtrixForAspectRatio:self.actualWindowWidth / self.actualWindowHeight];
+	return [self viewProjectionMatrixForAspectRatio:self.actualWindowWidth / self.actualWindowHeight];
 }
 
 #pragma mark - Private methods

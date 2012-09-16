@@ -338,7 +338,7 @@ struct GLLAlphaTestBlock
 		dispatch_semaphore_signal(downloadReady);
 	});
 
-	mat_float16 cameraMatrix = [self.view.camera viewProjectionMtrixForAspectRatio:size.width / size.height];
+	mat_float16 cameraMatrix = [self.view.camera viewProjectionMatrixForAspectRatio:size.width / size.height];
 	
 	// Set up state for rendering
 	// We invert drawing here so it comes out right in the file. That makes it necessary to turn cull face around.
