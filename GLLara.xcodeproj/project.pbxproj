@@ -111,6 +111,8 @@
 		52423B5A1604EC5B009F5753 /* gol_totec.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B451604EC5B009F5753 /* gol_totec.modelparams.plist */; };
 		52423B5B1604EC5B009F5753 /* gol_xolotl.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B461604EC5B009F5753 /* gol_xolotl.modelparams.plist */; };
 		52423B5D1604ED48009F5753 /* wings.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B5C1604ED47009F5753 /* wings.modelparams.plist */; };
+		52423B5F16052CB0009F5753 /* skydome_thailand_sea.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B5E16052CAF009F5753 /* skydome_thailand_sea.modelparams.plist */; };
+		52423B6116052D21009F5753 /* croft_manor_back.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B6016052D20009F5753 /* croft_manor_back.modelparams.plist */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -375,6 +377,8 @@
 		52423B451604EC5B009F5753 /* gol_totec.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_totec.modelparams.plist; sourceTree = "<group>"; };
 		52423B461604EC5B009F5753 /* gol_xolotl.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = gol_xolotl.modelparams.plist; sourceTree = "<group>"; };
 		52423B5C1604ED47009F5753 /* wings.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = wings.modelparams.plist; sourceTree = "<group>"; };
+		52423B5E16052CAF009F5753 /* skydome_thailand_sea.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = skydome_thailand_sea.modelparams.plist; sourceTree = "<group>"; };
+		52423B6016052D20009F5753 /* croft_manor_back.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = croft_manor_back.modelparams.plist; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -782,6 +786,7 @@
 				52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */,
 				523DE0EF1604D7D600BB9F61 /* amelia.modelparams.plist */,
 				523DE0F11604D80A00BB9F61 /* braid.modelparams.plist */,
+				52423B6016052D20009F5753 /* croft_manor_back.modelparams.plist */,
 				52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */,
 				52BB21A815FB45B200937450 /* croft_manor_hall_lq.modelparams.plist */,
 				523DE0F31604D84100BB9F61 /* diver_captain.modelparams.plist */,
@@ -866,6 +871,7 @@
 				52423AF21604EB35009F5753 /* shark_greenland.modelparams.plist */,
 				52BB21B915FB7D0500937450 /* ship.modelparams.plist */,
 				52423AF31604EB35009F5753 /* ship_natla_room.modelparams.plist */,
+				52423B5E16052CAF009F5753 /* skydome_thailand_sea.modelparams.plist */,
 				523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */,
 				523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */,
 				52BB207315F8334E00937450 /* tiger1.modelparams.plist */,
@@ -1349,6 +1355,8 @@
 				52423B5A1604EC5B009F5753 /* gol_totec.modelparams.plist in Resources */,
 				52423B5B1604EC5B009F5753 /* gol_xolotl.modelparams.plist in Resources */,
 				52423B5D1604ED48009F5753 /* wings.modelparams.plist in Resources */,
+				52423B5F16052CB0009F5753 /* skydome_thailand_sea.modelparams.plist in Resources */,
+				52423B6116052D21009F5753 /* croft_manor_back.modelparams.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
