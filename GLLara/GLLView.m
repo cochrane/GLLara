@@ -108,6 +108,8 @@ const double unitsPerSecond = 0.2;
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
+	if (self.camera.cameraLocked) return;
+	
 	if (theEvent.modifierFlags & NSShiftKeyMask && !inWASDMove)
 	{
 		// This is a move event
@@ -148,11 +150,13 @@ const double unitsPerSecond = 0.2;
 
 - (void)keyDown:(NSEvent *)theEvent;
 {
+	if (self.camera.cameraLocked) return;
 	[self _processEventsStartingWith:theEvent];
 }
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
+	if (self.camera.cameraLocked) return;
 	[self _processEventsStartingWith:theEvent];
 }
 
@@ -160,6 +164,8 @@ const double unitsPerSecond = 0.2;
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
 {
+	if (self.camera.cameraLocked) return;
+	
 	BOOL wDown = NO;
 	BOOL aDown = NO;
 	BOOL sDown = NO;
