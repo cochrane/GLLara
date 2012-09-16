@@ -629,6 +629,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		52423B6E160619F4009F5753 /* Source List */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Source List";
+			sourceTree = "<group>";
+		};
 		525ACD3C15F0F1A700534E7D = {
 			isa = PBXGroup;
 			children = (
@@ -1041,6 +1048,7 @@
 		5296946115F7B22E00DF2FA3 /* Document and UI */ = {
 			isa = PBXGroup;
 			children = (
+				52423B6E160619F4009F5753 /* Source List */,
 				52B9E0AA1602811D00641518 /* GLLDocument.xib */,
 				52B9E0AB1602811D00641518 /* MainMenu.xib */,
 				5296945215F60F3900DF2FA3 /* GLLView.h */,

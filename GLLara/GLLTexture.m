@@ -105,14 +105,14 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 
 @interface GLLTexture ()
 
-- (void)_loadDDSTextureWithData:(NSData *)data;
+- (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (void)_loadCGCompatibleTexture:(NSData *)data;
 
 @end
 
 @implementation GLLTexture
 
-- (id)initWithData:(NSData *)data;
+- (id)initWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 
@@ -126,7 +126,7 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 	
 	// Load texture
 	if (memcmp(data.bytes, "DDS ", 4) == 0)
-		[self _loadDDSTextureWithData:data];
+		[self _loadDDSTextureWithData:data error:error];
 	else
 		[self _loadCGCompatibleTexture:data];
 	
@@ -146,9 +146,15 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 
 #pragma mark - Private methods
 
-- (void)_loadDDSTextureWithData:(NSData *)data;
+- (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 {
 	DDSFile *file = DDSOpenData((__bridge CFDataRef) data);
+	if (!file)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"Textures" code:12 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"There was an error loading the dds file", @"DDSOpenData returned NULL")] }];
+		return NO;
+	}
 	NSAssert(file, @"Not a DDS file at all!");
 	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -165,6 +171,8 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
 	
 	DDSDestroy(file);
+	
+	return YES;
 }
 - (void)_loadCGCompatibleTexture:(NSData *)data;
 {

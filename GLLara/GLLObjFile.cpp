@@ -71,18 +71,26 @@ GLLObjFile::Material::~Material()
 
 void GLLObjFile::normalizeTexCoords(float *texCoords)
 {
-	texCoords[0] = std::fmod(texCoords[0], 1);
-	if (texCoords[0] < 0.0f) texCoords[0] += 1.0f;
-	texCoords[1] = std::fmod(texCoords[1], 1);
-	if (texCoords[1] < 0.0f) texCoords[1] += 1.0f;
+//	texCoords[0] = std::fmod(texCoords[0], 1);
+//	if (texCoords[0] < 0.0f) texCoords[0] += 1.0f;
+//	texCoords[1] = std::fmod(texCoords[1], 1);
+//	if (texCoords[1] < 0.0f) texCoords[1] += 1.0f;
 }
 
-template<class T> void GLLObjFile::parseFloatVector(const char *line, std::vector<T> &values, unsigned number) throw()
+void GLLObjFile::parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw()
 {
 	float vals[4];
 	int scanned = sscanf(line, "%*s %f %f %f %f", &vals[0], &vals[1], &vals[2], &vals[3]);
 	for (int i = 0; i < std::min(scanned, (int) number); i++)
-		values.push_back((T) vals[i]);
+		values.push_back((unsigned char) std::min(vals[i]*255.0f, 255.0f));
+}
+
+void GLLObjFile::parseFloatVector(const char *line, std::vector<float> &values, unsigned number) throw()
+{
+	float vals[4];
+	int scanned = sscanf(line, "%*s %f %f %f %f", &vals[0], &vals[1], &vals[2], &vals[3]);
+	for (int i = 0; i < std::min(scanned, (int) number); i++)
+		values.push_back(vals[i]);
 }
 
 void GLLObjFile::parseFace(std::istream &stream)
@@ -265,7 +273,7 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 			normalizeTexCoords(&texCoords[texCoords.size() - 2]);
 		}
 		else if (token == "vc")
-			parseFloatVector(line.c_str(), colors, 4);
+			parseUCharVector(line.c_str(), colors, 4);
 		else if (token == "f")
 			parseFace(linestream);
 		else if (token == "mtllib")

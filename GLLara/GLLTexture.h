@@ -16,7 +16,7 @@
  */
 @interface GLLTexture : NSObject
 
-- (id)initWithData:(NSData *)data;
+- (id)initWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 
 - (void)unload;
 
