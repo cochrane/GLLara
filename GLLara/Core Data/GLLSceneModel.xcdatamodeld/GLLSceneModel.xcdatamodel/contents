@@ -5,17 +5,17 @@
     </entity>
     <entity name="GLLCamera" representedClassName="GLLCamera" syncable="YES">
         <attribute name="cameraLocked" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="distance" attributeType="Double" defaultValueString="2" syncable="YES"/>
-        <attribute name="farDistance" attributeType="Double" defaultValueString="20" syncable="YES"/>
-        <attribute name="fieldOfViewY" attributeType="Double" minValueString="1" maxValueString="179" defaultValueString="65" syncable="YES"/>
+        <attribute name="distance" attributeType="Float" defaultValueString="2" syncable="YES"/>
+        <attribute name="farDistance" attributeType="Float" defaultValueString="100" syncable="YES"/>
+        <attribute name="fieldOfViewY" attributeType="Float" minValueString="1" maxValueString="179" defaultValueString="65" syncable="YES"/>
         <attribute name="index" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="latitude" attributeType="Double" minValueString="-1.5707963267949" maxValueString="1.5707963267949" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="longitude" attributeType="Double" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="nearDistance" attributeType="Double" minValueString="1e-05" defaultValueString="0.1" syncable="YES"/>
-        <attribute name="positionX" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="positionY" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="positionZ" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="windowHeight" attributeType="Double" defaultValueString="480" syncable="YES"/>
+        <attribute name="latitude" attributeType="Float" minValueString="-1.5707963267949" maxValueString="1.5707963267949" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="nearDistance" attributeType="Float" minValueString="1e-05" defaultValueString="0.1" syncable="YES"/>
+        <attribute name="positionX" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionY" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionZ" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="windowHeight" attributeType="Float" defaultValueString="480" syncable="YES"/>
         <attribute name="windowSizeLocked" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="windowWidth" attributeType="Double" defaultValueString="640" syncable="YES"/>
         <relationship name="target" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLCameraTarget" inverseName="cameras" inverseEntity="GLLCameraTarget" syncable="YES"/>

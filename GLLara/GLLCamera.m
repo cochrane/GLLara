@@ -77,62 +77,62 @@
 	[self setPrimitiveValue:[self valueForKey:@"actualWindowHeight"] forKey:@"windowHeight"];
 }
 
-- (void)setLongitude:(double)longitude
+- (void)setLongitude:(float)longitude
 {
 	[self willChangeValueForKey:@"longitude"];
 	
-	double inRange = fmod(longitude, 2*M_PI);
-	if (inRange < 0.0) inRange += 2*M_PI;
+	float inRange = fmodf(longitude, 2*M_PI);
+	if (inRange < 0.0f) inRange += 2*M_PI;
 	
 	[self setPrimitiveValue:@(inRange) forKey:@"longitude"];
 	[self didChangeValueForKey:@"longitude"];
 }
 
-- (double)latestWindowWidth
+- (float)latestWindowWidth
 {
 	return self.actualWindowWidth;
 }
-- (void)setLatestWindowWidth:(double)latestWindowWidth
+- (void)setLatestWindowWidth:(float)latestWindowWidth
 {
 	self.windowWidth = latestWindowWidth;
 }
-- (double)latestWindowHeight
+- (float)latestWindowHeight
 {
 	return self.actualWindowHeight;
 }
-- (void)setLatestWindowHeight:(double)latestWindowHeight
+- (void)setLatestWindowHeight:(float)latestWindowHeight
 {
 	self.windowHeight = latestWindowHeight;
 }
 
-- (void)setCurrentPositionX:(double)currentPositionX
+- (void)setCurrentPositionX:(float)currentPositionX
 {
 	[self _clearTarget];
 	self.positionX = currentPositionX;
 }
-- (double)currentPositionX
+- (float)currentPositionX
 {
 	if (self.target) return simd_extract(self.target.position, 0);
 	else return self.positionX;
 }
 
-- (void)setCurrentPositionY:(double)currentPositionY
+- (void)setCurrentPositionY:(float)currentPositionY
 {	
 	[self _clearTarget];
 	self.positionY = currentPositionY;
 }
-- (double)currentPositionY
+- (float)currentPositionY
 {
 	if (self.target) return simd_extract(self.target.position, 1);
 	else return self.positionY;
 }
 
-- (void)setCurrentPositionZ:(double)currentPositionZ
+- (void)setCurrentPositionZ:(float)currentPositionZ
 {
 	[self _clearTarget];
 	self.positionZ = currentPositionZ;
 }
-- (double)currentPositionZ
+- (float)currentPositionZ
 {
 	if (self.target) return simd_extract(self.target.position, 2);
 	else return self.positionZ;
@@ -142,7 +142,7 @@
 {
 	vec_float4 targetPosition = self.target ? self.target.position : simd_make( self.positionX, self.positionY, self.positionZ, 1.0f );
 	
-	vec_float4 viewDirection = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
+	vec_float4 viewDirection = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w), -simd_e_z);
 	
 	return targetPosition - viewDirection * simd_splatf(self.distance);
 }
@@ -153,7 +153,7 @@
 	
 	vec_float4 targetPosition = self.target ? self.target.position : simd_make( self.positionX, self.positionY, self.positionZ, 1.0f );
 	
-	vec_float4 viewDirection = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
+	vec_float4 viewDirection = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w), -simd_e_z);
 	
 	vec_float4 position = targetPosition - viewDirection * simd_splatf(self.distance);
 	
