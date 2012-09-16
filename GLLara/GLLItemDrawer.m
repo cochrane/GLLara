@@ -52,7 +52,7 @@
 	for (id transform in item.bones)
 		[transform addObserver:self forKeyPath:@"globalTransform" options:0 context:0];
 	
-	// Observe settings of all item
+	// Observe settings of all meshes
 	NSMutableArray *mutableAlphaDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.alphaMeshDrawers.count];
 	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)
 	{
