@@ -14,14 +14,14 @@ uniform sampler2D diffuseTexture;
 uniform sampler2D lightmapTexture;
 
 struct Light {
-	vec4 color;
+	vec4 diffuseColor;
+	vec4 specularColor;
 	vec4 direction;
-	float intensity;
-	float shadowDepth;
 };
 
 layout(std140) uniform LightData {
-	vec3 cameraPosition;
+	vec4 cameraPosition;
+	vec4 ambientColor;
 	Light lights[3];
 } lightData;
 
