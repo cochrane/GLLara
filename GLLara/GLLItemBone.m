@@ -19,7 +19,6 @@
 
 - (void)_standardSetValue:(id)value forKey:(NSString *)key;
 - (void)_updateRelativeTransform;
-- (void)_updateGlobalTransform;
 
 @end
 
@@ -169,21 +168,16 @@
 	
 	self.relativeTransform = [NSValue valueWithBytes:&transform objCType:@encode(float [16])];
 	
-	[self _updateGlobalTransform];
+	[self updateGlobalTransform];
 }
-- (void)_updateGlobalTransform
-{
-	if (!self.parent)
-	{
-		self.globalTransform = self.relativeTransform;
-		for (GLLItemBone *child in self.children)
-			[child _updateGlobalTransform];
-		
-		return;
-	}
-	
+- (void)updateGlobalTransform;
+{	
 	mat_float16 parentGlobalTransform;
-	[self.parent.globalTransform getValue:&parentGlobalTransform];
+	
+	if (!self.parent)
+		parentGlobalTransform = self.item.modelTransform;
+	else
+		[self.parent.globalTransform getValue:&parentGlobalTransform];
 
 	mat_float16 ownLocalTransform;
 	[self.relativeTransform getValue:&ownLocalTransform];
@@ -199,7 +193,7 @@
 	self.globalPosition = [NSValue valueWithBytes:&position objCType:@encode(float [4])];
 	
 	for (GLLItemBone *child in self.children)
-		[child _updateGlobalTransform];
+		[child updateGlobalTransform];
 }
 
 @end

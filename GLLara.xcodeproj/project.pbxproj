@@ -220,6 +220,7 @@
 		52C9F61D1600A8D3003272E1 /* GLLModelMeshObj.mm in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F61C1600A8D3003272E1 /* GLLModelMeshObj.mm */; };
 		52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.m */; };
 		52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.m */; };
+		52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m */; };
 		52D3D72516029699006CB743 /* GLLRenderAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52D3D72316029699006CB743 /* GLLRenderAccessoryView.xib */; };
 		52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */; };
@@ -548,6 +549,8 @@
 		52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLFloatRenderParameter.m; sourceTree = "<group>"; };
 		52C9F6211600CCFC003272E1 /* GLLColorRenderParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLColorRenderParameter.h; sourceTree = "<group>"; };
 		52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLColorRenderParameter.m; sourceTree = "<group>"; };
+		52CE280A1605FE98005A86E9 /* GLLLogarithmicValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLogarithmicValueTransformer.h; sourceTree = "<group>"; };
+		52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLogarithmicValueTransformer.m; sourceTree = "<group>"; };
 		52D3D72316029699006CB743 /* GLLRenderAccessoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLRenderAccessoryView.xib; sourceTree = "<group>"; };
 		52D3D72716029BD8006CB743 /* GLLRenderAccessoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderAccessoryViewController.h; sourceTree = "<group>"; };
 		52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderAccessoryViewController.m; sourceTree = "<group>"; };
@@ -1067,6 +1070,8 @@
 				52D3D72316029699006CB743 /* GLLRenderAccessoryView.xib */,
 				52D3D72716029BD8006CB743 /* GLLRenderAccessoryViewController.h */,
 				52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */,
+				52CE280A1605FE98005A86E9 /* GLLLogarithmicValueTransformer.h */,
+				52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1461,6 +1466,7 @@
 				52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */,
 				521326351602ACBE00787AA1 /* GLLProgram.m in Sources */,
 				5213263E1602BB8000787AA1 /* GLLSquareProgram.m in Sources */,
+				52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

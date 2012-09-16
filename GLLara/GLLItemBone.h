@@ -38,4 +38,7 @@
 @property (nonatomic, weak, readonly) GLLItemBone *parent;
 @property (nonatomic, retain, readonly) NSArray *children;
 
+// Updates the bone data. Should only be called from the item or a parent bone (or itself)
+- (void)updateGlobalTransform;
+
 @end

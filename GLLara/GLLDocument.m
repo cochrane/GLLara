@@ -14,6 +14,7 @@
 #import "GLLDirectionalLight.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLItem.h"
+#import "GLLLogarithmicValueTransformer.h"
 #import "GLLModel.h"
 #import "GLLRenderWindowController.h"
 
@@ -29,6 +30,7 @@
 + (void)initialize
 {
 	[NSValueTransformer setValueTransformer:[[GLLAngleRangeValueTransformer alloc] init] forName:@"GLLAngleRangeValueTransformer"];
+	[NSValueTransformer setValueTransformer:[[GLLLogarithmicValueTransformer alloc] init] forName:@"GLLLogarithmicValueTransformer"];
 }
 
 - (id)initWithType:(NSString *)typeName error:(NSError **)outError

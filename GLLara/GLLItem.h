@@ -29,6 +29,12 @@
 @property (nonatomic) float scaleX;
 @property (nonatomic) float scaleY;
 @property (nonatomic) float scaleZ;
+@property (nonatomic) float rotationX;
+@property (nonatomic) float rotationY;
+@property (nonatomic) float rotationZ;
+@property (nonatomic) float positionX;
+@property (nonatomic) float positionY;
+@property (nonatomic) float positionZ;
 @property (nonatomic) BOOL isVisible;
 @property (nonatomic, retain) NSOrderedSet *bones;
 @property (nonatomic, retain) NSOrderedSet *meshes;
@@ -45,6 +51,8 @@
 @property (nonatomic, retain, readonly) NSArray *rootBones;
 
 - (GLLItemMesh *)itemMeshForModelMesh:(GLLModelMesh *)mesh;
+
+@property (nonatomic, readonly) mat_float16 modelTransform;
 
 // Poses
 - (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error;

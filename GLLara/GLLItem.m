@@ -13,6 +13,7 @@
 #import "GLLModel.h"
 #import "GLLModelBone.h"
 #import "GLLModelMesh.h"
+#import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
@@ -104,6 +105,9 @@
 	GLLItem_MeshesSourceListMarker *meshesMarker;
 }
 
+- (void)_standardSetValue:(id)value forKey:(NSString *)key;
+- (void)_updateTransform;
+
 @end
 
 @implementation GLLItem
@@ -113,6 +117,12 @@
 @dynamic scaleX;
 @dynamic scaleY;
 @dynamic scaleZ;
+@dynamic rotationX;
+@dynamic rotationY;
+@dynamic rotationZ;
+@dynamic positionX;
+@dynamic positionY;
+@dynamic positionZ;
 @dynamic isVisible;
 @dynamic bones;
 @dynamic meshes;
@@ -122,10 +132,63 @@
 @dynamic itemName;
 @dynamic itemDirectory;
 
+@synthesize modelTransform;
+
+#pragma mark - Special accessors
+- (void)setPositionX:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"positionX"];
+	[self _updateTransform];
+}
+- (void)setPositionY:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"positionY"];
+	[self _updateTransform];
+}
+- (void)setPositionZ:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"positionZ"];
+	[self _updateTransform];
+}
+
+- (void)setRotationX:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"rotationX"];
+	[self _updateTransform];
+}
+- (void)setRotationY:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"rotationY"];
+	[self _updateTransform];
+}
+- (void)setRotationZ:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"rotationZ"];
+	[self _updateTransform];
+}
+
+- (void)setScaleX:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"scaleX"];
+	[self _updateTransform];
+}
+- (void)setScaleY:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"scaleY"];
+	[self _updateTransform];
+}
+- (void)setScaleZ:(float)position
+{
+	[self _standardSetValue:@(position) forKey:@"scaleZ"];
+	[self _updateTransform];
+}
+
 #pragma mark - Non-standard attributes
 
 - (void)awakeFromFetch
 {
+	[super awakeFromFetch];
+	
 	// Get URL from bookmark and load that model.
 	NSData *bookmarkData = self.itemURLBookmark;
 	if (bookmarkData)
@@ -140,6 +203,20 @@
 		GLLModel *model = [GLLModel cachedModelFromFile:itemURL error:NULL];
 		[self setPrimitiveValue:model forKey:@"model"];
 	}
+	
+	[self _updateTransform];
+}
+
+- (void)awakeFromInsert
+{
+	[super awakeFromInsert];
+	[self _updateTransform];
+}
+
+- (void)awakeFromSnapshotEvents:(NSSnapshotEventType)flags
+{
+	[super awakeFromSnapshotEvents:flags];
+	[self _updateTransform];
 }
 
 - (void)willSave
@@ -340,6 +417,25 @@
 		return bonesMarker;
 	}
 	else return nil;
+}
+
+#pragma mark - Private methods
+
+- (void)_standardSetValue:(id)value forKey:(NSString *)key;
+{
+	[self willChangeValueForKey:key];
+	[self setPrimitiveValue:value forKey:key];
+	[self didChangeValueForKey:key];
+}
+
+- (void)_updateTransform;
+{
+	mat_float16 scale = (mat_float16) { { self.scaleX, 0.0f, 0.0f, 0.0f }, { 0.0f, self.scaleY, 0.0f, 0.0f }, { 0.0f, 0.0f, self.scaleZ, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f } };
+	
+	mat_float16 rotateAndTranslate = simd_mat_euler(simd_make(self.rotationX, self.rotationY, self.rotationZ, 0.0f), simd_make(self.positionX, self.positionY, self.positionZ, 1.0f));
+	
+	modelTransform = simd_mat_mul(rotateAndTranslate, scale);
+	[self.rootBones makeObjectsPerformSelector:@selector(updateGlobalTransform)];
 }
 
 @end
