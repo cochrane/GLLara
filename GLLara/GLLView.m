@@ -8,6 +8,7 @@
 
 #import "GLLView.h"
 
+#import <AppKit/NSWindow.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
 
@@ -18,9 +19,14 @@
 @interface GLLView ()
 {
 	BOOL inGesture;
+	BOOL shiftIsDown;
 }
 
+- (void)_processEventsStartingWith:(NSEvent *)theEvent;
+
 @end
+
+const double unitsPerSecond = 0.2;
 
 @implementation GLLView
 
@@ -114,6 +120,112 @@
 {
 	[self.sceneDrawer draw];
 	[self.openGLContext flushBuffer];
+}
+
+- (BOOL)acceptsFirstResponder
+{
+	return YES;
+}
+
+- (void)keyDown:(NSEvent *)theEvent;
+{
+	[self _processEventsStartingWith:theEvent];
+}
+
+- (void)mouseDown:(NSEvent *)theEvent
+{
+	[self _processEventsStartingWith:theEvent];
+}
+
+#pragma mark - Private methods
+
+- (void)_processEventsStartingWith:(NSEvent *)theEvent;
+{
+	BOOL wDown = NO;
+	BOOL aDown = NO;
+	BOOL sDown = NO;
+	BOOL dDown = NO;
+	BOOL mouseDown = NO;
+	NSPoint mousePoint = NSZeroPoint;
+	
+	NSTimeInterval lastEvent = [NSDate timeIntervalSinceReferenceDate];
+	
+	[NSEvent startPeriodicEventsAfterDelay:0.0 withPeriod:1.0 / 30.0];
+	
+	while(YES)
+	{
+		NSTimeInterval rightNow = [NSDate timeIntervalSinceReferenceDate];
+		double diff = rightNow - lastEvent;
+		lastEvent = rightNow;
+		
+		if (shiftIsDown) diff *= 10.0f;
+		
+		switch (theEvent.type)
+		{
+			case NSAppKitDefined:
+				if (theEvent.subtype == NSApplicationDeactivatedEventType)
+				{
+					[NSEvent stopPeriodicEvents];
+					self.needsDisplay = YES;
+					return;
+				}
+				break;
+			case NSKeyDown:
+			{
+				unichar firstCharacter = tolower([theEvent.charactersIgnoringModifiers characterAtIndex:0]);
+				wDown = wDown || (firstCharacter == 'w');
+				aDown = aDown || (firstCharacter == 'a');
+				sDown = sDown || (firstCharacter == 's');
+				dDown = dDown || (firstCharacter == 'd');
+				shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
+			}
+				break;
+			case NSKeyUp:
+			{
+				unichar firstCharacter = tolower([theEvent.charactersIgnoringModifiers characterAtIndex:0]);
+				wDown = wDown && (firstCharacter != 'w');
+				aDown = aDown && (firstCharacter != 'a');
+				sDown = sDown && (firstCharacter != 's');
+				dDown = dDown && (firstCharacter != 'd');
+				shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
+			}
+				break;
+			case NSFlagsChanged:
+				shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
+				break;
+			case NSScrollWheel:
+				[self scrollWheel:theEvent];
+				break;
+			case NSLeftMouseDragged:
+				[self mouseDragged:theEvent];
+				break;
+			case NSLeftMouseUp:
+				mouseDown = NO;
+				break;
+			case NSLeftMouseDown:
+				mousePoint = [self convertPoint:theEvent.locationInWindow fromView:nil];
+				mouseDown = YES;
+				break;
+		}
+		if (!wDown && !aDown && !sDown && !dDown && !mouseDown && !shiftIsDown) break;
+		
+		// Perform actions
+		float deltaX = 0, deltaY = 0, deltaZ = 0;
+		if (aDown && !dDown) deltaX = -diff * unitsPerSecond;
+		else if (!aDown & dDown) deltaX = diff * unitsPerSecond;
+		if (wDown && !sDown) deltaZ = -diff * unitsPerSecond;
+		else if (!wDown && sDown) deltaZ = diff * unitsPerSecond;
+		
+		[self.camera moveLocalX:deltaX y:deltaY z:deltaZ];
+		
+		// Prepare for next move through the loop
+		self.needsDisplay = YES;
+		
+		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDownMask | NSLeftMouseUpMask | NSLeftMouseDraggedMask | NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSApplicationDeactivatedEventType untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
+	}
+	[NSEvent stopPeriodicEvents];
+	
+	self.needsDisplay = YES;
 }
 
 @end

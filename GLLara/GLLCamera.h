@@ -50,4 +50,9 @@
 // Used by the render to image functionality
 - (mat_float16)viewProjectionMatrixForAspectRatio:(float)aspect;
 
+@property (nonatomic, readonly) mat_float16 viewMatrix;
+
+// Used for input
+- (void)moveLocalX:(float)deltaX y:(float)deltaY z:(float)deltaZ;
+
 @end
