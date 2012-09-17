@@ -641,6 +641,7 @@
 		52423B6E160619F4009F5753 /* Source List */ = {
 			isa = PBXGroup;
 			children = (
+				5296947415F807A700DF2FA3 /* GLLSourceListItem.h */,
 				5275F6801607293000978779 /* GLLItemController.h */,
 				5275F6811607293000978779 /* GLLItemController.m */,
 				5275F684160736C000978779 /* GLLSourceListMarker.h */,
@@ -1075,7 +1076,6 @@
 				52B9E0AA1602811D00641518 /* GLLDocument.xib */,
 				5296946715F7DAA200DF2FA3 /* GLLDocumentWindowController.h */,
 				5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */,
-				5296947415F807A700DF2FA3 /* GLLSourceListItem.h */,
 				5296947515F80F4500DF2FA3 /* GLLBoneViewController.h */,
 				5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */,
 				52F2BC3815F8198400E3EE75 /* GLLBoneView.xib */,
