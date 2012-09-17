@@ -41,11 +41,31 @@
 		return nil;
 }
 
+- (void)setSelectedObjects:(NSArray *)selectedObjects
+{
+	if (self.representedObject == nil) return;
+	
+	_selectedObjects = selectedObjects;
+	
+	NSSet *namesSet = [self.selectedObjects valueForKeyPath:@"@distinctUnionOfSets.renderParameters.name"];
+	renderParameterNames = [namesSet sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
+	
+	[self.renderParametersView reloadData];
+}
+
 - (void)setRepresentedObject:(id)representedObject
 {
 	[super setRepresentedObject:representedObject];
 	
-	renderParameterNames = [[representedObject valueForKeyPath:@"renderParameters.name"] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
+	id namesSet = [representedObject valueForKeyPath:@"renderParameters.name"];
+	if (namesSet == NSMultipleValuesMarker)
+	{
+		NSSet *namesSet = [self.selectedObjects valueForKeyPath:@"@distinctUnionOfSets.renderParameters.name"];
+		renderParameterNames = [namesSet sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
+		[self.renderParametersView reloadData];
+		return;
+	}
+	renderParameterNames = [namesSet sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
 	
 	[self.renderParametersView reloadData];
 }

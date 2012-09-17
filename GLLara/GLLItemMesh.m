@@ -8,6 +8,8 @@
 
 #import "GLLItemMesh.h"
 
+#import <AppKit/NSKeyValueBinding.h>
+
 #import "GLLItem.h"
 #import "GLLModel.h"
 #import "GLLModelMesh.h"
@@ -95,7 +97,7 @@
 {
 	GLLRenderParameter *param = [self renderParameterWithName:key];
 	if (param) return param;
-	return [super valueForUndefinedKey:key];
+	else return NSNotApplicableMarker;
 }
 
 #pragma mark - Source list item

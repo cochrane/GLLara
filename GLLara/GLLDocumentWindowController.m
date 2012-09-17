@@ -84,6 +84,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 - (void)dealloc
 {
 	[self.treeController removeObserver:self forKeyPath:@"selectedObjects"];
+	[meshViewController unbind:@"selectedObjects"];
 }
 
 - (void)windowDidLoad
@@ -93,6 +94,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	self.sourceView.delegate = self;
 	
 	[self.treeController addObserver:self forKeyPath:@"selectedObjects" options:0 context:0];
+	
+	[meshViewController bind:@"selectedObjects" toObject:self withKeyPath:@"treeController.selectedObjects" options:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
