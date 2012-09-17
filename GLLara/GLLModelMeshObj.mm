@@ -128,9 +128,4 @@
 	return NO; // OBJ files don't use them. They do use one bone matrix, for the model position, but that's it.
 }
 
-- (GLLCullFaceMode)cullFaceMode
-{
-	return GLLCullClockWise;
-}
-
 @end

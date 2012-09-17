@@ -95,34 +95,49 @@ void GLLObjFile::parseFloatVector(const char *line, std::vector<float> &values, 
 
 void GLLObjFile::parseFace(std::istream &stream)
 {
-	IndexSet set[3];
+	std::vector<IndexSet> sets;
 	
-	for (unsigned i = 0; i < 3; i++)
+	while (stream.good())
 	{
 		std::string indices;
 		stream >> indices;
 		
-		int scanned = sscanf(indices.c_str(), "%d/%d/%d/%d", &set[i].vertex, &set[i].texCoord, &set[i].normal, &set[i].color);
+		IndexSet set;
+		
+		int scanned = sscanf(indices.c_str(), "%d/%d/%d/%d", &set.vertex, &set.texCoord, &set.normal, &set.color);
+		
+		if (scanned == -1) break; // Reached end of this face.
 		
 		if (scanned < 3) throw std::invalid_argument("Only OBJ files with vertices, normals and texture coordinates are supported.");
 		
-		if (set[i].vertex > 0) set[i].vertex -= 1;
-		else set[i].vertex += vertices.size() / 3;
+		if (set.vertex > 0) set.vertex -= 1;
+		else set.vertex += vertices.size() / 3;
 		
-		if (set[i].normal > 0) set[i].normal -= 1;
-		else set[i].normal += normals.size() / 3;
+		if (set.normal > 0) set.normal -= 1;
+		else set.normal += normals.size() / 3;
 		
-		if (set[i].texCoord > 0) set[i].texCoord -= 1;
-		else set[i].texCoord += texCoords.size() / 2;
+		if (set.texCoord > 0) set.texCoord -= 1;
+		else set.texCoord += texCoords.size() / 2;
 		
 		if (scanned > 3) // Color is optional.
 		{
-			if (set[i].color > 0) set[i].color -= 1;
-			else set[i].color += colors.size() / 4;
+			if (set.color > 0) set.color -= 1;
+			else set.color += colors.size() / 4;
 		}
-		else set[i].color = INT_MAX;
+		else set.color = INT_MAX;
 		
-		originalIndices.push_back(set[i]);
+		sets.push_back(set);
+	}
+	
+	if (sets.size() < 3)
+		throw std::invalid_argument("OBJ files have to have at least three vertices per face");
+	
+	// Treat the face as a triangle fan. And reverse order while we're at it.
+	for (unsigned i = 2; i < sets.size(); i++)
+	{
+		originalIndices.push_back(sets[0]);
+		originalIndices.push_back(sets[i-1]);
+		originalIndices.push_back(sets[i]);
 	}
 }
 
