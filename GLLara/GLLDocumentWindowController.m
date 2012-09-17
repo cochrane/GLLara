@@ -38,7 +38,7 @@
 	GLLSourceListMarker *settingsMarker;
 }
 
-- (void)_setRightHandController:(NSViewController *)controller representedObject:(id)object;
+- (void)_setRightHandController:(NSViewController *)controller;
 
 @end
 
@@ -81,11 +81,46 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
     return self;
 }
 
+- (void)dealloc
+{
+	[self.treeController removeObserver:self forKeyPath:@"selectedObjects"];
+}
+
 - (void)windowDidLoad
 {
     [super windowDidLoad];
 	
 	self.sourceView.delegate = self;
+	
+	[self.treeController addObserver:self forKeyPath:@"selectedObjects" options:0 context:0];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:@"selectedObjects"])
+	{
+		NSArray *selected = self.treeController.selectedObjects;
+		
+		if (selected.count == 0)
+		{
+			[self _setRightHandController:nil];
+			return;
+		}
+		
+		if ([selected.lastObject isKindOfClass:[GLLAmbientLight class]])
+			[self _setRightHandController:ambientLightViewController];
+		else if ([selected.lastObject isKindOfClass:[GLLItemBone class]])
+			[self _setRightHandController:boneViewController];
+		else if ([selected.lastObject isKindOfClass:[GLLItemController class]])
+			[self _setRightHandController:itemViewController];
+		else if ([selected.lastObject isKindOfClass:[GLLItemMesh class]])
+			[self _setRightHandController:meshViewController];
+		else if ([selected.lastObject isKindOfClass:[GLLDirectionalLight class]])
+			[self _setRightHandController:lightViewController];
+
+	}
+	else
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 #pragma mark - Actions
@@ -157,19 +192,23 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		{
 			anyItemController = YES;
 			
-			// Do not add controllers if there are already objects in.
+			// Do not add controllers if there are already objects in…
 			if (firstDescription)
 				return outlineView.selectedRowIndexes;
 		}
-		else if (anyItemController) // and vice versa
-			return outlineView.selectedRowIndexes;
-		
-		// Reject if any object has a type unlike the others.
-		NSEntityDescription *entity = [item entity];
-		if (!firstDescription)
-			firstDescription = entity;
-		else if (![entity isEqual:firstDescription])
-			return outlineView.selectedRowIndexes;
+		else
+		{
+			// …and vice versa
+			if (anyItemController)
+				return outlineView.selectedRowIndexes;
+			
+			// Reject if any object has a type unlike the others.
+			NSEntityDescription *entity = [item entity];
+			if (!firstDescription)
+				firstDescription = entity;
+			else if (![entity isEqual:firstDescription])
+				return outlineView.selectedRowIndexes;
+		}
 	}
 	
 	return proposedSelectionIndexes;
@@ -185,11 +224,16 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 #pragma mark - Private methods
 
-- (void)_setRightHandController:(NSViewController *)controller representedObject:(id)object;
+- (void)_setRightHandController:(NSViewController *)controller;
 {
+	/*
+	 * This code first sets the represented object to nil, then to the selection, even if nothing seems to have changed. This is because otherwise, the object controllers don't notice that the contents of the selection of the array controller has changed (Someone should really write a bug report about this, by the way). Setting it again to the original value will be ignored, so it has to be set to something else (like nil) in between.
+	 */
+	currentController.representedObject = nil;
+	
 	if (currentController == controller)
 	{
-		currentController.representedObject = object;
+		currentController.representedObject = self.treeController.selection;
 		return;
 	}
 	
@@ -204,7 +248,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		NSView *newView = controller.view;
 		newView.frame = (NSRect) { { 0.0f, 0.0f }, self.placeholderView.frame.size };
 		[self.placeholderView addSubview:controller.view];
-		controller.representedObject = object;
+		controller.representedObject = self.treeController.selection;
 		currentController = controller;
 	}
 }
