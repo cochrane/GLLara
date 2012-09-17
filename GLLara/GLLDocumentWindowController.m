@@ -16,8 +16,11 @@
 #import "GLLModel.h"
 #import "GLLDirectionalLight.h"
 #import "GLLItem.h"
+#import "GLLItemController.h"
+#import "GLLItemListController.h"
 #import "GLLItemViewController.h"
 #import "GLLSourceListItem.h"
+#import "GLLSourceListMarker.h"
 
 @interface GLLDocumentWindowController ()
 {
@@ -29,8 +32,10 @@
 	
 	NSViewController *currentController;
 	
+	GLLItemListController *itemListController;
 	NSArrayController *lightsController;
-	NSArrayController *itemsController;
+	GLLSourceListMarker *lightsMarker;
+	GLLSourceListMarker *settingsMarker;
 }
 
 - (void)_setRightHandController:(NSViewController *)controller representedObject:(id)object;
@@ -53,7 +58,6 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	meshViewController = [[GLLMeshViewController alloc] init];
 	lightViewController = [[NSViewController alloc] initWithNibName:@"GLLLightView" bundle:[NSBundle mainBundle]];
 	
-	
 	lightsController = [[NSArrayController alloc] initWithContent:nil];
 	lightsController.managedObjectContext = self.managedObjectContext;
 	lightsController.entityName = @"GLLLight";
@@ -62,42 +66,32 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	lightsController.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES] ];
 	[lightsController fetch:self];
 	
-	itemsController = [[NSArrayController alloc] initWithContent:nil];
-	itemsController.managedObjectContext = self.managedObjectContext;
-	itemsController.entityName = @"GLLItem";
-	itemsController.automaticallyPreparesContent = YES;
-	itemsController.automaticallyRearrangesObjects = YES;
-	[itemsController fetch:self];
+	lightsMarker = [[GLLSourceListMarker alloc] initWithObject:lightsController childrenKeyPath:@"arrangedObjects"];
+	lightsMarker.isSourceListHeader = YES;
+	lightsMarker.sourceListDisplayName = NSLocalizedString(@"Lights", @"source list header: lights");
 	
-	// Using __bridge because for the entire time this observation happens, the controllers get retained by this class anyway.
-	[lightsController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:(__bridge void *) lightsController];
-	[itemsController addObserver:self forKeyPath:@"arrangedObjects" options:0 context:(__bridge void *) itemsController];
+	settingsMarker = [[GLLSourceListMarker alloc] initWithObject:nil childrenKeyPath:nil];
+	settingsMarker.isSourceListHeader = YES;
+	settingsMarker.sourceListDisplayName = NSLocalizedString(@"Settings", @"source list header: lights");
 	
+	itemListController = [[GLLItemListController alloc] initWithManagedObjectContext:managedObjectContext];
+		
 	self.shouldCloseDocument = YES;
 	
     return self;
-}
-
-- (void)dealloc
-{
-	[lightsController removeObserver:self forKeyPath:@"arrangedObjects"];
-	[itemsController removeObserver:self forKeyPath:@"arrangedObjects"];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	if ([keyPath isEqual:@"arrangedObjects"])
-		[self.sourceView reloadItem:(__bridge id) context reloadChildren:YES];
-	else
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 - (void)windowDidLoad
 {
     [super windowDidLoad];
 	
-	self.sourceView.dataSource = self;
 	self.sourceView.delegate = self;
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1), dispatch_get_main_queue(), ^(void){
+		[self.sourceView expandItem:[self.sourceView itemAtRow:0]];
+		[self.sourceView expandItem:[self.sourceView itemAtRow:1]];
+		[self.sourceView expandItem:[self.sourceView itemAtRow:2]];
+	});
 }
 
 #pragma mark - Actions
@@ -113,8 +107,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	
 	id selectedObject = [self.sourceView itemAtRow:selectedRow];
 	
-	if ([selectedObject isKindOfClass:[GLLItem class]])
-		[self.managedObjectContext deleteObject:selectedObject];
+	if ([selectedObject isKindOfClass:[GLLItemController class]])
+		[self.managedObjectContext deleteObject:[selectedObject item]];
 	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
 		[self.managedObjectContext deleteObject:[selectedObject item]];
 	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
@@ -123,78 +117,29 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		NSBeep();
 }
 
-#pragma mark - Outline view data source
+#pragma mark - Filling the tree controller
 
-- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
+- (NSUInteger)countOfSourceListRoots;
 {
-	if (item == nil) // Top level
-		return 3;
-	else if ([item isKindOfClass:[NSArrayController class]])
-		return [[item arrangedObjects] count];
-	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
-		return [item numberOfChildrenInSourceList];
-	
-	return 0;
+	return 3;
 }
 
-- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
+- (id)objectInSourceListRootsAtIndex:(NSUInteger)index;
 {
-	if ([item isKindOfClass:[NSArrayController class]])
-		return YES;
-	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
-		return [item hasChildrenInSourceList];
-	
-	return NO;
-}
-
-- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
-{
-	if (item == nil)
+	switch(index)
 	{
-		switch(index)
-		{
-			case 0: return lightsController;
-			case 1: return itemsController;
-			case 2: return settingsGroupIdentifier;
-			default: return nil;
-		}
+		case 0: return lightsMarker;
+		case 1: return itemListController;
+		case 2: return settingsMarker;
+		default: return nil;
 	}
-	else if ([item isKindOfClass:[NSArrayController class]])
-		return [[item arrangedObjects] objectAtIndex:index];
-	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
-		return [item childInSourceListAtIndex:index];
-	
-	return nil;
-}
-
-- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
-{
-	if (item == lightsController)
-		return NSLocalizedString(@"Lights", @"lights source list header");
-	else if (item == itemsController)
-		return NSLocalizedString(@"Items", @"items source list header");
-	else if (item == settingsGroupIdentifier)
-		return NSLocalizedString(@"Settings", @"settings source list header");
-	
-	else if ([item conformsToProtocol:@protocol(GLLSourceListItem)])
-		return [item sourceListDisplayName];
-	
-	return nil;
-}
-
-- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
-{
-	if ([item isKindOfClass:[GLLItem class]])
-		[item setValue:object forKey:@"displayName"];
-	else
-		[NSException raise:NSInvalidArgumentException format:@"Item %@ is not editable, can't set new value %@", item, object];
 }
 
 #pragma mark - Outline view delegate
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
 {
-	return item == lightsController || item == itemsController || item == settingsGroupIdentifier;
+	return [[item valueForKeyPath:@"representedObject.isSourceListHeader"] boolValue];
 }
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
@@ -206,7 +151,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		return;
 	}
 	
-	id selectedObject = [self.sourceView itemAtRow:selectedRow];
+	id selectedObject = [[self.sourceView itemAtRow:selectedRow] representedObject];
 	if ([selectedObject isKindOfClass:[GLLItemBone class]])
 		[self _setRightHandController:boneViewController representedObject:selectedObject];
 	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
@@ -215,7 +160,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		[self _setRightHandController:lightViewController representedObject:selectedObject];
 	else if ([selectedObject isKindOfClass:[GLLAmbientLight class]])
 		[self _setRightHandController:ambientLightViewController representedObject:selectedObject];
-	else if ([selectedObject isKindOfClass:[GLLItem class]])
+	else if ([selectedObject isKindOfClass:[GLLItemController class]])
 		[self _setRightHandController:itemViewController representedObject:selectedObject];
 	else
 		[self _setRightHandController:nil representedObject:nil];
@@ -223,7 +168,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
-	if ([item isKindOfClass:[GLLItem class]])
+	if ([item isKindOfClass:[GLLItemController class]])
 		return YES;
 	
 	return NO;

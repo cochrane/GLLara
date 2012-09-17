@@ -42,7 +42,7 @@
 			return;
 		}
 		
-		if (![(GLLItem *) self.representedObject loadPose:file error:&error])
+		if (![(GLLItem *) [self.representedObject item] loadPose:file error:&error])
 		{
 			[self.view.window presentError:error];
 			return;

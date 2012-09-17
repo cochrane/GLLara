@@ -10,7 +10,6 @@
 #import <Foundation/Foundation.h>
 
 #import "GLLVersion.h"
-#import "GLLSourceListItem.h"
 #import "simd_types.h"
 
 @class TRInDataStream;
@@ -22,7 +21,7 @@
 @class GLLScene;
 @class GLLRenderParameterDescription;
 
-@interface GLLItem : NSManagedObject <GLLSourceListItem>
+@interface GLLItem : NSManagedObject
 
 // From Core Data
 @property (nonatomic, retain) NSData * itemURLBookmark;

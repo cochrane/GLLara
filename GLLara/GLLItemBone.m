@@ -137,15 +137,15 @@
 {
 	return self.bone.name;
 }
-- (BOOL)hasChildrenInSourceList
+- (BOOL)isLeafInSourceList
 {
-	return self.children.count > 0;
+	return self.children.count == 0;
 }
-- (NSUInteger)numberOfChildrenInSourceList
+- (NSUInteger)countOfSourceListChildren
 {
 	return self.children.count;
 }
-- (id)childInSourceListAtIndex:(NSUInteger)index;
+- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
 {
 	return self.children[index];
 }
