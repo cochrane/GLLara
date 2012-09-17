@@ -13,6 +13,47 @@
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
 
+/************************************************************************
+ A very high-level overview:
+ 
+ I have an array controller, whose content is dependent on the selection
+ of a tree controller (but not direclty set to; the view-based table
+ view didn't work as I wanted it, so I'm rolling my own). The mesh
+ objects of the tree controller have parameters with names that are
+ unique per mesh, but most meshes wil have parameters of the same
+ values. Each entry in the table view allows me to edit one parameter. I
+ want that each table view cell can edit the values for multiple
+ selection.
+ 
+ Any straightforward implementation is hampered by the fact that you can
+ only bind things directly to  a key path containing "selection", you
+ can't go through anything that is bound to "selection". To solve this,
+ 
+ a) This controller gets the "selection" proxy as a representedObject,
+ with the selectedObjects array as generic fallbac
+ b) The items of the view are bound more or less directly to self.
+ 
+ The more or less is what I hate the most; binding directly to selection
+ won't work (not sure why), so I've got an array controller set to
+ selected objects, all selected, and am using that controller's
+ selection proxy for the binding. It works, but I'm really looking for a
+ cleaner solution.
+ 
+ Binding something to a specific index in an array (or set!) won't work,
+ of course, but I know that each object has its own key here, and that
+ two will have the same key if I want to display them together. So with
+ some slight hackery, I am using that key as a key for KVC, and bind to
+ it. You don't expect to see stringWithFormat… in any KVC or bindings
+ code, but this solution doesn't rely on anything undocumented and works.
+ 
+ Getting access to the view is also surprisingly difficult. I have no
+ idea what the "owner" parameter does, but it's not what I want it to;
+ it doesn't set my outlets. So instead I'm using an NSView subclass that
+ contains the outlets to the individual fields. That works. Binding in
+ IB is out of the question due to the trick with the dynamically
+ generated key path.
+ ************************************************************************/
+
 @interface GLLMeshViewController ()
 {
 	NSArray *renderParameterNames;
