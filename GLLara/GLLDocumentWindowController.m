@@ -136,21 +136,43 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	return [[item valueForKeyPath:@"representedObject.isSourceListHeader"] boolValue];
 }
 
-- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
+- (NSIndexSet *)outlineView:(NSOutlineView *)outlineView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes;
 {
-	if ([self outlineView:outlineView isGroupItem:item]) return NO;
-	if ([[item representedObject] isKindOfClass:[GLLSourceListMarker class]]) return NO;
+	BOOL anyItemController = NO;
+	NSEntityDescription *firstDescription = nil;
 	
-	NSArray *selected = self.treeController.selectedObjects;
-	if ([[item representedObject] isKindOfClass:[GLLItemController class]] || [selected.lastObject isKindOfClass:[GLLItemController class]])
+	for (NSUInteger index = proposedSelectionIndexes.firstIndex; index <= proposedSelectionIndexes.lastIndex; index = [proposedSelectionIndexes indexGreaterThanIndex:index])
 	{
-		if (![[item representedObject] isKindOfClass:[GLLItemController class]] || ![selected.lastObject isKindOfClass:[GLLItemController class]])
-			self.treeController.selectionIndexPaths = @[];
+		id item = [[outlineView itemAtRow:index] representedObject];
+		
+		// Do not add source list headers
+		if ([item isSourceListHeader])
+			return outlineView.selectedRowIndexes;
+		
+		// Do not add marker objects
+		if ([item isKindOfClass:[GLLSourceListMarker class]])
+			return outlineView.selectedRowIndexes;
+		
+		if ([item isKindOfClass:[GLLItemController class]])
+		{
+			anyItemController = YES;
+			
+			// Do not add controllers if there are already objects in.
+			if (firstDescription)
+				return outlineView.selectedRowIndexes;
+		}
+		else if (anyItemController) // and vice versa
+			return outlineView.selectedRowIndexes;
+		
+		// Reject if any object has a type unlike the others.
+		NSEntityDescription *entity = [item entity];
+		if (!firstDescription)
+			firstDescription = entity;
+		else if (![entity isEqual:firstDescription])
+			return outlineView.selectedRowIndexes;
 	}
-	else if (![[[item representedObject] entity] isEqual:[selected.lastObject entity]])
-		self.treeController.selectionIndexPaths = @[];
 	
-	return YES;
+	return proposedSelectionIndexes;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
