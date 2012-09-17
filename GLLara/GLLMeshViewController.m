@@ -8,6 +8,7 @@
 
 #import "GLLMeshViewController.h"
 
+#import "GLLColorRenderParameterView.h"
 #import "GLLFloatRenderParameterView.h"
 #import "GLLItemMesh.h"
 #import "GLLRenderParameter.h"
@@ -91,7 +92,16 @@
 		return nil;
 	
 	if ([descriptionForName.type isEqual:GLLRenderParameterTypeColor])
-		return [tableView makeViewWithIdentifier:@"ColorRenderParameterView" owner:self];
+	{
+		GLLColorRenderParameterView *result = [tableView makeViewWithIdentifier:@"ColorRenderParameterView" owner:self];
+		
+		[result.parameterTitle bind:@"value" toObject:renderParameters withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.localizedTitle", parameterName] options:nil];
+		[result.parameterDescription bind:@"value" toObject:renderParameters withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.localizedDescription", parameterName] options:nil];
+		[result.parameterValue bind:@"value" toObject:renderParameters withKeyPath:[NSString stringWithFormat:@"selection.%@.value", parameterName] options:nil];
+		
+		return result;
+		
+	}
 	else if ([descriptionForName.type isEqual:GLLRenderParameterTypeFloat])
 	{
 		GLLFloatRenderParameterView *result = [tableView makeViewWithIdentifier:@"FloatRenderParameterView" owner:self];

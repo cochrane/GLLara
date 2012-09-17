@@ -128,6 +128,7 @@
 		5275F686160736C000978779 /* GLLSourceListMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F685160736C000978779 /* GLLSourceListMarker.m */; };
 		5275F6891607399800978779 /* GLLItemListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6881607399800978779 /* GLLItemListController.m */; };
 		5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6BC1607CD7800978779 /* GLLFloatRenderParameterView.m */; };
+		5275F6C01607D27F00978779 /* GLLColorRenderParameterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6BF1607D27F00978779 /* GLLColorRenderParameterView.m */; };
 		52919A1515FDF0A7004ACBA5 /* cameratemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */; };
 		5291DB8215FBB33400ECDBCA /* MetallicBump3.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */; };
 		5291DB9115FBE51600ECDBCA /* Metallic.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB9015FBE51600ECDBCA /* Metallic.fs */; };
@@ -413,6 +414,8 @@
 		5275F6881607399800978779 /* GLLItemListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemListController.m; sourceTree = "<group>"; };
 		5275F6BB1607CD7800978779 /* GLLFloatRenderParameterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLFloatRenderParameterView.h; sourceTree = "<group>"; };
 		5275F6BC1607CD7800978779 /* GLLFloatRenderParameterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLFloatRenderParameterView.m; sourceTree = "<group>"; };
+		5275F6BE1607D27E00978779 /* GLLColorRenderParameterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLColorRenderParameterView.h; sourceTree = "<group>"; };
+		5275F6BF1607D27F00978779 /* GLLColorRenderParameterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLColorRenderParameterView.m; sourceTree = "<group>"; };
 		52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = cameratemplate.pdf; sourceTree = SOURCE_ROOT; };
 		5291DB7F15FB711900ECDBCA /* Model Parameters (english).md */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Model Parameters (english).md"; sourceTree = "<group>"; };
 		5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = MetallicBump3.fs; sourceTree = "<group>"; };
@@ -1100,6 +1103,8 @@
 				52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m */,
 				5275F6BB1607CD7800978779 /* GLLFloatRenderParameterView.h */,
 				5275F6BC1607CD7800978779 /* GLLFloatRenderParameterView.m */,
+				5275F6BE1607D27E00978779 /* GLLColorRenderParameterView.h */,
+				5275F6BF1607D27F00978779 /* GLLColorRenderParameterView.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1499,6 +1504,7 @@
 				5275F686160736C000978779 /* GLLSourceListMarker.m in Sources */,
 				5275F6891607399800978779 /* GLLItemListController.m in Sources */,
 				5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */,
+				5275F6C01607D27F00978779 /* GLLColorRenderParameterView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
