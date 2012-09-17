@@ -85,6 +85,7 @@
 							<string key="NSFrame">{{344, 2}, {199, 17}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSPopUpButtonCell" key="NSCell" id="632704157">
@@ -103,53 +104,29 @@
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">400</int>
 								<int key="NSPeriodicInterval">75</int>
-								<object class="NSMenuItem" key="NSMenuItem" id="656315972">
+								<object class="NSMenuItem" key="NSMenuItem" id="830363268">
 									<reference key="NSMenu" ref="925626807"/>
-									<string key="NSTitle">No item</string>
+									<string key="NSTitle">items go here (do not localize)</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
-									<int key="NSState">1</int>
-									<object class="NSCustomResource" key="NSOnImage" id="724757861">
+									<object class="NSCustomResource" key="NSOnImage">
 										<string key="NSClassName">NSImage</string>
 										<string key="NSResourceName">NSMenuCheckmark</string>
 									</object>
-									<object class="NSCustomResource" key="NSMixedImage" id="46376591">
+									<object class="NSCustomResource" key="NSMixedImage">
 										<string key="NSClassName">NSImage</string>
 										<string key="NSResourceName">NSMenuMixedState</string>
 									</object>
 									<string key="NSAction">_popUpItemAction:</string>
+									<int key="NSTag">100</int>
 									<reference key="NSTarget" ref="632704157"/>
 								</object>
 								<bool key="NSMenuItemRespectAlignment">YES</bool>
 								<object class="NSMenu" key="NSMenu" id="925626807">
 									<string key="NSTitle">OtherViews</string>
 									<array class="NSMutableArray" key="NSMenuItems">
-										<reference ref="656315972"/>
-										<object class="NSMenuItem" id="1020938726">
-											<reference key="NSMenu" ref="925626807"/>
-											<bool key="NSIsDisabled">YES</bool>
-											<bool key="NSIsSeparator">YES</bool>
-											<string key="NSTitle"/>
-											<string key="NSKeyEquiv"/>
-											<int key="NSMnemonicLoc">2147483647</int>
-											<reference key="NSOnImage" ref="724757861"/>
-											<reference key="NSMixedImage" ref="46376591"/>
-											<string key="NSAction">_popUpItemAction:</string>
-											<reference key="NSTarget" ref="632704157"/>
-										</object>
-										<object class="NSMenuItem" id="830363268">
-											<reference key="NSMenu" ref="925626807"/>
-											<string key="NSTitle">items go here (do not localize)</string>
-											<string key="NSKeyEquiv"/>
-											<int key="NSKeyEquivModMask">1048576</int>
-											<int key="NSMnemonicLoc">2147483647</int>
-											<reference key="NSOnImage" ref="724757861"/>
-											<reference key="NSMixedImage" ref="46376591"/>
-											<string key="NSAction">_popUpItemAction:</string>
-											<int key="NSTag">100</int>
-											<reference key="NSTarget" ref="632704157"/>
-										</object>
+										<reference ref="830363268"/>
 									</array>
 									<object class="NSFont" key="NSMenuFont">
 										<string key="NSName">LucidaGrande</string>
@@ -157,7 +134,6 @@
 										<int key="NSfFlags">1044</int>
 									</object>
 								</object>
-								<int key="NSSelectedIndex">-1</int>
 								<int key="NSPreferredEdge">1</int>
 								<bool key="NSUsesItemFromMenu">YES</bool>
 								<bool key="NSAltersState">YES</bool>
@@ -274,41 +250,43 @@
 						<string key="label">content: arrangedObjects</string>
 						<reference key="source" ref="259234258"/>
 						<reference key="destination" ref="279963426"/>
-						<object class="NSNibBindingConnector" key="connector" id="901624437">
+						<object class="NSNibBindingConnector" key="connector" id="172959026">
 							<reference key="NSSource" ref="259234258"/>
 							<reference key="NSDestination" ref="279963426"/>
 							<string key="NSLabel">content: arrangedObjects</string>
 							<string key="NSBinding">content</string>
 							<string key="NSKeyPath">arrangedObjects</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSContentPlacementTag</string>
-								<integer value="100" key="NS.object.0"/>
-							</object>
+							<dictionary key="NSOptions">
+								<integer value="100" key="NSContentPlacementTag"/>
+								<boolean value="YES" key="NSInsertsNullPlaceholder"/>
+								<string key="NSNullPlaceholder">No Camera Target</string>
+							</dictionary>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">154</int>
+					<int key="connectionID">185</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentValues: arrangedObjects.displayName</string>
 						<reference key="source" ref="259234258"/>
 						<reference key="destination" ref="279963426"/>
-						<object class="NSNibBindingConnector" key="connector" id="49308950">
+						<object class="NSNibBindingConnector" key="connector" id="732888459">
 							<reference key="NSSource" ref="259234258"/>
 							<reference key="NSDestination" ref="279963426"/>
 							<string key="NSLabel">contentValues: arrangedObjects.displayName</string>
 							<string key="NSBinding">contentValues</string>
 							<string key="NSKeyPath">arrangedObjects.displayName</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSContentPlacementTag</string>
-								<integer value="100" key="NS.object.0"/>
-							</object>
-							<reference key="NSPreviousConnector" ref="901624437"/>
+							<dictionary key="NSOptions">
+								<integer value="100" key="NSContentPlacementTag"/>
+								<boolean value="YES" key="NSInsertsNullPlaceholder"/>
+								<string key="NSNullPlaceholder">no null2</string>
+							</dictionary>
+							<reference key="NSPreviousConnector" ref="172959026"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">157</int>
+					<int key="connectionID">186</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -321,11 +299,11 @@
 							<string key="NSLabel">selectedObject: camera.target</string>
 							<string key="NSBinding">selectedObject</string>
 							<string key="NSKeyPath">camera.target</string>
-							<reference key="NSPreviousConnector" ref="49308950"/>
+							<reference key="NSPreviousConnector" ref="732888459"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">162</int>
+					<int key="connectionID">187</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -586,19 +564,12 @@
 						<reference key="object" ref="925626807"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="830363268"/>
-							<reference ref="656315972"/>
-							<reference ref="1020938726"/>
 						</array>
 						<reference key="parent" ref="632704157"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">58</int>
 						<reference key="object" ref="830363268"/>
-						<reference key="parent" ref="925626807"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">60</int>
-						<reference key="object" ref="656315972"/>
 						<reference key="parent" ref="925626807"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -639,11 +610,6 @@
 						<int key="objectID">76</int>
 						<reference key="object" ref="515250309"/>
 						<reference key="parent" ref="1006"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">92</int>
-						<reference key="object" ref="1020938726"/>
-						<reference key="parent" ref="925626807"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">94</int>
@@ -695,7 +661,6 @@
 				<string key="56.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="57.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="58.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="60.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="NO" key="69.IBNSViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="69.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="7.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -706,31 +671,33 @@
 				<string key="81.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="83.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="84.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="92.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="94.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">163</int>
+			<int key="maxID">187</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">GLLRenderWindowController</string>
 					<string key="superclassName">NSWindowController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">showPopoverFrom:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">showPopoverFrom:</string>
-						<object class="IBActionInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="renderToFile:">id</string>
+						<string key="showPopoverFrom:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="renderToFile:">
+							<string key="name">renderToFile:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showPopoverFrom:">
 							<string key="name">showPopoverFrom:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="popover">NSPopover</string>
 						<string key="popoverButton">NSButton</string>
