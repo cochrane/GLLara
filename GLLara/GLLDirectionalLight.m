@@ -68,15 +68,15 @@
 {
 	return [NSString stringWithFormat:NSLocalizedString(@"Light %lu", @"source list: Light name format"), self.index];
 }
-- (BOOL)hasChildrenInSourceList
+- (BOOL)isLeafInSourceList
 {
-	return NO;
+	return YES;
 }
-- (NSUInteger)numberOfChildrenInSourceList
+- (NSUInteger)countOfSourceListChildren
 {
 	return 0;
 }
-- (id)childInSourceListAtIndex:(NSUInteger)index;
+- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
 {
 	return nil;
 }

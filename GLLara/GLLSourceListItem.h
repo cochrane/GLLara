@@ -18,8 +18,8 @@
 
 @property (nonatomic, assign, readonly) BOOL isSourceListHeader;
 @property (nonatomic, copy, readonly) NSString *sourceListDisplayName;
-@property (nonatomic, assign, readonly) BOOL hasChildrenInSourceList;
-@property (nonatomic, assign, readonly) NSUInteger numberOfChildrenInSourceList;
-- (id)childInSourceListAtIndex:(NSUInteger)index;
+@property (nonatomic, assign, readonly) BOOL isLeafInSourceList;
+@property (nonatomic, assign, readonly) NSUInteger countOfSourceListChildren;
+- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
 
 @end

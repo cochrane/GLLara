@@ -8,6 +8,8 @@
 
 #import "GLLItemMesh.h"
 
+#import <AppKit/NSKeyValueBinding.h>
+
 #import "GLLItem.h"
 #import "GLLModel.h"
 #import "GLLModelMesh.h"
@@ -81,6 +83,23 @@
 	return self.mesh.name;
 }
 
+- (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
+{
+	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GLLRenderParameter"];
+	request.predicate = [NSPredicate predicateWithFormat:@"mesh == %@ && name == %@", self, parameterName];
+	
+	NSArray *result = [self.managedObjectContext executeFetchRequest:request error:NULL];
+	if (!result || [result count] == 0) return nil;
+	return result[0];
+}
+
+- (id)valueForUndefinedKey:(NSString *)key
+{
+	GLLRenderParameter *param = [self renderParameterWithName:key];
+	if (param) return param;
+	else return NSNotApplicableMarker;
+}
+
 #pragma mark - Source list item
 
 - (BOOL)isSourceListHeader
@@ -91,15 +110,15 @@
 {
 	return self.mesh.name;
 }
-- (BOOL)hasChildrenInSourceList
+- (BOOL)isLeafInSourceList
 {
-	return NO;
+	return YES;
 }
-- (NSUInteger)numberOfChildrenInSourceList
+- (NSUInteger)countOfSourceListChildren
 {
 	return 0;
 }
-- (id)childInSourceListAtIndex:(NSUInteger)index;
+- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
 {
 	return nil;
 }

@@ -16,4 +16,6 @@
 
 @property IBOutlet NSTableView *renderParametersView;
 
+@property (nonatomic) NSArray *selectedObjects;
+
 @end
