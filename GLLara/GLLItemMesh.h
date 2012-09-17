@@ -31,6 +31,8 @@
 // This key is just for observing. Don't try to actually read it.
 @property (nonatomic, retain) id renderSettings;
 
+- (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
+
 @end
 
 @interface GLLItemMesh (CoreDataGeneratedAccessors)

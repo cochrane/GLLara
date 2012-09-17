@@ -81,6 +81,23 @@
 	return self.mesh.name;
 }
 
+- (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
+{
+	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GLLRenderParameter"];
+	request.predicate = [NSPredicate predicateWithFormat:@"mesh == %@ && name == %@", self, parameterName];
+	
+	NSArray *result = [self.managedObjectContext executeFetchRequest:request error:NULL];
+	if (!result || [result count] == 0) return nil;
+	return result[0];
+}
+
+- (id)valueForUndefinedKey:(NSString *)key
+{
+	GLLRenderParameter *param = [self renderParameterWithName:key];
+	if (param) return param;
+	return [super valueForUndefinedKey:key];
+}
+
 #pragma mark - Source list item
 
 - (BOOL)isSourceListHeader

@@ -11,6 +11,13 @@
 #import "GLLItemMesh.h"
 #import "GLLRenderParameterDescription.h"
 
+@interface GLLMeshViewController ()
+{
+	NSArray *renderParameterNames;
+}
+
+@end
+
 @implementation GLLMeshViewController
 
 - (id)init
@@ -23,11 +30,9 @@
 
 -(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	NSArray *renderParameters = [[(GLLItemMesh *) self.representedObject renderParameters] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ]];
-	if ((NSUInteger) row >= renderParameters.count)
-		return nil;
-	
-	id object = renderParameters[row];
+	NSString *parameterName = [renderParameterNames objectAtIndex:row];
+	id object = [self.representedObject valueForKeyPath:parameterName];
+
 	if ([[object valueForKeyPath:@"parameterDescription.type"] isEqual:GLLRenderParameterTypeColor])
 		return [tableView makeViewWithIdentifier:@"ColorRenderParameterView" owner:self];
 	else if ([[object valueForKeyPath:@"parameterDescription.type"] isEqual:GLLRenderParameterTypeFloat])
@@ -39,18 +44,21 @@
 - (void)setRepresentedObject:(id)representedObject
 {
 	[super setRepresentedObject:representedObject];
+	
+	renderParameterNames = [[representedObject valueForKeyPath:@"renderParameters.name"] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
+	
 	[self.renderParametersView reloadData];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
-	return [[self.representedObject renderParameters] count];
+	return renderParameterNames.count;
 }
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	NSArray *renderParameters = [[(GLLItemMesh *) self.representedObject renderParameters] sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES] ]];
-	
-	return [renderParameters objectAtIndex:row];
+	// representedObject is a selection proxy, pointing to GLLItemMesh objects
+	NSString *parameterName = [renderParameterNames objectAtIndex:row];
+	return [self.representedObject valueForKeyPath:parameterName];
 }
 
 @end

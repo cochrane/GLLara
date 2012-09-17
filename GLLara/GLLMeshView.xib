@@ -11,7 +11,6 @@
 			<string key="NS.object.0">2549</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
-			<string>NSArrayController</string>
 			<string>NSButton</string>
 			<string>NSButtonCell</string>
 			<string>NSColorWell</string>
@@ -79,7 +78,7 @@
 										<string key="NSFrameSize">{490, 205}</string>
 										<reference key="NSSuperview" ref="220608875"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="633807967"/>
+										<reference key="NSNextKeyView" ref="1012442872"/>
 										<string key="NSReuseIdentifierKey">_NS:13</string>
 										<bool key="NSEnabled">YES</bool>
 										<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -205,7 +204,6 @@
 								<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 								<reference key="NSSuperview" ref="342988078"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:58</string>
 								<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 								<reference key="NSTarget" ref="342988078"/>
@@ -246,7 +244,7 @@
 						<string key="NSFrameSize">{490, 222}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1012442872"/>
+						<reference key="NSNextKeyView" ref="220608875"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<int key="NSsFlags">133680</int>
 						<reference key="NSVScroller" ref="939242733"/>
@@ -401,13 +399,6 @@
 				<reference key="NSNextKeyView" ref="1017327570"/>
 				<string key="NSClassName">NSView</string>
 			</object>
-			<object class="NSArrayController" id="929407623">
-				<string key="NSObjectClassName">GLLRenderParameter</string>
-				<bool key="NSEditable">YES</bool>
-				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
-				<bool key="NSFilterRestrictsInsertion">YES</bool>
-				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
-			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<array class="NSMutableArray" key="connectionRecords">
@@ -426,14 +417,6 @@
 						<reference key="destination" ref="777853792"/>
 					</object>
 					<int key="connectionID">335</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">renderParametersController</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="929407623"/>
-					</object>
-					<int key="connectionID">336</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -498,22 +481,6 @@
 						<reference key="destination" ref="1001"/>
 					</object>
 					<int key="connectionID">334</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentSet: selection.renderParameters</string>
-						<reference key="source" ref="929407623"/>
-						<reference key="destination" ref="960577429"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="929407623"/>
-							<reference key="NSDestination" ref="960577429"/>
-							<string key="NSLabel">contentSet: selection.renderParameters</string>
-							<string key="NSBinding">contentSet</string>
-							<string key="NSKeyPath">selection.renderParameters</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">282</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -1042,11 +1009,6 @@
 						<reference key="parent" ref="725159186"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">199</int>
-						<reference key="object" ref="929407623"/>
-						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">212</int>
 						<reference key="object" ref="633807967"/>
 						<array class="NSMutableArray" key="children">
@@ -1165,7 +1127,6 @@
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="-3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="199.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="212.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="212.userInterfaceItemIdentifier">FloatRenderParameterView</string>
 				<string key="219.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1217,29 +1178,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">338</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">GLLMeshSettingsViewController</string>
-					<string key="superclassName">NSViewController</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">renderParametersView</string>
-						<string key="NS.object.0">NSTableView</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">renderParametersView</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">renderParametersView</string>
-							<string key="candidateClassName">NSTableView</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/GLLMeshSettingsViewController.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
