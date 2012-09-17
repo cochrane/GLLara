@@ -104,6 +104,33 @@
 	return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view %lu", @"render window title format"), displayName, self.camera.index + 1];
 }
 
+#pragma mark - Actions
+
+- (IBAction)renderToFile:(id)sender
+{
+	NSMutableDictionary *saveData = [NSMutableDictionary dictionaryWithDictionary:@{
+									 @"width" : @(self.camera.actualWindowWidth),
+									 @"height" : @(self.camera.actualWindowHeight),
+									 @"maxSamples" : @8,
+									 }];
+	
+	NSSavePanel *savePanel = [NSSavePanel savePanel];
+	savePanelAccessoryViewController.representedObject = saveData;
+	savePanelAccessoryViewController.savePanel = savePanel;
+	savePanel.accessoryView = savePanelAccessoryViewController.view;
+	
+	savePanel.allowedFileTypes = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
+	
+	[savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+		if (result != NSOKButton) return;
+		
+		NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
+		NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
+		
+		[self.renderView.sceneDrawer writeImageToURL:savePanel.URL fileType:savePanelAccessoryViewController.selectedTypeIdentifier size:CGSizeMake(width, height)];
+	}];
+}
+
 #pragma mark - Popover
 
 - (IBAction)showPopoverFrom:(id)sender;
@@ -148,31 +175,6 @@
 	self.renderView.camera = nil;
 	self.camera = nil;
 	self.popover.delegate = nil;
-}
-
-- (IBAction)renderToFile:(id)sender
-{
-	NSMutableDictionary *saveData = [NSMutableDictionary dictionaryWithDictionary:@{
-									 @"width" : @(self.camera.actualWindowWidth),
-									 @"height" : @(self.camera.actualWindowHeight),
-									 @"maxSamples" : @8,
-									 }];
-	
-	NSSavePanel *savePanel = [NSSavePanel savePanel];
-	savePanelAccessoryViewController.representedObject = saveData;
-	savePanelAccessoryViewController.savePanel = savePanel;
-	savePanel.accessoryView = savePanelAccessoryViewController.view;
-	
-	savePanel.allowedFileTypes = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
-	
-	[savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
-		
-		NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
-		NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
-		
-		[self.renderView.sceneDrawer writeImageToURL:savePanel.URL fileType:savePanelAccessoryViewController.selectedTypeIdentifier size:CGSizeMake(width, height)];
-	}];
 }
 
 @end
