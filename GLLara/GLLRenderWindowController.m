@@ -88,6 +88,8 @@
 		styleMask = styleMask & ~NSResizableWindowMask; // Clear resizable window mask bit (if it was set)
 		if (![change[NSKeyValueChangeNewKey] boolValue])
 			styleMask = styleMask | NSResizableWindowMask; // Set it
+		
+		[[self.window standardWindowButton:NSWindowZoomButton] setEnabled:![change[NSKeyValueChangeNewKey] boolValue]];
 		self.window.styleMask = styleMask;
 	}
 	else
