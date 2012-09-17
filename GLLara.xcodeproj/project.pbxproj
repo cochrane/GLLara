@@ -71,7 +71,7 @@
 		52423B091604EB99009F5753 /* naga_red.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B051604EB99009F5753 /* naga_red.modelparams.plist */; };
 		52423B1E1604EBFE009F5753 /* lara_bathing_suit_nogear.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0A1604EBFB009F5753 /* lara_bathing_suit_nogear.modelparams.plist */; };
 		52423B1F1604EBFE009F5753 /* lara_casual.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0B1604EBFB009F5753 /* lara_casual.modelparams.plist */; };
-		52423B201604EBFE009F5753 /* lara_dlc_bikini_black_white.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0C1604EBFB009F5753 /* lara_dlc_bikini_black_white.modelparams.plist */; };
+		52423B201604EBFE009F5753 /* lara_dlc_bikini_blackwhite.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0C1604EBFB009F5753 /* lara_dlc_bikini_blackwhite.modelparams.plist */; };
 		52423B211604EBFE009F5753 /* lara_dlc_bikini_camo.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0D1604EBFB009F5753 /* lara_dlc_bikini_camo.modelparams.plist */; };
 		52423B221604EBFE009F5753 /* lara_dlc_bikini_yellow.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0E1604EBFB009F5753 /* lara_dlc_bikini_yellow.modelparams.plist */; };
 		52423B231604EBFE009F5753 /* lara_dlc_casual_explorer.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B0F1604EBFB009F5753 /* lara_dlc_casual_explorer.modelparams.plist */; };
@@ -129,6 +129,7 @@
 		5275F6891607399800978779 /* GLLItemListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6881607399800978779 /* GLLItemListController.m */; };
 		5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6BC1607CD7800978779 /* GLLFloatRenderParameterView.m */; };
 		5275F6C01607D27F00978779 /* GLLColorRenderParameterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6BF1607D27F00978779 /* GLLColorRenderParameterView.m */; };
+		5275F6C21607E19C00978779 /* TexturelessOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5275F6C11607E19C00978779 /* TexturelessOBJ.fs */; };
 		52919A1515FDF0A7004ACBA5 /* cameratemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */; };
 		5291DB8215FBB33400ECDBCA /* MetallicBump3.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */; };
 		5291DB9115FBE51600ECDBCA /* Metallic.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5291DB9015FBE51600ECDBCA /* Metallic.fs */; };
@@ -343,7 +344,7 @@
 		52423B051604EB99009F5753 /* naga_red.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = naga_red.modelparams.plist; sourceTree = "<group>"; };
 		52423B0A1604EBFB009F5753 /* lara_bathing_suit_nogear.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_bathing_suit_nogear.modelparams.plist; sourceTree = "<group>"; };
 		52423B0B1604EBFB009F5753 /* lara_casual.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_casual.modelparams.plist; sourceTree = "<group>"; };
-		52423B0C1604EBFB009F5753 /* lara_dlc_bikini_black_white.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_bikini_black_white.modelparams.plist; sourceTree = "<group>"; };
+		52423B0C1604EBFB009F5753 /* lara_dlc_bikini_blackwhite.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_bikini_blackwhite.modelparams.plist; sourceTree = "<group>"; };
 		52423B0D1604EBFB009F5753 /* lara_dlc_bikini_camo.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_bikini_camo.modelparams.plist; sourceTree = "<group>"; };
 		52423B0E1604EBFB009F5753 /* lara_dlc_bikini_yellow.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_bikini_yellow.modelparams.plist; sourceTree = "<group>"; };
 		52423B0F1604EBFB009F5753 /* lara_dlc_casual_explorer.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_casual_explorer.modelparams.plist; sourceTree = "<group>"; };
@@ -416,6 +417,7 @@
 		5275F6BC1607CD7800978779 /* GLLFloatRenderParameterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLFloatRenderParameterView.m; sourceTree = "<group>"; };
 		5275F6BE1607D27E00978779 /* GLLColorRenderParameterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLColorRenderParameterView.h; sourceTree = "<group>"; };
 		5275F6BF1607D27F00978779 /* GLLColorRenderParameterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLColorRenderParameterView.m; sourceTree = "<group>"; };
+		5275F6C11607E19C00978779 /* TexturelessOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = TexturelessOBJ.fs; sourceTree = "<group>"; };
 		52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = cameratemplate.pdf; sourceTree = SOURCE_ROOT; };
 		5291DB7F15FB711900ECDBCA /* Model Parameters (english).md */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Model Parameters (english).md"; sourceTree = "<group>"; };
 		5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = MetallicBump3.fs; sourceTree = "<group>"; };
@@ -862,7 +864,7 @@
 				52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */,
 				52423B0A1604EBFB009F5753 /* lara_bathing_suit_nogear.modelparams.plist */,
 				52423B0B1604EBFB009F5753 /* lara_casual.modelparams.plist */,
-				52423B0C1604EBFB009F5753 /* lara_dlc_bikini_black_white.modelparams.plist */,
+				52423B0C1604EBFB009F5753 /* lara_dlc_bikini_blackwhite.modelparams.plist */,
 				529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */,
 				52423B0D1604EBFB009F5753 /* lara_dlc_bikini_camo.modelparams.plist */,
 				52423B0E1604EBFB009F5753 /* lara_dlc_bikini_yellow.modelparams.plist */,
@@ -952,6 +954,7 @@
 				52BB21B715FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs */,
 				52B9E07C16020A8300641518 /* DiffuseOBJ.fs */,
 				52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */,
+				5275F6C11607E19C00978779 /* TexturelessOBJ.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1236,6 +1239,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5275F6C21607E19C00978779 /* TexturelessOBJ.fs in Resources */,
 				521326391602B19700787AA1 /* Square.fs in Resources */,
 				5213263B1602B1AA00787AA1 /* Square.vs in Resources */,
 				52B9E07D16020A8300641518 /* DiffuseOBJ.fs in Resources */,
@@ -1353,7 +1357,7 @@
 				52423B091604EB99009F5753 /* naga_red.modelparams.plist in Resources */,
 				52423B1E1604EBFE009F5753 /* lara_bathing_suit_nogear.modelparams.plist in Resources */,
 				52423B1F1604EBFE009F5753 /* lara_casual.modelparams.plist in Resources */,
-				52423B201604EBFE009F5753 /* lara_dlc_bikini_black_white.modelparams.plist in Resources */,
+				52423B201604EBFE009F5753 /* lara_dlc_bikini_blackwhite.modelparams.plist in Resources */,
 				52423B211604EBFE009F5753 /* lara_dlc_bikini_camo.modelparams.plist in Resources */,
 				52423B221604EBFE009F5753 /* lara_dlc_bikini_yellow.modelparams.plist in Resources */,
 				52423B231604EBFE009F5753 /* lara_dlc_casual_explorer.modelparams.plist in Resources */,

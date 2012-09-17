@@ -47,6 +47,13 @@
 	</dict>
 	<key>shaders</key>
 	<dict>
+		<key>TexturelessOBJ</key>
+		<dict>
+			<key>vertex</key>
+			<string>staticBasic.vs</string>
+			<key>fragment</key>
+			<string>TexturelessOBJ.fs</string>
+		</dict>
 		<key>DiffuseSpecularNormalOBJ</key>
 		<dict>
 			<key>vertex</key>

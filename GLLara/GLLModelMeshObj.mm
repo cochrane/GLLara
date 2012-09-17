@@ -85,8 +85,16 @@
 	
 	if (range.material->specularTexture == NULL && range.material->normalTexture == NULL)
 	{
-		self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture ];
-		self.shader = [objModelParams shaderNamed:@"DiffuseOBJ"];
+		if (range.material->diffuseTexture != NULL)
+		{
+			self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture ];
+			self.shader = [objModelParams shaderNamed:@"DiffuseOBJ"];
+		}
+		else
+		{
+			self.textures = @[];
+			self.shader = [objModelParams shaderNamed:@"TexturelessOBJ"];
+		}
 	}
 	else if (range.material->specularTexture != NULL && range.material->normalTexture == NULL)
 	{
