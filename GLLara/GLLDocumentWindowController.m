@@ -86,12 +86,6 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
     [super windowDidLoad];
 	
 	self.sourceView.delegate = self;
-	
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1), dispatch_get_main_queue(), ^(void){
-		[self.sourceView expandItem:[self.sourceView itemAtRow:0]];
-		[self.sourceView expandItem:[self.sourceView itemAtRow:1]];
-		[self.sourceView expandItem:[self.sourceView itemAtRow:2]];
-	});
 }
 
 #pragma mark - Actions
@@ -142,28 +136,12 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	return [[item valueForKeyPath:@"representedObject.isSourceListHeader"] boolValue];
 }
 
-- (void)outlineViewSelectionDidChange:(NSNotification *)notification
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
 {
-	NSUInteger selectedRow = self.sourceView.selectedRow;
-	if (selectedRow == NSNotFound)
-	{
-		[self _setRightHandController:nil representedObject:nil];
-		return;
-	}
+	if ([self outlineView:outlineView isGroupItem:item]) return NO;
+	if ([[item representedObject] isKindOfClass:[GLLSourceListMarker class]]) return NO;
 	
-	id selectedObject = [[self.sourceView itemAtRow:selectedRow] representedObject];
-	if ([selectedObject isKindOfClass:[GLLItemBone class]])
-		[self _setRightHandController:boneViewController representedObject:selectedObject];
-	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
-		[self _setRightHandController:meshViewController representedObject:selectedObject];
-	else if ([selectedObject isKindOfClass:[GLLDirectionalLight class]])
-		[self _setRightHandController:lightViewController representedObject:selectedObject];
-	else if ([selectedObject isKindOfClass:[GLLAmbientLight class]])
-		[self _setRightHandController:ambientLightViewController representedObject:selectedObject];
-	else if ([selectedObject isKindOfClass:[GLLItemController class]])
-		[self _setRightHandController:itemViewController representedObject:selectedObject];
-	else
-		[self _setRightHandController:nil representedObject:nil];
+	return YES;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
