@@ -141,6 +141,15 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	if ([self outlineView:outlineView isGroupItem:item]) return NO;
 	if ([[item representedObject] isKindOfClass:[GLLSourceListMarker class]]) return NO;
 	
+	NSArray *selected = self.treeController.selectedObjects;
+	if ([[item representedObject] isKindOfClass:[GLLItemController class]] || [selected.lastObject isKindOfClass:[GLLItemController class]])
+	{
+		if (![[item representedObject] isKindOfClass:[GLLItemController class]] || ![selected.lastObject isKindOfClass:[GLLItemController class]])
+			self.treeController.selectionIndexPaths = @[];
+	}
+	else if (![[[item representedObject] entity] isEqual:[selected.lastObject entity]])
+		self.treeController.selectionIndexPaths = @[];
+	
 	return YES;
 }
 
