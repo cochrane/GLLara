@@ -49,6 +49,13 @@
 	<dict>
 		<key>TexturelessOBJ</key>
 		<dict>
+			<key>additionalParameters</key>
+			<array>
+				<string>specularExponent</string>
+				<string>specularColor</string>
+				<string>diffuseColor</string>
+				<string>ambientColor</string>
+			</array>
 			<key>vertex</key>
 			<string>staticBasic.vs</string>
 			<key>fragment</key>
