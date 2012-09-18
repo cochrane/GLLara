@@ -16,6 +16,7 @@
 		5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */; };
 		5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */; };
 		5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
+		522C4BFB1609331D0043FCBA /* DiffuseSpecularNormalOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */; };
 		523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */; };
 		523DE0E01604A5ED00BB9F61 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B9E09616027FC800641518 /* Foundation.framework */; };
 		523DE0E31604A5ED00BB9F61 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523DE0E21604A5ED00BB9F61 /* main.m */; };
@@ -289,6 +290,7 @@
 		5224C8EC15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAngleRangeValueTransformer.h; sourceTree = "<group>"; };
 		5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAngleRangeValueTransformer.m; sourceTree = "<group>"; };
 		5224C8EF15FABC92002A6C76 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = DiffuseSpecularNormalOBJ.fs; sourceTree = "<group>"; };
 		523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = glasses.modelparams.plist; sourceTree = "<group>"; };
 		523DE0DE1604A5ED00BB9F61 /* parseItems */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = parseItems; sourceTree = BUILT_PRODUCTS_DIR; };
 		523DE0E21604A5ED00BB9F61 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -958,6 +960,7 @@
 				52B9E07C16020A8300641518 /* DiffuseOBJ.fs */,
 				52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */,
 				5275F6C11607E19C00978779 /* TexturelessOBJ.fs */,
+				522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1243,6 +1246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5275F6C21607E19C00978779 /* TexturelessOBJ.fs in Resources */,
+				522C4BFB1609331D0043FCBA /* DiffuseSpecularNormalOBJ.fs in Resources */,
 				521326391602B19700787AA1 /* Square.fs in Resources */,
 				5213263B1602B1AA00787AA1 /* Square.vs in Resources */,
 				52B9E07D16020A8300641518 /* DiffuseOBJ.fs in Resources */,
