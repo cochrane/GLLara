@@ -370,3 +370,9 @@
 /* Class = "NSMenuItem"; title = "Open new render window…"; ObjectID = "536"; */
 "Open new render window…" = "Open new render window…";
 
+/* Class = "NSMenuItem"; title = "Render to Image…"; ObjectID = "539"; */
+"Render to Image…" = "Render to Image…";
+
+/* Class = "NSMenuItem"; title = "Add Model…"; ObjectID = "543"; */
+"Add Model…" = "Add Model…";
+

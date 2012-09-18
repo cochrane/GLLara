@@ -22,15 +22,15 @@
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "76"; */
 "Text Cell" = "Text Cell";
 
-/* Class = "NSTextFieldCell"; title = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!"; ObjectID = "223"; */
-"This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
-
-/* Class = "NSTextFieldCell"; title = "Bump 1 Specular UV Scale Thingy (do not translate)"; ObjectID = "228"; */
+/* Class = "NSTextFieldCell"; title = "Bump 1 Specular UV Scale Thingy (do not translate)"; ObjectID = "363"; */
 "Bump 1 Specular UV Scale Thingy (do not translate)" = "Bump 1 Specular UV Scale Thingy (do not translate)";
 
-/* Class = "NSTextFieldCell"; title = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!"; ObjectID = "298"; */
+/* Class = "NSTextFieldCell"; title = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!"; ObjectID = "367"; */
 "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
 
-/* Class = "NSTextFieldCell"; title = "Bump 1 Specular UV Scale Thingy (do not translate)"; ObjectID = "300"; */
+/* Class = "NSTextFieldCell"; title = "Bump 1 Specular UV Scale Thingy (do not translate)"; ObjectID = "382"; */
 "Bump 1 Specular UV Scale Thingy (do not translate)" = "Bump 1 Specular UV Scale Thingy (do not translate)";
+
+/* Class = "NSTextFieldCell"; title = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!"; ObjectID = "384"; */
+"This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
 

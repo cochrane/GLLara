@@ -113,6 +113,17 @@
 		52423B5D1604ED48009F5753 /* wings.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B5C1604ED47009F5753 /* wings.modelparams.plist */; };
 		52423B5F16052CB0009F5753 /* skydome_thailand_sea.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B5E16052CAF009F5753 /* skydome_thailand_sea.modelparams.plist */; };
 		52423B6116052D21009F5753 /* croft_manor_back.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B6016052D20009F5753 /* croft_manor_back.modelparams.plist */; };
+		524C705516087B130038823B /* GLLRenderAccessoryView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C705716087B130038823B /* GLLRenderAccessoryView.strings */; };
+		524C705816087B160038823B /* GLLAmbientLightView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C705A16087B160038823B /* GLLAmbientLightView.strings */; };
+		524C705B16087B1A0038823B /* GLLBoneView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C705D16087B1A0038823B /* GLLBoneView.strings */; };
+		524C705E16087B1D0038823B /* GLLDocument.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C706016087B1D0038823B /* GLLDocument.strings */; };
+		524C706116087B200038823B /* GLLItemView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C706316087B200038823B /* GLLItemView.strings */; };
+		524C706416087B230038823B /* GLLLightView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C706616087B230038823B /* GLLLightView.strings */; };
+		524C706716087B260038823B /* GLLMeshView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C706916087B260038823B /* GLLMeshView.strings */; };
+		524C706A16087B290038823B /* GLLRenderWindowController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C706C16087B290038823B /* GLLRenderWindowController.strings */; };
+		524C706D16087B2C0038823B /* GLLWindowSettingsPopoverView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C706F16087B2C0038823B /* GLLWindowSettingsPopoverView.strings */; };
+		524C707016087B310038823B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C707216087B310038823B /* Localizable.strings */; };
+		524C707316087B350038823B /* MainMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C707516087B350038823B /* MainMenu.strings */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -184,17 +195,7 @@
 		52B9E0AC1602811E00641518 /* GLLDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0AA1602811D00641518 /* GLLDocument.xib */; };
 		52B9E0AD1602811E00641518 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0AB1602811D00641518 /* MainMenu.xib */; };
 		52B9E0AE1602815800641518 /* RenderParameters.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B01602815800641518 /* RenderParameters.strings */; };
-		52B9E0BC1602817000641518 /* GLLAmbientLightView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B11602816F00641518 /* GLLAmbientLightView.strings */; };
-		52B9E0BD1602817000641518 /* GLLBoneView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B21602816F00641518 /* GLLBoneView.strings */; };
-		52B9E0BE1602817000641518 /* GLLDocument.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B31602816F00641518 /* GLLDocument.strings */; };
-		52B9E0BF1602817000641518 /* GLLItemView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B41602817000641518 /* GLLItemView.strings */; };
-		52B9E0C01602817000641518 /* GLLLightView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B51602817000641518 /* GLLLightView.strings */; };
-		52B9E0C11602817000641518 /* GLLMeshView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B61602817000641518 /* GLLMeshView.strings */; };
-		52B9E0C21602817000641518 /* GLLRenderWindowController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B71602817000641518 /* GLLRenderWindowController.strings */; };
-		52B9E0C31602817000641518 /* GLLWindowSettingsPopoverView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B81602817000641518 /* GLLWindowSettingsPopoverView.strings */; };
 		52B9E0C41602817000641518 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B91602817000641518 /* InfoPlist.strings */; };
-		52B9E0C51602817000641518 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0BA1602817000641518 /* Localizable.strings */; };
-		52B9E0C61602817000641518 /* MainMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0BB1602817000641518 /* MainMenu.strings */; };
 		52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206715F8275E00937450 /* doppelganger.modelparams.plist */; };
 		52BB206A15F82B4200937450 /* Shadeless.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206915F82B4200937450 /* Shadeless.fs */; };
 		52BB206C15F82D9A00937450 /* lara_bathing_suit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */; };
@@ -386,6 +387,17 @@
 		52423B5C1604ED47009F5753 /* wings.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = wings.modelparams.plist; sourceTree = "<group>"; };
 		52423B5E16052CAF009F5753 /* skydome_thailand_sea.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = skydome_thailand_sea.modelparams.plist; sourceTree = "<group>"; };
 		52423B6016052D20009F5753 /* croft_manor_back.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = croft_manor_back.modelparams.plist; sourceTree = "<group>"; };
+		524C705616087B130038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLRenderAccessoryView.strings; sourceTree = "<group>"; };
+		524C705916087B160038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLAmbientLightView.strings; sourceTree = "<group>"; };
+		524C705C16087B1A0038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLBoneView.strings; sourceTree = "<group>"; };
+		524C705F16087B1D0038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLDocument.strings; sourceTree = "<group>"; };
+		524C706216087B200038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLItemView.strings; sourceTree = "<group>"; };
+		524C706516087B230038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLLightView.strings; sourceTree = "<group>"; };
+		524C706816087B260038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLMeshView.strings; sourceTree = "<group>"; };
+		524C706B16087B290038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLRenderWindowController.strings; sourceTree = "<group>"; };
+		524C706E16087B2C0038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLWindowSettingsPopoverView.strings; sourceTree = "<group>"; };
+		524C707116087B310038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		524C707416087B350038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -514,17 +526,7 @@
 		52B9E0AA1602811D00641518 /* GLLDocument.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLDocument.xib; sourceTree = "<group>"; };
 		52B9E0AB1602811D00641518 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		52B9E0AF1602815800641518 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RenderParameters.strings; sourceTree = "<group>"; };
-		52B9E0B11602816F00641518 /* GLLAmbientLightView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLAmbientLightView.strings; sourceTree = "<group>"; };
-		52B9E0B21602816F00641518 /* GLLBoneView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLBoneView.strings; sourceTree = "<group>"; };
-		52B9E0B31602816F00641518 /* GLLDocument.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLDocument.strings; sourceTree = "<group>"; };
-		52B9E0B41602817000641518 /* GLLItemView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLItemView.strings; sourceTree = "<group>"; };
-		52B9E0B51602817000641518 /* GLLLightView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLLightView.strings; sourceTree = "<group>"; };
-		52B9E0B61602817000641518 /* GLLMeshView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLMeshView.strings; sourceTree = "<group>"; };
-		52B9E0B71602817000641518 /* GLLRenderWindowController.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLRenderWindowController.strings; sourceTree = "<group>"; };
-		52B9E0B81602817000641518 /* GLLWindowSettingsPopoverView.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = GLLWindowSettingsPopoverView.strings; sourceTree = "<group>"; };
 		52B9E0B91602817000641518 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
-		52B9E0BA1602817000641518 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		52B9E0BB1602817000641518 /* MainMenu.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = MainMenu.strings; sourceTree = "<group>"; };
 		52BB206715F8275E00937450 /* doppelganger.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = doppelganger.modelparams.plist; sourceTree = "<group>"; };
 		52BB206915F82B4200937450 /* Shadeless.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Shadeless.fs; sourceTree = "<group>"; };
 		52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_bathing_suit.modelparams.plist; sourceTree = "<group>"; };
@@ -738,17 +740,18 @@
 		525ACD5215F0F1A700534E7D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				52B9E0B11602816F00641518 /* GLLAmbientLightView.strings */,
-				52B9E0B21602816F00641518 /* GLLBoneView.strings */,
-				52B9E0B31602816F00641518 /* GLLDocument.strings */,
-				52B9E0B41602817000641518 /* GLLItemView.strings */,
-				52B9E0B51602817000641518 /* GLLLightView.strings */,
-				52B9E0B61602817000641518 /* GLLMeshView.strings */,
-				52B9E0B71602817000641518 /* GLLRenderWindowController.strings */,
-				52B9E0B81602817000641518 /* GLLWindowSettingsPopoverView.strings */,
+				524C705716087B130038823B /* GLLRenderAccessoryView.strings */,
+				524C705A16087B160038823B /* GLLAmbientLightView.strings */,
+				524C705D16087B1A0038823B /* GLLBoneView.strings */,
+				524C706016087B1D0038823B /* GLLDocument.strings */,
+				524C706316087B200038823B /* GLLItemView.strings */,
+				524C706616087B230038823B /* GLLLightView.strings */,
+				524C706916087B260038823B /* GLLMeshView.strings */,
+				524C706C16087B290038823B /* GLLRenderWindowController.strings */,
+				524C706F16087B2C0038823B /* GLLWindowSettingsPopoverView.strings */,
 				52B9E0B91602817000641518 /* InfoPlist.strings */,
-				52B9E0BA1602817000641518 /* Localizable.strings */,
-				52B9E0BB1602817000641518 /* MainMenu.strings */,
+				524C707216087B310038823B /* Localizable.strings */,
+				524C707516087B350038823B /* MainMenu.strings */,
 				52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */,
 				52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */,
 				525ACD5315F0F1A700534E7D /* GLLara-Info.plist */,
@@ -1292,17 +1295,17 @@
 				52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */,
 				52B9E0AC1602811E00641518 /* GLLDocument.xib in Resources */,
 				52B9E0AD1602811E00641518 /* MainMenu.xib in Resources */,
-				52B9E0BC1602817000641518 /* GLLAmbientLightView.strings in Resources */,
-				52B9E0BD1602817000641518 /* GLLBoneView.strings in Resources */,
-				52B9E0BE1602817000641518 /* GLLDocument.strings in Resources */,
-				52B9E0BF1602817000641518 /* GLLItemView.strings in Resources */,
-				52B9E0C01602817000641518 /* GLLLightView.strings in Resources */,
-				52B9E0C11602817000641518 /* GLLMeshView.strings in Resources */,
-				52B9E0C21602817000641518 /* GLLRenderWindowController.strings in Resources */,
-				52B9E0C31602817000641518 /* GLLWindowSettingsPopoverView.strings in Resources */,
+				524C705816087B160038823B /* GLLAmbientLightView.strings in Resources */,
+				524C705B16087B1A0038823B /* GLLBoneView.strings in Resources */,
+				524C705E16087B1D0038823B /* GLLDocument.strings in Resources */,
+				524C706116087B200038823B /* GLLItemView.strings in Resources */,
+				524C706416087B230038823B /* GLLLightView.strings in Resources */,
+				524C706716087B260038823B /* GLLMeshView.strings in Resources */,
+				524C706A16087B290038823B /* GLLRenderWindowController.strings in Resources */,
+				524C706D16087B2C0038823B /* GLLWindowSettingsPopoverView.strings in Resources */,
 				52B9E0C41602817000641518 /* InfoPlist.strings in Resources */,
-				52B9E0C51602817000641518 /* Localizable.strings in Resources */,
-				52B9E0C61602817000641518 /* MainMenu.strings in Resources */,
+				524C707016087B310038823B /* Localizable.strings in Resources */,
+				524C707316087B350038823B /* MainMenu.strings in Resources */,
 				52D3D72516029699006CB743 /* GLLRenderAccessoryView.xib in Resources */,
 				523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */,
 				523DE0EC1604CE8600BB9F61 /* natla.modelparams.plist in Resources */,
@@ -1399,6 +1402,7 @@
 				52423B5D1604ED48009F5753 /* wings.modelparams.plist in Resources */,
 				52423B5F16052CB0009F5753 /* skydome_thailand_sea.modelparams.plist in Resources */,
 				52423B6116052D21009F5753 /* croft_manor_back.modelparams.plist in Resources */,
+				524C705516087B130038823B /* GLLRenderAccessoryView.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1544,6 +1548,94 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		524C705716087B130038823B /* GLLRenderAccessoryView.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C705616087B130038823B /* en */,
+			);
+			name = GLLRenderAccessoryView.strings;
+			sourceTree = "<group>";
+		};
+		524C705A16087B160038823B /* GLLAmbientLightView.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C705916087B160038823B /* en */,
+			);
+			name = GLLAmbientLightView.strings;
+			sourceTree = "<group>";
+		};
+		524C705D16087B1A0038823B /* GLLBoneView.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C705C16087B1A0038823B /* en */,
+			);
+			name = GLLBoneView.strings;
+			sourceTree = "<group>";
+		};
+		524C706016087B1D0038823B /* GLLDocument.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C705F16087B1D0038823B /* en */,
+			);
+			name = GLLDocument.strings;
+			sourceTree = "<group>";
+		};
+		524C706316087B200038823B /* GLLItemView.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C706216087B200038823B /* en */,
+			);
+			name = GLLItemView.strings;
+			sourceTree = "<group>";
+		};
+		524C706616087B230038823B /* GLLLightView.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C706516087B230038823B /* en */,
+			);
+			name = GLLLightView.strings;
+			sourceTree = "<group>";
+		};
+		524C706916087B260038823B /* GLLMeshView.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C706816087B260038823B /* en */,
+			);
+			name = GLLMeshView.strings;
+			sourceTree = "<group>";
+		};
+		524C706C16087B290038823B /* GLLRenderWindowController.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C706B16087B290038823B /* en */,
+			);
+			name = GLLRenderWindowController.strings;
+			sourceTree = "<group>";
+		};
+		524C706F16087B2C0038823B /* GLLWindowSettingsPopoverView.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C706E16087B2C0038823B /* en */,
+			);
+			name = GLLWindowSettingsPopoverView.strings;
+			sourceTree = "<group>";
+		};
+		524C707216087B310038823B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C707116087B310038823B /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		524C707516087B350038823B /* MainMenu.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				524C707416087B350038823B /* en */,
+			);
+			name = MainMenu.strings;
+			sourceTree = "<group>";
+		};
 		525ACD5415F0F1A700534E7D /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

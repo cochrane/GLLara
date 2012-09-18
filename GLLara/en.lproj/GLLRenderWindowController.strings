@@ -7,9 +7,12 @@
 /* Class = "NSMenuItem"; title = "items go here (do not localize)"; ObjectID = "58"; */
 "items go here (do not localize)" = "items go here (do not localize)";
 
-/* Class = "NSMenuItem"; title = "No item"; ObjectID = "60"; */
-"No item" = "No item";
-
 /* Class = "NSViewController"; title = "Window Settings Popover Controller"; ObjectID = "83"; */
 "Window Settings Popover Controller" = "Window Settings Popover Controller";
+
+/* Class = "IBBindingConnection"; ibShadowedIsNilPlaceholder = "No Camera Target"; ObjectID = "185"; */
+"No Camera Target" = "No Camera Target";
+
+/* Class = "IBBindingConnection"; ibShadowedIsNilPlaceholder = "no null2"; ObjectID = "186"; */
+"no null2" = "no null2";
 

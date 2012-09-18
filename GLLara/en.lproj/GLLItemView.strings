@@ -1,0 +1,39 @@
+/* Class = "NSButtonCell"; title = "Load pose"; ObjectID = "8"; */
+"Load pose" = "Load pose";
+
+/* Class = "NSTextFieldCell"; title = "Position"; ObjectID = "55"; */
+"Position" = "Position";
+
+/* Class = "NSTextFieldCell"; title = "Rotation"; ObjectID = "68"; */
+"Rotation" = "Rotation";
+
+/* Class = "NSTextFieldCell"; title = "Scale"; ObjectID = "91"; */
+"Scale" = "Scale";
+
+/* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "144"; */
+"Z" = "Z";
+
+/* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "145"; */
+"Y" = "Y";
+
+/* Class = "NSTextFieldCell"; title = "X"; ObjectID = "146"; */
+"X" = "X";
+
+/* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "150"; */
+"Z" = "Z";
+
+/* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "151"; */
+"Y" = "Y";
+
+/* Class = "NSTextFieldCell"; title = "X"; ObjectID = "152"; */
+"X" = "X";
+
+/* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "222"; */
+"Z" = "Z";
+
+/* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "223"; */
+"Y" = "Y";
+
+/* Class = "NSTextFieldCell"; title = "X"; ObjectID = "224"; */
+"X" = "X";
+
