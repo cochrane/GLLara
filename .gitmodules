@@ -1,3 +1,6 @@
 [submodule "DMLocalizedNibBundle"]
 	path = DMLocalizedNibBundle
 	url = https://github.com/incbee/DMLocalizedNibBundle.git
+[submodule "TRPoser"]
+	path = TRPoser
+	url = https://github.com/cochrane/TRPoser.git
