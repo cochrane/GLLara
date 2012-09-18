@@ -128,6 +128,8 @@ const double unitsPerSecond = 0.2;
 
 - (void)reshape
 {
+	[self.openGLContext makeCurrentContext];
+	
 	// Set height and width for camera.
 	// Note: This is points, not pixels. Pixels are used for glViewport exclusively.
 	self.camera.actualWindowWidth = self.bounds.size.width;
