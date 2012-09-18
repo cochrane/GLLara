@@ -17,6 +17,7 @@
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
 #import "GLLShaderDescription.h"
+#import "LionSubscripting.h"
 
 @implementation GLLItemMesh
 

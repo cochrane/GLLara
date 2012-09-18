@@ -9,7 +9,7 @@
 #import "GLLTexture.h"
 
 #import <Accelerate/Accelerate.h>
-#import <CoreGraphics/CoreGraphics.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
 #import "OpenDDSFile.h"

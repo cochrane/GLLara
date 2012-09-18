@@ -13,6 +13,7 @@
 #import "GLLItemMesh.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
+#import "LionSubscripting.h"
 
 /************************************************************************
  A very high-level overview:

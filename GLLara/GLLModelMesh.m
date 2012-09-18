@@ -13,6 +13,7 @@
 #import "GLLModel.h"
 #import "GLLModelParams.h"
 #import "TRInDataStream.h"
+#import "LionSubscripting.h"
 
 float vec_dot(float *a, float *b)
 {

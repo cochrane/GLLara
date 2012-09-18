@@ -8,6 +8,8 @@
 
 #import "GLLRenderAccessoryViewController.h"
 
+#import "LionSubscripting.h"
+
 @interface GLLRenderAccessoryViewController ()
 
 @end

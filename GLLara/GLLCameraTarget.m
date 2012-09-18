@@ -11,6 +11,7 @@
 
 #import "GLLItem.h"
 #import "simd_functions.h"
+#import "LionSubscripting.h"
 
 static void *contextMarker = (void *) 0xdeadbeef;
 

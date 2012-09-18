@@ -14,6 +14,7 @@
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
+#import "LionSubscripting.h"
 
 @interface GLLItemBone ()
 

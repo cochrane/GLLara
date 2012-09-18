@@ -16,6 +16,7 @@
 		5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */; };
 		5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */; };
 		5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
+		522C4A691608D2640043FCBA /* LionSubscripting.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4A681608D2640043FCBA /* LionSubscripting.m */; };
 		523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */; };
 		523DE0E01604A5ED00BB9F61 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B9E09616027FC800641518 /* Foundation.framework */; };
 		523DE0E31604A5ED00BB9F61 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523DE0E21604A5ED00BB9F61 /* main.m */; };
@@ -289,6 +290,8 @@
 		5224C8EC15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAngleRangeValueTransformer.h; sourceTree = "<group>"; };
 		5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAngleRangeValueTransformer.m; sourceTree = "<group>"; };
 		5224C8EF15FABC92002A6C76 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		522C4A671608D2640043FCBA /* LionSubscripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LionSubscripting.h; sourceTree = "<group>"; };
+		522C4A681608D2640043FCBA /* LionSubscripting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LionSubscripting.m; sourceTree = "<group>"; };
 		523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = glasses.modelparams.plist; sourceTree = "<group>"; };
 		523DE0DE1604A5ED00BB9F61 /* parseItems */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = parseItems; sourceTree = BUILT_PRODUCTS_DIR; };
 		523DE0E21604A5ED00BB9F61 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -759,6 +762,8 @@
 				525ACD5715F0F1A700534E7D /* main.m */,
 				525ACD5A15F0F1A700534E7D /* Credits.rtf */,
 				52B9E0B01602815800641518 /* RenderParameters.strings */,
+				522C4A671608D2640043FCBA /* LionSubscripting.h */,
+				522C4A681608D2640043FCBA /* LionSubscripting.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1513,6 +1518,7 @@
 				5275F6891607399800978779 /* GLLItemListController.m in Sources */,
 				5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */,
 				5275F6C01607D27F00978779 /* GLLColorRenderParameterView.m in Sources */,
+				522C4A691608D2640043FCBA /* LionSubscripting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1712,9 +1718,9 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wextra",
 					"-Wall",
@@ -1741,8 +1747,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				SDKROOT = macosx;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx10.7;
 				WARNING_CFLAGS = (
 					"-Wextra",
 					"-Wall",

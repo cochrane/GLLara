@@ -15,6 +15,7 @@
 #import "GLLVertexFormat.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLResourceManager.h"
+#import "LionSubscripting.h"
 
 @implementation GLLModelProgram
 

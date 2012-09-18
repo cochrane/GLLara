@@ -24,6 +24,7 @@
 #import "GLLView.h"
 #import "simd_matrix.h"
 #import "simd_project.h"
+#import "LionSubscripting.h"
 
 struct GLLLightBlock
 {

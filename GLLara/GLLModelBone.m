@@ -12,6 +12,7 @@
 #import "GLLModel.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
+#import "LionSubscripting.h"
 
 @implementation GLLModelBone
 
