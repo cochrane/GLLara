@@ -16,13 +16,14 @@
 #import "GLLModel.h"
 #import "GLLDirectionalLight.h"
 #import "GLLItem.h"
+#import "GLLItem+OBJExport.h"
 #import "GLLItemController.h"
 #import "GLLItemListController.h"
 #import "GLLItemViewController.h"
 #import "GLLSourceListItem.h"
 #import "GLLSourceListMarker.h"
 
-@interface GLLDocumentWindowController ()
+@interface GLLDocumentWindowController () <NSOpenSavePanelDelegate>
 {
 	NSViewController *ambientLightViewController;
 	GLLBoneViewController *boneViewController;
@@ -75,7 +76,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	settingsMarker.sourceListDisplayName = NSLocalizedString(@"Settings", @"source list header: lights");
 	
 	itemListController = [[GLLItemListController alloc] initWithManagedObjectContext:managedObjectContext];
-		
+	
 	self.shouldCloseDocument = YES;
 	
     return self;
@@ -120,7 +121,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 			[self _setRightHandController:meshViewController];
 		else if ([selected.lastObject isKindOfClass:[GLLDirectionalLight class]])
 			[self _setRightHandController:lightViewController];
-
+		
 	}
 	else
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -137,7 +138,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		return;
 	}
 	
-	id selectedObject = [self.sourceView itemAtRow:selectedRow];
+	id selectedObject = [[self.sourceView itemAtRow:selectedRow] representedObject];
 	
 	if ([selectedObject isKindOfClass:[GLLItemController class]])
 		[self.managedObjectContext deleteObject:[selectedObject item]];
@@ -147,6 +148,51 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		[self.managedObjectContext deleteObject:[selectedObject item]];
 	else
 		NSBeep();
+}
+
+- (IBAction)exportSelectedModel:(id)sender
+{
+	NSUInteger selectedRow = self.sourceView.selectedRow;
+	if (selectedRow == NSNotFound)
+	{
+		NSBeep();
+		return;
+	}
+	
+	id selectedObject = [[self.sourceView itemAtRow:selectedRow] representedObject];
+	GLLItem *item = nil;
+	if ([selectedObject isKindOfClass:[GLLItemController class]])
+		item = [selectedObject item];
+	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
+		item = [selectedObject item];
+	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
+		item = [selectedObject item];
+	if (!item) return;
+	
+	NSSavePanel *panel = [NSSavePanel savePanel];
+	panel.allowedFileTypes = @[ @"obj" ];
+	panel.delegate = self;
+	
+	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+		if (result != NSOKButton) return;
+		
+		NSURL *objURL = panel.URL;
+		NSString *materialLibraryName = [[objURL.lastPathComponent stringByDeletingPathExtension] stringByAppendingString:@".mtl"];
+		NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:objURL];
+		
+		NSError *error = nil;
+		if (![item writeOBJToLocation:objURL withTransform:YES withColor:NO error:&error])
+		{
+			[self.window presentError:error];
+			return;
+		}
+		if (![item writeMTLToLocation:mtlURL error:&error])
+		{
+			[self.window presentError:error];
+			return;
+		}
+	}];
+	
 }
 
 #pragma mark - Filling the tree controller
@@ -223,6 +269,33 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		return YES;
 	
 	return NO;
+}
+
+#pragma mark - Save panel delegate
+
+- (BOOL)panel:(id)sender validateURL:(NSURL *)url error:(NSError **)outError
+{
+	if ([url.pathExtension isEqual:@"mtl"])
+	{
+		if (outError)
+			*outError = [NSError errorWithDomain:self.className code:65 userInfo:@{
+			   NSLocalizedFailureReasonErrorKey : NSLocalizedString(@"OBJ files cannot use .mtl as extension", @"export: suffix = mtl"),
+		  NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. To avoid clashes, do not use .mtl as an extension.", @"export: suffix = mtl")
+						 }];
+		return NO;
+	}
+	
+	NSString *materialLibraryName = [[url.lastPathComponent stringByDeletingPathExtension] stringByAppendingString:@".mtl"];
+	NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:url];
+	
+	if ([mtlURL checkResourceIsReachableAndReturnError:NULL])
+	{
+		NSAlert *mtlExistsAlert = [NSAlert alertWithMessageText:NSLocalizedString(@"An MTL file with this name already exists", @"export: has such mtl already") defaultButton:nil alternateButton:NSLocalizedString(@"Cancel", @"export: cancel") otherButton:nil informativeTextWithFormat:NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. This will overwrite an existing file of the same name.", @"export: suffix = mtl")];
+		NSInteger result = [mtlExistsAlert runModal];
+		return result == NSOKButton;
+	}
+	
+	return YES;
 }
 
 #pragma mark - Private methods
