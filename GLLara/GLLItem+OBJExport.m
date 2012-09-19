@@ -28,6 +28,9 @@
 {
 	NSMutableString *obj = [NSMutableString string];
 	
+	NSString *materialLibraryName = [[location.lastPathComponent stringByDeletingPathExtension] stringByAppendingPathExtension:@"mtl"];
+	[obj appendFormat:@"mtllib %@\n", materialLibraryName];
+	
 	mat_float16 *transforms = malloc(sizeof(mat_float16) * self.bones.count);
 	NSUInteger boneIndex = 0;
 	for (GLLItemBone *bone in self.bones)
