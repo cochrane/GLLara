@@ -18,6 +18,7 @@
 #import "GLLItem.h"
 #import "GLLItem+OBJExport.h"
 #import "GLLItemController.h"
+#import "GLLItemExportViewController.h"
 #import "GLLItemListController.h"
 #import "GLLItemViewController.h"
 #import "GLLSourceListItem.h"
@@ -173,6 +174,15 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	panel.allowedFileTypes = @[ @"obj" ];
 	panel.delegate = self;
 	
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"objExportIncludeTransformations" : @YES, @"objExportIncludeVertexColors" : @NO }];
+	
+	GLLItemExportViewController *controller = [[GLLItemExportViewController alloc] init];
+	controller.includeTransformations = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeTransformations"];
+	controller.includeVertexColors = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeVertexColors"];
+	controller.canExportAllData = ![item willLoseDataWhenConvertedToOBJ];
+	
+	panel.accessoryView = controller.view;
+	
 	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
 		if (result != NSOKButton) return;
 		
@@ -181,7 +191,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:objURL];
 		
 		NSError *error = nil;
-		if (![item writeOBJToLocation:objURL withTransform:YES withColor:NO error:&error])
+		if (![item writeOBJToLocation:objURL withTransform:controller.includeTransformations withColor:controller.includeVertexColors error:&error])
 		{
 			[self.window presentError:error];
 			return;

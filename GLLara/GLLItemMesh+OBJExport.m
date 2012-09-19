@@ -24,7 +24,7 @@
 {
 	NSMutableString *mtlString = [[NSMutableString alloc] init];
 	
-	[mtlString appendFormat:@"newmtl %lu\n", self.meshIndex];
+	[mtlString appendFormat:@"newmtl material%lu\n", self.meshIndex];
 	
 	// Use only first texture
 	if (self.mesh.textures.count > 0)
