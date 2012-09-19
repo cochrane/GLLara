@@ -26,6 +26,11 @@ static inline mat_float16 simd_mat_sub(mat_float16 a, mat_float16 b)
     return (mat_float16) {a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w};
 }
 
+static inline mat_float16 simd_mat_scale(mat_float16 a, float s)
+{
+	return (mat_float16) { simd_scale(a.x, s), simd_scale(a.y, s), simd_scale(a.z, s), simd_scale(a.w, s) };
+}
+
 /*!
  * @abstract Die Identitaetsmatrix
  * @discussion Kann man immer mal brauchen.
