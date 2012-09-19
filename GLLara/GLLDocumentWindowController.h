@@ -27,6 +27,7 @@
 @property (nonatomic, retain) IBOutlet NSTreeController *treeController;
 
 - (IBAction)removeSelectedMesh:(id)sender;
+- (IBAction)exportSelectedModel:(id)sender;
 
 - (NSUInteger)countOfSourceListRoots;
 - (id)objectInSourceListRootsAtIndex:(NSUInteger)index;
