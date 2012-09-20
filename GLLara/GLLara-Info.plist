@@ -76,6 +76,25 @@
 			<array>
 				<string>public.data</string>
 			</array>
+			<key>UTTypeIdentifier</key>
+			<string>com.square-enix.tombraider1234</string>
+			<key>UTTypeDescription</key>
+			<string>Classic TR Level</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>tr4</string>
+					<string>tr2</string>
+					<string>phd</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
 			<key>UTTypeDescription</key>
 			<string>XNALara Mesh</string>
 			<key>UTTypeIdentifier</key>

@@ -17,10 +17,13 @@
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLModel.h"
 #import "GLLRenderWindowController.h"
+#import "TR1Level.h"
+#import "TRItemSelectWindowController.h"
 
 @interface GLLDocument ()
 {
 	GLLDocumentWindowController *documentWindowController;
+	TRItemSelectWindowController *itemController;
 }
 
 @end
@@ -109,21 +112,43 @@
 - (IBAction)loadMesh:(id)sender;
 {
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
-	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj" ];
+	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj", @"com.square-enix.tombraider1234" ];
 	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
 		if (result != NSOKButton) return;
 		
-		NSError *error = nil;
-		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL error:&error];
-		
-		if (!model)
+		NSString *type = (__bridge_transfer NSString *) UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)panel.URL.pathExtension, kUTTypeData);
+		if ([type isEqual:@"com.square-enix.tombraider1234"])
 		{
-			[self.windowForSheet presentError:error];
-			return;
+			dispatch_after(1, dispatch_get_current_queue(), ^{
+				NSError *error = nil;
+				NSData *data = [NSData dataWithContentsOfURL:panel.URL options:0 error:&error];
+				if (!data)
+				{
+					[self.windowForSheet presentError:error];
+					return;
+				}
+				TR1Level *level = [[TR1Level alloc] initWithData:data];
+				if (!itemController)
+					itemController = [[TRItemSelectWindowController alloc] init];
+				itemController.level = level;
+				
+				[NSApp beginSheet:itemController.window modalForWindow:self.windowForSheet modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
+			});
 		}
-		
-		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
-		newItem.model = model;
+		else
+		{
+			NSError *error = nil;
+			GLLModel *model = [GLLModel cachedModelFromFile:panel.URL error:&error];
+			
+			if (!model)
+			{
+				[self.windowForSheet presentError:error];
+				return;
+			}
+			
+			GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
+			newItem.model = model;
+		}
 	}];
 }
 

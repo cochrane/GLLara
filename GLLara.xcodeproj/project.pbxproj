@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5209FA12160B155B00B29FF3 /* TRItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4BCC160921CF0043FCBA /* TRItemView.m */; };
 		521326351602ACBE00787AA1 /* GLLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 521326341602ACBE00787AA1 /* GLLProgram.m */; };
 		521326391602B19700787AA1 /* Square.fs in Resources */ = {isa = PBXBuildFile; fileRef = 521326381602B19700787AA1 /* Square.fs */; };
 		5213263B1602B1AA00787AA1 /* Square.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5213263A1602B1AA00787AA1 /* Square.vs */; };
@@ -102,6 +103,13 @@
 		522C4B8E16090D6A0043FCBA /* TR4Texture.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4B3816090D6A0043FCBA /* TR4Texture.m */; };
 		522C4B8F16090D6A0043FCBA /* TR4TexturePage32.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4B3A16090D6A0043FCBA /* TR4TexturePage32.m */; };
 		522C4B9B160910D00043FCBA /* TRFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4B9A160910D00043FCBA /* TRFrame.m */; };
+		522C4BCA16091E940043FCBA /* TRItemSelectWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522C4BC816091E940043FCBA /* TRItemSelectWindowController.xib */; };
+		522C4BDB1609284A0043FCBA /* TRRenderIndexUtilities.c in Sources */ = {isa = PBXBuildFile; fileRef = 522C4BCF1609284A0043FCBA /* TRRenderIndexUtilities.c */; };
+		522C4BDC1609284A0043FCBA /* TRRenderLevelResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4BD21609284A0043FCBA /* TRRenderLevelResources.m */; };
+		522C4BDD1609284A0043FCBA /* TRRenderMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4BD41609284A0043FCBA /* TRRenderMesh.m */; };
+		522C4BDE1609284A0043FCBA /* TRRenderMoveableDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4BD61609284A0043FCBA /* TRRenderMoveableDescription.m */; };
+		522C4BDF1609284A0043FCBA /* TRRenderRoomGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4BD81609284A0043FCBA /* TRRenderRoomGeometry.m */; };
+		522C4BE01609284A0043FCBA /* TRRenderTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4BDA1609284A0043FCBA /* TRRenderTexture.m */; };
 		522C4BFB1609331D0043FCBA /* DiffuseSpecularNormalOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */; };
 		522C4C141609B1F10043FCBA /* GLLModelMesh+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */; };
 		523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */; };
@@ -227,6 +235,7 @@
 		526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31B1609C7C300940A74 /* GLLItem+OBJExport.m */; };
 		526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31E1609CCE900940A74 /* GLLItemExportViewController.m */; };
 		526AB3211609CCE900940A74 /* GLLItemExportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 526AB31F1609CCE900940A74 /* GLLItemExportView.xib */; };
+		526AB348160A386400940A74 /* TRItemSelectWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4BC716091E940043FCBA /* TRItemSelectWindowController.m */; };
 		5275F6821607293000978779 /* GLLItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6811607293000978779 /* GLLItemController.m */; };
 		5275F686160736C000978779 /* GLLSourceListMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F685160736C000978779 /* GLLSourceListMarker.m */; };
 		5275F6891607399800978779 /* GLLItemListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6881607399800978779 /* GLLItemListController.m */; };
@@ -551,6 +560,24 @@
 		522C4B3A16090D6A0043FCBA /* TR4TexturePage32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TR4TexturePage32.m; sourceTree = "<group>"; };
 		522C4B99160910D00043FCBA /* TRFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRFrame.h; sourceTree = "<group>"; };
 		522C4B9A160910D00043FCBA /* TRFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRFrame.m; sourceTree = "<group>"; };
+		522C4BC616091E940043FCBA /* TRItemSelectWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRItemSelectWindowController.h; sourceTree = "<group>"; };
+		522C4BC716091E940043FCBA /* TRItemSelectWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRItemSelectWindowController.m; sourceTree = "<group>"; };
+		522C4BC816091E940043FCBA /* TRItemSelectWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRItemSelectWindowController.xib; sourceTree = "<group>"; };
+		522C4BCB160921CF0043FCBA /* TRItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRItemView.h; sourceTree = "<group>"; };
+		522C4BCC160921CF0043FCBA /* TRItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRItemView.m; sourceTree = "<group>"; };
+		522C4BCE1609284A0043FCBA /* TRRenderElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRRenderElement.h; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderElement.h"; sourceTree = "<group>"; };
+		522C4BCF1609284A0043FCBA /* TRRenderIndexUtilities.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = TRRenderIndexUtilities.c; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderIndexUtilities.c"; sourceTree = "<group>"; };
+		522C4BD01609284A0043FCBA /* TRRenderIndexUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRRenderIndexUtilities.h; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderIndexUtilities.h"; sourceTree = "<group>"; };
+		522C4BD11609284A0043FCBA /* TRRenderLevelResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRRenderLevelResources.h; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderLevelResources.h"; sourceTree = "<group>"; };
+		522C4BD21609284A0043FCBA /* TRRenderLevelResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRRenderLevelResources.m; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderLevelResources.m"; sourceTree = "<group>"; };
+		522C4BD31609284A0043FCBA /* TRRenderMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRRenderMesh.h; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderMesh.h"; sourceTree = "<group>"; };
+		522C4BD41609284A0043FCBA /* TRRenderMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRRenderMesh.m; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderMesh.m"; sourceTree = "<group>"; };
+		522C4BD51609284A0043FCBA /* TRRenderMoveableDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRRenderMoveableDescription.h; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderMoveableDescription.h"; sourceTree = "<group>"; };
+		522C4BD61609284A0043FCBA /* TRRenderMoveableDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRRenderMoveableDescription.m; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderMoveableDescription.m"; sourceTree = "<group>"; };
+		522C4BD71609284A0043FCBA /* TRRenderRoomGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRRenderRoomGeometry.h; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderRoomGeometry.h"; sourceTree = "<group>"; };
+		522C4BD81609284A0043FCBA /* TRRenderRoomGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRRenderRoomGeometry.m; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderRoomGeometry.m"; sourceTree = "<group>"; };
+		522C4BD91609284A0043FCBA /* TRRenderTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TRRenderTexture.h; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderTexture.h"; sourceTree = "<group>"; };
+		522C4BDA1609284A0043FCBA /* TRRenderTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TRRenderTexture.m; path = "../../../../TRPoser/TR Poser/Rendering/TRRenderTexture.m"; sourceTree = "<group>"; };
 		522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = DiffuseSpecularNormalOBJ.fs; sourceTree = "<group>"; };
 		522C4C121609B1F10043FCBA /* GLLModelMesh+OBJExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLModelMesh+OBJExport.h"; sourceTree = "<group>"; };
 		522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLModelMesh+OBJExport.m"; sourceTree = "<group>"; };
@@ -917,6 +944,19 @@
 		522C4A8916090D080043FCBA /* Rendering */ = {
 			isa = PBXGroup;
 			children = (
+				522C4BCE1609284A0043FCBA /* TRRenderElement.h */,
+				522C4BCF1609284A0043FCBA /* TRRenderIndexUtilities.c */,
+				522C4BD01609284A0043FCBA /* TRRenderIndexUtilities.h */,
+				522C4BD11609284A0043FCBA /* TRRenderLevelResources.h */,
+				522C4BD21609284A0043FCBA /* TRRenderLevelResources.m */,
+				522C4BD31609284A0043FCBA /* TRRenderMesh.h */,
+				522C4BD41609284A0043FCBA /* TRRenderMesh.m */,
+				522C4BD51609284A0043FCBA /* TRRenderMoveableDescription.h */,
+				522C4BD61609284A0043FCBA /* TRRenderMoveableDescription.m */,
+				522C4BD71609284A0043FCBA /* TRRenderRoomGeometry.h */,
+				522C4BD81609284A0043FCBA /* TRRenderRoomGeometry.m */,
+				522C4BD91609284A0043FCBA /* TRRenderTexture.h */,
+				522C4BDA1609284A0043FCBA /* TRRenderTexture.m */,
 			);
 			name = Rendering;
 			path = "TR Poser/Rendering";
@@ -1632,6 +1672,11 @@
 				526AB31D1609CCE900940A74 /* GLLItemExportViewController.h */,
 				526AB31E1609CCE900940A74 /* GLLItemExportViewController.m */,
 				526AB31F1609CCE900940A74 /* GLLItemExportView.xib */,
+				522C4BC616091E940043FCBA /* TRItemSelectWindowController.h */,
+				522C4BC716091E940043FCBA /* TRItemSelectWindowController.m */,
+				522C4BC816091E940043FCBA /* TRItemSelectWindowController.xib */,
+				522C4BCB160921CF0043FCBA /* TRItemView.h */,
+				522C4BCC160921CF0043FCBA /* TRItemView.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1926,6 +1971,7 @@
 				52423B6116052D21009F5753 /* croft_manor_back.modelparams.plist in Resources */,
 				524C705516087B130038823B /* GLLRenderAccessoryView.strings in Resources */,
 				526AB3211609CCE900940A74 /* GLLItemExportView.xib in Resources */,
+				522C4BCA16091E940043FCBA /* TRItemSelectWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2124,6 +2170,14 @@
 				526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */,
 				526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */,
 				526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */,
+				522C4BDB1609284A0043FCBA /* TRRenderIndexUtilities.c in Sources */,
+				522C4BDC1609284A0043FCBA /* TRRenderLevelResources.m in Sources */,
+				522C4BDD1609284A0043FCBA /* TRRenderMesh.m in Sources */,
+				522C4BDE1609284A0043FCBA /* TRRenderMoveableDescription.m in Sources */,
+				522C4BDF1609284A0043FCBA /* TRRenderRoomGeometry.m in Sources */,
+				522C4BE01609284A0043FCBA /* TRRenderTexture.m in Sources */,
+				526AB348160A386400940A74 /* TRItemSelectWindowController.m in Sources */,
+				5209FA12160B155B00B29FF3 /* TRItemView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
