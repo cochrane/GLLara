@@ -173,7 +173,6 @@ const double unitsPerSecond = 0.2;
 	BOOL sDown = NO;
 	BOOL dDown = NO;
 	BOOL mouseDown = NO;
-	NSPoint mousePoint = NSZeroPoint;
 	
 	NSTimeInterval lastEvent = [NSDate timeIntervalSinceReferenceDate];
 	
@@ -230,7 +229,6 @@ const double unitsPerSecond = 0.2;
 				mouseDown = NO;
 				break;
 			case NSLeftMouseDown:
-				mousePoint = [self convertPoint:theEvent.locationInWindow fromView:nil];
 				mouseDown = YES;
 				break;
 		}

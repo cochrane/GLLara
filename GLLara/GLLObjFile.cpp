@@ -21,7 +21,10 @@ std::string stringFromFileURL(CFURLRef fileURL)
 	CFURLRef absolute = CFURLCopyAbsoluteURL(fileURL);
 	CFStringRef fsPath = CFURLCopyFileSystemPath(absolute, kCFURLPOSIXPathStyle);
 	if (!fsPath)
+	{
+		CFRelease(absolute);
 		throw std::runtime_error("Could not convert file path to URL");
+	}
 	CFRelease(absolute);
 	CFIndex length = CFStringGetMaximumSizeOfFileSystemRepresentation(fsPath);
 	char *buffer = new char[length];
