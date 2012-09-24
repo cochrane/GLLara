@@ -69,14 +69,6 @@ GLLObjFile::Material::~Material()
 	CFRelease(normalTexture);
 }
 
-void GLLObjFile::normalizeTexCoords(float *texCoords)
-{
-//	texCoords[0] = std::fmod(texCoords[0], 1);
-//	if (texCoords[0] < 0.0f) texCoords[0] += 1.0f;
-//	texCoords[1] = std::fmod(texCoords[1], 1);
-//	if (texCoords[1] < 0.0f) texCoords[1] += 1.0f;
-}
-
 void GLLObjFile::parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw()
 {
 	float vals[4];
@@ -283,10 +275,7 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 		else if (token == "vn")
 			parseFloatVector(line.c_str(), normals, 3);
 		else if (token == "vt")
-		{
 			parseFloatVector(line.c_str(), texCoords, 2);
-			normalizeTexCoords(&texCoords[texCoords.size() - 2]);
-		}
 		else if (token == "vc")
 			parseUCharVector(line.c_str(), colors, 4);
 		else if (token == "f")
