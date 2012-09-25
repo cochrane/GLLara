@@ -8,7 +8,7 @@
 
 #import "GLLColorRenderParameter.h"
 
-#import <AppKit/NSColorSpace.h>
+#import "NSColor+Color32Bit.h"
 
 @implementation GLLColorRenderParameter
 
@@ -21,12 +21,8 @@
 
 - (NSData *)uniformValue;
 {
-	CGFloat r = 0, g = 0, b = 0, a = 0;
-	if (self.value)
-	[[self.value colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
-
-	
-	float values[4] = { r, g, b, a };
+	float values[4];
+	[self.value get128BitRGBAComponents:values];
 	return [NSData dataWithBytes:&values length:sizeof(values)];
 }
 

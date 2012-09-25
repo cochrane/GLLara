@@ -8,10 +8,10 @@
 
 #import "GLLSceneDrawer.h"
 
-#import <AppKit/NSColorSpace.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
 
+#import "NSColor+Color32Bit.h"
 #import "GLLAmbientLight.h"
 #import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
@@ -28,7 +28,7 @@
 struct GLLLightBlock
 {
 	vec_float4 cameraLocation;
-	vec_float4 ambientColor;
+	float ambientColor[4];
 	struct GLLLightUniformBlock lights[3];
 };
 
@@ -424,9 +424,7 @@ struct GLLAlphaTestBlock
 	
 	// Ambient
 	GLLAmbientLight *ambient = lights[0];
-	CGFloat r, g, b, a;
-	[[ambient.color colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
-	lightData.ambientColor = simd_make(r, g, b, a);
+	[ambient.color get128BitRGBAComponents:lightData.ambientColor];
 	
 	// Diffuse + Specular
 	for (NSUInteger i = 0; i < 3; i++)
