@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class GLLCamera;
-@class GLLScene;
+@class GLLSceneDrawer;
 @class GLLView;
 
 /*!
@@ -18,9 +18,10 @@
  */
 @interface GLLRenderWindowController : NSWindowController <NSPopoverDelegate, NSWindowDelegate>
 
-- (id)initWithCamera:(GLLCamera *)camera;
+- (id)initWithCamera:(GLLCamera *)camera sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
 
 @property (nonatomic, retain, readonly) GLLCamera *camera;
+@property (nonatomic, retain, readonly) GLLSceneDrawer *sceneDrawer;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, retain) IBOutlet GLLView *renderView;

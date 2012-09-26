@@ -12,6 +12,7 @@
 #import "GLLView.h"
 #import "GLLRenderAccessoryViewController.h"
 #import "GLLSceneDrawer.h"
+#import "GLLViewDrawer.h"
 
 @interface GLLRenderWindowController ()
 {
@@ -25,12 +26,13 @@
 
 @implementation GLLRenderWindowController
 
-- (id)initWithCamera:(GLLCamera *)camera;
+- (id)initWithCamera:(GLLCamera *)camera sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
 {
 	if (!(self = [super initWithWindowNibName:@"GLLRenderWindowController"]))
 		return nil;
 	
 	_camera = camera;
+	_sceneDrawer = sceneDrawer;
 	savePanelAccessoryViewController = [[GLLRenderAccessoryViewController alloc] init];
 	
 	return self;
@@ -44,7 +46,7 @@
 	
 	self.window.delegate = self;
     
-	self.renderView.camera = self.camera;
+	[self.renderView setCamera:self.camera sceneDrawer:self.sceneDrawer];
 	self.popover.delegate = self;
 	
 	[self.camera addObserver:self forKeyPath:@"windowWidth" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
@@ -129,7 +131,7 @@
 		NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
 		NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
 		
-		[self.renderView.sceneDrawer writeImageToURL:savePanel.URL fileType:savePanelAccessoryViewController.selectedTypeIdentifier size:CGSizeMake(width, height)];
+		[self.renderView.viewDrawer writeImageToURL:savePanel.URL fileType:savePanelAccessoryViewController.selectedTypeIdentifier size:CGSizeMake(width, height)];
 	}];
 }
 
@@ -159,7 +161,7 @@
 	[self.camera removeObserver:self forKeyPath:@"windowWidth"];
 	[self.camera removeObserver:self forKeyPath:@"windowHeight"];
 	[self.camera removeObserver:self forKeyPath:@"windowSizeLocked"];
-	self.renderView.camera = nil;
+	[self.renderView unload];
 	
 	[self.managedObjectContext deleteObject:self.camera];
 	
@@ -174,7 +176,7 @@
 	[self.camera removeObserver:self forKeyPath:@"windowWidth"];
 	[self.camera removeObserver:self forKeyPath:@"windowHeight"];
 	[self.camera removeObserver:self forKeyPath:@"windowSizeLocked"];
-	self.renderView.camera = nil;
+	[self.renderView unload];
 	self.camera = nil;
 	self.popover.delegate = nil;
 }

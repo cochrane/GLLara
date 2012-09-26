@@ -13,8 +13,9 @@
 #import <OpenGL/gl3ext.h>
 
 #import "GLLCamera.h"
-#import "GLLSceneDrawer.h"
 #import "GLLResourceManager.h"
+#import "GLLSceneDrawer.h"
+#import "GLLViewDrawer.h"
 
 @interface GLLView ()
 {
@@ -54,20 +55,21 @@ const double unitsPerSecond = 0.2;
 	[self setWantsBestResolutionOpenGLSurface:YES];
 	
 	return self;
-}
+};
 
-- (void)prepareOpenGL
+- (void)unload
 {
-	if (self.camera)
-		_sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.camera.managedObjectContext view:self];
+	[self.openGLContext makeCurrentContext];
+	_camera = nil;
+	_viewDrawer = nil;
 }
 
-- (void)setCamera:(GLLCamera *)camera
+- (void)setCamera:(GLLCamera *)camera sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
 {
 	_camera = camera;
+	_sceneDrawer = sceneDrawer;
 	
-	if (!_sceneDrawer && camera)
-		_sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.camera.managedObjectContext view:self];
+	_viewDrawer = [[GLLViewDrawer alloc] initWithManagedSceneDrawer:sceneDrawer view:self];
 }
 
 - (void)rotateWithEvent:(NSEvent *)event
@@ -141,7 +143,7 @@ const double unitsPerSecond = 0.2;
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	[self.sceneDrawer draw];
+	[self.viewDrawer draw];
 	[self.openGLContext flushBuffer];
 }
 

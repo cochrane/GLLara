@@ -115,6 +115,12 @@
 		52423B5D1604ED48009F5753 /* wings.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B5C1604ED47009F5753 /* wings.modelparams.plist */; };
 		52423B5F16052CB0009F5753 /* skydome_thailand_sea.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B5E16052CAF009F5753 /* skydome_thailand_sea.modelparams.plist */; };
 		52423B6116052D21009F5753 /* croft_manor_back.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B6016052D20009F5753 /* croft_manor_back.modelparams.plist */; };
+		524BEAFF1611250C00EA061D /* GLLSkeletonDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */; };
+		524BEB0316120FCF00EA061D /* GLLSkeletonProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */; };
+		524BEB06161211E400EA061D /* Skeleton.fs in Resources */ = {isa = PBXBuildFile; fileRef = 524BEB04161211E400EA061D /* Skeleton.fs */; };
+		524BEB07161211E400EA061D /* Skeleton.vs in Resources */ = {isa = PBXBuildFile; fileRef = 524BEB05161211E400EA061D /* Skeleton.vs */; };
+		524BEB0D1612551800EA061D /* NSColor+Color32Bit.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEB0C1612551800EA061D /* NSColor+Color32Bit.m */; };
+		524BEB101612F13D00EA061D /* GLLViewDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEB0F1612F13D00EA061D /* GLLViewDrawer.m */; };
 		524C705516087B130038823B /* GLLRenderAccessoryView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C705716087B130038823B /* GLLRenderAccessoryView.strings */; };
 		524C705816087B160038823B /* GLLAmbientLightView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C705A16087B160038823B /* GLLAmbientLightView.strings */; };
 		524C705B16087B1A0038823B /* GLLBoneView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C705D16087B1A0038823B /* GLLBoneView.strings */; };
@@ -396,6 +402,16 @@
 		52423B5C1604ED47009F5753 /* wings.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = wings.modelparams.plist; sourceTree = "<group>"; };
 		52423B5E16052CAF009F5753 /* skydome_thailand_sea.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = skydome_thailand_sea.modelparams.plist; sourceTree = "<group>"; };
 		52423B6016052D20009F5753 /* croft_manor_back.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = croft_manor_back.modelparams.plist; sourceTree = "<group>"; };
+		524BEAFD1611250C00EA061D /* GLLSkeletonDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonDrawer.h; sourceTree = "<group>"; };
+		524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSkeletonDrawer.m; sourceTree = "<group>"; };
+		524BEB0116120FCF00EA061D /* GLLSkeletonProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonProgram.h; sourceTree = "<group>"; };
+		524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSkeletonProgram.m; sourceTree = "<group>"; };
+		524BEB04161211E400EA061D /* Skeleton.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Skeleton.fs; sourceTree = "<group>"; };
+		524BEB05161211E400EA061D /* Skeleton.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Skeleton.vs; sourceTree = "<group>"; };
+		524BEB0B1612551800EA061D /* NSColor+Color32Bit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Color32Bit.h"; sourceTree = "<group>"; };
+		524BEB0C1612551800EA061D /* NSColor+Color32Bit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Color32Bit.m"; sourceTree = "<group>"; };
+		524BEB0E1612F13D00EA061D /* GLLViewDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLLViewDrawer.h; path = ../GLLViewDrawer.h; sourceTree = "<group>"; };
+		524BEB0F1612F13D00EA061D /* GLLViewDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLLViewDrawer.m; path = ../GLLViewDrawer.m; sourceTree = "<group>"; };
 		524C705616087B130038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLRenderAccessoryView.strings; sourceTree = "<group>"; };
 		524C705916087B160038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLAmbientLightView.strings; sourceTree = "<group>"; };
 		524C705C16087B1A0038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLBoneView.strings; sourceTree = "<group>"; };
@@ -643,6 +659,8 @@
 			children = (
 				521326381602B19700787AA1 /* Square.fs */,
 				5213263A1602B1AA00787AA1 /* Square.vs */,
+				524BEB04161211E400EA061D /* Skeleton.fs */,
+				524BEB05161211E400EA061D /* Skeleton.vs */,
 			);
 			name = "Internal use only";
 			sourceTree = "<group>";
@@ -746,6 +764,8 @@
 				529692E415F286E600DF2FA3 /* GLLVertexFormat.h */,
 				5296942915F4174F00DF2FA3 /* GLLSceneDrawer.h */,
 				5296942A15F4174F00DF2FA3 /* GLLSceneDrawer.m */,
+				524BEB0E1612F13D00EA061D /* GLLViewDrawer.h */,
+				524BEB0F1612F13D00EA061D /* GLLViewDrawer.m */,
 				529693F315F2B58A00DF2FA3 /* GLLASCIIScanner.h */,
 				529693F415F2B58B00DF2FA3 /* GLLASCIIScanner.m */,
 				52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */,
@@ -775,6 +795,8 @@
 				525ACD5715F0F1A700534E7D /* main.m */,
 				525ACD5A15F0F1A700534E7D /* Credits.rtf */,
 				52B9E0B01602815800641518 /* RenderParameters.strings */,
+				524BEB0B1612551800EA061D /* NSColor+Color32Bit.h */,
+				524BEB0C1612551800EA061D /* NSColor+Color32Bit.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1066,6 +1088,8 @@
 				5296944815F565D100DF2FA3 /* GLLResourceManager.m */,
 				5213263C1602BB8000787AA1 /* GLLSquareProgram.h */,
 				5213263D1602BB8000787AA1 /* GLLSquareProgram.m */,
+				524BEB0116120FCF00EA061D /* GLLSkeletonProgram.h */,
+				524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */,
 			);
 			name = "Render resources";
 			sourceTree = "<group>";
@@ -1077,6 +1101,8 @@
 				5296942715F4139300DF2FA3 /* GLLItemDrawer.m */,
 				52D6A09B15F8BAB0002A0BB4 /* GLLItemMeshDrawer.h */,
 				52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m */,
+				524BEAFD1611250C00EA061D /* GLLSkeletonDrawer.h */,
+				524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */,
 			);
 			name = "Drawing posed items";
 			sourceTree = "<group>";
@@ -1326,6 +1352,8 @@
 				524C705B16087B1A0038823B /* GLLBoneView.strings in Resources */,
 				524C705E16087B1D0038823B /* GLLDocument.strings in Resources */,
 				524C706116087B200038823B /* GLLItemView.strings in Resources */,
+				524BEB06161211E400EA061D /* Skeleton.fs in Resources */,
+				524BEB07161211E400EA061D /* Skeleton.vs in Resources */,
 				524C706416087B230038823B /* GLLLightView.strings in Resources */,
 				524C706716087B260038823B /* GLLMeshView.strings in Resources */,
 				524C706A16087B290038823B /* GLLRenderWindowController.strings in Resources */,
@@ -1545,6 +1573,10 @@
 				526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */,
 				526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */,
 				526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */,
+				524BEAFF1611250C00EA061D /* GLLSkeletonDrawer.m in Sources */,
+				524BEB0316120FCF00EA061D /* GLLSkeletonProgram.m in Sources */,
+				524BEB0D1612551800EA061D /* NSColor+Color32Bit.m in Sources */,
+				524BEB101612F13D00EA061D /* GLLViewDrawer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,10 +17,12 @@
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLModel.h"
 #import "GLLRenderWindowController.h"
+#import "GLLSceneDrawer.h"
 
 @interface GLLDocument ()
 {
 	GLLDocumentWindowController *documentWindowController;
+	GLLSceneDrawer *sceneDrawer;
 }
 
 @end
@@ -68,6 +70,8 @@
 
 - (void)makeWindowControllers
 {
+	sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext];
+	
 	documentWindowController = [[GLLDocumentWindowController alloc] initWithManagedObjectContext:self.managedObjectContext];
 	[self addWindowController:documentWindowController];
 
@@ -78,7 +82,7 @@
 	
 	for (GLLCamera *camera in cameras)
 	{
-		GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera];
+		GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera sceneDrawer:sceneDrawer];
 		[self addWindowController:controller];
 	}
 }
@@ -102,7 +106,7 @@
 	camera.index = index;
 	
 	// 3rd: Create its window controller
-	GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera];
+	GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera sceneDrawer:sceneDrawer];
 	[self addWindowController:controller];
 	[controller showWindow:sender];
 }
