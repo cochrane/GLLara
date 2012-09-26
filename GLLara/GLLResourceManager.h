@@ -41,4 +41,8 @@
 @property (nonatomic) GLLProgram *squareProgram;
 @property (nonatomic) GLuint squareVertexArray;
 
+@property (nonatomic) GLuint alphaTestDisabledBuffer;
+@property (nonatomic) GLuint alphaTestPassGreaterBuffer;
+@property (nonatomic) GLuint alphaTestPassLessBuffer;
+
 @end

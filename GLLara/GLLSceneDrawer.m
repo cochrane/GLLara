@@ -32,12 +32,6 @@ struct GLLLightBlock
 	struct GLLLightUniformBlock lights[3];
 };
 
-struct GLLAlphaTestBlock
-{
-	GLuint mode;
-	GLfloat reference;
-};
-
 @interface GLLSceneDrawer ()
 {
 	NSMutableArray *itemDrawers;
@@ -47,11 +41,7 @@ struct GLLAlphaTestBlock
 	GLuint lightBuffer;
 	GLuint transformBuffer;
 	
-	// Alpha test
-	GLuint alphaTestDisabledBuffer;
-	GLuint alphaTestPassGreaterBuffer;
-	GLuint alphaTestPassLessBuffer;
-	
+	// Alpha test	
 	BOOL needsUpdateMatrices;
 	BOOL needsUpdateLights;
 }
@@ -137,20 +127,6 @@ struct GLLAlphaTestBlock
 	glGenBuffers(1, &transformBuffer);
 	[view addObserver:self forKeyPath:@"camera.viewProjectionMatrix" options:0 context:0];
 	
-	// Alpha test buffer
-	glGenBuffers(1, &alphaTestDisabledBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestDisabledBuffer);
-	struct GLLAlphaTestBlock alphaBlock = { .mode = 0, .reference = .9 };
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
-	glGenBuffers(1, &alphaTestPassGreaterBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestPassGreaterBuffer);
-	alphaBlock.mode = 1;
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
-	glGenBuffers(1, &alphaTestPassLessBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestPassLessBuffer);
-	alphaBlock.mode = 2;
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
-	
 	// Other necessary render state. Thanks to Core Profile, that got cut down a lot.
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
@@ -219,13 +195,13 @@ struct GLLAlphaTestBlock
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
 	
 	// 1st pass: Draw items that do not need blending, without alpha test
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestDisabledBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestDisabledBuffer);
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[drawer drawSolid];
 	
 	// 2nd pass: Draw blended items, but only those pixels that are "almost opaque"
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestPassGreaterBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestPassGreaterBuffer);
 	
 	glEnable(GL_BLEND);
 	
@@ -233,7 +209,7 @@ struct GLLAlphaTestBlock
 		[drawer drawAlpha];
 	
 	// 3rd pass: Draw blended items, now only those things that are "mostly transparent".
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, alphaTestPassLessBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestPassLessBuffer);
 	
 	glEnable(GL_BLEND);
 	
