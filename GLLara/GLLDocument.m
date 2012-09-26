@@ -18,11 +18,13 @@
 #import "GLLModel.h"
 #import "GLLRenderWindowController.h"
 #import "GLLSceneDrawer.h"
+#import "GLLSourceListController.h"
 
 @interface GLLDocument ()
 {
 	GLLDocumentWindowController *documentWindowController;
 	GLLSceneDrawer *sceneDrawer;
+	GLLSourceListController *sourceListController;
 }
 
 @end
@@ -129,6 +131,13 @@
 		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
 		newItem.model = model;
 	}];
+}
+
+- (GLLSourceListController *)sourceListController
+{
+	if (!sourceListController)
+		sourceListController = [[GLLSourceListController alloc] initWithManagedObjectContext:self.managedObjectContext];
+	return sourceListController;
 }
 
 @end

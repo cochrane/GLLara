@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class GLLView;
+@class GLLSourceListController;
 
 /*!
  * @abstract The main class for a scene.
@@ -19,5 +20,7 @@
 
 - (IBAction)openNewRenderView:(id)sender;
 - (IBAction)loadMesh:(id)sender;
+
+@property (nonatomic, readonly) GLLSourceListController *sourceListController;
 
 @end

@@ -15,12 +15,14 @@
 #import "GLLMeshViewController.h"
 #import "GLLModel.h"
 #import "GLLDirectionalLight.h"
+#import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLItem+OBJExport.h"
 #import "GLLItemController.h"
 #import "GLLItemExportViewController.h"
 #import "GLLItemListController.h"
 #import "GLLItemViewController.h"
+#import "GLLSourceListController.h"
 #import "GLLSourceListItem.h"
 #import "GLLSourceListMarker.h"
 
@@ -33,11 +35,6 @@
 	NSViewController *lightViewController;
 	
 	NSViewController *currentController;
-	
-	GLLItemListController *itemListController;
-	NSArrayController *lightsController;
-	GLLSourceListMarker *lightsMarker;
-	GLLSourceListMarker *settingsMarker;
 }
 
 - (void)_setRightHandController:(NSViewController *)controller;
@@ -59,25 +56,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	itemViewController = [[GLLItemViewController alloc] init];
 	meshViewController = [[GLLMeshViewController alloc] init];
 	lightViewController = [[NSViewController alloc] initWithNibName:@"GLLLightView" bundle:[NSBundle mainBundle]];
-	
-	lightsController = [[NSArrayController alloc] initWithContent:nil];
-	lightsController.managedObjectContext = self.managedObjectContext;
-	lightsController.entityName = @"GLLLight";
-	lightsController.automaticallyPreparesContent = YES;
-	lightsController.automaticallyRearrangesObjects = YES;
-	lightsController.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES] ];
-	[lightsController fetch:self];
-	
-	lightsMarker = [[GLLSourceListMarker alloc] initWithObject:lightsController childrenKeyPath:@"arrangedObjects"];
-	lightsMarker.isSourceListHeader = YES;
-	lightsMarker.sourceListDisplayName = NSLocalizedString(@"Lights", @"source list header: lights");
-	
-	settingsMarker = [[GLLSourceListMarker alloc] initWithObject:nil childrenKeyPath:nil];
-	settingsMarker.isSourceListHeader = YES;
-	settingsMarker.sourceListDisplayName = NSLocalizedString(@"Settings", @"source list header: lights");
-	
-	itemListController = [[GLLItemListController alloc] initWithManagedObjectContext:managedObjectContext];
-	
+		
 	self.shouldCloseDocument = YES;
 	
     return self;
@@ -89,11 +68,17 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	[meshViewController unbind:@"selectedObjects"];
 }
 
+- (NSTreeController *)treeController
+{
+	return [[self.document sourceListController] treeController];
+}
+
 - (void)windowDidLoad
 {
     [super windowDidLoad];
 	
 	self.sourceView.delegate = self;
+	[[self.sourceView tableColumns][0] bind:@"value" toObject:self.treeController withKeyPath:@"arrangedObjects.sourceListDisplayName" options:@{ NSAllowsEditingMultipleValuesSelectionBindingOption : @YES, NSRaisesForNotApplicableKeysBindingOption : @YES }];
 	
 	[self.treeController addObserver:self forKeyPath:@"selectedObjects" options:0 context:0];
 	
@@ -203,24 +188,6 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		}
 	}];
 	
-}
-
-#pragma mark - Filling the tree controller
-
-- (NSUInteger)countOfSourceListRoots;
-{
-	return 3;
-}
-
-- (id)objectInSourceListRootsAtIndex:(NSUInteger)index;
-{
-	switch(index)
-	{
-		case 0: return lightsMarker;
-		case 1: return itemListController;
-		case 2: return settingsMarker;
-		default: return nil;
-	}
 }
 
 #pragma mark - Outline view delegate

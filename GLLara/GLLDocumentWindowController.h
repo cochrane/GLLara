@@ -24,12 +24,9 @@
 
 @property (nonatomic, retain) IBOutlet NSOutlineView *sourceView;
 @property (nonatomic, retain) IBOutlet NSView *placeholderView;
-@property (nonatomic, retain) IBOutlet NSTreeController *treeController;
+@property (nonatomic, retain, readonly) NSTreeController *treeController;
 
 - (IBAction)removeSelectedMesh:(id)sender;
 - (IBAction)exportSelectedModel:(id)sender;
-
-- (NSUInteger)countOfSourceListRoots;
-- (id)objectInSourceListRootsAtIndex:(NSUInteger)index;
 
 @end
