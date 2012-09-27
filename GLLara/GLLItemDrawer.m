@@ -27,6 +27,8 @@
 	
 	NSArray *alphaDrawers;
 	NSArray *solidDrawers;
+	
+	NSArray *bones;
 }
 
 - (void)_updateTransforms;
@@ -49,8 +51,15 @@
 		return nil;
 	
 	// Observe all the bones
+	// Store bones so we can unregister.
+	// Getting the bones from the item to unregister may not work, because they may already be gone when the drawer gets unloaded.
+	NSMutableArray *mutableBones = [[NSMutableArray alloc] initWithCapacity:item.bones.count];
 	for (id transform in item.bones)
+	{
+		[mutableBones addObject:transform];
 		[transform addObserver:self forKeyPath:@"globalTransform" options:0 context:0];
+	}
+	bones = [mutableBones copy];
 	
 	// Observe settings of all meshes
 	NSMutableArray *mutableAlphaDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.alphaMeshDrawers.count];
@@ -130,14 +139,17 @@
 
 - (void)unload;
 {
-	for (id bone in self.item.bones)
+	for (id bone in bones)
 		[bone removeObserver:self forKeyPath:@"globalTransform"];
+	bones = nil;
 	
 	for (GLLItemMeshDrawer *drawer in solidDrawers)
 		[drawer unload];
+	solidDrawers = nil;
 	
 	for (GLLItemMeshDrawer *drawer in alphaDrawers)
 		[drawer unload];
+	alphaDrawers = nil;
 	
 	glDeleteBuffers(1, &transformsBuffer);
 	transformsBuffer = 0;
