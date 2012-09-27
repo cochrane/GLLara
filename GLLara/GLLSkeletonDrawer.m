@@ -63,9 +63,9 @@ struct GLLSkeletonDrawer_Vertex {
 	glVertexAttribPointer(GLLVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(struct GLLSkeletonDrawer_Vertex), (GLvoid *) offsetof(struct GLLSkeletonDrawer_Vertex, position));
 	glVertexAttribPointer(GLLVertexAttribColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(struct GLLSkeletonDrawer_Vertex), (GLvoid *) offsetof(struct GLLSkeletonDrawer_Vertex, color));
 
-	self.defaultColor = [NSColor yellowColor];
-	self.selectedColor = [NSColor redColor];
-	self.childOfSelectedColor = [NSColor greenColor];
+	self.defaultColor = [[NSColor yellowColor] colorWithAlphaComponent:0.5];
+	self.selectedColor = [[NSColor redColor] colorWithAlphaComponent:0.5];
+	self.childOfSelectedColor = [[NSColor greenColor] colorWithAlphaComponent:0.5];
 	
 	glBindVertexArray(0);
 	
@@ -134,10 +134,10 @@ struct GLLSkeletonDrawer_Vertex {
 	{
 		for (GLLItemBone *bone in item.bones)
 		{
-			indices[i+0] = (uint16_t) (i + base);
-			indices[i+1] = bone.bone.parentIndex == UINT16_MAX ? indices[i] : (uint16_t) (bone.bone.parentIndex + base);
+			indices[i*2+0] = (uint16_t) (i + base);
+			indices[i*2+1] = bone.bone.parentIndex == UINT16_MAX ? indices[i*2] : (uint16_t) (bone.bone.parentIndex + base);
 			
-			i += 2;
+			i += 1;
 		}
 		base += item.bones.count;
 	}
