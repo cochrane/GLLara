@@ -60,8 +60,8 @@ const double unitsPerSecond = 0.2;
 - (void)unload
 {
 	[self.openGLContext makeCurrentContext];
-	_camera = nil;
 	_viewDrawer = nil;
+	_camera = nil;
 }
 
 - (void)setCamera:(GLLCamera *)camera sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
