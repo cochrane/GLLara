@@ -24,6 +24,7 @@
 #import "GLLView.h"
 #import "simd_matrix.h"
 #import "simd_project.h"
+#import "GLLSkeletonDrawer.h"
 
 NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNotification";
 
@@ -31,6 +32,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 {
 	NSMutableArray *itemDrawers;
 	id managedObjectContextObserver;
+	GLLSkeletonDrawer *skeletonDrawer;
 }
 
 - (void)_addDrawerForItem:(GLLItem *)item;
@@ -90,6 +92,8 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	for (GLLItem *item in allItems)
 		[self _addDrawerForItem:item];
 	
+	skeletonDrawer = [[GLLSkeletonDrawer alloc] initWithResourceManager:self.resourceManager];
+	
 	return self;
 }
 
@@ -137,10 +141,22 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	glDepthMask(GL_FALSE);
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[drawer drawAlpha];
-		
+	
+	glDisable(GL_DEPTH_TEST);
+	glPointSize(30);
+	[skeletonDrawer draw];
+	glEnable(GL_DEPTH_TEST);
+	
 	// Special note: Ensure that depthMask is true before doing the next glClear. Otherwise results may be quite funny indeed.
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
+}
+
+#pragma mark - Selection
+
+- (void)setSelectedBones:(NSArray *)selectedBones;
+{
+	skeletonDrawer.selectedBones = selectedBones;
 }
 
 #pragma mark - Private methods

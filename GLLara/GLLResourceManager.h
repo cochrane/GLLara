@@ -38,6 +38,8 @@
 - (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 
 // Shared programs and buffers that everyone needs sometime
+
+@property (nonatomic) GLLProgram *skeletonProgram;
 @property (nonatomic) GLLProgram *squareProgram;
 @property (nonatomic) GLuint squareVertexArray;
 

@@ -16,6 +16,7 @@
 #import "GLLUniformBlockBindings.h"
 #import "GLLShader.h"
 #import "GLLShaderDescription.h"
+#import "GLLSkeletonProgram.h"
 #import "GLLSquareProgram.h"
 #import "GLLTexture.h"
 
@@ -232,6 +233,22 @@ static GLLResourceManager *sharedManager;
 		[previous makeCurrentContext];
 	}
 	return _squareVertexArray;
+}
+
+- (GLLProgram *)skeletonProgram
+{
+	if (!_skeletonProgram)
+	{
+		NSError *error = nil;
+		
+		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
+		[self.openGLContext makeCurrentContext];
+		_skeletonProgram = [[GLLSkeletonProgram alloc] initWithResourceManager:self error:&error];
+		[previous makeCurrentContext];
+		
+		NSAssert(_skeletonProgram, @"Could not load skeleton program because of %@", error);
+	}
+	return _skeletonProgram;
 }
 
 #pragma mark - Private methods

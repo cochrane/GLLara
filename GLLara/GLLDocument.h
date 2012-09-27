@@ -22,5 +22,6 @@
 - (IBAction)loadMesh:(id)sender;
 
 @property (nonatomic, readonly) GLLSourceListController *sourceListController;
+@property (nonatomic) NSArray *selectedObjects;
 
 @end

@@ -14,6 +14,8 @@
 #import "GLLDirectionalLight.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLItem.h"
+#import "GLLItemBone.h"
+#import "GLLItemController.h"
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLModel.h"
 #import "GLLRenderWindowController.h"
@@ -136,8 +138,38 @@
 - (GLLSourceListController *)sourceListController
 {
 	if (!sourceListController)
+	{
 		sourceListController = [[GLLSourceListController alloc] initWithManagedObjectContext:self.managedObjectContext];
+		[self bind:@"selectedObjects" toObject:sourceListController withKeyPath:@"treeController.selectedObjects" options:nil];
+	}
 	return sourceListController;
+}
+
+- (void)setSelectedObjects:(NSArray *)selectedObjects
+{
+	NSAssert(sceneDrawer, @"Need to have scene drawer now.");
+	
+	if (!selectedObjects || selectedObjects.count == 0)
+	{
+		[sceneDrawer setSelectedBones:@[]];
+	}
+	else if ([selectedObjects.lastObject isKindOfClass:[GLLItemBone class]])
+	{
+		[sceneDrawer setSelectedBones:selectedObjects];
+	}
+	else if ([selectedObjects.lastObject isKindOfClass:[GLLItemController class]])
+	{
+		NSMutableArray *allBones = [NSMutableArray array];
+		for (GLLItemController *controller in selectedObjects)
+		{
+			[allBones addObjectsFromArray:[[controller valueForKeyPath:@"item.bones"] array]];
+		}
+		[sceneDrawer setSelectedBones:allBones];
+	}
+	else
+	{
+		[sceneDrawer setSelectedBones:@[]];
+	}
 }
 
 @end

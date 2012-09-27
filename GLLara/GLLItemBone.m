@@ -150,6 +150,19 @@
 	return self.children[index];
 }
 
+- (BOOL)isChildOfBone:(GLLItemBone *)bone;
+{
+	if (bone == self) return YES;
+	else if (self.parent) return [self.parent isChildOfBone:bone];
+	else return NO;
+}
+- (BOOL)isChildOfAny:(id)boneSet;
+{
+	if ([boneSet containsObject:self]) return YES;
+	if (!self.parent) return NO;
+	return [self.parent isChildOfAny:boneSet];
+}
+
 #pragma mark - Private methods
 
 - (void)_standardSetValue:(id)value forKey:(NSString *)key;
