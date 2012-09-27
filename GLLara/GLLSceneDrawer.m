@@ -37,6 +37,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 
 - (void)_addDrawerForItem:(GLLItem *)item;
 - (void)_unregisterDrawer:(GLLItemDrawer *)drawer;
+- (void)_notifyRedraw;
 
 @end
 
@@ -81,7 +82,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 				[self _addDrawerForItem:(GLLItem *) newItem];
 		}
 		
-		[[NSNotificationCenter defaultCenter] postNotificationName:GLLSceneDrawerNeedsUpdateNotification object:self];
+		[self _notifyRedraw];
 	}];
 	
 	// Load existing items
@@ -109,7 +110,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 {
 	if ([keyPath isEqual:@"needsRedraw"])
 	{
-		[[NSNotificationCenter defaultCenter] postNotificationName:GLLSceneDrawerNeedsUpdateNotification object:self];
+		[self _notifyRedraw];
 	}
 	else
 	{
@@ -143,7 +144,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 		[drawer drawAlpha];
 	
 	glDisable(GL_DEPTH_TEST);
-	glPointSize(30);
+	glPointSize(10);
 	[skeletonDrawer draw];
 	glEnable(GL_DEPTH_TEST);
 	
@@ -157,6 +158,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 - (void)setSelectedBones:(NSArray *)selectedBones;
 {
 	skeletonDrawer.selectedBones = selectedBones;
+	[self _notifyRedraw];
 }
 
 #pragma mark - Private methods
@@ -179,6 +181,10 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 {
 	[drawer removeObserver:self forKeyPath:@"needsRedraw"];
 	[drawer unload];
+}
+- (void)_notifyRedraw;
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:GLLSceneDrawerNeedsUpdateNotification object:self];
 }
 
 @end
