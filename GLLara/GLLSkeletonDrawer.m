@@ -104,6 +104,14 @@ struct GLLSkeletonDrawer_Vertex {
 	glDrawElements(GL_LINES, numPoints*2, GL_UNSIGNED_SHORT, 0);
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:@"globalPosition"])
+		vertexBufferNeedsUpdate = YES;
+	else
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+}
+
 - (void)setItems:(id)items
 {
 	_items = items;
@@ -113,12 +121,19 @@ struct GLLSkeletonDrawer_Vertex {
 
 - (void)setSelectedBones:(id)selectedBones
 {
+	for (GLLItemBone *bone in _selectedBones)
+		[bone removeObserver:self forKeyPath:@"globalPosition"];
+	
 	_selectedBones = selectedBones;
+	for (GLLItemBone *bone in _selectedBones)
+		[bone addObserver:self forKeyPath:@"globalPosition" options:0 context:0];
 	id objects = [_selectedBones valueForKeyPath:@"@distinctUnionOfObjects.item"];
 	if (![objects isEqual:self.items])
 		self.items = objects;
-	elementBufferNeedsUpdate = YES;
+	vertexBufferNeedsUpdate = YES;
 }
+
+#pragma mark - Private methods
 
 - (void)_updateElementBuffer;
 {
