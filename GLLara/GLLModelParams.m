@@ -35,7 +35,7 @@ static NSString *meshNameRegexpString = @"^([0-9P]{1,2})_\
 			)?\
 		)?\
 	)?\
-)?$";
+)?_?$";
 
 static NSRegularExpression *meshNameRegexp;
 
