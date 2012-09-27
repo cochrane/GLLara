@@ -359,19 +359,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">removeSelectedMesh:</string>
-						<reference key="source" ref="512844837"/>
-						<reference key="destination" ref="872601105"/>
-					</object>
-					<int key="connectionID">100133</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">loadMesh:</string>
 						<reference key="source" ref="613418571"/>
 						<reference key="destination" ref="554967103"/>
 					</object>
 					<int key="connectionID">100134</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">delete:</string>
+						<reference key="source" ref="613418571"/>
+						<reference key="destination" ref="872601105"/>
+					</object>
+					<int key="connectionID">100146</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -542,7 +542,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">100144</int>
+			<int key="maxID">100146</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -550,10 +550,20 @@
 					<string key="className">GLLDocument</string>
 					<string key="superclassName">NSPersistentDocument</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="delete:">id</string>
+						<string key="exportSelectedModel:">id</string>
 						<string key="loadMesh:">id</string>
 						<string key="openNewRenderView:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="delete:">
+							<string key="name">delete:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="exportSelectedModel:">
+							<string key="name">exportSelectedModel:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="loadMesh:">
 							<string key="name">loadMesh:</string>
 							<string key="candidateClassName">id</string>
@@ -571,20 +581,6 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">GLLDocumentWindowController</string>
 					<string key="superclassName">NSWindowController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="exportSelectedModel:">id</string>
-						<string key="removeSelectedMesh:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="exportSelectedModel:">
-							<string key="name">exportSelectedModel:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="removeSelectedMesh:">
-							<string key="name">removeSelectedMesh:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="placeholderView">NSView</string>
 						<string key="sourceView">NSOutlineView</string>

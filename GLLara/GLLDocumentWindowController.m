@@ -26,7 +26,7 @@
 #import "GLLSourceListItem.h"
 #import "GLLSourceListMarker.h"
 
-@interface GLLDocumentWindowController () <NSOpenSavePanelDelegate>
+@interface GLLDocumentWindowController ()
 {
 	NSViewController *ambientLightViewController;
 	GLLBoneViewController *boneViewController;
@@ -113,83 +113,6 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
-#pragma mark - Actions
-
-- (IBAction)removeSelectedMesh:(id)sender;
-{
-	NSUInteger selectedRow = self.sourceView.selectedRow;
-	if (selectedRow == NSNotFound)
-	{
-		NSBeep();
-		return;
-	}
-	
-	id selectedObject = [[self.sourceView itemAtRow:selectedRow] representedObject];
-	
-	if ([selectedObject isKindOfClass:[GLLItemController class]])
-		[self.managedObjectContext deleteObject:[selectedObject item]];
-	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
-		[self.managedObjectContext deleteObject:[selectedObject item]];
-	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
-		[self.managedObjectContext deleteObject:[selectedObject item]];
-	else
-		NSBeep();
-}
-
-- (IBAction)exportSelectedModel:(id)sender
-{
-	NSUInteger selectedRow = self.sourceView.selectedRow;
-	if (selectedRow == NSNotFound)
-	{
-		NSBeep();
-		return;
-	}
-	
-	id selectedObject = [[self.sourceView itemAtRow:selectedRow] representedObject];
-	GLLItem *item = nil;
-	if ([selectedObject isKindOfClass:[GLLItemController class]])
-		item = [selectedObject item];
-	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
-		item = [selectedObject item];
-	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
-		item = [selectedObject item];
-	if (!item) return;
-	
-	NSSavePanel *panel = [NSSavePanel savePanel];
-	panel.allowedFileTypes = @[ @"obj" ];
-	panel.delegate = self;
-	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"objExportIncludeTransformations" : @YES, @"objExportIncludeVertexColors" : @NO }];
-	
-	GLLItemExportViewController *controller = [[GLLItemExportViewController alloc] init];
-	controller.includeTransformations = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeTransformations"];
-	controller.includeVertexColors = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeVertexColors"];
-	controller.canExportAllData = ![item willLoseDataWhenConvertedToOBJ];
-	
-	panel.accessoryView = controller.view;
-	
-	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
-		
-		NSURL *objURL = panel.URL;
-		NSString *materialLibraryName = [[objURL.lastPathComponent stringByDeletingPathExtension] stringByAppendingString:@".mtl"];
-		NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:objURL];
-		
-		NSError *error = nil;
-		if (![item writeOBJToLocation:objURL withTransform:controller.includeTransformations withColor:controller.includeVertexColors error:&error])
-		{
-			[self.window presentError:error];
-			return;
-		}
-		if (![item writeMTLToLocation:mtlURL error:&error])
-		{
-			[self.window presentError:error];
-			return;
-		}
-	}];
-	
-}
-
 #pragma mark - Outline view delegate
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
@@ -246,33 +169,6 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		return YES;
 	
 	return NO;
-}
-
-#pragma mark - Save panel delegate
-
-- (BOOL)panel:(id)sender validateURL:(NSURL *)url error:(NSError **)outError
-{
-	if ([url.pathExtension isEqual:@"mtl"])
-	{
-		if (outError)
-			*outError = [NSError errorWithDomain:self.className code:65 userInfo:@{
-			   NSLocalizedFailureReasonErrorKey : NSLocalizedString(@"OBJ files cannot use .mtl as extension", @"export: suffix = mtl"),
-		  NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. To avoid clashes, do not use .mtl as an extension.", @"export: suffix = mtl")
-						 }];
-		return NO;
-	}
-	
-	NSString *materialLibraryName = [[url.lastPathComponent stringByDeletingPathExtension] stringByAppendingString:@".mtl"];
-	NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:url];
-	
-	if ([mtlURL checkResourceIsReachableAndReturnError:NULL])
-	{
-		NSAlert *mtlExistsAlert = [NSAlert alertWithMessageText:NSLocalizedString(@"An MTL file with this name already exists", @"export: has such mtl already") defaultButton:nil alternateButton:NSLocalizedString(@"Cancel", @"export: cancel") otherButton:nil informativeTextWithFormat:NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. This will overwrite an existing file of the same name.", @"export: suffix = mtl")];
-		NSInteger result = [mtlExistsAlert runModal];
-		return result == NSOKButton;
-	}
-	
-	return YES;
 }
 
 #pragma mark - Private methods

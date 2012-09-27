@@ -26,7 +26,4 @@
 @property (nonatomic, retain) IBOutlet NSView *placeholderView;
 @property (nonatomic, retain, readonly) NSTreeController *treeController;
 
-- (IBAction)removeSelectedMesh:(id)sender;
-- (IBAction)exportSelectedModel:(id)sender;
-
 @end
