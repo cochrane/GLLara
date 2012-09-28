@@ -27,6 +27,7 @@
 @property (nonatomic, retain) IBOutlet GLLView *renderView;
 @property (nonatomic, retain) IBOutlet NSPopover *popover;
 @property (nonatomic, retain) IBOutlet NSButton *popoverButton;
+@property (nonatomic, retain) IBOutlet NSSegmentedControl *selectionModeControl;
 
 - (IBAction)showPopoverFrom:(id)sender;
 - (IBAction)renderToFile:(id)sender;

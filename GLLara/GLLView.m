@@ -182,7 +182,7 @@ const double unitsPerSecond = 0.2;
 	
 	NSTimeInterval lastEvent = [NSDate timeIntervalSinceReferenceDate];
 	
-	GLLItemBone *lastSelectedBone = nil;
+	//GLLItemBone *lastSelectedBone = nil;
 	
 	[NSEvent startPeriodicEventsAfterDelay:0.0 withPeriod:1.0 / 30.0];
 	

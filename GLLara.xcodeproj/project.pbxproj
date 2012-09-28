@@ -144,6 +144,9 @@
 		525ACD7915F0F1A700534E7D /* GLLaraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD7815F0F1A700534E7D /* GLLaraTests.m */; };
 		525ACD8415F0F33700534E7D /* GLLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8315F0F33700534E7D /* GLLModel.m */; };
 		525ACD8715F0F3ED00534E7D /* GLLModelMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8615F0F3ED00534E7D /* GLLModelMesh.m */; };
+		5267F1B61615B2C400987717 /* moveChildren.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B31615B2C400987717 /* moveChildren.pdf */; };
+		5267F1B71615B2C400987717 /* moveNodeOnly.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B41615B2C400987717 /* moveNodeOnly.pdf */; };
+		5267F1B81615B2C400987717 /* moveParent.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B51615B2C400987717 /* moveParent.pdf */; };
 		526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.m */; };
 		526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31B1609C7C300940A74 /* GLLItem+OBJExport.m */; };
 		526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31E1609CCE900940A74 /* GLLItemExportViewController.m */; };
@@ -447,6 +450,9 @@
 		525ACD8315F0F33700534E7D /* GLLModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModel.m; sourceTree = "<group>"; };
 		525ACD8515F0F3ED00534E7D /* GLLModelMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelMesh.h; sourceTree = "<group>"; };
 		525ACD8615F0F3ED00534E7D /* GLLModelMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelMesh.m; sourceTree = "<group>"; };
+		5267F1B31615B2C400987717 /* moveChildren.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveChildren.pdf; sourceTree = SOURCE_ROOT; };
+		5267F1B41615B2C400987717 /* moveNodeOnly.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveNodeOnly.pdf; sourceTree = SOURCE_ROOT; };
+		5267F1B51615B2C400987717 /* moveParent.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveParent.pdf; sourceTree = SOURCE_ROOT; };
 		526AB3131609BD4300940A74 /* GLLItemMesh+OBJExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLItemMesh+OBJExport.h"; sourceTree = "<group>"; };
 		526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItemMesh+OBJExport.m"; sourceTree = "<group>"; };
 		526AB31A1609C7C300940A74 /* GLLItem+OBJExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLItem+OBJExport.h"; sourceTree = "<group>"; };
@@ -781,6 +787,9 @@
 		525ACD5215F0F1A700534E7D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5267F1B31615B2C400987717 /* moveChildren.pdf */,
+				5267F1B41615B2C400987717 /* moveNodeOnly.pdf */,
+				5267F1B51615B2C400987717 /* moveParent.pdf */,
 				524C705716087B130038823B /* GLLRenderAccessoryView.strings */,
 				524C705A16087B160038823B /* GLLAmbientLightView.strings */,
 				524C705D16087B1A0038823B /* GLLBoneView.strings */,
@@ -1464,6 +1473,9 @@
 				52423B6116052D21009F5753 /* croft_manor_back.modelparams.plist in Resources */,
 				524C705516087B130038823B /* GLLRenderAccessoryView.strings in Resources */,
 				526AB3211609CCE900940A74 /* GLLItemExportView.xib in Resources */,
+				5267F1B61615B2C400987717 /* moveChildren.pdf in Resources */,
+				5267F1B71615B2C400987717 /* moveNodeOnly.pdf in Resources */,
+				5267F1B81615B2C400987717 /* moveParent.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

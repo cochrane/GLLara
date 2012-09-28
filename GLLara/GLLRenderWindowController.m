@@ -43,6 +43,8 @@
     [super windowDidLoad];
 	
 	[self.popoverButton.image setTemplate:YES];
+	for (NSInteger i = 0; i < self.selectionModeControl.segmentCount; i++)
+		[[self.selectionModeControl imageForSegment:i] setTemplate:YES];
 	
 	self.window.delegate = self;
     
@@ -144,7 +146,7 @@
 	else
 	{
 		self.popover.contentViewController.representedObject = self.camera;
-		[self.popover showRelativeToRect:[sender frame] ofView:sender preferredEdge:NSMaxYEdge];
+		[self.popover showRelativeToRect:[sender frame] ofView:[sender superview] preferredEdge:NSMinYEdge];
 		showingPopover = YES;
 	}
 }
