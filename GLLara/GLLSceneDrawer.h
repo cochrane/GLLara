@@ -21,7 +21,7 @@ extern NSString *GLLSceneDrawerNeedsUpdateNotification;
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) GLLResourceManager *resourceManager;
 
-- (void)draw;
+- (void)drawShowingSelection:(BOOL)showSelection;
 
 - (void)setSelectedBones:(NSArray *)selectedBones;
 

@@ -118,8 +118,8 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	}
 }
 
-- (void)draw;
-{	
+- (void)drawShowingSelection:(BOOL)showSelection;
+{
 	// 1st pass: Draw items that do not need blending, without alpha test
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestDisabledBuffer);
 	
@@ -143,10 +143,13 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[drawer drawAlpha];
 	
-	glDisable(GL_DEPTH_TEST);
-	glPointSize(10);
-	[skeletonDrawer draw];
-	glEnable(GL_DEPTH_TEST);
+	if (showSelection)
+	{
+		glDisable(GL_DEPTH_TEST);
+		glPointSize(10);
+		[skeletonDrawer draw];
+		glEnable(GL_DEPTH_TEST);
+	}
 	
 	// Special note: Ensure that depthMask is true before doing the next glClear. Otherwise results may be quite funny indeed.
 	glDepthMask(GL_TRUE);

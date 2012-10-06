@@ -147,7 +147,7 @@ const double unitsPerSecond = 0.2;
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	[self.viewDrawer draw];
+	[self.viewDrawer drawShowingSelection:YES];
 	[self.openGLContext flushBuffer];
 }
 
