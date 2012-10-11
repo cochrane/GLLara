@@ -15,8 +15,8 @@
 
 struct GLLLightUniformBlock
 {
-	vec_float4 diffuseColor;
-	vec_float4 specularColor;
+	float diffuseColor[4];
+	float specularColor[4];
 	vec_float4 direction;
 };
 

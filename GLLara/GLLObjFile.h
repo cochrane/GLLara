@@ -93,9 +93,6 @@ private:
 	std::map<std::string, Material *> materials;
 	std::vector<MaterialRange> materialRanges;
 	
-	// Brings texture coordinates in the 0…1 range, assuming repeat semantics are in place. Necessary if you want to do something fun with them later (like change orientation).
-	void normalizeTexCoords(float *coords);
-	
 	// Parsing
 	void parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw();
 	void parseFloatVector(const char *line, std::vector<float> &values, unsigned number) throw();

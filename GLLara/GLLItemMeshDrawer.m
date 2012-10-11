@@ -22,6 +22,7 @@
 {
 	GLuint renderParametersBuffer;
 	BOOL needsParameterBufferUpdate;
+	NSMutableArray *renderParameters;
 }
 - (void)_updateParameterBuffer;
 
@@ -42,10 +43,15 @@
 	// If there are render parameters to be set, create a uniform buffer for them and set their values from the mesh.
 	if (meshDrawer.program.renderParametersUniformBlockIndex != GL_INVALID_INDEX)
 	{
+		// Store the render parameters in our own container, because by the time unload is called, there is a chance that the relationship is already destroyed and we can't get them again.
+		renderParameters = [[NSMutableArray alloc] initWithCapacity:self.itemMesh.renderParameters.count];
 		glGenBuffers(1, &renderParametersBuffer);
 		needsParameterBufferUpdate = YES;
 		for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
+		{
+			[renderParameters addObject:parameter];
 			[parameter addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
+		}
 	}
 	
 	return self;
@@ -106,8 +112,10 @@
 {
 	glDeleteBuffers(1, &renderParametersBuffer);
 	renderParametersBuffer = 0;
-	for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
+	for (GLLRenderParameter *parameter in renderParameters)
 		[parameter removeObserver:self forKeyPath:@"uniformValue"];
+	
+	renderParameters = nil;
 }
 
 #pragma mark - Private methods

@@ -13,8 +13,12 @@
 #import <OpenGL/gl3ext.h>
 
 #import "GLLCamera.h"
-#import "GLLSceneDrawer.h"
 #import "GLLResourceManager.h"
+#import "GLLSceneDrawer.h"
+#import "GLLItemBone.h"
+#import "GLLViewDrawer.h"
+#import "simd_matrix.h"
+#import "simd_project.h"
 
 @interface GLLView ()
 {
@@ -24,6 +28,7 @@
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
+- (GLLItemBone *)closestBoneAtScreenPoint:(NSPoint)point fromBones:(id)bones;
 
 @end
 
@@ -54,20 +59,21 @@ const double unitsPerSecond = 0.2;
 	[self setWantsBestResolutionOpenGLSurface:YES];
 	
 	return self;
-}
+};
 
-- (void)prepareOpenGL
+- (void)unload
 {
-	if (self.camera)
-		_sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.camera.managedObjectContext view:self];
+	[self.openGLContext makeCurrentContext];
+	_viewDrawer = nil;
+	_camera = nil;
 }
 
-- (void)setCamera:(GLLCamera *)camera
+- (void)setCamera:(GLLCamera *)camera sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
 {
 	_camera = camera;
+	_sceneDrawer = sceneDrawer;
 	
-	if (!_sceneDrawer && camera)
-		_sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.camera.managedObjectContext view:self];
+	_viewDrawer = [[GLLViewDrawer alloc] initWithManagedSceneDrawer:sceneDrawer view:self];
 }
 
 - (void)rotateWithEvent:(NSEvent *)event
@@ -141,7 +147,7 @@ const double unitsPerSecond = 0.2;
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	[self.sceneDrawer draw];
+	[self.viewDrawer drawShowingSelection:YES];
 	[self.openGLContext flushBuffer];
 }
 
@@ -173,9 +179,10 @@ const double unitsPerSecond = 0.2;
 	BOOL sDown = NO;
 	BOOL dDown = NO;
 	BOOL mouseDown = NO;
-	NSPoint mousePoint = NSZeroPoint;
 	
 	NSTimeInterval lastEvent = [NSDate timeIntervalSinceReferenceDate];
+	
+	//GLLItemBone *lastSelectedBone = nil;
 	
 	[NSEvent startPeriodicEventsAfterDelay:0.0 withPeriod:1.0 / 30.0];
 	
@@ -230,7 +237,6 @@ const double unitsPerSecond = 0.2;
 				mouseDown = NO;
 				break;
 			case NSLeftMouseDown:
-				mousePoint = [self convertPoint:theEvent.locationInWindow fromView:nil];
 				mouseDown = YES;
 				break;
 		}
@@ -255,6 +261,39 @@ const double unitsPerSecond = 0.2;
 	inWASDMove = NO;
 	
 	self.needsDisplay = YES;
+}
+
+- (GLLItemBone *)closestBoneAtScreenPoint:(NSPoint)point fromBones:(id)bones;
+{
+	// All calculations are in screen coordinates, so all values are pixels (or points)
+	
+	vec_float4 near = (vec_float4) { point.x, point.y, 0.0f, 1.0f };
+	vec_float4 direction = (vec_float4) { 0.0f, 0.0f, 1.0f, 0.0f };
+	
+	mat_float16 viewProjection = self.camera.viewMatrix;
+	mat_float16 viewport = simd_orthoMatrix(0, self.bounds.size.width, 0, self.bounds.size.height, 1, -1);
+	mat_float16 transform = simd_mat_mul(viewport, viewProjection);
+	
+	float closestDistance = HUGE_VALF;
+	GLLItemBone *closestBone = nil;
+	
+	for (GLLItemBone *bone in bones)
+	{
+		vec_float4 position;
+		[bone.globalPosition getValue:&position];
+		vec_float4 screenPosition = simd_mat_vecmul(transform, position);
+		float distanceToRay = simd_rayDistance(near, direction, screenPosition);
+		if (distanceToRay > 7.0f) continue;
+		
+		float distanceToStart = simd_length(screenPosition - near);
+		if (distanceToStart < closestDistance)
+		{
+			closestDistance = distanceToStart;
+			closestBone = bone;
+		}
+	}
+	
+	return closestBone;
 }
 
 @end

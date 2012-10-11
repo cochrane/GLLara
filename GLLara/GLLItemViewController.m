@@ -42,7 +42,8 @@
 			return;
 		}
 		
-		if (![(GLLItem *) [self.representedObject item] loadPose:file error:&error])
+		GLLItem *item = [self.representedObject valueForKeyPath:@"item"];
+		if (![item loadPose:file error:&error])
 		{
 			[self.view.window presentError:error];
 			return;

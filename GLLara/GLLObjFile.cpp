@@ -21,7 +21,10 @@ std::string stringFromFileURL(CFURLRef fileURL)
 	CFURLRef absolute = CFURLCopyAbsoluteURL(fileURL);
 	CFStringRef fsPath = CFURLCopyFileSystemPath(absolute, kCFURLPOSIXPathStyle);
 	if (!fsPath)
+	{
+		CFRelease(absolute);
 		throw std::runtime_error("Could not convert file path to URL");
+	}
 	CFRelease(absolute);
 	CFIndex length = CFStringGetMaximumSizeOfFileSystemRepresentation(fsPath);
 	char *buffer = new char[length];
@@ -67,14 +70,6 @@ GLLObjFile::Material::~Material()
 	CFRelease(diffuseTexture);
 	CFRelease(specularTexture);
 	CFRelease(normalTexture);
-}
-
-void GLLObjFile::normalizeTexCoords(float *texCoords)
-{
-//	texCoords[0] = std::fmod(texCoords[0], 1);
-//	if (texCoords[0] < 0.0f) texCoords[0] += 1.0f;
-//	texCoords[1] = std::fmod(texCoords[1], 1);
-//	if (texCoords[1] < 0.0f) texCoords[1] += 1.0f;
 }
 
 void GLLObjFile::parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw()
@@ -283,10 +278,7 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 		else if (token == "vn")
 			parseFloatVector(line.c_str(), normals, 3);
 		else if (token == "vt")
-		{
 			parseFloatVector(line.c_str(), texCoords, 2);
-			normalizeTexCoords(&texCoords[texCoords.size() - 2]);
-		}
 		else if (token == "vc")
 			parseUCharVector(line.c_str(), colors, 4);
 		else if (token == "f")

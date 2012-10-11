@@ -15,6 +15,9 @@
 static void *contextMarker = (void *) 0xdeadbeef;
 
 @interface GLLCameraTarget ()
+{
+	BOOL didRegister;
+}
 
 @property (nonatomic, assign, readwrite) vec_float4 position;
 - (void)_updatePosition;
@@ -25,7 +28,7 @@ static void *contextMarker = (void *) 0xdeadbeef;
 
 + (NSSet *)keyPathsForValuesAffectingDisplayName
 {
-	return [NSSet setWithObjects:@"name", @"bones", nil];
+	return [NSSet setWithObjects:@"name", nil];
 }
 
 @synthesize position;
@@ -37,21 +40,29 @@ static void *contextMarker = (void *) 0xdeadbeef;
 - (void)awakeFromFetch
 {
 	[super awakeFromFetch];
-	[self addObserver:self forKeyPath:@"bones" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contextMarker];
+	if (!didRegister)
+		[self addObserver:self forKeyPath:@"bones" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contextMarker];
+	didRegister = YES;
 }
 - (void)awakeFromInsert
 {
 	[super awakeFromInsert];
-	[self addObserver:self forKeyPath:@"bones" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contextMarker];
+	if (!didRegister)
+		[self addObserver:self forKeyPath:@"bones" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contextMarker];
+	didRegister = YES;
 }
 - (void)awakeFromSnapshotEvents:(NSSnapshotEventType)flags
 {
 	[super awakeFromSnapshotEvents:flags];
-	[self addObserver:self forKeyPath:@"bones" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contextMarker];
+	if (!didRegister)
+		[self addObserver:self forKeyPath:@"bones" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contextMarker];
+	didRegister = YES;
 }
 - (void)willTurnIntoFault
 {
-	[self removeObserver:self forKeyPath:@"bones"];
+	if (didRegister)
+		[self removeObserver:self forKeyPath:@"bones"];
+	didRegister = NO;
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {

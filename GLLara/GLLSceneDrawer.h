@@ -12,18 +12,17 @@
 @class GLLResourceManager;
 @class GLLView;
 
+extern NSString *GLLSceneDrawerNeedsUpdateNotification;
+
 @interface GLLSceneDrawer : NSObject
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context view:(GLLView *)view;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
 
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) GLLResourceManager *resourceManager;
-@property (nonatomic, weak, readonly) GLLView *view;
 
-- (void)draw;
+- (void)drawShowingSelection:(BOOL)showSelection;
 
-// Basic support for render to file
-- (void)writeImageToURL:(NSURL *)url fileType:(NSString *)type size:(CGSize)size;
-- (void)renderImageOfSize:(CGSize)size toColorBuffer:(void *)colorData;
+- (void)setSelectedBones:(NSArray *)selectedBones;
 
 @end
