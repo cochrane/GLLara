@@ -107,7 +107,6 @@ enum TRItemView_RenderMode
 	TRItemView_AlphaColor,
 	TRItemView_AlphaLight
 };
-
 @interface TRItemView ()
 {
 	GLuint colorProgram;
