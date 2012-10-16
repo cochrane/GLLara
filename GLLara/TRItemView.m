@@ -83,14 +83,14 @@ out vec4 screenColor;\
 \
 uniform sampler2D levelTexture;\
 \
-const vec3 lightDirection = vec3(-1, 1, 1);\
+const vec3 lightDirection = vec3(-0.577350269189626, 0.577350269189626, 0.577350269189626);\
 \
 void main()\
 {\
 	vec4 textureColor = texture(levelTexture, outTexCoord);\
 	if (textureColor.a < 0.5) discard;\
-	float brightness = max(0, dot(lightDirection, normalize(outNormal)));\
-	screenColor = textureColor * vec4(brightness);\
+	float brightness = 0.5 + max(0, dot(lightDirection, normalize(outNormal)));\
+	screenColor = textureColor * vec4(min(brightness, 1.0));\
 }";
 
 enum TRItemView_VertexArray
@@ -428,6 +428,12 @@ enum TRItemView_RenderMode
 {
 	cameraLatitude += M_PI * theEvent.deltaY / self.bounds.size.height;
 	cameraLongitude += M_PI * theEvent.deltaX / self.bounds.size.width;
+	[self _updateViewMatrix];
+}
+
+- (void)magnifyWithEvent:(NSEvent *)event
+{
+	cameraZoom += event.magnification;
 	[self _updateViewMatrix];
 }
 
