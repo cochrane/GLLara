@@ -22,6 +22,7 @@
 #import "TRRenderElement.h"
 #import "TRRenderLevelResources.h"
 #import "TRRenderMesh.h"
+#import "TRRenderMoveableDescription.h"
 #import "TRRenderTexture.h"
 
 static const char *colorVertexShaderSource = "#version 150\n\
@@ -82,13 +83,13 @@ out vec4 screenColor;\
 \
 uniform sampler2D levelTexture;\
 \
-const vec3 lightDirection = vec3(-1, 1, -1);\
+const vec3 lightDirection = vec3(-1, 1, 1);\
 \
 void main()\
 {\
 	vec4 textureColor = texture(levelTexture, outTexCoord);\
 	if (textureColor.a < 0.5) discard;\
-	float brightness = 0.5 + max(0, dot(lightDirection, normalize(outNormal)));\
+	float brightness = max(0, dot(lightDirection, normalize(outNormal)));\
 	screenColor = textureColor * vec4(brightness);\
 }";
 
@@ -139,7 +140,7 @@ enum TRItemView_RenderMode
 	TRRenderLevelResources *resources;
 }
 
-- (NSData *)_vertexData:(NSData *)original movedByX:(float)x y:(float)y z:(float)z;
+- (NSData *)_vertexData:(NSData *)original transformedBy:(mat_float16)matrix;
 - (void)_loadLevel:(TR1Level *)level;
 - (void)_updateViewMatrix;
 - (void)_calculateCenterFromVertexData:(NSData *)data;
@@ -296,7 +297,77 @@ enum TRItemView_RenderMode
 
 - (void)showMoveable:(TR1Moveable *)moveable;
 {
-	NSLog(@"not supported");
+	if (moveable.level != resources.level)
+		[self _loadLevel:moveable.level];
+	
+	TRRenderMoveableDescription *description = [[TRRenderMoveableDescription alloc] initWithMoveable:moveable inRenderLevel:resources];
+		
+	partsCount = (GLsizei) description.nodes.count;
+	for (int mode = 0; mode < 4; mode++)
+	{
+		elementsPerPart[mode] = realloc(elementsPerPart[mode], sizeof(GLsizei) * partsCount);
+		bzero(elementsPerPart[mode], sizeof(GLsizei) * partsCount);
+		
+		elementsVBOOffset[mode] = realloc(elementsVBOOffset[mode], sizeof(GLvoid *) * partsCount);
+		bzero(elementsVBOOffset[mode], sizeof(GLvoid *) * partsCount);
+		
+		indexOffsets[mode] = realloc(indexOffsets[mode], sizeof(GLint) * partsCount);
+		bzero(indexOffsets[mode], sizeof(GLint) * partsCount);
+	}
+	
+	NSMutableData *allVertexData = [NSMutableData data];
+	NSMutableData *allElementData = [NSMutableData data];
+	GLint indexOffset = 0;
+	
+	for (NSUInteger i = 0; i < description.nodes.count; i++)
+	{
+		TRRenderMoveableDescriptionNode *node = description.nodes[i];
+		
+		TR1Mesh *mesh = [resources.level.meshPointers[node.meshIndex] mesh];
+		TRRenderMesh *renderMesh = [[TRRenderMesh alloc] initWithMesh:mesh resources:resources];
+		
+		NSUInteger opaqueCount, alphaCount, vertexCount;
+		NSData *vertexData = [renderMesh createVertexDataVectorCount:&vertexCount];
+		NSData *elementData = [renderMesh createElementsNormalCount:&opaqueCount alphaCount:&alphaCount];
+		
+		if (mesh.usesInternalLighting)
+		{
+			elementsPerPart[TRItemView_OpaqueColor][i] = (GLsizei) opaqueCount;
+			elementsVBOOffset[TRItemView_OpaqueColor][i] = (GLvoid *) allElementData.length;
+			indexOffsets[TRItemView_OpaqueColor][i] = indexOffset;
+			
+			elementsPerPart[TRItemView_AlphaColor][i] = (GLsizei) alphaCount;
+			elementsVBOOffset[TRItemView_AlphaColor][i] = (GLvoid *) (allElementData.length + opaqueCount * sizeof(GLuint));
+			indexOffsets[TRItemView_AlphaColor][i] = indexOffset;
+		}
+		else
+		{
+			elementsPerPart[TRItemView_OpaqueLight][i] = (GLsizei) opaqueCount;
+			elementsVBOOffset[TRItemView_OpaqueLight][i] = (GLvoid *) allElementData.length;
+			indexOffsets[TRItemView_OpaqueLight][i] = indexOffset;
+			
+			elementsPerPart[TRItemView_AlphaLight][i] = (GLsizei) alphaCount;
+			elementsVBOOffset[TRItemView_AlphaLight][i] = (GLvoid *) (allElementData.length + opaqueCount * sizeof(GLuint));
+			indexOffsets[TRItemView_AlphaLight][i] = indexOffset;
+		}
+		
+		mat_float16 matrix = [node positionInAnimation:0 frame:0];
+		vertexData = [self _vertexData:vertexData transformedBy:matrix];
+		
+		[allVertexData appendData:vertexData];
+		[allElementData appendData:elementData];
+		indexOffset += vertexCount;
+	}
+	
+	[self _calculateCenterFromVertexData:allVertexData];
+	
+	[self.openGLContext makeCurrentContext];
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, (GLsizei) allVertexData.length, allVertexData.bytes, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizei) allElementData.length, allElementData.bytes, GL_STATIC_DRAW);
+	
+	self.needsDisplay = YES;
 }
 - (void)showRoom:(TR1Room *)room;
 {
@@ -314,6 +385,7 @@ enum TRItemView_RenderMode
 	NSData *vertexData = [renderMesh createVertexDataVectorCount:&vertexCount];
 	NSData *elementData = [renderMesh createElementsNormalCount:&opaqueCount alphaCount:&alphaCount];
 	
+	partsCount = 1;
 	for (int i = 0; i < 4; i++)
 	{
 		elementsPerPart[i] = realloc(elementsPerPart[i], sizeof(GLsizei));
@@ -336,8 +408,6 @@ enum TRItemView_RenderMode
 		elementsPerPart[TRItemView_AlphaLight][0] = (GLsizei) alphaCount;
 		elementsVBOOffset[TRItemView_AlphaLight][0] = (GLvoid *) (opaqueCount * sizeof(GLuint));
 	}
-	
-	partsCount = 1;
 	
 	[self _calculateCenterFromVertexData:vertexData];
 	
@@ -363,7 +433,7 @@ enum TRItemView_RenderMode
 
 #pragma mark - Private methods
 
-- (NSData *)_vertexData:(NSData *)original movedByX:(float)x y:(float)y z:(float)z;
+- (NSData *)_vertexData:(NSData *)original transformedBy:(mat_float16)matrix;
 {
 	NSMutableData *result = [original mutableCopy];
 	NSUInteger count = result.length / sizeof(TRRenderElement);
@@ -371,9 +441,13 @@ enum TRItemView_RenderMode
 	
 	for (NSUInteger i = 0; i < count; i++)
 	{
-		vertex[i].position[0] += x;
-		vertex[i].position[1] += y;
-		vertex[i].position[2] += z;
+		vec_float4 vector = simd_make(vertex[i].position[0], vertex[i].position[1], vertex[i].position[2], 1.0f);
+		
+		vector = simd_mat_vecmul(matrix, vector);
+		
+		vertex[i].position[0] = simd_extract(vector, 0);
+		vertex[i].position[1] = simd_extract(vector, 1);
+		vertex[i].position[2] = simd_extract(vector, 2);
 	}
 	
 	return [result copy];
@@ -418,12 +492,12 @@ enum TRItemView_RenderMode
 	float x, y, z;
 	for (NSUInteger i = 0; i < count; i += 1)
 	{
-		x += element[i].position[0] / (float) count;
-		y += element[i].position[1] / (float) count;
-		z += element[i].position[2] / (float) count;
+		x += element[i].position[0];
+		y += element[i].position[1];
+		z += element[i].position[2];
 	}
 	
-	center = simd_make(x, y, z, 1);
+	center = simd_make(x / (float) count, y / (float) count, z / (float) count, 1);
 	[self _updateViewMatrix];
 }
 - (GLuint)_compileShader:(const char *)source type:(GLenum)type;

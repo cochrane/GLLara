@@ -133,6 +133,8 @@ static id allRoomsMarker = @"all rooms";
 	id selectedObject = [self.sourceView itemAtRow:selectedRow];
 	if ([selectedObject isKindOfClass:[TR1StaticMesh class]])
 		[self.itemView showStaticMesh:selectedObject];
+	else if ([selectedObject isKindOfClass:[TR1Moveable class]])
+		[self.itemView showMoveable:selectedObject];
 }
 
 @end
