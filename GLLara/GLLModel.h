@@ -24,7 +24,9 @@
 
 
 - (id)initBinaryFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
+- (id)initBinaryFromData:(NSData *)data parameters:(GLLModelParams *)parameters baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 - (id)initASCIIFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
+- (id)initASCIIFromString:(NSString *)source parameters:(GLLModelParams *)parameters baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, copy) NSURL *baseURL;
 

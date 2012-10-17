@@ -156,6 +156,8 @@
 }
 - (TRInDataStream *)substreamWithLength:(NSUInteger)count;
 {
+	if (count == 0) return nil;
+	
 	NSAssert(!self.isAtEnd, @"Cannot read from data %@ after end", self);
 	NSAssert(_position + count <= _levelData.length, @"Range (%lu, %lu) is beyond end of data (length %lu)", _position, _position + count, _levelData.length);
 	
@@ -167,6 +169,8 @@
 
 - (NSData *)dataWithLength:(NSUInteger)count
 {
+	if (count == 0) return nil;
+	
 	NSAssert(!self.isAtEnd, @"Cannot read from data %@ after end", self);
 	NSAssert(_position + count <= _levelData.length, @"Range (%lu, %lu) is beyond end of data (length %lu)", _position, _position + count, _levelData.length);
 

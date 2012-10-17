@@ -22,7 +22,6 @@
 	_model = model;
 	
 	_parentIndex = UINT16_MAX;
-	_parent = nil;
 	_children = @[];
 	
 	_positionX = 0;
@@ -56,11 +55,15 @@
 	return self;
 }
 
+- (GLLModelBone *)parent
+{
+	return self.parentIndex != UINT16_MAX ? self.model.bones[self.parentIndex] : nil;
+}
+
 #pragma mark - Finishing loading
 
 - (void)setupParent
 {
-	_parent = self.parentIndex != UINT16_MAX ? self.model.bones[self.parentIndex] : nil;
 	_children = [self.model.bones filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"parent == %@", self]];
 }
 
