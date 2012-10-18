@@ -87,10 +87,11 @@
 
 - (void)readUint8Array:(uint8_t *)array count:(NSUInteger)count;
 {
-	NSAssert(!self.isAtEnd, @"Cannot read from data %@ after end", self);
-	NSAssert(_position + count <= _levelData.length, @"Range (%lu, %lu) is beyond end of data (length %lu)", _position, _position + count, _levelData.length);
+	if (self.isValid && _position + count <= self.levelData.length)
+		[_levelData getBytes:array range:NSMakeRange(_position, count)];
+	else
+		bzero(array, count);
 	
-	[_levelData getBytes:array range:NSMakeRange(_position, count)];
 	_position += count;
 }
 
@@ -110,9 +111,11 @@
 		length += (lengthByte & 0x7F) << (7*shiftAmount);
 		shiftAmount += 1;
 	} while (lengthByte & 0x80);
+	if (!self.isValid) return nil;
 	
 	uint8_t buffer[length];
 	[self readUint8Array:buffer count:length];
+	if (!self.isValid) return nil;
 	return [[NSString alloc] initWithBytes:buffer length:length encoding:NSUTF8StringEncoding];
 }
 
@@ -133,8 +136,15 @@
 	[self skipBytes:fieldLength * elementWidth];
 }
 
-- (TRInDataStream *)decompressStreamCompressedLength:(NSUInteger)actualBytes uncompressedLength:(NSUInteger)originalBytes;
+- (TRInDataStream *)decompressStreamCompressedLength:(NSUInteger)actualBytes uncompressedLength:(NSUInteger)originalBytes error:(NSError *__autoreleasing*)error;
 {
+	if (!self.isValid) return nil;
+	if (_position + actualBytes> _levelData.length)
+	{
+		_position += actualBytes;
+		return nil;
+	}
+	
 	uint8_t *uncompressedData = malloc(originalBytes);
 	uint8_t *compressedData = malloc(actualBytes);
 	[self readUint8Array:compressedData count:actualBytes];
@@ -142,24 +152,37 @@
 	NSUInteger uncompressedLength = originalBytes;
 	
 	int result = uncompress(uncompressedData, (uLongf *) &uncompressedLength, compressedData, actualBytes);
-	if (result != Z_OK) [NSException raise:NSInternalInconsistencyException format:@"ZLib encountered error %i", result];
-	
-	if (uncompressedLength < originalBytes) [NSException raise:NSInternalInconsistencyException format:@"Not all data could be decompressed, only uncompressed %lu bytes", uncompressedLength];
-	
-	NSData *data = [NSData dataWithBytes:uncompressedData length:originalBytes];
-	id resultLevelData = [[[self class] alloc] initWithData:data];
-	
 	free(compressedData);
-	free(uncompressedData);
+	if (result != Z_OK)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"TRInDataStream" code:result userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Could not decompress part of the data.", @"uncompress failed")}];
+		free(uncompressedData);
+		return nil;
+	}
+	if (uncompressedLength < originalBytes)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"TRInDataStream" code:result userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Could not decompress part of the data.", @"uncompress failed"), uncompressedLength]}];
+		free(uncompressedData);
+		return nil;
+	}
+		
+	NSData *data = [NSData dataWithBytesNoCopy:uncompressedData length:uncompressedLength freeWhenDone:YES];
+	id resultLevelData = [[[self class] alloc] initWithData:data];
 	
 	return resultLevelData;
 }
 - (TRInDataStream *)substreamWithLength:(NSUInteger)count;
 {
 	if (count == 0) return nil;
+	if (!self.isValid) return nil;
 	
-	NSAssert(!self.isAtEnd, @"Cannot read from data %@ after end", self);
-	NSAssert(_position + count <= _levelData.length, @"Range (%lu, %lu) is beyond end of data (length %lu)", _position, _position + count, _levelData.length);
+	if (_position + count > _levelData.length)
+	{
+		_position += count;
+		return nil;
+	}
 	
 	NSData *underlyingData = [_levelData subdataWithRange:NSMakeRange(_position, count)];
 	TRInDataStream *result = [[[self class] alloc] initWithData:underlyingData];
@@ -170,11 +193,9 @@
 - (NSData *)dataWithLength:(NSUInteger)count
 {
 	if (count == 0) return nil;
-	
-	NSAssert(!self.isAtEnd, @"Cannot read from data %@ after end", self);
-	NSAssert(_position + count <= _levelData.length, @"Range (%lu, %lu) is beyond end of data (length %lu)", _position, _position + count, _levelData.length);
+	if (!self.isValid) return nil;
 
-	NSData *underlyingData = [_levelData subdataWithRange:NSMakeRange(_position, count)];
+	NSData *underlyingData = (_position + count <= _levelData.length) ? [_levelData subdataWithRange:NSMakeRange(_position, count)] : nil;
 	_position += count;
 	
 	return underlyingData;
@@ -183,6 +204,10 @@
 - (BOOL)isAtEnd;
 {
 	return _position >= _levelData.length;
+}
+- (BOOL)isValid
+{
+	return _position <= _levelData.length;
 }
 
 @end

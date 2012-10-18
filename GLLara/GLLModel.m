@@ -15,6 +15,8 @@
 #import "GLLModelObj.h"
 #import "TRInDataStream.h"
 
+NSString *GLLModelLoadingErrorDomain = @"GLL Model loading error domain";
+
 @interface GLLModel ()
 
 // Adds a single mesh to the object, splitting it up into multiple parts if necessary (as specified by the model parameters). Also takes care to add it to the mesh groups and so on.
@@ -60,7 +62,7 @@ static NSCache *cachedModels;
 				CFStringRef fileTypeDescription = UTTypeCopyDescription(fileType);
 				CFRelease(fileType);
 				
-				*error = [NSError errorWithDomain:@"GLLModel" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Files of type %@ are not supported.", @"Tried to load other than .mesh or .mesh.ascii"), (__bridge NSString *)fileTypeDescription] }];
+				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_FileTypeNotSupported userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Files of type %@ are not supported.", @"Tried to load other than .mesh or .mesh.ascii"), (__bridge NSString *)fileTypeDescription]  }];
 				CFRelease(fileTypeDescription);
 			}
 			return nil;
@@ -85,6 +87,13 @@ static NSCache *cachedModels;
 - (id)initBinaryFromData:(NSData *)data parameters:(GLLModelParams *)parameters baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
+	
+	if (data.length < sizeof(uint32_t [2])) // Minimum length
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
 	
 	_baseURL = baseURL;
 	_parameters = parameters;
@@ -143,18 +152,42 @@ static NSCache *cachedModels;
 		header = [stream readUint32];
 	}
 	
-	NSUInteger numBones = header;
+	NSUInteger numBones = header;	
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
 	for (NSUInteger i = 0; i < numBones; i++)
-		[bones addObject:[[GLLModelBone alloc] initFromSequentialData:stream partOfModel:self]];
+	{
+		GLLModelBone *bone = [[GLLModelBone alloc] initFromSequentialData:stream partOfModel:self error:error];
+		if (!bone) return nil;
+		[bones addObject:bone];
+	}
 	_bones = [bones copy];
-	for (GLLModelBone *bone in _bones) [bone setupParent];
+	for (GLLModelBone *bone in _bones)
+		if (![bone findParentsAndChildrenError:error])
+			return nil;
+	
+	if (!stream.isValid)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
 	
 	NSUInteger numMeshes = [stream readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
 	for (NSUInteger i = 0; i < numMeshes; i++)
-		[self _addMesh:[[GLLModelMesh alloc] initFromStream:stream partOfModel:self] toArray:meshes];
+	{
+		GLLModelMesh *mesh = [[GLLModelMesh alloc] initFromStream:stream partOfModel:self error:error];
+		if (!mesh) return nil;
+		[self _addMesh:mesh toArray:meshes];
+	}
 	_meshes = meshes;
+	
+	if (!stream.isValid)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
 	
 	if (isGenericItem2)
 	{
@@ -168,6 +201,13 @@ static NSCache *cachedModels;
 		
 		NSString *creationToolText = [stream readPascalString];
 		NSLog(@"Creation tool text: %@", creationToolText);
+		
+		if (!stream.isValid)
+		{
+			if (error)
+				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+			return nil;
+		}
 	}
 	
 	return self;
@@ -196,15 +236,39 @@ static NSCache *cachedModels;
 	NSUInteger numBones = [scanner readUint32];
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
 	for (NSUInteger i = 0; i < numBones; i++)
-		[bones addObject:[[GLLModelBone alloc] initFromSequentialData:scanner partOfModel:self]];
+	{
+		GLLModelBone *bone = [[GLLModelBone alloc] initFromSequentialData:scanner partOfModel:self error:error];
+		if (!bone) return nil;
+		[bones addObject:bone];
+	}
 	_bones = [bones copy];
-	for (GLLModelBone *bone in _bones) [bone setupParent];
+	for (GLLModelBone *bone in _bones)
+		if (![bone findParentsAndChildrenError:error])
+			return nil;
+	
+	if (!scanner.isValid)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
 	
 	NSUInteger numMeshes = [scanner readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
 	for (NSUInteger i = 0; i < numMeshes; i++)
-		[self _addMesh:[[GLLModelMesh alloc] initFromScanner:scanner partOfModel:self] toArray:meshes];
+	{
+		GLLModelMesh *mesh = [[GLLModelMesh alloc] initFromScanner:scanner partOfModel:self error:error];
+		if (!mesh) return nil;
+		[self _addMesh:mesh toArray:meshes];
+	}
 	_meshes = meshes;
+	
+	if (!scanner.isValid)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
 	
 	return self;
 }

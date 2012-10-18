@@ -24,7 +24,7 @@
 - (id)initWithModel:(GLLModel *)model;
 
 // Stream must be either a GLLASCIIScanner or a TRInDataStream.
-- (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model;
+- (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, weak, readonly) GLLModel *model;
 
@@ -50,6 +50,6 @@
 /*
  * Called as part of the model loading process;
  */
-- (void)setupParent;
+- (BOOL)findParentsAndChildrenError:(NSError *__autoreleasing*)error;
 
 @end

@@ -30,8 +30,8 @@ typedef enum GLLCullFaceMode
 // For subclasses
 - (id)initAsPartOfModel:(GLLModel *)model;
 
-- (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
-- (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model;
+- (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
+- (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, weak) GLLModel *model;
 

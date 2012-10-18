@@ -53,7 +53,7 @@ void vec_addTo(float *a, float *b)
 	return self;
 }
 
-- (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
+- (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -74,6 +74,13 @@ void vec_addTo(float *a, float *b)
 	}
 	_textures = [textures copy];
 	
+	if (![stream isValid])
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
+	
 	_countOfVertices = [stream readUint32];
 	NSData *rawVertexData = [stream dataWithLength:_countOfVertices * self.stride];
 	_vertexData = [[self _postprocessVertices:rawVertexData] copy];
@@ -81,12 +88,53 @@ void vec_addTo(float *a, float *b)
 	_countOfElements = 3 * [stream readUint32]; // File saves number of triangles
 	_elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
 	
+	if (![stream isValid])
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
+	
 	[self _setRenderParameters];
+	
+	// Check bone indices
+	if (self.hasBoneWeights)
+	{
+		const void *vertexData = self.vertexData.bytes;
+		for (NSUInteger i = 0; i < self.countOfVertices; i++)
+		{
+			const uint16_t *indices = vertexData + i*self.stride + self.offsetForBoneIndices;
+			
+			for (NSUInteger j = 0; j < 4; j++)
+			{
+				if (indices[j] >= model.bones.count)
+				{
+					if (error)
+						*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file references bones that do not exist.", @"Bone index out of range error") }];
+
+					return nil;
+				}
+			}
+		}
+	}
+	
+	// Check element indices
+	const uint32_t *indices = self.elementData.bytes;
+	for (NSUInteger i = 0; i < self.countOfElements; i++)
+	{
+		if (indices[i] >= self.countOfVertices)
+		{
+			if (error)
+				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"A mesh references vertices that do not exist.", @"Vertex index out of range error") }];
+			
+			return nil;
+		}
+	}
 	
 	return self;
 }
 
-- (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model;
+- (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model error:(NSError *__autoreleasing *)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -166,6 +214,13 @@ void vec_addTo(float *a, float *b)
 	
 	[self calculateTangents:rawVertexData];
 	_vertexData = [[self _postprocessVertices:rawVertexData] copy];
+	
+	if (![scanner isValid])
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
 	
 	[self _setRenderParameters];
 	

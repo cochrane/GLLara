@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+enum GLLModelLoadingErrorCodes
+{
+	GLLModelLoadingError_PrematureEndOfFile,
+	GLLModelLoadingError_IndexOutOfRange,
+	GLLModelLoadingError_CircularReference,
+	GLLModelLoadingError_FileTypeNotSupported
+};
+extern NSString *GLLModelLoadingErrorDomain;
+
 @class GLLModelParams;
 
 /*!

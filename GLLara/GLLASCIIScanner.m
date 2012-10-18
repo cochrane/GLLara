@@ -16,6 +16,8 @@
 - (NSInteger)_readInteger;
 - (void)_skipComments;
 
+@property (nonatomic, readwrite) BOOL isValid;
+
 @end
 
 @implementation GLLASCIIScanner
@@ -28,6 +30,7 @@
 	
 	// Use american english at all times, because that is the number format used.
 	scanner.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+	self.isValid = YES;
 	
 	return self;
 }
@@ -48,11 +51,17 @@
 {
 	[self _skipComments];
 	if (scanner.isAtEnd)
-		[NSException raise:NSInvalidArgumentException format:@"Premature end of file!"];
+	{
+		self.isValid = NO;
+		return 0.0f;
+	}
 	
 	float result;
 	if (![scanner scanFloat:&result])
-		[NSException raise:NSInvalidArgumentException format:@"Expected float at position %lu, but didn't get it.", scanner.scanLocation];
+	{
+		self.isValid = NO;
+		return 0.0f;
+	}
 	
 	return result;
 }
@@ -60,13 +69,20 @@
 - (NSString *)readPascalString;
 {
 	[self _skipComments];
-	if (scanner.isAtEnd) [NSException raise:NSInvalidArgumentException format:@"Premature end of file!"];
+	if (scanner.isAtEnd)
+	{
+		self.isValid = NO;
+		return nil;
+	}
 	
 	[scanner scanCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] intoString:NULL];
 	
 	NSString *result;
 	if (![scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:&result])
-		[NSException raise:NSInvalidArgumentException format:@"Expected string at position %lu, but didn't get it.", scanner.scanLocation];
+	{
+		self.isValid = NO;
+		return nil;
+	}
 	
 	return result;
 }

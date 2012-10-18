@@ -19,4 +19,6 @@
 
 - (NSString *)readPascalString;
 
+@property (nonatomic, readonly) BOOL isValid;
+
 @end
