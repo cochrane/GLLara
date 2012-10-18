@@ -44,11 +44,13 @@ struct GLLLightBlock
 
 @implementation GLLViewDrawer
 
-- (id)initWithManagedSceneDrawer:(GLLSceneDrawer *)drawer view:(GLLView *)view;
+- (id)initWithManagedSceneDrawer:(GLLSceneDrawer *)drawer camera:(GLLCamera *)camera context:(NSOpenGLContext *)openGLContext pixelFormat:(NSOpenGLPixelFormat *)format;
 {
 	if (!(self = [super init])) return nil;
 
-	_view = view;
+	_context = openGLContext;
+	_pixelFormat = format;
+	_camera = camera;
 	_sceneDrawer = drawer;
 	__weak id weakSelf = self;
 	[[NSNotificationCenter defaultCenter] addObserverForName:GLLSceneDrawerNeedsUpdateNotification object:_sceneDrawer queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
@@ -77,7 +79,7 @@ struct GLLLightBlock
 	
 	// Transform buffer
 	glGenBuffers(1, &transformBuffer);
-	[view addObserver:self forKeyPath:@"camera.viewProjectionMatrix" options:0 context:0];
+	[self.camera addObserver:self forKeyPath:@"viewProjectionMatrix" options:0 context:0];
 	
 	// Other necessary render state. Thanks to Core Profile, that got cut down a lot.
 	glEnable(GL_DEPTH_TEST);
@@ -91,7 +93,6 @@ struct GLLLightBlock
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
 	
-	self.view.needsDisplay = YES;
 	needsUpdateMatrices = YES;
 	needsUpdateLights = YES;
 	
@@ -105,13 +106,13 @@ struct GLLLightBlock
 	for (int i = 0; i < 3; i++)
 		[lights[i + 1] removeObserver:self forKeyPath:@"uniformBlock"];
 	
-	[self.view removeObserver:self forKeyPath:@"camera.viewProjectionMatrix"];
+	[self.camera removeObserver:self forKeyPath:@"viewProjectionMatrix"];
 	[self.sceneDrawer removeObserver:self forKeyPath:@"needsRedraw"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:@"camera.viewProjectionMatrix"])
+	if ([keyPath isEqual:@"viewProjectionMatrix"])
 	{
 		needsUpdateMatrices = YES;
 		needsUpdateLights = YES;
@@ -126,6 +127,12 @@ struct GLLLightBlock
 	{
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
+}
+
+- (void)setView:(NSView *)view
+{
+	_view = view;
+	_view.needsDisplay = YES;
 }
 
 - (void)drawShowingSelection:(BOOL)selection;
@@ -179,7 +186,7 @@ struct GLLLightBlock
 - (void)renderImageOfSize:(CGSize)size toColorBuffer:(void *)colorData;
 {
 	// What is the largest tile that can be rendered?
-	[self.view.openGLContext makeCurrentContext];
+	[self.context makeCurrentContext];
 	GLint maxTextureSize, maxRenderbufferSize;
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
 	glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &maxRenderbufferSize);
@@ -205,7 +212,7 @@ struct GLLLightBlock
 	__block dispatch_semaphore_t texturesReady = dispatch_semaphore_create(0);
 	__block dispatch_semaphore_t downloadReady = dispatch_semaphore_create(0);
 	
-	NSOpenGLContext *backgroundLoadingContext = [[NSOpenGLContext alloc] initWithFormat:self.view.pixelFormat shareContext:self.view.openGLContext];
+	NSOpenGLContext *backgroundLoadingContext = [[NSOpenGLContext alloc] initWithFormat:self.pixelFormat shareContext:self.context];
 	
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[backgroundLoadingContext makeCurrentContext];
@@ -231,7 +238,7 @@ struct GLLLightBlock
 		dispatch_semaphore_signal(downloadReady);
 	});
 	
-	mat_float16 cameraMatrix = [self.view.camera viewProjectionMatrixForAspectRatio:size.width / size.height];
+	mat_float16 cameraMatrix = [self.camera viewProjectionMatrixForAspectRatio:size.width / size.height];
 	
 	// Set up state for rendering
 	// We invert drawing here so it comes out right in the file. That makes it necessary to turn cull face around.
@@ -284,7 +291,7 @@ struct GLLLightBlock
 	}
 	
 	dispatch_semaphore_wait(downloadReady, DISPATCH_TIME_FOREVER);
-	glViewport(0, 0, self.view.camera.actualWindowWidth, self.view.camera.actualWindowHeight);
+	glViewport(0, 0, self.camera.actualWindowWidth, self.camera.actualWindowHeight);
 	glDeleteFramebuffers(1, &framebuffer);
 	glDeleteRenderbuffers(1, &depthRenderbuffer);
 	glCullFace(GL_BACK);
@@ -301,7 +308,7 @@ struct GLLLightBlock
 	struct GLLLightBlock lightData;
 	
 	// Camera position
-	lightData.cameraLocation = self.view.camera.cameraWorldPosition;
+	lightData.cameraLocation = self.camera.cameraWorldPosition;
 	
 	// Ambient
 	GLLAmbientLight *ambient = lights[0];
@@ -323,9 +330,7 @@ struct GLLLightBlock
 
 - (void)_updateMatrices
 {
-	GLLCamera *camera = self.view.camera;
-	
-	mat_float16 viewProjection = camera.viewProjectionMatrix;
+	mat_float16 viewProjection = self.camera.viewProjectionMatrix;
 	
 	// Set the view projection matrix.
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);

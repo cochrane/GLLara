@@ -73,7 +73,8 @@ const double unitsPerSecond = 0.2;
 	_camera = camera;
 	_sceneDrawer = sceneDrawer;
 	
-	_viewDrawer = [[GLLViewDrawer alloc] initWithManagedSceneDrawer:sceneDrawer view:self];
+	_viewDrawer = [[GLLViewDrawer alloc] initWithManagedSceneDrawer:sceneDrawer camera:camera context:self.openGLContext pixelFormat:self.pixelFormat];
+	_viewDrawer.view = self;
 }
 
 - (void)rotateWithEvent:(NSEvent *)event
