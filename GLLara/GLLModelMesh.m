@@ -35,7 +35,7 @@ void vec_addTo(float *a, float *b)
 
 @interface GLLModelMesh ()
 
-- (BOOL)_checkIndicesError:(NSError *__autoreleasing*)error;
+- (BOOL)_checkIndicesInVertexData:(NSData *)vertices elementData:(NSData *)elements error:(NSError *__autoreleasing*)error;
 - (NSData *)_postprocessVertices:(NSData *)vertexData;
 - (void)_setRenderParameters;
 
@@ -89,6 +89,8 @@ void vec_addTo(float *a, float *b)
 	_countOfElements = 3 * [stream readUint32]; // File saves number of triangles
 	_elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
 	
+	if (![self _checkIndicesInVertexData:rawVertexData elementData:_elementData error:error]) return nil;
+	
 	if (![stream isValid])
 	{
 		if (error)
@@ -97,7 +99,6 @@ void vec_addTo(float *a, float *b)
 	}
 	
 	[self _setRenderParameters];
-	if (![self _checkIndicesError:error]) return nil;
 	
 	return self;
 }
@@ -180,6 +181,8 @@ void vec_addTo(float *a, float *b)
 	}
 	_elementData = [elementData copy];
 	
+	if (![self _checkIndicesInVertexData:rawVertexData elementData:_elementData error:error]) return nil;
+	
 	[self calculateTangents:rawVertexData];
 	_vertexData = [[self _postprocessVertices:rawVertexData] copy];
 	
@@ -191,7 +194,6 @@ void vec_addTo(float *a, float *b)
 	}
 	
 	[self _setRenderParameters];
-	if (![self _checkIndicesError:error]) return nil;
 	
 	return self;
 }
@@ -431,12 +433,12 @@ void vec_addTo(float *a, float *b)
 
 #pragma mark - Private methods
 
-- (BOOL)_checkIndicesError:(NSError *__autoreleasing*)error;
+- (BOOL)_checkIndicesInVertexData:(NSData *)vertices elementData:(NSData *)elements error:(NSError *__autoreleasing*)error;
 {
 	// Check bone indices
 	if (self.hasBoneWeights)
 	{
-		const void *vertexData = self.vertexData.bytes;
+		const void *vertexData = vertices.bytes;
 		for (NSUInteger i = 0; i < self.countOfVertices; i++)
 		{
 			const uint16_t *indices = vertexData + i*self.stride + self.offsetForBoneIndices;
@@ -455,7 +457,7 @@ void vec_addTo(float *a, float *b)
 	}
 	
 	// Check element indices
-	const uint32_t *indices = self.elementData.bytes;
+	const uint32_t *indices = elements.bytes;
 	for (NSUInteger i = 0; i < self.countOfElements; i++)
 	{
 		if (indices[i] >= self.countOfVertices)

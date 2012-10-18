@@ -15,10 +15,11 @@
 - (void)testZeroLengthFile
 {
 	NSString *source = @"";
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source parameters:nil baseURL:nil error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -26,10 +27,11 @@
 - (void)testTooManyBonesFile
 {
 	NSString *source = @"12 0";
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source parameters:nil baseURL:nil error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -37,10 +39,11 @@
 - (void)testTooManyMeshesFile
 {
 	NSString *source = @"0 12";
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source parameters:nil baseURL:nil error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -55,10 +58,11 @@
 	16\n\
 	0 0 0\n\
 	0";
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source parameters:nil baseURL:nil error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -73,10 +77,11 @@
 	0\n\
 	0 0 0\n\
 	0";
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source parameters:nil baseURL:nil error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -119,11 +124,11 @@
 	0.5 0.5 0 0\n\
 	1 # count of tris\n\
 	0 1 2	";
-	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/testfile.mesh"];
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source parameters:nil baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -166,13 +171,62 @@
 	0.5 0.5 0 0\n\
 	1 # count of tris\n\
 	10 11 12	";
-	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/testfile.mesh"];
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source parameters:nil baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
+
+- (void)testArbitraryString
+{
+	NSString *source = @"2 # bones\n\
+	Bone1\n\
+	-1\n\
+	-0.50 0 0\n\
+	\n\
+	Bone2\n\
+	0\n\
+	0.50 0 0.0\n\
+	\n\
+	1 # the count of them meshes\n\
+	Test\n\
+	1 # uv layers\n\
+	1 # textures\n\
+	tex.tga\n\
+	0\n\
+	I've been working on the railroad...\n\
+	3 # num verts\n\
+	-.5 0 0\n\
+	0 0 1\n\
+	255 0 0 255\n\
+	0 0\n\
+	0 0 0 0\n\
+	1 0 0 0\n\
+	0.5 0 0\n\
+	0 0 1\n\
+	0 255 0  255\n\
+	1 0\n\
+	1 0 0 0\n\
+	1 0 0 0\n\
+	0.0 1.000000 0\n\
+	0 0 1\n\
+	0 0 255 255\n\
+	0 1\n\
+	0 1 0 0\n\
+	0.5 0.5 0 0\n\
+	1 # count of tris\n\
+	10 11 12	";
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
+	
+	GLLModel *model;
+	NSError *error = nil;
+	STAssertNoThrow(model = [[GLLModel alloc] initASCIIFromString:source baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNil(model, @"This model should not have loaded");
+	STAssertNotNil(error, @"Model should have written an error message");
+}
+
 
 @end

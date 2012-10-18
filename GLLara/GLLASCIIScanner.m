@@ -99,7 +99,10 @@
 	
 	NSInteger result;
 	if (![scanner scanInteger:&result])
-		[NSException raise:NSInvalidArgumentException format:@"Expected integer at position %lu, but didn't get it.", scanner.scanLocation];
+	{
+		self.isValid = NO;
+		return 0;
+	}
 	
 	return result;
 }

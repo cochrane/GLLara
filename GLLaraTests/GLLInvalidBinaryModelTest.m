@@ -15,10 +15,11 @@
 - (void)testZeroLengthFile
 {
 	NSData *data = [NSData data];
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data parameters:nil baseURL:nil error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -30,10 +31,11 @@
 		0x00, 0x00, 0x00, 0x00 // Count of meshes
 	};
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data parameters:nil baseURL:nil error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");	
 }
@@ -45,10 +47,11 @@
 		0xFF, 0x01, 0x00, 0x00 // Count of meshes
 	};
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data parameters:nil baseURL:nil error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -70,10 +73,11 @@
 		0x00, 0x00, 0x00, 0x00 // Count of meshes
 	};
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data parameters:nil baseURL:nil error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -95,10 +99,11 @@
 		0x00, 0x00, 0x00, 0x00 // Count of meshes
 	};
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data parameters:nil baseURL:nil error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -184,11 +189,11 @@
 		0x02, 0x00, 0x00, 0x00, // index 3
 	};
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
-	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/testfile.mesh"];
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data parameters:nil baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -274,11 +279,11 @@
 		0x02, 0x01, 0x00, 0x00, // index 3
 	};
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
-	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/testfile.mesh"];
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data parameters:nil baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
