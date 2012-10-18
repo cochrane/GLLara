@@ -153,6 +153,7 @@
 		526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31B1609C7C300940A74 /* GLLItem+OBJExport.m */; };
 		526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31E1609CCE900940A74 /* GLLItemExportViewController.m */; };
 		526AB3211609CCE900940A74 /* GLLItemExportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 526AB31F1609CCE900940A74 /* GLLItemExportView.xib */; };
+		5273A3F31630BF55009095F3 /* GLLInvalidASCIIModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5273A3F21630BF55009095F3 /* GLLInvalidASCIIModelTest.m */; };
 		5275F6821607293000978779 /* GLLItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6811607293000978779 /* GLLItemController.m */; };
 		5275F686160736C000978779 /* GLLSourceListMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F685160736C000978779 /* GLLSourceListMarker.m */; };
 		5275F6891607399800978779 /* GLLItemListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6881607399800978779 /* GLLItemListController.m */; };
@@ -466,6 +467,8 @@
 		526AB31D1609CCE900940A74 /* GLLItemExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemExportViewController.h; sourceTree = "<group>"; };
 		526AB31E1609CCE900940A74 /* GLLItemExportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemExportViewController.m; sourceTree = "<group>"; };
 		526AB31F1609CCE900940A74 /* GLLItemExportView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLItemExportView.xib; sourceTree = "<group>"; };
+		5273A3F11630BF55009095F3 /* GLLInvalidASCIIModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLInvalidASCIIModelTest.h; sourceTree = "<group>"; };
+		5273A3F21630BF55009095F3 /* GLLInvalidASCIIModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLInvalidASCIIModelTest.m; sourceTree = "<group>"; };
 		5275F6801607293000978779 /* GLLItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemController.h; sourceTree = "<group>"; };
 		5275F6811607293000978779 /* GLLItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemController.m; sourceTree = "<group>"; };
 		5275F684160736C000978779 /* GLLSourceListMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSourceListMarker.h; sourceTree = "<group>"; };
@@ -831,6 +834,8 @@
 				5251BCE4162EA7F200973E0A /* GLLBasicASCIIModelTest.m */,
 				5251BCE6162EB84F00973E0A /* GLLInvalidBinaryModelTest.h */,
 				5251BCE7162EB84F00973E0A /* GLLInvalidBinaryModelTest.m */,
+				5273A3F11630BF55009095F3 /* GLLInvalidASCIIModelTest.h */,
+				5273A3F21630BF55009095F3 /* GLLInvalidASCIIModelTest.m */,
 			);
 			path = GLLaraTests;
 			sourceTree = "<group>";
@@ -1615,6 +1620,7 @@
 				5251BCE2162E248700973E0A /* GLLBasicBinaryModelTest.m in Sources */,
 				5251BCE5162EA7F200973E0A /* GLLBasicASCIIModelTest.m in Sources */,
 				5251BCE8162EB84F00973E0A /* GLLInvalidBinaryModelTest.m in Sources */,
+				5273A3F31630BF55009095F3 /* GLLInvalidASCIIModelTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

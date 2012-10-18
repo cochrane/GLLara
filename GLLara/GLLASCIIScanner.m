@@ -92,7 +92,10 @@
 {
 	[self _skipComments];
 	if (scanner.isAtEnd)
-		[NSException raise:NSInvalidArgumentException format:@"Premature end of file!"];
+	{
+		self.isValid = NO;
+		return 0;
+	}
 	
 	NSInteger result;
 	if (![scanner scanInteger:&result])

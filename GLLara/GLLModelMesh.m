@@ -35,6 +35,7 @@ void vec_addTo(float *a, float *b)
 
 @interface GLLModelMesh ()
 
+- (BOOL)_checkIndicesError:(NSError *__autoreleasing*)error;
 - (NSData *)_postprocessVertices:(NSData *)vertexData;
 - (void)_setRenderParameters;
 
@@ -96,40 +97,7 @@ void vec_addTo(float *a, float *b)
 	}
 	
 	[self _setRenderParameters];
-	
-	// Check bone indices
-	if (self.hasBoneWeights)
-	{
-		const void *vertexData = self.vertexData.bytes;
-		for (NSUInteger i = 0; i < self.countOfVertices; i++)
-		{
-			const uint16_t *indices = vertexData + i*self.stride + self.offsetForBoneIndices;
-			
-			for (NSUInteger j = 0; j < 4; j++)
-			{
-				if (indices[j] >= model.bones.count)
-				{
-					if (error)
-						*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file references bones that do not exist.", @"Bone index out of range error") }];
-
-					return nil;
-				}
-			}
-		}
-	}
-	
-	// Check element indices
-	const uint32_t *indices = self.elementData.bytes;
-	for (NSUInteger i = 0; i < self.countOfElements; i++)
-	{
-		if (indices[i] >= self.countOfVertices)
-		{
-			if (error)
-				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"A mesh references vertices that do not exist.", @"Vertex index out of range error") }];
-			
-			return nil;
-		}
-	}
+	if (![self _checkIndicesError:error]) return nil;
 	
 	return self;
 }
@@ -223,6 +191,7 @@ void vec_addTo(float *a, float *b)
 	}
 	
 	[self _setRenderParameters];
+	if (![self _checkIndicesError:error]) return nil;
 	
 	return self;
 }
@@ -461,6 +430,45 @@ void vec_addTo(float *a, float *b)
 }
 
 #pragma mark - Private methods
+
+- (BOOL)_checkIndicesError:(NSError *__autoreleasing*)error;
+{
+	// Check bone indices
+	if (self.hasBoneWeights)
+	{
+		const void *vertexData = self.vertexData.bytes;
+		for (NSUInteger i = 0; i < self.countOfVertices; i++)
+		{
+			const uint16_t *indices = vertexData + i*self.stride + self.offsetForBoneIndices;
+			
+			for (NSUInteger j = 0; j < 4; j++)
+			{
+				if (indices[j] >= self.model.bones.count)
+				{
+					if (error)
+						*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file references bones that do not exist.", @"Bone index out of range error") }];
+					
+					return NO;
+				}
+			}
+		}
+	}
+	
+	// Check element indices
+	const uint32_t *indices = self.elementData.bytes;
+	for (NSUInteger i = 0; i < self.countOfElements; i++)
+	{
+		if (indices[i] >= self.countOfVertices)
+		{
+			if (error)
+				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"A mesh references vertices that do not exist.", @"Vertex index out of range error") }];
+			
+			return NO;
+		}
+	}
+	
+	return YES;
+}
 
 - (NSData *)_postprocessVertices:(NSData *)vertexData;
 {
