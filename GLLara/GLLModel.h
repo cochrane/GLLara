@@ -13,7 +13,8 @@ enum GLLModelLoadingErrorCodes
 	GLLModelLoadingError_PrematureEndOfFile,
 	GLLModelLoadingError_IndexOutOfRange,
 	GLLModelLoadingError_CircularReference,
-	GLLModelLoadingError_FileTypeNotSupported
+	GLLModelLoadingError_FileTypeNotSupported,
+	GLLModelLoadingError_ParametersNotFound
 };
 extern NSString *GLLModelLoadingErrorDomain;
 
@@ -33,9 +34,9 @@ extern NSString *GLLModelLoadingErrorDomain;
 
 
 - (id)initBinaryFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
-- (id)initBinaryFromData:(NSData *)data parameters:(GLLModelParams *)parameters baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (id)initBinaryFromData:(NSData *)data baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 - (id)initASCIIFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
-- (id)initASCIIFromString:(NSString *)source parameters:(GLLModelParams *)parameters baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (id)initASCIIFromString:(NSString *)source baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, copy) NSURL *baseURL;
 

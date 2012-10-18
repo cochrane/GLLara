@@ -74,17 +74,14 @@ static NSCache *cachedModels;
 }
 
 - (id)initBinaryFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
-{
-	GLLModelParams *parameters = [GLLModelParams parametersForModel:self error:error];
-	if (!parameters) return nil;
-	
+{	
 	NSData *data = [NSData dataWithContentsOfURL:file options:0 error:error];
 	if (!data) return nil;
 	
-	return [self initBinaryFromData:data parameters:parameters baseURL:file error:error];
+	return [self initBinaryFromData:data baseURL:file error:error];
 }
 
-- (id)initBinaryFromData:(NSData *)data parameters:(GLLModelParams *)parameters baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (id)initBinaryFromData:(NSData *)data baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -96,7 +93,13 @@ static NSCache *cachedModels;
 	}
 	
 	_baseURL = baseURL;
-	_parameters = parameters;
+	_parameters = [GLLModelParams parametersForModel:self error:error];
+	if (!_parameters)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_ParametersNotFound userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Parameters for file could not be found.", @"Loading error: No parameters for this model.")}];
+		return nil;
+	}
 	
 	TRInDataStream *stream = [[TRInDataStream alloc] initWithData:data];
 	
@@ -215,21 +218,24 @@ static NSCache *cachedModels;
 
 - (id)initASCIIFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
 {
-	GLLModelParams *parameters = [GLLModelParams parametersForModel:self error:error];
-	if (!parameters) return nil;
-	
 	NSString *source = [NSString stringWithContentsOfURL:file usedEncoding:NULL error:error];
 	if (!source) return nil;
 	
-	return [self initASCIIFromString:source parameters:parameters baseURL:file error:error];
+	return [self initASCIIFromString:source baseURL:file error:error];
 }
 
-- (id)initASCIIFromString:(NSString *)source parameters:(GLLModelParams *)parameters baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (id)initASCIIFromString:(NSString *)source baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
 	_baseURL = baseURL;
-	_parameters = parameters;
+	_parameters = [GLLModelParams parametersForModel:self error:error];
+	if (!_parameters)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_ParametersNotFound userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Parameters for file could not be found.", @"Loading error: No parameters for this model.")}];
+		return nil;
+	}
 	
 	GLLASCIIScanner *scanner = [[GLLASCIIScanner alloc] initWithString:source];
 	
