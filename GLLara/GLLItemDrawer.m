@@ -18,7 +18,7 @@
 #import "GLLSceneDrawer.h"
 #import "GLLItemMeshDrawer.h"
 #import "GLLUniformBlockBindings.h"
-#import "simd_types.h"
+#import "simd_matrix.h"
 
 @interface GLLItemDrawer ()
 {
@@ -32,6 +32,8 @@
 }
 
 - (void)_updateTransforms;
+
+- (vec_float4)_permutationTableColumn:(int16_t)mapping;
 
 @end
 
@@ -49,6 +51,10 @@
 	GLLModelDrawer *modelDrawer = [sceneDrawer.resourceManager drawerForModel:item.model error:error];
 	if (!modelDrawer)
 		return nil;
+	
+	[_item addObserver:self forKeyPath:@"normalChannelAssignmentR" options:0 context:0];
+	[_item addObserver:self forKeyPath:@"normalChannelAssignmentG" options:0 context:0];
+	[_item addObserver:self forKeyPath:@"normalChannelAssignmentB" options:0 context:0];
 	
 	// Observe all the bones
 	// Store bones so we can unregister.
@@ -94,7 +100,7 @@
 	{
 		self.needsRedraw = YES;
 	}
-	else if ([keyPath isEqual:@"globalTransform"])
+	else if ([keyPath isEqual:@"globalTransform"] || [keyPath isEqual:@"normalChannelAssignmentR"] || [keyPath isEqual:@"normalChannelAssignmentG"] || [keyPath isEqual:@"normalChannelAssignmentB"])
 	{
 		needToUpdateTransforms = YES;
 		self.needsRedraw = YES;
@@ -139,6 +145,10 @@
 
 - (void)unload;
 {
+	[_item removeObserver:self forKeyPath:@"normalChannelAssignmentR"];
+	[_item removeObserver:self forKeyPath:@"normalChannelAssignmentG"];
+	[_item removeObserver:self forKeyPath:@"normalChannelAssignmentB"];
+	
 	for (id bone in bones)
 		[bone removeObserver:self forKeyPath:@"globalTransform"];
 	bones = nil;
@@ -158,9 +168,13 @@
 - (void)_updateTransforms
 {	
 	NSUInteger count = self.item.bones.count;
-	mat_float16 *matrices = malloc(count * sizeof(mat_float16));
+	mat_float16 *matrices = malloc((count + 1) * sizeof(mat_float16));
+	matrices[0].x = [self _permutationTableColumn:self.item.normalChannelAssignmentR];
+	matrices[0].y = [self _permutationTableColumn:self.item.normalChannelAssignmentG];
+	matrices[0].z = [self _permutationTableColumn:self.item.normalChannelAssignmentB];
+	matrices[0].w = simd_e_w;
 	for (NSUInteger i = 0; i < count; i++)
-		[[[self.item.bones objectAtIndex:i] globalTransform] getValue:&matrices[i]];
+		[[[self.item.bones objectAtIndex:i] globalTransform] getValue:&matrices[i + 1]];
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
 	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_STREAM_DRAW);
@@ -168,6 +182,20 @@
 	free(matrices);
 	
 	needToUpdateTransforms = NO;
+}
+
+- (vec_float4)_permutationTableColumn:(int16_t)mapping;
+{
+	switch (mapping)
+	{
+		case GLLNormalPos: return simd_e_z; break;
+		case GLLNormalNeg: return -simd_e_z; break;
+		case GLLTangentUPos: return simd_e_y; break;
+		case GLLTangentUNeg: return -simd_e_y; break;
+		case GLLTangentVPos: return simd_e_x; break;
+		case GLLTangentVNeg: return -simd_e_x; break;
+		default: return simd_zero();
+	}
 }
 
 @end

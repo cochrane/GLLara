@@ -457,6 +457,7 @@
 		525ACD8315F0F33700534E7D /* GLLModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModel.m; sourceTree = "<group>"; };
 		525ACD8515F0F3ED00534E7D /* GLLModelMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelMesh.h; sourceTree = "<group>"; };
 		525ACD8615F0F3ED00534E7D /* GLLModelMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelMesh.m; sourceTree = "<group>"; };
+		5260CE9C163B16450069459D /* GLLSceneModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GLLSceneModel 2.xcdatamodel"; sourceTree = "<group>"; };
 		5267F1B31615B2C400987717 /* moveChildren.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveChildren.pdf; sourceTree = SOURCE_ROOT; };
 		5267F1B41615B2C400987717 /* moveNodeOnly.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveNodeOnly.pdf; sourceTree = SOURCE_ROOT; };
 		5267F1B51615B2C400987717 /* moveParent.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveParent.pdf; sourceTree = SOURCE_ROOT; };
@@ -1007,6 +1008,9 @@
 				521326371602B17800787AA1 /* Internal use only */,
 				5296940615F3919A00DF2FA3 /* Basic.vs */,
 				5296940D15F3935E00DF2FA3 /* Bump.vs */,
+				52BB21A615FAD30000937450 /* StaticBump.vs */,
+				52BB21AA15FB4C3200937450 /* StaticBasic.vs */,
+				52BB21B515FB7AE700937450 /* StaticBasic2TexCoords.vs */,
 				5296941615F3EC9B00DF2FA3 /* Diffuse.fs */,
 				5296941415F3E7A000DF2FA3 /* DiffuseLightmap.fs */,
 				5296941815F3ED3D00DF2FA3 /* DiffuseBump.fs */,
@@ -1015,12 +1019,9 @@
 				52BB206915F82B4200937450 /* Shadeless.fs */,
 				52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */,
 				5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */,
-				52BB21A615FAD30000937450 /* StaticBump.vs */,
-				52BB21AA15FB4C3200937450 /* StaticBasic.vs */,
 				52BB21AC15FB4CED00937450 /* ShadelessVertexColor.fs */,
 				5291DB8115FBB33300ECDBCA /* MetallicBump3.fs */,
 				5291DB9015FBE51600ECDBCA /* Metallic.fs */,
-				52BB21B515FB7AE700937450 /* StaticBasic2TexCoords.vs */,
 				52BB21B715FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs */,
 				52B9E07C16020A8300641518 /* DiffuseOBJ.fs */,
 				52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */,
@@ -1972,9 +1973,10 @@
 		52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				5260CE9C163B16450069459D /* GLLSceneModel 2.xcdatamodel */,
 				52BB217C15F972AB00937450 /* GLLSceneModel.xcdatamodel */,
 			);
-			currentVersion = 52BB217C15F972AB00937450 /* GLLSceneModel.xcdatamodel */;
+			currentVersion = 5260CE9C163B16450069459D /* GLLSceneModel 2.xcdatamodel */;
 			name = GLLSceneModel.xcdatamodeld;
 			path = "Core Data/GLLSceneModel.xcdatamodeld";
 			sourceTree = "<group>";
