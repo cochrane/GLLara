@@ -9,7 +9,6 @@
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
-#import "GLLVersion.h"
 #import "simd_types.h"
 
 enum GLLItemChannelAssignment

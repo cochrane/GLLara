@@ -10,7 +10,6 @@
 #import <Foundation/Foundation.h>
 
 #import "GLLSourceListItem.h"
-#import "GLLVersion.h"
 
 @class GLLItem;
 @class GLLModelBone;
