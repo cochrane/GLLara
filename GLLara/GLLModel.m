@@ -14,6 +14,7 @@
 #import "GLLModelParams.h"
 #import "GLLModelObj.h"
 #import "TRInDataStream.h"
+#import "TROutDataStream.h"
 
 NSString *GLLModelLoadingErrorDomain = @"GLL Model loading error domain";
 
@@ -278,6 +279,35 @@ static NSCache *cachedModels;
 	
 	return self;
 }
+
+#pragma mark - Export
+
+- (NSString *)writeASCII;
+{
+	NSMutableString *result = [NSMutableString string];
+	[result appendFormat:@"%lu\n", self.bones.count];
+	for (GLLModelBone *bone in self.bones)
+		[result appendString:[bone writeASCII]];
+	[result appendFormat:@"%lu\n", self.meshes.count];
+	for (GLLModelMesh *mesh in self.meshes)
+		[result appendString:[mesh writeASCII]];
+	
+	return [result copy];
+}
+- (NSData *)writeBinary;
+{
+	TROutDataStream *stream = [[TROutDataStream alloc] init];
+	[stream appendUint32:(uint32_t) self.bones.count];
+	for (GLLModelBone *bone in self.bones)
+		[stream appendData:[bone writeBinary]];
+	[stream appendUint32:(uint32_t) self.meshes.count];
+	for (GLLModelMesh *mesh in self.meshes)
+		[stream appendData:[mesh writeBinary]];
+	
+	return stream.data;
+}
+
+#pragma mark - Accessors
 
 - (BOOL)hasBones
 {

@@ -26,6 +26,10 @@
 // Stream must be either a GLLASCIIScanner or a TRInDataStream.
 - (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 
+// Export
+- (NSString *)writeASCII;
+- (NSData *)writeBinary;
+
 @property (nonatomic, weak, readonly) GLLModel *model;
 
 @property (nonatomic, copy, readonly) NSString *name;

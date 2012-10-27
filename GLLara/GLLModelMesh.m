@@ -13,6 +13,7 @@
 #import "GLLModel.h"
 #import "GLLModelParams.h"
 #import "TRInDataStream.h"
+#import "TROutDataStream.h"
 
 float vec_dot(float *a, float *b)
 {
@@ -333,6 +334,71 @@ void vec_addTo(float *a, float *b)
 - (GLLCullFaceMode)cullFaceMode
 {
 	return GLLCullCounterClockWise;
+}
+
+#pragma mark - Export
+
+- (NSString *)writeASCII;
+{
+	NSMutableString *result = [NSMutableString string];
+	[result appendFormat:@"%@\n", self.name];
+	[result appendFormat:@"%lu\n", self.countOfUVLayers];
+	[result appendFormat:@"%lu\n", self.textures.count];
+	for (NSURL *texture in self.textures)
+		[result appendFormat:@"%@\n0\n", texture.lastPathComponent];
+	
+	[result appendFormat:@"%lu\n", self.countOfVertices];
+	const void *vertexBytes = self.vertexData.bytes;
+	for (NSUInteger i = 0; i < self.countOfVertices; i++)
+	{
+		const float *position = (const float *) (vertexBytes + i*self.stride + self.offsetForPosition);
+		[result appendFormat:@"%f %f %f ", position[0], position[1], position[2]];
+		const float *normal = (const float *) (vertexBytes + i*self.stride + self.offsetForNormal);
+		[result appendFormat:@"%f %f %f ", normal[0], normal[1], normal[2]];
+		const uint8_t *colors = (const uint8_t *) (vertexBytes + i*self.stride + self.offsetForColor);
+		[result appendFormat:@"%u %u %u %u ", colors[0], colors[1], colors[2], colors[3]];
+		for (NSUInteger uvlayer = 0; uvlayer < self.countOfUVLayers; uvlayer++)
+		{
+			const float *texCoords = (const float *) (vertexBytes + i*self.stride + [self offsetForTexCoordLayer:0]);
+			[result appendFormat:@"%f %f ", texCoords[0], texCoords[1]];
+		}
+		if (self.hasBoneWeights)
+		{
+			const uint16_t *boneIndices = (const uint16_t *) (vertexBytes + i*self.stride + self.offsetForBoneIndices);
+			[result appendFormat:@"%u %u %u %u ", boneIndices[0], boneIndices[1], boneIndices[2], boneIndices[3]];
+
+			const float *boneWeights = (const float *) (vertexBytes + i*self.stride + self.offsetForBoneWeights);
+			[result appendFormat:@"%f %f %f %f ", boneWeights[0], boneWeights[1], boneWeights[2], boneWeights[3]];
+		}
+		[result appendString:@"\n"];
+	}
+	
+	[result appendFormat:@"%lu\n", self.countOfElements / 3];
+	const uint32_t *elements = self.elementData.bytes;
+	for (NSUInteger i = 0; i < self.countOfElements; i++)
+		[result appendFormat:@"%u ", elements[i]];
+	[result appendString:@"\n"];
+	
+	return [result copy];
+}
+
+- (NSData *)writeBinary;
+{
+	TROutDataStream *stream = [[TROutDataStream alloc] init];
+	[stream appendPascalString:self.name];
+	[stream appendUint32:(uint32_t) self.countOfUVLayers];
+	[stream appendUint32:(uint32_t) self.textures.count];
+	for (NSURL *texture in self.textures)
+	{
+		[stream appendPascalString:texture.lastPathComponent];
+		[stream appendUint32:0];
+	}
+	[stream appendUint32:(uint32_t) self.countOfVertices];
+	[stream appendData:self.vertexData];
+	[stream appendUint32:(uint32_t) self.countOfElements / 3UL];
+	[stream appendData:self.elementData];
+	
+	return stream.data;
 }
 
 #pragma mark - Tangents
