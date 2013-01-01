@@ -165,6 +165,19 @@ const double unitsPerSecond = 0.2;
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
+	// Try to find the bone that corresponds to this event.
+	
+	// Set it as selected
+	if (theEvent.modifierFlags & (NSAlternateKeyMask | NSShiftKeyMask))
+	{
+		// Add to the selection
+	}
+	else
+	{
+		// Set as only selection
+	}
+	
+	// Next (in either case): Start mouse movement
 	if (self.camera.cameraLocked) return;
 	[self _processEventsStartingWith:theEvent];
 }

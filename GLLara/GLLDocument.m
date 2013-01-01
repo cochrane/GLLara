@@ -23,6 +23,7 @@
 #import "GLLModel.h"
 #import "GLLRenderWindowController.h"
 #import "GLLSceneDrawer.h"
+#import "GLLSelection.h"
 #import "GLLSourceListController.h"
 
 @interface GLLDocument () <NSOpenSavePanelDelegate>
@@ -77,7 +78,11 @@
 
 - (void)makeWindowControllers
 {
+	self.selection = [[GLLSelection alloc] init];
+	self.selection.managedObjectContext = self.managedObjectContext;
+	
 	sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext];
+	[sceneDrawer bind:@"selectedBones" toObject:self.selection withKeyPath:@"selectedBones" options:nil];
 	
 	documentWindowController = [[GLLDocumentWindowController alloc] initWithManagedObjectContext:self.managedObjectContext];
 	[self addWindowController:documentWindowController];
@@ -142,7 +147,7 @@
 
 - (IBAction)delete:(id)sender;
 {	
-	for (id selectedObject in self.selectedObjects)
+	for (id selectedObject in self.selection.selectedObjects)
 	{
 		if ([selectedObject isKindOfClass:[GLLItemController class]])
 			[self.managedObjectContext deleteObject:[selectedObject item]];
@@ -157,13 +162,13 @@
 
 - (IBAction)exportSelectedModel:(id)sender
 {
-	if (self.selectedObjects.count != 1)
+	if (self.selection.selectedObjects.count != 1)
 	{
 		NSBeep();
 		return;
 	}
 	
-	id selectedObject = [self.selectedObjects objectAtIndex:0];
+	id selectedObject = [self.selection.selectedObjects objectAtIndex:0];
 	GLLItem *item = nil;
 	if ([selectedObject isKindOfClass:[GLLItemController class]])
 		item = [selectedObject item];
@@ -215,38 +220,9 @@
 	if (!sourceListController)
 	{
 		sourceListController = [[GLLSourceListController alloc] initWithManagedObjectContext:self.managedObjectContext];
-		[self bind:@"selectedObjects" toObject:sourceListController withKeyPath:@"treeController.selectedObjects" options:nil];
+		[self.selection bind:@"selectedObjects" toObject:sourceListController.treeController withKeyPath:@"selectedObjects" options:nil];
 	}
 	return sourceListController;
-}
-
-- (void)setSelectedObjects:(NSArray *)selectedObjects
-{
-	NSAssert(sceneDrawer, @"Need to have scene drawer now.");
-	
-	_selectedObjects = selectedObjects;
-	
-	if (!selectedObjects || selectedObjects.count == 0)
-	{
-		[sceneDrawer setSelectedBones:@[]];
-	}
-	else if ([selectedObjects.lastObject isKindOfClass:[GLLItemBone class]])
-	{
-		[sceneDrawer setSelectedBones:selectedObjects];
-	}
-	else if ([selectedObjects.lastObject isKindOfClass:[GLLItemController class]])
-	{
-		NSMutableArray *allBones = [NSMutableArray array];
-		for (GLLItemController *controller in selectedObjects)
-		{
-			[allBones addObjectsFromArray:[[controller valueForKeyPath:@"item.bones"] array]];
-		}
-		[sceneDrawer setSelectedBones:allBones];
-	}
-	else
-	{
-		[sceneDrawer setSelectedBones:@[]];
-	}
 }
 
 #pragma mark - Save panel delegate

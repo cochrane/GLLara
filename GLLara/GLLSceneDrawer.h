@@ -24,5 +24,6 @@ extern NSString *GLLSceneDrawerNeedsUpdateNotification;
 - (void)drawShowingSelection:(BOOL)showSelection;
 
 - (void)setSelectedBones:(NSArray *)selectedBones;
+- (NSArray *)selectedBones;
 
 @end

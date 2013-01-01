@@ -10,6 +10,7 @@
 
 @class GLLView;
 @class GLLSourceListController;
+@class GLLSelection;
 
 /*!
  * @abstract The main class for a scene.
@@ -25,6 +26,6 @@
 - (IBAction)exportSelectedModel:(id)sender;
 
 @property (nonatomic, readonly) GLLSourceListController *sourceListController;
-@property (nonatomic) NSArray *selectedObjects;
+@property (nonatomic) GLLSelection *selection;
 
 @end

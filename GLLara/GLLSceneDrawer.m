@@ -163,6 +163,10 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	skeletonDrawer.selectedBones = selectedBones;
 	[self _notifyRedraw];
 }
+- (NSArray *)selectedBones
+{
+	return skeletonDrawer.selectedBones;
+}
 
 #pragma mark - Private methods
 
