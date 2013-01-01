@@ -6,7 +6,8 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <AppKit/NSPersistentDocument.h>
+#import <Foundation/Foundation.h>
 
 @class GLLView;
 @class GLLSourceListController;
@@ -27,5 +28,6 @@
 
 @property (nonatomic, readonly) GLLSourceListController *sourceListController;
 @property (nonatomic) GLLSelection *selection;
+@property (nonatomic, readonly) NSArray *allBones;
 
 @end

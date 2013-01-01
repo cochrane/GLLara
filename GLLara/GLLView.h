@@ -11,6 +11,7 @@
 #import <AppKit/NSOpenGLView.h>
 
 @class GLLCamera;
+@class GLLDocument;
 @class GLLSceneDrawer;
 @class GLLViewDrawer;
 
@@ -27,6 +28,7 @@
 - (void)setCamera:(GLLCamera *)camera sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
 
 @property (nonatomic, retain, readonly) GLLCamera *camera;
+@property (nonatomic, weak) GLLDocument *document;
 @property (nonatomic, retain, readonly) GLLSceneDrawer *sceneDrawer;
 @property (nonatomic, retain, readonly) GLLViewDrawer *viewDrawer;
 

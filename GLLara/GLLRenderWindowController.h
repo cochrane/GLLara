@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class GLLCamera;
+@class GLLDocument;
 @class GLLSceneDrawer;
 @class GLLView;
 

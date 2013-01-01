@@ -13,8 +13,10 @@
 #import <OpenGL/gl3ext.h>
 
 #import "GLLCamera.h"
+#import "GLLDocument.h"
 #import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"
+#import "GLLSelection.h"
 #import "GLLItemBone.h"
 #import "GLLViewDrawer.h"
 #import "simd_matrix.h"
@@ -138,10 +140,11 @@ const double unitsPerSecond = 0.2;
 	[self.openGLContext makeCurrentContext];
 	
 	// Set height and width for camera.
-	// Note: This is points, not pixels. Pixels are used for glViewport exclusively.
+	// Note: This is points, not pixels.
 	self.camera.actualWindowWidth = self.bounds.size.width;
 	self.camera.actualWindowHeight = self.bounds.size.height;
 	
+	// Pixels are used for glViewport exclusively.
 	NSRect actualPixels = [self convertRectToBacking:[self bounds]];
 	glViewport(0, 0, actualPixels.size.width, actualPixels.size.height);
 }
@@ -166,15 +169,26 @@ const double unitsPerSecond = 0.2;
 - (void)mouseDown:(NSEvent *)theEvent
 {
 	// Try to find the bone that corresponds to this event.
+	GLLItemBone *bone = [self closestBoneAtScreenPoint:[self convertPoint:theEvent.locationInWindow fromView:nil] fromBones:self.document.allBones];
 	
-	// Set it as selected
-	if (theEvent.modifierFlags & (NSAlternateKeyMask | NSShiftKeyMask))
+	if (bone)
 	{
-		// Add to the selection
-	}
-	else
-	{
-		// Set as only selection
+		NSMutableArray *selectedBones = [self.document.selection mutableArrayValueForKey:@"selectedBones"];
+		// Set it as selected
+		if (theEvent.modifierFlags & (NSCommandKeyMask | NSShiftKeyMask))
+		{
+			// Add to the selection
+			NSUInteger index = [selectedBones indexOfObject:bone];
+			if (index == NSNotFound)
+				[selectedBones addObject:bone];
+			else
+				[selectedBones removeObjectAtIndex:index];
+		}
+		else
+		{
+			// Set as only selection
+			[selectedBones replaceObjectsInRange:NSMakeRange(0, selectedBones.count) withObjectsFromArray:@[ bone ]];
+		}
 	}
 	
 	// Next (in either case): Start mouse movement
@@ -279,30 +293,34 @@ const double unitsPerSecond = 0.2;
 
 - (GLLItemBone *)closestBoneAtScreenPoint:(NSPoint)point fromBones:(id)bones;
 {
-	// All calculations are in screen coordinates, so all values are pixels (or points)
+	// All calculations are in screen coordinates, so all values are points
 	
-	vec_float4 near = (vec_float4) { point.x, point.y, 0.0f, 1.0f };
-	vec_float4 direction = (vec_float4) { 0.0f, 0.0f, 1.0f, 0.0f };
-	
-	mat_float16 viewProjection = self.camera.viewMatrix;
-	mat_float16 viewport = simd_orthoMatrix(0, self.bounds.size.width, 0, self.bounds.size.height, 1, -1);
-	mat_float16 transform = simd_mat_mul(viewport, viewProjection);
+	mat_float16 viewProjection = self.camera.viewProjectionMatrix;
 	
 	float closestDistance = HUGE_VALF;
 	GLLItemBone *closestBone = nil;
+	
+	float width = self.bounds.size.width;
+	float height = self.bounds.size.height;
 	
 	for (GLLItemBone *bone in bones)
 	{
 		vec_float4 position;
 		[bone.globalPosition getValue:&position];
-		vec_float4 screenPosition = simd_mat_vecmul(transform, position);
-		float distanceToRay = simd_rayDistance(near, direction, screenPosition);
-		if (distanceToRay > 7.0f) continue;
+		vec_float4 screenPosition = simd_mat_vecmul(viewProjection, position);
+		screenPosition /= simd_splat(screenPosition, 3);
 		
-		float distanceToStart = simd_length(screenPosition - near);
-		if (distanceToStart < closestDistance)
+		float screenX = (simd_extract(screenPosition, 0) * 0.5 + 1.0) * width;
+		float screenY = (simd_extract(screenPosition, 1) * 0.5 + 1.0) * height;
+		
+		float distanceToRay = sqrtf((screenX - point.x)*(screenX - point.x) + (screenY - point.y) *(screenY - point.y));
+		
+		if (distanceToRay > 30.0f) continue;
+		
+		float zDistance = simd_extract(screenPosition, 2);
+		if (zDistance < closestDistance)
 		{
-			closestDistance = distanceToStart;
+			closestDistance = zDistance;
 			closestBone = bone;
 		}
 	}

@@ -225,6 +225,12 @@
 	return sourceListController;
 }
 
+- (NSArray *)allBones
+{
+	NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"GLLItemBone"];
+	return [self.managedObjectContext executeFetchRequest:request error:NULL];
+}
+
 #pragma mark - Save panel delegate
 
 - (BOOL)panel:(id)sender validateURL:(NSURL *)url error:(NSError **)outError

@@ -9,6 +9,7 @@
 #import "GLLRenderWindowController.h"
 
 #import "GLLCamera.h"
+#import "GLLDocument.h"
 #import "GLLView.h"
 #import "GLLRenderAccessoryViewController.h"
 #import "GLLSceneDrawer.h"
@@ -57,6 +58,8 @@
 					 context:NULL];
 	[self.camera addObserver:self forKeyPath:@"windowSizeLocked" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
 					 context:NULL];
+	
+	self.renderView.document = self.document;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
