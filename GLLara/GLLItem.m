@@ -161,12 +161,11 @@
 	// They have appropriate default values, so they need no setting of parameters.
 	NSMutableOrderedSet *meshes = [self mutableOrderedSetValueForKey:@"meshes"];
 	[meshes removeAllObjects];
-	for (NSUInteger i = 0; i < model.meshes.count; i++)
-	{
-		GLLItemMesh *mesh = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext];
-		mesh.cullFaceMode = [(GLLModelMesh *) model.meshes[i] cullFaceMode];
-		[meshes addObject:mesh];
-	}
+	[meshes addObjectsFromArray:[model.meshes map:^(GLLModelMesh *modelMesh) {
+		GLLItemMesh *itemMesh = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext];
+		itemMesh.cullFaceMode = modelMesh.cullFaceMode;
+		return itemMesh;
+	}]];
 	
 	NSMutableOrderedSet *bones = [self mutableOrderedSetValueForKey:@"bones"];
 	[bones removeAllObjects];

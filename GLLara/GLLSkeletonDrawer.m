@@ -137,9 +137,7 @@ struct GLLSkeletonDrawer_Vertex {
 
 - (void)_updateElementBuffer;
 {
-	numPoints = 0;
-	for (GLLItem *item in self.items)
-		numPoints += item.bones.count;
+	numPoints = [[self.items valueForKeyPath:@"@sum.bones.@count"] intValue];
 	
 	uint16_t *indices = malloc(sizeof(uint16_t) * numPoints * 2);
 	

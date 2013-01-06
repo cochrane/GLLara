@@ -10,6 +10,7 @@
 
 #import <OpenGL/gl3.h>
 
+#import "NSArray+Map.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLMeshDrawer.h"
@@ -53,28 +54,18 @@
 	// Observe all the bones
 	// Store bones so we can unregister.
 	// Getting the bones from the item to unregister may not work, because they may already be gone when the drawer gets unloaded.
-	NSMutableArray *mutableBones = [[NSMutableArray alloc] initWithCapacity:item.bones.count];
-	for (id transform in item.bones)
-	{
-		[mutableBones addObject:transform];
+	bones = [item.bones map:^(id transform){
 		[transform addObserver:self forKeyPath:@"globalTransform" options:0 context:0];
-	}
-	bones = [mutableBones copy];
+		return transform;
+	}];
 	
 	// Observe settings of all meshes
-	NSMutableArray *mutableAlphaDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.alphaMeshDrawers.count];
-	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)
-	{
-		[mutableAlphaDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]]];
-	}
-	alphaDrawers = [mutableAlphaDrawers copy];
-	
-	NSMutableArray *mutableSolidDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.solidMeshDrawers.count];
-	for (GLLMeshDrawer *drawer in modelDrawer.solidMeshDrawers)
-	{
-		[mutableSolidDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]]];
-	}
-	solidDrawers = [mutableSolidDrawers copy];
+	alphaDrawers = [modelDrawer.alphaMeshDrawers map:^(GLLMeshDrawer *drawer) {
+		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]];
+	}];
+	solidDrawers = [modelDrawer.solidMeshDrawers map:^(GLLMeshDrawer *drawer) {
+		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]];
+	}];
 	
 	glGenBuffers(1, &transformsBuffer);
 	needToUpdateTransforms = YES;
@@ -143,12 +134,10 @@
 		[bone removeObserver:self forKeyPath:@"globalTransform"];
 	bones = nil;
 	
-	for (GLLItemMeshDrawer *drawer in solidDrawers)
-		[drawer unload];
+	[solidDrawers makeObjectsPerformSelector:@selector(unload)];
 	solidDrawers = nil;
 	
-	for (GLLItemMeshDrawer *drawer in alphaDrawers)
-		[drawer unload];
+	[solidDrawers makeObjectsPerformSelector:@selector(alphaDrawers)];
 	alphaDrawers = nil;
 	
 	glDeleteBuffers(1, &transformsBuffer);

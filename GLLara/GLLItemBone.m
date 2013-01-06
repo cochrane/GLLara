@@ -205,8 +205,7 @@
 	vec_float4 position = simd_mat_vecmul(transform, simd_make(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0f));
 	self.globalPosition = [NSValue valueWithBytes:&position objCType:@encode(float [4])];
 	
-	for (GLLItemBone *child in self.children)
-		[child updateGlobalTransform];
+	[self.children makeObjectsPerformSelector:@selector(updateGlobalTransform)];
 }
 
 @end

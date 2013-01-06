@@ -8,6 +8,7 @@
 
 #import "GLLModel.h"
 
+#import "NSArray+Map.h"
 #import "GLLASCIIScanner.h"
 #import "GLLModelBone.h"
 #import "GLLModelMesh.h"
@@ -304,8 +305,9 @@ static NSCache *cachedModels;
 {
 	if ([self.parameters.meshesToSplit containsObject:mesh.name])
 	{
-		for (GLLMeshSplitter *splitter in [self.parameters meshSplittersForMesh:mesh.name])
-			[array addObject:[mesh partialMeshFromSplitter:splitter]];
+		[array addObjectsFromArray:[[self.parameters meshSplittersForMesh:mesh.name] map:^(GLLMeshSplitter *splitter) {
+			return [mesh partialMeshFromSplitter:splitter];
+		}]];
 	}
 	else
 	{

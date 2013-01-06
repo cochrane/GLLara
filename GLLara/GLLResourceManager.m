@@ -90,14 +90,10 @@ static GLLResourceManager *sharedManager;
 {
 	[self.openGLContext makeCurrentContext];
 	
-	for (GLLModelDrawer *drawer in models.allValues)
-		[drawer unload];
-	for (GLLTexture *texture in textures.allValues)
-		[texture unload];
-	for (GLLModelProgram *program in programs.allValues)
-		[program unload];
-	for (GLLShader *shader in shaders.allValues)
-		[shader unload];
+	[models.allValues makeObjectsPerformSelector:@selector(unload)];
+	[textures.allValues makeObjectsPerformSelector:@selector(unload)];
+	[programs.allValues makeObjectsPerformSelector:@selector(unload)];
+	[shaders.allValues makeObjectsPerformSelector:@selector(unload)];
 	
 	models = nil;
 	textures = nil;

@@ -53,10 +53,8 @@
 
 - (void)unload;
 {
-	for (GLLMeshDrawer *drawer in self.solidMeshDrawers)
-		[drawer unload];
-	for (GLLMeshDrawer *drawer in self.alphaMeshDrawers)
-		[drawer unload];
+	[self.solidMeshDrawers makeObjectsPerformSelector:@selector(unload)];
+	[self.alphaMeshDrawers makeObjectsPerformSelector:@selector(unload)];
 	
 	_solidMeshDrawers = nil;
 	_alphaMeshDrawers = nil;
