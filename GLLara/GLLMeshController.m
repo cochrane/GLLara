@@ -12,4 +12,13 @@
 
 @implementation GLLMeshController
 
+- (void)addMeshChangeObserver:(id <GLLMeshChangeObserver>)observer;
+{
+	
+}
+- (void)removeMeshChangeObserver:(id <GLLMeshChangeObserver>)observer;
+{
+	
+}
+
 @end

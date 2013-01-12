@@ -47,9 +47,27 @@
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
+- (void)addBoneChangeObserver:(id <GLLBoneChangeListener>)observer;
+{
+	
+}
+- (void)removeBoneChangeObserver:(id <GLLBoneChangeListener>)observer;
+{
+	
+}
+
+#pragma mark - Bone Change Listener
+
 - (void)boneDidChange:(GLLBoneController *)controller
 {
 	[self _updateObservers];
+}
+
+#pragma mark - Private methods
+
+- (void)_updateObservers
+{
+	
 }
 
 @end

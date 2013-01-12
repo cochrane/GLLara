@@ -22,8 +22,8 @@
 
 @property (nonatomic) GLLItemBone *bone;
 
-- (void)addMeshChangeObserver:(id <GLLBoneChangeListener>)observer;
-- (void)removeMeshChangeObserver:(id <GLLBoneChangeListener>)observer;
+- (void)addBoneChangeObserver:(id <GLLBoneChangeListener>)observer;
+- (void)removeBoneChangeObserver:(id <GLLBoneChangeListener>)observer;
 
 // Derived
 @property (nonatomic, readonly) GLLBoneController *parentController;
