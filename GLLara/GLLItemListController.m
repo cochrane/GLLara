@@ -8,6 +8,7 @@
 
 #import "GLLItemListController.h"
 
+#import "NSArray+Map.h"
 #import "GLLItem.h"
 #import "GLLItemController.h"
 
@@ -44,22 +45,15 @@
 		
 		NSMutableArray *controllers = [self mutableArrayValueForKey:@"sourceListChildren"];
 		
-		NSMutableArray *toRemove = [[NSMutableArray alloc] init];
-		for (GLLItemController *drawer in itemControllers)
-		{
-			if (![notification.userInfo[NSDeletedObjectsKey] containsObject:drawer.item])
-				continue;
-			
-			[toRemove addObject:drawer];
-		}
+		NSArray *toRemove = [itemControllers map:^(GLLItemController *drawer){
+			return [notification.userInfo[NSDeletedObjectsKey] containsObject:drawer.item] ? drawer : nil;
+		}];
 		[controllers removeObjectsInArray:toRemove];
 		
 		// New objects includes absolutely anything. Restrict this to items.
-		for (GLLItem *newItem in notification.userInfo[NSInsertedObjectsKey])
-		{
-			if ([newItem.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:managedObjectContext]])
-				[controllers addObject:[[GLLItemController alloc] initWithItem:newItem]];
-		}
+		[controllers addObjectsFromArray:[notification.userInfo[NSInsertedObjectsKey] map:^(GLLItem *newItem){
+			return [newItem.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:managedObjectContext]] ? [[GLLItemController alloc] initWithItem:newItem] : nil;
+		}]];
 	}];
 
 	

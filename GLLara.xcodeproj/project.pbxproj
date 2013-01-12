@@ -254,6 +254,9 @@
 		52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m */; };
 		52D6A0A315F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */; };
 		52ED9E1E168399AE0082EABB /* GLLSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E1D168399AE0082EABB /* GLLSelection.m */; };
+		52ED9E26169332540082EABB /* GLLMeshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E25169332540082EABB /* GLLMeshController.m */; };
+		52ED9E29169333050082EABB /* GLLBoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E28169333050082EABB /* GLLBoneController.m */; };
+		52ED9E3B16999E370082EABB /* NSArray+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E3A16999E370082EABB /* NSArray+Map.m */; };
 		52F2BC3915F8198400E3EE75 /* GLLBoneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52F2BC3815F8198400E3EE75 /* GLLBoneView.xib */; };
 /* End PBXBuildFile section */
 
@@ -632,6 +635,12 @@
 		52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBump3Specular.fs; sourceTree = "<group>"; };
 		52ED9E1C168399AE0082EABB /* GLLSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSelection.h; sourceTree = "<group>"; };
 		52ED9E1D168399AE0082EABB /* GLLSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSelection.m; sourceTree = "<group>"; };
+		52ED9E24169332540082EABB /* GLLMeshController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshController.h; sourceTree = "<group>"; };
+		52ED9E25169332540082EABB /* GLLMeshController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshController.m; sourceTree = "<group>"; };
+		52ED9E27169333050082EABB /* GLLBoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneController.h; sourceTree = "<group>"; };
+		52ED9E28169333050082EABB /* GLLBoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneController.m; sourceTree = "<group>"; };
+		52ED9E3916999E370082EABB /* NSArray+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Map.h"; sourceTree = "<group>"; };
+		52ED9E3A16999E370082EABB /* NSArray+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Map.m"; sourceTree = "<group>"; };
 		52F2BC3815F8198400E3EE75 /* GLLBoneView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLBoneView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -771,6 +780,7 @@
 		525ACD5115F0F1A700534E7D /* GLLara */ = {
 			isa = PBXGroup;
 			children = (
+				52ED9E23169332390082EABB /* Controllers */,
 				5296946115F7B22E00DF2FA3 /* Document and UI */,
 				5296942C15F421D800DF2FA3 /* shared_simd */,
 				5296942515F4138100DF2FA3 /* Drawing posed items */,
@@ -823,6 +833,8 @@
 				52B9E0B01602815800641518 /* RenderParameters.strings */,
 				524BEB0B1612551800EA061D /* NSColor+Color32Bit.h */,
 				524BEB0C1612551800EA061D /* NSColor+Color32Bit.m */,
+				52ED9E3916999E370082EABB /* NSArray+Map.h */,
+				52ED9E3A16999E370082EABB /* NSArray+Map.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1216,6 +1228,17 @@
 				52B9E09C16027FC800641518 /* xibLocalizationPostprocessor-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		52ED9E23169332390082EABB /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				52ED9E24169332540082EABB /* GLLMeshController.h */,
+				52ED9E25169332540082EABB /* GLLMeshController.m */,
+				52ED9E27169333050082EABB /* GLLBoneController.h */,
+				52ED9E28169333050082EABB /* GLLBoneController.m */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1616,6 +1639,9 @@
 				524BEB101612F13D00EA061D /* GLLViewDrawer.m in Sources */,
 				524BEB131613304200EA061D /* GLLSourceListController.m in Sources */,
 				52ED9E1E168399AE0082EABB /* GLLSelection.m in Sources */,
+				52ED9E26169332540082EABB /* GLLMeshController.m in Sources */,
+				52ED9E29169333050082EABB /* GLLBoneController.m in Sources */,
+				52ED9E3B16999E370082EABB /* NSArray+Map.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
