@@ -12,6 +12,7 @@
 #import "GLLModel.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
+#import "TROutDataStream.h"
 
 @implementation GLLModelBone
 
@@ -104,6 +105,32 @@
 	
 	_children = [self.model.bones filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"parent == %@", self]];
 	return YES;
+}
+
+#pragma mark - Export
+
+- (NSString *)writeASCII;
+{
+	NSMutableString *result = [NSMutableString string];
+	
+	[result appendFormat:@"%@\n", self.name];
+	[result appendFormat:@"%d\n", self.parentIndex != NSNotFound ? (int) self.parentIndex : -1];
+	[result appendFormat:@"%f %f %f\n", self.positionX, self.positionY, self.positionZ];
+	
+	return [result copy];
+}
+
+- (NSData *)writeBinary;
+{
+	TROutDataStream *stream = [[TROutDataStream alloc] init];
+	
+	[stream appendPascalString:self.name];
+	[stream appendUint16:(uint16_t) self.parentIndex];
+	[stream appendFloat32:self.positionX];
+	[stream appendFloat32:self.positionY];
+	[stream appendFloat32:self.positionZ];
+	
+	return stream.data;
 }
 
 @end

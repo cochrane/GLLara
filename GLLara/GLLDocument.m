@@ -99,6 +99,14 @@
 	}
 }
 
+- (BOOL)configurePersistentStoreCoordinatorForURL:(NSURL *)url ofType:(NSString *)fileType modelConfiguration:(NSString *)configuration storeOptions:(NSDictionary *)storeOptions error:(NSError *__autoreleasing *)error
+{
+	NSMutableDictionary *allOptions = [@{ NSMigratePersistentStoresAutomaticallyOption : @YES, NSInferMappingModelAutomaticallyOption : @YES } mutableCopy];
+	if (storeOptions)
+		[allOptions addEntriesFromDictionary:storeOptions];
+	return [super configurePersistentStoreCoordinatorForURL:url ofType:fileType modelConfiguration:configuration storeOptions:allOptions error:error];
+}
+
 #pragma mark - Actions
 
 - (IBAction)openNewRenderView:(id)sender

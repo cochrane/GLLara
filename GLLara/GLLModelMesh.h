@@ -100,4 +100,8 @@ typedef enum GLLCullFaceMode
 
 @property (nonatomic, assign, readonly) GLLCullFaceMode cullFaceMode;
 
+// Export
+- (NSString *)writeASCII;
+- (NSData *)writeBinary;
+
 @end

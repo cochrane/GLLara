@@ -40,6 +40,9 @@
 @dynamic isVisible;
 @dynamic bones;
 @dynamic meshes;
+@dynamic normalChannelAssignmentR;
+@dynamic normalChannelAssignmentG;
+@dynamic normalChannelAssignmentB;
 
 @dynamic model;
 @dynamic itemURL;

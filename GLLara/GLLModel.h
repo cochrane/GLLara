@@ -38,6 +38,10 @@ extern NSString *GLLModelLoadingErrorDomain;
 - (id)initASCIIFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
 - (id)initASCIIFromString:(NSString *)source baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 
+// Export
+- (NSString *)writeASCII;
+- (NSData *)writeBinary;
+
 @property (nonatomic, copy) NSURL *baseURL;
 
 @property (nonatomic, retain) GLLModelParams *parameters;

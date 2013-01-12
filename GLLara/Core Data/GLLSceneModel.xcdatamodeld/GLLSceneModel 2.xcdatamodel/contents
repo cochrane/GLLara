@@ -43,7 +43,10 @@
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="itemURL" optional="YES" transient="YES" syncable="YES"/>
         <attribute name="itemURLBookmark" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="model" transient="YES" syncable="YES"/>
+        <attribute name="model" optional="YES" transient="YES" syncable="YES"/>
+        <attribute name="normalChannelAssignmentB" attributeType="Integer 16" minValueString="0" maxValueString="5" defaultValueString="0" syncable="YES"/>
+        <attribute name="normalChannelAssignmentG" attributeType="Integer 16" minValueString="0" maxValueString="5" defaultValueString="4" syncable="YES"/>
+        <attribute name="normalChannelAssignmentR" attributeType="Integer 16" minValueString="0" maxValueString="5" defaultValueString="2" syncable="YES"/>
         <attribute name="positionX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="positionY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="positionZ" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -92,7 +95,7 @@
         <element name="GLLColorRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLDirectionalLight" positionX="0" positionY="0" width="128" height="120"/>
         <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="GLLItem" positionX="0" positionY="0" width="128" height="314"/>
+        <element name="GLLItem" positionX="0" positionY="0" width="128" height="359"/>
         <element name="GLLItemBone" positionX="0" positionY="0" width="128" height="210"/>
         <element name="GLLItemMesh" positionX="0" positionY="0" width="128" height="105"/>
         <element name="GLLLight" positionX="0" positionY="0" width="128" height="60"/>
