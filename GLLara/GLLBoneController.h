@@ -6,11 +6,12 @@
 //  Copyright (c) 2013 Torsten Kammer. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 @class GLLItemBone;
 
 @class GLLBoneController;
+@class GLLBoneListController;
 
 @protocol GLLBoneChangeListener <NSObject>
 
@@ -18,8 +19,11 @@
 
 @end
 
-@interface GLLBoneController : NSObject <GLLBoneChangeListener>
+@interface GLLBoneController : NSObject <GLLBoneChangeListener, NSOutlineViewDataSource>
 
+- (id)initWithBone:(GLLItemBone *)bone listController:(GLLBoneListController *)listController;
+
+@property (nonatomic, weak) GLLBoneListController *listController;
 @property (nonatomic) GLLItemBone *bone;
 
 - (void)addBoneChangeObserver:(id <GLLBoneChangeListener>)observer;

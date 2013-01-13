@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Torsten Kammer. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 @class GLLItemMesh;
 
@@ -19,6 +19,8 @@
 @end
 
 @interface GLLMeshController : NSObject
+
+- (id)initWithMesh:(GLLItemMesh *)mesh;
 
 @property (nonatomic) GLLItemMesh *mesh;
 

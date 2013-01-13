@@ -8,15 +8,30 @@
 
 #import "GLLBoneController.h"
 
+#import "GLLBoneListController.h"
 #import "GLLItemBone.h"
+#import "GLLModelBone.h"
 
 @interface GLLBoneController ()
 
 - (void)_updateObservers;
+- (void)_loadChildBones;
+
+@property (nonatomic) NSArray *childBoneControllers;
 
 @end
 
 @implementation GLLBoneController
+
+- (id)initWithBone:(GLLItemBone *)bone listController:(GLLBoneListController *)listController;
+{
+	if (!(self = [super init])) return nil;
+	
+	self.bone = bone;
+	self.listController = listController;
+	
+	return self;
+}
 
 - (void)setBone:(GLLItemBone *)bone
 {
@@ -56,6 +71,31 @@
 	
 }
 
+#pragma mark - Outline View Data Source
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
+{
+	if (!self.childBoneControllers) [self _loadChildBones];
+	return self.childBoneControllers[index];
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{
+	return self.bone.bone.name;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
+{
+	if (!self.childBoneControllers) [self _loadChildBones];
+	return self.childBoneControllers.count > 0;
+}
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
+{
+	if (!self.childBoneControllers) [self _loadChildBones];
+	return self.childBoneControllers.count;
+}
+
 #pragma mark - Bone Change Listener
 
 - (void)boneDidChange:(GLLBoneController *)controller
@@ -68,6 +108,10 @@
 - (void)_updateObservers
 {
 	
+}
+- (void)_loadChildBones;
+{
+	self.childBoneControllers = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"bone.parent == %@", self.bone]];
 }
 
 @end
