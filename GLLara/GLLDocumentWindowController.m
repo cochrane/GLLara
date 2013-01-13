@@ -23,8 +23,6 @@
 #import "GLLItemListController.h"
 #import "GLLItemViewController.h"
 #import "GLLSourceListController.h"
-#import "GLLSourceListItem.h"
-#import "GLLSourceListMarker.h"
 
 @interface GLLDocumentWindowController ()
 {

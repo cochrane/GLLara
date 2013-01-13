@@ -9,14 +9,12 @@
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
-#import "GLLSourceListItem.h"
-
 @class GLLItem;
 @class GLLModelBone;
 @class TRInDataStream;
 @class TROutDataStream;
 
-@interface GLLItemBone : NSManagedObject <GLLSourceListItem>
+@interface GLLItemBone : NSManagedObject
 
 // From core data
 @property (nonatomic) float positionX;

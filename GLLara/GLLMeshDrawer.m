@@ -10,6 +10,7 @@
 
 #import <OpenGL/gl3.h>
 
+#import "NSArray+Map.h"
 #import "GLLModelMesh.h"
 #import "GLLModelProgram.h"
 #import "GLLVertexFormat.h"
@@ -38,15 +39,10 @@
 	if (!_program) return nil;
 	
 	// Set up textures
-	NSMutableArray *textures = [[NSMutableArray alloc] initWithCapacity:mesh.textures.count];
-	for (NSURL *textureLocation in mesh.textures)
-	{
-		GLLTexture *texture = [resourceManager textureForURL:textureLocation error:error];
-		if (!texture) return nil;
-		[textures addObject:texture];
-		
-	}
-	_textures = [textures copy];
+	_textures = [mesh.textures map:^(NSURL *location){
+		return [resourceManager textureForURL:location error:error];
+	}];
+	if (_textures.count < mesh.textures.count) return nil;
 		
 	// Create the element and vertex buffers, and spend a lot of time setting up the vertex attribute arrays and pointers.
 	glGenVertexArrays(1, &vertexArray);

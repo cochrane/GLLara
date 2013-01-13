@@ -100,27 +100,4 @@
 	else return NSNotApplicableMarker;
 }
 
-#pragma mark - Source list item
-
-- (BOOL)isSourceListHeader
-{
-	return NO;
-}
-- (NSString *)sourceListDisplayName
-{
-	return self.mesh.name;
-}
-- (BOOL)isLeafInSourceList
-{
-	return YES;
-}
-- (NSUInteger)countOfSourceListChildren
-{
-	return 0;
-}
-- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
-{
-	return nil;
-}
-
 @end

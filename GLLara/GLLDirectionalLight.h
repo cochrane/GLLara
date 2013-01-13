@@ -10,7 +10,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import "GLLSourceListItem.h"
 #import "simd_types.h"
 
 struct GLLLightUniformBlock
@@ -20,7 +19,7 @@ struct GLLLightUniformBlock
 	vec_float4 direction;
 };
 
-@interface GLLDirectionalLight : NSManagedObject <GLLSourceListItem>
+@interface GLLDirectionalLight : NSManagedObject
 
 @property (nonatomic) BOOL isEnabled;
 @property (nonatomic) NSUInteger index;

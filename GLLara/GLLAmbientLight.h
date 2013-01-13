@@ -10,9 +10,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import "GLLSourceListItem.h"
-
-@interface GLLAmbientLight : NSManagedObject <GLLSourceListItem>
+@interface GLLAmbientLight : NSManagedObject
 
 @property (nonatomic, retain) NSColor *color;
 @property (nonatomic) NSUInteger index;

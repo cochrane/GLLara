@@ -156,7 +156,6 @@
 		526AB3211609CCE900940A74 /* GLLItemExportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 526AB31F1609CCE900940A74 /* GLLItemExportView.xib */; };
 		5273A3F31630BF55009095F3 /* GLLInvalidASCIIModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5273A3F21630BF55009095F3 /* GLLInvalidASCIIModelTest.m */; };
 		5275F6821607293000978779 /* GLLItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6811607293000978779 /* GLLItemController.m */; };
-		5275F686160736C000978779 /* GLLSourceListMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F685160736C000978779 /* GLLSourceListMarker.m */; };
 		5275F6891607399800978779 /* GLLItemListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6881607399800978779 /* GLLItemListController.m */; };
 		5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6BC1607CD7800978779 /* GLLFloatRenderParameterView.m */; };
 		5275F6C01607D27F00978779 /* GLLColorRenderParameterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6BF1607D27F00978779 /* GLLColorRenderParameterView.m */; };
@@ -487,8 +486,6 @@
 		5273A3F21630BF55009095F3 /* GLLInvalidASCIIModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLInvalidASCIIModelTest.m; sourceTree = "<group>"; };
 		5275F6801607293000978779 /* GLLItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemController.h; sourceTree = "<group>"; };
 		5275F6811607293000978779 /* GLLItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemController.m; sourceTree = "<group>"; };
-		5275F684160736C000978779 /* GLLSourceListMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSourceListMarker.h; sourceTree = "<group>"; };
-		5275F685160736C000978779 /* GLLSourceListMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSourceListMarker.m; sourceTree = "<group>"; };
 		5275F6871607399800978779 /* GLLItemListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemListController.h; sourceTree = "<group>"; };
 		5275F6881607399800978779 /* GLLItemListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemListController.m; sourceTree = "<group>"; };
 		5275F6BB1607CD7800978779 /* GLLFloatRenderParameterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLFloatRenderParameterView.h; sourceTree = "<group>"; };
@@ -582,7 +579,6 @@
 		5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDocumentWindowController.m; sourceTree = "<group>"; };
 		5296947115F7FB3200DF2FA3 /* GLLItemMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemMesh.h; sourceTree = "<group>"; };
 		5296947215F7FB3200DF2FA3 /* GLLItemMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemMesh.m; sourceTree = "<group>"; };
-		5296947415F807A700DF2FA3 /* GLLSourceListItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLSourceListItem.h; sourceTree = "<group>"; };
 		5296947515F80F4500DF2FA3 /* GLLBoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneViewController.h; sourceTree = "<group>"; };
 		5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneViewController.m; sourceTree = "<group>"; };
 		52AF114B15FCB2D200DF2565 /* GLLWindowSettingsPopoverView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLWindowSettingsPopoverView.xib; sourceTree = "<group>"; };
@@ -745,11 +741,8 @@
 			children = (
 				524BEB111613304100EA061D /* GLLSourceListController.h */,
 				524BEB121613304100EA061D /* GLLSourceListController.m */,
-				5296947415F807A700DF2FA3 /* GLLSourceListItem.h */,
 				5275F6801607293000978779 /* GLLItemController.h */,
 				5275F6811607293000978779 /* GLLItemController.m */,
-				5275F684160736C000978779 /* GLLSourceListMarker.h */,
-				5275F685160736C000978779 /* GLLSourceListMarker.m */,
 				5275F6871607399800978779 /* GLLItemListController.h */,
 				5275F6881607399800978779 /* GLLItemListController.m */,
 				52ED9E8216A225D90082EABB /* GLLLightsListController.h */,
@@ -1671,7 +1664,6 @@
 				5213263E1602BB8000787AA1 /* GLLSquareProgram.m in Sources */,
 				52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m in Sources */,
 				5275F6821607293000978779 /* GLLItemController.m in Sources */,
-				5275F686160736C000978779 /* GLLSourceListMarker.m in Sources */,
 				5275F6891607399800978779 /* GLLItemListController.m in Sources */,
 				5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */,
 				5275F6C01607D27F00978779 /* GLLColorRenderParameterView.m in Sources */,

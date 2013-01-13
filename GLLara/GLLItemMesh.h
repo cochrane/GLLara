@@ -9,13 +9,11 @@
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
-#import "GLLSourceListItem.h"
-
 @class GLLItem;
 @class GLLModelMesh;
 @class GLLRenderParameter;
 
-@interface GLLItemMesh : NSManagedObject <GLLSourceListItem>
+@interface GLLItemMesh : NSManagedObject
 
 // Core data
 @property (nonatomic) BOOL isVisible;

@@ -54,27 +54,4 @@
 	return block;
 }
 
-#pragma mark - Source list item
-
-- (BOOL)isSourceListHeader
-{
-	return NO;
-}
-- (NSString *)sourceListDisplayName
-{
-	return [NSString stringWithFormat:NSLocalizedString(@"Light %lu", @"source list: Light name format"), self.index];
-}
-- (BOOL)isLeafInSourceList
-{
-	return YES;
-}
-- (NSUInteger)countOfSourceListChildren
-{
-	return 0;
-}
-- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
-{
-	return nil;
-}
-
 @end

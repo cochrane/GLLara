@@ -157,6 +157,7 @@ struct GLLSkeletonDrawer_Vertex {
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lineElementBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint16_t) * numPoints * 2, indices, GL_DYNAMIC_DRAW);
+	free(indices);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(struct GLLSkeletonDrawer_Vertex) * numPoints, NULL, GL_DYNAMIC_DRAW);

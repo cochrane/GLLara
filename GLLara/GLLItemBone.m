@@ -127,29 +127,6 @@
 	return children;
 }
 
-#pragma mark - Source list item
-
-- (BOOL)isSourceListHeader
-{
-	return NO;
-}
-- (NSString *)sourceListDisplayName
-{
-	return self.bone.name;
-}
-- (BOOL)isLeafInSourceList
-{
-	return self.children.count == 0;
-}
-- (NSUInteger)countOfSourceListChildren
-{
-	return self.children.count;
-}
-- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
-{
-	return self.children[index];
-}
-
 - (BOOL)isChildOfBone:(GLLItemBone *)bone;
 {
 	if (bone == self) return YES;
