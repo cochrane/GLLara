@@ -81,6 +81,10 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	
 	self.sourceView.delegate = self;
 	self.sourceView.dataSource = self;
+	
+	[self.sourceView expandItem:lightsListController];
+	[self.sourceView expandItem:itemListController];
+	[self.sourceView expandItem:settingsListController];
 		
 //	[meshViewController bind:@"selectedObjects" toObject:self withKeyPath:@"treeController.selectedObjects" options:nil];
 }
@@ -135,6 +139,12 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	return nil;
 }
 
+- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{
+	if ([item respondsToSelector:_cmd])
+		[item outlineView:outlineView setObjectValue:object forTableColumn:tableColumn byItem:item];
+}
+
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
 	if (item == nil) return YES;
@@ -151,7 +161,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
 {
-//	return [[item valueForKeyPath:@"representedObject.isSourceListHeader"] boolValue];
+	if ([item respondsToSelector:_cmd])
+		return [item outlineView:outlineView isGroupItem:item];
 	return NO;
 }
 
@@ -201,10 +212,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
-//	if ([item isKindOfClass:[GLLItemController class]])
-//		return YES;
-//	
-//	return NO;
+	if ([item respondsToSelector:_cmd])
+		return [item outlineView:outlineView shouldEditTableColumn:tableColumn item:item];
 	return NO;
 }
 

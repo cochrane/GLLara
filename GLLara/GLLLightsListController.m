@@ -50,14 +50,20 @@
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-	if (item == self) return YES;
-	else return NO;
+	return YES;
 }
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
 	if (!self.lights) [self _fetchLights];
 	return self.lights.count;
+}
+
+#pragma mark - Outline view delegate
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
+{
+	return YES;
 }
 
 #pragma mark - Private methods

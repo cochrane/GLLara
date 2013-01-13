@@ -75,4 +75,11 @@
 	return self.itemControllers.count;
 }
 
+#pragma mark - Outline view delegate
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
+{
+	return YES;
+}
+
 @end

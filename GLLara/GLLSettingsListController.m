@@ -35,13 +35,19 @@
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-	if (item == self) return YES;
-	else return NO;
+	return YES;
 }
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
 	return 0;
+}
+
+#pragma mark - Outline view delegate
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
+{
+	return YES;
 }
 
 @end
