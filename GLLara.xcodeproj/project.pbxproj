@@ -121,7 +121,6 @@
 		524BEB07161211E400EA061D /* Skeleton.vs in Resources */ = {isa = PBXBuildFile; fileRef = 524BEB05161211E400EA061D /* Skeleton.vs */; };
 		524BEB0D1612551800EA061D /* NSColor+Color32Bit.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEB0C1612551800EA061D /* NSColor+Color32Bit.m */; };
 		524BEB101612F13D00EA061D /* GLLViewDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEB0F1612F13D00EA061D /* GLLViewDrawer.m */; };
-		524BEB131613304200EA061D /* GLLSourceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEB121613304100EA061D /* GLLSourceListController.m */; };
 		524C705516087B130038823B /* GLLRenderAccessoryView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C705716087B130038823B /* GLLRenderAccessoryView.strings */; };
 		524C705816087B160038823B /* GLLAmbientLightView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C705A16087B160038823B /* GLLAmbientLightView.strings */; };
 		524C705B16087B1A0038823B /* GLLBoneView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C705D16087B1A0038823B /* GLLBoneView.strings */; };
@@ -432,8 +431,6 @@
 		524BEB0C1612551800EA061D /* NSColor+Color32Bit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+Color32Bit.m"; sourceTree = "<group>"; };
 		524BEB0E1612F13D00EA061D /* GLLViewDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLLViewDrawer.h; path = ../GLLViewDrawer.h; sourceTree = "<group>"; };
 		524BEB0F1612F13D00EA061D /* GLLViewDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLLViewDrawer.m; path = ../GLLViewDrawer.m; sourceTree = "<group>"; };
-		524BEB111613304100EA061D /* GLLSourceListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSourceListController.h; sourceTree = "<group>"; };
-		524BEB121613304100EA061D /* GLLSourceListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSourceListController.m; sourceTree = "<group>"; };
 		524C705616087B130038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLRenderAccessoryView.strings; sourceTree = "<group>"; };
 		524C705916087B160038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLAmbientLightView.strings; sourceTree = "<group>"; };
 		524C705C16087B1A0038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLBoneView.strings; sourceTree = "<group>"; };
@@ -739,8 +736,6 @@
 		52423B6E160619F4009F5753 /* Source List */ = {
 			isa = PBXGroup;
 			children = (
-				524BEB111613304100EA061D /* GLLSourceListController.h */,
-				524BEB121613304100EA061D /* GLLSourceListController.m */,
 				5275F6801607293000978779 /* GLLItemController.h */,
 				5275F6811607293000978779 /* GLLItemController.m */,
 				5275F6871607399800978779 /* GLLItemListController.h */,
@@ -1675,7 +1670,6 @@
 				524BEB0316120FCF00EA061D /* GLLSkeletonProgram.m in Sources */,
 				524BEB0D1612551800EA061D /* NSColor+Color32Bit.m in Sources */,
 				524BEB101612F13D00EA061D /* GLLViewDrawer.m in Sources */,
-				524BEB131613304200EA061D /* GLLSourceListController.m in Sources */,
 				52ED9E1E168399AE0082EABB /* GLLSelection.m in Sources */,
 				52ED9E26169332540082EABB /* GLLMeshController.m in Sources */,
 				52ED9E29169333050082EABB /* GLLBoneController.m in Sources */,

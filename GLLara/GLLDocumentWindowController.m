@@ -22,7 +22,9 @@
 #import "GLLItemExportViewController.h"
 #import "GLLItemListController.h"
 #import "GLLItemViewController.h"
-#import "GLLSourceListController.h"
+#import "GLLLightsListController.h"
+#import "GLLItemListController.h"
+#import "GLLSettingsListController.h"
 
 @interface GLLDocumentWindowController ()
 {
@@ -32,7 +34,9 @@
 	GLLMeshViewController *meshViewController;
 	NSViewController *lightViewController;
 	
-	GLLSourceListController *sourceListController;
+	GLLLightsListController *lightsListController;
+	GLLItemListController *itemListController;
+	GLLSettingsListController *settingsListController;
 	
 	NSViewController *currentController;
 }
@@ -71,11 +75,12 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 {
     [super windowDidLoad];
 	
-	
-	sourceListController = [[GLLSourceListController alloc] initWithManagedObjectContext:self.managedObjectContext outlineView:self.sourceView];
+	lightsListController = [[GLLLightsListController alloc] initWithManagedObjectContext:self.managedObjectContext outlineView:self.sourceView];
+	itemListController = [[GLLItemListController alloc] initWithManagedObjectContext:self.managedObjectContext outlineView:self.sourceView];
+	settingsListController = [[GLLSettingsListController alloc] initWithManagedObjectContext:self.managedObjectContext outlineView:self.sourceView];
 	
 	self.sourceView.delegate = self;
-	self.sourceView.dataSource = sourceListController;
+	self.sourceView.dataSource = self;
 		
 //	[meshViewController bind:@"selectedObjects" toObject:self withKeyPath:@"treeController.selectedObjects" options:nil];
 }
@@ -106,6 +111,40 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	}
 	else
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+}
+
+#pragma mark - Outline view data source
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
+{
+	if (item) return [item outlineView:outlineView child:index ofItem:item];
+	
+	switch (index)
+	{
+		case 0: return lightsListController;
+		case 1: return itemListController;
+		case 2: return settingsListController;
+		default: return nil;
+	}
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{
+	if (item) return [item outlineView:outlineView objectValueForTableColumn:tableColumn byItem:item];
+	
+	return nil;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
+{
+	if (item == nil) return YES;
+	else return [item outlineView:outlineView isItemExpandable:item];
+}
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
+{
+	if (item == nil) return 3;
+	else return [item outlineView:outlineView numberOfChildrenOfItem:item];
 }
 
 #pragma mark - Outline view delegate

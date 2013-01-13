@@ -24,7 +24,6 @@
 #import "GLLRenderWindowController.h"
 #import "GLLSceneDrawer.h"
 #import "GLLSelection.h"
-#import "GLLSourceListController.h"
 
 @interface GLLDocument () <NSOpenSavePanelDelegate>
 {
