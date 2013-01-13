@@ -24,6 +24,5 @@
 
 @property (nonatomic, retain) IBOutlet NSOutlineView *sourceView;
 @property (nonatomic, retain) IBOutlet NSView *placeholderView;
-@property (nonatomic, retain, readonly) NSTreeController *treeController;
 
 @end

@@ -8,71 +8,66 @@
 
 #import "GLLSourceListController.h"
 
+#import "GLLLightsListController.h"
 #import "GLLItemListController.h"
-#import "GLLSourceListMarker.h"
+#import "GLLSettingsListController.h"
 
 @interface GLLSourceListController ()
 {
+	GLLLightsListController *lightsListController;
 	GLLItemListController *itemListController;
-	NSArrayController *lightsController;
-	GLLSourceListMarker *lightsMarker;
-	GLLSourceListMarker *settingsMarker;
+	GLLSettingsListController *settingsListController;
 }
 
 @end
 
 @implementation GLLSourceListController
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext outlineView:(NSOutlineView *)outlineView;
 {
     if (!(self = [super init])) return nil;
     
 	_managedObjectContext = managedObjectContext;
 	
-	lightsController = [[NSArrayController alloc] initWithContent:nil];
-	lightsController.managedObjectContext = self.managedObjectContext;
-	lightsController.entityName = @"GLLLight";
-	lightsController.automaticallyPreparesContent = YES;
-	lightsController.automaticallyRearrangesObjects = YES;
-	lightsController.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES] ];
-	[lightsController fetch:self];
+	lightsListController = [[GLLLightsListController alloc] initWithManagedObjectContext:_managedObjectContext outlineView:outlineView];
+	itemListController = [[GLLItemListController alloc] initWithManagedObjectContext:_managedObjectContext outlineView:outlineView];
+	settingsListController = [[GLLSettingsListController alloc] initWithManagedObjectContext:_managedObjectContext outlineView:outlineView];
 	
-	lightsMarker = [[GLLSourceListMarker alloc] initWithObject:lightsController childrenKeyPath:@"arrangedObjects"];
-	lightsMarker.isSourceListHeader = YES;
-	lightsMarker.sourceListDisplayName = NSLocalizedString(@"Lights", @"source list header: lights");
-	
-	settingsMarker = [[GLLSourceListMarker alloc] initWithObject:nil childrenKeyPath:nil];
-	settingsMarker.isSourceListHeader = YES;
-	settingsMarker.sourceListDisplayName = NSLocalizedString(@"Settings", @"source list header: lights");
-	
-	itemListController = [[GLLItemListController alloc] initWithManagedObjectContext:managedObjectContext];
-	
-	_treeController = [[NSTreeController alloc] init];
-	_treeController.childrenKeyPath = @"sourceListChildren";
-	_treeController.leafKeyPath = @"isLeafInSourceList";
-	[_treeController bind:@"content" toObject:self withKeyPath:@"sourceListRoots" options:nil];
-	
-    return self;
+	return self;
 }
 
+#pragma mark - Outline view data source
 
-#pragma mark - Filling the tree controller
-
-- (NSUInteger)countOfSourceListRoots;
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
-	return 3;
-}
+	if (item) return [item outlineView:outlineView child:index ofItem:item];
 
-- (id)objectInSourceListRootsAtIndex:(NSUInteger)index;
-{
-	switch(index)
+	switch (index)
 	{
-		case 0: return lightsMarker;
+		case 0: return lightsListController;
 		case 1: return itemListController;
-		case 2: return settingsMarker;
+		case 2: return settingsListController;
 		default: return nil;
 	}
 }
 
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{
+	if (item) return [item outlineView:outlineView objectValueForTableColumn:tableColumn byItem:item];
+	
+	return nil;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
+{
+	if (item == nil) return YES;
+	else return [item outlineView:outlineView isItemExpandable:item];
+}
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
+{
+	if (item == nil) return 3;
+	else return [item outlineView:outlineView numberOfChildrenOfItem:item];
+}
 
 @end

@@ -287,11 +287,9 @@ static NSCache *cachedModels;
 {
 	NSMutableString *result = [NSMutableString string];
 	[result appendFormat:@"%lu\n", self.bones.count];
-	for (GLLModelBone *bone in self.bones)
-		[result appendString:[bone writeASCII]];
+	[result appendString:[[self.bones valueForKey:@"writeASCII"] componentsJoinedByString:@""]];
 	[result appendFormat:@"%lu\n", self.meshes.count];
-	for (GLLModelMesh *mesh in self.meshes)
-		[result appendString:[mesh writeASCII]];
+	[result appendString:[[self.meshes valueForKey:@"writeASCII"] componentsJoinedByString:@""]];
 	
 	return [result copy];
 }

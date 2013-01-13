@@ -9,76 +9,54 @@
 #import "GLLItemController.h"
 
 #import "GLLItem.h"
-#import "GLLSourceListMarker.h"
+#import "GLLBoneListController.h"
+#import "GLLMeshListController.h"
 
 @interface GLLItemController ()
-{
-	GLLSourceListMarker *bonesMarker;
-	GLLSourceListMarker *meshesMarker;
-}
+
+@property (nonatomic) GLLMeshListController *meshListController;
+@property (nonatomic) GLLBoneListController *boneListController;
 
 @end
 
 @implementation GLLItemController
-
-+ (NSSet *)keyPathsForValuesAffectingSourceListDisplayName
-{
-	return [NSSet setWithObject:@"item.displayName"];
-}
 
 - (id)initWithItem:(GLLItem *)item;
 {
 	if (!(self = [super init])) return nil;
 	
 	self.item = item;
+	self.meshListController = [[GLLMeshListController alloc] initWithItem:item];
+	self.boneListController = [[GLLBoneListController alloc] initWithItem:item];
 		
 	return self;
 }
 
-- (void)setSourceListDisplayName:(NSString *)displayName
+#pragma mark - Outline View Data Source
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
-	self.item.displayName = displayName;
+	switch (index)
+	{
+		case 0: return self.meshListController;
+		case 1: return self.boneListController;
+		default: return nil;
+	}
 }
 
-#pragma mark - Source List Item
-
-- (BOOL)isSourceListHeader
-{
-	return NO;
-}
-- (NSString *)sourceListDisplayName
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
 	return self.item.displayName;
 }
-- (BOOL)isLeafInSourceList
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-	return NO;
+	return YES;
 }
-- (NSUInteger)countOfSourceListChildren
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
 	return 2;
-}
-- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
-{
-	if (index == 0)
-	{
-		if (!meshesMarker)
-		{
-			meshesMarker = [[GLLSourceListMarker alloc] initWithObject:self childrenKeyPath:@"item.meshes"];
-			meshesMarker.sourceListDisplayName = NSLocalizedString(@"Meshes", @"source list: meshes subheader");
-		}
-		return meshesMarker;
-	}
-	else if (index == 1)
-	{
-		if (!bonesMarker)
-		{
-			bonesMarker = [[GLLSourceListMarker alloc] initWithObject:self childrenKeyPath:@"item.rootBones"];
-			bonesMarker.sourceListDisplayName = NSLocalizedString(@"Bones", @"source list: bones subheader");
-		}
-		return bonesMarker;
-	}
-	else return nil;
 }
 
 @end

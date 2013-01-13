@@ -13,87 +13,66 @@
 #import "GLLItemController.h"
 
 @interface GLLItemListController ()
-{
-	id managedObjectContextObserver;
-	NSMutableArray *itemControllers;
-}
+
+@property (nonatomic) NSMutableArray *itemControllers;
 
 @end
 
 @implementation GLLItemListController
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext outlineView:(NSOutlineView *)outlineView;
 {
 	if (!(self = [super init])) return nil;
 	
 	_managedObjectContext = managedObjectContext;
+	_outlineView = outlineView;
 	
-	itemControllers = [[NSMutableArray alloc] init];
-	
-	// Load existing items
-	NSFetchRequest *allItemsRequest = [[NSFetchRequest alloc] initWithEntityName:@"GLLItem"];
-	NSArray *allItems = [self.managedObjectContext executeFetchRequest:allItemsRequest error:NULL];
-	NSMutableArray *controllers = [self mutableArrayValueForKey:@"sourceListChildren"];
-	for (GLLItem *item in allItems)
-		[controllers addObject:[[GLLItemController alloc] initWithItem:item]];
-	
-	// Set up loading of future items and destroying items.
-	// Store self as weak in the block, so it does not retain this.
-	__block __weak id weakSelf = self;
-	managedObjectContextObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:_managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-		GLLItemListController *self = weakSelf;
+	[[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:_managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
 		
-		NSMutableArray *controllers = [self mutableArrayValueForKey:@"sourceListChildren"];
+		NSArray *removedItemControllers = [self.itemControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"item in %@", notification.userInfo[NSDeletedObjectsKey]]];
+		[self.itemControllers removeObjectsInArray:removedItemControllers];
 		
-		NSArray *toRemove = [itemControllers map:^(GLLItemController *drawer){
-			return [notification.userInfo[NSDeletedObjectsKey] containsObject:drawer.item] ? drawer : nil;
+		NSSet *addedItems = [notification.userInfo[NSInsertedObjectsKey] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"entity.name == \"GLLItem\""]];
+		NSArray *addedItemControllers = [addedItems map:^(GLLItem *item){
+			return [[GLLItemController alloc] initWithItem:item];
 		}];
-		[controllers removeObjectsInArray:toRemove];
+		[self.itemControllers addObjectsFromArray:addedItemControllers];
+		[self.itemControllers sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"item.displayName" ascending:YES] ]];
 		
-		// New objects includes absolutely anything. Restrict this to items.
-		[controllers addObjectsFromArray:[notification.userInfo[NSInsertedObjectsKey] map:^(GLLItem *newItem){
-			return [newItem.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:managedObjectContext]] ? [[GLLItemController alloc] initWithItem:newItem] : nil;
-		}]];
+		[self.outlineView reloadItem:self reloadChildren:YES];
 	}];
-
+	
+	// Get initial items
+	NSFetchRequest *itemRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
+	itemRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"displayName" ascending:YES] ];
+	
+	self.itemControllers = [[_managedObjectContext executeFetchRequest:itemRequest error:NULL] mapMutable:^(GLLItem *item){
+		return [[GLLItemController alloc] initWithItem:item];
+	}];
 	
 	return self;
 }
 
-- (void)insertObject:(GLLItemController *)object inSourceListChildrenAtIndex:(NSUInteger)index
+#pragma mark - Outline view data source
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
-	[itemControllers insertObject:object atIndex:index];
+	return self.itemControllers[index];
 }
 
-- (void)removeObjectFromSourceListChildrenAtIndex:(NSUInteger)index
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
-	[itemControllers removeObjectAtIndex:index];
+	return NSLocalizedString(@"Items", @"source view header");
 }
 
-- (void)replaceObjectInSourceListChildrenAtIndex:(NSUInteger)index withObject:(GLLItemController *)newObject;
-{
-	[itemControllers replaceObjectAtIndex:index withObject:newObject];
-}
-
-- (BOOL)isSourceListHeader
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
 	return YES;
 }
-- (NSString *)sourceListDisplayName
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
-	return NSLocalizedString(@"Items", @"items source list header");
-}
-- (BOOL)isLeafInSourceList
-{
-	return NO;
-}
-- (NSUInteger)countOfSourceListChildren
-{
-	return [itemControllers count];
-}
-- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
-{
-	return [itemControllers objectAtIndex:index];
+	return self.itemControllers.count;
 }
 
 @end

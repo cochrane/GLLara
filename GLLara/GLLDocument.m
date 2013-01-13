@@ -225,12 +225,13 @@
 
 - (GLLSourceListController *)sourceListController
 {
-	if (!sourceListController)
-	{
-		sourceListController = [[GLLSourceListController alloc] initWithManagedObjectContext:self.managedObjectContext];
-		[self.selection bind:@"selectedObjects" toObject:sourceListController.treeController withKeyPath:@"selectedObjects" options:nil];
-	}
-	return sourceListController;
+//	if (!sourceListController)
+//	{
+//		sourceListController = [[GLLSourceListController alloc] initWithManagedObjectContext:self.managedObjectContext];
+//		[self.selection bind:@"selectedObjects" toObject:sourceListController.treeController withKeyPath:@"selectedObjects" options:nil];
+//	}
+//	return sourceListController;
+	return nil;
 }
 
 - (NSArray *)allBones
