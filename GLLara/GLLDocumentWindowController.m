@@ -41,6 +41,8 @@
 	GLLSettingsListController *settingsListController;
 	
 	NSViewController *currentController;
+	
+	NSArrayController *selectionController;
 }
 
 - (void)_setRightHandController:(NSViewController *)controller;
@@ -62,6 +64,9 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	itemViewController = [[GLLItemViewController alloc] init];
 	meshViewController = [[GLLMeshViewController alloc] init];
 	lightViewController = [[NSViewController alloc] initWithNibName:@"GLLLightView" bundle:[NSBundle mainBundle]];
+	
+	selectionController = [[NSArrayController alloc] init];
+	[selectionController bind:@"contentArray" toObject:self withKeyPath:@"selection.selectedObjects" options:nil];
 		
 	self.shouldCloseDocument = YES;
 	
@@ -88,35 +93,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	[self.sourceView expandItem:itemListController];
 	[self.sourceView expandItem:settingsListController];
 		
-//	[meshViewController bind:@"selectedObjects" toObject:self withKeyPath:@"treeController.selectedObjects" options:nil];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	if ([keyPath isEqual:@"selectedObjects"])
-	{
-//		NSArray *selected = self.treeController.selectedObjects;
-//		
-//		if (selected.count == 0)
-//		{
-//			[self _setRightHandController:nil];
-//			return;
-//		}
-//		
-//		if ([selected.lastObject isKindOfClass:[GLLAmbientLight class]])
-//			[self _setRightHandController:ambientLightViewController];
-//		else if ([selected.lastObject isKindOfClass:[GLLItemBone class]])
-//			[self _setRightHandController:boneViewController];
-//		else if ([selected.lastObject isKindOfClass:[GLLItemController class]])
-//			[self _setRightHandController:itemViewController];
-//		else if ([selected.lastObject isKindOfClass:[GLLItemMesh class]])
-//			[self _setRightHandController:meshViewController];
-//		else if ([selected.lastObject isKindOfClass:[GLLDirectionalLight class]])
-//			[self _setRightHandController:lightViewController];
-		
-	}
-	else
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	[meshViewController bind:@"selectedObjects" toObject:self withKeyPath:@"selection.selectedObjects" options:nil];
 }
 
 #pragma mark - Outline view data source
@@ -206,6 +183,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	
 	[[self.selection mutableArrayValueForKey:@"selectedObjects"] replaceObjectsInRange:NSMakeRange(0, self.selection.selectedObjects.count) withObjectsFromArray:selectedObjects];
 	
+	[selectionController setSelectedObjects:selectionController.arrangedObjects];
+	
 	if (selectedObjects.count == 0)
 		[self _setRightHandController:nil];
 	else
@@ -221,6 +200,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 			[self _setRightHandController:meshViewController];
 		else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItemBone" inManagedObjectContext:self.managedObjectContext]])
 			[self _setRightHandController:boneViewController];
+		else
+			[self _setRightHandController:nil];
 	}
 }
 
@@ -235,7 +216,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	
 	if (currentController == controller)
 	{
-//		currentController.representedObject = self.treeController.selection;
+		currentController.representedObject = [selectionController selection];
 		return;
 	}
 	
@@ -250,7 +231,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		NSView *newView = controller.view;
 		newView.frame = (NSRect) { { 0.0f, 0.0f }, self.placeholderView.frame.size };
 		[self.placeholderView addSubview:controller.view];
-//		controller.representedObject = self.treeController.selection;
+		controller.representedObject = [selectionController selection];
 		currentController = controller;
 	}
 }
