@@ -43,6 +43,11 @@
 	return 0;
 }
 
+- (NSArray *)allSelectableControllers
+{
+	return @[];
+}
+
 #pragma mark - Outline view delegate
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item

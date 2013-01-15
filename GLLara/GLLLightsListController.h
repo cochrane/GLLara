@@ -14,5 +14,6 @@
 
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readonly) NSOutlineView *outlineView;
+@property (nonatomic, readonly) NSArray *allSelectableControllers;
 
 @end

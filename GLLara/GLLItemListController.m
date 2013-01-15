@@ -53,6 +53,11 @@
 	return self;
 }
 
+- (NSArray *)allSelectableControllers
+{
+	return [self valueForKeyPath:@"itemControllers.@unionOfArrays.allSelectableControllers"];
+}
+
 #pragma mark - Outline view data source
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item

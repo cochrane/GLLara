@@ -30,6 +30,11 @@
 	return self;
 }
 
+- (NSArray *)allSelectableControllers
+{
+	return self.lights;
+}
+
 #pragma mark - Outline view data source
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item

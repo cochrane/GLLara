@@ -35,6 +35,11 @@
 	return self;
 }
 
+- (NSArray *)allSelectableControllers
+{
+	return self.boneControllers;
+}
+
 #pragma mark - Outline View Data Source
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item

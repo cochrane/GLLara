@@ -47,6 +47,8 @@
 
 - (void)_setRightHandController:(NSViewController *)controller;
 
+@property (nonatomic, readonly) NSArray *allSelectableControllers;
+
 @end
 
 static NSString *settingsGroupIdentifier = @"settings group identifier";
@@ -67,6 +69,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	
 	selectionController = [[NSArrayController alloc] init];
 	[selectionController bind:@"contentArray" toObject:self withKeyPath:@"selection.selectedObjects" options:nil];
+	[self addObserver:self forKeyPath:@"selection.selectedObjects" options:NSKeyValueObservingOptionNew context:NULL];
 		
 	self.shouldCloseDocument = YES;
 	
@@ -94,6 +97,21 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	[self.sourceView expandItem:settingsListController];
 		
 	[meshViewController bind:@"selectedObjects" toObject:self withKeyPath:@"selection.selectedObjects" options:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:@"selection.selectedObjects"])
+	{
+		// Set the correct selection in the outline view
+		NSArray *selectedOutlineViewItems = [self.allSelectableControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"representedObject in %@", self.selection.selectedObjects]];
+		
+		NSMutableIndexSet *selectionIndexes = [NSMutableIndexSet indexSet];
+		for (id item in selectedOutlineViewItems)
+			[selectionIndexes addIndex:[self.sourceView rowForItem:item]];
+		
+		[self.sourceView selectRowIndexes:selectionIndexes byExtendingSelection:NO];
+	}
 }
 
 #pragma mark - Outline view data source
@@ -234,6 +252,15 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		controller.representedObject = [selectionController selection];
 		currentController = controller;
 	}
+}
+
+- (NSArray *)allSelectableControllers
+{
+	NSMutableArray *result = [NSMutableArray array];
+	[result addObjectsFromArray:lightsListController.allSelectableControllers];
+	[result addObjectsFromArray:itemListController.allSelectableControllers];
+	[result addObjectsFromArray:settingsListController.allSelectableControllers];
+	return result;
 }
 
 @end

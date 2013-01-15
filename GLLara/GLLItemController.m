@@ -37,6 +37,14 @@
 	return self.item;
 }
 
+- (NSArray *)allSelectableControllers
+{
+	NSMutableArray *result = [NSMutableArray arrayWithObject:self];
+	[result addObjectsFromArray:self.meshListController.allSelectableControllers];
+	[result addObjectsFromArray:self.boneListController.allSelectableControllers];
+	return result;
+}
+
 #pragma mark - Outline View Data Source
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item

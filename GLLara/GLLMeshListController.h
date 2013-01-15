@@ -15,5 +15,7 @@
 - (id)initWithItem:(GLLItem *)item;
 
 @property (nonatomic) GLLItem *item;
+@property (nonatomic, readonly) NSArray *allSelectableControllers;
+
 
 @end

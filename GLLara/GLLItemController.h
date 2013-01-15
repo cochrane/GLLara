@@ -19,5 +19,6 @@
 
 @property (nonatomic) GLLItem *item;
 @property (nonatomic, readonly) id representedObject;
+@property (nonatomic, readonly) NSArray *allSelectableControllers;
 
 @end

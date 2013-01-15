@@ -16,5 +16,7 @@
 
 @property (nonatomic) GLLItem *item;
 @property (nonatomic, readonly) NSArray *boneControllers;
+@property (nonatomic, readonly) NSArray *allSelectableControllers;
+
 
 @end
