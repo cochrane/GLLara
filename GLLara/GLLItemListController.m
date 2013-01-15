@@ -82,4 +82,9 @@
 	return YES;
 }
 
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
+{
+	return NO;
+}
+
 @end

@@ -168,45 +168,24 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (NSIndexSet *)outlineView:(NSOutlineView *)outlineView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes;
 {
-//	BOOL anyItemController = NO;
-//	NSEntityDescription *firstDescription = nil;
-//	
-//	for (NSUInteger index = proposedSelectionIndexes.firstIndex; index <= proposedSelectionIndexes.lastIndex; index = [proposedSelectionIndexes indexGreaterThanIndex:index])
-//	{
-//		id item = [[outlineView itemAtRow:index] representedObject];
-//		
-//		// Do not add source list headers
-//		if ([item isSourceListHeader])
-//			return outlineView.selectedRowIndexes;
-//		
-//		// Do not add marker objects
-//		if ([item isKindOfClass:[GLLSourceListMarker class]])
-//			return outlineView.selectedRowIndexes;
-//		
-//		if ([item isKindOfClass:[GLLItemController class]])
-//		{
-//			anyItemController = YES;
-//			
-//			// Do not add controllers if there are already objects in…
-//			if (firstDescription)
-//				return outlineView.selectedRowIndexes;
-//		}
-//		else
-//		{
-//			// …and vice versa
-//			if (anyItemController)
-//				return outlineView.selectedRowIndexes;
-//			
-//			// Reject if any object has a type unlike the others.
-//			NSEntityDescription *entity = [item entity];
-//			if (!firstDescription)
-//				firstDescription = entity;
-//			else if (![entity isEqual:firstDescription])
-//				return outlineView.selectedRowIndexes;
-//		}
-//	}
-//	
-//	return proposedSelectionIndexes;
+	Class firstClass = Nil;
+	
+	for (NSUInteger index = proposedSelectionIndexes.firstIndex; index <= proposedSelectionIndexes.lastIndex; index = [proposedSelectionIndexes indexGreaterThanIndex:index])
+	{
+		id item = [outlineView itemAtRow:index];
+		
+		// Check whether item does not want to be selected
+		if ([item respondsToSelector:@selector(outlineView:shouldSelectItem:)])
+		{
+			if (![item outlineView:outlineView shouldSelectItem:item])
+				return outlineView.selectedRowIndexes;
+		}
+		
+		Class current = [item class];
+		if (!firstClass) firstClass = current;
+		if (firstClass != current) return outlineView.selectedRowIndexes;
+	}
+	
 	return proposedSelectionIndexes;
 }
 

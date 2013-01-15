@@ -57,4 +57,11 @@
 	return self.rootBoneControllers.count;
 }
 
+#pragma mark - Outline View Delegate
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
+{
+	return NO;
+}
+
 @end

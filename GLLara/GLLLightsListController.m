@@ -66,6 +66,11 @@
 	return YES;
 }
 
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
+{
+	return NO;
+}
+
 #pragma mark - Private methods
 
 - (void)_fetchLights;
