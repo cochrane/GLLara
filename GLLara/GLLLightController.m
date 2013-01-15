@@ -19,6 +19,11 @@
 	return self;
 }
 
+- (id)representedObject
+{
+	return self.light;
+}
+
 #pragma mark - Outline view data source
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item

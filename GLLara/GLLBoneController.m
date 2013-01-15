@@ -71,6 +71,11 @@
 	
 }
 
+- (id)representedObject
+{
+	return self.bone;
+}
+
 #pragma mark - Outline View Data Source
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item

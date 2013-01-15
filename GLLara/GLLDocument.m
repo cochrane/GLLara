@@ -84,6 +84,7 @@
 	[sceneDrawer bind:@"selectedBones" toObject:self.selection withKeyPath:@"selectedBones" options:nil];
 	
 	documentWindowController = [[GLLDocumentWindowController alloc] initWithManagedObjectContext:self.managedObjectContext];
+	documentWindowController.selection = self.selection;
 	[self addWindowController:documentWindowController];
 
 	NSFetchRequest *camerasFetchRequest = [[NSFetchRequest alloc] init];

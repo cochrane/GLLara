@@ -18,5 +18,6 @@
 - (id)initWithItem:(GLLItem *)item;
 
 @property (nonatomic) GLLItem *item;
+@property (nonatomic, readonly) id representedObject;
 
 @end

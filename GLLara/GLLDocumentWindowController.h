@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class GLLScene;
+@class GLLSelection;
 
 /*
  * @abstract Holds the document window.
@@ -24,5 +24,7 @@
 
 @property (nonatomic, retain) IBOutlet NSOutlineView *sourceView;
 @property (nonatomic, retain) IBOutlet NSView *placeholderView;
+
+@property (nonatomic) GLLSelection *selection;
 
 @end

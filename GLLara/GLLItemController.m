@@ -32,6 +32,11 @@
 	return self;
 }
 
+- (id)representedObject
+{
+	return self.item;
+}
+
 #pragma mark - Outline View Data Source
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item

@@ -13,5 +13,6 @@
 - (id)initWithLight:(NSManagedObject *)light;
 
 @property (nonatomic, readonly) NSManagedObject *light;
+@property (nonatomic, readonly) id representedObject;
 
 @end

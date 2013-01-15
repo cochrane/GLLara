@@ -23,6 +23,7 @@
 - (id)initWithMesh:(GLLItemMesh *)mesh;
 
 @property (nonatomic) GLLItemMesh *mesh;
+@property (nonatomic, readonly) id representedObject;
 
 - (void)addMeshChangeObserver:(id <GLLMeshChangeObserver>)observer;
 - (void)removeMeshChangeObserver:(id <GLLMeshChangeObserver>)observer;

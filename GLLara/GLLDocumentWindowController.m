@@ -8,6 +8,7 @@
 
 #import "GLLDocumentWindowController.h"
 
+#import "NSArray+Map.h"
 #import "GLLAmbientLight.h"
 #import "GLLItemBone.h"
 #import "GLLBoneViewController.h"
@@ -24,6 +25,7 @@
 #import "GLLItemViewController.h"
 #import "GLLLightsListController.h"
 #import "GLLItemListController.h"
+#import "GLLSelection.h"
 #import "GLLSettingsListController.h"
 
 @interface GLLDocumentWindowController ()
@@ -194,6 +196,32 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	if ([item respondsToSelector:_cmd])
 		return [item outlineView:outlineView shouldEditTableColumn:tableColumn item:item];
 	return NO;
+}
+
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification
+{
+	NSArray *selectedObjects = [self.sourceView.selectedRowIndexes map:^(NSUInteger index){
+		return [[self.sourceView itemAtRow:index] representedObject];
+	}];
+	
+	[[self.selection mutableArrayValueForKey:@"selectedObjects"] replaceObjectsInRange:NSMakeRange(0, self.selection.selectedObjects.count) withObjectsFromArray:selectedObjects];
+	
+	if (selectedObjects.count == 0)
+		[self _setRightHandController:nil];
+	else
+	{
+		NSManagedObject *oneOfSelection = selectedObjects.lastObject;
+		if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLAmbientLight" inManagedObjectContext:self.managedObjectContext]])
+			[self _setRightHandController:ambientLightViewController];
+		else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLDirectionalLight" inManagedObjectContext:self.managedObjectContext]])
+			[self _setRightHandController:lightViewController];
+		else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext]])
+			[self _setRightHandController:itemViewController];
+		else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext]])
+			[self _setRightHandController:meshViewController];
+		else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItemBone" inManagedObjectContext:self.managedObjectContext]])
+			[self _setRightHandController:boneViewController];
+	}
 }
 
 #pragma mark - Private methods
