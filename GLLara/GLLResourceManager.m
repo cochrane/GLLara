@@ -145,19 +145,20 @@ static GLLResourceManager *sharedManager;
 	id result = [textures objectForKey:textureURL];
 	if (!result)
 	{
+		NSURL *effectiveURL = textureURL;
 		NSData *textureData = [NSData dataWithContentsOfURL:textureURL options:NSDataReadingUncached error:error];
 		if (!textureData)
 		{
 			// Second attempt: Maybe there is a default version of that in the bundle.
 			// If not, then keep error from first read.
-			NSURL *resourceURL = [[NSBundle mainBundle] URLForResource:textureURL.lastPathComponent withExtension:nil];
-			if (!resourceURL)
+			effectiveURL = [[NSBundle mainBundle] URLForResource:textureURL.lastPathComponent withExtension:nil];
+			if (!effectiveURL)
 				return nil;
 		}
 		
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLTexture alloc] initWithData:textureData error:error];
+		result = [[GLLTexture alloc] initWithURL:effectiveURL];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;

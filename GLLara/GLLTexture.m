@@ -103,32 +103,58 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 	return 1;
 }
 
+static NSOperationQueue *imageInformationQueue = nil;
+
 @interface GLLTexture ()
+{
+	dispatch_source_t dispatchSource;
+	int fileHandle;
+}
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (void)_loadCGCompatibleTexture:(NSData *)data;
+
+- (void)_reloadData;
 
 @end
 
 @implementation GLLTexture
 
-- (id)initWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
++ (void)initialize
 {
-	if (!(self = [super init])) return nil;
+	imageInformationQueue = [[NSOperationQueue alloc] init];
+	imageInformationQueue.maxConcurrentOperationCount = 1;
+}
 
-	if (!data) return nil;
++ (NSSet *)keyPathsForValuesAffectingPresentedItemURL
+{
+	return [NSSet setWithObject:@"url"];
+}
+
+- (id)initWithURL:(NSURL *)url
+{
+	NSParameterAssert(url);
+	
+	if (!(self = [super init])) return nil;
+	
+	[NSFileCoordinator addFilePresenter:self];
+	
+	self.url = url.absoluteURL;
+	
+	const char *path = self.url.path.fileSystemRepresentation;
+	fileHandle = open(path, O_EVTONLY);
+	
+	__block __weak id weakSelf = self;
+	
+	dispatchSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, fileHandle, DISPATCH_VNODE_WRITE, dispatch_get_main_queue());
+	dispatch_source_set_event_handler(dispatchSource, ^(){
+		[weakSelf _reloadData];
+	});
+	dispatch_resume(dispatchSource);
 	
 	glGenTextures(1, &_textureID);
-	glBindTexture(GL_TEXTURE_2D, _textureID);
 	
-	// Ensure that memcmp does not error out.
-	if (data.length < 4) return nil;
-	
-	// Load texture
-	if (memcmp(data.bytes, "DDS ", 4) == 0)
-		[self _loadDDSTextureWithData:data error:error];
-	else
-		[self _loadCGCompatibleTexture:data];
+	[self _reloadData];
 	
 	return self;
 }
@@ -137,14 +163,73 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 {
 	glDeleteTextures(1, &_textureID);
 	_textureID = 0;
+	self.url = nil;
 }
 
 - (void)dealloc
 {
+	close(fileHandle);
 	NSAssert(_textureID == 0, @"did not call unload before dealloc");
 }
 
+#pragma mark - File Presenter
+
+- (NSURL *)presentedItemURL
+{
+	return self.url;
+}
+
+- (NSOperationQueue *)presentedItemOperationQueue
+{
+	return imageInformationQueue;
+}
+
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(void (^)(NSError *errorOrNil))completionHandler
+{
+	glBindTexture(GL_TEXTURE_2D, _textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	
+	completionHandler(nil);
+}
+
+- (void)presentedItemDidChange
+{
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self _reloadData];
+	});
+}
+
+- (void)presentedItemDidMoveToURL:(NSURL *)newURL
+{
+	self.url = newURL;
+}
+
 #pragma mark - Private methods
+
+- (void)_reloadData
+{
+	NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
+	
+	NSError *error = nil;
+	__block NSError *internalError = nil;
+	[coordinator coordinateReadingItemAtURL:self.url options:NSFileCoordinatorReadingResolvesSymbolicLink error:&error byAccessor:^(NSURL *newURL){
+		
+		NSData *data = [NSData dataWithContentsOfURL:newURL options:0 error:&internalError];
+		
+		// Ensure that memcmp does not error out.
+		if (data.length < 4) return;
+		
+		// Load texture
+		glBindTexture(GL_TEXTURE_2D, _textureID);
+		
+		if (memcmp(data.bytes, "DDS ", 4) == 0)
+			[self _loadDDSTextureWithData:data error:&internalError];
+		else
+			[self _loadCGCompatibleTexture:data];
+		
+		if (internalError != nil) NSLog(@"Error loading texture %@: %@", self.url, internalError);
+	}];
+}
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 {
