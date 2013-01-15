@@ -17,11 +17,6 @@
 
 @property (nonatomic) NSManagedObjectContext *managedObjectContext;
 
-@property (nonatomic) NSMutableArray *selectedBones;
-@property (nonatomic) NSMutableArray *selectedItems;
-@property (nonatomic) NSMutableArray *selectedLights;
-@property (nonatomic) NSMutableArray *selectedMeshes;
-
 @property (nonatomic) NSMutableArray *selectedObjects;
 
 - (NSUInteger)countOfSelectedBones;
@@ -47,7 +42,5 @@
 - (void)removeObjectFromSelectedLightsAtIndex:(NSUInteger)index;
 - (void)removeObjectFromSelectedMeshesAtIndex:(NSUInteger)index;
 - (void)removeObjectFromSelectedObjectsAtIndex:(NSUInteger)index;
-
-- (void)clearSelection;
 
 @end
