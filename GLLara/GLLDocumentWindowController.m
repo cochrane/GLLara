@@ -79,6 +79,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 - (void)dealloc
 {
 	[meshViewController unbind:@"selectedObjects"];
+	[self removeObserver:self forKeyPath:@"selection.selectedObjects"];
 }
 
 - (void)windowDidLoad
