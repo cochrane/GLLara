@@ -56,7 +56,9 @@
 
 - (BOOL)writeMTLToLocation:(NSURL *)location error:(NSError *__autoreleasing*)error;
 {
-	NSString *mtl = [[self.meshes map:^(GLLItemMesh *mesh) { return [mesh writeMTLWithBaseURL:location]; }] componentsJoinedByString:@"\n"];
+	NSString *mtl = [[self.meshes map:^(GLLItemMesh *mesh) {
+		return [mesh writeMTLWithBaseURL:location];
+	}] componentsJoinedByString:@"\n"];
 	
 	return [mtl writeToURL:location atomically:YES encoding:NSUTF8StringEncoding error:error];
 }
