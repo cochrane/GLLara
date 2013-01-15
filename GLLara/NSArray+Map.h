@@ -34,3 +34,9 @@
 - (NSArray *)map:(id (^)(id))block;
 
 @end
+
+@interface NSIndexSet (Map)
+
+- (NSArray *)map:(id (^)(NSUInteger))block;
+
+@end

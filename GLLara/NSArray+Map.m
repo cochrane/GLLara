@@ -99,3 +99,21 @@
 }
 
 @end
+
+@implementation NSIndexSet (Map)
+
+- (NSArray *)map:(id (^)(NSUInteger))block;
+{
+	NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
+	
+	for (NSUInteger index = self.firstIndex; index <= self.lastIndex; index = [self indexGreaterThanIndex:index])
+	{
+		id newObject = block(index);
+		if (!newObject) continue;
+		[result addObject:newObject];
+	}
+	
+	return [result copy];
+}
+
+@end
