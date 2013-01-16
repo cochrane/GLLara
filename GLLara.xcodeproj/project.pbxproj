@@ -117,6 +117,7 @@
 		52423B6116052D21009F5753 /* croft_manor_back.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B6016052D20009F5753 /* croft_manor_back.modelparams.plist */; };
 		52474B1B16A73B6C007A0223 /* GLLMtlFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52474B1916A73B6C007A0223 /* GLLMtlFile.cpp */; };
 		52474B1E16A73CB2007A0223 /* GLLStringURLConversion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52474B1C16A73CB2007A0223 /* GLLStringURLConversion.cpp */; };
+		52474B2116A7518C007A0223 /* GLLBasicOBJModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52474B2016A7518C007A0223 /* GLLBasicOBJModelTest.m */; };
 		524BEAFF1611250C00EA061D /* GLLSkeletonDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */; };
 		524BEB0316120FCF00EA061D /* GLLSkeletonProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */; };
 		524BEB06161211E400EA061D /* Skeleton.fs in Resources */ = {isa = PBXBuildFile; fileRef = 524BEB04161211E400EA061D /* Skeleton.fs */; };
@@ -427,6 +428,8 @@
 		52474B1A16A73B6C007A0223 /* GLLMtlFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMtlFile.h; sourceTree = "<group>"; };
 		52474B1C16A73CB2007A0223 /* GLLStringURLConversion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLLStringURLConversion.cpp; sourceTree = "<group>"; };
 		52474B1D16A73CB2007A0223 /* GLLStringURLConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLStringURLConversion.h; sourceTree = "<group>"; };
+		52474B1F16A7518C007A0223 /* GLLBasicOBJModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBasicOBJModelTest.h; sourceTree = "<group>"; };
+		52474B2016A7518C007A0223 /* GLLBasicOBJModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBasicOBJModelTest.m; sourceTree = "<group>"; };
 		524BEAFD1611250C00EA061D /* GLLSkeletonDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonDrawer.h; sourceTree = "<group>"; };
 		524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSkeletonDrawer.m; sourceTree = "<group>"; };
 		524BEB0116120FCF00EA061D /* GLLSkeletonProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonProgram.h; sourceTree = "<group>"; };
@@ -892,6 +895,8 @@
 				52DD80F7163B58E400534475 /* GLLExportASCIITest.m */,
 				52DD80F9163B58F100534475 /* GLLExportBinaryTest.h */,
 				52DD80FA163B58F100534475 /* GLLExportBinaryTest.m */,
+				52474B1F16A7518C007A0223 /* GLLBasicOBJModelTest.h */,
+				52474B2016A7518C007A0223 /* GLLBasicOBJModelTest.m */,
 			);
 			path = GLLaraTests;
 			sourceTree = "<group>";
@@ -1706,6 +1711,7 @@
 				52DD80F3163B464200534475 /* GLLRenderingTest.m in Sources */,
 				52DD80F8163B58E400534475 /* GLLExportASCIITest.m in Sources */,
 				52DD80FB163B58F100534475 /* GLLExportBinaryTest.m in Sources */,
+				52474B2116A7518C007A0223 /* GLLBasicOBJModelTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

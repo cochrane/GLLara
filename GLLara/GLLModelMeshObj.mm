@@ -25,7 +25,8 @@
 	if (range.materialName == "")
 	{
 		if (error)
-			*error = [NSError errorWithDomain:@"GLLMeshObj" code:1 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Some parts of the model have no material", @"error description: material for range is null"),
+			*error = [NSError errorWithDomain:@"GLLMeshObj" code:1 userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"Some parts of the model have no material", @"error description: material for range is null"),
 	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"This model is not supported.", @"error description: material for range is null") }];
 		return nil;
 	}
@@ -80,8 +81,7 @@
 	// Setup material
 	// Three options: Diffuse, DiffuseSpecular, DiffuseNormal, DiffuseSpecularNormal
 	GLLModelParams *objModelParams = [GLLModelParams parametersForName:@"objFileParameters" error:error];
-	if (!objModelParams)
-		return nil;
+	NSAssert(objModelParams, @"obj file parameters must always exist");
 	
 	const GLLMtlFile::Material *material = NULL;
 	for (auto iter = mtlFiles.begin(); iter != mtlFiles.end(); iter++)
@@ -92,7 +92,15 @@
 			break;
 		}
 	}
-	if (!material) return nil;
+	if (!material)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"GLLMeshObj" code:1 userInfo:@{
+				   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Material %s was not found", @"error description: no material for name"), range.materialName.c_str()],
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The material files do not appear to match the model.", @"error description: no material for name") }];
+		return nil;
+
+	}
 	
 	if (material->specularTexture == NULL && material->normalTexture == NULL)
 	{
