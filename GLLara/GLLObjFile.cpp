@@ -15,41 +15,7 @@
 #include <sstream>
 #include <stdexcept>
 
-std::string stringFromFileURL(CFURLRef fileURL)
-{
-	// Not using CFURLGetFileSystemRepresentation here, because there is no function to find the maximum needed buffer size for CFURL.
-	CFURLRef absolute = CFURLCopyAbsoluteURL(fileURL);
-	CFStringRef fsPath = CFURLCopyFileSystemPath(absolute, kCFURLPOSIXPathStyle);
-	if (!fsPath)
-	{
-		CFRelease(absolute);
-		throw std::runtime_error("Could not convert file path to URL");
-	}
-	CFRelease(absolute);
-	CFIndex length = CFStringGetMaximumSizeOfFileSystemRepresentation(fsPath);
-	char *buffer = new char[length];
-	CFStringGetFileSystemRepresentation(fsPath, buffer, length);
-	CFRelease(fsPath);
-	
-	std::string result(buffer);
-	delete [] buffer;
-	return result;
-}
-
-CFURLRef urlFromString(const std::string &string, CFURLRef relativeTo)
-{
-	std::string path = string;
-	
-	// Is this possibly a windows path?
-	if (string.size() > 2 && string[1] == ':' && string[2] == '\\')
-	{
-		// It is! Take only the last component
-		size_t lastBackslash = string.find_last_of('\\');
-		path = string.substr(lastBackslash+1);
-	}
-	path.erase(path.find_last_not_of(" \n\r\t")+1);
-	return CFURLCreateWithBytes(kCFAllocatorDefault, (UInt8 *)path.c_str(), path.size(), kCFStringEncodingUTF8, relativeTo);
-}
+#include "GLLStringURLConversion.h"
 
 bool GLLObjFile::IndexSet::operator<(const GLLObjFile::IndexSet &other) const
 {
@@ -63,13 +29,6 @@ bool GLLObjFile::IndexSet::operator<(const GLLObjFile::IndexSet &other) const
 	else if (texCoord > other.texCoord) return false;
 	
 	return false;
-}
-
-GLLObjFile::Material::~Material()
-{
-	CFRelease(diffuseTexture);
-	CFRelease(specularTexture);
-	CFRelease(normalTexture);
 }
 
 void GLLObjFile::parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw()
@@ -136,82 +95,6 @@ void GLLObjFile::parseFace(std::istream &stream)
 	}
 }
 
-void GLLObjFile::parseMaterialLibrary(CFURLRef location)
-{
-	std::string filename = stringFromFileURL(location);
-	
-	std::ifstream stream(filename.c_str());
-	if (!stream) throw std::runtime_error("Could not open MTLLib file.");
-	
-	bool hasFirstMaterial = false;
-	std::string materialName;
-	Material *currentMaterial = new Material();
-	
-	while(stream.good())
-	{
-		std::string line;
-		std::getline(stream, line);
-		
-		std::istringstream linestream(line);
-		std::string token;
-		linestream >> token;
-		
-		if (token == "newmtl")
-		{
-			if (!hasFirstMaterial)
-			{
-				// This is the first material. Just save the name.
-				linestream >> materialName;
-				hasFirstMaterial = true;
-				currentMaterial->name = materialName;
-			}
-			else
-			{
-				// Old material ends here. Store it here; map copies it, so it can be overwritten now.
-				currentMaterial->ambient[3] = currentMaterial->diffuse[3] = currentMaterial->specular[3] = 1.0f;
-				materials[materialName] = currentMaterial;
-				
-				// Reset material
-				currentMaterial = new Material();
-				
-				// Save new name
-				linestream >> materialName;
-				currentMaterial->name = materialName;
-			}
-		}
-		else if (token == "Ka")
-		{
-			int scanned = sscanf(line.c_str(), "Ka %f %f %f", &currentMaterial->ambient[0], &currentMaterial->ambient[1], &currentMaterial->ambient[2]);
-			if (scanned == 1)
-				currentMaterial->ambient[1] = currentMaterial->ambient[2] = currentMaterial->ambient[0];
-		}
-		else if (token == "Kd")
-		{
-			int scanned = sscanf(line.c_str(), "Kd %f %f %f", &currentMaterial->diffuse[0], &currentMaterial->diffuse[1], &currentMaterial->diffuse[2]);
-			if (scanned == 1)
-				currentMaterial->diffuse[1] = currentMaterial->diffuse[2] = currentMaterial->diffuse[0];
-		}
-		else if (token == "Ks")
-		{
-			int scanned = sscanf(line.c_str(), "Ks %f %f %f", &currentMaterial->specular[0], &currentMaterial->specular[1], &currentMaterial->specular[2]);
-			if (scanned == 1)
-				currentMaterial->specular[1] = currentMaterial->specular[2] = currentMaterial->specular[0];
-		}
-		else if (token == "Ns")
-			sscanf(line.c_str(), "Ns %f", &currentMaterial->shininess);
-		else if (token == "map_Kd")
-			currentMaterial->diffuseTexture = urlFromString(line.substr(token.size() + 1), location);
-		else if (token == "map_Ks")
-			currentMaterial->specularTexture = urlFromString(line.substr(token.size() + 1), location);
-		else if (token == "map_Kn" || token == "bump" || token == "map_bump")
-			currentMaterial->normalTexture = urlFromString(line.substr(token.size() + 1), location);
-	}
-	
-	// Wrap up final material
-	currentMaterial->ambient[3] = currentMaterial->diffuse[3] = currentMaterial->specular[3] = 1.0f;
-	materials[materialName] = currentMaterial;
-}
-
 unsigned GLLObjFile::unifiedIndex(const IndexSet &indexSet)
 {
 	std::map<IndexSet, unsigned>::iterator iter(vertexDataIndexForSet.find(indexSet));
@@ -256,11 +139,12 @@ void GLLObjFile::fillIndices()
 
 GLLObjFile::GLLObjFile(CFURLRef location)
 {
-	std::string filename = stringFromFileURL(location);
+	std::string filename = GLLStringFromFileURL(location);
 	
 	std::ifstream stream(filename.c_str());
 	if (!stream) throw std::runtime_error("Could not open OBJ file.");
 	
+	materialLibraryURLs = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
 	std::string activeMaterial("");
 	unsigned activeMaterialStart = 0;
 	bool hasFirstMaterial = false;
@@ -287,8 +171,8 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 		{
 			try
 			{
-				CFURLRef mtllibLocation = urlFromString(line.substr(token.size() + 1), location);
-				parseMaterialLibrary(mtllibLocation);
+				CFURLRef mtllibLocation = GLLURLFromString(line.substr(token.size() + 1), location);
+				CFArrayAppendValue(materialLibraryURLs, mtllibLocation);
 				CFRelease(mtllibLocation);
 			}
 			catch (std::exception &e)
@@ -297,32 +181,11 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 			}
 		}
 		else if (token == "usemtl")
-		{
-			if (materials.size() == 0)
-			{
-				// Try to find an mtllib of the same name as the obj in the same directory as the obj
-				CFStringRef lastPathComponent = CFURLCopyLastPathComponent(location);
-				CFMutableStringRef mtlLibName = CFStringCreateMutableCopy(kCFAllocatorDefault, CFStringGetLength(lastPathComponent), lastPathComponent);
-				CFStringReplace(mtlLibName, CFRangeMake(CFStringGetLength(mtlLibName) - 3, 3), CFSTR("mtl"));
-				
-				CFURLRef mtlLibURL = CFURLCreateWithString(kCFAllocatorDefault, mtlLibName, location);
-				
-				CFRelease(lastPathComponent);
-				CFRelease(mtlLibName);
-				
-				try {
-					parseMaterialLibrary(mtlLibURL);
-				} catch (std::exception &e) {
-					CFRelease(mtlLibURL);
-					throw e;
-				}
-				CFRelease(mtlLibURL);
-			}
-				
+		{				
 			if (hasFirstMaterial)
 			{
 				// End previous material run
-				materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), materials[activeMaterial]));
+				materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), activeMaterial));
 			}
 			else
 				hasFirstMaterial = true;
@@ -333,7 +196,12 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 	}
 	
 	// Wrap up final material group
-	materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), materials[activeMaterial]));
+	materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), activeMaterial));
 	
 	fillIndices();
+}
+
+GLLObjFile::~GLLObjFile()
+{
+	CFRelease(materialLibraryURLs);
 }

@@ -115,6 +115,8 @@
 		52423B5D1604ED48009F5753 /* wings.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B5C1604ED47009F5753 /* wings.modelparams.plist */; };
 		52423B5F16052CB0009F5753 /* skydome_thailand_sea.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B5E16052CAF009F5753 /* skydome_thailand_sea.modelparams.plist */; };
 		52423B6116052D21009F5753 /* croft_manor_back.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423B6016052D20009F5753 /* croft_manor_back.modelparams.plist */; };
+		52474B1B16A73B6C007A0223 /* GLLMtlFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52474B1916A73B6C007A0223 /* GLLMtlFile.cpp */; };
+		52474B1E16A73CB2007A0223 /* GLLStringURLConversion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52474B1C16A73CB2007A0223 /* GLLStringURLConversion.cpp */; };
 		524BEAFF1611250C00EA061D /* GLLSkeletonDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */; };
 		524BEB0316120FCF00EA061D /* GLLSkeletonProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */; };
 		524BEB06161211E400EA061D /* Skeleton.fs in Resources */ = {isa = PBXBuildFile; fileRef = 524BEB04161211E400EA061D /* Skeleton.fs */; };
@@ -421,6 +423,10 @@
 		52423B5C1604ED47009F5753 /* wings.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = wings.modelparams.plist; sourceTree = "<group>"; };
 		52423B5E16052CAF009F5753 /* skydome_thailand_sea.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = skydome_thailand_sea.modelparams.plist; sourceTree = "<group>"; };
 		52423B6016052D20009F5753 /* croft_manor_back.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = croft_manor_back.modelparams.plist; sourceTree = "<group>"; };
+		52474B1916A73B6C007A0223 /* GLLMtlFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLLMtlFile.cpp; sourceTree = "<group>"; };
+		52474B1A16A73B6C007A0223 /* GLLMtlFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMtlFile.h; sourceTree = "<group>"; };
+		52474B1C16A73CB2007A0223 /* GLLStringURLConversion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLLStringURLConversion.cpp; sourceTree = "<group>"; };
+		52474B1D16A73CB2007A0223 /* GLLStringURLConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLStringURLConversion.h; sourceTree = "<group>"; };
 		524BEAFD1611250C00EA061D /* GLLSkeletonDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonDrawer.h; sourceTree = "<group>"; };
 		524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSkeletonDrawer.m; sourceTree = "<group>"; };
 		524BEB0116120FCF00EA061D /* GLLSkeletonProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonProgram.h; sourceTree = "<group>"; };
@@ -1107,6 +1113,10 @@
 				52C9F61C1600A8D3003272E1 /* GLLModelMeshObj.mm */,
 				522C4C121609B1F10043FCBA /* GLLModelMesh+OBJExport.h */,
 				522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */,
+				52474B1A16A73B6C007A0223 /* GLLMtlFile.h */,
+				52474B1916A73B6C007A0223 /* GLLMtlFile.cpp */,
+				52474B1D16A73CB2007A0223 /* GLLStringURLConversion.h */,
+				52474B1C16A73CB2007A0223 /* GLLStringURLConversion.cpp */,
 			);
 			name = "Model Resources";
 			sourceTree = "<group>";
@@ -1680,6 +1690,8 @@
 				528934E816A29B8300F05312 /* GLLLightController.m in Sources */,
 				528934EB16A332BD00F05312 /* GLLMeshListController.m in Sources */,
 				528934EE16A3593500F05312 /* GLLBoneListController.m in Sources */,
+				52474B1B16A73B6C007A0223 /* GLLMtlFile.cpp in Sources */,
+				52474B1E16A73CB2007A0223 /* GLLStringURLConversion.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
