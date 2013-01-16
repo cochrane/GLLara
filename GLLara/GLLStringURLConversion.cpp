@@ -31,7 +31,7 @@ std::string GLLStringFromFileURL(CFURLRef fileURL)
 	return result;
 }
 
-CFURLRef GLLURLFromString(const std::string &string, CFURLRef relativeTo)
+CFURLRef GLLCreateURLFromString(const std::string &string, CFURLRef relativeTo)
 {
 	std::string path = string;
 	

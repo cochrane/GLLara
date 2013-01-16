@@ -171,7 +171,7 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 		{
 			try
 			{
-				CFURLRef mtllibLocation = GLLURLFromString(line.substr(token.size() + 1), location);
+				CFURLRef mtllibLocation = GLLCreateURLFromString(line.substr(token.size() + 1), location);
 				CFArrayAppendValue(materialLibraryURLs, mtllibLocation);
 				CFRelease(mtllibLocation);
 			}

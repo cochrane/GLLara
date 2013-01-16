@@ -13,6 +13,6 @@
 #include <string>
 
 std::string GLLStringFromFileURL(CFURLRef fileURL);
-CFURLRef GLLURLFromString(const std::string &string, CFURLRef relativeTo);
+CFURLRef GLLCreateURLFromString(const std::string &string, CFURLRef relativeTo);
 
 #endif /* defined(__GLLara__GLLStringURLConversion__) */
