@@ -78,7 +78,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (void)dealloc
 {
-	[meshViewController unbind:@"selectedObjects"];
+	[meshViewController unbind:@"selectedMeshes"];
 	[self removeObserver:self forKeyPath:@"selection.selectedObjects"];
 }
 
@@ -97,7 +97,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	[self.sourceView expandItem:itemListController];
 	[self.sourceView expandItem:settingsListController];
 		
-	[meshViewController bind:@"selectedObjects" toObject:self withKeyPath:@"selection.selectedObjects" options:nil];
+	[meshViewController bind:@"selectedMeshes" toObject:self withKeyPath:@"selection.selectedMeshes" options:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
