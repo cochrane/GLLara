@@ -12,11 +12,12 @@
 
 @implementation GLLMeshController
 
-- (id)initWithMesh:(GLLItemMesh *)mesh;
+- (id)initWithMesh:(GLLItemMesh *)mesh parentController:(id)parentController;
 {
 	if (!(self = [super init])) return nil;
 	
 	self.mesh = mesh;
+	self.parentController = parentController;
 	
 	return self;
 }

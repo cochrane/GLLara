@@ -21,11 +21,12 @@
 
 @implementation GLLBoneListController
 
-- (id)initWithItem:(GLLItem *)item;
+- (id)initWithItem:(GLLItem *)item parent:(id)parentController;
 {
 	if (!(self = [super init])) return nil;
 	
 	self.item = item;
+	self.parentController = parentController;
 	
 	self.boneControllers = [self.item.bones map:^(GLLItemBone *bone){
 		return [[GLLBoneController alloc] initWithBone:bone listController:self];

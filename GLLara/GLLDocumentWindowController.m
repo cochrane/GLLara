@@ -46,6 +46,7 @@
 }
 
 - (void)_setRightHandController:(NSViewController *)controller;
+- (void)_recursivelyExpandItem:(id)item;
 
 @property (nonatomic, readonly) NSArray *allSelectableControllers;
 
@@ -109,7 +110,10 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		
 		NSMutableIndexSet *selectionIndexes = [NSMutableIndexSet indexSet];
 		for (id item in selectedOutlineViewItems)
+		{
+			[self _recursivelyExpandItem:item];
 			[selectionIndexes addIndex:[self.sourceView rowForItem:item]];
+		}
 		
 		[self.sourceView selectRowIndexes:selectionIndexes byExtendingSelection:NO];
 	}
@@ -253,6 +257,13 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		controller.representedObject = [selectionController selection];
 		currentController = controller;
 	}
+}
+
+- (void)_recursivelyExpandItem:(id)item;
+{
+	if ([item respondsToSelector:@selector(parentController)])
+		[self _recursivelyExpandItem:[item parentController]];
+	[self.sourceView expandItem:item];
 }
 
 - (NSArray *)allSelectableControllers

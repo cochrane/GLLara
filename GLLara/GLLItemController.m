@@ -21,13 +21,14 @@
 
 @implementation GLLItemController
 
-- (id)initWithItem:(GLLItem *)item;
+- (id)initWithItem:(GLLItem *)item parent:(id)parentController;
 {
 	if (!(self = [super init])) return nil;
 	
 	self.item = item;
-	self.meshListController = [[GLLMeshListController alloc] initWithItem:item];
-	self.boneListController = [[GLLBoneListController alloc] initWithItem:item];
+	self.parentController = parentController;
+	self.meshListController = [[GLLMeshListController alloc] initWithItem:item parent:self];
+	self.boneListController = [[GLLBoneListController alloc] initWithItem:item parent:self];
 		
 	return self;
 }

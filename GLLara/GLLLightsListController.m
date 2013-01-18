@@ -86,7 +86,7 @@
 	NSArray *lightEntities = [self.managedObjectContext executeFetchRequest:lightsRequest error:NULL];
 	
 	self.lights = [lightEntities map:^(NSManagedObject *light){
-		return [[GLLLightController alloc] initWithLight:light];
+		return [[GLLLightController alloc] initWithLight:light parentController:self];
 	}];
 }
 

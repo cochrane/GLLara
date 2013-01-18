@@ -310,8 +310,8 @@ const double unitsPerSecond = 0.2;
 		vec_float4 screenPosition = simd_mat_vecmul(viewProjection, position);
 		screenPosition /= simd_splat(screenPosition, 3);
 		
-		float screenX = (simd_extract(screenPosition, 0) * 0.5 + 1.0) * width;
-		float screenY = (simd_extract(screenPosition, 1) * 0.5 + 1.0) * height;
+		float screenX = (simd_extract(screenPosition, 0) * 0.5 + 0.5) * width;
+		float screenY = (simd_extract(screenPosition, 1) * 0.5 + 0.5) * height;
 		
 		float distanceToRay = sqrtf((screenX - point.x)*(screenX - point.x) + (screenY - point.y) *(screenY - point.y));
 		

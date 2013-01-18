@@ -76,6 +76,13 @@
 	return self.bone;
 }
 
+- (id)parentController
+{
+	NSArray *parents = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%@ in bone.children", self.bone]];
+	if (parents.count == 0) return self.listController;
+	else return parents[0];
+}
+
 #pragma mark - Outline View Data Source
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item

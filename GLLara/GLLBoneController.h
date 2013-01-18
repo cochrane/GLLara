@@ -26,11 +26,9 @@
 @property (nonatomic, weak) GLLBoneListController *listController;
 @property (nonatomic) GLLItemBone *bone;
 @property (nonatomic, readonly) id representedObject;
+@property (nonatomic, weak, readonly) id parentController;
 
 - (void)addBoneChangeObserver:(id <GLLBoneChangeListener>)observer;
 - (void)removeBoneChangeObserver:(id <GLLBoneChangeListener>)observer;
-
-// Derived
-@property (nonatomic, readonly) GLLBoneController *parentController;
 
 @end

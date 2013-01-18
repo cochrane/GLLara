@@ -10,11 +10,12 @@
 
 @implementation GLLLightController
 
-- (id)initWithLight:(NSManagedObject *)light;
+- (id)initWithLight:(NSManagedObject *)light parentController:(id)parentController;
 {
     if (!(self = [super init])) return nil;
     
 	_light = light;
+	_parentController = parentController;
 	
 	return self;
 }

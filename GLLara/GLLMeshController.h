@@ -20,10 +20,11 @@
 
 @interface GLLMeshController : NSObject
 
-- (id)initWithMesh:(GLLItemMesh *)mesh;
+- (id)initWithMesh:(GLLItemMesh *)mesh parentController:(id)parentController;
 
 @property (nonatomic) GLLItemMesh *mesh;
 @property (nonatomic, readonly) id representedObject;
+@property (nonatomic, weak) id parentController;
 
 - (void)addMeshChangeObserver:(id <GLLMeshChangeObserver>)observer;
 - (void)removeMeshChangeObserver:(id <GLLMeshChangeObserver>)observer;

@@ -20,14 +20,14 @@
 
 @implementation GLLMeshListController
 
-- (id)initWithItem:(GLLItem *)item;
+- (id)initWithItem:(GLLItem *)item parent:(id)parentController;
 {
 	if (!(self = [super init])) return nil;
 	
 	self.item = item;
-	
+	self.parentController = parentController;	
 	self.meshControllers = [self.item.meshes map:^(GLLItemMesh *mesh){
-		return [[GLLMeshController alloc] initWithMesh:mesh];
+		return [[GLLMeshController alloc] initWithMesh:mesh parentController:self];
 	}];
 	
 	return self;

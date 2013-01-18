@@ -10,9 +10,10 @@
 
 @interface GLLLightController : NSObject
 
-- (id)initWithLight:(NSManagedObject *)light;
+- (id)initWithLight:(NSManagedObject *)light parentController:(id)parentController;
 
 @property (nonatomic, readonly) NSManagedObject *light;
 @property (nonatomic, readonly) id representedObject;
+@property (nonatomic, weak) id parentController;
 
 @end
