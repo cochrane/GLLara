@@ -104,6 +104,8 @@
 
 - (NSArray *)map:(id (^)(NSUInteger))block;
 {
+	if (self.count == 0) return @[];
+	
 	NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
 	
 	for (NSUInteger index = self.firstIndex; index <= self.lastIndex; index = [self indexGreaterThanIndex:index])
