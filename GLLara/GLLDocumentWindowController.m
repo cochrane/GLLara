@@ -43,6 +43,8 @@
 	NSViewController *currentController;
 	
 	NSArrayController *selectionController;
+	
+	BOOL updatingSourceViewSelection;
 }
 
 - (void)_setRightHandController:(NSViewController *)controller;
@@ -106,6 +108,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	if ([keyPath isEqual:@"selection.selectedObjects"])
 	{
 		// Set the correct selection in the outline view
+		updatingSourceViewSelection = YES;
+		
 		NSArray *selectedOutlineViewItems = [self.allSelectableControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"representedObject in %@", self.selection.selectedObjects]];
 		
 		NSMutableIndexSet *selectionIndexes = [NSMutableIndexSet indexSet];
@@ -116,6 +120,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		}
 		
 		[self.sourceView selectRowIndexes:selectionIndexes byExtendingSelection:NO];
+		
+		updatingSourceViewSelection = NO;
 	}
 }
 
@@ -200,19 +206,23 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
-	NSArray *selectedObjects = [self.sourceView.selectedRowIndexes map:^(NSUInteger index){
+	NSArray *newSelectedObjects = [self.sourceView.selectedRowIndexes map:^(NSUInteger index){
 		return [[self.sourceView itemAtRow:index] representedObject];
 	}];
 	
-	[[self.selection mutableArrayValueForKey:@"selectedObjects"] replaceObjectsInRange:NSMakeRange(0, self.selection.selectedObjects.count) withObjectsFromArray:selectedObjects];
+	if (!updatingSourceViewSelection)
+	{
+		NSMutableArray *selectedObjects = [self.selection mutableArrayValueForKey:@"selectedObjects"];
+		[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:newSelectedObjects];
+	}
 	
 	[selectionController setSelectedObjects:selectionController.arrangedObjects];
 	
-	if (selectedObjects.count == 0)
+	if (newSelectedObjects.count == 0)
 		[self _setRightHandController:nil];
 	else
 	{
-		NSManagedObject *oneOfSelection = selectedObjects.lastObject;
+		NSManagedObject *oneOfSelection = newSelectedObjects.lastObject;
 		if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLAmbientLight" inManagedObjectContext:self.managedObjectContext]])
 			[self _setRightHandController:ambientLightViewController];
 		else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLDirectionalLight" inManagedObjectContext:self.managedObjectContext]])
