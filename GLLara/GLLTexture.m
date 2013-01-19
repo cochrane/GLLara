@@ -12,6 +12,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
+#import <OpenGL/OpenGL.h>
 #import "OpenDDSFile.h"
 
 #pragma mark - Private DDS loading functions
@@ -134,6 +135,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 - (id)initWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error
 {
 	NSParameterAssert(url);
+	NSAssert(CGLGetCurrentContext() != NULL, @"Context must exist");
 	
 	if (!(self = [super init])) return nil;
 	
@@ -214,6 +216,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 	__block NSError *internalError = nil;
 	NSError *coordinationError;
 	[coordinator coordinateReadingItemAtURL:self.url options:NSFileCoordinatorReadingResolvesSymbolicLink error:&coordinationError byAccessor:^(NSURL *newURL){
+		NSAssert(CGLGetCurrentContext() != NULL, @"Context must exist");
 		
 		NSData *data = [NSData dataWithContentsOfURL:newURL options:0 error:&internalError];
 		

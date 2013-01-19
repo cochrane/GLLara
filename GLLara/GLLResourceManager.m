@@ -63,6 +63,7 @@ static GLLResourceManager *sharedManager;
 	NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
 	_openGLContext = [[NSOpenGLContext alloc] initWithFormat:format shareContext:nil];
 	[_openGLContext makeCurrentContext];
+	NSAssert(_openGLContext, @"Should have an OpenGL context here");
 	
 	shaders = [[NSMutableDictionary alloc] init];
 	programs = [[NSMutableDictionary alloc] init];

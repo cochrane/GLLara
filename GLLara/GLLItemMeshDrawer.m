@@ -124,7 +124,7 @@
 {
 	GLint bufferLength;
 	glGetActiveUniformBlockiv(self.meshDrawer.program.programID, self.meshDrawer.program.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &bufferLength);
-	void *data = malloc(bufferLength);
+	void *data = calloc(1, bufferLength);
 	
 	for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
 	{
