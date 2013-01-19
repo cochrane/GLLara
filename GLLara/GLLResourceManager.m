@@ -158,7 +158,7 @@ static GLLResourceManager *sharedManager;
 		
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLTexture alloc] initWithURL:effectiveURL];
+		result = [[GLLTexture alloc] initWithURL:effectiveURL error:error];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;

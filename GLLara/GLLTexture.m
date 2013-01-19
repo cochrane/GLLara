@@ -114,7 +114,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (void)_loadCGCompatibleTexture:(NSData *)data;
 
-- (void)_reloadData;
+- (BOOL)_loadDataError:(NSError *__autoreleasing*)error;
 
 @end
 
@@ -131,7 +131,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 	return [NSSet setWithObject:@"url"];
 }
 
-- (id)initWithURL:(NSURL *)url
+- (id)initWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error
 {
 	NSParameterAssert(url);
 	
@@ -148,13 +148,14 @@ static NSOperationQueue *imageInformationQueue = nil;
 	
 	dispatchSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, fileHandle, DISPATCH_VNODE_WRITE, dispatch_get_main_queue());
 	dispatch_source_set_event_handler(dispatchSource, ^(){
-		[weakSelf _reloadData];
+		[weakSelf _loadDataError:NULL];
 	});
 	dispatch_resume(dispatchSource);
 	
 	glGenTextures(1, &_textureID);
 	
-	[self _reloadData];
+	BOOL success = [self _loadDataError:error];
+	if (!success) return nil;
 	
 	return self;
 }
@@ -195,7 +196,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 - (void)presentedItemDidChange
 {
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[self _reloadData];
+		[self _loadDataError:NULL];
 	});
 }
 
@@ -206,13 +207,13 @@ static NSOperationQueue *imageInformationQueue = nil;
 
 #pragma mark - Private methods
 
-- (void)_reloadData
+- (BOOL)_loadDataError:(NSError *__autoreleasing*)error;
 {
 	NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:self];
 	
-	NSError *error = nil;
 	__block NSError *internalError = nil;
-	[coordinator coordinateReadingItemAtURL:self.url options:NSFileCoordinatorReadingResolvesSymbolicLink error:&error byAccessor:^(NSURL *newURL){
+	NSError *coordinationError;
+	[coordinator coordinateReadingItemAtURL:self.url options:NSFileCoordinatorReadingResolvesSymbolicLink error:&coordinationError byAccessor:^(NSURL *newURL){
 		
 		NSData *data = [NSData dataWithContentsOfURL:newURL options:0 error:&internalError];
 		
@@ -229,6 +230,18 @@ static NSOperationQueue *imageInformationQueue = nil;
 		
 		if (internalError != nil) NSLog(@"Error loading texture %@: %@", self.url, internalError);
 	}];
+	
+	if (coordinationError)
+	{
+		if (error) *error = coordinationError;
+		return NO;
+	}
+	else if (internalError)
+	{
+		if (error) *error = internalError;
+		return NO;
+	}
+	else return YES;
 }
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
