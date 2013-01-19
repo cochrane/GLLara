@@ -315,7 +315,7 @@ const double unitsPerSecond = 0.2;
 		
 		float distanceToRay = sqrtf((screenX - point.x)*(screenX - point.x) + (screenY - point.y) *(screenY - point.y));
 		
-		if (distanceToRay > 30.0f) continue;
+		if (distanceToRay > 10.0f) continue;
 		
 		float zDistance = simd_extract(screenPosition, 2);
 		if (zDistance < closestDistance)
