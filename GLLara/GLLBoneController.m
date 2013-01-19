@@ -18,6 +18,7 @@
 - (void)_loadChildBones;
 
 @property (nonatomic) NSArray *childBoneControllers;
+@property (nonatomic) GLLBoneController *parentBoneController;
 
 @end
 
@@ -78,9 +79,10 @@
 
 - (id)parentController
 {
-	NSArray *parents = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%@ in bone.children", self.bone]];
-	if (parents.count == 0) return self.listController;
-	else return parents[0];
+	// Loading children also loads parent
+	if (!self.childBoneControllers) [self _loadChildBones];
+	if (self.parentBoneController) return self.parentBoneController;
+	else return self.listController;
 }
 
 #pragma mark - Outline View Data Source
@@ -124,6 +126,9 @@
 - (void)_loadChildBones;
 {
 	self.childBoneControllers = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"bone.parent == %@", self.bone]];
+	
+	NSArray *parents = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%@ in bone.children", self.bone]];
+	if (parents.count > 0) self.parentBoneController = parents[0];
 }
 
 @end
