@@ -142,7 +142,7 @@ static NSCache *parameterCache;
 	}];
 	
 	// And render parameters
-	ownRenderParameters = [propertyList[@"renderParameterDescriptions"] mapValues:^(id description){
+	ownRenderParameterDescriptions = [propertyList[@"renderParameterDescriptions"] mapValues:^(id description){
 		return [[GLLRenderParameterDescription alloc] initWithPlist:description];
 	}];
 	
