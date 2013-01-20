@@ -121,8 +121,6 @@
 
 - (void)setSelectedMeshes:(NSArray *)selectedMeshes
 {
-	if (self.representedObject == nil) return;
-	
 	_selectedMeshes = selectedMeshes;
 	
 	[self _findRenderParameterNames];
@@ -142,7 +140,6 @@
 }
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	// representedObject is a selection proxy, pointing to GLLItemMesh objects
 	NSString *parameterName = [renderParameterNames objectAtIndex:row];
 	return [renderParameters.selection valueForKeyPath:parameterName];
 }

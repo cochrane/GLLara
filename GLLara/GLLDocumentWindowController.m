@@ -100,7 +100,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	[self.sourceView expandItem:itemListController];
 	[self.sourceView expandItem:settingsListController];
 		
-	[meshViewController bind:@"selectedMeshes" toObject:self withKeyPath:@"selection.selectedMeshes" options:nil];
+	[meshViewController bind:@"selectedMeshes" toObject:self.selection withKeyPath:@"selectedMeshes" options:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
