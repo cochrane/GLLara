@@ -246,6 +246,7 @@
 		52BB21D715FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21D615FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist */; };
 		52BB21DB15FCF02200937450 /* GLLCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21DA15FCF02200937450 /* GLLCamera.m */; };
 		52C7B5DD16AA15A100FC2927 /* MapTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7B5DC16AA15A100FC2927 /* MapTests.m */; };
+		52C7B5E116ABEB3000FC2927 /* GLLModelParametersTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7B5E016ABEB3000FC2927 /* GLLModelParametersTest.m */; };
 		52C9F60E15FF1753003272E1 /* GLLItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F60C15FF1752003272E1 /* GLLItemViewController.m */; };
 		52C9F60F15FF1753003272E1 /* GLLItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52C9F60D15FF1753003272E1 /* GLLItemView.xib */; };
 		52C9F6161600022B003272E1 /* GLLModelObj.mm in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F6151600022B003272E1 /* GLLModelObj.mm */; };
@@ -633,6 +634,8 @@
 		52BB21DA15FCF02200937450 /* GLLCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLCamera.m; sourceTree = "<group>"; };
 		52C7B5DB16AA15A100FC2927 /* MapTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTests.h; sourceTree = "<group>"; };
 		52C7B5DC16AA15A100FC2927 /* MapTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTests.m; sourceTree = "<group>"; };
+		52C7B5DF16ABEB3000FC2927 /* GLLModelParametersTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelParametersTest.h; sourceTree = "<group>"; };
+		52C7B5E016ABEB3000FC2927 /* GLLModelParametersTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelParametersTest.m; sourceTree = "<group>"; };
 		52C9F60B15FF1752003272E1 /* GLLItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemViewController.h; sourceTree = "<group>"; };
 		52C9F60C15FF1752003272E1 /* GLLItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemViewController.m; sourceTree = "<group>"; };
 		52C9F60D15FF1753003272E1 /* GLLItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLItemView.xib; sourceTree = "<group>"; };
@@ -902,6 +905,8 @@
 				52474B2016A7518C007A0223 /* GLLBasicOBJModelTest.m */,
 				52C7B5DB16AA15A100FC2927 /* MapTests.h */,
 				52C7B5DC16AA15A100FC2927 /* MapTests.m */,
+				52C7B5DF16ABEB3000FC2927 /* GLLModelParametersTest.h */,
+				52C7B5E016ABEB3000FC2927 /* GLLModelParametersTest.m */,
 			);
 			path = GLLaraTests;
 			sourceTree = "<group>";
@@ -1718,6 +1723,7 @@
 				52DD80FB163B58F100534475 /* GLLExportBinaryTest.m in Sources */,
 				52474B2116A7518C007A0223 /* GLLBasicOBJModelTest.m in Sources */,
 				52C7B5DD16AA15A100FC2927 /* MapTests.m in Sources */,
+				52C7B5E116ABEB3000FC2927 /* GLLModelParametersTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
