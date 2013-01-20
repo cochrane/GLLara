@@ -49,7 +49,7 @@ const double unitsPerSecond = 0.2;
 		NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
 		NSOpenGLPFAMultisample, 1,
 		NSOpenGLPFASampleBuffers, 1,
-		NSOpenGLPFASamples, 8,
+		NSOpenGLPFASamples, 4,
 		0
 	};
 	
