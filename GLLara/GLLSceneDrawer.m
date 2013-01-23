@@ -137,8 +137,6 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	// 3rd pass: Draw blended items, now only those things that are "mostly transparent".
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestPassLessBuffer);
 	
-	glEnable(GL_BLEND);
-	
 	glDepthMask(GL_FALSE);
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[drawer drawAlpha];

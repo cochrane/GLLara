@@ -84,11 +84,11 @@ struct GLLLightBlock
 	// Other necessary render state. Thanks to Core Profile, that got cut down a lot.
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
-	glClearColor(0.2, 0.2, 0.2, 0);
+	glClearColor(0.2, 0.2, 0.2, 0.0);
 	
 	glBlendColor(0, 0, 0, 1.0);
-	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
+	glBlendEquation(GL_FUNC_ADD);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);

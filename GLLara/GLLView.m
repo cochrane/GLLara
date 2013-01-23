@@ -50,6 +50,8 @@ const double unitsPerSecond = 0.2;
 		NSOpenGLPFAMultisample, 1,
 		NSOpenGLPFASampleBuffers, 1,
 		NSOpenGLPFASamples, 4,
+		NSOpenGLPFAAlphaSize, 8,
+		NSOpenGLPFAColorSize, 24,
 		0
 	};
 	
