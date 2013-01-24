@@ -59,7 +59,6 @@ const double unitsPerSecond = 0.2;
 	NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:format shareContext:[[GLLResourceManager sharedResourceManager] openGLContext]];
 	[self setPixelFormat:format];
 	[self setOpenGLContext:context];
-	[context setView:self];
 	[self setWantsBestResolutionOpenGLSurface:YES];
 	
 	return self;
