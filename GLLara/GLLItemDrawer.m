@@ -155,18 +155,21 @@
 }
 
 - (void)_updateTransforms
-{	
-	NSUInteger count = self.item.bones.count;
-	mat_float16 *matrices = malloc((count + 1) * sizeof(mat_float16));
+{
+	// The first matrix stores the normal transform, so make the buffer one
+	// longer than needed for the bones themselves.
+	NSUInteger boneCount = self.item.bones.count;
+	NSUInteger matrixCount = boneCount + 1;
+	mat_float16 *matrices = malloc(matrixCount * sizeof(mat_float16));
 	matrices[0].x = [self _permutationTableColumn:self.item.normalChannelAssignmentR];
 	matrices[0].y = [self _permutationTableColumn:self.item.normalChannelAssignmentG];
 	matrices[0].z = [self _permutationTableColumn:self.item.normalChannelAssignmentB];
 	matrices[0].w = simd_e_w;
-	for (NSUInteger i = 0; i < count; i++)
+	for (NSUInteger i = 0; i < boneCount; i++)
 		[[[self.item.bones objectAtIndex:i] globalTransform] getValue:&matrices[i + 1]];
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_STREAM_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, matrixCount * sizeof(mat_float16), matrices, GL_STREAM_DRAW);
 	
 	free(matrices);
 	
