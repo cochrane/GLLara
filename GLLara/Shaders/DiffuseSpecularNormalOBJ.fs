@@ -41,36 +41,37 @@ uniform RenderParameters {
 
 void main()
 {
-	// Find diffuse texture and do alpha test.
-	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
-		discard;
-	
-	// Base diffuse color
-	vec4 diffuseColor = diffuseTexColor * outColor;
-	
-	// Separate specular color
-	vec4 specularColor = texture(specularTexture, outTexCoord);
-	
-	// Calculate normal
-	vec4 normalMap = texture(bumpTexture, outTexCoord);
-	vec3 normalFromMap = normalMap.rgb * 2 - 1;
-	vec3 normal = normalize(tangentToWorld * normalFromMap);
-	
-	// Direction to camera
-	vec3 cameraDirection = normalize(lightData.cameraPosition.xyz - positionWorld);
-	
-	vec4 color = lightData.ambientColor * diffuseColor * parameters.ambientColor;
-	for (int i = 0; i < 3; i++)
-	{
-		// Diffuse term; this version does not use specular
-		color += diffuseTexColor * lightData.lights[i].diffuseColor * max(dot(-normal, lightData.lights[i].direction.xyz), 0) * parameters.diffuseColor;
-		
-		// Specular term
-		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normal);
-		float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), parameters.specularExponent);
-		color += lightData.lights[i].specularColor * specularFactor * parameters.specularColor * specularColor;
-	}
-	
-	screenColor = vec4(color.rgb, diffuseTexColor.a);
+//	// Find diffuse texture and do alpha test.
+//	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
+//	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
+//		discard;
+//	
+//	// Base diffuse color
+//	vec4 diffuseColor = diffuseTexColor * outColor;
+//	
+//	// Separate specular color
+//	vec4 specularColor = texture(specularTexture, outTexCoord);
+//	
+//	// Calculate normal
+//	vec4 normalMap = texture(bumpTexture, outTexCoord);
+//	vec3 normalFromMap = normalMap.rgb * 2 - 1;
+//	vec3 normal = normalize(tangentToWorld * normalFromMap);
+//	
+//	// Direction to camera
+//	vec3 cameraDirection = normalize(lightData.cameraPosition.xyz - positionWorld);
+//	
+//	vec4 color = lightData.ambientColor * diffuseColor * parameters.ambientColor;
+//	for (int i = 0; i < 3; i++)
+//	{
+//		// Diffuse term; this version does not use specular
+//		color += diffuseTexColor * lightData.lights[i].diffuseColor * max(dot(-normal, lightData.lights[i].direction.xyz), 0) * parameters.diffuseColor;
+//		
+//		// Specular term
+//		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normal);
+//		float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), parameters.specularExponent);
+//		color += lightData.lights[i].specularColor * specularFactor * parameters.specularColor * specularColor;
+//	}
+//	
+//	screenColor = vec4(color.rgb, diffuseTexColor.a);
+	screenColor = vec4(1.0, 0.0, 0.0, 1.0);
 }

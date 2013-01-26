@@ -46,48 +46,49 @@ layout(std140) uniform AlphaTest {
 
 void main()
 {
-	// Find diffuse texture and do alpha test.
-	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
-		discard;
-	
-	// Base diffuse color
-	vec4 diffuseColor = diffuseTexColor * outColor;
-	
-	// Calculate normal
-	vec4 normalMap = texture(bumpTexture, outTexCoord);
-	vec4 detailNormalMap1 = texture(bump1Texture, outTexCoord * parameters.bumpUVScale);
-	vec4 detailNormalMap2 = texture(bump2Texture, outTexCoord * parameters.bumpUVScale);
-	vec4 maskColor = texture(maskTexture, outTexCoord);
-	
-	vec3 normalFromMap = (normalMap.rgb + detailNormalMap1.rgb * maskColor.r + detailNormalMap2.rgb * maskColor.g) * 2 - 1;
-	vec3 normal = normalize(tangentToWorld * normalFromMap);
-	
-	// Direction to camera
-	vec3 cameraDirection = normalize(lightData.cameraPosition.xyz - positionWorld);
-	
-	vec4 color = lightData.ambientColor * diffuseColor;
-	for (int i = 0; i < 3; i++)
-	{
-		// Diffuse term
-		float diffuseFactor = max(dot(-normal, lightData.lights[i].direction.xyz), 0);
-		color += diffuseTexColor * lightData.lights[i].diffuseColor * diffuseFactor;
-		
-		// Specular term
-		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normal);
-		float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
-		color += lightData.lights[i].specularColor * specularFactor;
-	}
-	
-	// Apply reflection
-	vec3 reflectionDir = normalize(reflect(cameraDirection, normal));
-	
-	// Reflection dir now points at a sphere. We ignore the z component to get a circle. But we still have to scale it to get to the square XNAlara demands.
-	float tanAlpha = reflectionDir.x/reflectionDir.y;
-	float cotAlpha = reflectionDir.y/reflectionDir.x;
-	float scaleFactor = sqrt(min(1, tanAlpha*tanAlpha) + min(1, cotAlpha*cotAlpha));
-	vec2 reflectionTexCoord = scaleFactor * reflectionDir.xy;
-	vec4 reflectionColor = texture(reflectionTexture, reflectionTexCoord * 0.5 + 0.5);
-	
-	screenColor = vec4(mix(color.rgb, reflectionColor.rgb, parameters.reflectionAmount), diffuseTexColor.a);
+//	// Find diffuse texture and do alpha test.
+//	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
+//	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
+//		discard;
+//	
+//	// Base diffuse color
+//	vec4 diffuseColor = diffuseTexColor * outColor;
+//	
+//	// Calculate normal
+//	vec4 normalMap = texture(bumpTexture, outTexCoord);
+//	vec4 detailNormalMap1 = texture(bump1Texture, outTexCoord * parameters.bumpUVScale);
+//	vec4 detailNormalMap2 = texture(bump2Texture, outTexCoord * parameters.bumpUVScale);
+//	vec4 maskColor = texture(maskTexture, outTexCoord);
+//	
+//	vec3 normalFromMap = (normalMap.rgb + detailNormalMap1.rgb * maskColor.r + detailNormalMap2.rgb * maskColor.g) * 2 - 1;
+//	vec3 normal = normalize(tangentToWorld * normalFromMap);
+//	
+//	// Direction to camera
+//	vec3 cameraDirection = normalize(lightData.cameraPosition.xyz - positionWorld);
+//	
+//	vec4 color = lightData.ambientColor * diffuseColor;
+//	for (int i = 0; i < 3; i++)
+//	{
+//		// Diffuse term
+//		float diffuseFactor = max(dot(-normal, lightData.lights[i].direction.xyz), 0);
+//		color += diffuseTexColor * lightData.lights[i].diffuseColor * diffuseFactor;
+//		
+//		// Specular term
+//		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normal);
+//		float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
+//		color += lightData.lights[i].specularColor * specularFactor;
+//	}
+//	
+//	// Apply reflection
+//	vec3 reflectionDir = normalize(reflect(cameraDirection, normal));
+//	
+//	// Reflection dir now points at a sphere. We ignore the z component to get a circle. But we still have to scale it to get to the square XNAlara demands.
+//	float tanAlpha = reflectionDir.x/reflectionDir.y;
+//	float cotAlpha = reflectionDir.y/reflectionDir.x;
+//	float scaleFactor = sqrt(min(1, tanAlpha*tanAlpha) + min(1, cotAlpha*cotAlpha));
+//	vec2 reflectionTexCoord = scaleFactor * reflectionDir.xy;
+//	vec4 reflectionColor = texture(reflectionTexture, reflectionTexCoord * 0.5 + 0.5);
+//	
+//	screenColor = vec4(mix(color.rgb, reflectionColor.rgb, parameters.reflectionAmount), diffuseTexColor.a);
+	screenColor = vec4(1.0, 0.0, 0.0, 1.0);
 }

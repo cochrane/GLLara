@@ -32,23 +32,24 @@ layout(std140) uniform AlphaTest {
 
 void main()
 {
-	// Find diffuse texture and do alpha test.
-	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
-		discard;
-	
-	// Base diffuse color
-	vec4 diffuseColor = diffuseTexColor * outColor;
-	
-	vec4 color = lightData.ambientColor * diffuseColor;
-	for (int i = 0; i < 3; i++)
-	{
-		// Diffuse term; this version does not use specular
-		color += diffuseTexColor * lightData.lights[i].diffuseColor * max(dot(-normalWorld, lightData.lights[i].direction.xyz), 0);
-	}
-	
-	// Lightmap
-	color *= texture(lightmapTexture, outTexCoord2);
-	
-	screenColor = vec4(color.rgb, diffuseTexColor.a);
+//	// Find diffuse texture and do alpha test.
+//	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
+//	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
+//		discard;
+//	
+//	// Base diffuse color
+//	vec4 diffuseColor = diffuseTexColor * outColor;
+//	
+//	vec4 color = lightData.ambientColor * diffuseColor;
+//	for (int i = 0; i < 3; i++)
+//	{
+//		// Diffuse term; this version does not use specular
+//		color += diffuseTexColor * lightData.lights[i].diffuseColor * max(dot(-normalWorld, lightData.lights[i].direction.xyz), 0);
+//	}
+//	
+//	// Lightmap
+//	color *= texture(lightmapTexture, outTexCoord2);
+//	
+//	screenColor = vec4(color.rgb, diffuseTexColor.a);
+	screenColor = vec4(1.0, 0.0, 0.0, 1.0);
 }

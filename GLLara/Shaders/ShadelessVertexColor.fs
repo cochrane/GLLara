@@ -30,10 +30,11 @@ layout(std140) uniform AlphaTest {
 
 void main()
 {
-	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	vec4 diffuseColor = diffuseTexColor * outColor;
-	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
-	discard;
-	
-	screenColor = vec4(diffuseColor.rgb, diffuseTexColor.a);
+//	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
+//	vec4 diffuseColor = diffuseTexColor * outColor;
+//	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
+//	discard;
+//	
+//	screenColor = vec4(diffuseColor.rgb, diffuseTexColor.a);
+	screenColor = vec4(1.0, 0.0, 0.0, 1.0);
 }
