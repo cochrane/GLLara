@@ -37,12 +37,12 @@
 @dynamic rotationZ;
 @dynamic boneIndex;
 @dynamic item;
-@dynamic relativeTransform;
-@dynamic globalTransform;
-@dynamic globalPosition;
 
 @synthesize parent;
 @synthesize children;
+@synthesize relativeTransform;
+@synthesize globalTransform;
+@synthesize globalPosition;
 
 - (void)awakeFromFetch
 {
