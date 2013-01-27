@@ -13,6 +13,7 @@
 
 typedef struct __GLLDrawState {
 	GLuint activeProgram;
+	int16_t cullFaceMode;
 } GLLDrawState;
 
 #endif

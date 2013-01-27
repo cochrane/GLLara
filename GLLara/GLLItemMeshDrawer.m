@@ -75,21 +75,28 @@
 	if (needsParameterBufferUpdate)
 		[self _updateParameterBuffer];
 	
-	switch (self.itemMesh.cullFaceMode)
+	if (state->cullFaceMode != self.itemMesh.cullFaceMode)
 	{
-		case GLLCullCounterClockWise:
-			glFrontFace(GL_CW);
-			break;
-			
-		case GLLCullClockWise:
-			glFrontFace(GL_CCW);
-			break;
-			
-		case GLLCullNone:
-			glDisable(GL_CULL_FACE);
-			
-		default:
-			break;
+		// Set cull mode
+		switch (self.itemMesh.cullFaceMode)
+		{
+			case GLLCullCounterClockWise:
+				if (state->cullFaceMode == GLLCullNone) glEnable(GL_CULL_FACE);
+				glFrontFace(GL_CW);
+				break;
+				
+			case GLLCullClockWise:
+				if (state->cullFaceMode == GLLCullNone) glEnable(GL_CULL_FACE);
+				glFrontFace(GL_CCW);
+				break;
+				
+			case GLLCullNone:
+				glDisable(GL_CULL_FACE);
+				
+			default:
+				break;
+		}
+		state->cullFaceMode = self.itemMesh.cullFaceMode;
 	}
 	
 	// If there are render parameters, apply them
@@ -97,10 +104,6 @@
 		glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingRenderParameters, renderParametersBuffer);
 	
 	[self.meshDrawer drawWithState:state];
-	
-	// Enable it again.
-	if (self.itemMesh.cullFaceMode == GLLCullNone)
-		glEnable(GL_CULL_FACE);
 }
 
 - (void)dealloc
