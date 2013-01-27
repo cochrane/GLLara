@@ -16,6 +16,10 @@
 #import <OpenGL/CGLRenderers.h>
 #import "OpenDDSFile.h"
 
+#ifndef kCGLRendererIntelHD4000ID
+#define kCGLRendererIntelHD4000ID 0x0024400
+#endif
+
 #pragma mark - Private DDS loading functions
 
 GLenum _dds_get_compressed_texture_format(const DDSFile *file)
