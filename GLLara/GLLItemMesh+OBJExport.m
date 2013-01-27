@@ -49,6 +49,7 @@
 		
 		NSString *texturePath = [relativePathComponents componentsJoinedByString:@"/"];
 		
+		// Write out
 		[mtlString appendFormat:@"map_Kd %@\n", texturePath];
 	}
 	
