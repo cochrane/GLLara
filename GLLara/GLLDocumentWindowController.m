@@ -142,59 +142,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
-<<<<<<< HEAD
 	if (item) return [item outlineView:outlineView objectValueForTableColumn:tableColumn byItem:item];
-=======
-	NSUInteger selectedRow = self.sourceView.selectedRow;
-	if (selectedRow == NSNotFound)
-	{
-		NSBeep();
-		return;
-	}
-	
-	id selectedObject = [[self.sourceView itemAtRow:selectedRow] representedObject];
-	GLLItem *item = nil;
-	if ([selectedObject isKindOfClass:[GLLItemController class]])
-		item = [selectedObject item];
-	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
-		item = [selectedObject item];
-	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
-		item = [selectedObject item];
-	if (!item) return;
-	
-	NSSavePanel *panel = [NSSavePanel savePanel];
-	panel.allowedFileTypes = @[ @"obj" ];
-	panel.delegate = self;
-	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"objExportIncludeTransformations" : @(YES), @"objExportIncludeVertexColors" : @(NO) }];
-	
-	GLLItemExportViewController *controller = [[GLLItemExportViewController alloc] init];
-	controller.includeTransformations = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeTransformations"];
-	controller.includeVertexColors = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeVertexColors"];
-	controller.canExportAllData = ![item willLoseDataWhenConvertedToOBJ];
-	
-	panel.accessoryView = controller.view;
-	
-	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
-		
-		NSURL *objURL = panel.URL;
-		NSString *materialLibraryName = [[objURL.lastPathComponent stringByDeletingPathExtension] stringByAppendingString:@".mtl"];
-		NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:objURL];
-		
-		NSError *error = nil;
-		if (![item writeOBJToLocation:objURL withTransform:controller.includeTransformations withColor:controller.includeVertexColors error:&error])
-		{
-			[self.window presentError:error];
-			return;
-		}
-		if (![item writeMTLToLocation:mtlURL error:&error])
-		{
-			[self.window presentError:error];
-			return;
-		}
-	}];
->>>>>>> Fixed 10.7-specific differences
 	
 	return nil;
 }
