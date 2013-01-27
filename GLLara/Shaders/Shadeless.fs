@@ -35,5 +35,5 @@ void main()
 //		discard;
 //
 //	screenColor = diffuseTexColor;
-	screenColor = vec4(1.0, 0.0, 0.0, 1.0);
+	screenColor = texture(diffuseTexture, outTexCoord);
 }

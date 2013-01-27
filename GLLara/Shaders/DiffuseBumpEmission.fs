@@ -72,5 +72,5 @@ void main()
 //	screenColor += emission;
 //
 //	screenColor = vec4(color.rgb, diffuseTexColor.a);
-	screenColor = vec4(1.0, 0.0, 0.0, 1.0);
+	screenColor = texture(diffuseTexture, outTexCoord);
 }
