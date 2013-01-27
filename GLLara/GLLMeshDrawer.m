@@ -93,10 +93,14 @@
 	return self;
 }
 
-- (void)draw;
+- (void)drawWithState:(GLLDrawState *)state;
 {
 	// Use this program, with the correct transformation.
-	glUseProgram(self.program.programID);
+	if (state->activeProgram != self.program.programID)
+	{
+		glUseProgram(self.program.programID);
+		state->activeProgram = self.program.programID;
+	}
 
 	// Setup textures
 	for (GLuint i = 0; i < self.textures.count; i++)

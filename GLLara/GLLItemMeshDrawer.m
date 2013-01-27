@@ -68,7 +68,7 @@
 		[super observeValueForKeyPath:@"keyPath" ofObject:object change:change context:context];
 }
 
-- (void)draw;
+- (void)drawWithState:(GLLDrawState *)state;
 {
 	if (!self.itemMesh.isVisible)
 		return;
@@ -96,7 +96,7 @@
 	if (renderParametersBuffer != 0)
 		glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingRenderParameters, renderParametersBuffer);
 	
-	[self.meshDrawer draw];
+	[self.meshDrawer drawWithState:state];
 	
 	// Enable it again.
 	if (self.itemMesh.cullFaceMode == GLLCullNone)

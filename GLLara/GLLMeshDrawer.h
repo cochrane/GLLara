@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GLLDrawState.h"
 #import "simd_types.h"
 
 @class GLLModelMesh;
@@ -26,7 +27,7 @@
 @property (nonatomic, retain, readonly) GLLModelProgram *program;
 @property (nonatomic, copy, readonly) NSArray *textures;
 
-- (void)draw;
+- (void)drawWithState:(GLLDrawState *)state;
 
 - (void)unload;
 

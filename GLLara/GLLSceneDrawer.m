@@ -15,6 +15,7 @@
 #import "GLLAmbientLight.h"
 #import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
+#import "GLLDrawState.h"
 #import "GLLItem.h"
 #import "GLLItemDrawer.h"
 #import "GLLModelProgram.h"
@@ -34,6 +35,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	NSMutableArray *itemDrawers;
 	id managedObjectContextObserver;
 	GLLSkeletonDrawer *skeletonDrawer;
+	GLLDrawState state;
 }
 
 - (void)_addDrawerForItem:(GLLItem *)item;
@@ -125,7 +127,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestDisabledBuffer);
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
-		[drawer drawSolid];
+		[drawer drawSolidWithState:&state];
 	
 	// 2nd pass: Draw blended items, but only those pixels that are "almost opaque"
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestPassGreaterBuffer);
@@ -133,14 +135,14 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	glEnable(GL_BLEND);
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
-		[drawer drawAlpha];
+		[drawer drawAlphaWithState:&state];
 	
 	// 3rd pass: Draw blended items, now only those things that are "mostly transparent".
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestPassLessBuffer);
 	
 	glDepthMask(GL_FALSE);
 	for (GLLItemDrawer *drawer in itemDrawers)
-		[drawer drawAlpha];
+		[drawer drawAlphaWithState:&state];
 	
 	if (showSelection)
 	{

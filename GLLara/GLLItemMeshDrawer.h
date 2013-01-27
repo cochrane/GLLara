@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GLLDrawState.h"
 #import "simd_types.h"
 
 @class GLLItemDrawer;
@@ -26,7 +27,7 @@
 @property (nonatomic, retain, readonly) GLLMeshDrawer *meshDrawer;
 @property (nonatomic, retain, readonly) GLLItemMesh *itemMesh;
 
-- (void)draw;
+- (void)drawWithState:(GLLDrawState *)state;
 
 - (void)unload;
 

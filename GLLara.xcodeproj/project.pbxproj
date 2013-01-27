@@ -313,6 +313,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5212027E16B5895E00338ADD /* GLLDrawState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLDrawState.h; sourceTree = "<group>"; };
 		521326331602ACBE00787AA1 /* GLLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = GLLProgram.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
 		521326341602ACBE00787AA1 /* GLLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GLLProgram.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
 		521326381602B19700787AA1 /* Square.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Square.fs; sourceTree = "<group>"; };
@@ -849,6 +850,7 @@
 				529693F315F2B58A00DF2FA3 /* GLLASCIIScanner.h */,
 				529693F415F2B58B00DF2FA3 /* GLLASCIIScanner.m */,
 				52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */,
+				5212027E16B5895E00338ADD /* GLLDrawState.h */,
 			);
 			path = GLLara;
 			sourceTree = "<group>";

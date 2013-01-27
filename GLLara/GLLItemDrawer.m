@@ -111,25 +111,25 @@
 		_needsRedraw = needsRedraw;
 }
 
-- (void)drawSolid;
+- (void)drawSolidWithState:(GLLDrawState *)state;
 {
 	if (needToUpdateTransforms) [self _updateTransforms];
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
 	
 	for (GLLItemMeshDrawer *drawer in solidDrawers)
-		[drawer draw];
+		[drawer drawWithState:state];
 	
 	self.needsRedraw = NO;
 }
-- (void)drawAlpha;
+- (void)drawAlphaWithState:(GLLDrawState *)state;
 {
 	if (needToUpdateTransforms) [self _updateTransforms];
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
 	
 	for (GLLItemMeshDrawer *drawer in alphaDrawers)
-		[drawer draw];
+		[drawer drawWithState:state];
 	
 	self.needsRedraw = NO;
 }

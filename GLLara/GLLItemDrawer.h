@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GLLDrawState.h"
+
 @class GLLItem;
 @class GLLSceneDrawer;
 
@@ -27,8 +29,8 @@
 // Triggers KVO updates only when it is set from NO to YES.
 @property (nonatomic, assign) BOOL needsRedraw;
 
-- (void)drawSolid;
-- (void)drawAlpha;
+- (void)drawSolidWithState:(GLLDrawState *)state;
+- (void)drawAlphaWithState:(GLLDrawState *)state;
 
 - (void)unload;
 
