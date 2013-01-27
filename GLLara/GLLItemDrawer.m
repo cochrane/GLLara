@@ -10,6 +10,7 @@
 
 #import <OpenGL/gl3.h>
 
+#import "NSArray+Map.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLMeshDrawer.h"
@@ -18,7 +19,7 @@
 #import "GLLSceneDrawer.h"
 #import "GLLItemMeshDrawer.h"
 #import "GLLUniformBlockBindings.h"
-#import "simd_types.h"
+#import "simd_matrix.h"
 
 @interface GLLItemDrawer ()
 {
@@ -27,9 +28,13 @@
 	
 	NSArray *alphaDrawers;
 	NSArray *solidDrawers;
+	
+	NSArray *bones;
 }
 
 - (void)_updateTransforms;
+
+- (vec_float4)_permutationTableColumn:(int16_t)mapping;
 
 @end
 
@@ -48,24 +53,25 @@
 	if (!modelDrawer)
 		return nil;
 	
+	[_item addObserver:self forKeyPath:@"normalChannelAssignmentR" options:0 context:0];
+	[_item addObserver:self forKeyPath:@"normalChannelAssignmentG" options:0 context:0];
+	[_item addObserver:self forKeyPath:@"normalChannelAssignmentB" options:0 context:0];
+	
 	// Observe all the bones
-	for (id transform in item.bones)
+	// Store bones so we can unregister.
+	// Getting the bones from the item to unregister may not work, because they may already be gone when the drawer gets unloaded.
+	bones = [item.bones map:^(id transform){
 		[transform addObserver:self forKeyPath:@"globalTransform" options:0 context:0];
+		return transform;
+	}];
 	
 	// Observe settings of all meshes
-	NSMutableArray *mutableAlphaDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.alphaMeshDrawers.count];
-	for (GLLMeshDrawer *drawer in modelDrawer.alphaMeshDrawers)
-	{
-		[mutableAlphaDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]]];
-	}
-	alphaDrawers = [mutableAlphaDrawers copy];
-	
-	NSMutableArray *mutableSolidDrawers = [[NSMutableArray alloc] initWithCapacity:modelDrawer.solidMeshDrawers.count];
-	for (GLLMeshDrawer *drawer in modelDrawer.solidMeshDrawers)
-	{
-		[mutableSolidDrawers addObject:[[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]]];
-	}
-	solidDrawers = [mutableSolidDrawers copy];
+	alphaDrawers = [modelDrawer.alphaMeshDrawers map:^(GLLMeshDrawer *drawer) {
+		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]];
+	}];
+	solidDrawers = [modelDrawer.solidMeshDrawers map:^(GLLMeshDrawer *drawer) {
+		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]];
+	}];
 	
 	glGenBuffers(1, &transformsBuffer);
 	needToUpdateTransforms = YES;
@@ -85,7 +91,7 @@
 	{
 		self.needsRedraw = YES;
 	}
-	else if ([keyPath isEqual:@"globalTransform"])
+	else if ([keyPath isEqual:@"globalTransform"] || [keyPath isEqual:@"normalChannelAssignmentR"] || [keyPath isEqual:@"normalChannelAssignmentG"] || [keyPath isEqual:@"normalChannelAssignmentB"])
 	{
 		needToUpdateTransforms = YES;
 		self.needsRedraw = YES;
@@ -130,32 +136,58 @@
 
 - (void)unload;
 {
-	for (id bone in self.item.bones)
+	[_item removeObserver:self forKeyPath:@"normalChannelAssignmentR"];
+	[_item removeObserver:self forKeyPath:@"normalChannelAssignmentG"];
+	[_item removeObserver:self forKeyPath:@"normalChannelAssignmentB"];
+	
+	for (id bone in bones)
 		[bone removeObserver:self forKeyPath:@"globalTransform"];
+	bones = nil;
 	
-	for (GLLItemMeshDrawer *drawer in solidDrawers)
-		[drawer unload];
+	[solidDrawers makeObjectsPerformSelector:@selector(unload)];
+	solidDrawers = nil;
 	
-	for (GLLItemMeshDrawer *drawer in alphaDrawers)
-		[drawer unload];
+	[solidDrawers makeObjectsPerformSelector:@selector(alphaDrawers)];
+	alphaDrawers = nil;
 	
 	glDeleteBuffers(1, &transformsBuffer);
 	transformsBuffer = 0;
 }
 
 - (void)_updateTransforms
-{	
-	NSUInteger count = self.item.bones.count;
-	mat_float16 *matrices = malloc(count * sizeof(mat_float16));
-	for (NSUInteger i = 0; i < count; i++)
-		[[[self.item.bones objectAtIndex:i] globalTransform] getValue:&matrices[i]];
+{
+	// The first matrix stores the normal transform, so make the buffer one
+	// longer than needed for the bones themselves.
+	NSUInteger boneCount = self.item.bones.count;
+	NSUInteger matrixCount = boneCount + 1;
+	mat_float16 *matrices = malloc(matrixCount * sizeof(mat_float16));
+	matrices[0].x = [self _permutationTableColumn:self.item.normalChannelAssignmentR];
+	matrices[0].y = [self _permutationTableColumn:self.item.normalChannelAssignmentG];
+	matrices[0].z = [self _permutationTableColumn:self.item.normalChannelAssignmentB];
+	matrices[0].w = simd_e_w;
+	for (NSUInteger i = 0; i < boneCount; i++)
+		[[[self.item.bones objectAtIndex:i] globalTransform] getValue:&matrices[i + 1]];
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, count * sizeof(mat_float16), matrices, GL_STREAM_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, matrixCount * sizeof(mat_float16), matrices, GL_STREAM_DRAW);
 	
 	free(matrices);
 	
 	needToUpdateTransforms = NO;
+}
+
+- (vec_float4)_permutationTableColumn:(int16_t)mapping;
+{
+	switch (mapping)
+	{
+		case GLLNormalPos: return simd_e_z; break;
+		case GLLNormalNeg: return -simd_e_z; break;
+		case GLLTangentUPos: return simd_e_y; break;
+		case GLLTangentUNeg: return -simd_e_y; break;
+		case GLLTangentVPos: return simd_e_x; break;
+		case GLLTangentVNeg: return -simd_e_x; break;
+		default: return simd_zero();
+	}
 }
 
 @end

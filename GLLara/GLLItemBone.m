@@ -38,12 +38,12 @@
 @dynamic rotationZ;
 @dynamic boneIndex;
 @dynamic item;
-@dynamic relativeTransform;
-@dynamic globalTransform;
-@dynamic globalPosition;
 
 @synthesize parent;
 @synthesize children;
+@synthesize relativeTransform;
+@synthesize globalTransform;
+@synthesize globalPosition;
 
 - (void)awakeFromFetch
 {
@@ -128,27 +128,17 @@
 	return children;
 }
 
-#pragma mark - Source list item
-
-- (BOOL)isSourceListHeader
+- (BOOL)isChildOfBone:(GLLItemBone *)bone;
 {
-	return NO;
+	if (bone == self) return YES;
+	else if (self.parent) return [self.parent isChildOfBone:bone];
+	else return NO;
 }
-- (NSString *)sourceListDisplayName
+- (BOOL)isChildOfAny:(id)boneSet;
 {
-	return self.bone.name;
-}
-- (BOOL)isLeafInSourceList
-{
-	return self.children.count == 0;
-}
-- (NSUInteger)countOfSourceListChildren
-{
-	return self.children.count;
-}
-- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
-{
-	return self.children[index];
+	if ([boneSet containsObject:self]) return YES;
+	if (!self.parent) return NO;
+	return [self.parent isChildOfAny:boneSet];
 }
 
 #pragma mark - Private methods
@@ -193,8 +183,7 @@
 	vec_float4 position = simd_mat_vecmul(transform, simd_make(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0f));
 	self.globalPosition = [NSValue valueWithBytes:&position objCType:@encode(float [4])];
 	
-	for (GLLItemBone *child in self.children)
-		[child updateGlobalTransform];
+	[self.children makeObjectsPerformSelector:@selector(updateGlobalTransform)];
 }
 
 @end

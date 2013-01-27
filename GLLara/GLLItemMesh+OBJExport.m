@@ -9,6 +9,7 @@
 #import "GLLItemMesh+OBJExport.h"
 
 #import "GLLModelMesh+OBJExport.h"
+#import "LionSubscripting.h"
 
 @implementation GLLItemMesh (OBJExport)
 

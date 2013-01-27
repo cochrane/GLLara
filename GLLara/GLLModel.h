@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+enum GLLModelLoadingErrorCodes
+{
+	GLLModelLoadingError_PrematureEndOfFile,
+	GLLModelLoadingError_IndexOutOfRange,
+	GLLModelLoadingError_CircularReference,
+	GLLModelLoadingError_FileTypeNotSupported,
+	GLLModelLoadingError_ParametersNotFound
+};
+extern NSString *GLLModelLoadingErrorDomain;
+
 @class GLLModelParams;
 
 /*!
@@ -24,7 +34,13 @@
 
 
 - (id)initBinaryFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
+- (id)initBinaryFromData:(NSData *)data baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 - (id)initASCIIFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
+- (id)initASCIIFromString:(NSString *)source baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+
+// Export
+- (NSString *)writeASCII;
+- (NSData *)writeBinary;
 
 @property (nonatomic, copy) NSURL *baseURL;
 

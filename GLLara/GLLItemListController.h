@@ -6,18 +6,14 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
-#import "GLLSourceListItem.h"
+@interface GLLItemListController : NSObject <NSOutlineViewDataSource>
 
-/*!
- * The root for the items list in the outline view. What this code actually does is manage a list of GLLItemController instances that gets updated whenever necessary.
- */
-@interface GLLItemListController : NSObject <GLLSourceListItem>
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext outlineView:(NSOutlineView *)outlineView;
 
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readonly) NSOutlineView *outlineView;
+@property (nonatomic, readonly) NSArray *allSelectableControllers;
 
 @end

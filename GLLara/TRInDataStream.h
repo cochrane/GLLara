@@ -31,12 +31,13 @@
 - (void)skipField16:(NSUInteger)elementWidth;
 - (void)skipField32:(NSUInteger)elementWidth;
 
-- (TRInDataStream *)decompressStreamCompressedLength:(NSUInteger)actualBytes uncompressedLength:(NSUInteger)originalBytes;
+- (TRInDataStream *)decompressStreamCompressedLength:(NSUInteger)actualBytes uncompressedLength:(NSUInteger)originalBytes error:(NSError *__autoreleasing*)error;
 - (TRInDataStream *)substreamWithLength:(NSUInteger)bytes;
 - (NSData *)dataWithLength:(NSUInteger)bytes;
 
 @property (nonatomic, assign) NSUInteger position;
 @property (nonatomic, copy, readonly) NSData *levelData;
 @property (nonatomic, assign, readonly) BOOL isAtEnd;
+@property (nonatomic, assign, readonly) BOOL isValid;
 
 @end

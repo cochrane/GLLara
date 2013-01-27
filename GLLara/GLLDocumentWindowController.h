@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class GLLScene;
+@class GLLSelection;
 
 /*
  * @abstract Holds the document window.
@@ -16,7 +16,7 @@
  *
  * It also currently loads and removes meshes, although that job might be better situated in the document. That would just mean telling the document what was selected here, which becomes ugly very fast.
  */
-@interface GLLDocumentWindowController : NSWindowController <NSOutlineViewDelegate>
+@interface GLLDocumentWindowController : NSWindowController <NSOutlineViewDelegate, NSOutlineViewDataSource>
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
@@ -24,12 +24,7 @@
 
 @property (nonatomic, retain) IBOutlet NSOutlineView *sourceView;
 @property (nonatomic, retain) IBOutlet NSView *placeholderView;
-@property (nonatomic, retain) IBOutlet NSTreeController *treeController;
 
-- (IBAction)removeSelectedMesh:(id)sender;
-- (IBAction)exportSelectedModel:(id)sender;
-
-- (NSUInteger)countOfSourceListRoots;
-- (id)objectInSourceListRootsAtIndex:(NSUInteger)index;
+@property (nonatomic) GLLSelection *selection;
 
 @end

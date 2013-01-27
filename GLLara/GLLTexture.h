@@ -14,12 +14,13 @@
  * @abstract A texture.
  * @discussion Nothing much to see here. This uses hand-written code to load DDS files and ImageIO to load everything else, and vImage to unpremultiply whatever comes from ImageIO.
  */
-@interface GLLTexture : NSObject
+@interface GLLTexture : NSObject <NSFilePresenter>
 
-- (id)initWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
+- (id)initWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error;
 
 - (void)unload;
 
+@property (nonatomic) NSURL *url;
 @property (nonatomic, assign, readonly) GLuint textureID;
 
 @end

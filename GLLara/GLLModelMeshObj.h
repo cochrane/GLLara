@@ -8,10 +8,11 @@
 
 #import "GLLModelMesh.h"
 
+#import "GLLMtlFile.h"
 #import "GLLObjFile.h"
 
 @interface GLLModelMeshObj : GLLModelMesh
 
-- (id)initWithObjFile:(GLLObjFile *)file range:(const GLLObjFile::MaterialRange &)range inModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
+- (id)initWithObjFile:(GLLObjFile *)file mtlFiles:(const std::vector<GLLMtlFile *> &)mtlFiles range:(const GLLObjFile::MaterialRange &)range inModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 
 @end

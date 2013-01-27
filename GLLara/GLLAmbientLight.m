@@ -14,28 +14,4 @@
 @dynamic color;
 @dynamic index;
 
-#pragma mark - Source list item
-
-- (BOOL)isSourceListHeader
-{
-	return NO;
-}
-- (NSString *)sourceListDisplayName
-{
-	return NSLocalizedString(@"Ambient", @"source list: ambient light name");
-}
-- (BOOL)isLeafInSourceList
-{
-	return YES;
-}
-- (NSUInteger)countOfSourceListChildren
-{
-	return 0;
-}
-- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
-{
-	return nil;
-}
-
-
 @end

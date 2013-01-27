@@ -8,6 +8,7 @@ layout(std140) uniform Transform {
 } transform;
 
 layout(std140) uniform Bones {
+	mat4 normalPermute;
 	mat4 transforms[512];
 } bones;
 
@@ -37,7 +38,7 @@ void main()
 	vec3 tangentV = normalize(cross(normal, tangentU) * tangent.w);
 	vec3 normal = normalize(normal);
 	
-	tangentToWorld = mat3(bones.transforms[0]) * mat3(tangentU, tangentV, normal);
+	tangentToWorld = mat3(bones.transforms[0]) * mat3(tangentU, tangentV, normal) * mat3(bones.normalPermute);
 	
 	// Pass through
 	outColor = color;

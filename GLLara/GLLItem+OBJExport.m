@@ -8,6 +8,7 @@
 
 #import "GLLItem+OBJExport.h"
 
+#import "NSArray+Map.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh+OBJExport.h"
 #import "GLLModelBone.h"
@@ -55,10 +56,9 @@
 
 - (BOOL)writeMTLToLocation:(NSURL *)location error:(NSError *__autoreleasing*)error;
 {
-	NSMutableString *mtl = [NSMutableString string];
-	
-	for (GLLItemMesh *mesh in self.meshes)
-		[mtl appendString:[mesh writeMTLWithBaseURL:location]];
+	NSString *mtl = [[self.meshes map:^(GLLItemMesh *mesh) {
+		return [mesh writeMTLWithBaseURL:location];
+	}] componentsJoinedByString:@"\n"];
 	
 	return [mtl writeToURL:location atomically:YES encoding:NSUTF8StringEncoding error:error];
 }

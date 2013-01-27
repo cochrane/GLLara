@@ -450,6 +450,35 @@
 			<key>vertex</key>
 			<string>Bump.vs</string>
 		</dict>
+		<key>DiffuseBumpEmission</key>
+		<dict>
+			<key>additionalParameters</key>
+			<array>
+				<string>bumpSpecularGloss</string>
+			</array>
+			<key>solidMeshGroups</key>
+			<array>
+				<string>MeshGroup30</string>
+			</array>
+			<key>alphaMeshGroups</key>
+			<array>
+				<string>MeshGroup31</string>
+			</array>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>bumpTexture</string>
+				<string>emissionTexture</string>
+			</array>
+			<key>parameters</key>
+			<array>
+				<string>bumpSpecularAmount</string>
+			</array>
+			<key>fragment</key>
+			<string>DiffuseBumpEmission.fs</string>
+			<key>vertex</key>
+			<string>Bump.vs</string>
+		</dict>
 	</dict>
 </dict>
 </plist>

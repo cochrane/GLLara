@@ -9,6 +9,7 @@
 #import "GLLRenderAccessoryViewController.h"
 
 #import "LionSubscripting.h"
+#import "NSArray+Map.h"
 
 @interface GLLRenderAccessoryViewController ()
 
@@ -22,15 +23,10 @@
 	
 	NSArray *typeNames = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
 	
-	NSMutableArray *types = [[NSMutableArray alloc] initWithCapacity:typeNames.count];
-	
-	for (NSString *type in typeNames)
-	{
-		[types addObject:@{ @"type" : type,
-		 @"typeDescription" : (__bridge_transfer NSString *) UTTypeCopyDescription((__bridge CFStringRef) type) }];
-	}
-	
-    self.fileTypes = [types copy];
+	self.fileTypes = [typeNames map:^(NSString *type){
+		return @{ @"type" : type,
+		@"typeDescription" : (__bridge_transfer NSString *) UTTypeCopyDescription((__bridge CFStringRef) type) };
+	}];
 	self.selectedFileType = self.fileTypes[0];
 	
     return self;

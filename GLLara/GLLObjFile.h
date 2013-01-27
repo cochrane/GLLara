@@ -30,34 +30,12 @@ public:
 		unsigned char color[4];
 		float tex[2];
 	};
-	struct Material
-	{
-		float ambient[4];
-		float diffuse[4];
-		float specular[4];
-		float shininess;
-		CFURLRef diffuseTexture;
-		CFURLRef specularTexture;
-		CFURLRef normalTexture;
-		std::string name;
-		
-		Material() : ambient{1, 1, 1, 1}, diffuse{1, 1, 1, 1}, specular{0, 0, 0, 0}, shininess(0), diffuseTexture(0), specularTexture(0), normalTexture(0) {}
-		~Material();
-		
-		const float *getAmbient() const { return ambient; }
-		const float *getDiffuse() const { return diffuse; }
-		const float *getSpecular() const { return specular; }
-		float getShininess() const { return shininess; }
-		CFURLRef getDiffuseFilename() const { return diffuseTexture; }
-		CFURLRef getSpecularFilename() const { return specularTexture; }
-		CFURLRef getNormalFilename() const { return normalTexture; }
-	};
 	struct MaterialRange
 	{
 		unsigned start;
 		unsigned end;
-		Material *material;
-		MaterialRange(unsigned s, unsigned e, Material *m) : start(s), end(e), material(m) {}
+		std::string materialName;
+		MaterialRange(unsigned s, unsigned e, const std::string &m) : start(s), end(e), materialName(m) {}
 	};
 private:
 	// Vertex data as saved in the OBJ-file.
@@ -90,17 +68,13 @@ private:
 	std::vector<unsigned> indices;
 			
 	// Support for material handling.
-	std::map<std::string, Material *> materials;
 	std::vector<MaterialRange> materialRanges;
-	
-	// Brings texture coordinates in the 0…1 range, assuming repeat semantics are in place. Necessary if you want to do something fun with them later (like change orientation).
-	void normalizeTexCoords(float *coords);
+	CFMutableArrayRef materialLibraryURLs;
 	
 	// Parsing
 	void parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw();
 	void parseFloatVector(const char *line, std::vector<float> &values, unsigned number) throw();
 	void parseFace(std::istream &string);
-	void parseMaterialLibrary(CFURLRef location);
 				
 	void fillIndices();
 	
@@ -109,8 +83,10 @@ private:
 	
 public:
 	GLLObjFile(CFURLRef location);
+	~GLLObjFile();
 	
 	const std::vector<MaterialRange> &getMaterialRanges() const { return materialRanges; }
 	const std::vector<VertexData> &getVertexData() const { return vertexData; }
 	const std::vector<unsigned> &getIndices() const { return indices; }
+	CFArrayRef getMaterialLibaryURLs() const { return materialLibraryURLs; }
 };

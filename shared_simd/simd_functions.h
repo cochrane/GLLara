@@ -663,6 +663,20 @@ static inline vec_float4 simd_plane(const vec_float4 normal, const vec_float4 po
 #pragma mark Raytracing
 
 /*!
+ * @abstract Entfernung von Strahl und Punkt
+ */
+static inline float simd_rayDistance(const vec_float4 start, const vec_float4 direction, const vec_float4 point)
+{
+	const vec_float4 startToPoint = point - start;
+	const vec_float4 normalizedDirection = simd_normalize_e(direction);
+	vec_float4 alongStart = simd_dot(startToPoint, normalizedDirection);
+	alongStart = simd_max(alongStart, (vec_float4) { 0.0f, 0.0f, 0.0f, 0.0f});
+	alongStart = simd_min(alongStart, (vec_float4) { 1.0f, 1.0f, 1.0f, 0.0f});
+	const vec_float4 nearestPoint = start + normalizedDirection*alongStart;
+	return simd_length(nearestPoint - point);
+}
+
+/*!
  * @abstract Berechnet ob und wenn ja wo ein Strahl auf eine axis-aligned bounding box trifft
  * @discussion Hier darf outFactor null sein.
  */

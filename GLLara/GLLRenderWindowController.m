@@ -9,9 +9,11 @@
 #import "GLLRenderWindowController.h"
 
 #import "GLLCamera.h"
+#import "GLLDocument.h"
 #import "GLLView.h"
 #import "GLLRenderAccessoryViewController.h"
 #import "GLLSceneDrawer.h"
+#import "GLLViewDrawer.h"
 #import "LionSubscripting.h"
 
 @interface GLLRenderWindowController ()
@@ -26,12 +28,13 @@
 
 @implementation GLLRenderWindowController
 
-- (id)initWithCamera:(GLLCamera *)camera;
+- (id)initWithCamera:(GLLCamera *)camera sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
 {
 	if (!(self = [super initWithWindowNibName:@"GLLRenderWindowController"]))
 		return nil;
 	
 	_camera = camera;
+	_sceneDrawer = sceneDrawer;
 	savePanelAccessoryViewController = [[GLLRenderAccessoryViewController alloc] init];
 	
 	return self;
@@ -42,10 +45,12 @@
     [super windowDidLoad];
 	
 	[self.popoverButton.image setTemplate:YES];
+	for (NSInteger i = 0; i < self.selectionModeControl.segmentCount; i++)
+		[[self.selectionModeControl imageForSegment:i] setTemplate:YES];
 	
 	self.window.delegate = self;
     
-	self.renderView.camera = self.camera;
+	[self.renderView setCamera:self.camera sceneDrawer:self.sceneDrawer];
 	self.popover.delegate = self;
 	
 	[self.camera addObserver:self forKeyPath:@"windowWidth" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
@@ -54,6 +59,8 @@
 					 context:NULL];
 	[self.camera addObserver:self forKeyPath:@"windowSizeLocked" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
 					 context:NULL];
+	
+	self.renderView.document = self.document;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -130,7 +137,7 @@
 		NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
 		NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
 		
-		[self.renderView.sceneDrawer writeImageToURL:savePanel.URL fileType:savePanelAccessoryViewController.selectedTypeIdentifier size:CGSizeMake(width, height)];
+		[self.renderView.viewDrawer writeImageToURL:savePanel.URL fileType:savePanelAccessoryViewController.selectedTypeIdentifier size:CGSizeMake(width, height)];
 	}];
 }
 
@@ -143,7 +150,7 @@
 	else
 	{
 		self.popover.contentViewController.representedObject = self.camera;
-		[self.popover showRelativeToRect:[sender frame] ofView:sender preferredEdge:NSMaxYEdge];
+		[self.popover showRelativeToRect:[sender frame] ofView:[sender superview] preferredEdge:NSMinYEdge];
 		showingPopover = YES;
 	}
 }
@@ -160,7 +167,7 @@
 	[self.camera removeObserver:self forKeyPath:@"windowWidth"];
 	[self.camera removeObserver:self forKeyPath:@"windowHeight"];
 	[self.camera removeObserver:self forKeyPath:@"windowSizeLocked"];
-	self.renderView.camera = nil;
+	[self.renderView unload];
 	
 	[self.managedObjectContext deleteObject:self.camera];
 	
@@ -175,7 +182,7 @@
 	[self.camera removeObserver:self forKeyPath:@"windowWidth"];
 	[self.camera removeObserver:self forKeyPath:@"windowHeight"];
 	[self.camera removeObserver:self forKeyPath:@"windowSizeLocked"];
-	self.renderView.camera = nil;
+	[self.renderView unload];
 	self.camera = nil;
 	self.popover.delegate = nil;
 }

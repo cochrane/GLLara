@@ -8,6 +8,7 @@
 
 #import "GLLDocumentWindowController.h"
 
+#import "NSArray+Map.h"
 #import "GLLAmbientLight.h"
 #import "GLLItemBone.h"
 #import "GLLBoneViewController.h"
@@ -15,16 +16,19 @@
 #import "GLLMeshViewController.h"
 #import "GLLModel.h"
 #import "GLLDirectionalLight.h"
+#import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLItem+OBJExport.h"
 #import "GLLItemController.h"
 #import "GLLItemExportViewController.h"
 #import "GLLItemListController.h"
 #import "GLLItemViewController.h"
-#import "GLLSourceListItem.h"
-#import "GLLSourceListMarker.h"
+#import "GLLLightsListController.h"
+#import "GLLItemListController.h"
+#import "GLLSelection.h"
+#import "GLLSettingsListController.h"
 
-@interface GLLDocumentWindowController () <NSOpenSavePanelDelegate>
+@interface GLLDocumentWindowController ()
 {
 	NSViewController *ambientLightViewController;
 	GLLBoneViewController *boneViewController;
@@ -32,15 +36,21 @@
 	GLLMeshViewController *meshViewController;
 	NSViewController *lightViewController;
 	
+	GLLLightsListController *lightsListController;
+	GLLItemListController *itemListController;
+	GLLSettingsListController *settingsListController;
+	
 	NSViewController *currentController;
 	
-	GLLItemListController *itemListController;
-	NSArrayController *lightsController;
-	GLLSourceListMarker *lightsMarker;
-	GLLSourceListMarker *settingsMarker;
+	NSArrayController *selectionController;
+	
+	BOOL updatingSourceViewSelection;
 }
 
 - (void)_setRightHandController:(NSViewController *)controller;
+- (void)_recursivelyExpandItem:(id)item;
+
+@property (nonatomic, readonly) NSArray *allSelectableControllers;
 
 @end
 
@@ -60,24 +70,10 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	meshViewController = [[GLLMeshViewController alloc] init];
 	lightViewController = [[NSViewController alloc] initWithNibName:@"GLLLightView" bundle:[NSBundle mainBundle]];
 	
-	lightsController = [[NSArrayController alloc] initWithContent:nil];
-	lightsController.managedObjectContext = self.managedObjectContext;
-	lightsController.entityName = @"GLLLight";
-	lightsController.automaticallyPreparesContent = YES;
-	lightsController.automaticallyRearrangesObjects = YES;
-	lightsController.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES] ];
-	[lightsController fetch:self];
-	
-	lightsMarker = [[GLLSourceListMarker alloc] initWithObject:lightsController childrenKeyPath:@"arrangedObjects"];
-	lightsMarker.isSourceListHeader = YES;
-	lightsMarker.sourceListDisplayName = NSLocalizedString(@"Lights", @"source list header: lights");
-	
-	settingsMarker = [[GLLSourceListMarker alloc] initWithObject:nil childrenKeyPath:nil];
-	settingsMarker.isSourceListHeader = YES;
-	settingsMarker.sourceListDisplayName = NSLocalizedString(@"Settings", @"source list header: lights");
-	
-	itemListController = [[GLLItemListController alloc] initWithManagedObjectContext:managedObjectContext];
-	
+	selectionController = [[NSArrayController alloc] init];
+	[selectionController bind:@"contentArray" toObject:self withKeyPath:@"selection.selectedObjects" options:nil];
+	[self addObserver:self forKeyPath:@"selection.selectedObjects" options:NSKeyValueObservingOptionNew context:NULL];
+		
 	self.shouldCloseDocument = YES;
 	
     return self;
@@ -85,189 +81,117 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (void)dealloc
 {
-	[self.treeController removeObserver:self forKeyPath:@"selectedObjects"];
-	[meshViewController unbind:@"selectedObjects"];
+	[meshViewController unbind:@"selectedMeshes"];
+	[self removeObserver:self forKeyPath:@"selection.selectedObjects"];
 }
 
 - (void)windowDidLoad
 {
     [super windowDidLoad];
 	
+	lightsListController = [[GLLLightsListController alloc] initWithManagedObjectContext:self.managedObjectContext outlineView:self.sourceView];
+	itemListController = [[GLLItemListController alloc] initWithManagedObjectContext:self.managedObjectContext outlineView:self.sourceView];
+	settingsListController = [[GLLSettingsListController alloc] initWithManagedObjectContext:self.managedObjectContext outlineView:self.sourceView];
+	
 	self.sourceView.delegate = self;
+	self.sourceView.dataSource = self;
 	
-	[self.treeController addObserver:self forKeyPath:@"selectedObjects" options:0 context:0];
-	
-	[meshViewController bind:@"selectedObjects" toObject:self withKeyPath:@"treeController.selectedObjects" options:nil];
+	[self.sourceView expandItem:lightsListController];
+	[self.sourceView expandItem:itemListController];
+	[self.sourceView expandItem:settingsListController];
+		
+	[meshViewController bind:@"selectedMeshes" toObject:self.selection withKeyPath:@"selectedMeshes" options:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:@"selectedObjects"])
+	if ([keyPath isEqual:@"selection.selectedObjects"])
 	{
-		NSArray *selected = self.treeController.selectedObjects;
+		// Set the correct selection in the outline view
+		updatingSourceViewSelection = YES;
 		
-		if (selected.count == 0)
+		NSArray *selectedOutlineViewItems = [self.allSelectableControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"representedObject in %@", self.selection.selectedObjects]];
+		
+		NSMutableIndexSet *selectionIndexes = [NSMutableIndexSet indexSet];
+		for (id item in selectedOutlineViewItems)
 		{
-			[self _setRightHandController:nil];
-			return;
+			[self _recursivelyExpandItem:item];
+			[selectionIndexes addIndex:[self.sourceView rowForItem:item]];
 		}
 		
-		if ([selected.lastObject isKindOfClass:[GLLAmbientLight class]])
-			[self _setRightHandController:ambientLightViewController];
-		else if ([selected.lastObject isKindOfClass:[GLLItemBone class]])
-			[self _setRightHandController:boneViewController];
-		else if ([selected.lastObject isKindOfClass:[GLLItemController class]])
-			[self _setRightHandController:itemViewController];
-		else if ([selected.lastObject isKindOfClass:[GLLItemMesh class]])
-			[self _setRightHandController:meshViewController];
-		else if ([selected.lastObject isKindOfClass:[GLLDirectionalLight class]])
-			[self _setRightHandController:lightViewController];
+		[self.sourceView selectRowIndexes:selectionIndexes byExtendingSelection:NO];
 		
+		updatingSourceViewSelection = NO;
 	}
-	else
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
-#pragma mark - Actions
+#pragma mark - Outline view data source
 
-- (IBAction)removeSelectedMesh:(id)sender;
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
-	NSUInteger selectedRow = self.sourceView.selectedRow;
-	if (selectedRow == NSNotFound)
+	if (item) return [item outlineView:outlineView child:index ofItem:item];
+	
+	switch (index)
 	{
-		NSBeep();
-		return;
-	}
-	
-	id selectedObject = [[self.sourceView itemAtRow:selectedRow] representedObject];
-	
-	if ([selectedObject isKindOfClass:[GLLItemController class]])
-		[self.managedObjectContext deleteObject:[selectedObject item]];
-	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
-		[self.managedObjectContext deleteObject:[selectedObject item]];
-	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
-		[self.managedObjectContext deleteObject:[selectedObject item]];
-	else
-		NSBeep();
-}
-
-- (IBAction)exportSelectedModel:(id)sender
-{
-	NSUInteger selectedRow = self.sourceView.selectedRow;
-	if (selectedRow == NSNotFound)
-	{
-		NSBeep();
-		return;
-	}
-	
-	id selectedObject = [[self.sourceView itemAtRow:selectedRow] representedObject];
-	GLLItem *item = nil;
-	if ([selectedObject isKindOfClass:[GLLItemController class]])
-		item = [selectedObject item];
-	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
-		item = [selectedObject item];
-	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
-		item = [selectedObject item];
-	if (!item) return;
-	
-	NSSavePanel *panel = [NSSavePanel savePanel];
-	panel.allowedFileTypes = @[ @"obj" ];
-	panel.delegate = self;
-	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"objExportIncludeTransformations" : @YES, @"objExportIncludeVertexColors" : @NO }];
-	
-	GLLItemExportViewController *controller = [[GLLItemExportViewController alloc] init];
-	controller.includeTransformations = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeTransformations"];
-	controller.includeVertexColors = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeVertexColors"];
-	controller.canExportAllData = ![item willLoseDataWhenConvertedToOBJ];
-	
-	panel.accessoryView = controller.view;
-	
-	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
-		
-		NSURL *objURL = panel.URL;
-		NSString *materialLibraryName = [[objURL.lastPathComponent stringByDeletingPathExtension] stringByAppendingString:@".mtl"];
-		NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:objURL];
-		
-		NSError *error = nil;
-		if (![item writeOBJToLocation:objURL withTransform:controller.includeTransformations withColor:controller.includeVertexColors error:&error])
-		{
-			[self.window presentError:error];
-			return;
-		}
-		if (![item writeMTLToLocation:mtlURL error:&error])
-		{
-			[self.window presentError:error];
-			return;
-		}
-	}];
-	
-}
-
-#pragma mark - Filling the tree controller
-
-- (NSUInteger)countOfSourceListRoots;
-{
-	return 3;
-}
-
-- (id)objectInSourceListRootsAtIndex:(NSUInteger)index;
-{
-	switch(index)
-	{
-		case 0: return lightsMarker;
+		case 0: return lightsListController;
 		case 1: return itemListController;
-		case 2: return settingsMarker;
+		case 2: return settingsListController;
 		default: return nil;
 	}
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{
+	if (item) return [item outlineView:outlineView objectValueForTableColumn:tableColumn byItem:item];
+	
+	return nil;
+}
+
+- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{
+	if ([item respondsToSelector:_cmd])
+		[item outlineView:outlineView setObjectValue:object forTableColumn:tableColumn byItem:item];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
+{
+	if (item == nil) return YES;
+	else return [item outlineView:outlineView isItemExpandable:item];
+}
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
+{
+	if (item == nil) return 3;
+	else return [item outlineView:outlineView numberOfChildrenOfItem:item];
 }
 
 #pragma mark - Outline view delegate
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item
 {
-	return [[item valueForKeyPath:@"representedObject.isSourceListHeader"] boolValue];
+	if ([item respondsToSelector:_cmd])
+		return [item outlineView:outlineView isGroupItem:item];
+	return NO;
 }
 
 - (NSIndexSet *)outlineView:(NSOutlineView *)outlineView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes;
 {
-	BOOL anyItemController = NO;
-	NSEntityDescription *firstDescription = nil;
+	Class firstClass = Nil;
 	
 	for (NSUInteger index = proposedSelectionIndexes.firstIndex; index <= proposedSelectionIndexes.lastIndex; index = [proposedSelectionIndexes indexGreaterThanIndex:index])
 	{
-		id item = [[outlineView itemAtRow:index] representedObject];
+		id item = [outlineView itemAtRow:index];
 		
-		// Do not add source list headers
-		if ([item isSourceListHeader])
-			return outlineView.selectedRowIndexes;
-		
-		// Do not add marker objects
-		if ([item isKindOfClass:[GLLSourceListMarker class]])
-			return outlineView.selectedRowIndexes;
-		
-		if ([item isKindOfClass:[GLLItemController class]])
+		// Check whether item does not want to be selected
+		if ([item respondsToSelector:@selector(outlineView:shouldSelectItem:)])
 		{
-			anyItemController = YES;
-			
-			// Do not add controllers if there are already objects in…
-			if (firstDescription)
+			if (![item outlineView:outlineView shouldSelectItem:item])
 				return outlineView.selectedRowIndexes;
 		}
-		else
-		{
-			// …and vice versa
-			if (anyItemController)
-				return outlineView.selectedRowIndexes;
-			
-			// Reject if any object has a type unlike the others.
-			NSEntityDescription *entity = [item entity];
-			if (!firstDescription)
-				firstDescription = entity;
-			else if (![entity isEqual:firstDescription])
-				return outlineView.selectedRowIndexes;
-		}
+		
+		Class current = [item class];
+		if (!firstClass) firstClass = current;
+		if (firstClass != current) return outlineView.selectedRowIndexes;
 	}
 	
 	return proposedSelectionIndexes;
@@ -275,37 +199,43 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
-	if ([item isKindOfClass:[GLLItemController class]])
-		return YES;
-	
+	if ([item respondsToSelector:_cmd])
+		return [item outlineView:outlineView shouldEditTableColumn:tableColumn item:item];
 	return NO;
 }
 
-#pragma mark - Save panel delegate
-
-- (BOOL)panel:(id)sender validateURL:(NSURL *)url error:(NSError **)outError
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
-	if ([url.pathExtension isEqual:@"mtl"])
+	NSArray *newSelectedObjects = [self.sourceView.selectedRowIndexes map:^(NSUInteger index){
+		return [[self.sourceView itemAtRow:index] representedObject];
+	}];
+	
+	if (!updatingSourceViewSelection)
 	{
-		if (outError)
-			*outError = [NSError errorWithDomain:self.className code:65 userInfo:@{
-			   NSLocalizedFailureReasonErrorKey : NSLocalizedString(@"OBJ files cannot use .mtl as extension", @"export: suffix = mtl"),
-		  NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. To avoid clashes, do not use .mtl as an extension.", @"export: suffix = mtl")
-						 }];
-		return NO;
+		NSMutableArray *selectedObjects = [self.selection mutableArrayValueForKey:@"selectedObjects"];
+		[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:newSelectedObjects];
 	}
 	
-	NSString *materialLibraryName = [[url.lastPathComponent stringByDeletingPathExtension] stringByAppendingString:@".mtl"];
-	NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:url];
+	[selectionController setSelectedObjects:selectionController.arrangedObjects];
 	
-	if ([mtlURL checkResourceIsReachableAndReturnError:NULL])
+	if (newSelectedObjects.count == 0)
+		[self _setRightHandController:nil];
+	else
 	{
-		NSAlert *mtlExistsAlert = [NSAlert alertWithMessageText:NSLocalizedString(@"An MTL file with this name already exists", @"export: has such mtl already") defaultButton:nil alternateButton:NSLocalizedString(@"Cancel", @"export: cancel") otherButton:nil informativeTextWithFormat:NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. This will overwrite an existing file of the same name.", @"export: suffix = mtl")];
-		NSInteger result = [mtlExistsAlert runModal];
-		return result == NSOKButton;
+		NSManagedObject *oneOfSelection = newSelectedObjects.lastObject;
+		if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLAmbientLight" inManagedObjectContext:self.managedObjectContext]])
+			[self _setRightHandController:ambientLightViewController];
+		else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLDirectionalLight" inManagedObjectContext:self.managedObjectContext]])
+			[self _setRightHandController:lightViewController];
+		else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext]])
+			[self _setRightHandController:itemViewController];
+		else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext]])
+			[self _setRightHandController:meshViewController];
+		else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItemBone" inManagedObjectContext:self.managedObjectContext]])
+			[self _setRightHandController:boneViewController];
+		else
+			[self _setRightHandController:nil];
 	}
-	
-	return YES;
 }
 
 #pragma mark - Private methods
@@ -319,7 +249,7 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	
 	if (currentController == controller)
 	{
-		currentController.representedObject = self.treeController.selection;
+		currentController.representedObject = [selectionController selection];
 		return;
 	}
 	
@@ -334,9 +264,25 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		NSView *newView = controller.view;
 		newView.frame = (NSRect) { { 0.0f, 0.0f }, self.placeholderView.frame.size };
 		[self.placeholderView addSubview:controller.view];
-		controller.representedObject = self.treeController.selection;
+		controller.representedObject = [selectionController selection];
 		currentController = controller;
 	}
+}
+
+- (void)_recursivelyExpandItem:(id)item;
+{
+	if ([item respondsToSelector:@selector(parentController)])
+		[self _recursivelyExpandItem:[item parentController]];
+	[self.sourceView expandItem:item];
+}
+
+- (NSArray *)allSelectableControllers
+{
+	NSMutableArray *result = [NSMutableArray array];
+	[result addObjectsFromArray:lightsListController.allSelectableControllers];
+	[result addObjectsFromArray:itemListController.allSelectableControllers];
+	[result addObjectsFromArray:settingsListController.allSelectableControllers];
+	return result;
 }
 
 @end

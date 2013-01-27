@@ -83,7 +83,7 @@
 	NSString *parameterName = [renderParameterNames objectAtIndex:row];
 	
 	GLLRenderParameterDescription *descriptionForName = nil;
-	for (GLLItemMesh *mesh in self.selectedObjects)
+	for (GLLItemMesh *mesh in self.selectedMeshes)
 	{
 		descriptionForName = [mesh renderParameterWithName:parameterName].parameterDescription;
 		if (descriptionForName) break;
@@ -120,11 +120,9 @@
 		return nil;
 }
 
-- (void)setSelectedObjects:(NSArray *)selectedObjects
+- (void)setSelectedMeshes:(NSArray *)selectedMeshes
 {
-	if (self.representedObject == nil) return;
-	
-	_selectedObjects = selectedObjects;
+	_selectedMeshes = selectedMeshes;
 	
 	[self _findRenderParameterNames];
 	[self.renderParametersView reloadData];
@@ -143,7 +141,6 @@
 }
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	// representedObject is a selection proxy, pointing to GLLItemMesh objects
 	NSString *parameterName = [renderParameterNames objectAtIndex:row];
 	return [renderParameters.selection valueForKeyPath:parameterName];
 }
@@ -152,22 +149,22 @@
 
 - (void)_findRenderParameterNames;
 {
-	if (self.selectedObjects.count == 0)
+	if (self.selectedMeshes.count == 0)
 	{
 		renderParameterNames = @[];
 		return;
 	}
 	
 	// Compute intersection of parameter names
-	NSMutableSet *parameterNames = [[self.selectedObjects[0] valueForKeyPath:@"renderParameters.name"] mutableCopy];
+	NSMutableSet *parameterNames = [[self.selectedMeshes[0] valueForKeyPath:@"renderParameters.name"] mutableCopy];
 	
-	for (GLLItemMesh *mesh in self.selectedObjects)
+	for (GLLItemMesh *mesh in self.selectedMeshes)
 		[parameterNames intersectSet:[mesh valueForKeyPath:@"renderParameters.name"]];
 	
 	renderParameterNames = [parameterNames sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
 	
-	renderParameters.content = self.selectedObjects;
-	renderParameters.selectedObjects = self.selectedObjects;
+	renderParameters.content = self.selectedMeshes;
+	renderParameters.selectedObjects = self.selectedMeshes;
 	
 	[self.renderParametersView reloadData];
 }

@@ -9,8 +9,17 @@
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
-#import "GLLVersion.h"
 #import "simd_types.h"
+
+enum GLLItemChannelAssignment
+{
+	GLLNormalPos,
+	GLLNormalNeg,
+	GLLTangentUPos,
+	GLLTangentUNeg,
+	GLLTangentVPos,
+	GLLTangentVNeg
+};
 
 @class TRInDataStream;
 @class TROutDataStream;
@@ -38,6 +47,9 @@
 @property (nonatomic, retain) NSOrderedSet *bones;
 @property (nonatomic, retain) NSOrderedSet *meshes;
 @property (nonatomic, retain) NSString *displayName;
+@property (nonatomic) int16_t normalChannelAssignmentR;
+@property (nonatomic) int16_t normalChannelAssignmentG;
+@property (nonatomic) int16_t normalChannelAssignmentB;
 
 // Derived
 @property (nonatomic, retain) NSURL *itemURL;

@@ -9,15 +9,12 @@
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
-#import "GLLSourceListItem.h"
-#import "GLLVersion.h"
-
 @class GLLItem;
 @class GLLModelBone;
 @class TRInDataStream;
 @class TROutDataStream;
 
-@interface GLLItemBone : NSManagedObject <GLLSourceListItem>
+@interface GLLItemBone : NSManagedObject
 
 // From core data
 @property (nonatomic) float positionX;
@@ -27,6 +24,8 @@
 @property (nonatomic) float rotationY;
 @property (nonatomic) float rotationZ;
 @property (nonatomic, retain) GLLItem *item;
+
+// Local
 @property (nonatomic) NSValue *relativeTransform;
 @property (nonatomic) NSValue *globalTransform;
 @property (nonatomic) NSValue *globalPosition;
@@ -37,6 +36,10 @@
 
 @property (nonatomic, weak, readonly) GLLItemBone *parent;
 @property (nonatomic, retain, readonly) NSArray *children;
+
+// Checks whether the parameter is the bone or one of its ancestors
+- (BOOL)isChildOfBone:(GLLItemBone *)bone;
+- (BOOL)isChildOfAny:(id)boneSet;
 
 // Updates the bone data. Should only be called from the item or a parent bone (or itself)
 - (void)updateGlobalTransform;

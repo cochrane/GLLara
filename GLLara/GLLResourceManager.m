@@ -13,10 +13,18 @@
 #import "GLLModel.h"
 #import "GLLModelDrawer.h"
 #import "GLLModelProgram.h"
+#import "GLLUniformBlockBindings.h"
 #import "GLLShader.h"
 #import "GLLShaderDescription.h"
+#import "GLLSkeletonProgram.h"
 #import "GLLSquareProgram.h"
 #import "GLLTexture.h"
+
+struct GLLAlphaTestBlock
+{
+	GLuint mode;
+	GLfloat reference;
+};
 
 @interface GLLResourceManager ()
 {
@@ -55,11 +63,26 @@ static GLLResourceManager *sharedManager;
 	NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
 	_openGLContext = [[NSOpenGLContext alloc] initWithFormat:format shareContext:nil];
 	[_openGLContext makeCurrentContext];
+	NSAssert(_openGLContext, @"Should have an OpenGL context here");
 	
 	shaders = [[NSMutableDictionary alloc] init];
 	programs = [[NSMutableDictionary alloc] init];
 	textures = [[NSMutableDictionary alloc] init];
 	models = [[NSMutableDictionary alloc] init];
+	
+	// Alpha test buffers
+	glGenBuffers(1, &_alphaTestDisabledBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestDisabledBuffer);
+	struct GLLAlphaTestBlock alphaBlock = { .mode = 0, .reference = .9 };
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
+	glGenBuffers(1, &_alphaTestPassGreaterBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestPassGreaterBuffer);
+	alphaBlock.mode = 1;
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
+	glGenBuffers(1, &_alphaTestPassLessBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestPassLessBuffer);
+	alphaBlock.mode = 2;
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
 	
 	return self;
 }
@@ -68,14 +91,10 @@ static GLLResourceManager *sharedManager;
 {
 	[self.openGLContext makeCurrentContext];
 	
-	for (GLLModelDrawer *drawer in models.allValues)
-		[drawer unload];
-	for (GLLTexture *texture in textures.allValues)
-		[texture unload];
-	for (GLLModelProgram *program in programs.allValues)
-		[program unload];
-	for (GLLShader *shader in shaders.allValues)
-		[shader unload];
+	[models.allValues makeObjectsPerformSelector:@selector(unload)];
+	[textures.allValues makeObjectsPerformSelector:@selector(unload)];
+	[programs.allValues makeObjectsPerformSelector:@selector(unload)];
+	[shaders.allValues makeObjectsPerformSelector:@selector(unload)];
 	
 	models = nil;
 	textures = nil;
@@ -127,19 +146,20 @@ static GLLResourceManager *sharedManager;
 	id result = [textures objectForKey:textureURL];
 	if (!result)
 	{
+		NSURL *effectiveURL = textureURL;
 		NSData *textureData = [NSData dataWithContentsOfURL:textureURL options:NSDataReadingUncached error:error];
 		if (!textureData)
 		{
 			// Second attempt: Maybe there is a default version of that in the bundle.
 			// If not, then keep error from first read.
-			NSURL *resourceURL = [[NSBundle mainBundle] URLForResource:textureURL.lastPathComponent withExtension:nil];
-			if (!resourceURL)
+			effectiveURL = [[NSBundle mainBundle] URLForResource:textureURL.lastPathComponent withExtension:nil];
+			if (!effectiveURL)
 				return nil;
 		}
 		
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLTexture alloc] initWithData:textureData error:error];
+		result = [[GLLTexture alloc] initWithURL:effectiveURL error:error];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;
@@ -211,6 +231,22 @@ static GLLResourceManager *sharedManager;
 		[previous makeCurrentContext];
 	}
 	return _squareVertexArray;
+}
+
+- (GLLProgram *)skeletonProgram
+{
+	if (!_skeletonProgram)
+	{
+		NSError *error = nil;
+		
+		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
+		[self.openGLContext makeCurrentContext];
+		_skeletonProgram = [[GLLSkeletonProgram alloc] initWithResourceManager:self error:&error];
+		[previous makeCurrentContext];
+		
+		NSAssert(_skeletonProgram, @"Could not load skeleton program because of %@", error);
+	}
+	return _skeletonProgram;
 }
 
 #pragma mark - Private methods

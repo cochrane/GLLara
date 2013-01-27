@@ -86,12 +86,12 @@
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
 {
-	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GLLRenderParameter"];
-	request.predicate = [NSPredicate predicateWithFormat:@"mesh == %@ && name == %@", self, parameterName];
-	
-	NSArray *result = [self.managedObjectContext executeFetchRequest:request error:NULL];
-	if (!result || [result count] == 0) return nil;
-	return result[0];
+	for (GLLRenderParameter *parameter in self.renderParameters)
+	{
+		if ([parameter.name isEqual:parameterName])
+			return parameter;
+	}
+	return nil;
 }
 
 - (id)valueForUndefinedKey:(NSString *)key
@@ -99,29 +99,6 @@
 	GLLRenderParameter *param = [self renderParameterWithName:key];
 	if (param) return param;
 	else return NSNotApplicableMarker;
-}
-
-#pragma mark - Source list item
-
-- (BOOL)isSourceListHeader
-{
-	return NO;
-}
-- (NSString *)sourceListDisplayName
-{
-	return self.mesh.name;
-}
-- (BOOL)isLeafInSourceList
-{
-	return YES;
-}
-- (NSUInteger)countOfSourceListChildren
-{
-	return 0;
-}
-- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
-{
-	return nil;
 }
 
 @end

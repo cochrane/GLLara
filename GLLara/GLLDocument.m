@@ -14,13 +14,22 @@
 #import "GLLDirectionalLight.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLItem.h"
+#import "GLLItemBone.h"
+#import "GLLItemController.h"
+#import "GLLItemExportViewController.h"
+#import "GLLItemMesh.h"
+#import "GLLItem+OBJExport.h"
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLModel.h"
 #import "GLLRenderWindowController.h"
+#import "GLLSceneDrawer.h"
+#import "GLLSelection.h"
 
-@interface GLLDocument ()
+@interface GLLDocument () <NSOpenSavePanelDelegate>
 {
 	GLLDocumentWindowController *documentWindowController;
+	GLLSceneDrawer *sceneDrawer;
+	GLLSourceListController *sourceListController;
 }
 
 @end
@@ -68,7 +77,14 @@
 
 - (void)makeWindowControllers
 {
+	self.selection = [[GLLSelection alloc] init];
+	self.selection.managedObjectContext = self.managedObjectContext;
+	
+	sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext];
+	[sceneDrawer bind:@"selectedBones" toObject:self.selection withKeyPath:@"selectedBones" options:nil];
+	
 	documentWindowController = [[GLLDocumentWindowController alloc] initWithManagedObjectContext:self.managedObjectContext];
+	documentWindowController.selection = self.selection;
 	[self addWindowController:documentWindowController];
 
 	NSFetchRequest *camerasFetchRequest = [[NSFetchRequest alloc] init];
@@ -78,10 +94,20 @@
 	
 	for (GLLCamera *camera in cameras)
 	{
-		GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera];
+		GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera sceneDrawer:sceneDrawer];
 		[self addWindowController:controller];
 	}
 }
+
+- (BOOL)configurePersistentStoreCoordinatorForURL:(NSURL *)url ofType:(NSString *)fileType modelConfiguration:(NSString *)configuration storeOptions:(NSDictionary *)storeOptions error:(NSError *__autoreleasing *)error
+{
+	NSMutableDictionary *allOptions = [@{ NSMigratePersistentStoresAutomaticallyOption : @(YES), NSInferMappingModelAutomaticallyOption : @(YES) } mutableCopy];
+	if (storeOptions)
+		[allOptions addEntriesFromDictionary:storeOptions];
+	return [super configurePersistentStoreCoordinatorForURL:url ofType:fileType modelConfiguration:configuration storeOptions:allOptions error:error];
+}
+
+#pragma mark - Actions
 
 - (IBAction)openNewRenderView:(id)sender
 {
@@ -102,7 +128,7 @@
 	camera.index = index;
 	
 	// 3rd: Create its window controller
-	GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera];
+	GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera sceneDrawer:sceneDrawer];
 	[self addWindowController:controller];
 	[controller showWindow:sender];
 }
@@ -125,6 +151,120 @@
 		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
 		newItem.model = model;
 	}];
+}
+
+- (IBAction)delete:(id)sender;
+{	
+	for (id selectedObject in self.selection.selectedObjects)
+	{
+		if ([selectedObject isKindOfClass:[GLLItemController class]])
+			[self.managedObjectContext deleteObject:[selectedObject item]];
+		else if ([selectedObject isKindOfClass:[GLLItemBone class]])
+			[self.managedObjectContext deleteObject:[selectedObject item]];
+		else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
+			[self.managedObjectContext deleteObject:[selectedObject item]];
+		else
+			NSBeep();
+	}
+}
+
+- (IBAction)exportSelectedModel:(id)sender
+{
+	if (self.selection.selectedObjects.count != 1)
+	{
+		NSBeep();
+		return;
+	}
+	
+	id selectedObject = [self.selection.selectedObjects objectAtIndex:0];
+	GLLItem *item = nil;
+	if ([selectedObject isKindOfClass:[GLLItemController class]])
+		item = [selectedObject item];
+	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
+		item = [selectedObject item];
+	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
+		item = [selectedObject item];
+	if (!item) return;
+	
+	NSSavePanel *panel = [NSSavePanel savePanel];
+	panel.allowedFileTypes = @[ @"obj" ];
+	panel.delegate = self;
+	
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"objExportIncludeTransformations" : @(YES), @"objExportIncludeVertexColors" : @(NO) }];
+	
+	GLLItemExportViewController *controller = [[GLLItemExportViewController alloc] init];
+	controller.includeTransformations = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeTransformations"];
+	controller.includeVertexColors = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeVertexColors"];
+	controller.canExportAllData = ![item willLoseDataWhenConvertedToOBJ];
+	
+	panel.accessoryView = controller.view;
+	
+	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
+		if (result != NSOKButton) return;
+		
+		NSURL *objURL = panel.URL;
+		NSString *materialLibraryName = [[objURL.lastPathComponent stringByDeletingPathExtension] stringByAppendingString:@".mtl"];
+		NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:objURL];
+		
+		NSError *error = nil;
+		if (![item writeOBJToLocation:objURL withTransform:controller.includeTransformations withColor:controller.includeVertexColors error:&error])
+		{
+			[self.windowForSheet presentError:error];
+			return;
+		}
+		if (![item writeMTLToLocation:mtlURL error:&error])
+		{
+			[self.windowForSheet presentError:error];
+			return;
+		}
+	}];
+	
+}
+
+#pragma mark - Accessors
+
+- (GLLSourceListController *)sourceListController
+{
+//	if (!sourceListController)
+//	{
+//		sourceListController = [[GLLSourceListController alloc] initWithManagedObjectContext:self.managedObjectContext];
+//		[self.selection bind:@"selectedObjects" toObject:sourceListController.treeController withKeyPath:@"selectedObjects" options:nil];
+//	}
+//	return sourceListController;
+	return nil;
+}
+
+- (NSArray *)allBones
+{
+	NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"GLLItemBone"];
+	return [self.managedObjectContext executeFetchRequest:request error:NULL];
+}
+
+#pragma mark - Save panel delegate
+
+- (BOOL)panel:(id)sender validateURL:(NSURL *)url error:(NSError **)outError
+{
+	if ([url.pathExtension isEqual:@"mtl"])
+	{
+		if (outError)
+			*outError = [NSError errorWithDomain:self.className code:65 userInfo:@{
+			   NSLocalizedFailureReasonErrorKey : NSLocalizedString(@"OBJ files cannot use .mtl as extension", @"export: suffix = mtl"),
+		  NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. To avoid clashes, do not use .mtl as an extension.", @"export: suffix = mtl")
+						 }];
+		return NO;
+	}
+	
+	NSString *materialLibraryName = [[url.lastPathComponent stringByDeletingPathExtension] stringByAppendingString:@".mtl"];
+	NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:url];
+	
+	if ([mtlURL checkResourceIsReachableAndReturnError:NULL])
+	{
+		NSAlert *mtlExistsAlert = [NSAlert alertWithMessageText:NSLocalizedString(@"An MTL file with this name already exists", @"export: has such mtl already") defaultButton:nil alternateButton:NSLocalizedString(@"Cancel", @"export: cancel") otherButton:nil informativeTextWithFormat:NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. This will overwrite an existing file of the same name.", @"export: suffix = mtl")];
+		NSInteger result = [mtlExistsAlert runModal];
+		return result == NSOKButton;
+	}
+	
+	return YES;
 }
 
 @end

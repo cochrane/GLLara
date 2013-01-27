@@ -12,8 +12,9 @@
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "GLLModelParams.h"
-#import "TRInDataStream.h"
 #import "LionSubscripting.h"
+#import "TRInDataStream.h"
+#import "TROutDataStream.h"
 
 float vec_dot(float *a, float *b)
 {
@@ -36,6 +37,7 @@ void vec_addTo(float *a, float *b)
 
 @interface GLLModelMesh ()
 
+- (BOOL)_checkIndicesInVertexData:(NSData *)vertices elementData:(NSData *)elements error:(NSError *__autoreleasing*)error;
 - (NSData *)_postprocessVertices:(NSData *)vertexData;
 - (void)_setRenderParameters;
 
@@ -54,7 +56,7 @@ void vec_addTo(float *a, float *b)
 	return self;
 }
 
-- (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model;
+- (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -70,9 +72,17 @@ void vec_addTo(float *a, float *b)
 		NSString *textureName = [stream readPascalString];
 		[stream readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
 		NSString *finalPathComponent = [[textureName componentsSeparatedByString:@"\\"] lastObject];
-		[textures addObject:[NSURL URLWithString:finalPathComponent relativeToURL:model.baseURL]];
+		if (!finalPathComponent) return nil;
+		[textures addObject:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:model.baseURL]];
 	}
 	_textures = [textures copy];
+	
+	if (![stream isValid])
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
 	
 	_countOfVertices = [stream readUint32];
 	NSData *rawVertexData = [stream dataWithLength:_countOfVertices * self.stride];
@@ -81,12 +91,21 @@ void vec_addTo(float *a, float *b)
 	_countOfElements = 3 * [stream readUint32]; // File saves number of triangles
 	_elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
 	
+	if (![self _checkIndicesInVertexData:rawVertexData elementData:_elementData error:error]) return nil;
+	
+	if (![stream isValid])
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
+	
 	[self _setRenderParameters];
 	
 	return self;
 }
 
-- (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model;
+- (id)initFromScanner:(GLLASCIIScanner *)scanner partOfModel:(GLLModel *)model error:(NSError *__autoreleasing *)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -102,7 +121,8 @@ void vec_addTo(float *a, float *b)
 		NSString *textureName = [scanner readPascalString];
 		[scanner readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
 		NSString *finalPathComponent = [[textureName componentsSeparatedByString:@"\\"] lastObject];
-		[textures addObject:[NSURL URLWithString:finalPathComponent relativeToURL:model.baseURL]];
+		if (!finalPathComponent) return nil;
+		[textures addObject:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:model.baseURL]];
 	}
 	_textures = [textures copy];
 	
@@ -163,8 +183,17 @@ void vec_addTo(float *a, float *b)
 	}
 	_elementData = [elementData copy];
 	
+	if (![self _checkIndicesInVertexData:rawVertexData elementData:_elementData error:error]) return nil;
+	
 	[self calculateTangents:rawVertexData];
 	_vertexData = [[self _postprocessVertices:rawVertexData] copy];
+	
+	if (![scanner isValid])
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+		return nil;
+	}
 	
 	[self _setRenderParameters];
 	
@@ -308,6 +337,71 @@ void vec_addTo(float *a, float *b)
 	return GLLCullCounterClockWise;
 }
 
+#pragma mark - Export
+
+- (NSString *)writeASCII;
+{
+	NSMutableString *result = [NSMutableString string];
+	[result appendFormat:@"%@\n", self.name];
+	[result appendFormat:@"%lu\n", self.countOfUVLayers];
+	[result appendFormat:@"%lu\n", self.textures.count];
+	for (NSURL *texture in self.textures)
+		[result appendFormat:@"%@\n0\n", texture.lastPathComponent];
+	
+	[result appendFormat:@"%lu\n", self.countOfVertices];
+	const void *vertexBytes = self.vertexData.bytes;
+	for (NSUInteger i = 0; i < self.countOfVertices; i++)
+	{
+		const float *position = (const float *) (vertexBytes + i*self.stride + self.offsetForPosition);
+		[result appendFormat:@"%f %f %f ", position[0], position[1], position[2]];
+		const float *normal = (const float *) (vertexBytes + i*self.stride + self.offsetForNormal);
+		[result appendFormat:@"%f %f %f ", normal[0], normal[1], normal[2]];
+		const uint8_t *colors = (const uint8_t *) (vertexBytes + i*self.stride + self.offsetForColor);
+		[result appendFormat:@"%u %u %u %u ", colors[0], colors[1], colors[2], colors[3]];
+		for (NSUInteger uvlayer = 0; uvlayer < self.countOfUVLayers; uvlayer++)
+		{
+			const float *texCoords = (const float *) (vertexBytes + i*self.stride + [self offsetForTexCoordLayer:0]);
+			[result appendFormat:@"%f %f ", texCoords[0], texCoords[1]];
+		}
+		if (self.hasBoneWeights)
+		{
+			const uint16_t *boneIndices = (const uint16_t *) (vertexBytes + i*self.stride + self.offsetForBoneIndices);
+			[result appendFormat:@"%u %u %u %u ", boneIndices[0], boneIndices[1], boneIndices[2], boneIndices[3]];
+
+			const float *boneWeights = (const float *) (vertexBytes + i*self.stride + self.offsetForBoneWeights);
+			[result appendFormat:@"%f %f %f %f ", boneWeights[0], boneWeights[1], boneWeights[2], boneWeights[3]];
+		}
+		[result appendString:@"\n"];
+	}
+	
+	[result appendFormat:@"%lu\n", self.countOfElements / 3];
+	const uint32_t *elements = self.elementData.bytes;
+	for (NSUInteger i = 0; i < self.countOfElements; i++)
+		[result appendFormat:@"%u ", elements[i]];
+	[result appendString:@"\n"];
+	
+	return [result copy];
+}
+
+- (NSData *)writeBinary;
+{
+	TROutDataStream *stream = [[TROutDataStream alloc] init];
+	[stream appendPascalString:self.name];
+	[stream appendUint32:(uint32_t) self.countOfUVLayers];
+	[stream appendUint32:(uint32_t) self.textures.count];
+	for (NSURL *texture in self.textures)
+	{
+		[stream appendPascalString:texture.lastPathComponent];
+		[stream appendUint32:0];
+	}
+	[stream appendUint32:(uint32_t) self.countOfVertices];
+	[stream appendData:self.vertexData];
+	[stream appendUint32:(uint32_t) self.countOfElements / 3UL];
+	[stream appendData:self.elementData];
+	
+	return stream.data;
+}
+
 #pragma mark - Tangents
 
 - (void)calculateTangents:(NSMutableData *)vertexData;
@@ -405,6 +499,45 @@ void vec_addTo(float *a, float *b)
 }
 
 #pragma mark - Private methods
+
+- (BOOL)_checkIndicesInVertexData:(NSData *)vertices elementData:(NSData *)elements error:(NSError *__autoreleasing*)error;
+{
+	// Check bone indices
+	if (self.hasBoneWeights)
+	{
+		const void *vertexData = vertices.bytes;
+		for (NSUInteger i = 0; i < self.countOfVertices; i++)
+		{
+			const uint16_t *indices = vertexData + i*self.stride + self.offsetForBoneIndices;
+			
+			for (NSUInteger j = 0; j < 4; j++)
+			{
+				if (indices[j] >= self.model.bones.count)
+				{
+					if (error)
+						*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file references bones that do not exist.", @"Bone index out of range error") }];
+					
+					return NO;
+				}
+			}
+		}
+	}
+	
+	// Check element indices
+	const uint32_t *indices = elements.bytes;
+	for (NSUInteger i = 0; i < self.countOfElements; i++)
+	{
+		if (indices[i] >= self.countOfVertices)
+		{
+			if (error)
+				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"A mesh references vertices that do not exist.", @"Vertex index out of range error") }];
+			
+			return NO;
+		}
+	}
+	
+	return YES;
+}
 
 - (NSData *)_postprocessVertices:(NSData *)vertexData;
 {

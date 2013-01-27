@@ -8,8 +8,7 @@
 
 #import "GLLDirectionalLight.h"
 
-#import <AppKit/NSColorSpace.h>
-
+#import "NSColor+Color32Bit.h"
 #import "simd_matrix.h"
 
 @implementation GLLDirectionalLight
@@ -49,36 +48,10 @@
 	struct GLLLightUniformBlock block;
 	block.direction = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
 	
-	CGFloat r, g, b, a;
-	[[self.diffuseColor colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
-	block.diffuseColor = simd_make(r, g, b, a);
-	[[self.specularColor colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
-	block.specularColor = simd_make(r, g, b, a);
+	[self.diffuseColor get128BitRGBAComponents:block.diffuseColor];
+	[self.specularColor get128BitRGBAComponents:block.specularColor];
 	
 	return block;
-}
-
-#pragma mark - Source list item
-
-- (BOOL)isSourceListHeader
-{
-	return NO;
-}
-- (NSString *)sourceListDisplayName
-{
-	return [NSString stringWithFormat:NSLocalizedString(@"Light %lu", @"source list: Light name format"), self.index];
-}
-- (BOOL)isLeafInSourceList
-{
-	return YES;
-}
-- (NSUInteger)countOfSourceListChildren
-{
-	return 0;
-}
-- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
-{
-	return nil;
 }
 
 @end

@@ -10,17 +10,16 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import "GLLSourceListItem.h"
 #import "simd_types.h"
 
 struct GLLLightUniformBlock
 {
-	vec_float4 diffuseColor;
-	vec_float4 specularColor;
+	float diffuseColor[4];
+	float specularColor[4];
 	vec_float4 direction;
 };
 
-@interface GLLDirectionalLight : NSManagedObject <GLLSourceListItem>
+@interface GLLDirectionalLight : NSManagedObject
 
 @property (nonatomic) BOOL isEnabled;
 @property (nonatomic) NSUInteger index;

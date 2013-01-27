@@ -6,9 +6,12 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <AppKit/NSPersistentDocument.h>
+#import <Foundation/Foundation.h>
 
 @class GLLView;
+@class GLLSourceListController;
+@class GLLSelection;
 
 /*!
  * @abstract The main class for a scene.
@@ -19,5 +22,12 @@
 
 - (IBAction)openNewRenderView:(id)sender;
 - (IBAction)loadMesh:(id)sender;
+
+- (IBAction)delete:(id)sender;
+- (IBAction)exportSelectedModel:(id)sender;
+
+@property (nonatomic, readonly) GLLSourceListController *sourceListController;
+@property (nonatomic) GLLSelection *selection;
+@property (nonatomic, readonly) NSArray *allBones;
 
 @end

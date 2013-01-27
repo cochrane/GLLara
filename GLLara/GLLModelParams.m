@@ -8,6 +8,7 @@
 
 #import "GLLModelParams.h"
 
+#import "NSArray+Map.h"
 #import "GLLModelMesh.h"
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
@@ -36,7 +37,7 @@ static NSString *meshNameRegexpString = @"^([0-9P]{1,2})_\
 			)?\
 		)?\
 	)?\
-)?$";
+)?_?$";
 
 static NSRegularExpression *meshNameRegexp;
 
@@ -130,29 +131,21 @@ static NSCache *parameterCache;
 	defaultMeshGroup = propertyList[@"defaultMeshGroup"];
 	
 	// Loading splitters is more complicated, because they are stored in their own class which handles a few nuisances automatically (in particular the fact that a mesh splitter does not usually define the full box).
-	NSMutableDictionary *mutableMeshSplitters = [[NSMutableDictionary alloc] initWithCapacity:[propertyList[@"meshSplitters"] count]];
-	for (NSString *originalMeshName in propertyList[@"meshSplitters"])
-	{
-		NSArray *splitterSpecifications = propertyList[@"meshSplitters"][originalMeshName];
-		NSMutableArray *splitters = [[NSMutableArray alloc] initWithCapacity:splitterSpecifications.count];
-		for (NSDictionary *spec in splitterSpecifications)
-			[splitters addObject:[[GLLMeshSplitter alloc] initWithPlist:spec]];
+	ownMeshSplitters = [propertyList[@"meshSplitters"] mapValues:^(NSArray *splitterSpecifications) {
+		return [splitterSpecifications map:^(NSDictionary *spec){
+			return [[GLLMeshSplitter alloc] initWithPlist:spec];
+		}];
+	}];
 		
-		mutableMeshSplitters[originalMeshName] = splitters;
-	}
-	ownMeshSplitters = [mutableMeshSplitters copy];
-	
 	// Similar for loading shaders
-	NSMutableDictionary *shaders = [[NSMutableDictionary alloc] initWithCapacity:[propertyList[@"shaders"] count]];
-	for (NSString *shaderName in propertyList[@"shaders"])
-		[shaders setObject:[[GLLShaderDescription alloc] initWithPlist:propertyList[@"shaders"][shaderName] name:shaderName baseURL:nil modelParameters:self] forKey:shaderName];
-	ownShaders = [shaders copy];
+	ownShaders = [propertyList[@"shaders"] mapValuesWithKey:^(NSString *shaderName, id description){
+		return [[GLLShaderDescription alloc] initWithPlist:description name:shaderName baseURL:nil modelParameters:self];
+	}];
 	
 	// And render parameters
-	NSMutableDictionary *renderParameters = [[NSMutableDictionary alloc] initWithCapacity:[propertyList[@"renderParameterDescriptions"] count]];
-	for (NSString *renderParameterName in propertyList[@"renderParameterDescriptions"])
-		[renderParameters setObject:[[GLLRenderParameterDescription alloc] initWithPlist:propertyList[@"renderParameterDescriptions"][renderParameterName]] forKey:renderParameterName];
-	ownRenderParameterDescriptions = [renderParameters copy];
+	ownRenderParameterDescriptions = [propertyList[@"renderParameterDescriptions"] mapValues:^(id description){
+		return [[GLLRenderParameterDescription alloc] initWithPlist:description];
+	}];
 	
 	return self;
 }
@@ -215,16 +208,15 @@ static NSCache *parameterCache;
 {
 	if (!ownCameraTargets && model)
 	{
-		NSMutableSet *resultSet = [[NSMutableSet alloc] init];
-		for (GLLModelMesh *mesh in model.meshes)
-		{
+		NSArray *targets = [model.meshes map:^(GLLModelMesh *mesh){
 			NSString *cameraTargetName = nil;
 			[self _parseModelName:mesh.name meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:NULL];
-			if (cameraTargetName != nil)
-				[resultSet addObject:cameraTargetName];
-		}
+			return cameraTargetName;
+		}];
 		
-		return [resultSet allObjects];
+		// Remove duplicates by converting to NSSet and back
+		NSSet *uniqueTargets = [NSSet setWithArray:targets];
+		return uniqueTargets.allObjects;
 	}
 	
 	NSMutableArray *cameraTargets = [NSMutableArray array];
@@ -239,17 +231,15 @@ static NSCache *parameterCache;
 {
 	if (!ownCameraTargets && model)
 	{
-		NSMutableArray *result = [[NSMutableArray alloc] init];
-		for (GLLModelMesh *mesh in model.meshes)
-		{
+		return [model.meshes mapAndJoin:^NSArray*(GLLModelMesh *mesh){
 			NSString *cameraTargetName = nil;
 			NSArray *cameraTargetBones;
 			[self _parseModelName:mesh.name meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:&cameraTargetBones];
 			if ([cameraTargetName isEqual:cameraTarget])
-				[result addObjectsFromArray:cameraTargetBones];
-		}
-		
-		return [result copy];
+				return cameraTargetBones;
+			else
+				return nil;
+		}];
 	}
 	
 	NSArray *result = ownCameraTargets[cameraTarget];

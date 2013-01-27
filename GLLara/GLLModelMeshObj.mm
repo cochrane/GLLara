@@ -14,7 +14,7 @@
 
 @implementation GLLModelMeshObj
 
-- (id)initWithObjFile:(GLLObjFile *)file range:(const GLLObjFile::MaterialRange &)range inModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
+- (id)initWithObjFile:(GLLObjFile *)file mtlFiles:(const std::vector<GLLMtlFile *> &)mtlFiles range:(const GLLObjFile::MaterialRange &)range inModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super initAsPartOfModel:model])) return nil;
 	
@@ -22,10 +22,11 @@
 	
 	self.countOfUVLayers = 1;
 	
-	if (range.material == 0)
+	if (range.materialName == "")
 	{
 		if (error)
-			*error = [NSError errorWithDomain:@"GLLMeshObj" code:1 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Some parts of the model have no material", @"error description: material for range is null"),
+			*error = [NSError errorWithDomain:@"GLLMeshObj" code:1 userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"Some parts of the model have no material", @"error description: material for range is null"),
 	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"This model is not supported.", @"error description: material for range is null") }];
 		return nil;
 	}
@@ -48,12 +49,12 @@
 			// Add vertex
 			const GLLObjFile::VertexData &vertex = file->getVertexData().at(globalIndex);
 			
-			[vertices appendBytes:vertex.vert length:sizeof(float [3])];
-			[vertices appendBytes:vertex.norm length:sizeof(float [3])];
-			[vertices appendBytes:vertex.color length:sizeof(uint8_t [4])];
+			[vertices appendBytes:vertex.vert length:sizeof(vertex.vert)];
+			[vertices appendBytes:vertex.norm length:sizeof(vertex.norm)];
+			[vertices appendBytes:vertex.color length:sizeof(vertex.color)];
 			float texCoordY = 1.0f - vertex.tex[1]; // Turn tex coords around (because I don't want to swap the whole image)
-			[vertices appendBytes:vertex.tex length:sizeof(float)];
-			[vertices appendBytes:&texCoordY length:sizeof(float)];
+			[vertices appendBytes:vertex.tex length:sizeof(vertex.tex[0])];
+			[vertices appendBytes:&texCoordY length:sizeof(vertex.tex[1])];
 			
 			// Space for tangents
 			float zero[4] = { 0, 0, 0, 0 };
@@ -80,14 +81,32 @@
 	// Setup material
 	// Three options: Diffuse, DiffuseSpecular, DiffuseNormal, DiffuseSpecularNormal
 	GLLModelParams *objModelParams = [GLLModelParams parametersForName:@"objFileParameters" error:error];
-	if (!objModelParams)
-		return nil;
+	NSAssert(objModelParams, @"obj file parameters must always exist");
 	
-	if (range.material->specularTexture == NULL && range.material->normalTexture == NULL)
+	const GLLMtlFile::Material *material = NULL;
+	for (auto iter = mtlFiles.begin(); iter != mtlFiles.end(); iter++)
 	{
-		if (range.material->diffuseTexture != NULL)
+		if ((*iter)->hasMaterial(range.materialName))
 		{
-			self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture ];
+			material = (*iter)->getMaterial(range.materialName);
+			break;
+		}
+	}
+	if (!material)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"GLLMeshObj" code:1 userInfo:@{
+				   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Material %s was not found", @"error description: no material for name"), range.materialName.c_str()],
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The material files do not appear to match the model.", @"error description: no material for name") }];
+		return nil;
+
+	}
+	
+	if (material->specularTexture == NULL && material->normalTexture == NULL)
+	{
+		if (material->diffuseTexture != NULL)
+		{
+			self.textures = @[ (__bridge NSURL *) material->diffuseTexture ];
 			self.shader = [objModelParams shaderNamed:@"DiffuseOBJ"];
 		}
 		else
@@ -96,25 +115,25 @@
 			self.shader = [objModelParams shaderNamed:@"TexturelessOBJ"];
 		}
 	}
-	else if (range.material->specularTexture != NULL && range.material->normalTexture == NULL)
+	else if (material->specularTexture != NULL && material->normalTexture == NULL)
 	{
-		self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture, (__bridge NSURL *) range.material->specularTexture ];
+		self.textures = @[ (__bridge NSURL *) material->diffuseTexture, (__bridge NSURL *) material->specularTexture ];
 		self.shader = [objModelParams shaderNamed:@"DiffuseSpecularOBJ"];
 	}
-	else if (range.material->specularTexture == NULL && range.material->normalTexture != NULL)
+	else if (material->specularTexture == NULL && material->normalTexture != NULL)
 	{
-		self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture, (__bridge NSURL *) range.material->normalTexture ];
+		self.textures = @[ (__bridge NSURL *) material->diffuseTexture, (__bridge NSURL *) material->normalTexture ];
 		self.shader = [objModelParams shaderNamed:@"DiffuseNormalOBJ"];
 	}
-	else if (range.material->specularTexture != NULL && range.material->normalTexture != NULL)
+	else if (material->specularTexture != NULL && material->normalTexture != NULL)
 	{
-		self.textures = @[ (__bridge NSURL *) range.material->diffuseTexture, (__bridge NSURL *) range.material->specularTexture, (__bridge NSURL *) range.material->normalTexture ];
+		self.textures = @[ (__bridge NSURL *) material->diffuseTexture, (__bridge NSURL *) material->specularTexture, (__bridge NSURL *) material->normalTexture ];
 		self.shader = [objModelParams shaderNamed:@"DiffuseSpecularNormalOBJ"];
 	}
-	self.renderParameterValues = @{ @"ambientColor" : [NSColor colorWithCalibratedRed:range.material->ambient[0] green:range.material->ambient[1] blue:range.material->ambient[2] alpha:range.material->ambient[3]],
-	@"diffuseColor" : [NSColor colorWithCalibratedRed:range.material->diffuse[0] green:range.material->diffuse[1] blue:range.material->diffuse[2] alpha:range.material->diffuse[3]],
-	@"specularColor" : [NSColor colorWithCalibratedRed:range.material->specular[0] green:range.material->specular[1] blue:range.material->specular[2] alpha:range.material->specular[3]],
-	@"specularExponent": @(range.material->shininess)
+	self.renderParameterValues = @{ @"ambientColor" : [NSColor colorWithCalibratedRed:material->ambient[0] green:material->ambient[1] blue:material->ambient[2] alpha:material->ambient[3]],
+	@"diffuseColor" : [NSColor colorWithCalibratedRed:material->diffuse[0] green:material->diffuse[1] blue:material->diffuse[2] alpha:material->diffuse[3]],
+	@"specularColor" : [NSColor colorWithCalibratedRed:material->specular[0] green:material->specular[1] blue:material->specular[2] alpha:material->specular[3]],
+	@"specularExponent": @(material->shininess)
 	};
 	
 	// Always use blending, since I can't prove that it doesn't otherwise.

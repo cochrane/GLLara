@@ -11,7 +11,9 @@
 #import <AppKit/NSOpenGLView.h>
 
 @class GLLCamera;
+@class GLLDocument;
 @class GLLSceneDrawer;
+@class GLLViewDrawer;
 
 /*!
  * @abstract Draws a scene, based on a camera.
@@ -23,8 +25,13 @@
  */
 @interface GLLView : NSOpenGLView
 
-@property (nonatomic, retain) GLLCamera *camera;
+- (void)setCamera:(GLLCamera *)camera sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
 
+@property (nonatomic, retain, readonly) GLLCamera *camera;
+@property (nonatomic, weak) GLLDocument *document;
 @property (nonatomic, retain, readonly) GLLSceneDrawer *sceneDrawer;
+@property (nonatomic, retain, readonly) GLLViewDrawer *viewDrawer;
+
+- (void)unload;
 
 @end

@@ -8,17 +8,18 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "GLLSourceListItem.h"
-
 @class GLLItem;
 
 /*!
  * The item controller provides the data for an item's user interface. In particular, it implements GLLSourceListItem, using source list markers to provide the grouping.
  */
-@interface GLLItemController : NSObject <GLLSourceListItem>
+@interface GLLItemController : NSObject <NSOutlineViewDataSource>
 
-- (id)initWithItem:(GLLItem *)item;
+- (id)initWithItem:(GLLItem *)item parent:(id)parentController;
 
 @property (nonatomic) GLLItem *item;
+@property (nonatomic, readonly) id representedObject;
+@property (nonatomic, readonly) NSArray *allSelectableControllers;
+@property (nonatomic, weak) id parentController;
 
 @end

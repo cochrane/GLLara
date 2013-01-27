@@ -10,11 +10,13 @@
 
 #import "GLLModelBone.h"
 #import "GLLModelMeshObj.h"
+#import "GLLMtlFile.h"
 #import "GLLObjFile.h"
 
 @interface GLLModelObj ()
 {
 	GLLObjFile *file;
+	std::vector<GLLMtlFile *> materialFiles;
 }
 
 @end
@@ -29,10 +31,20 @@
 	
 	try {
 		file = new GLLObjFile((__bridge CFURLRef) url);
+		
+		NSArray *materialLibraryURLs = (__bridge NSArray *) file->getMaterialLibaryURLs();
+		if (materialLibraryURLs.count == 0)
+			materialLibraryURLs = @[ [url.URLByDeletingPathExtension URLByAppendingPathExtension:@"mtl"] ];
+		
+		for (NSURL *url in materialLibraryURLs)
+			materialFiles.push_back(new GLLMtlFile((__bridge CFURLRef) url));
+		
 	} catch (std::exception &e) {
 		if (error)
-			*error = [NSError errorWithDomain:@"GLLModelObj" code:1 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"There was an error loading the file.", @"couldn't load obj file")}];
-		NSLog(@"Exception: %s", e.what());
+			*error = [NSError errorWithDomain:@"GLLModelObj" code:1 userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"There was an error loading the file.", @"couldn't load obj file"),
+			NSLocalizedFailureReasonErrorKey : [NSString stringWithFormat:NSLocalizedString(@"Underlying error: %s", @"C++ threw exception"), e.what()]
+					  }];
 		return nil;
 	}
 	
@@ -44,7 +56,7 @@
 	NSUInteger meshNumber = 1;
 	for (auto &range : file->getMaterialRanges())
 	{
-		GLLModelMeshObj *mesh = [[GLLModelMeshObj alloc] initWithObjFile:file range:range inModel:self error:error];
+		GLLModelMeshObj *mesh = [[GLLModelMeshObj alloc] initWithObjFile:file mtlFiles:materialFiles range:range inModel:self error:error];
 		if (!mesh) return nil;
 		mesh.name = [NSString stringWithFormat:NSLocalizedString(@"Mesh %lu", "Mesh name for obj format"), meshNumber++];
 		[meshes addObject:mesh];

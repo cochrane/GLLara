@@ -8,6 +8,7 @@ layout(std140) uniform Transform {
 } transform;
 
 layout(std140) uniform Bones {
+	mat4 normalPermute;
 	mat4 transforms[512];
 } bones;
 

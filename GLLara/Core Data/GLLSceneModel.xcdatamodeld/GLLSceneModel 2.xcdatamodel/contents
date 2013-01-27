@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="GLLAmbientLight" representedClassName="GLLAmbientLight" parentEntity="GLLLight" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
+    </entity>
+    <entity name="GLLCamera" representedClassName="GLLCamera" syncable="YES">
+        <attribute name="cameraLocked" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="distance" attributeType="Float" defaultValueString="2" syncable="YES"/>
+        <attribute name="farDistance" attributeType="Float" defaultValueString="100" syncable="YES"/>
+        <attribute name="fieldOfViewY" attributeType="Float" minValueString="1" maxValueString="179" defaultValueString="65" syncable="YES"/>
+        <attribute name="index" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="latitude" attributeType="Float" minValueString="-1.5707963267949" maxValueString="1.5707963267949" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="nearDistance" attributeType="Float" minValueString="1e-05" defaultValueString="0.1" syncable="YES"/>
+        <attribute name="positionX" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionY" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionZ" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="windowHeight" attributeType="Float" defaultValueString="480" syncable="YES"/>
+        <attribute name="windowSizeLocked" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="windowWidth" attributeType="Float" defaultValueString="640" syncable="YES"/>
+        <relationship name="target" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLCameraTarget" inverseName="cameras" inverseEntity="GLLCameraTarget" syncable="YES"/>
+    </entity>
+    <entity name="GLLCameraTarget" representedClassName="GLLCameraTarget" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="bones" optional="YES" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="GLLItemBone" inverseName="cameraTargets" inverseEntity="GLLItemBone" syncable="YES"/>
+        <relationship name="cameras" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GLLCamera" inverseName="target" inverseEntity="GLLCamera" syncable="YES"/>
+    </entity>
+    <entity name="GLLColorRenderParameter" representedClassName="GLLColorRenderParameter" parentEntity="GLLRenderParameter" syncable="YES">
+        <attribute name="value" attributeType="Transformable" syncable="YES"/>
+    </entity>
+    <entity name="GLLDirectionalLight" representedClassName="GLLDirectionalLight" parentEntity="GLLLight" syncable="YES">
+        <attribute name="diffuseColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="isEnabled" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="latitude" attributeType="Float" minValueString="-1.5707963267949" maxValueString="1.5707963267949" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="specularColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+    </entity>
+    <entity name="GLLFloatRenderParameter" representedClassName="GLLFloatRenderParameter" parentEntity="GLLRenderParameter" syncable="YES">
+        <attribute name="value" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+    </entity>
+    <entity name="GLLItem" representedClassName="GLLItem" syncable="YES">
+        <attribute name="displayName" optional="YES" attributeType="String" spotlightIndexingEnabled="YES" syncable="YES"/>
+        <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="itemURL" optional="YES" transient="YES" syncable="YES"/>
+        <attribute name="itemURLBookmark" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="model" optional="YES" transient="YES" syncable="YES"/>
+        <attribute name="normalChannelAssignmentB" attributeType="Integer 16" minValueString="0" maxValueString="5" defaultValueString="0" syncable="YES"/>
+        <attribute name="normalChannelAssignmentG" attributeType="Integer 16" minValueString="0" maxValueString="5" defaultValueString="4" syncable="YES"/>
+        <attribute name="normalChannelAssignmentR" attributeType="Integer 16" minValueString="0" maxValueString="5" defaultValueString="2" syncable="YES"/>
+        <attribute name="positionX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionZ" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationZ" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="scaleX" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
+        <attribute name="scaleY" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
+        <attribute name="scaleZ" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
+        <relationship name="bones" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemBone" inverseName="item" inverseEntity="GLLItemBone" syncable="YES"/>
+        <relationship name="meshes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemMesh" inverseName="item" inverseEntity="GLLItemMesh" syncable="YES"/>
+        <fetchedProperty name="cameraTargets" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="GLLCameraTarget" predicateString="boneTransformations.item == $FETCH_SOURCE"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="GLLItemBone" representedClassName="GLLItemBone" syncable="YES">
+        <attribute name="positionX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="positionZ" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationX" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationY" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rotationZ" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="cameraTargets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLCameraTarget" inverseName="bones" inverseEntity="GLLCameraTarget" syncable="YES"/>
+        <relationship name="item" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="bones" inverseEntity="GLLItem" syncable="YES"/>
+    </entity>
+    <entity name="GLLItemMesh" representedClassName="GLLItemMesh" syncable="YES">
+        <attribute name="cullFaceMode" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
+        <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshes" inverseEntity="GLLItem" syncable="YES"/>
+        <relationship name="renderParameters" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLRenderParameter" inverseName="mesh" inverseEntity="GLLRenderParameter" syncable="YES"/>
+    </entity>
+    <entity name="GLLLight" isAbstract="YES" syncable="YES">
+        <attribute name="index" optional="YES" attributeType="Integer 64" minValueString="0" maxValueString="3" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="GLLRenderParameter" representedClassName="GLLRenderParameter" isAbstract="YES" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mesh" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItemMesh" inverseName="renderParameters" inverseEntity="GLLItemMesh" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="GLLAmbientLight" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="GLLCamera" positionX="0" positionY="0" width="128" height="270"/>
+        <element name="GLLCameraTarget" positionX="0" positionY="0" width="128" height="90"/>
+        <element name="GLLColorRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="GLLDirectionalLight" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="GLLItem" positionX="0" positionY="0" width="128" height="359"/>
+        <element name="GLLItemBone" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="GLLItemMesh" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="GLLLight" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="GLLRenderParameter" positionX="0" positionY="0" width="128" height="75"/>
+    </elements>
+</model>

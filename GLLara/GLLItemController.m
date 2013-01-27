@@ -9,76 +9,80 @@
 #import "GLLItemController.h"
 
 #import "GLLItem.h"
-#import "GLLSourceListMarker.h"
+#import "GLLBoneListController.h"
+#import "GLLMeshListController.h"
 
 @interface GLLItemController ()
-{
-	GLLSourceListMarker *bonesMarker;
-	GLLSourceListMarker *meshesMarker;
-}
+
+@property (nonatomic) GLLMeshListController *meshListController;
+@property (nonatomic) GLLBoneListController *boneListController;
 
 @end
 
 @implementation GLLItemController
 
-+ (NSSet *)keyPathsForValuesAffectingSourceListDisplayName
-{
-	return [NSSet setWithObject:@"item.displayName"];
-}
-
-- (id)initWithItem:(GLLItem *)item;
+- (id)initWithItem:(GLLItem *)item parent:(id)parentController;
 {
 	if (!(self = [super init])) return nil;
 	
 	self.item = item;
+	self.parentController = parentController;
+	self.meshListController = [[GLLMeshListController alloc] initWithItem:item parent:self];
+	self.boneListController = [[GLLBoneListController alloc] initWithItem:item parent:self];
 		
 	return self;
 }
 
-- (void)setSourceListDisplayName:(NSString *)displayName
+- (id)representedObject
 {
-	self.item.displayName = displayName;
+	return self.item;
 }
 
-#pragma mark - Source List Item
-
-- (BOOL)isSourceListHeader
+- (NSArray *)allSelectableControllers
 {
-	return NO;
+	NSMutableArray *result = [NSMutableArray arrayWithObject:self];
+	[result addObjectsFromArray:self.meshListController.allSelectableControllers];
+	[result addObjectsFromArray:self.boneListController.allSelectableControllers];
+	return result;
 }
-- (NSString *)sourceListDisplayName
+
+#pragma mark - Outline View Data Source
+
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
+{
+	switch (index)
+	{
+		case 0: return self.meshListController;
+		case 1: return self.boneListController;
+		default: return nil;
+	}
+}
+
+- (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
 	return self.item.displayName;
 }
-- (BOOL)isLeafInSourceList
+
+- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
-	return NO;
+	self.item.displayName = object;
 }
-- (NSUInteger)countOfSourceListChildren
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
+{
+	return YES;
+}
+
+- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
 	return 2;
 }
-- (id)objectInSourceListChildrenAtIndex:(NSUInteger)index;
+
+#pragma mark - Outline View Delegate
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
-	if (index == 0)
-	{
-		if (!meshesMarker)
-		{
-			meshesMarker = [[GLLSourceListMarker alloc] initWithObject:self childrenKeyPath:@"item.meshes"];
-			meshesMarker.sourceListDisplayName = NSLocalizedString(@"Meshes", @"source list: meshes subheader");
-		}
-		return meshesMarker;
-	}
-	else if (index == 1)
-	{
-		if (!bonesMarker)
-		{
-			bonesMarker = [[GLLSourceListMarker alloc] initWithObject:self childrenKeyPath:@"item.rootBones"];
-			bonesMarker.sourceListDisplayName = NSLocalizedString(@"Bones", @"source list: bones subheader");
-		}
-		return bonesMarker;
-	}
-	else return nil;
+	return YES;
 }
 
 @end
