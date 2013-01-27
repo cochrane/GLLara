@@ -105,6 +105,8 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
 }
 
 static NSOperationQueue *imageInformationQueue = nil;
+static GLint renderer;
+static BOOL isIntel;
 
 @interface GLLTexture ()
 {
@@ -142,6 +144,17 @@ static NSOperationQueue *imageInformationQueue = nil;
 	[NSFileCoordinator addFilePresenter:self];
 	
 	self.url = url.absoluteURL;
+	
+	// Find out whether we're using an Intel renderer
+	if (renderer == 0)
+	{
+		CGLContextObj context = CGLGetCurrentContext();
+		CGLGetParameter(context, kCGLCPCurrentRendererID, &renderer);
+		renderer &= kCGLRendererIDMatchingMask;
+		
+		// Compare with Intel HD (3000) and HD 4000. Earlier Intel GPU's aren't supported by 10.8 anyway.
+		isIntel = (renderer == kCGLRendererIntelHD4000ID) || (renderer == kCGLRendererIntelHDID);
+	}
 	
 	const char *path = self.url.path.fileSystemRepresentation;
 	fileHandle = open(path, O_EVTONLY);
@@ -308,13 +321,14 @@ static NSOperationQueue *imageInformationQueue = nil;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, isIntel ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR);
 	
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) width, (GLsizei) height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
 	
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
+	if (!isIntel)
+		glGenerateMipmap(GL_TEXTURE_2D);
 	
-	glGenerateMipmap(GL_TEXTURE_2D);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
 	
 	free(unpremultipliedBufferData);
 }
