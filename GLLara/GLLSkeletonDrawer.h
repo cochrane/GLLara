@@ -9,6 +9,8 @@
 #import <AppKit/NSColor.h>
 #import <Foundation/Foundation.h>
 
+#import "GLLDrawState.h"
+
 @class GLLItem;
 @class GLLResourceManager;
 
@@ -18,7 +20,7 @@
 
 - (void)unload;
 
-- (void)draw;
+- (void)drawWithState:(GLLDrawState *)state;
 
 @property (nonatomic) id items;
 @property (nonatomic) id selectedBones;

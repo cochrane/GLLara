@@ -148,7 +148,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	{
 		glDisable(GL_DEPTH_TEST);
 		glPointSize(10);
-		[skeletonDrawer draw];
+		[skeletonDrawer drawWithState:&state];
 		glEnable(GL_DEPTH_TEST);
 	}
 	

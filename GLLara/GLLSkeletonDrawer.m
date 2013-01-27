@@ -87,7 +87,7 @@ struct GLLSkeletonDrawer_Vertex {
 	lineElementBuffer = 0;
 }
 
-- (void)draw;
+- (void)drawWithState:(GLLDrawState *)state;
 {
 	if (!self.items || [self.items count] == 0) return;
 	
@@ -98,7 +98,11 @@ struct GLLSkeletonDrawer_Vertex {
 	if (vertexBufferNeedsUpdate)
 		[self _updateVertexBuffer];
 	
-	glUseProgram(program);
+	if (program != state->activeProgram)
+	{
+		glUseProgram(program);
+		state->activeProgram = program;
+	}
 	
 	glDrawArrays(GL_POINTS, 0, numPoints);
 	glDrawElements(GL_LINES, numPoints*2, GL_UNSIGNED_SHORT, 0);
