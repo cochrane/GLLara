@@ -168,9 +168,8 @@ struct GLLSkeletonDrawer_Vertex {
 - (void)_updateVertexBuffer;
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(struct GLLSkeletonDrawer_Vertex) * numPoints, NULL, GL_DYNAMIC_DRAW);
-	struct GLLSkeletonDrawer_Vertex *vertices = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-
+	struct GLLSkeletonDrawer_Vertex *vertices = calloc(sizeof(struct GLLSkeletonDrawer_Vertex), numPoints);
+	
 	uint8_t defaultColorValue[4];
 	[self.defaultColor get32BitRGBAComponents:defaultColorValue];
 	uint8_t selectedColorValue[4];
@@ -198,7 +197,8 @@ struct GLLSkeletonDrawer_Vertex {
 		}
 	}
 	
-	glUnmapBuffer(GL_ARRAY_BUFFER);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(struct GLLSkeletonDrawer_Vertex) * numPoints, vertices, GL_DYNAMIC_DRAW);
+	free(vertices);
 	vertexBufferNeedsUpdate = NO;
 }
 
