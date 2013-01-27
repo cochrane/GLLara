@@ -24,6 +24,8 @@
 @property (nonatomic) float rotationY;
 @property (nonatomic) float rotationZ;
 @property (nonatomic, retain) GLLItem *item;
+
+// Local
 @property (nonatomic) NSValue *relativeTransform;
 @property (nonatomic) NSValue *globalTransform;
 @property (nonatomic) NSValue *globalPosition;

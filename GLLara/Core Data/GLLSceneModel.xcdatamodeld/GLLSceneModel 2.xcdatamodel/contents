@@ -63,12 +63,9 @@
         </fetchedProperty>
     </entity>
     <entity name="GLLItemBone" representedClassName="GLLItemBone" syncable="YES">
-        <attribute name="globalPosition" optional="YES" transient="YES" syncable="YES"/>
-        <attribute name="globalTransform" optional="YES" transient="YES" syncable="YES"/>
         <attribute name="positionX" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="positionY" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="positionZ" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="relativeTransform" optional="YES" transient="YES" syncable="YES"/>
         <attribute name="rotationX" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
         <attribute name="rotationY" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
         <attribute name="rotationZ" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
@@ -96,7 +93,7 @@
         <element name="GLLDirectionalLight" positionX="0" positionY="0" width="128" height="120"/>
         <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLItem" positionX="0" positionY="0" width="128" height="359"/>
-        <element name="GLLItemBone" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="GLLItemBone" positionX="0" positionY="0" width="128" height="165"/>
         <element name="GLLItemMesh" positionX="0" positionY="0" width="128" height="105"/>
         <element name="GLLLight" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLRenderParameter" positionX="0" positionY="0" width="128" height="75"/>
