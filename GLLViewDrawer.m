@@ -63,6 +63,8 @@ struct GLLLightBlock
 	
 	// Prepare light buffer.
 	glGenBuffers(1, &lightBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(struct GLLLightBlock), NULL, GL_STREAM_DRAW);
 	
 	// Load existing lights
 	NSFetchRequest *allLightsRequest = [[NSFetchRequest alloc] init];
@@ -80,6 +82,8 @@ struct GLLLightBlock
 	
 	// Transform buffer
 	glGenBuffers(1, &transformBuffer);
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(mat_float16), NULL, GL_STREAM_DRAW);
 	[self.camera addObserver:self forKeyPath:@"viewProjectionMatrix" options:0 context:0];
 	
 	// Other necessary render state. Thanks to Core Profile, that got cut down a lot.
@@ -306,25 +310,25 @@ struct GLLLightBlock
 
 - (void)_updateLights;
 {
-	struct GLLLightBlock lightData;
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
+
+	struct GLLLightBlock *lightData = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
 	
 	// Camera position
-	lightData.cameraLocation = self.camera.cameraWorldPosition;
+	lightData->cameraLocation = self.camera.cameraWorldPosition;
 	
 	// Ambient
 	GLLAmbientLight *ambient = lights[0];
-	[ambient.color get128BitRGBAComponents:lightData.ambientColor];
+	[ambient.color get128BitRGBAComponents:lightData->ambientColor];
 	
 	// Diffuse + Specular
 	for (NSUInteger i = 0; i < 3; i++)
 	{
 		GLLDirectionalLight *light = lights[i+1];
-		lightData.lights[i] = light.uniformBlock;
+		lightData->lights[i] = light.uniformBlock;
 	}
 	
-	// Upload
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(lightData), &lightData, GL_STREAM_DRAW);
+	glUnmapBuffer(GL_UNIFORM_BUFFER);
 	
 	needsUpdateLights = NO;
 }
@@ -335,7 +339,9 @@ struct GLLLightBlock
 	
 	// Set the view projection matrix.
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(viewProjection), &viewProjection, GL_STREAM_DRAW);
+	mat_float16 *buffer = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
+	*buffer = viewProjection;
+	glUnmapBuffer(GL_UNIFORM_BUFFER);
 	
 	needsUpdateMatrices = NO;
 }
