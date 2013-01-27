@@ -310,23 +310,24 @@ struct GLLLightBlock
 
 - (void)_updateLights;
 {
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
-
-	struct GLLLightBlock *lightData = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
+	struct GLLLightBlock lightData;
 	
 	// Camera position
-	lightData->cameraLocation = self.camera.cameraWorldPosition;
+	lightData.cameraLocation = self.camera.cameraWorldPosition;
 	
 	// Ambient
 	GLLAmbientLight *ambient = lights[0];
-	[ambient.color get128BitRGBAComponents:lightData->ambientColor];
+	[ambient.color get128BitRGBAComponents:lightData.ambientColor];
 	
 	// Diffuse + Specular
 	for (NSUInteger i = 0; i < 3; i++)
 	{
 		GLLDirectionalLight *light = lights[i+1];
-		lightData->lights[i] = light.uniformBlock;
+		lightData.lights[i] = light.uniformBlock;
 	}
+	
+	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(lightData), &lightData);
 	
 	glUnmapBuffer(GL_UNIFORM_BUFFER);
 	
@@ -339,9 +340,7 @@ struct GLLLightBlock
 	
 	// Set the view projection matrix.
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
-	mat_float16 *buffer = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
-	*buffer = viewProjection;
-	glUnmapBuffer(GL_UNIFORM_BUFFER);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(viewProjection), &viewProjection);
 	
 	needsUpdateMatrices = NO;
 }
