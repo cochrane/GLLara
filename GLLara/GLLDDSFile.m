@@ -179,7 +179,22 @@ static NSString *ddsError = @"DDS File Loading";
 		}
 		else // No alpha
 		{
-			if (header.pixelFormat.rgbBitCount == 24)
+			if (header.pixelFormat.rgbBitCount == 32)
+			{
+				// To be supported, it has to be ?RGB32 now.
+				if (!((header.pixelFormat.rBitMask == 0x00ff0000) &&
+					  (header.pixelFormat.gBitMask == 0x0000ff00) &&
+					  (header.pixelFormat.bBitMask == 0x000000ff)))
+				{
+					if (error)
+						*error = [NSError errorWithDomain:ddsError code:1 userInfo:@{
+							   NSLocalizedDescriptionKey : NSLocalizedString(@"Graphics format is not supported.", @"DDS: Unknown 32-bit alpha format"),
+				   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file uses a data layout that is not supported. Only XRGB is supported for 32 bit uncompressed textures with alpha.", @"DDS: Unknown 32-bit alpha format")}];
+					return nil;
+				}
+				_dataFormat = GLL_DDS_XRGB_8;
+			}
+			else if (header.pixelFormat.rgbBitCount == 24)
 			{
 				// To be supported, it has to be RGB32 now.
 				if (!((header.pixelFormat.rBitMask == 0x00ff0000) &&
@@ -214,7 +229,7 @@ static NSString *ddsError = @"DDS File Loading";
 				if (error)
 					*error = [NSError errorWithDomain:ddsError code:1 userInfo:@{
 					   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"%u bits per pixel without alpha are not supported.", @"DDS: Unknown non-alpha bitcount"), header.pixelFormat.rgbBitCount],
-		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file uses a data layout that is not supported. Uncompressed formats without alpha have to be 24 or 16 bits per pixel.", @"DDS: Unknown non-alpha bitcount")}];
+		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file uses a data layout that is not supported. Uncompressed formats without alpha have to be 32, 24 or 16 bits per pixel.", @"DDS: Unknown non-alpha bitcount")}];
 				return nil;
 
 			};
