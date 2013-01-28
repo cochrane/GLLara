@@ -14,7 +14,8 @@
 #import <OpenGL/gl3ext.h>
 #import <OpenGL/OpenGL.h>
 #import <OpenGL/CGLRenderers.h>
-#import "OpenDDSFile.h"
+
+#import "GLLDDSFile.h"
 
 #ifndef kCGLRendererIntelHD4000ID
 #define kCGLRendererIntelHD4000ID 0x0024400
@@ -22,16 +23,15 @@
 
 #pragma mark - Private DDS loading functions
 
-GLenum _dds_get_compressed_texture_format(const DDSFile *file)
+GLenum _dds_get_compressed_texture_format(GLLDDSFile *file)
 {
-	enum DDSDataFormat format = DDSGetDataFormat(file);
-	switch(format)
+	switch(file.dataFormat)
 	{
-		case DDS_DXT1:
+		case GLL_DDS_DXT1:
 			return GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-		case DDS_DXT3:
+		case GLL_DDS_DXT3:
 			return GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-		case DDS_DXT5:
+		case GLL_DDS_DXT5:
 			return GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
 			
 		default:
@@ -39,30 +39,29 @@ GLenum _dds_get_compressed_texture_format(const DDSFile *file)
 	}
 }
 
-void _dds_get_texture_format(const DDSFile *file, GLenum *format, GLenum *type)
+void _dds_get_texture_format(GLLDDSFile *file, GLenum *format, GLenum *type)
 {
-	enum DDSDataFormat fileFormat = DDSGetDataFormat(file);
 	*format = 0;
 	*type = 0;
-	switch(fileFormat)
+	switch(file.dataFormat)
 	{
-		case DDS_RGB_8:
+		case GLL_DDS_RGB_8:
 			*format = GL_RGB;
 			*type = GL_UNSIGNED_BYTE;
 			break;
-		case DDS_RGB_565:
+		case GLL_DDS_RGB_565:
 			*format = GL_RGB;
 			*type = GL_UNSIGNED_SHORT_5_6_5;
 			break;
-		case DDS_ARGB_8:
+		case GLL_DDS_ARGB_8:
 			*format = GL_BGRA;
 			*type = GL_UNSIGNED_INT_8_8_8_8_REV;
 			break;
-		case DDS_ARGB_4:
+		case GLL_DDS_ARGB_4:
 			*format = GL_BGRA;
 			*type = GL_UNSIGNED_SHORT_4_4_4_4_REV;
 			break;
-		case DDS_ARGB_1555:
+		case GLL_DDS_ARGB_1555:
 			*format = GL_BGRA;
 			*type = GL_UNSIGNED_SHORT_1_5_5_5_REV;
 			break;
@@ -73,28 +72,27 @@ void _dds_get_texture_format(const DDSFile *file, GLenum *format, GLenum *type)
 	}
 }
 
-Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
+Boolean _dds_upload_texture_data(GLLDDSFile *file, CFIndex mipmapLevel)
 {
 	CFIndex size;
 	CFIndex width;
 	CFIndex height;
-	CFDataRef data;
+	NSData *data;
 	
-	width = DDSGetWidth(file) >> mipmapLevel;
-	height = DDSGetHeight(file) >> mipmapLevel;
+	width = file.width >> mipmapLevel;
+	height = file.height >> mipmapLevel;
 	if (!width || !height) return 0;
 	
-	data = DDSCreateDataForMipmapLevel(file, mipmapLevel);
+	data = [file dataForMipmapLevel:mipmapLevel];
 	if (!data) return 0;
-    const void *byteData = CFDataGetBytePtr(data);
-    size = CFDataGetLength(data);
+    const void *byteData = data.bytes;
+    size = data.length;
 	if (size == 0)
 	{
-		CFRelease(data);
 		return 0;
 	}
     
-	if (DDSIsCompressed(file))
+	if (file.isCompressed)
 		glCompressedTexImage2D(GL_TEXTURE_2D, (GLsizei) mipmapLevel, _dds_get_compressed_texture_format(file), (GLsizei) width, (GLsizei) height, 0, (GLsizei) size, byteData);
 	else
 	{
@@ -103,8 +101,6 @@ Boolean _dds_upload_texture_data(const DDSFile *file, CFIndex mipmapLevel)
         _dds_get_texture_format(file, &format, &type);
 		glTexImage2D(GL_TEXTURE_2D, (GLsizei) mipmapLevel, GL_RGBA, (GLsizei) width, (GLsizei) height, 0, format, type, byteData);
 	}
-    
-    CFRelease(data);
     
 	return 1;
 }
@@ -267,11 +263,16 @@ static BOOL isIntel;
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 {
-	DDSFile *file = DDSOpenData((__bridge CFDataRef) data);
+	NSError *ddsLoadingError = nil;
+	GLLDDSFile *file = [[GLLDDSFile alloc] initWithData:data error:&ddsLoadingError];
 	if (!file)
 	{
 		if (error)
-			*error = [NSError errorWithDomain:@"Textures" code:12 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"There was an error loading the dds file", @"DDSOpenData returned NULL")] }];
+			*error = [NSError errorWithDomain:@"Textures" code:12 userInfo:@{
+				   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"DDS File %@ couldn't be opened: %@", @"DDSOpenData returned NULL"), self.url.lastPathComponent, ddsLoadingError.userInfo[NSLocalizedDescriptionKey]],
+	   NSLocalizedRecoverySuggestionErrorKey : ddsLoadingError.userInfo[NSLocalizedRecoverySuggestionErrorKey],
+						NSUnderlyingErrorKey : ddsLoadingError
+					  }];
 		return NO;
 	}
 	NSAssert(file, @"Not a DDS file at all!");
@@ -288,8 +289,6 @@ static BOOL isIntel;
 	glGenerateMipmap(GL_TEXTURE_2D);
 	
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
-	
-	DDSDestroy(file);
 	
 	return YES;
 }

@@ -11,6 +11,7 @@
 		521326391602B19700787AA1 /* Square.fs in Resources */ = {isa = PBXBuildFile; fileRef = 521326381602B19700787AA1 /* Square.fs */; };
 		5213263B1602B1AA00787AA1 /* Square.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5213263A1602B1AA00787AA1 /* Square.vs */; };
 		5213263E1602BB8000787AA1 /* GLLSquareProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213263D1602BB8000787AA1 /* GLLSquareProgram.m */; };
+		52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52152CEE16B66951001AE54C /* GLLDDSFile.m */; };
 		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
 		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
 		5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */; };
@@ -181,7 +182,6 @@
 		529692E315F2861E00DF2FA3 /* GLLMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692E215F2861E00DF2FA3 /* GLLMeshDrawer.m */; };
 		529692E615F289EB00DF2FA3 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692E515F289EB00DF2FA3 /* OpenGL.framework */; };
 		529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692E815F28BFB00DF2FA3 /* GLLTexture.m */; };
-		529692F015F28D0F00DF2FA3 /* OpenDDSFile.c in Sources */ = {isa = PBXBuildFile; fileRef = 529692EF15F28D0F00DF2FA3 /* OpenDDSFile.c */; };
 		529693F215F2A77F00DF2FA3 /* GLLModelParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 529693F115F2A77E00DF2FA3 /* GLLModelParams.m */; };
 		529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 529693F415F2B58B00DF2FA3 /* GLLASCIIScanner.m */; };
 		529693F815F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */; };
@@ -320,6 +320,8 @@
 		5213263A1602B1AA00787AA1 /* Square.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Square.vs; sourceTree = "<group>"; };
 		5213263C1602BB8000787AA1 /* GLLSquareProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSquareProgram.h; sourceTree = "<group>"; };
 		5213263D1602BB8000787AA1 /* GLLSquareProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSquareProgram.m; sourceTree = "<group>"; };
+		52152CED16B66951001AE54C /* GLLDDSFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDDSFile.h; sourceTree = "<group>"; };
+		52152CEE16B66951001AE54C /* GLLDDSFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDDSFile.m; sourceTree = "<group>"; };
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
 		5224C8E415FA4F18002A6C76 /* GLLDirectionalLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDirectionalLight.h; sourceTree = "<group>"; };
 		5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDirectionalLight.m; sourceTree = "<group>"; };
@@ -539,8 +541,6 @@
 		529692E515F289EB00DF2FA3 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		529692E715F28BFB00DF2FA3 /* GLLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTexture.h; sourceTree = "<group>"; };
 		529692E815F28BFB00DF2FA3 /* GLLTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLTexture.m; sourceTree = "<group>"; };
-		529692EE15F28D0F00DF2FA3 /* OpenDDSFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenDDSFile.h; sourceTree = "<group>"; };
-		529692EF15F28D0F00DF2FA3 /* OpenDDSFile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OpenDDSFile.c; sourceTree = "<group>"; };
 		529693F015F2A77E00DF2FA3 /* GLLModelParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelParams.h; sourceTree = "<group>"; };
 		529693F115F2A77E00DF2FA3 /* GLLModelParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelParams.m; sourceTree = "<group>"; };
 		529693F315F2B58A00DF2FA3 /* GLLASCIIScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLASCIIScanner.h; sourceTree = "<group>"; };
@@ -839,7 +839,6 @@
 				5296941E15F4111A00DF2FA3 /* Model Resources */,
 				5296940515F38FFA00DF2FA3 /* Shaders */,
 				529693F615F2D00200DF2FA3 /* Model Parameters */,
-				529692F115F28D1200DF2FA3 /* From DDSConverter */,
 				529692CF15F1568700DF2FA3 /* From TR Poser */,
 				525ACD5215F0F1A700534E7D /* Supporting Files */,
 				529692E415F286E600DF2FA3 /* GLLVertexFormat.h */,
@@ -949,15 +948,6 @@
 				5291DB7F15FB711900ECDBCA /* Model Parameters (english).md */,
 			);
 			path = Documentation;
-			sourceTree = "<group>";
-		};
-		529692F115F28D1200DF2FA3 /* From DDSConverter */ = {
-			isa = PBXGroup;
-			children = (
-				529692EE15F28D0F00DF2FA3 /* OpenDDSFile.h */,
-				529692EF15F28D0F00DF2FA3 /* OpenDDSFile.c */,
-			);
-			name = "From DDSConverter";
 			sourceTree = "<group>";
 		};
 		529693F615F2D00200DF2FA3 /* Model Parameters */ = {
@@ -1203,6 +1193,8 @@
 				5213263D1602BB8000787AA1 /* GLLSquareProgram.m */,
 				524BEB0116120FCF00EA061D /* GLLSkeletonProgram.h */,
 				524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */,
+				52152CED16B66951001AE54C /* GLLDDSFile.h */,
+				52152CEE16B66951001AE54C /* GLLDDSFile.m */,
 			);
 			name = "Render resources";
 			sourceTree = "<group>";
@@ -1651,7 +1643,6 @@
 				529692DD15F2759400DF2FA3 /* GLLItemBone.m in Sources */,
 				529692E315F2861E00DF2FA3 /* GLLMeshDrawer.m in Sources */,
 				529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */,
-				529692F015F28D0F00DF2FA3 /* OpenDDSFile.c in Sources */,
 				529693F215F2A77F00DF2FA3 /* GLLModelParams.m in Sources */,
 				529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */,
 				5296940115F3881B00DF2FA3 /* GLLModelProgram.m in Sources */,
@@ -1715,6 +1706,7 @@
 				528934EE16A3593500F05312 /* GLLBoneListController.m in Sources */,
 				52474B1B16A73B6C007A0223 /* GLLMtlFile.cpp in Sources */,
 				52474B1E16A73CB2007A0223 /* GLLStringURLConversion.cpp in Sources */,
+				52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
