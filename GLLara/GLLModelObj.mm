@@ -43,7 +43,7 @@
 		if (error)
 			*error = [NSError errorWithDomain:@"GLLModelObj" code:1 userInfo:@{
 				   NSLocalizedDescriptionKey : NSLocalizedString(@"There was an error loading the file.", @"couldn't load obj file"),
-			NSLocalizedFailureReasonErrorKey : [NSString stringWithFormat:NSLocalizedString(@"Underlying error: %s", @"C++ threw exception"), e.what()]
+			NSLocalizedRecoverySuggestionErrorKey : [NSString stringWithFormat:NSLocalizedString(@"Underlying error: %s", @"C++ threw exception"), e.what()]
 					  }];
 		return nil;
 	}
