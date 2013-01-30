@@ -150,7 +150,6 @@
 		525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD7415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD8415F0F33700534E7D /* GLLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8315F0F33700534E7D /* GLLModel.m */; };
 		525ACD8715F0F3ED00534E7D /* GLLModelMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8615F0F3ED00534E7D /* GLLModelMesh.m */; };
-		52629398163DDB6500AC1088 /* DiffuseBumpEmission.fs in Sources */ = {isa = PBXBuildFile; fileRef = 52629397163DDB6500AC1088 /* DiffuseBumpEmission.fs */; };
 		5267F1B61615B2C400987717 /* moveChildren.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B31615B2C400987717 /* moveChildren.pdf */; };
 		5267F1B71615B2C400987717 /* moveNodeOnly.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B41615B2C400987717 /* moveNodeOnly.pdf */; };
 		5267F1B81615B2C400987717 /* moveParent.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B51615B2C400987717 /* moveParent.pdf */; };
@@ -1698,7 +1697,6 @@
 				52ED9E26169332540082EABB /* GLLMeshController.m in Sources */,
 				52ED9E29169333050082EABB /* GLLBoneController.m in Sources */,
 				52ED9E3B16999E370082EABB /* NSArray+Map.m in Sources */,
-				52629398163DDB6500AC1088 /* DiffuseBumpEmission.fs in Sources */,
 				52ED9E8416A225D90082EABB /* GLLLightsListController.m in Sources */,
 				528934DE16A2281900F05312 /* GLLSettingsListController.m in Sources */,
 				528934E816A29B8300F05312 /* GLLLightController.m in Sources */,
