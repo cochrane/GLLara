@@ -329,8 +329,6 @@ struct GLLLightBlock
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(lightData), &lightData);
 	
-	glUnmapBuffer(GL_UNIFORM_BUFFER);
-	
 	needsUpdateLights = NO;
 }
 
