@@ -102,12 +102,13 @@ f 1/1/1/1 2/2/2/2 3/3/3/3";
 						(float [3]) { -0.5, 0.0, 0.0 },
 						sizeof(float [3])) == 0,
 				 @"Vertex position 0");
+	// Note that the loader reverses the winding order to match XNALara standards
 	STAssertTrue(memcmp(vertices + mesh.stride*1 + mesh.offsetForPosition,
-						(float [3]) { 0.5, 0.0, 0.0 },
+						(float [3]) { 0.0, 1.0, 0.0 },
 						sizeof(float [3])) == 0,
 				 @"Vertex position 1");
 	STAssertTrue(memcmp(vertices + mesh.stride*2 + mesh.offsetForPosition,
-						(float [3]) { 0.0, 1.0, 0.0 },
+						(float [3]) { 0.5, 0.0, 0.0 },
 						sizeof(float [3])) == 0,
 				 @"Vertex position 2");
 }
