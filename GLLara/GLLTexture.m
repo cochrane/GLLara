@@ -123,6 +123,7 @@ static BOOL isIntel;
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (void)_loadCGCompatibleTexture:(NSData *)data;
+- (void)_loadDefaultTexture;
 
 - (BOOL)_loadDataError:(NSError *__autoreleasing*)error;
 
@@ -218,7 +219,13 @@ static BOOL isIntel;
 - (void)presentedItemDidChange
 {
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[self _loadDataError:NULL];
+		BOOL success = [self _loadDataError:NULL];
+		if (!success)
+		{
+			// Load default
+			glBindTexture(GL_TEXTURE_2D, _textureID);
+			[self _loadDefaultTexture];
+		}
 	});
 }
 
@@ -340,6 +347,23 @@ static BOOL isIntel;
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
 	
 	free(unpremultipliedBufferData);
+}
+
+- (void)_loadDefaultTexture;
+{
+	const uint8_t defaultTexture[16] = {
+		255, 255, 255, 0,
+		255, 0, 0, 0,
+		255, 0, 0, 0,
+		255, 255, 255, 0
+	};
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, defaultTexture);
 }
 
 @end
