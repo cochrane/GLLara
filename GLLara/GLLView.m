@@ -8,6 +8,7 @@
 
 #import "GLLView.h"
 
+#import <AppKit/NSUserDefaultsController.h>
 #import <AppKit/NSWindow.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
@@ -27,6 +28,7 @@
 	BOOL inGesture;
 	BOOL shiftIsDown;
 	BOOL inWASDMove;
+	BOOL showSelection;
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
@@ -61,8 +63,27 @@ const double unitsPerSecond = 0.2;
 	[self setOpenGLContext:context];
 	[self setWantsBestResolutionOpenGLSurface:YES];
 	
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"showsSkeleton" : @(YES) }];
+	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:@"values.showsSkeleton" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:0];
+	
 	return self;
 };
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:@"values.showsSkeleton"])
+	{
+		showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:@"showsSkeleton"];
+		self.needsDisplay = YES;
+	}
+	else
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+}
+
+- (void)dealloc
+{
+	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:@"values.showsSkeleton"];
+}
 
 - (void)unload
 {
@@ -152,7 +173,7 @@ const double unitsPerSecond = 0.2;
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	[self.viewDrawer drawShowingSelection:YES];
+	[self.viewDrawer drawShowingSelection:showSelection];
 	[self.openGLContext flushBuffer];
 }
 
