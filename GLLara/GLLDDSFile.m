@@ -306,7 +306,7 @@ static NSString *ddsError = @"DDS File Loading";
 
 - (BOOL)isCompressed
 {
-	return (self.dataFormat == GLL_DDS_DXT1 || self.dataFormat == GLL_DDS_DXT1 || self.dataFormat == GLL_DDS_DXT1);
+	return (self.dataFormat == GLL_DDS_DXT1 || self.dataFormat == GLL_DDS_DXT3 || self.dataFormat == GLL_DDS_DXT5);
 }
 
 - (BOOL)hasMipmaps
