@@ -35,7 +35,7 @@
 - (void)insertObject:(GLLItem *)object inSelectedItemsAtIndex:(NSUInteger)index;
 - (void)insertObject:(NSManagedObject *)object inSelectedLightsAtIndex:(NSUInteger)index;
 - (void)insertObject:(GLLItemMesh *)object inSelectedMeshesAtIndex:(NSUInteger)index;
-- (void)insertObject:(NSManagedObject *)object inSelectedObjectsAtIndex:(NSUInteger)index;
+//- (void)insertObject:(NSManagedObject *)object inSelectedObjectsAtIndex:(NSUInteger)index;
 
 - (void)removeObjectFromSelectedBonesAtIndex:(NSUInteger)index;
 - (void)removeObjectFromSelectedItemsAtIndex:(NSUInteger)index;

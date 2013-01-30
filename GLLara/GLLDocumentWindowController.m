@@ -45,6 +45,7 @@
 	NSArrayController *selectionController;
 	
 	BOOL updatingSourceViewSelection;
+	BOOL selectionUpdateFromSourceView;
 }
 
 - (void)_setRightHandController:(NSViewController *)controller;
@@ -109,6 +110,9 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 {
 	if ([keyPath isEqual:@"selection.selectedObjects"])
 	{
+		// Ignore updates to selection that we essentially create ourselves
+		if (selectionUpdateFromSourceView) return;
+		
 		// Set the correct selection in the outline view
 		updatingSourceViewSelection = YES;
 		
@@ -208,6 +212,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
+	selectionUpdateFromSourceView = YES;
+	
 	NSArray *newSelectedObjects = [self.sourceView.selectedRowIndexes map:^(NSUInteger index){
 		return [[self.sourceView itemAtRow:index] representedObject];
 	}];
@@ -215,7 +221,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 	if (!updatingSourceViewSelection)
 	{
 		NSMutableArray *selectedObjects = [self.selection mutableArrayValueForKey:@"selectedObjects"];
-		[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:newSelectedObjects];
+		[selectedObjects removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedObjects.count)]];
+		[selectedObjects insertObjects:newSelectedObjects atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, newSelectedObjects.count)]];
 	}
 	
 	[selectionController setSelectedObjects:selectionController.arrangedObjects];
@@ -238,6 +245,8 @@ static NSString *settingsGroupIdentifier = @"settings group identifier";
 		else
 			[self _setRightHandController:nil];
 	}
+	
+	selectionUpdateFromSourceView = NO;
 }
 
 #pragma mark - Private methods

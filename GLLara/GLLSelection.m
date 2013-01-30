@@ -150,11 +150,6 @@
 	[selectedObjects insertObject:object atIndex:index];
 }
 
-- (void)insertObject:(NSManagedObject *)object inSelectedObjectsAtIndex:(NSUInteger)index;
-{
-	[self.selectedObjects insertObject:object atIndex:index];
-}
-
 - (void)removeObjectFromSelectedBonesAtIndex:(NSUInteger)index;
 {
 	NSMutableArray *selectedObjects = [self mutableArrayValueForKey:@"selectedObjects"];
@@ -198,6 +193,21 @@
 	
 	// Remove
 	[selectedObjects removeObjectAtIndex:index];
+}
+
+- (void)replaceSelectedObjectsAtIndexes:(NSIndexSet *)indexes withSelectedObjects:(NSArray *)array
+{
+	[self.selectedObjects replaceObjectsAtIndexes:indexes withObjects:array];
+}
+
+- (void)removeSelectedObjectsAtIndexes:(NSIndexSet *)indexes
+{
+	[self.selectedObjects removeObjectsAtIndexes:indexes];
+}
+
+- (void)insertSelectedObjects:(NSArray *)array atIndexes:(NSIndexSet *)indexes
+{
+	[self.selectedObjects insertObjects:array atIndexes:indexes];
 }
 
 @end
