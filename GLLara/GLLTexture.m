@@ -103,6 +103,8 @@ Boolean _dds_upload_texture_data(GLLDDSFile *file, CFIndex mipmapLevel)
 		GLenum format;
 		GLenum type;
         _dds_get_texture_format(file, &format, &type);
+		if (format == 0 || type == 0)
+			return 0;
 		glTexImage2D(GL_TEXTURE_2D, (GLsizei) mipmapLevel, GL_RGBA, (GLsizei) width, (GLsizei) height, 0, format, type, byteData);
 	}
     
