@@ -192,7 +192,7 @@ static NSString *ddsError = @"DDS File Loading";
 				   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file uses a data layout that is not supported. Only XRGB is supported for 32 bit uncompressed textures with alpha.", @"DDS: Unknown 32-bit alpha format")}];
 					return nil;
 				}
-				_dataFormat = GLL_DDS_XRGB_8;
+				_dataFormat = GLL_DDS_BGRX_8;
 			}
 			else if (header.pixelFormat.rgbBitCount == 24)
 			{
@@ -286,10 +286,11 @@ static NSString *ddsError = @"DDS File Loading";
 				size = (width * height) * 3;
 				break;
 			case GLL_DDS_ARGB_8:
+			case GLL_DDS_BGRX_8:
 				size = (width * height) * 4;
 				break;
 			default:
-				size = 0;
+				[NSException raise:NSInternalInconsistencyException format:@"Size for format %lu unknown", (NSUInteger) self.dataFormat];
 		}
 		width  >>= 1;
 		height >>= 1;

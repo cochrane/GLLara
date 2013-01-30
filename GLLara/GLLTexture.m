@@ -39,35 +39,41 @@ GLenum _dds_get_compressed_texture_format(GLLDDSFile *file)
 	}
 }
 
-void _dds_get_texture_format(GLLDDSFile *file, GLenum *format, GLenum *type)
+void _dds_get_texture_format(GLLDDSFile *file, GLenum *internalFormat, GLenum *format, GLenum *type)
 {
 	*format = 0;
 	*type = 0;
 	switch(file.dataFormat)
 	{
 		case GLL_DDS_RGB_8:
+			*internalFormat = GL_RGB;
 			*format = GL_RGB;
 			*type = GL_UNSIGNED_BYTE;
 			break;
 		case GLL_DDS_RGB_565:
+			*internalFormat = GL_RGB;
 			*format = GL_RGB;
 			*type = GL_UNSIGNED_SHORT_5_6_5;
 			break;
 		case GLL_DDS_ARGB_8:
+			*internalFormat = GL_RGBA;
 			*format = GL_BGRA;
 			*type = GL_UNSIGNED_INT_8_8_8_8_REV;
 			break;
 		case GLL_DDS_ARGB_4:
+			*internalFormat = GL_RGBA;
 			*format = GL_BGRA;
 			*type = GL_UNSIGNED_SHORT_4_4_4_4_REV;
 			break;
 		case GLL_DDS_ARGB_1555:
+			*internalFormat = GL_RGBA;
 			*format = GL_BGRA;
 			*type = GL_UNSIGNED_SHORT_1_5_5_5_REV;
 			break;
-		case GLL_DDS_XRGB_8:
-			*format = GL_BGR;
-			*type = GL_UNSIGNED_INT_8_8_8_8_REV;
+		case GLL_DDS_BGRX_8:
+			*internalFormat = GL_RGB;
+			*format = GL_BGRA;
+			*type = GL_UNSIGNED_BYTE;
 			break;
 		
 		default:
@@ -100,12 +106,13 @@ Boolean _dds_upload_texture_data(GLLDDSFile *file, CFIndex mipmapLevel)
 		glCompressedTexImage2D(GL_TEXTURE_2D, (GLsizei) mipmapLevel, _dds_get_compressed_texture_format(file), (GLsizei) width, (GLsizei) height, 0, (GLsizei) size, byteData);
 	else
 	{
+		GLenum internalFormat;
 		GLenum format;
 		GLenum type;
-        _dds_get_texture_format(file, &format, &type);
+        _dds_get_texture_format(file, &internalFormat, &format, &type);
 		if (format == 0 || type == 0)
 			return 0;
-		glTexImage2D(GL_TEXTURE_2D, (GLsizei) mipmapLevel, GL_RGBA, (GLsizei) width, (GLsizei) height, 0, format, type, byteData);
+		glTexImage2D(GL_TEXTURE_2D, (GLsizei) mipmapLevel, internalFormat, (GLsizei) width, (GLsizei) height, 0, format, type, byteData);
 	}
     
 	return 1;

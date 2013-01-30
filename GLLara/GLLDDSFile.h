@@ -19,7 +19,7 @@ enum GLLDDSDataFormat
 	GLL_DDS_RGB_565,
 	GLL_DDS_RGB_8,
 	GLL_DDS_ARGB_8,
-	GLL_DDS_XRGB_8
+	GLL_DDS_BGRX_8
 };
 
 @interface GLLDDSFile : NSObject
