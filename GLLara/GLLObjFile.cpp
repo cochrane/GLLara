@@ -90,8 +90,8 @@ void GLLObjFile::parseFace(std::istream &stream)
 	for (unsigned i = 2; i < sets.size(); i++)
 	{
 		originalIndices.push_back(sets[0]);
-		originalIndices.push_back(sets[i-1]);
 		originalIndices.push_back(sets[i]);
+		originalIndices.push_back(sets[i-1]);
 	}
 }
 
