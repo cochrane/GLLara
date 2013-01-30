@@ -27,7 +27,7 @@ public:
 		CFURLRef normalTexture;
 		std::string name;
 		
-		Material() : ambient{1, 1, 1, 1}, diffuse{1, 1, 1, 1}, specular{0, 0, 0, 0}, shininess(0), diffuseTexture(0), specularTexture(0), normalTexture(0) {}
+		Material() : ambient{1, 1, 1, 1}, diffuse{1, 1, 1, 1}, specular{0, 0, 0, 0}, shininess(0.1), diffuseTexture(0), specularTexture(0), normalTexture(0) {}
 		~Material();
 		
 		const float *getAmbient() const { return ambient; }
