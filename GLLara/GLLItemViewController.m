@@ -42,10 +42,13 @@
 			return;
 		}
 		
-		if (![self.representedObject loadPose:file error:&error])
+		for (GLLItem *item in self.selectedItems)
 		{
-			[self.view.window presentError:error];
-			return;
+			if (![item loadPose:file error:&error])
+			{
+				[self.view.window presentError:error];
+				return;
+			}
 		}
 	}];
 
