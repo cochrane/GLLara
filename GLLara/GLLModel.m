@@ -201,7 +201,7 @@ static NSCache *cachedModels;
 		return nil;
 	}
 	
-	if (isGenericItem2)
+	if (isGenericItem2 && !stream.isAtEnd)
 	{
 		// A string; always $$XNAaraL$$
 		NSString *footerAuthor = [stream readPascalString];
