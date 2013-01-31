@@ -242,8 +242,18 @@
 	GLLPoseExportViewController *controller = [[GLLPoseExportViewController alloc] init];
 	panel.accessoryView = controller.view;
 	
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{
+	 @"exportPose-includeUnused" : @(NO),
+	 @"exportPose-onlySelected" : @(YES)
+	 }];
+	controller.exportUnusedBones = [[NSUserDefaults standardUserDefaults] boolForKey:@"exportPose-includeUnused"];
+	controller.exportOnlySelectedBones = [[NSUserDefaults standardUserDefaults] boolForKey:@"exportPose-onlySelected"];
+	
 	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
 		if (result != NSOKButton) return;
+		
+		[[NSUserDefaults standardUserDefaults] setBool:controller.exportUnusedBones forKey:@"exportPose-includeUnused"];
+		[[NSUserDefaults standardUserDefaults] setBool:controller.exportOnlySelectedBones forKey:@"exportPose-onlySelected"];
 		
 		GLLPoseExporter *exporter = nil;
 		if (controller.exportOnlySelectedBones)

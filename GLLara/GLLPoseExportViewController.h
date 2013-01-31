@@ -13,6 +13,6 @@
 @property (nonatomic) NSUInteger selectionMode;
 @property (nonatomic) BOOL exportUnusedBones;
 
-@property (nonatomic, readonly) BOOL exportOnlySelectedBones;
+@property (nonatomic) BOOL exportOnlySelectedBones;
 
 @end
