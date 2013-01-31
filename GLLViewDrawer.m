@@ -92,8 +92,8 @@ struct GLLLightBlock
 	glClearColor(0.2, 0.2, 0.2, 0.0);
 	
 	glBlendColor(0, 0, 0, 1.0);
-	glBlendEquation(GL_FUNC_ADD);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquationSeparate(GL_FUNC_ADD, GL_MAX);
+	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA, GL_DST_ALPHA);
 	
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
