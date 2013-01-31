@@ -1956,9 +1956,11 @@
 		525ACD7D15F0F1A700534E7D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Developer ID Application: Torsten Kammer";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1966,9 +1968,11 @@
 		525ACD7E15F0F1A700534E7D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Developer ID Application: Torsten Kammer";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
