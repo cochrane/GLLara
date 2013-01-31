@@ -16,6 +16,7 @@
 #import <OpenGL/CGLRenderers.h>
 
 #import "GLLDDSFile.h"
+#import "LionSubscripting.h"
 
 #ifndef kCGLRendererIntelHD4000ID
 #define kCGLRendererIntelHD4000ID 0x0024400
