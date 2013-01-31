@@ -226,4 +226,17 @@
 	[self.selectedObjects insertObjects:array atIndexes:indexes];
 }
 
+- (void)removeSelectedBonesAtIndexes:(NSIndexSet *)indexes
+{
+	NSMutableArray *selectedObjects = [self mutableArrayValueForKey:@"selectedObjects"];
+	
+	// Switch to selecting only bones
+	NSArray *selectedBones = [self valueForKey:@"selectedBones"];
+	[selectedObjects removeAllObjects];
+	[selectedObjects insertObjects:selectedBones atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedBones.count)]];
+	
+	// Remove
+	[selectedObjects removeObjectsAtIndexes:indexes];
+}
+
 @end
