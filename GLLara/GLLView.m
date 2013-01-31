@@ -45,6 +45,9 @@ const double unitsPerSecond = 0.2;
 	// Not calling initWithFrame:pixelFormat:, because we set up our own context.
 	if (!(self = [super initWithFrame:frame])) return nil;
 	
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"showsSkeleton" : @(YES) }];
+	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:@"values.showsSkeleton" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:0];
+	
 	NSOpenGLPixelFormatAttribute attribs[] = {
 		NSOpenGLPFADoubleBuffer,
 		NSOpenGLPFADepthSize, 24,
@@ -59,12 +62,20 @@ const double unitsPerSecond = 0.2;
 	
 	NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
 	NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:format shareContext:[[GLLResourceManager sharedResourceManager] openGLContext]];
+	
+	if (!context)
+	{
+		NSError *error = [NSError errorWithDomain:self.className code:1 userInfo:@{
+					   NSLocalizedDescriptionKey : NSLocalizedString(@"Could not create an OpenGL 3.2 Core Profile context.", @"Context creation failed"),
+		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"GLLara requires graphics cards that support OpenGL 3.2 or higher.", @"Context creation failed")
+						  }];
+		[self presentError:error];
+		return nil;
+	}
+	
 	[self setPixelFormat:format];
 	[self setOpenGLContext:context];
 	[self setWantsBestResolutionOpenGLSurface:YES];
-	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"showsSkeleton" : @(YES) }];
-	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:@"values.showsSkeleton" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:0];
 	
 	return self;
 };
