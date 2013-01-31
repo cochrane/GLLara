@@ -114,7 +114,9 @@
 	NSMutableArray *selectedObjects = [self mutableArrayValueForKey:@"selectedObjects"];
 	
 	// Switch to selecting only bones
-	[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:[self valueForKey:@"selectedBones"]];
+	NSArray *selectedBones = [self valueForKey:@"selectedBones"];
+	[selectedObjects removeAllObjects];
+	[selectedObjects insertObjects:selectedBones atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedBones.count)]];
 	
 	// Insert
 	[selectedObjects insertObject:object atIndex:index];
@@ -123,8 +125,10 @@
 {
 	NSMutableArray *selectedObjects = [self mutableArrayValueForKey:@"selectedObjects"];
 	
-	// Switch to selecting only bones
-	[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:[self valueForKey:@"selectedLights"]];
+	// Switch to selecting only lights
+	NSArray *selectedLights = [self valueForKey:@"selectedLights"];
+	[selectedObjects removeAllObjects];
+	[selectedObjects insertObjects:selectedLights atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedLights.count)]];
 	
 	// Insert
 	[selectedObjects insertObject:object atIndex:index];
@@ -133,8 +137,10 @@
 {
 	NSMutableArray *selectedObjects = [self mutableArrayValueForKey:@"selectedObjects"];
 	
-	// Switch to selecting only bones
-	[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:[self valueForKey:@"selectedMeshes"]];
+	// Switch to selecting only meshes
+	NSArray *selectedMeshes = [self valueForKey:@"selectedMeshes"];
+	[selectedObjects removeAllObjects];
+	[selectedObjects insertObjects:selectedMeshes atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedMeshes.count)]];
 	
 	// Insert
 	[selectedObjects insertObject:object atIndex:index];
@@ -143,8 +149,10 @@
 {
 	NSMutableArray *selectedObjects = [self mutableArrayValueForKey:@"selectedObjects"];
 	
-	// Switch to selecting only bones
-	[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:[self valueForKey:@"selectedItems"]];
+	// Switch to selecting only items
+	NSArray *selectedItems = [self valueForKey:@"selectedItems"];
+	[selectedObjects removeAllObjects];
+	[selectedObjects insertObjects:selectedItems atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedItems.count)]];
 	
 	// Insert
 	[selectedObjects insertObject:object atIndex:index];
@@ -155,7 +163,9 @@
 	NSMutableArray *selectedObjects = [self mutableArrayValueForKey:@"selectedObjects"];
 	
 	// Switch to selecting only bones
-	[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:[self valueForKey:@"selectedBones"]];
+	NSArray *selectedBones = [self valueForKey:@"selectedBones"];
+	[selectedObjects removeAllObjects];
+	[selectedObjects insertObjects:selectedBones atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedBones.count)]];
 	
 	// Remove
 	[selectedObjects removeObjectAtIndex:index];
@@ -164,8 +174,10 @@
 {
 	NSMutableArray *selectedObjects = [self mutableArrayValueForKey:@"selectedObjects"];
 	
-	// Switch to selecting only bones
-	[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:[self valueForKey:@"selectedLights"]];
+	// Switch to selecting only lights
+	NSArray *selectedLights = [self valueForKey:@"selectedLights"];
+	[selectedObjects removeAllObjects];
+	[selectedObjects insertObjects:selectedLights atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedLights.count)]];
 	
 	// Remove
 	[selectedObjects removeObjectAtIndex:index];
@@ -174,8 +186,10 @@
 {
 	NSMutableArray *selectedObjects = [self mutableArrayValueForKey:@"selectedObjects"];
 	
-	// Switch to selecting only bones
-	[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:[self valueForKey:@"selectedMeshes"]];
+	// Switch to selecting only meshes
+	NSArray *selectedMeshes = [self valueForKey:@"selectedMeshes"];
+	[selectedObjects removeAllObjects];
+	[selectedObjects insertObjects:selectedMeshes atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedMeshes.count)]];
 	
 	// Remove
 	[selectedObjects removeObjectAtIndex:index];
@@ -188,8 +202,10 @@
 {
 	NSMutableArray *selectedObjects = [self mutableArrayValueForKey:@"selectedObjects"];
 	
-	// Switch to selecting only bones
-	[selectedObjects replaceObjectsInRange:NSMakeRange(0, selectedObjects.count) withObjectsFromArray:[self valueForKey:@"selectedLights"]];
+	// Switch to selecting only items
+	NSArray *selectedItems = [self valueForKey:@"selectedItems"];
+	[selectedObjects removeAllObjects];
+	[selectedObjects insertObjects:selectedItems atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedItems.count)]];
 	
 	// Remove
 	[selectedObjects removeObjectAtIndex:index];

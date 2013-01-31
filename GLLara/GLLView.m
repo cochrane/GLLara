@@ -209,7 +209,9 @@ const double unitsPerSecond = 0.2;
 		else
 		{
 			// Set as only selection
-			[selectedBones replaceObjectsInRange:NSMakeRange(0, selectedBones.count) withObjectsFromArray:@[ bone ]];
+			[selectedBones removeAllObjects];
+			[selectedBones addObject:bone];
+			//[selectedBones replaceObjectsInRange:NSMakeRange(0, selectedBones.count) withObjectsFromArray:@[ bone ]];
 		}
 	}
 	
