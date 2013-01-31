@@ -45,5 +45,6 @@ void main()
 		color += diffuseTexColor * lightData.lights[i].diffuseColor * max(dot(-normalWorld, lightData.lights[i].direction.xyz), 0);
 	}
 	
-	screenColor = vec4(color.rgb, diffuseTexColor.a);
+	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+	screenColor = vec4(color.rgb, alpha);
 }

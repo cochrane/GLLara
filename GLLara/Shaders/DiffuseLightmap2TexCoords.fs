@@ -50,5 +50,6 @@ void main()
 	// Lightmap
 	color *= texture(lightmapTexture, outTexCoord2);
 	
-	screenColor = vec4(color.rgb, diffuseTexColor.a);
+	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+	screenColor = vec4(color.rgb, alpha);
 }

@@ -72,5 +72,6 @@ void main()
 		color += lightData.lights[i].specularColor * specularFactor * parameters.specularColor * specularColor;
 	}
 	
-	screenColor = vec4(color.rgb, diffuseTexColor.a);
+	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+	screenColor = vec4(color.rgb, alpha);
 }

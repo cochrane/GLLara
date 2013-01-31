@@ -34,5 +34,6 @@ void main()
 	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
 		discard;
 
-	screenColor = diffuseTexColor;
+	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+	screenColor = vec4(diffuseTexColor.rgb, alpha);
 }

@@ -70,6 +70,7 @@ void main()
 	// Emission texture
 	vec4 emission = texture(emissionTexture, outTexCoord);
 	screenColor += emission;
-
-	screenColor = vec4(color.rgb, diffuseTexColor.a);
+	
+	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+	screenColor = vec4(color.rgb, alpha);
 }

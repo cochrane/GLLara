@@ -70,5 +70,6 @@ void main()
 	vec2 reflectionTexCoord = scaleFactor * reflectionDir.xy;
 	vec4 reflectionColor = texture(reflectionTexture, reflectionTexCoord * 0.5 + 0.5);
 	
-	screenColor = vec4(mix(color.rgb, reflectionColor.rgb, parameters.reflectionAmount), diffuseTexColor.a);
+	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+	screenColor = vec4(mix(color.rgb, reflectionColor.rgb, parameters.reflectionAmount), alpha);
 }

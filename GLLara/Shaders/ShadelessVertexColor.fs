@@ -33,7 +33,8 @@ void main()
 	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
 	vec4 diffuseColor = diffuseTexColor * outColor;
 	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
-	discard;
+		discard;
 	
-	screenColor = vec4(diffuseColor.rgb, diffuseTexColor.a);
+	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+	screenColor = vec4(diffuseTexColor.rgb, alpha);
 }
