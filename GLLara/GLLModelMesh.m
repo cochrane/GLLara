@@ -80,7 +80,9 @@ void vec_addTo(float *a, float *b)
 	if (![stream isValid])
 	{
 		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error"),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file breaks off during the descriptions of a mesh. Maybe it is damaged?", @"Premature end of file error") }];
 		return nil;
 	}
 	
@@ -96,7 +98,9 @@ void vec_addTo(float *a, float *b)
 	if (![stream isValid])
 	{
 		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error"),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file breaks off inside a mesh's vertex data", @"Premature end of file error") }];
 		return nil;
 	}
 	
@@ -191,7 +195,9 @@ void vec_addTo(float *a, float *b)
 	if (![scanner isValid])
 	{
 		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error"),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file breaks off in the middle of the meshes section. Maybe it is damaged?", @"Premature end of file error") }];
 		return nil;
 	}
 	
