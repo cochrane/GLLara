@@ -21,6 +21,8 @@
 #import "GLLItem+OBJExport.h"
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLModel.h"
+#import "GLLPoseExporter.h"
+#import "GLLPoseExportViewController.h"
 #import "GLLRenderWindowController.h"
 #import "GLLSceneDrawer.h"
 #import "GLLSelection.h"
@@ -219,6 +221,45 @@
 		}
 	}];
 	
+}
+
+- (IBAction)exportSelectedPose:(id)sender;
+{
+	if ([[self.selection valueForKeyPath:@"selectedItems"] count] > 1)
+	{
+		NSBeep();
+		return;
+	}
+	if ([[self.selection valueForKeyPath:@"selectedBones"] count] == 0)
+	{
+		NSBeep();
+		return;
+	}
+	
+	NSSavePanel *panel = [NSSavePanel savePanel];
+	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.pose" ];
+	
+	GLLPoseExportViewController *controller = [[GLLPoseExportViewController alloc] init];
+	panel.accessoryView = controller.view;
+	
+	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
+		if (result != NSOKButton) return;
+		
+		GLLPoseExporter *exporter = nil;
+		if (controller.exportOnlySelectedBones)
+			exporter = [[GLLPoseExporter alloc] initWithBones:[self.selection valueForKeyPath:@"selectedBones"]];
+		else
+		{
+			GLLItem *selectedItem = ([[self.selection valueForKey:@"selectedItems"] count] > 0) ? [self.selection valueForKey:@"selectedItems"][0] : [[self.selection valueForKey:@"selectedBones"][0] item];
+			exporter = [[GLLPoseExporter alloc] initWithItem:selectedItem];
+		}
+		
+		exporter.skipUnused = !controller.exportUnusedBones;
+		
+		NSError *error = nil;
+		if (![exporter.poseDescription writeToURL:panel.URL atomically:YES encoding:NSUTF8StringEncoding error:&error])
+			[self.windowForSheet presentError:error];
+	}];
 }
 
 #pragma mark - Accessors

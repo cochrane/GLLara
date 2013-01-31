@@ -25,6 +25,7 @@
 
 - (IBAction)delete:(id)sender;
 - (IBAction)exportSelectedModel:(id)sender;
+- (IBAction)exportSelectedPose:(id)sender;
 
 @property (nonatomic, readonly) GLLSourceListController *sourceListController;
 @property (nonatomic) GLLSelection *selection;
