@@ -218,8 +218,10 @@ static BOOL isIntel;
 
 - (void)accommodatePresentedItemDeletionWithCompletionHandler:(void (^)(NSError *errorOrNil))completionHandler
 {
-	glBindTexture(GL_TEXTURE_2D, _textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	dispatch_async(dispatch_get_main_queue(), ^{
+		glBindTexture(GL_TEXTURE_2D, _textureID);
+		[self _loadDefaultTexture];
+	});
 	
 	completionHandler(nil);
 }
