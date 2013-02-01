@@ -15,7 +15,6 @@
 #import "GLLDocumentWindowController.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
-#import "GLLItemController.h"
 #import "GLLItemExportViewController.h"
 #import "GLLItemMesh.h"
 #import "GLLItem+OBJExport.h"
@@ -178,8 +177,8 @@
 	
 	id selectedObject = [self.selection.selectedObjects objectAtIndex:0];
 	GLLItem *item = nil;
-	if ([selectedObject isKindOfClass:[GLLItemController class]])
-		item = [selectedObject item];
+	if ([selectedObject isKindOfClass:[GLLItem class]])
+		item = selectedObject;
 	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
 		item = [selectedObject item];
 	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
