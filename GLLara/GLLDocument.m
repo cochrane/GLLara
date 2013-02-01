@@ -156,18 +156,16 @@
 }
 
 - (IBAction)delete:(id)sender;
-{	
+{
+	BOOL shouldBeep = NO;
 	for (id selectedObject in self.selection.selectedObjects)
 	{
-		if ([selectedObject isKindOfClass:[GLLItemController class]])
-			[self.managedObjectContext deleteObject:[selectedObject item]];
-		else if ([selectedObject isKindOfClass:[GLLItemBone class]])
-			[self.managedObjectContext deleteObject:[selectedObject item]];
-		else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
-			[self.managedObjectContext deleteObject:[selectedObject item]];
+		if ([selectedObject isKindOfClass:[GLLItem class]])
+			[self.managedObjectContext deleteObject:selectedObject];
 		else
-			NSBeep();
+			shouldBeep = YES;
 	}
+	if (shouldBeep) NSBeep();
 }
 
 - (IBAction)exportSelectedModel:(id)sender
