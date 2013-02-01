@@ -119,9 +119,16 @@ int main(int argc, const char * argv[])
 		NSString *outPath = [outDir stringByAppendingPathComponent:[underscoredName stringByAppendingPathExtension:@"modelparams.plist"]];
 		
 		NSError *error = nil;
-		NSString *itemFile = [NSString stringWithContentsOfFile:inPath encoding:NSUTF8StringEncoding error:&error];
-		NSRange full = NSMakeRange(0, itemFile.length);
+		NSMutableString *itemFile = [NSMutableString stringWithContentsOfFile:inPath encoding:NSUTF8StringEncoding error:&error];
 		NSAssert(itemFile, @"not found file: %@", error);
+		
+		// Remove parts that are commented out
+		NSRegularExpression *commentExpression = [NSRegularExpression regularExpressionWithPattern:@"/\\*.*\\*/" options:0 error:&error];
+		NSAssert(itemFile, @"couldn't compile regexp: %@", error);
+		[commentExpression replaceMatchesInString:itemFile options:0 range:NSMakeRange(0, itemFile.length) withTemplate:@""];
+		
+		
+		NSRange full = NSMakeRange(0, itemFile.length);
 		
 		NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
 		
