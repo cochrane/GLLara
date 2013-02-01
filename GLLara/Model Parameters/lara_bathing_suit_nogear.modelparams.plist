@@ -13,6 +13,18 @@
 			<string>collar</string>
 			<string>suit</string>
 		</array>
+		<key>MeshGroup2</key>
+		<array>
+			<string>arms</string>
+			<string>body</string>
+			<string>eyeducts</string>
+			<string>face</string>
+			<string>feet</string>
+			<string>hands</string>
+			<string>legs</string>
+			<string>mouth</string>
+			<string>ribbon</string>
+		</array>
 		<key>MeshGroup4</key>
 		<array>
 			<string>eyeirises</string>
