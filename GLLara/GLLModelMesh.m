@@ -521,7 +521,9 @@ void vec_addTo(float *a, float *b)
 				if (indices[j] >= self.model.bones.count)
 				{
 					if (error)
-						*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file references bones that do not exist.", @"Bone index out of range error") }];
+						*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{
+							   NSLocalizedDescriptionKey : NSLocalizedString(@"The file references bones that do not exist.", @"Bone index out of range error"),
+				   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"An index in the bone references is out of range", @"Bone index out of range error")}];
 					
 					return NO;
 				}
@@ -536,7 +538,9 @@ void vec_addTo(float *a, float *b)
 		if (indices[i] >= self.countOfVertices)
 		{
 			if (error)
-				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"A mesh references vertices that do not exist.", @"Vertex index out of range error") }];
+				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{
+					   NSLocalizedDescriptionKey : NSLocalizedString(@"A mesh references vertices that do not exist.", @"Vertex index out of range error"),
+		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"An index in the graphics data is out of range", @"Vertex index out of range error") }];
 			
 			return NO;
 		}

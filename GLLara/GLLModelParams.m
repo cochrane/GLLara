@@ -91,7 +91,10 @@ static NSCache *parameterCache;
 		if (!plistURL)
 		{
 			if (error)
-				*error = [NSError errorWithDomain:@"GLLModelParams" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Did not find model parameters for model type %@", @"Bundle didn't find Modelparams file."), name] }];
+				*error = [NSError errorWithDomain:@"GLLModelParams" code:1 userInfo:@{
+					   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Did not find model parameters for model type %@", @"Bundle didn't find Modelparams file."), name],
+		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"GLLara stores special information for files not named generic_item. This information is not available", @"Bundle didn't find Modelparams file.")
+						  }];
 			return nil;
 		}
 		

@@ -27,7 +27,7 @@
 		if (error)
 			*error = [NSError errorWithDomain:@"GLLMeshObj" code:1 userInfo:@{
 				   NSLocalizedDescriptionKey : NSLocalizedString(@"Some parts of the model have no material", @"error description: material for range is null"),
-	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"This model is not supported.", @"error description: material for range is null") }];
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Only OBJ files with materials for all parts are supported.", @"error suggestion: material for range is null") }];
 		return nil;
 	}
 	

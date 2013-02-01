@@ -64,7 +64,9 @@ static NSCache *cachedModels;
 				CFStringRef fileTypeDescription = UTTypeCopyDescription(fileType);
 				CFRelease(fileType);
 				
-				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_FileTypeNotSupported userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Files of type %@ are not supported.", @"Tried to load other than .mesh or .mesh.ascii"), (__bridge NSString *)fileTypeDescription]  }];
+				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_FileTypeNotSupported userInfo:@{
+					   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Files of type %@ are not supported.", @"Tried to load unsupported format"), (__bridge NSString *)fileTypeDescription],
+		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Only .mesh, .mesh.ascii and .obj files can be loaded.", @"Tried to load unsupported format")}];
 				CFRelease(fileTypeDescription);
 			}
 			return nil;
@@ -101,7 +103,9 @@ static NSCache *cachedModels;
 	if (!_parameters)
 	{
 		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_ParametersNotFound userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Parameters for file could not be found.", @"Loading error: No parameters for this model.")}];
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_ParametersNotFound userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"Parameters for file could not be found.", @"Loading error: No parameters for this model."),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"This file is neither a generic item nor a known named file.", @"Loading error: No parameters for this model.")}];
 		return nil;
 	}
 	
@@ -127,14 +131,18 @@ static NSCache *cachedModels;
 		if (possiblyMajorVersion != 0x0001)
 		{
 			if (error)
-				*error = [NSError errorWithDomain:@"GLLModel" code:10 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"New-style Generic Item has wrong major version.", @"Generic Item 2: Expected 0x0001 at offset 4"), NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If there is a .mesh.ascii version, try opening that.", @"New-style binary generic item won't work.")}];
+				*error = [NSError errorWithDomain:@"GLLModel" code:10 userInfo:@{
+					   NSLocalizedDescriptionKey : NSLocalizedString(@"New-style Generic Item has wrong major version.", @"Generic Item 2: Expected 0x0001 at offset 4"),
+		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If there is a .mesh.ascii version, try opening that.", @"New-style binary generic item won't work.")}];
 			return nil;
 		}
 		uint16_t possiblyMinorVersion = [stream readUint16];
 		if (possiblyMinorVersion != 0x000C)
 		{
 			if (error)
-				*error = [NSError errorWithDomain:@"GLLModel" code:10 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"New-style Generic Item has wrong minor version.", @"Generic Item 2: Expected 0x000C at offset 6"), NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If there is a .mesh.ascii version, try opening that.", @"New-style binary generic item won't work.")}];
+				*error = [NSError errorWithDomain:@"GLLModel" code:10 userInfo:@{
+					   NSLocalizedDescriptionKey : NSLocalizedString(@"New-style Generic Item has wrong minor version.", @"Generic Item 2: Expected 0x000C at offset 6"),
+		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If there is a .mesh.ascii version, try opening that.", @"New-style binary generic item won't work.")}];
 			return nil;
 		}
 		
@@ -244,7 +252,9 @@ static NSCache *cachedModels;
 	if (!_parameters)
 	{
 		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_ParametersNotFound userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Parameters for file could not be found.", @"Loading error: No parameters for this model.")}];
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_ParametersNotFound userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"Parameters for file could not be found.", @"Loading error: No parameters for this model."),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"This file is neither a generic item nor a known named file.", @"Loading error: No parameters for this model.")}];
 		return nil;
 	}
 	
@@ -285,7 +295,10 @@ static NSCache *cachedModels;
 	if (!scanner.isValid)
 	{
 		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error") }];
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error"),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The mesh data is incomplete. The file may be damaged.", @"Premature end of file error")
+					  }];
 		return nil;
 	}
 	

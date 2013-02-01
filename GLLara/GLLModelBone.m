@@ -90,7 +90,10 @@
 	if (self.parentIndex != UINT16_MAX && self.parentIndex >= self.model.bones.count)
 	{
 		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Bone's parent does not exist.", @"The parent index of this bone is invalid.") }];
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{
+				   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Parent of bone \"%@\" does not exist.", @"The parent index of this bone is invalid."), self.name],
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"All bones have to have a parent that exists or no parent at all.", @"The parent index of this bone is invalid.")
+					  }];
 
 		return NO;
 	}
@@ -102,7 +105,9 @@
 		if ([encounteredBones containsObject:parent])
 		{
 			if (error)
-				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_CircularReference userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"A bone has itself as an ancestor.", @"Found a circle in the bone relationships.") }];
+				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_CircularReference userInfo:@{
+					   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Bone \"%@\" has itself as an ancestor.", @"Found a circle in the bone relationships."), self.name],
+		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The bones would form an infinite loop.", @"Found a circle in a bone relationship")}];
 			
 			return NO;
 		}

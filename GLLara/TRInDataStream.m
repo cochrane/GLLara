@@ -156,14 +156,20 @@
 	if (result != Z_OK)
 	{
 		if (error)
-			*error = [NSError errorWithDomain:@"TRInDataStream" code:result userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Could not decompress part of the data.", @"uncompress failed")}];
+			*error = [NSError errorWithDomain:@"TRInDataStream" code:result userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"Could not decompress part of the data.", @"uncompress failed"),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The compressed parts of the file could not be processed. The file may be damaged.", @"uncompress failed")
+					  }];
 		free(uncompressedData);
 		return nil;
 	}
 	if (uncompressedLength < originalBytes)
 	{
 		if (error)
-			*error = [NSError errorWithDomain:@"TRInDataStream" code:result userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Could not decompress part of the data.", @"uncompress failed"), uncompressedLength]}];
+			*error = [NSError errorWithDomain:@"TRInDataStream" code:result userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"Could not decompress part of the data.", @"uncompress failed"),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"A piece of compressed data was shorter than it should have been. The file may be damaged", @"uncompress failed")
+					  }];
 		free(uncompressedData);
 		return nil;
 	}

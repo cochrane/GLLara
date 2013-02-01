@@ -248,7 +248,9 @@
 		if (lines.count != self.bones.count)
 		{
 			if (error)
-				*error = [NSError errorWithDomain:@"poses" code:1 userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"Pose file does not contain the right amount of bones", @"error loading pose old-style")}];
+				*error = [NSError errorWithDomain:@"poses" code:1 userInfo:@{
+					   NSLocalizedDescriptionKey : NSLocalizedString(@"Pose file does not contain the right amount of bones", @"error loading pose old-style"),
+		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Poses in the old format have to contain exactly as many items as bones. Try using a newer pose.", @"error loading pose old-style")}];
 			return NO;
 		}
 		
