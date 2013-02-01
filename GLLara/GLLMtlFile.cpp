@@ -78,11 +78,11 @@ GLLMtlFile::GLLMtlFile(CFURLRef location)
 		else if (token == "Ns")
 			sscanf(line.c_str(), "Ns %f", &currentMaterial->shininess);
 		else if (token == "map_Kd")
-			currentMaterial->diffuseTexture = GLLCreateURLFromString(line.substr(token.size() + 1), location);
+			currentMaterial->diffuseTexture = GLLCreateURLFromString(line.substr(line.find_first_not_of(" \t") + token.size() + 1), location);
 		else if (token == "map_Ks")
-			currentMaterial->specularTexture = GLLCreateURLFromString(line.substr(token.size() + 1), location);
+			currentMaterial->specularTexture = GLLCreateURLFromString(line.substr(line.find_first_not_of(" \t") + token.size() + 1), location);
 		else if (token == "map_Kn" || token == "bump" || token == "map_bump")
-			currentMaterial->normalTexture = GLLCreateURLFromString(line.substr(token.size() + 1), location);
+			currentMaterial->normalTexture = GLLCreateURLFromString(line.substr(line.find_first_not_of(" \t") + token.size() + 1), location);
 	}
 	
 	// Wrap up final material
