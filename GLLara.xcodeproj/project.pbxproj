@@ -374,6 +374,7 @@
 		523DE1291604E0C500BB9F61 /* tiger2.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tiger2.modelparams.plist; sourceTree = "<group>"; };
 		523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = thailand_mirror_statue_left.modelparams.plist; sourceTree = "<group>"; };
 		523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = thailand_mirror_statue_right.modelparams.plist; sourceTree = "<group>"; };
+		52421C0F16BDA65B00D41EAA /* GLLSceneModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GLLSceneModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		52423AE91604EB35009F5753 /* panther_thrall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = panther_thrall.modelparams.plist; sourceTree = "<group>"; };
 		52423AEA1604EB35009F5753 /* panther.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = panther.modelparams.plist; sourceTree = "<group>"; };
 		52423AEB1604EB35009F5753 /* poacher.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = poacher.modelparams.plist; sourceTree = "<group>"; };
@@ -2093,10 +2094,11 @@
 		52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				52421C0F16BDA65B00D41EAA /* GLLSceneModel 3.xcdatamodel */,
 				5260CE9C163B16450069459D /* GLLSceneModel 2.xcdatamodel */,
 				52BB217C15F972AB00937450 /* GLLSceneModel.xcdatamodel */,
 			);
-			currentVersion = 5260CE9C163B16450069459D /* GLLSceneModel 2.xcdatamodel */;
+			currentVersion = 52421C0F16BDA65B00D41EAA /* GLLSceneModel 3.xcdatamodel */;
 			name = GLLSceneModel.xcdatamodeld;
 			path = "Core Data/GLLSceneModel.xcdatamodeld";
 			sourceTree = "<group>";
