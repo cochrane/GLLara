@@ -78,8 +78,11 @@
 		glEnableVertexAttribArray(GLLVertexAttribTexCoord0 + 2*i);
 		glVertexAttribPointer(GLLVertexAttribTexCoord0 + 2*i, 2, GL_FLOAT, GL_FALSE, (GLsizei) mesh.stride, (GLvoid *) [mesh offsetForTexCoordLayer:i]);
 		
-		glEnableVertexAttribArray(GLLVertexAttribTangent0 + 2*i);
-		glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_FLOAT, GL_FALSE, (GLsizei) mesh.stride, (GLvoid *) [mesh offsetForTangentLayer:i]);
+		if (mesh.hasTangents)
+		{
+			glEnableVertexAttribArray(GLLVertexAttribTangent0 + 2*i);
+			glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_FLOAT, GL_FALSE, (GLsizei) mesh.stride, (GLvoid *) [mesh offsetForTangentLayer:i]);
+		}
 	}
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);

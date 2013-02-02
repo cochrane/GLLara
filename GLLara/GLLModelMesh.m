@@ -229,12 +229,12 @@ void vec_addTo(float *a, float *b)
 {
 	NSAssert(self.hasBoneWeights, @"Asking for offset for bone indices in mesh that doesn't have any.");
 	
-	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [6])*self.countOfUVLayers;
+	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0);
 }
 - (NSUInteger)offsetForBoneWeights
 {
 	NSAssert(self.hasBoneWeights, @"Asking for offset for bone indices in mesh that doesn't have any.");
-	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [6])*self.countOfUVLayers + sizeof(uint16_t [4]);
+	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0) + sizeof(uint16_t [4]);
 }
 - (NSUInteger)stride
 {

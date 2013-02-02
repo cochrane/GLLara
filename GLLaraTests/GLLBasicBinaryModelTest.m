@@ -220,6 +220,8 @@
 	STAssertEquals(mesh.offsetForColor, (NSUInteger) 24, @"Wrong offset");
 	STAssertEquals([mesh offsetForTexCoordLayer:0], (NSUInteger) 28, @"Wrong offset");
 	STAssertEquals([mesh offsetForTangentLayer:0], (NSUInteger) 36, @"Wrong offset");
+	STAssertEquals(mesh.offsetForBoneIndices, (NSUInteger) 52, @"Wrong offset");
+	STAssertEquals(mesh.offsetForBoneWeights, (NSUInteger) 60, @"Wrong offset");
 	
 	const uint32_t *elements = mesh.elementData.bytes;
 	STAssertTrue(memcmp(elements, (const uint32_t []) { 0, 1, 2 }, sizeof(uint32_t [3])) == 0, @"incorrect indices");

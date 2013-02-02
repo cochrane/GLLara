@@ -59,6 +59,7 @@
 		523DE12E1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */; };
 		52421C1316BDAD5500D41EAA /* GLLModelMeshV3.m in Sources */ = {isa = PBXBuildFile; fileRef = 52421C1216BDAD5500D41EAA /* GLLModelMeshV3.m */; };
 		52421C1516BDB78100D41EAA /* DiffuseSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52421C1416BDB78100D41EAA /* DiffuseSpecular.fs */; };
+		52421C1816BDBF4800D41EAA /* GLLV3Mesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 52421C1716BDBF4800D41EAA /* GLLV3Mesh.m */; };
 		52423AF41604EB35009F5753 /* panther_thrall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AE91604EB35009F5753 /* panther_thrall.modelparams.plist */; };
 		52423AF51604EB35009F5753 /* panther.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AEA1604EB35009F5753 /* panther.modelparams.plist */; };
 		52423AF61604EB35009F5753 /* poacher.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52423AEB1604EB35009F5753 /* poacher.modelparams.plist */; };
@@ -380,6 +381,8 @@
 		52421C1116BDAD5500D41EAA /* GLLModelMeshV3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelMeshV3.h; sourceTree = "<group>"; };
 		52421C1216BDAD5500D41EAA /* GLLModelMeshV3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelMeshV3.m; sourceTree = "<group>"; };
 		52421C1416BDB78100D41EAA /* DiffuseSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseSpecular.fs; sourceTree = "<group>"; };
+		52421C1616BDBF4800D41EAA /* GLLV3Mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLV3Mesh.h; sourceTree = "<group>"; };
+		52421C1716BDBF4800D41EAA /* GLLV3Mesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLV3Mesh.m; sourceTree = "<group>"; };
 		52423AE91604EB35009F5753 /* panther_thrall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = panther_thrall.modelparams.plist; sourceTree = "<group>"; };
 		52423AEA1604EB35009F5753 /* panther.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = panther.modelparams.plist; sourceTree = "<group>"; };
 		52423AEB1604EB35009F5753 /* poacher.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = poacher.modelparams.plist; sourceTree = "<group>"; };
@@ -928,6 +931,8 @@
 				52C7B5DC16AA15A100FC2927 /* MapTests.m */,
 				52C7B5DF16ABEB3000FC2927 /* GLLModelParametersTest.h */,
 				52C7B5E016ABEB3000FC2927 /* GLLModelParametersTest.m */,
+				52421C1616BDBF4800D41EAA /* GLLV3Mesh.h */,
+				52421C1716BDBF4800D41EAA /* GLLV3Mesh.m */,
 			);
 			path = GLLaraTests;
 			sourceTree = "<group>";
@@ -1749,6 +1754,7 @@
 				52474B2116A7518C007A0223 /* GLLBasicOBJModelTest.m in Sources */,
 				52C7B5DD16AA15A100FC2927 /* MapTests.m in Sources */,
 				52C7B5E116ABEB3000FC2927 /* GLLModelParametersTest.m in Sources */,
+				52421C1816BDBF4800D41EAA /* GLLV3Mesh.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
