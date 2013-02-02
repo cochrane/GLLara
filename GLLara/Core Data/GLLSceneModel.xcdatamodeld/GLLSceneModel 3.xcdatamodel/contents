@@ -56,7 +56,7 @@
         <attribute name="scaleX" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="scaleY" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="scaleZ" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
-        <relationship name="bones" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemBone" inverseName="item" inverseEntity="GLLItemBone" syncable="YES"/>
+        <relationship name="bones" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="GLLItemBone" inverseName="items" inverseEntity="GLLItemBone" syncable="YES"/>
         <relationship name="childItems" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItem" inverseName="parent" inverseEntity="GLLItem" syncable="YES"/>
         <relationship name="meshes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemMesh" inverseName="item" inverseEntity="GLLItemMesh" syncable="YES"/>
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="childItems" inverseEntity="GLLItem" syncable="YES"/>
@@ -72,7 +72,7 @@
         <attribute name="rotationY" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
         <attribute name="rotationZ" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
         <relationship name="cameraTargets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLCameraTarget" inverseName="bones" inverseEntity="GLLCameraTarget" syncable="YES"/>
-        <relationship name="item" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="bones" inverseEntity="GLLItem" syncable="YES"/>
+        <relationship name="items" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="bones" inverseEntity="GLLItem" elementID="item" syncable="YES"/>
     </entity>
     <entity name="GLLItemMesh" representedClassName="GLLItemMesh" syncable="YES">
         <attribute name="cullFaceMode" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
