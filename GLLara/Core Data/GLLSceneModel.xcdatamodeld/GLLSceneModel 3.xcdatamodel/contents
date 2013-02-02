@@ -57,7 +57,9 @@
         <attribute name="scaleY" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <attribute name="scaleZ" optional="YES" attributeType="Float" defaultValueString="1" syncable="YES"/>
         <relationship name="bones" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemBone" inverseName="item" inverseEntity="GLLItemBone" syncable="YES"/>
+        <relationship name="childItems" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItem" inverseName="parent" inverseEntity="GLLItem" syncable="YES"/>
         <relationship name="meshes" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="GLLItemMesh" inverseName="item" inverseEntity="GLLItemMesh" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="childItems" inverseEntity="GLLItem" syncable="YES"/>
         <fetchedProperty name="cameraTargets" optional="YES" syncable="YES">
             <fetchRequest name="fetchedPropertyFetchRequest" entity="GLLCameraTarget" predicateString="boneTransformations.item == $FETCH_SOURCE"/>
         </fetchedProperty>
@@ -92,7 +94,7 @@
         <element name="GLLColorRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLDirectionalLight" positionX="0" positionY="0" width="128" height="120"/>
         <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="GLLItem" positionX="0" positionY="0" width="128" height="359"/>
+        <element name="GLLItem" positionX="0" positionY="0" width="128" height="389"/>
         <element name="GLLItemBone" positionX="0" positionY="0" width="128" height="165"/>
         <element name="GLLItemMesh" positionX="0" positionY="0" width="128" height="105"/>
         <element name="GLLLight" positionX="0" positionY="0" width="128" height="60"/>
