@@ -12,6 +12,7 @@
 #import "GLLASCIIScanner.h"
 #import "GLLModelBone.h"
 #import "GLLModelMesh.h"
+#import "GLLModelMeshV3.h"
 #import "GLLModelParams.h"
 #import "GLLModelObj.h"
 #import "TRInDataStream.h"
@@ -112,6 +113,7 @@ static NSCache *cachedModels;
 	TRInDataStream *stream = [[TRInDataStream alloc] initWithData:data];
 	
 	BOOL isGenericItem2 = NO;
+	BOOL isGenericItem3 = NO;
 	
 	NSUInteger header = [stream readUint32];
 	if (header == 323232)
@@ -128,20 +130,35 @@ static NSCache *cachedModels;
 		// First: Two uint16s. My guess: Major, then minor version.
 		// Always 1 and 12.
 		uint16_t possiblyMajorVersion = [stream readUint16];
-		if (possiblyMajorVersion != 0x0001)
-		{
-			if (error)
-				*error = [NSError errorWithDomain:@"GLLModel" code:10 userInfo:@{
-					   NSLocalizedDescriptionKey : NSLocalizedString(@"New-style Generic Item has wrong major version.", @"Generic Item 2: Expected 0x0001 at offset 4"),
-		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If there is a .mesh.ascii version, try opening that.", @"New-style binary generic item won't work.")}];
-			return nil;
-		}
 		uint16_t possiblyMinorVersion = [stream readUint16];
-		if (possiblyMinorVersion != 0x000C)
+		if (possiblyMajorVersion == 0x0001)
+		{
+			if (possiblyMinorVersion != 0x000C)
+			{
+				if (error)
+					*error = [NSError errorWithDomain:@"GLLModel" code:10 userInfo:@{
+					   NSLocalizedDescriptionKey : NSLocalizedString(@"New-style Generic Item has unknown minor version for major version 1.", @"Generic Item 2: Second uint32 unexpected"),
+		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If there is a .mesh.ascii version, try opening that.", @"New-style binary generic item won't work.")}];
+					return nil;
+			}
+		}
+		else if (possiblyMajorVersion == 0x0002)
+		{
+			isGenericItem3 = YES;
+			if (possiblyMinorVersion != 0x0000F)
+			{
+				if (error)
+					*error = [NSError errorWithDomain:@"GLLModel" code:10 userInfo:@{
+						   NSLocalizedDescriptionKey : NSLocalizedString(@"New-style Generic Item has unknown minor version for major version 2.", @"Generic Item 2: Second uint32 unexpected"),
+			   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If there is a .mesh.ascii version, try opening that.", @"New-style binary generic item won't work.")}];
+				return nil;
+			}
+		}
+		else
 		{
 			if (error)
 				*error = [NSError errorWithDomain:@"GLLModel" code:10 userInfo:@{
-					   NSLocalizedDescriptionKey : NSLocalizedString(@"New-style Generic Item has wrong minor version.", @"Generic Item 2: Expected 0x000C at offset 6"),
+					   NSLocalizedDescriptionKey : NSLocalizedString(@"New-style Generic Item has unknown major version.", @"Generic Item 2: Second uint32 unexpected"),
 		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If there is a .mesh.ascii version, try opening that.", @"New-style binary generic item won't work.")}];
 			return nil;
 		}
@@ -191,9 +208,10 @@ static NSCache *cachedModels;
 	
 	NSUInteger numMeshes = [stream readUint32];
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
+	Class meshClass = isGenericItem3 ? [GLLModelMeshV3 class] : [GLLModelMesh class];
 	for (NSUInteger i = 0; i < numMeshes; i++)
 	{
-		GLLModelMesh *mesh = [[GLLModelMesh alloc] initFromStream:stream partOfModel:self error:error];
+		GLLModelMesh *mesh = [[meshClass alloc] initFromStream:stream partOfModel:self error:error];
 		if (!mesh) return nil;
 		[self _addMesh:mesh toArray:meshes];
 	}

@@ -80,6 +80,7 @@ typedef enum GLLCullFaceMode
  */
 @property (nonatomic, assign) NSUInteger countOfUVLayers;
 @property (nonatomic, assign, readonly) BOOL hasBoneWeights;
+@property (nonatomic, readonly) BOOL hasTangents;
 @property (nonatomic, copy, readonly) NSURL *baseURL;
 
 /*
@@ -95,8 +96,20 @@ typedef enum GLLCullFaceMode
 @property (nonatomic, assign) BOOL usesAlphaBlending;
 @property (nonatomic, copy) NSDictionary *renderParameterValues;
 
-// To be used by subclasses. Calculates the tangents based on the texture coordinates, and fills them in the correct fields of the data, using the offsets and strides of the file
+// -- For subclasses
+// Calculates the tangents based on the texture coordinates, and fills them in the correct fields of the data, using the offsets and strides of the file
 - (void)calculateTangents:(NSMutableData *)vertexData;
+
+// Checks whether all the data is valid and can be used. Should be done before calculateTangents:!
+- (BOOL)validateVertexData:(NSData *)vertexData indexData:(NSData *)indicesData error:(NSError *__autoreleasing*)error;
+
+// Ensures that all bone weights are correct
+- (NSData *)normalizeBoneWeightsInVertices:(NSData *)vertexData;
+
+// Finalize loading. In particular, load render parameters.
+- (void)finishLoading;
+
+
 
 @property (nonatomic, assign, readonly) GLLCullFaceMode cullFaceMode;
 

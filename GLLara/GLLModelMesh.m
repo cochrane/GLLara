@@ -35,14 +35,6 @@ void vec_addTo(float *a, float *b)
 	a[2] += b[2];
 }
 
-@interface GLLModelMesh ()
-
-- (BOOL)_checkIndicesInVertexData:(NSData *)vertices elementData:(NSData *)elements error:(NSError *__autoreleasing*)error;
-- (NSData *)_postprocessVertices:(NSData *)vertexData;
-- (void)_setRenderParameters;
-
-@end
-
 @implementation GLLModelMesh
 
 #pragma mark - Mesh loading
@@ -88,12 +80,13 @@ void vec_addTo(float *a, float *b)
 	
 	_countOfVertices = [stream readUint32];
 	NSData *rawVertexData = [stream dataWithLength:_countOfVertices * self.stride];
-	_vertexData = [[self _postprocessVertices:rawVertexData] copy];
+	_vertexData = [[self normalizeBoneWeightsInVertices:rawVertexData] copy];
 	
 	_countOfElements = 3 * [stream readUint32]; // File saves number of triangles
 	_elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
 	
-	if (![self _checkIndicesInVertexData:rawVertexData elementData:_elementData error:error]) return nil;
+	if (![self validateVertexData:rawVertexData indexData:_elementData error:error])
+		return nil;
 	
 	if (![stream isValid])
 	{
@@ -104,7 +97,7 @@ void vec_addTo(float *a, float *b)
 		return nil;
 	}
 	
-	[self _setRenderParameters];
+	[self finishLoading];
 	
 	return self;
 }
@@ -187,10 +180,10 @@ void vec_addTo(float *a, float *b)
 	}
 	_elementData = [elementData copy];
 	
-	if (![self _checkIndicesInVertexData:rawVertexData elementData:_elementData error:error]) return nil;
 	
+	if (![self validateVertexData:rawVertexData indexData:_elementData error:error]) return nil;
 	[self calculateTangents:rawVertexData];
-	_vertexData = [[self _postprocessVertices:rawVertexData] copy];
+	_vertexData = [[self normalizeBoneWeightsInVertices:rawVertexData] copy];
 	
 	if (![scanner isValid])
 	{
@@ -201,7 +194,7 @@ void vec_addTo(float *a, float *b)
 		return nil;
 	}
 	
-	[self _setRenderParameters];
+	[self finishLoading];
 	
 	return self;
 }
@@ -245,7 +238,7 @@ void vec_addTo(float *a, float *b)
 }
 - (NSUInteger)stride
 {
-	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [6])*self.countOfUVLayers + (self.hasBoneWeights ? (sizeof(uint16_t [4]) + sizeof(float [4])) : 0);
+	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0) + (self.hasBoneWeights ? (sizeof(uint16_t [4]) + sizeof(float [4])) : 0);
 }
 
 #pragma mark - Properties
@@ -262,6 +255,12 @@ void vec_addTo(float *a, float *b)
 - (NSUInteger)meshIndex
 {
 	return [self.model.meshes indexOfObject:self];
+}
+
+- (BOOL)hasTangents
+{
+	// For subclasses to override
+	return YES;
 }
 
 #pragma mark - Splitting
@@ -329,7 +328,7 @@ void vec_addTo(float *a, float *b)
 	result->_model = self.model;
 	result->_name = [name copy];
 	result->_textures = [self.textures copy];
-	[result _setRenderParameters]; // Result may have different mesh group or shader. In fact, for the one and only object class where this entire feature is needed, this is guaranteed.
+	[result finishLoading]; // Result may have different mesh group or shader. In fact, for the one and only object class where this entire feature is needed, this is guaranteed.
 	
 	return result;
 }
@@ -408,7 +407,7 @@ void vec_addTo(float *a, float *b)
 	return stream.data;
 }
 
-#pragma mark - Tangents
+#pragma mark - Postprocessing
 
 - (void)calculateTangents:(NSMutableData *)vertexData;
 {
@@ -504,9 +503,7 @@ void vec_addTo(float *a, float *b)
 	}
 }
 
-#pragma mark - Private methods
-
-- (BOOL)_checkIndicesInVertexData:(NSData *)vertices elementData:(NSData *)elements error:(NSError *__autoreleasing*)error;
+- (BOOL)validateVertexData:(NSData *)vertices indexData:(NSData *)indexData error:(NSError *__autoreleasing*)error;
 {
 	// Check bone indices
 	if (self.hasBoneWeights)
@@ -532,7 +529,7 @@ void vec_addTo(float *a, float *b)
 	}
 	
 	// Check element indices
-	const uint32_t *indices = elements.bytes;
+	const uint32_t *indices = indexData.bytes;
 	for (NSUInteger i = 0; i < self.countOfElements; i++)
 	{
 		if (indices[i] >= self.countOfVertices)
@@ -549,7 +546,7 @@ void vec_addTo(float *a, float *b)
 	return YES;
 }
 
-- (NSData *)_postprocessVertices:(NSData *)vertexData;
+- (NSData *)normalizeBoneWeightsInVertices:(NSData *)vertexData;
 {
 	if (!self.hasBoneWeights)
 		return vertexData; // No processing necessary
@@ -580,7 +577,7 @@ void vec_addTo(float *a, float *b)
 	return mutableVertices;
 }
 
-- (void)_setRenderParameters;
+- (void)finishLoading;
 {
 	GLLShaderDescription *shader = nil;
 	[_model.parameters getShader:&shader alpha:&_usesAlphaBlending forMesh:_name];

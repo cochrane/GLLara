@@ -78,6 +78,8 @@ static NSCache *parameterCache;
 	NSString *name = [[model.baseURL.lastPathComponent stringByDeletingPathExtension] stringByDeletingPathExtension];
 	if ([[name lowercaseString] isEqual:@"generic_item"])
 		return [[self alloc] initWithModel:model error:error];
+	else if ([[name lowercaseString] isEqual:@"character"])
+		return [[self alloc] initWithModel:model error:error];
 	else
 		return [self parametersForName:name error:error];
 }
