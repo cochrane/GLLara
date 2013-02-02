@@ -72,7 +72,7 @@
         <attribute name="rotationY" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
         <attribute name="rotationZ" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" syncable="YES"/>
         <relationship name="cameraTargets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLCameraTarget" inverseName="bones" inverseEntity="GLLCameraTarget" syncable="YES"/>
-        <relationship name="items" toMany="YES" minCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="bones" inverseEntity="GLLItem" elementID="item" syncable="YES"/>
+        <relationship name="items" toMany="YES" minCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="GLLItem" inverseName="bones" inverseEntity="GLLItem" elementID="item" syncable="YES"/>
     </entity>
     <entity name="GLLItemMesh" representedClassName="GLLItemMesh" syncable="YES">
         <attribute name="cullFaceMode" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
