@@ -20,8 +20,10 @@
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:NULL];
+	NSError *error = nil;
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
+	STAssertNil(error, @"Should be no error, but is %@", error);
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 0, @"Model should have no bones.");
 	STAssertEquals(model.meshes.count, (NSUInteger) 0, @"Model should have no meshes.");
@@ -41,8 +43,10 @@
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:NULL];
+	NSError *error = nil;
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
+	STAssertNil(error, @"Should be no error, but is %@", error);
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 1, @"Model should have one bone.");
 	STAssertEquals(model.meshes.count, (NSUInteger) 0, @"Model should have no meshes.");
@@ -71,8 +75,10 @@
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:NULL];
+	NSError *error = nil;
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
+	STAssertNil(error, @"Should be no error, but is %@", error);
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 0, @"Model should have no bones.");
 	STAssertEquals(model.meshes.count, (NSUInteger) 1, @"Model should have one mesh.");
@@ -171,8 +177,10 @@
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:NULL];
+	NSError *error = nil;
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
+	STAssertNil(error, @"Should be no error, but is %@", error);
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 2, @"Model should have two bones.");
 	STAssertEquals(model.meshes.count, (NSUInteger) 1, @"Model should have one mesh.");
