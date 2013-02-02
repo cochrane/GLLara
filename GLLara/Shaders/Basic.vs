@@ -22,6 +22,7 @@ in vec4 boneWeights;
 
 out vec4 outColor;
 out vec2 outTexCoord;
+out vec3 positionWorld;
 out vec3 normalWorld;
 
 mat4 boneTransform()
@@ -34,9 +35,14 @@ mat4 boneTransform()
 
 void main()
 {
-	// Transform
+	// Transformation
 	mat4 bone = boneTransform();
-	gl_Position = transform.viewProjection * bone * vec4(position, 1.0);
+	gl_Position = transform.viewProjection * (bone * vec4(position, 1.0));
+	
+	// Relative to world
+	positionWorld = vec3(bone * vec4(position, 1.0));
+	
+	// Normal
 	normalWorld = mat3(bone) * normal;
 	
 	// Pass through
