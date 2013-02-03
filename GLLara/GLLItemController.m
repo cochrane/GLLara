@@ -11,24 +11,46 @@
 #import "GLLItem.h"
 #import "GLLBoneListController.h"
 #import "GLLMeshListController.h"
-
-@interface GLLItemController ()
-
-@property (nonatomic) GLLMeshListController *meshListController;
-@property (nonatomic) GLLBoneListController *boneListController;
-
-@end
+#import "GLLSubItemController.h"
+#import "NSArray+Map.h"
 
 @implementation GLLItemController
 
-- (id)initWithItem:(GLLItem *)item parent:(id)parentController;
+- (id)initWithItem:(GLLItem *)item outlineView:(NSOutlineView *)outlineView parent:(id)parentController;
 {
 	if (!(self = [super init])) return nil;
+	
+	_outlineView = outlineView;
 	
 	self.item = item;
 	self.parentController = parentController;
 	self.meshListController = [[GLLMeshListController alloc] initWithItem:item parent:self];
 	self.boneListController = [[GLLBoneListController alloc] initWithItem:item parent:self];
+	
+	[[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:self.item.managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
+		
+		NSArray *removedItemControllers = [self.childrenControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"item in %@", notification.userInfo[NSDeletedObjectsKey]]];
+		[self.childrenControllers removeObjectsInArray:removedItemControllers];
+		
+		NSSet *addedItems = [notification.userInfo[NSInsertedObjectsKey] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"entity.name == \"GLLItem\""]];
+		NSArray *addedItemControllers = [addedItems map:^(GLLItem *item){
+			if (item.parent != self.item) return (id) nil;
+			return (id) [[GLLSubItemController alloc] initWithItem:item outlineView:self.outlineView parent:self];
+		}];
+		[self.childrenControllers addObjectsFromArray:addedItemControllers];
+		[self.childrenControllers sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"item.displayName" ascending:YES] ]];
+		
+		[self.outlineView reloadItem:self reloadChildren:YES];
+	}];
+	
+	// Get initial items
+	NSFetchRequest *itemRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
+	itemRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"displayName" ascending:YES] ];
+	itemRequest.predicate = [NSPredicate predicateWithFormat:@"parent == %@", self.item];
+	
+	self.childrenControllers = [[self.item.managedObjectContext executeFetchRequest:itemRequest error:NULL] mapMutable:^(GLLItem *item){
+		return [[GLLSubItemController alloc] initWithItem:item outlineView:self.outlineView parent:self];
+	}];
 		
 	return self;
 }
@@ -54,7 +76,7 @@
 	{
 		case 0: return self.meshListController;
 		case 1: return self.boneListController;
-		default: return nil;
+		default: return self.childrenControllers[index - 2];
 	}
 }
 
@@ -75,7 +97,7 @@
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
-	return 2;
+	return 2 + self.childrenControllers.count;
 }
 
 #pragma mark - Outline View Delegate

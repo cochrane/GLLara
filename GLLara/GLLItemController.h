@@ -8,6 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class GLLMeshListController;
+@class GLLBoneListController;
+
 @class GLLItem;
 
 /*!
@@ -15,11 +18,17 @@
  */
 @interface GLLItemController : NSObject <NSOutlineViewDataSource>
 
-- (id)initWithItem:(GLLItem *)item parent:(id)parentController;
+- (id)initWithItem:(GLLItem *)item outlineView:(NSOutlineView *)outlineView parent:(id)parentController;
 
 @property (nonatomic) GLLItem *item;
 @property (nonatomic, readonly) id representedObject;
 @property (nonatomic, readonly) NSArray *allSelectableControllers;
 @property (nonatomic, weak) id parentController;
+@property (nonatomic, readonly) NSOutlineView *outlineView;
+
+
+@property (nonatomic) GLLMeshListController *meshListController;
+@property (nonatomic) GLLBoneListController *boneListController;
+@property (nonatomic) NSMutableArray *childrenControllers;
 
 @end
