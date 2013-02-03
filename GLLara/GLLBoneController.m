@@ -9,6 +9,7 @@
 #import "GLLBoneController.h"
 
 #import "GLLBoneListController.h"
+#import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLModelBone.h"
 #import "LionSubscripting.h"
@@ -16,9 +17,8 @@
 @interface GLLBoneController ()
 
 - (void)_updateObservers;
-- (void)_loadChildBones;
 
-@property (nonatomic) NSArray *childBoneControllers;
+@property (nonatomic, readonly) NSArray *childBoneControllers;
 @property (nonatomic) GLLBoneController *parentBoneController;
 @property (nonatomic) NSMutableSet *observers;
 
@@ -81,34 +81,38 @@
 
 - (id)parentController
 {
-	// Loading children also loads parent
-	if (!self.childBoneControllers) [self _loadChildBones];
-	if (self.parentBoneController) return self.parentBoneController;
+	NSArray *parents = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%@ in bone.children", self.bone]];
+	if (parents.count > 0) return parents[0];
 	else return self.listController;
+}
+
+- (NSArray *)childBoneControllers
+{
+	return [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"bone.parent == %@", self.bone]];
 }
 
 #pragma mark - Outline View Data Source
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
-	if (!self.childBoneControllers) [self _loadChildBones];
 	return self.childBoneControllers[index];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
-	return self.bone.bone.name;
+	if (self.bone.item != self.listController.item)
+		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%@)", @"Bone from other model"), self.bone.bone.name, self.bone.item.displayName];
+	else
+		return self.bone.bone.name;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-	if (!self.childBoneControllers) [self _loadChildBones];
 	return self.childBoneControllers.count > 0;
 }
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
-	if (!self.childBoneControllers) [self _loadChildBones];
 	return self.childBoneControllers.count;
 }
 
@@ -124,13 +128,6 @@
 - (void)_updateObservers
 {
 	[self.observers makeObjectsPerformSelector:@selector(boneDidChange:) withObject:self];
-}
-- (void)_loadChildBones;
-{
-	self.childBoneControllers = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"bone.parent == %@", self.bone]];
-	
-	NSArray *parents = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%@ in bone.children", self.bone]];
-	if (parents.count > 0) self.parentBoneController = parents[0];
 }
 
 @end

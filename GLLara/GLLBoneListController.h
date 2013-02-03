@@ -12,11 +12,12 @@
 
 @interface GLLBoneListController : NSObject <NSOutlineViewDataSource>
 
-- (id)initWithItem:(GLLItem *)item parent:(id)parentController;
+- (id)initWithItem:(GLLItem *)item outlineView:(NSOutlineView *)outlineView parent:(id)parentController;
 
 @property (nonatomic) GLLItem *item;
-@property (nonatomic, readonly) NSArray *boneControllers;
+@property (nonatomic, readonly) NSMutableArray *boneControllers;
 @property (nonatomic, readonly) NSArray *allSelectableControllers;
 @property (nonatomic, weak) id parentController;
+@property (nonatomic) NSOutlineView *outlineView;
 
 @end

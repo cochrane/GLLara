@@ -25,7 +25,7 @@
 	self.item = item;
 	self.parentController = parentController;
 	self.meshListController = [[GLLMeshListController alloc] initWithItem:item parent:self];
-	self.boneListController = [[GLLBoneListController alloc] initWithItem:item parent:self];
+	self.boneListController = [[GLLBoneListController alloc] initWithItem:item outlineView:outlineView parent:self];
 	
 	[[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:self.item.managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
 		
