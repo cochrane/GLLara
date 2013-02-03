@@ -13,6 +13,5 @@
 @property (nonatomic) NSArray *selectedItems;
 
 - (IBAction)loadPose:(id)sender;
-- (IBAction)savePose:(id)sender;
 
 @end

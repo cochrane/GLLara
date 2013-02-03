@@ -54,9 +54,4 @@
 
 }
 
-- (void)savePose:(id)sender
-{
-	NSBeep();
-}
-
 @end
