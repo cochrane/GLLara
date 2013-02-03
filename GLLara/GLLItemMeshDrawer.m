@@ -11,20 +11,29 @@
 #import <OpenGL/gl3.h>
 
 #import "GLLItemDrawer.h"
+#import "GLLItemMeshTexture.h"
 #import "GLLMeshDrawer.h"
 #import "GLLModelMesh.h"
 #import "GLLItemMesh.h"
 #import "GLLModelProgram.h"
 #import "GLLRenderParameter.h"
+#import "GLLResourceManager.h"
+#import "GLLShaderDescription.h"
+#import "GLLTexture.h"
 #import "GLLUniformBlockBindings.h"
+#import "NSArray+Map.h"
 
 @interface GLLItemMeshDrawer ()
 {
 	GLuint renderParametersBuffer;
 	BOOL needsParameterBufferUpdate;
 	NSMutableArray *renderParameters;
+	NSSet *textureAssignments;
+	NSArray *textures;
+	BOOL needsTextureUpdate;
 }
 - (void)_updateParameterBuffer;
+- (void)_updateTextures;
 
 @end
 
@@ -54,6 +63,9 @@
 		}
 	}
 	
+	textureAssignments = [[NSMutableSet alloc] init];
+	[_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+	
 	return self;
 }
 
@@ -63,6 +75,20 @@
 	{
 		needsParameterBufferUpdate = YES;
 		self.itemDrawer.needsRedraw = YES;
+	}
+	else if ([keyPath isEqual:@"textures"])
+	{
+		for (GLLItemMeshTexture *texture in textureAssignments)
+			[texture removeObserver:self forKeyPath:@"textureURL"];
+		
+		textureAssignments = _itemMesh.textures;
+		for (GLLItemMeshTexture *texture in textureAssignments)
+			[texture addObserver:self forKeyPath:@"textureURL" options:NSKeyValueObservingOptionNew context:NULL];
+		needsTextureUpdate = YES;
+	}
+	else if ([keyPath isEqual:@"textureURL"])
+	{
+		needsTextureUpdate = YES;
 	}
 	else
 		[super observeValueForKeyPath:@"keyPath" ofObject:object change:change context:context];
@@ -74,6 +100,8 @@
 		return;
 	if (needsParameterBufferUpdate)
 		[self _updateParameterBuffer];
+	if (needsTextureUpdate)
+		[self _updateTextures];
 	
 	if (state->cullFaceMode != self.itemMesh.cullFaceMode)
 	{
@@ -102,6 +130,12 @@
 	// If there are render parameters, apply them
 	if (renderParametersBuffer != 0)
 		glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingRenderParameters, renderParametersBuffer);
+	
+	for (NSUInteger i = 0; i < textures.count; i++)
+	{
+		glActiveTexture(GL_TEXTURE0 + (GLenum) i);
+		glBindTexture(GL_TEXTURE_2D, [textures[i] textureID]);
+	}
 	
 	[self.meshDrawer drawWithState:state];
 }
@@ -148,6 +182,14 @@
 	free(data);
 
 	needsParameterBufferUpdate = NO;
+}
+
+- (void)_updateTextures
+{
+	textures = [self.meshDrawer.modelMesh.shader.textureUniformNames map:^(NSString *identifier){
+		GLLItemMeshTexture *textureAssignment = [self.itemMesh textureWithIdentifier:identifier];
+		return [[GLLResourceManager sharedResourceManager] textureForURL:textureAssignment.textureURL error:NULL];
+	}];
 }
 
 @end

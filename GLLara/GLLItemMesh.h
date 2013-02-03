@@ -10,6 +10,7 @@
 #import <Foundation/Foundation.h>
 
 @class GLLItem;
+@class GLLItemMeshTexture;
 @class GLLModelMesh;
 @class GLLRenderParameter;
 
@@ -20,6 +21,7 @@
 @property (nonatomic, retain) GLLItem *item;
 @property (nonatomic) int16_t cullFaceMode;
 @property (nonatomic, retain) NSSet *renderParameters;
+@property (nonatomic, retain) NSSet *textures;
 
 // Derived
 @property (nonatomic, readonly) NSUInteger meshIndex;
@@ -30,6 +32,7 @@
 @property (nonatomic, retain) id renderSettings;
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
+- (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;
 
 @end
 
@@ -39,5 +42,10 @@
 - (void)removeRenderParametersObject:(GLLRenderParameter *)value;
 - (void)addRenderParameters:(NSSet *)values;
 - (void)removeRenderParameters:(NSSet *)values;
+
+- (void)addTexturesObject:(GLLRenderParameter *)value;
+- (void)removeTexturesObject:(GLLRenderParameter *)value;
+- (void)addTextures:(NSSet *)values;
+- (void)removeTextures:(NSSet *)values;
 
 @end

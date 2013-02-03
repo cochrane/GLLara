@@ -79,6 +79,13 @@
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshes" inverseEntity="GLLItem" syncable="YES"/>
         <relationship name="renderParameters" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLRenderParameter" inverseName="mesh" inverseEntity="GLLRenderParameter" syncable="YES"/>
+        <relationship name="textures" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLItemMeshTexture" inverseName="mesh" inverseEntity="GLLItemMeshTexture" syncable="YES"/>
+    </entity>
+    <entity name="GLLItemMeshTexture" representedClassName="GLLItemMeshTexture" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="textureBookmarkData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="textureURL" optional="YES" transient="YES" syncable="YES"/>
+        <relationship name="mesh" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItemMesh" inverseName="textures" inverseEntity="GLLItemMesh" syncable="YES"/>
     </entity>
     <entity name="GLLLight" isAbstract="YES" syncable="YES">
         <attribute name="index" optional="YES" attributeType="Integer 64" minValueString="0" maxValueString="3" defaultValueString="0" syncable="YES"/>
@@ -96,8 +103,9 @@
         <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLItem" positionX="0" positionY="0" width="128" height="389"/>
         <element name="GLLItemBone" positionX="0" positionY="0" width="128" height="165"/>
-        <element name="GLLItemMesh" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="GLLItemMesh" positionX="0" positionY="0" width="128" height="120"/>
         <element name="GLLLight" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLRenderParameter" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="GLLItemMeshTexture" positionX="160" positionY="192" width="128" height="105"/>
     </elements>
 </model>

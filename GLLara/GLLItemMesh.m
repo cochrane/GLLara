@@ -11,6 +11,7 @@
 #import <AppKit/NSKeyValueBinding.h>
 
 #import "GLLItem.h"
+#import "GLLItemMeshTexture.h"
 #import "GLLModel.h"
 #import "GLLModelMesh.h"
 #import "GLLModelParams.h"
@@ -18,6 +19,12 @@
 #import "GLLRenderParameterDescription.h"
 #import "GLLShaderDescription.h"
 #import "LionSubscripting.h"
+
+@interface GLLItemMesh ()
+
+- (void)_createTextureAssignments;
+
+@end
 
 @implementation GLLItemMesh
 
@@ -30,6 +37,7 @@
 @dynamic isVisible;
 @dynamic item;
 @dynamic renderParameters;
+@dynamic textures;
 
 @dynamic mesh;
 @dynamic meshIndex;
@@ -65,6 +73,15 @@
 		
 		[renderParameters addObject:parameter];
 	}
+	
+	[self _createTextureAssignments];
+}
+
+- (void)awakeFromFetch
+{
+	NSMutableSet *textures = [self mutableSetValueForKey:@"textures"];
+	if (textures.count == 0)
+		[self _createTextureAssignments];
 }
 
 #pragma mark - Derived
@@ -93,12 +110,37 @@
 	}
 	return nil;
 }
+- (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;
+{
+	for (GLLItemMeshTexture *texture in self.textures)
+	{
+		if ([texture.identifier isEqual:textureIdentifier])
+			return texture;
+	}
+	return nil;
+}
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
 	GLLRenderParameter *param = [self renderParameterWithName:key];
 	if (param) return param;
 	else return NSNotApplicableMarker;
+}
+
+#pragma mark - Private
+
+- (void)_createTextureAssignments;
+{	
+	// Replace all textures
+	NSMutableSet *textures = [self mutableSetValueForKey:@"textures"];
+	[textures removeAllObjects];
+	for (NSUInteger i = 0; i < self.mesh.shader.textureUniformNames.count; i++)
+	{
+		GLLItemMeshTexture *texture = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMeshTexture" inManagedObjectContext:self.managedObjectContext];
+		texture.mesh = self;
+		texture.identifier = self.mesh.shader.textureUniformNames[i];
+		texture.textureURL = self.mesh.textures[i];
+	}
 }
 
 @end

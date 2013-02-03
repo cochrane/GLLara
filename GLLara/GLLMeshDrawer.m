@@ -38,12 +38,6 @@
 	// Set up shader
 	_program = [resourceManager programForDescriptor:mesh.shader error:error];
 	if (!_program) return nil;
-	
-	// Set up textures
-	_textures = [mesh.textures map:^(NSURL *location){
-		return [resourceManager textureForURL:location error:error];
-	}];
-	if (_textures.count < mesh.textures.count) return nil;
 		
 	// Create the element and vertex buffers, and spend a lot of time setting up the vertex attribute arrays and pointers.
 	glGenVertexArrays(1, &vertexArray);
@@ -103,13 +97,6 @@
 	{
 		glUseProgram(self.program.programID);
 		state->activeProgram = self.program.programID;
-	}
-
-	// Setup textures
-	for (GLuint i = 0; i < self.textures.count; i++)
-	{
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, [self.textures[i] textureID]);
 	}
 	
 	// Load and draw the vertices

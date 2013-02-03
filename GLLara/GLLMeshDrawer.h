@@ -25,7 +25,6 @@
 
 @property (nonatomic, retain, readonly) GLLModelMesh *modelMesh;
 @property (nonatomic, retain, readonly) GLLModelProgram *program;
-@property (nonatomic, copy, readonly) NSArray *textures;
 
 - (void)drawWithState:(GLLDrawState *)state;
 
