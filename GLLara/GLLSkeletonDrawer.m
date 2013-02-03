@@ -147,7 +147,7 @@ struct GLLSkeletonDrawer_Vertex {
 	
 	NSUInteger i = 0;
 	NSUInteger base = 0;
-	for (GLLItem *item in self.items)
+	for (GLLItem *item in [self valueForKeyPath:@"items.rootItem"])
 	{
 		for (GLLItemBone *bone in item.rootItem.combinedBones)
 		{
@@ -156,7 +156,7 @@ struct GLLSkeletonDrawer_Vertex {
 			
 			i += 1;
 		}
-		base += item.combinedBones.count;
+		base += item.rootItem.combinedBones.count;
 	}
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lineElementBuffer);
@@ -171,6 +171,10 @@ struct GLLSkeletonDrawer_Vertex {
 
 - (void)_updateVertexBuffer;
 {
+	GLsizei currentNumPoints = [[self.items valueForKeyPath:@"@sum.rootItem.combinedBones.@count"] intValue];
+	if (numPoints != currentNumPoints)
+		[self _updateElementBuffer];
+	
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	struct GLLSkeletonDrawer_Vertex *vertices = calloc(sizeof(struct GLLSkeletonDrawer_Vertex), numPoints);
 	
@@ -182,9 +186,9 @@ struct GLLSkeletonDrawer_Vertex {
 	[self.childOfSelectedColor get32BitRGBAComponents:childOfSelectedColorValue];
 	
 	NSUInteger i = 0;
-	for (GLLItem *item in self.items)
+	for (GLLItem *item in [self valueForKeyPath:@"items.rootItem"])
 	{
-		for (GLLItemBone *bone in item.combinedBones)
+		for (GLLItemBone *bone in item.rootItem.combinedBones)
 		{
 			vec_float4 position;
 			[bone.globalPosition getValue:&position];
