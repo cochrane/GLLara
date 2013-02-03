@@ -80,6 +80,8 @@ static NSCache *parameterCache;
 		return [[self alloc] initWithModel:model error:error];
 	else if ([[name lowercaseString] isEqual:@"character"])
 		return [[self alloc] initWithModel:model error:error];
+	else if ([[name lowercaseString] isEqual:@"outfit"])
+		return [[self alloc] initWithModel:model error:error];
 	else
 		return [self parametersForName:name error:error];
 }

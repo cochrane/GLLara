@@ -13,5 +13,6 @@
 @property (nonatomic) NSArray *selectedItems;
 
 - (IBAction)loadPose:(id)sender;
+- (IBAction)loadChildModel:(id)sender;
 
 @end

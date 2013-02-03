@@ -116,15 +116,10 @@
 
 - (NSArray *)children
 {
-	if (children == nil)
-	{
-		NSIndexSet *childIndices = [self.item.bones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
-			return bone.parent == self;
-		}];
-		children = [self.item.bones objectsAtIndexes:childIndices];
-	}
-	
-	return children;
+	NSIndexSet *childIndices = [self.item.combinedBones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
+		return bone.parent == self;
+	}];
+	return [self.item.combinedBones objectsAtIndexes:childIndices];
 }
 
 - (BOOL)isChildOfBone:(GLLItemBone *)bone;

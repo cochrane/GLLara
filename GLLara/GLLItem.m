@@ -177,9 +177,9 @@
 	[bones removeAllObjects];
 	for (NSUInteger i = 0; i < model.bones.count; i++)
 	{
-		GLLModelBone *modelBone = model.bones[i];
-		if ([self.parent boneForName:modelBone.name])
-			[bones addObject:modelBone];
+		GLLItemBone *parentsBone = [self.parent boneForName:[model.bones[i] name]];
+		if (parentsBone)
+			[bones addObject:parentsBone];
 		else
 			[bones addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLItemBone" inManagedObjectContext:self.managedObjectContext]];
 	}
@@ -250,6 +250,14 @@
 		if ([bone.bone.name isEqual:name])
 			return bone;
 	return nil;
+}
+- (NSOrderedSet *)combinedBones;
+{
+	NSMutableOrderedSet *combinedBones = [NSMutableOrderedSet orderedSetWithOrderedSet:[self valueForKeyPath:@"bones"]];
+	for (GLLItem *child in [self valueForKeyPath:@"childItems"])
+		[combinedBones unionOrderedSet:child.combinedBones];
+	
+	return combinedBones;
 }
 
 #pragma mark - Poses I/O

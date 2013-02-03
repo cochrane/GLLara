@@ -70,7 +70,7 @@
 										<string key="NSFrame">{{14, 8}, {105, 32}}</string>
 										<reference key="NSSuperview" ref="748275751"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="543884573"/>
+										<reference key="NSNextKeyView" ref="502067869"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSButtonCell" key="NSCell" id="919282785">
@@ -1701,6 +1701,31 @@
 										</object>
 										<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 									</object>
+									<object class="NSButton" id="502067869">
+										<reference key="NSNextResponder" ref="748275751"/>
+										<int key="NSvFlags">268</int>
+										<string key="NSFrame">{{117, 8}, {109, 32}}</string>
+										<reference key="NSSuperview" ref="748275751"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="543884573"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="NSEnabled">YES</bool>
+										<object class="NSButtonCell" key="NSCell" id="600868792">
+											<int key="NSCellFlags">67108864</int>
+											<int key="NSCellFlags2">134217728</int>
+											<string key="NSContents">Load outfit</string>
+											<reference key="NSSupport" ref="122112272"/>
+											<string key="NSCellIdentifier">_NS:9</string>
+											<reference key="NSControlView" ref="502067869"/>
+											<int key="NSButtonFlags">-2038284288</int>
+											<int key="NSButtonFlags2">129</int>
+											<string key="NSAlternateContents"/>
+											<string key="NSKeyEquivalent"/>
+											<int key="NSPeriodicDelay">200</int>
+											<int key="NSPeriodicInterval">25</int>
+										</object>
+										<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+									</object>
 								</array>
 								<string key="NSFrameSize">{516, 468}</string>
 								<reference key="NSSuperview" ref="630449279"/>
@@ -1778,6 +1803,14 @@
 						<reference key="destination" ref="705063568"/>
 					</object>
 					<int key="connectionID">290</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">loadChildModel:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="502067869"/>
+					</object>
+					<int key="connectionID">294</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -2349,6 +2382,7 @@
 							<reference ref="618335127"/>
 							<reference ref="646928032"/>
 							<reference ref="767330559"/>
+							<reference ref="502067869"/>
 						</array>
 						<reference key="parent" ref="705063568"/>
 					</object>
@@ -3144,6 +3178,19 @@
 						<reference key="object" ref="927418391"/>
 						<reference key="parent" ref="1013760843"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">291</int>
+						<reference key="object" ref="502067869"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="600868792"/>
+						</array>
+						<reference key="parent" ref="748275751"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">292</int>
+						<reference key="object" ref="600868792"/>
+						<reference key="parent" ref="502067869"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -3216,6 +3263,8 @@
 				<string key="288.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="289.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="29.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="291.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="292.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="30.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="31.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="32.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3296,7 +3345,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">290</int>
+			<int key="maxID">294</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3304,16 +3353,16 @@
 					<string key="className">GLLItemViewController</string>
 					<string key="superclassName">NSViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="loadChildModel:">id</string>
 						<string key="loadPose:">id</string>
-						<string key="savePose:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="loadPose:">
-							<string key="name">loadPose:</string>
+						<object class="IBActionInfo" key="loadChildModel:">
+							<string key="name">loadChildModel:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="savePose:">
-							<string key="name">savePose:</string>
+						<object class="IBActionInfo" key="loadPose:">
+							<string key="name">loadPose:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>

@@ -9,6 +9,7 @@
 #import "GLLItemViewController.h"
 
 #import "GLLItem.h"
+#import "GLLModel.h"
 
 @interface GLLItemViewController ()
 
@@ -52,6 +53,34 @@
 		}
 	}];
 
+}
+- (IBAction)loadChildModel:(id)sender;
+{
+	if (self.selectedItems.count != 1)
+	{
+		NSBeep();
+		return;
+	}
+	GLLItem *item = self.selectedItems[0];
+	
+	NSOpenPanel *panel = [NSOpenPanel openPanel];
+	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj" ];
+	[panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result){
+		if (result != NSOKButton) return;
+		
+		NSError *error = nil;
+		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL parent:item.model error:&error];
+		
+		if (!model)
+		{
+			[self.view.window presentError:error];
+			return;
+		}
+		
+		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:item.managedObjectContext];
+		newItem.parent = item;
+		newItem.model = model;
+	}];
 }
 
 @end

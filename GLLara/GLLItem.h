@@ -69,7 +69,9 @@ enum GLLItemChannelAssignment
 // Poses
 - (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error;
 
+// Bones
 - (GLLItemBone *)boneForName:(NSString *)name;
+- (NSOrderedSet *)combinedBones;
 
 @end
 

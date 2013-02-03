@@ -35,7 +35,8 @@
 		
 		NSSet *addedItems = [notification.userInfo[NSInsertedObjectsKey] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"entity.name == \"GLLItem\""]];
 		NSArray *addedItemControllers = [addedItems map:^(GLLItem *item){
-			return [[GLLItemController alloc] initWithItem:item parent:self];
+			if (item.parent != nil) return (id) nil;
+			return (id) [[GLLItemController alloc] initWithItem:item parent:self];
 		}];
 		[self.itemControllers addObjectsFromArray:addedItemControllers];
 		[self.itemControllers sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"item.displayName" ascending:YES] ]];
@@ -46,6 +47,7 @@
 	// Get initial items
 	NSFetchRequest *itemRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 	itemRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"displayName" ascending:YES] ];
+	itemRequest.predicate = [NSPredicate predicateWithFormat:@"parent == nil"];
 	
 	self.itemControllers = [[_managedObjectContext executeFetchRequest:itemRequest error:NULL] mapMutable:^(GLLItem *item){
 		return [[GLLItemController alloc] initWithItem:item parent:self];
