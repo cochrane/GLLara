@@ -50,6 +50,7 @@ enum GLLItemChannelAssignment
 @property (nonatomic) int16_t normalChannelAssignmentR;
 @property (nonatomic) int16_t normalChannelAssignmentG;
 @property (nonatomic) int16_t normalChannelAssignmentB;
+@property (nonatomic, retain) GLLItem *parent;
 
 // Derived
 @property (nonatomic, retain) NSURL *itemURL;
@@ -67,6 +68,8 @@ enum GLLItemChannelAssignment
 
 // Poses
 - (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error;
+
+- (GLLItemBone *)boneForName:(NSString *)name;
 
 @end
 

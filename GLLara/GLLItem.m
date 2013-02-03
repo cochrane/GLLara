@@ -45,6 +45,7 @@
 @dynamic normalChannelAssignmentR;
 @dynamic normalChannelAssignmentG;
 @dynamic normalChannelAssignmentB;
+@dynamic parent;
 
 @dynamic model;
 @dynamic itemURL;
@@ -119,7 +120,7 @@
 	NSURL *itemURL = self.itemURL;
 	if (itemURL)
 	{
-		GLLModel *model = [GLLModel cachedModelFromFile:itemURL error:NULL];
+		GLLModel *model = [GLLModel cachedModelFromFile:itemURL parent:self.parent.model error:NULL];
 		[self setPrimitiveValue:model forKey:@"model"];
 	}
 	
@@ -175,7 +176,13 @@
 	NSMutableOrderedSet *bones = [self mutableOrderedSetValueForKey:@"bones"];
 	[bones removeAllObjects];
 	for (NSUInteger i = 0; i < model.bones.count; i++)
-		[bones addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLItemBone" inManagedObjectContext:self.managedObjectContext]];
+	{
+		GLLModelBone *modelBone = model.bones[i];
+		if ([self.parent boneForName:modelBone.name])
+			[bones addObject:modelBone];
+		else
+			[bones addObject:[NSEntityDescription insertNewObjectForEntityForName:@"GLLItemBone" inManagedObjectContext:self.managedObjectContext]];
+	}
 	
 	// -- Trigger a rebuild of the matrices
 	[[bones objectAtIndex:0] setPositionX:0];
@@ -235,6 +242,14 @@
 - (GLLItemMesh *)itemMeshForModelMesh:(GLLModelMesh *)mesh;
 {
 	return self.meshes[mesh.meshIndex];
+}
+
+- (GLLItemBone *)boneForName:(NSString *)name;
+{
+	for (GLLItemBone *bone in self.bones)
+		if ([bone.bone.name isEqual:name])
+			return bone;
+	return nil;
 }
 
 #pragma mark - Poses I/O

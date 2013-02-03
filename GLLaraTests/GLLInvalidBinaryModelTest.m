@@ -19,7 +19,7 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -35,7 +35,7 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");	
 }
@@ -51,7 +51,7 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -77,7 +77,7 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -103,7 +103,7 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -193,7 +193,7 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }
@@ -283,7 +283,7 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error], @"Loading should never throw");
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
 	STAssertNil(model, @"This model should not have loaded");
 	STAssertNotNil(error, @"Model should have written an error message");
 }

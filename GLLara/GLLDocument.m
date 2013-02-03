@@ -141,7 +141,7 @@
 		if (result != NSOKButton) return;
 		
 		NSError *error = nil;
-		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL error:&error];
+		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL parent:nil error:&error];
 		
 		if (!model)
 		{

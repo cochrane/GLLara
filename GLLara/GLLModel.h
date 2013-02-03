@@ -18,6 +18,7 @@ enum GLLModelLoadingErrorCodes
 };
 extern NSString *GLLModelLoadingErrorDomain;
 
+@class GLLModelBone;
 @class GLLModelParams;
 
 /*!
@@ -30,13 +31,13 @@ extern NSString *GLLModelLoadingErrorDomain;
  * @abstract Returns a model with a given URL, returning a cached instance if one exists.
  * @discussion Since a model is immutable here, it can be shared as much as necessary. This method uses an internal cache to share objects. Note that a model can be evicted from this cache again, if nobody is using it.
  */
-+ (id)cachedModelFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
++ (id)cachedModelFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 
 
-- (id)initBinaryFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
-- (id)initBinaryFromData:(NSData *)data baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
-- (id)initASCIIFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
-- (id)initASCIIFromString:(NSString *)source baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (id)initBinaryFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
+- (id)initBinaryFromData:(NSData *)data baseURL:(NSURL *)baseURL parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
+- (id)initASCIIFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
+- (id)initASCIIFromString:(NSString *)source baseURL:(NSURL *)baseURL parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 
 // Export
 - (NSString *)writeASCII;
@@ -55,5 +56,7 @@ extern NSString *GLLModelLoadingErrorDomain;
 
 @property (nonatomic, copy) NSArray *cameraTargetNames;
 - (NSArray *)boneNamesForCameraTarget:(NSString *)target;
+
+- (GLLModelBone *)boneForName:(NSString *)name;
 
 @end

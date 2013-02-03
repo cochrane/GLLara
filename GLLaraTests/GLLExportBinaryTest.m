@@ -53,10 +53,10 @@
 	1 # count of tris\n\
 	0 1 2	";
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
-	GLLModel *originalModel = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL error:NULL];
+	GLLModel *originalModel = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL parent:nil error:NULL];
 	
 	NSData *exported = [originalModel writeBinary];
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:exported baseURL:baseURL error:NULL];
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:exported baseURL:baseURL parent:nil error:NULL];
 	
 	STAssertNotNil(model, @"Model has to be loaded.");
 	
@@ -200,10 +200,10 @@
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
-	GLLModel *originalModel = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:NULL];
+	GLLModel *originalModel = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:NULL];
 	
 	NSData *exported = [originalModel writeBinary];
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:exported baseURL:baseURL error:NULL];
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:exported baseURL:baseURL parent:nil error:NULL];
 	
 	STAssertNotNil(model, @"Model has to be loaded.");
 	

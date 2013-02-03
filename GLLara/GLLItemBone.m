@@ -37,7 +37,6 @@
 @dynamic rotationY;
 @dynamic rotationZ;
 @dynamic boneIndex;
-@dynamic item;
 
 @synthesize parent;
 @synthesize children;
@@ -184,6 +183,13 @@
 	self.globalPosition = [NSValue valueWithBytes:&position objCType:@encode(float [4])];
 	
 	[self.children makeObjectsPerformSelector:@selector(updateGlobalTransform)];
+}
+
+- (GLLItem *)item
+{
+	NSOrderedSet *items = [self valueForKey:@"items"];
+	if (items.count == 0) return nil;
+	return [items objectAtIndex:0];
 }
 
 @end

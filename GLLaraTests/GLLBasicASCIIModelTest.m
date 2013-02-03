@@ -19,7 +19,7 @@
 	NSString *string = @"0 0";
 	
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
-	GLLModel *model = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL error:NULL];
+	GLLModel *model = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL parent:nil error:NULL];
 	STAssertNotNil(model, @"Model has to be loaded.");
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 0, @"Model should have no bones.");
@@ -34,7 +34,7 @@
 	0.0 0 0.0\n\
 	0";
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
-	GLLModel *model = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL error:NULL];
+	GLLModel *model = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL parent:nil error:NULL];
 	STAssertNotNil(model, @"Model has to be loaded.");
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 1, @"Model should have one bone.");
@@ -59,7 +59,7 @@
 	0\n\
 	0\n\
 	0";
-	GLLModel *model = [[GLLModel alloc] initASCIIFromString:string baseURL:nil error:NULL];
+	GLLModel *model = [[GLLModel alloc] initASCIIFromString:string baseURL:nil parent:nil error:NULL];
 	STAssertNotNil(model, @"Model has to be loaded.");
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 0, @"Model should have no bones.");
@@ -115,7 +115,7 @@
 	1 # count of tris\n\
 	0 1 2	";
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
-	GLLModel *model = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL error:NULL];
+	GLLModel *model = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL parent:nil error:NULL];
 	STAssertNotNil(model, @"Model has to be loaded.");
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 2, @"Model should have two bones.");
@@ -200,7 +200,7 @@
 	1 # count of tris\n\
 	0 1 2	";
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
-	GLLModel *model = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL error:NULL];
+	GLLModel *model = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL parent:nil error:NULL];
 	STAssertNotNil(model, @"Model has to be loaded.");
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 0, @"Model should have no bones.");

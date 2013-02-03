@@ -36,19 +36,23 @@ static NSCache *cachedModels;
 	cachedModels = [[NSCache alloc] init];
 }
 
-+ (id)cachedModelFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
++ (id)cachedModelFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 {
-	id result = [cachedModels objectForKey:file.absoluteURL];
+	id key = file.absoluteString;
+	if (parent != nil)
+		key = [file.absoluteString stringByAppendingFormat:@"\n%@", parent.baseURL.absoluteString];
+	
+	id result = [cachedModels objectForKey:key];
 	if (!result)
 	{
 		if ([file.path hasSuffix:@".mesh"])
 		{
-			result = [[self alloc] initBinaryFromFile:file error:error];
+			result = [[self alloc] initBinaryFromFile:file parent:parent error:error];
 			if (!result) return nil;
 		}
 		else if ([file.path hasSuffix:@".mesh.ascii"])
 		{
-			result = [[self alloc] initASCIIFromFile:file error:error];
+			result = [[self alloc] initASCIIFromFile:file parent:parent error:error];
 			if (!result) return nil;
 		}
 		else if ([file.path hasSuffix:@".obj"])
@@ -73,20 +77,20 @@ static NSCache *cachedModels;
 			return nil;
 		}
 		
-		[cachedModels setObject:result forKey:file.absoluteURL];
+		[cachedModels setObject:result forKey:key];
 	}
 	return result;
 }
 
-- (id)initBinaryFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
+- (id)initBinaryFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 {	
 	NSData *data = [NSData dataWithContentsOfURL:file options:0 error:error];
 	if (!data) return nil;
 	
-	return [self initBinaryFromData:data baseURL:file error:error];
+	return [self initBinaryFromData:data baseURL:file parent:parent error:error];
 }
 
-- (id)initBinaryFromData:(NSData *)data baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (id)initBinaryFromData:(NSData *)data baseURL:(NSURL *)baseURL parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -253,15 +257,15 @@ static NSCache *cachedModels;
 	return self;
 }
 
-- (id)initASCIIFromFile:(NSURL *)file error:(NSError *__autoreleasing*)error;
+- (id)initASCIIFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 {
 	NSString *source = [NSString stringWithContentsOfURL:file usedEncoding:NULL error:error];
 	if (!source) return nil;
 	
-	return [self initASCIIFromString:source baseURL:file error:error];
+	return [self initASCIIFromString:source baseURL:file parent:parent error:error];
 }
 
-- (id)initASCIIFromString:(NSString *)source baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (id)initASCIIFromString:(NSString *)source baseURL:(NSURL *)baseURL parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -284,7 +288,13 @@ static NSCache *cachedModels;
 	{
 		GLLModelBone *bone = [[GLLModelBone alloc] initFromSequentialData:scanner partOfModel:self error:error];
 		if (!bone) return nil;
-		[bones addObject:bone];
+		
+		// Check whether parent has this bone and defer to it instead
+		GLLModelBone *boneFromParent = [parent boneForName:bone.name];
+		if (boneFromParent)
+			[bones addObject:boneFromParent];
+		else
+			[bones addObject:bone];
 	}
 	_bones = [bones copy];
 	for (GLLModelBone *bone in _bones)
@@ -367,6 +377,14 @@ static NSCache *cachedModels;
 - (NSArray *)boneNamesForCameraTarget:(NSString *)target;
 {
 	return [self.parameters boneNamesForCameraTarget:target];
+}
+
+- (GLLModelBone *)boneForName:(NSString *)name;
+{
+	for (GLLModelBone *bone in self.bones)
+		if ([bone.name isEqual:name])
+			return bone;
+	return nil;
 }
 
 #pragma mark - Private methods

@@ -21,7 +21,7 @@
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	NSError *error = nil;
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error];
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
 	STAssertNil(error, @"Should be no error, but is %@", error);
 	
@@ -44,7 +44,7 @@
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	NSError *error = nil;
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error];
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
 	STAssertNil(error, @"Should be no error, but is %@", error);
 	
@@ -76,7 +76,7 @@
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	NSError *error = nil;
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error];
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
 	STAssertNil(error, @"Should be no error, but is %@", error);
 	
@@ -178,7 +178,7 @@
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
 	NSError *error = nil;
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:&error];
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
 	STAssertNil(error, @"Should be no error, but is %@", error);
 	
@@ -299,7 +299,7 @@
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL error:NULL];
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:NULL];
 	STAssertNotNil(model, @"Model has to be loaded.");
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 0, @"Model should have no bones.");

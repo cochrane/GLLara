@@ -377,7 +377,7 @@
 		523DE1291604E0C500BB9F61 /* tiger2.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tiger2.modelparams.plist; sourceTree = "<group>"; };
 		523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = thailand_mirror_statue_left.modelparams.plist; sourceTree = "<group>"; };
 		523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = thailand_mirror_statue_right.modelparams.plist; sourceTree = "<group>"; };
-		52421C0F16BDA65B00D41EAA /* GLLSceneModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GLLSceneModel 3.xcdatamodel"; sourceTree = "<group>"; };
+		52421C0F16BDA65B00D41EAA /* GLLSceneModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		52421C1116BDAD5500D41EAA /* GLLModelMeshV3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelMeshV3.h; sourceTree = "<group>"; };
 		52421C1216BDAD5500D41EAA /* GLLModelMeshV3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelMeshV3.m; sourceTree = "<group>"; };
 		52421C1416BDB78100D41EAA /* DiffuseSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseSpecular.fs; sourceTree = "<group>"; };

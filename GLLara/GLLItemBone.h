@@ -23,7 +23,9 @@
 @property (nonatomic) float rotationX;
 @property (nonatomic) float rotationY;
 @property (nonatomic) float rotationZ;
-@property (nonatomic, retain) GLLItem *item;
+
+// The "official" item; always the first item
+@property (nonatomic, readonly) GLLItem *item;
 
 // Local
 @property (nonatomic) NSValue *relativeTransform;
@@ -43,5 +45,20 @@
 
 // Updates the bone data. Should only be called from the item or a parent bone (or itself)
 - (void)updateGlobalTransform;
+
+@end
+
+@interface GLLItemBone (CoreDataGeneratedAccessors)
+
+- (void)insertObject:(GLLItem *)value inItemsAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromItemsAtIndex:(NSUInteger)idx;
+- (void)insertItems:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeItemsAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInItemsAtIndex:(NSUInteger)idx withObject:(GLLItemBone *)value;
+- (void)replaceItemsAtIndexes:(NSIndexSet *)indexes withBones:(NSArray *)values;
+- (void)addItemsObject:(GLLItemBone *)value;
+- (void)removeItemsObject:(GLLItemBone *)value;
+- (void)addItems:(NSOrderedSet *)values;
+- (void)removeItems:(NSOrderedSet *)values;
 
 @end
