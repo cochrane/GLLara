@@ -66,6 +66,8 @@ enum GLLItemChannelAssignment
 
 @property (nonatomic, readonly) mat_float16 modelTransform;
 
+@property (nonatomic, readonly) GLLItem *rootItem;
+
 // Poses
 - (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error;
 

@@ -39,6 +39,8 @@
 @property (nonatomic, weak, readonly) GLLItemBone *parent;
 @property (nonatomic, retain, readonly) NSArray *children;
 
+@property (nonatomic, readonly) NSUInteger parentIndexInCombined;
+
 // Checks whether the parameter is the bone or one of its ancestors
 - (BOOL)isChildOfBone:(GLLItemBone *)bone;
 - (BOOL)isChildOfAny:(id)boneSet;

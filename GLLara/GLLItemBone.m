@@ -122,6 +122,14 @@
 	return [self.item.combinedBones objectsAtIndexes:childIndices];
 }
 
+- (NSUInteger)parentIndexInCombined
+{
+	if (self.parent)
+		return [self.item.rootItem.combinedBones indexOfObject:self.parent];
+	else
+		return NSNotFound;
+}
+
 - (BOOL)isChildOfBone:(GLLItemBone *)bone;
 {
 	if (bone == self) return YES;

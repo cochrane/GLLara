@@ -141,7 +141,7 @@ struct GLLSkeletonDrawer_Vertex {
 
 - (void)_updateElementBuffer;
 {
-	numPoints = [[self.items valueForKeyPath:@"@sum.bones.@count"] intValue];
+	numPoints = [[self.items valueForKeyPath:@"@sum.rootItem.combinedBones.@count"] intValue];
 	
 	uint16_t *indices = malloc(sizeof(uint16_t) * numPoints * 2);
 	
@@ -149,14 +149,14 @@ struct GLLSkeletonDrawer_Vertex {
 	NSUInteger base = 0;
 	for (GLLItem *item in self.items)
 	{
-		for (GLLItemBone *bone in item.bones)
+		for (GLLItemBone *bone in item.rootItem.combinedBones)
 		{
 			indices[i*2+0] = (uint16_t) (i + base);
-			indices[i*2+1] = bone.bone.parentIndex == UINT16_MAX ? indices[i*2] : (uint16_t) (bone.bone.parentIndex + base);
+			indices[i*2+1] = bone.parentIndexInCombined == NSNotFound ? indices[i*2] : (uint16_t) (bone.parentIndexInCombined + base);
 			
 			i += 1;
 		}
-		base += item.bones.count;
+		base += item.combinedBones.count;
 	}
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lineElementBuffer);
@@ -184,7 +184,7 @@ struct GLLSkeletonDrawer_Vertex {
 	NSUInteger i = 0;
 	for (GLLItem *item in self.items)
 	{
-		for (GLLItemBone *bone in item.bones)
+		for (GLLItemBone *bone in item.combinedBones)
 		{
 			vec_float4 position;
 			[bone.globalPosition getValue:&position];

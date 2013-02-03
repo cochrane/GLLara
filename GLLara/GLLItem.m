@@ -260,6 +260,14 @@
 	return combinedBones;
 }
 
+- (GLLItem *)rootItem
+{
+	if (self.parent)
+		return self.parent.rootItem;
+	else
+		return self;
+}
+
 #pragma mark - Poses I/O
 
 - (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error
