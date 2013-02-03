@@ -20,6 +20,7 @@
 
 @property (nonatomic) NSArray *childBoneControllers;
 @property (nonatomic) GLLBoneController *parentBoneController;
+@property (nonatomic) NSMutableSet *observers;
 
 @end
 
@@ -66,11 +67,11 @@
 
 - (void)addBoneChangeObserver:(id <GLLBoneChangeListener>)observer;
 {
-	
+	[self.observers addObject:observer];
 }
 - (void)removeBoneChangeObserver:(id <GLLBoneChangeListener>)observer;
 {
-	
+	[self.observers removeObject:observer];
 }
 
 - (id)representedObject
@@ -122,7 +123,7 @@
 
 - (void)_updateObservers
 {
-	
+	[self.observers makeObjectsPerformSelector:@selector(boneDidChange:) withObject:self];
 }
 - (void)_loadChildBones;
 {
