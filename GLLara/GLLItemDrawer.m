@@ -67,11 +67,15 @@
 	
 	// Observe settings of all meshes
 	alphaDrawers = [modelDrawer.alphaMeshDrawers map:^(GLLMeshDrawer *drawer) {
-		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]];
+		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
 	}];
+	if (alphaDrawers.count < modelDrawer.alphaMeshDrawers.count)
+		return nil;
 	solidDrawers = [modelDrawer.solidMeshDrawers map:^(GLLMeshDrawer *drawer) {
-		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh]];
+		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
 	}];
+	if (solidDrawers.count < modelDrawer.solidMeshDrawers.count)
+		return nil;
 	
 	glGenBuffers(1, &transformsBuffer);
 	needToUpdateTransforms = YES;

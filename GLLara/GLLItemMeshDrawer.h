@@ -21,7 +21,7 @@
  */
 @interface GLLItemMeshDrawer : NSObject
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)drawer itemMesh:(GLLItemMesh *)itemMesh;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer itemMesh:(GLLItemMesh *)itemMesh error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, weak, readonly) GLLItemDrawer *itemDrawer;
 @property (nonatomic, retain, readonly) GLLMeshDrawer *meshDrawer;

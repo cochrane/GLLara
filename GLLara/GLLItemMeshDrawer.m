@@ -33,13 +33,13 @@
 	BOOL needsTextureUpdate;
 }
 - (void)_updateParameterBuffer;
-- (void)_updateTextures;
+- (BOOL)_updateTexturesError:(NSError *__autoreleasing*)error;
 
 @end
 
 @implementation GLLItemMeshDrawer
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer itemMesh:(GLLItemMesh *)itemMesh;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer itemMesh:(GLLItemMesh *)itemMesh error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -62,6 +62,9 @@
 			[parameter addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
 		}
 	}
+	
+	if (![self _updateTexturesError:error])
+		return nil;
 	
 	textureAssignments = [[NSMutableSet alloc] init];
 	[_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
@@ -101,7 +104,7 @@
 	if (needsParameterBufferUpdate)
 		[self _updateParameterBuffer];
 	if (needsTextureUpdate)
-		[self _updateTextures];
+		[self _updateTexturesError:NULL];
 	
 	if (state->cullFaceMode != self.itemMesh.cullFaceMode)
 	{
@@ -184,12 +187,17 @@
 	needsParameterBufferUpdate = NO;
 }
 
-- (void)_updateTextures
+- (BOOL)_updateTexturesError:(NSError *__autoreleasing*)error;
 {
+	needsTextureUpdate = NO;
 	textures = [self.meshDrawer.modelMesh.shader.textureUniformNames map:^(NSString *identifier){
 		GLLItemMeshTexture *textureAssignment = [self.itemMesh textureWithIdentifier:identifier];
-		return [[GLLResourceManager sharedResourceManager] textureForURL:textureAssignment.textureURL error:NULL];
+		return [[GLLResourceManager sharedResourceManager] textureForURL:textureAssignment.textureURL error:error];
 	}];
+	if (textures.count < self.meshDrawer.modelMesh.shader.textureUniformNames.count)
+		return NO;
+	else
+		return YES;
 }
 
 @end
