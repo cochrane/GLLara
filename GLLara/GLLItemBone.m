@@ -116,10 +116,11 @@
 
 - (NSArray *)children
 {
-	NSIndexSet *childIndices = [self.item.combinedBones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
+	NSOrderedSet *combinedBones = self.item.combinedBones;
+	NSIndexSet *childIndices = [combinedBones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
 		return bone.parent == self;
 	}];
-	return [self.item.combinedBones objectsAtIndexes:childIndices];
+	return [combinedBones objectsAtIndexes:childIndices];
 }
 
 - (NSUInteger)parentIndexInCombined

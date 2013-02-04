@@ -219,10 +219,12 @@ const double unitsPerSecond = 0.2;
 		}
 		else
 		{
-			// Set as only selection
-			[selectedBones removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedBones.count)]];
+			// Remove all other selection
+			NSMutableArray *selectedObjects = [self.document.selection mutableArrayValueForKey:@"selectedObjects"];
+			[selectedObjects removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedObjects.count)]];
+			
+			// Set self as only selection
 			[selectedBones addObject:bone];
-			//[selectedBones replaceObjectsInRange:NSMakeRange(0, selectedBones.count) withObjectsFromArray:@[ bone ]];
 		}
 	}
 	
