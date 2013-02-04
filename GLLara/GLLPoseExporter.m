@@ -22,7 +22,7 @@
 
 - (id)initWithItem:(GLLItem *)item
 {
-	return [self initWithBones:item.bones];
+	return [self initWithBones:item.combinedBones];
 }
 
 - (id)initWithBones:(id)bones
