@@ -853,7 +853,6 @@
 		525ACD5115F0F1A700534E7D /* GLLara */ = {
 			isa = PBXGroup;
 			children = (
-				52ED9E23169332390082EABB /* Controllers */,
 				5296946115F7B22E00DF2FA3 /* Document and UI */,
 				5296942C15F421D800DF2FA3 /* shared_simd */,
 				5296942515F4138100DF2FA3 /* Drawing posed items */,
@@ -1325,13 +1324,6 @@
 				52B9E09C16027FC800641518 /* xibLocalizationPostprocessor-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		52ED9E23169332390082EABB /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
