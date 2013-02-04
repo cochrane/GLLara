@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+/*!
+ * @abstract Reader for the .mesh.ascii format.
+ * @discussion It was deliberately designed to have the same interface as the
+ * TRInDataStream. Thus, it can read integers in different widths, although
+ * parsing them from an ASCII file is always the same work.
+ */
 @interface GLLASCIIScanner : NSObject
 
 - (id)initWithString:(NSString *)string;

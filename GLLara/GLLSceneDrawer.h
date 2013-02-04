@@ -14,6 +14,12 @@
 
 extern NSString *GLLSceneDrawerNeedsUpdateNotification;
 
+/*!
+ * @abstract Draw all elements in a scene, regardless of camera and so on.
+ * @discussion The Scene Drawer encapsulates all the drawing that is constant
+ * no matter what camera and context are used. It cannot render directly.
+ * Instead, it is used by one or more view drawers to handle the actual drawing.
+ */
 @interface GLLSceneDrawer : NSObject
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;

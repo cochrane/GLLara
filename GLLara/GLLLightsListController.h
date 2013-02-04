@@ -8,6 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*!
+ * Source list controller for a list of lights, and direct child of the root.
+ */
 @interface GLLLightsListController : NSObject <NSOutlineViewDataSource>
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext outlineView:(NSOutlineView *)outlineView;

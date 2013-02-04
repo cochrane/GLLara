@@ -14,7 +14,7 @@
 @class GLLItem;
 
 /*!
- * The item controller provides the data for an item's user interface. In particular, it implements GLLSourceListItem, using source list markers to provide the grouping.
+ * Source list controller for an item.
  */
 @interface GLLItemController : NSObject <NSOutlineViewDataSource>
 

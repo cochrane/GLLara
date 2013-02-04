@@ -10,6 +10,9 @@
 
 @class GLLItem;
 
+/*!
+ * Source list controller for a list of meshes. Child of an item.
+ */
 @interface GLLMeshListController : NSObject <NSOutlineViewDataSource>
 
 - (id)initWithItem:(GLLItem *)item parent:(id)parentController;

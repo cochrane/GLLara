@@ -10,6 +10,11 @@
 
 @class GLLItem;
 
+/*!
+ * @abstract Exports a pose for a complete item or just a few bones.
+ * @discussion Since it can export a pose for only a few bones, this
+ * functionality does not belong to the item.
+ */
 @interface GLLPoseExporter : NSObject
 
 - (id)initWithBones:(id)bones;

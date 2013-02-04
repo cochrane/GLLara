@@ -14,6 +14,11 @@
 @class GLLModelMesh;
 @class GLLRenderParameter;
 
+/*!
+ * @abstract Stores per-mesh data in the document.
+ * @discussion This class is mainly a container for the different render values
+ * that affect a mesh and that need to be stored.
+ */
 @interface GLLItemMesh : NSManagedObject
 
 // Core data

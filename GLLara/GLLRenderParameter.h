@@ -13,6 +13,12 @@
 @class GLLItemMesh;
 @class GLLRenderParameterDescription;
 
+/*!
+ * @abstract Stores the value of a render parameter.
+ * @discussion A render parameter is a term from XNALara. It means any uniform
+ * variable that is set on a per-mesh basis. GLLara allows adjusting them after
+ * loading, so they are represented in the data model.
+ */
 @interface GLLRenderParameter : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;

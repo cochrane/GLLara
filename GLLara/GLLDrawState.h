@@ -11,6 +11,11 @@
 
 #include <OpenGL/gltypes.h>
 
+/*!
+ * @abstract Stores the current rendering state.
+ * @discussion Everything that draws has to update this. It can use these
+ * fields to avoid state changes.
+ */
 typedef struct __GLLDrawState {
 	GLuint activeProgram;
 	int16_t cullFaceMode;

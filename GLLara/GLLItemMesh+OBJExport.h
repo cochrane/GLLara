@@ -10,6 +10,9 @@
 
 #import "simd_types.h"
 
+/*!
+ * @abstract Methods for exporting a posed item to an OBJ file.
+ */
 @interface GLLItemMesh (OBJExport)
 
 @property (nonatomic, readonly) BOOL willLoseDataWhenConvertedToOBJ;

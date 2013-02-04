@@ -14,6 +14,12 @@
 @class GLLView;
 @class GLLSceneDrawer;
 
+/*!
+ * @abstract Drawer for a single context.
+ * @discussion This drawer manages a context's state and is always associated
+ * with one view. For actual display, it uses a shared scene drawer. It also
+ * handles rendering to files.
+ */
 @interface GLLViewDrawer : NSObject
 
 - (id)initWithManagedSceneDrawer:(GLLSceneDrawer *)drawer camera:(GLLCamera *)camera context:(NSOpenGLContext *)openGLContext pixelFormat:(NSOpenGLPixelFormat *)format;

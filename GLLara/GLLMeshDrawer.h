@@ -16,8 +16,8 @@
 @class GLLResourceManager;
 
 /*!
- * @abstract Draws a single textured mesh.
- * @discussion This class contains only the mesh data, the program for rendering and the textures. In the future, both the program and the textures might be moved to the TransformedMeshDrawer, leaving this with only the geometry. There is one mesh drawer per mesh per loaded model. Several TransformedMeshDrawers can share one.
+ * @abstract Draws a single mesh.
+ * @discussion This class contains only the mesh data and the program for rendering. In the future, the program  might be moved to the ItemMeshDrawer, leaving this with only the geometry. There is one mesh drawer per mesh per loaded model. Several ItemMeshDrawer can share one.
  */
 @interface GLLMeshDrawer : NSObject
 

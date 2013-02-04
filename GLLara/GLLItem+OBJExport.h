@@ -8,6 +8,9 @@
 
 #import "GLLItem.h"
 
+/*!
+ * @abstract Methods for exporting a posed item to an OBJ file.
+ */
 @interface GLLItem (OBJExport)
 
 @property (nonatomic, readonly) BOOL willLoseDataWhenConvertedToOBJ;

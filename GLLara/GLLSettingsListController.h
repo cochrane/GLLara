@@ -8,6 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*!
+ * Source list controller for a list of settings, and direct child of the root.
+ * Currently, there are no settings.
+ */
 @interface GLLSettingsListController : NSObject <NSOutlineViewDataSource>
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext outlineView:(NSOutlineView *)outlineView;

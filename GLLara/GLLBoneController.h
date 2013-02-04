@@ -19,6 +19,12 @@
 
 @end
 
+/*!
+ * @abstract Source list controller for a bone.
+ * @discussion Can also be used to observe a bone, which is currently unused.
+ * Gets its children from the parent bone list controller. If it came from a
+ * child item, the name is altered to reflect this.
+ */
 @interface GLLBoneController : NSObject <GLLBoneChangeListener, NSOutlineViewDataSource>
 
 - (id)initWithBone:(GLLItemBone *)bone listController:(GLLBoneListController *)listController;

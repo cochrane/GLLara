@@ -8,6 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*!
+ * @abstract View to set values for a float render paramter.
+ * @discussion This class only contains a few outlets, to get access to the
+ * subviews in a view-based table view.
+ */
 @interface GLLColorRenderParameterView : NSView
 
 @property (nonatomic) IBOutlet NSTextField *parameterTitle;

@@ -11,7 +11,11 @@
 #import <CoreData/CoreData.h>
 #import "GLLRenderParameter.h"
 
-
+/*!
+ * @abstract A render parameter whose value is a color.
+ * @discussion These paramaters are new additions; XNALara has only float
+ * parameters.
+ */
 @interface GLLColorRenderParameter : GLLRenderParameter
 
 @property (nonatomic, retain) NSColor *value;

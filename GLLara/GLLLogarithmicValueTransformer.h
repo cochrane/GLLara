@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+/*!
+ * @abstract Logarithmic Value Transformer
+ * @discussion Used to allow setting of things like scales with a slider
+ * that uses logarithmic scale. works in base 10.
+ */
 @interface GLLLogarithmicValueTransformer : NSValueTransformer
 
 @end

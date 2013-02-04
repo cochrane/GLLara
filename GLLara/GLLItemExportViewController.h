@@ -8,6 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*!
+ * @abstract Provides accessory view for exporting posed items to OBJ.
+ * @discussion Just a simple holder view controller that passes its values on.
+ */
 @interface GLLItemExportViewController : NSViewController
 
 @property (nonatomic) BOOL includeTransformations;

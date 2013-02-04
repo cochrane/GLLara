@@ -17,7 +17,7 @@
 
 /*!
  * @abstract A GLSL program, used by the default rendering path.
- * @discussion This class specifically sets up the buffers, binds the textures to the texture units, does linking and so on. It is written specifically for the model shaders. Other special effects shaders will need a different class, which is yet to be written (there's a good chance this class will inherit from it).
+ * @discussion This class specifically sets up the buffers, binds the textures to the texture units, does linking and so on. It is written specifically for the model shaders. Other special effects shaders will need a different subclass of GLLProgram.
  */
 @interface GLLModelProgram : GLLProgram
 

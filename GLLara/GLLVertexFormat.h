@@ -9,6 +9,9 @@
 #ifndef GLLara_GLLVertexFormat_h
 #define GLLara_GLLVertexFormat_h
 
+/*!
+ * @abstract Defines the indices for the different vertex attribute arrays.
+ */
 enum GLLVertexAttrib
 {
 	GLLVertexAttribPosition,

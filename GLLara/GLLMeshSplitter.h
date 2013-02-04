@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+/*!
+ * @abstract Describes a subset of a mesh.
+ * @discussion Some models demand that certain meshes be split. This is
+ * described by this class. Each object belongs to one new sub-mesh.
+ */
 @interface GLLMeshSplitter : NSObject
 
 - (id)initWithPlist:(NSDictionary *)plist;

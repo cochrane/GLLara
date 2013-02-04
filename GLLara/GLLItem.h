@@ -30,6 +30,12 @@ enum GLLItemChannelAssignment
 @class GLLScene;
 @class GLLRenderParameterDescription;
 
+/*!
+ * @abstract A (possibly posed) instance of a model in a scene.
+ * @discussion This is the basis for much of the data model. An item corresponds
+ * to one model placed in the scene. If the model is placed several times, each
+ * instance has its own item with typically different values.
+ */
 @interface GLLItem : NSManagedObject
 
 // From Core Data

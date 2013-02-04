@@ -11,6 +11,12 @@
 extern NSString *GLLRenderParameterTypeFloat;
 extern NSString *GLLRenderParameterTypeColor;
 
+/*!
+ * @abstract UI values for a model-specific uniform variable.
+ * @discussion This class contains everything to build a UI for a model-specific
+ * variable, allowing end-users to adjust it on the fly. This includes localized
+ * descriptions, type information and, for sliders, minimum and maximum settings.
+ */
 @interface GLLRenderParameterDescription : NSObject
 
 - (id)initWithPlist:(NSDictionary *)plist;

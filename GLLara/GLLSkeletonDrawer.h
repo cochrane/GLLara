@@ -14,6 +14,10 @@
 @class GLLItem;
 @class GLLResourceManager;
 
+/*!
+ * @abstract Draws the skeleton/rig of an object, with color-coding for the
+ * different parts regarding selection.
+ */
 @interface GLLSkeletonDrawer : NSObject
 
 - (id)initWithResourceManager:(GLLResourceManager *)resourceManager;

@@ -12,6 +12,13 @@
 @class GLLRenderParameterDescription;
 @class GLLTextureDescription;
 
+/*!
+ * @abstract Description of a rendering method.
+ * @discussion A rendering method always corresponds to one shader, but also
+ * stores the inputs to this shader, in particular the render parameters
+ * (model-specific uniforms) and textures it expects, and the render group
+ * names to which this shader applies.
+ */
 @interface GLLShaderDescription : NSObject
 
 - (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL modelParameters:(GLLModelParams *)parameters;

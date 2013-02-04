@@ -10,6 +10,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+/*!
+ * @abstract A scene's ambient light information.
+ * @discussion Each scene will have only one. The index is only for sorting in
+ * the UI.
+ */
 @interface GLLAmbientLight : NSManagedObject
 
 @property (nonatomic, retain) NSColor *color;

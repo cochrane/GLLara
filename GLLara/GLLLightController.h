@@ -8,6 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*!
+ * Source list controller for a single light (whether diffuse or ambient).
+ */
 @interface GLLLightController : NSObject
 
 - (id)initWithLight:(NSManagedObject *)light parentController:(id)parentController;

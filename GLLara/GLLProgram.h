@@ -12,6 +12,13 @@
 @class GLLResourceManager;
 @class GLLShader;
 
+/*!
+ * @abstract A loaded GLSL program.
+ * @discussion A program consists of several shaders, and the bound attribute
+ * locations. This class is abstract. Actual programs either use GLLModelProgram,
+ * which sets the bindings for standard models, or a custom subclass setting
+ * the bindings for that.
+ */
 @interface GLLProgram : NSObject
 
 - (id)initWithName:(NSString *)name fragmentShaderName:(NSString *)fragmentName geometryShaderName:(NSString *)geometryName vertexShaderName:(NSString *)vertexName baseURL:(NSURL *)base resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;

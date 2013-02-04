@@ -22,6 +22,13 @@ enum GLLDDSDataFormat
 	GLL_DDS_BGRX_8
 };
 
+/*!
+ * @abstract Parses DDS files.
+ * @discussions Much of this is based on older code that was plain C and had
+ * become too hard to maintain, and especially add error support to. This class
+ * does not handle decompression and the like; it only provides the data to be
+ * loaded into OpenGL.
+ */
 @interface GLLDDSFile : NSObject
 
 - (id)initWithContentsOfURL:(NSURL *)url error:(NSError *__autoreleasing *)error;

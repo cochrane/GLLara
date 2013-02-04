@@ -8,6 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*!
+ * @abstract View controller for an item.
+ * @discussions Main functions include loading poses, child models and (in the
+ * future) texture packs.
+ */
 @interface GLLItemViewController : NSViewController
 
 @property (nonatomic) NSArray *selectedItems;

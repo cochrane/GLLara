@@ -10,6 +10,9 @@
 
 #import "simd_types.h"
 
+/*!
+ * @abstract Methods for exporting a posed mesh to an OBJ file.
+ */
 @interface GLLModelMesh (OBJExport)
 
 - (NSString *)writeOBJWithTransformations:(const mat_float16 *)transforms baseIndex:(uint32_t)baseIndex includeColors:(BOOL)includeColors;

@@ -19,6 +19,12 @@ struct GLLLightUniformBlock
 	vec_float4 direction;
 };
 
+/*!
+ * @abstract A directional light.
+ * @discussion Each scene will have three that can be enabled or disabled. The
+ * entity stores all the relevant information and can put them in a format
+ * useable by the shaders.
+ */
 @interface GLLDirectionalLight : NSManagedObject
 
 @property (nonatomic) BOOL isEnabled;

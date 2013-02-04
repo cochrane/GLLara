@@ -10,7 +10,11 @@
 #import <CoreData/CoreData.h>
 #import "GLLRenderParameter.h"
 
-
+/*!
+ * @abstract A render parameter whose value is a single real number.
+ * @discussion This includes all XNALara-specific render parameters, but also
+ * a few added myself.
+ */
 @interface GLLFloatRenderParameter : GLLRenderParameter
 
 @property (nonatomic) float value;

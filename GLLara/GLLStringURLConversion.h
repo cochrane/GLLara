@@ -12,6 +12,12 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <string>
 
+/*!
+ * @header GLLStringURLConversion.h
+ * @abstract Converting between CFURLs and std::string containing local paths.
+ * @discussion These functions are not particularly interesting, but needed
+ * both by the MTL and OBJ files.
+ */
 std::string GLLStringFromFileURL(CFURLRef fileURL);
 CFURLRef GLLCreateURLFromString(const std::string &string, CFURLRef relativeTo);
 

@@ -8,6 +8,10 @@
 
 #import "GLLProgram.h"
 
+/*!
+ * @abstract Program that renders a screen-aligned square.
+ * @discussion Needed for special effects.
+ */
 @interface GLLSquareProgram : GLLProgram
 
 - (id)initWithResourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;

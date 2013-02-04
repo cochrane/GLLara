@@ -13,6 +13,22 @@
 @class GLLItemBone;
 @class GLLItemMesh;
 
+/*!
+ * @abstract Stores a document's selection.
+ * @discussion A selection can be of bones, items, lights, or meshes. However,
+ * this can also be expanded; for example, if a mesh is selected, then the
+ * selected bones are not empty, but contain all of a mesh. All these details
+ * are handled by this class.
+ *
+ * The various arrays should be accessed by (mutable)valueForKey(Path) only. The
+ * actually implemented array accessors are subject to change, and not all of
+ * them are in this header. The key paths are:
+ * - selectedObjects
+ * - selectedItems
+ * - selectedBones
+ * - selectedLights
+ * - selectedMeshes
+ */
 @interface GLLSelection : NSObject
 
 @property (nonatomic) NSManagedObjectContext *managedObjectContext;

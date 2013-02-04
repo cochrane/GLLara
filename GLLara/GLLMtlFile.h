@@ -13,6 +13,11 @@
 #include <map>
 #include <string>
 
+/*!
+ * @abstract Stores a list of named materials.
+ * @discussion This parses an XNALara specific variant of MTL files belonging to
+ * OBJ files, and stores their information.
+ */
 class GLLMtlFile
 {
 public:

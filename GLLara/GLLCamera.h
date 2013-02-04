@@ -11,6 +11,12 @@
 
 #import "simd_types.h"
 
+/*!
+ * @abstract View data for a scene.
+ * @discussion Every view has one camera, which handles the view and projection
+ * matrices, selected camera targets, and stores the window size in the
+ * document.
+ */
 @class GLLCameraTarget;
 
 @interface GLLCamera : NSManagedObject

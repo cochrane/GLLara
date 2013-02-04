@@ -8,6 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*!
+ * @abstract View to assign textures in the mesh edit view.
+ * @discussion This class only contains a few outlets, to get access to the
+ * subviews in a view-based table view.
+ */
 @interface GLLTextureAssignmentView : NSTableCellView
 
 @property (nonatomic) IBOutlet NSTextField *textureTitle;

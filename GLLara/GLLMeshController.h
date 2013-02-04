@@ -18,6 +18,10 @@
 
 @end
 
+/*!
+ * @abstract Source list controller for a mesh.
+ * @discussion Can also be used to observe a mesh, which is currently unused.
+ */
 @interface GLLMeshController : NSObject
 
 - (id)initWithMesh:(GLLItemMesh *)mesh parentController:(id)parentController;

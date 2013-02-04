@@ -12,7 +12,10 @@
  * @abstract Subclass of image view that exposes a read-write binding for
  * the image's URL.
  * @discussion Because for some reaosn valueURL in the normal NSImageView
- * is read-only. That's just stupid.
+ * is read-only.
+ *
+ * The setting for imageURL happens using a custom system, so things like
+ * value transformers do not work here.
  */
 @interface GLLImageView : NSImageView
 

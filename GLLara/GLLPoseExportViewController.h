@@ -8,6 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*!
+ * @abstract Provides accessory view for exporting poses in XNALara format.
+ * @discussion Main functionality: Set and read the selected radio button.
+ */
 @interface GLLPoseExportViewController : NSViewController
 
 @property (nonatomic) NSUInteger selectionMode;

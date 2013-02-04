@@ -10,7 +10,7 @@
 
 /*
  * @abstract View controller for a mesh.
- * @discussion The main logic included here is to provide the views for the view-based NSTableView. Yeah, that's not a lot.
+ * @discussion The main logic included here is to provide the views for the view-based NSTableView.
  */
 @interface GLLMeshViewController : NSViewController <NSTableViewDataSource, NSTableViewDelegate>
 

@@ -14,6 +14,12 @@
 @class TRInDataStream;
 @class TROutDataStream;
 
+/*!
+ * @abstract Stores per-bone data in the document.
+ * @discussion This entity stores actual transformations. A bone can have
+ * several items it belongs to, in the case of child items, but only one item
+ * is the original root item (this is item #0).
+ */
 @interface GLLItemBone : NSManagedObject
 
 // From core data

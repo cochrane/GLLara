@@ -17,7 +17,7 @@
 
 /*!
  * @abstract Draws a mesh that is part of an item.
- * @discussion This uses a mesh drawer to draw the mesh, but taking into account all the various settings the item has for this mesh - specifically, whether it is visible or not, and the render parameters that can be overriden here.
+ * @discussion This uses a mesh drawer to draw the mesh, but taking into account all the various settings the item has for this mesh - specifically, whether it is visible or not, the render parameters that can be overriden here, and the textures which can also be changed.
  */
 @interface GLLItemMeshDrawer : NSObject
 
