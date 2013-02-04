@@ -56,7 +56,12 @@
 	_imageURL = imageURL;
 	self.image = [[NSImage alloc] initByReferencingURL:imageURL];
 	
-	[self.imageURLController setValue:imageURL forKeyPath:self.imageURLControllerPath];
+	// Do not update if the new value is nil. This is based on the theory that
+	// the ui doesn't allow deletion of the texture, so a nil argument will only
+	// be used while the binding is switching and when setting the value is not
+	// reliable anyway.
+	if (imageURL != nil)
+		[self.imageURLController setValue:imageURL forKeyPath:self.imageURLControllerPath];
 }
 
 @end
