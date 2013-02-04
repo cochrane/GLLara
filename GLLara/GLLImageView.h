@@ -8,6 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*!
+ * @abstract Subclass of image view that exposes a read-write binding for
+ * the image's URL.
+ * @discussion Because for some reaosn valueURL in the normal NSImageView
+ * is read-only. That's just stupid.
+ */
 @interface GLLImageView : NSImageView
 
 @property (nonatomic) NSURL *imageURL;
