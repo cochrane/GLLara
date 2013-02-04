@@ -10,17 +10,8 @@
 
 @class GLLItemMesh;
 
-@class GLLMeshController;
-
-@protocol GLLMeshChangeObserver <NSObject>
-
-- (void)meshDidChange:(GLLMeshController *)controller;
-
-@end
-
 /*!
  * @abstract Source list controller for a mesh.
- * @discussion Can also be used to observe a mesh, which is currently unused.
  */
 @interface GLLMeshController : NSObject
 
@@ -29,8 +20,5 @@
 @property (nonatomic) GLLItemMesh *mesh;
 @property (nonatomic, readonly) id representedObject;
 @property (nonatomic, weak) id parentController;
-
-- (void)addMeshChangeObserver:(id <GLLMeshChangeObserver>)observer;
-- (void)removeMeshChangeObserver:(id <GLLMeshChangeObserver>)observer;
 
 @end

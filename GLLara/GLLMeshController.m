@@ -22,15 +22,6 @@
 	return self;
 }
 
-- (void)addMeshChangeObserver:(id <GLLMeshChangeObserver>)observer;
-{
-	
-}
-- (void)removeMeshChangeObserver:(id <GLLMeshChangeObserver>)observer;
-{
-	
-}
-
 - (id)representedObject
 {
 	return self.mesh;
