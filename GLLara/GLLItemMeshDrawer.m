@@ -92,6 +92,7 @@
 	else if ([keyPath isEqual:@"textureURL"])
 	{
 		needsTextureUpdate = YES;
+		self.itemDrawer.needsRedraw = YES;
 	}
 	else
 		[super observeValueForKeyPath:@"keyPath" ofObject:object change:change context:context];

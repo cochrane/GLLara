@@ -9,6 +9,8 @@
 #import "GLLItemViewController.h"
 
 #import "GLLItem.h"
+#import "GLLItemMesh.h"
+#import "GLLItemMeshTexture.h"
 #import "GLLModel.h"
 
 @interface GLLItemViewController ()
@@ -52,7 +54,6 @@
 			}
 		}
 	}];
-
 }
 - (IBAction)loadChildModel:(id)sender;
 {
@@ -80,6 +81,31 @@
 		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:item.managedObjectContext];
 		newItem.parent = item;
 		newItem.model = model;
+	}];
+}
+- (IBAction)loadTexturePack:(id)sender
+{
+	NSOpenPanel *panel = [NSOpenPanel openPanel];
+	panel.canChooseDirectories = YES;
+	panel.canChooseFiles = NO;
+	[panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result){
+		if (result != NSOKButton) return;
+		
+		NSURL *directoryURL = panel.URL;
+		
+		for (GLLItem *item in self.selectedItems)
+		{
+			for (GLLItemMesh *mesh in [item valueForKeyPath:@"meshes"])
+			{
+				for (GLLItemMeshTexture *texture in [mesh valueForKeyPath:@"textures"])
+				{
+					NSString *name = texture.textureURL.lastPathComponent;
+					NSURL *newURL = [directoryURL URLByAppendingPathComponent:name isDirectory:NO];
+					if ([newURL checkResourceIsReachableAndReturnError:NULL])
+						texture.textureURL = newURL;
+				}
+			}
+		}
 	}];
 }
 
