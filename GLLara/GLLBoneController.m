@@ -86,9 +86,10 @@
 {
 	if (!parentController)
 	{
-		NSArray *parents = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%@ in bone.children", self.bone]];
-		if (parents.count > 0) parentController = parents[0];
-		else parentController = self.listController;
+		if (self.bone.parent)
+			parentController = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"bone == %@", self.bone.parent]][0];
+		else
+			parentController = self.listController;
 	}
 	return parentController;
 }
