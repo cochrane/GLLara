@@ -15,6 +15,9 @@
 #import "LionSubscripting.h"
 
 @interface GLLBoneController ()
+{
+	id parentController;
+}
 
 - (void)_updateObservers;
 
@@ -81,9 +84,13 @@
 
 - (id)parentController
 {
-	NSArray *parents = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%@ in bone.children", self.bone]];
-	if (parents.count > 0) return parents[0];
-	else return self.listController;
+	if (!parentController)
+	{
+		NSArray *parents = [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%@ in bone.children", self.bone]];
+		if (parents.count > 0) parentController = parents[0];
+		else parentController = self.listController;
+	}
+	return parentController;
 }
 
 - (NSArray *)childBoneControllers
