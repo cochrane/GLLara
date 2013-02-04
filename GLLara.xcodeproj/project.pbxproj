@@ -158,6 +158,9 @@
 		52653D8116BAB729001D802F /* GLLPoseExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52653D8016BAB729001D802F /* GLLPoseExporter.m */; };
 		52653D8616BAB965001D802F /* GLLPoseExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52653D8416BAB965001D802F /* GLLPoseExportViewController.m */; };
 		52653D8716BAB965001D802F /* GLLPoseExportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52653D8516BAB965001D802F /* GLLPoseExportViewController.xib */; };
+		526756A416BF3B0700FB85CA /* GLLTextureAssignmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 526756A316BF3B0600FB85CA /* GLLTextureAssignmentView.m */; };
+		526756A716BF45EF00FB85CA /* GLLTextureDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 526756A616BF45EF00FB85CA /* GLLTextureDescription.m */; };
+		526756AA16BF543800FB85CA /* GLLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 526756A916BF543800FB85CA /* GLLImageView.m */; };
 		5267F1B61615B2C400987717 /* moveChildren.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B31615B2C400987717 /* moveChildren.pdf */; };
 		5267F1B71615B2C400987717 /* moveNodeOnly.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B41615B2C400987717 /* moveNodeOnly.pdf */; };
 		5267F1B81615B2C400987717 /* moveParent.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B51615B2C400987717 /* moveParent.pdf */; };
@@ -508,6 +511,12 @@
 		52653D8316BAB965001D802F /* GLLPoseExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLPoseExportViewController.h; sourceTree = "<group>"; };
 		52653D8416BAB965001D802F /* GLLPoseExportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLPoseExportViewController.m; sourceTree = "<group>"; };
 		52653D8516BAB965001D802F /* GLLPoseExportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLPoseExportViewController.xib; sourceTree = "<group>"; };
+		526756A216BF3B0600FB85CA /* GLLTextureAssignmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTextureAssignmentView.h; sourceTree = "<group>"; };
+		526756A316BF3B0600FB85CA /* GLLTextureAssignmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLTextureAssignmentView.m; sourceTree = "<group>"; };
+		526756A516BF45EF00FB85CA /* GLLTextureDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTextureDescription.h; sourceTree = "<group>"; };
+		526756A616BF45EF00FB85CA /* GLLTextureDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLTextureDescription.m; sourceTree = "<group>"; };
+		526756A816BF543800FB85CA /* GLLImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLImageView.h; sourceTree = "<group>"; };
+		526756A916BF543800FB85CA /* GLLImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLImageView.m; sourceTree = "<group>"; };
 		5267F1B31615B2C400987717 /* moveChildren.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveChildren.pdf; sourceTree = SOURCE_ROOT; };
 		5267F1B41615B2C400987717 /* moveNodeOnly.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveNodeOnly.pdf; sourceTree = SOURCE_ROOT; };
 		5267F1B51615B2C400987717 /* moveParent.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveParent.pdf; sourceTree = SOURCE_ROOT; };
@@ -1159,6 +1168,8 @@
 				52474B1C16A73CB2007A0223 /* GLLStringURLConversion.cpp */,
 				52421C1116BDAD5500D41EAA /* GLLModelMeshV3.h */,
 				52421C1216BDAD5500D41EAA /* GLLModelMeshV3.m */,
+				526756A516BF45EF00FB85CA /* GLLTextureDescription.h */,
+				526756A616BF45EF00FB85CA /* GLLTextureDescription.m */,
 			);
 			name = "Model Resources";
 			sourceTree = "<group>";
@@ -1305,6 +1316,10 @@
 				52653D8316BAB965001D802F /* GLLPoseExportViewController.h */,
 				52653D8416BAB965001D802F /* GLLPoseExportViewController.m */,
 				52653D8516BAB965001D802F /* GLLPoseExportViewController.xib */,
+				526756A216BF3B0600FB85CA /* GLLTextureAssignmentView.h */,
+				526756A316BF3B0600FB85CA /* GLLTextureAssignmentView.m */,
+				526756A816BF543800FB85CA /* GLLImageView.h */,
+				526756A916BF543800FB85CA /* GLLImageView.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1741,6 +1756,9 @@
 				52421C1316BDAD5500D41EAA /* GLLModelMeshV3.m in Sources */,
 				523D368116BEB29F004FAD4B /* GLLSubItemController.m in Sources */,
 				523D368516BED84B004FAD4B /* GLLItemMeshTexture.m in Sources */,
+				526756A416BF3B0700FB85CA /* GLLTextureAssignmentView.m in Sources */,
+				526756A716BF45EF00FB85CA /* GLLTextureDescription.m in Sources */,
+				526756AA16BF543800FB85CA /* GLLImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

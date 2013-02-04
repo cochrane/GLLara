@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 @class GLLItemMesh;
+@class GLLTextureDescription;
 
 /*!
  * @abstract Stores which textures are associated with which uniform values.
@@ -26,5 +27,8 @@
 
 // The mesh this texture belongs to.
 @property (nonatomic, retain) GLLItemMesh *mesh;
+
+// Description
+@property (nonatomic, readonly) GLLTextureDescription *textureDescription;
 
 @end

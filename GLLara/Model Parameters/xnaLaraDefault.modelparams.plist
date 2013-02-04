@@ -2,6 +2,72 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>textureDescriptions</key>
+	<dict>
+		<key>reflectionTexture</key>
+		<dict>
+			<key>title</key>
+			<string>Reflection Texture</string>
+			<key>description</key>
+			<string>Image that shows up in reflected parts.</string>
+		</dict>
+		<key>specularTexture</key>
+		<dict>
+			<key>title</key>
+			<string>Specular Texture</string>
+			<key>description</key>
+			<string>Color and intensity of highlights.</string>
+		</dict>
+		<key>lightmapTexture</key>
+		<dict>
+			<key>title</key>
+			<string>Light Map Texture</string>
+			<key>description</key>
+			<string>Additional light intensity values.</string>
+		</dict>
+		<key>maskTexture</key>
+		<dict>
+			<key>title</key>
+			<string>Detail Bump Texture Mask</string>
+			<key>description</key>
+			<string>In red parts, detail bump 1 is used, in green detail bump 2.</string>
+		</dict>
+		<key>bump1Texture</key>
+		<dict>
+			<key>title</key>
+			<string>Detail Bump Texture 1</string>
+			<key>description</key>
+			<string>Additional detail structure.</string>
+		</dict>
+		<key>bump2Texture</key>
+		<dict>
+			<key>title</key>
+			<string>Detail Bump Texture 2</string>
+			<key>description</key>
+			<string>Additional detail structure.</string>
+		</dict>
+		<key>emissionTexture</key>
+		<dict>
+			<key>title</key>
+			<string>Emission Texture</string>
+			<key>description</key>
+			<string>Provides glowing parts.</string>
+		</dict>
+		<key>bumpTexture</key>
+		<dict>
+			<key>title</key>
+			<string>Bump Texture</string>
+			<key>description</key>
+			<string>Modifies lighting and reflections to give more surface structure.</string>
+		</dict>
+		<key>diffuseTexture</key>
+		<dict>
+			<key>title</key>
+			<string>Diffuse Texture</string>
+			<key>description</key>
+			<string>The basic color information.</string>
+		</dict>
+	</dict>
 	<key>renderParameterDescriptions</key>
 	<dict>
 		<key>bump2UVScale</key>

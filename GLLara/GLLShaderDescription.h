@@ -10,6 +10,7 @@
 
 @class GLLModelParams;
 @class GLLRenderParameterDescription;
+@class GLLTextureDescription;
 
 @interface GLLShaderDescription : NSObject
 
@@ -55,5 +56,6 @@
  * Description for a parameter, to set up an UI around it.
  */
 - (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
+- (GLLTextureDescription *)descriptionForTexture:(NSString *)textureUniformName;
 
 @end

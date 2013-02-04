@@ -14,7 +14,8 @@
  */
 @interface GLLMeshViewController : NSViewController <NSTableViewDataSource, NSTableViewDelegate>
 
-@property IBOutlet NSTableView *renderParametersView;
+@property (nonatomic, assign) IBOutlet NSTableView *renderParametersView;
+@property (nonatomic, assign) IBOutlet NSTableView *textureAssignmentsView;
 
 @property (nonatomic) NSArray *selectedMeshes;
 

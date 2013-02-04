@@ -51,4 +51,9 @@
 	return [self.parameters descriptionForParameter:parameterName];
 }
 
+- (GLLTextureDescription *)descriptionForTexture:(NSString *)textureUniformName;
+{
+	return [self.parameters descriptionForTexture:textureUniformName];
+}
+
 @end

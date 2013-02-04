@@ -7,8 +7,10 @@
 //
 
 #import "GLLItemMeshTexture.h"
-#import "GLLItemMesh.h"
 
+#import "GLLItemMesh.h"
+#import "GLLModelMesh.h"
+#import "GLLShaderDescription.h"
 
 @implementation GLLItemMeshTexture
 
@@ -41,6 +43,11 @@
 	}
 	else
 		[self setPrimitiveValue:nil forKey:@"textureBookmarkData"];
+}
+
+- (GLLTextureDescription *)textureDescription
+{
+	return [self.mesh.mesh.shader descriptionForTexture:self.identifier];
 }
 
 @end

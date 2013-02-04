@@ -11,6 +11,7 @@
 @class GLLModel;
 @class GLLRenderParameterDescription;
 @class GLLShaderDescription;
+@class GLLTextureDescription;
 
 /*!
  * @abstract Encapsulates all the data that is hardcoded into XNALara and stores it in a single place.
@@ -54,9 +55,10 @@
 - (GLLShaderDescription *)shaderNamed:(NSString *)name;
 
 /*
- * Render parameter descriptions
+ * Render parameter and texture descriptions
  */
 - (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
+- (GLLTextureDescription *)descriptionForTexture:(NSString *)textureUniformName;
 
 /*
  * Splitting up objects

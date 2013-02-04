@@ -124,7 +124,11 @@
 {
 	GLLRenderParameter *param = [self renderParameterWithName:key];
 	if (param) return param;
-	else return NSNotApplicableMarker;
+	
+	GLLItemMeshTexture *texture = [self textureWithIdentifier:key];
+	if (texture) return texture;
+	
+	return NSNotApplicableMarker;
 }
 
 #pragma mark - Private

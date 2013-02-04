@@ -14,6 +14,7 @@
 #import "GLLModel.h"
 #import "GLLRenderParameterDescription.h"
 #import "GLLShaderDescription.h"
+#import "GLLTextureDescription.h"
 #import "LionSubscripting.h"
 
 /*
@@ -54,6 +55,7 @@ static NSCache *parameterCache;
 	NSDictionary *ownMeshSplitters;
 	NSString *defaultMeshGroup;
 	NSDictionary *ownRenderParameterDescriptions;
+	NSDictionary *ownTextureDescriptions;
 	
 	GLLModel *model;
 }
@@ -153,6 +155,9 @@ static NSCache *parameterCache;
 	ownRenderParameterDescriptions = [propertyList[@"renderParameterDescriptions"] mapValues:^(id description){
 		return [[GLLRenderParameterDescription alloc] initWithPlist:description];
 	}];
+	ownTextureDescriptions = [propertyList[@"textureDescriptions"] mapValues:^(id description){
+		return [[GLLTextureDescription alloc] initWithPlist:description];
+	}];
 	
 	return self;
 }
@@ -176,6 +181,7 @@ static NSCache *parameterCache;
 	ownCameraTargets = nil;
 	ownMeshGroups = nil;
 	ownRenderParameters = nil;
+	ownTextureDescriptions = nil;
 		
 	return self;
 }
@@ -349,6 +355,18 @@ static NSCache *parameterCache;
 	if (!result)
 	{
 		if (self.base) return [self.base descriptionForParameter:parameterName];
+		else return nil;
+	}
+	
+	return result;
+}
+
+- (GLLTextureDescription *)descriptionForTexture:(NSString *)textureUniformName
+{
+	GLLTextureDescription *result = ownTextureDescriptions[textureUniformName];
+	if (!result)
+	{
+		if (self.base) return [self.base descriptionForTexture:textureUniformName];
 		else return nil;
 	}
 	
