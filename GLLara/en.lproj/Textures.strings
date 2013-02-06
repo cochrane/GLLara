@@ -1,0 +1,34 @@
+/* reflectionTexture */
+"Reflection Texture" = "Reflection Texture"
+"Image that shows up in reflected parts." = "Image that shows up in reflected parts.";
+
+/* specularTexture */
+"Specular Texture" = "Specular Texture";
+"Color and intensity of highlights." = "Color and intensity of highlights.";
+
+/* lightmapTexture */
+"Light Map Texture" = "Light Map Texture";
+"Additional light intensity values." = "Additional light intensity values.";
+
+/* maskTexture */
+"Detail Bump Texture Mask" = "Detail Bump Texture Mask";
+"In red parts, detail bump 1 is used, in green detail bump 2." = "In red parts, detail bump 1 is used, in green detail bump 2.";
+
+/* bump1Texture */
+"Detail Bump Texture 1" = "Detail Bump Texture 1";
+"Additional detail structure." = "Additional detail structure.";
+
+/* bump2Texture */
+"Detail Bump Texture 2" = "Detail Bump Texture 2";
+
+/* emissionTexture */
+"Emission Texture" = "Emission Texture";
+"Provides glowing parts." = "Provides glowing parts.";
+
+/* bumpTexture */
+"Bump Texture" = "Bump Texture";
+"Modifies lighting and reflections to give more surface structure." = "Modifies lighting and reflections to give more surface structure.";
+
+/* diffuseTexture */
+"Diffuse Texture" = "Diffuse Texture";
+"The basic color information." = "The basic color information.";

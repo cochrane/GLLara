@@ -13,9 +13,12 @@
 
 /* bump1UVScale */
 "Bump Detail UV Scale 1" = "Bump Detail UV Scale 1";
+"How often the first detail texture is repeated over the model. Higher values mean smaller structures." = "How often the first detail texture is repeated over the model. Higher values mean smaller structures.";
+
 
 /* bumpUVScale */
 "Bump Detail UV Scale" = "Bump Detail UV Scale";
+"How often the detail texture is repeated over the model. Higher values mean smaller structures." = "How often the detail texture is repeated over the model. Higher values mean smaller structures.";
 
 /* reflectionAmount */
 "Reflection" = "Reflection";
