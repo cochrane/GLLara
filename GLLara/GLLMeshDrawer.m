@@ -88,6 +88,13 @@
 
 - (void)draw;
 {
+	// Set standard vertex attribs for optional items
+	glVertexAttrib4usv(GLLVertexAttribBoneIndices, (const GLushort [4]) { 0, 0, 0, 0 });
+	glVertexAttrib4f(GLLVertexAttribBoneIndices, 1.0f, 0.0f, 0.0f, 0.0f);
+	glVertexAttrib4f(GLLVertexAttribTangent0, 0.0f, 0.0f, 0.0f, 0.0f);
+	glVertexAttrib2f(GLLVertexAttribTexCoord0 + 2U, 0.0f, 0.0f);
+	glVertexAttrib4f(GLLVertexAttribTangent0 + 3U, 0.0f, 0.0f, 0.0f, 0.0f);
+	
 	// Load and draw the vertices
 	glBindVertexArray(vertexArray);
 	glDrawElements(GL_TRIANGLES, elementsCount, GL_UNSIGNED_INT, NULL);
