@@ -16,3 +16,15 @@
 /* Class = "IBBindingConnection"; ibShadowedIsNilPlaceholder = "no null2"; ObjectID = "186"; */
 "no null2" = "no null2";
 
+/* Class = "NSSegmentedCell"; 203.ibShadowedToolTips[0] = "Move camera"; ObjectID = "203"; */
+"Move camera" = "Move camera";
+
+/* Class = "NSSegmentedCell"; 203.ibShadowedToolTips[1] = "Move bone and all children"; ObjectID = "203"; */
+"Move bone and all children" = "Move bone and all children";
+
+/* Class = "NSSegmentedCell"; 203.ibShadowedToolTips[2] = "Move bone but not children"; ObjectID = "203"; */
+"Move bone but not children" = "Move bone but not children";
+
+/* Class = "NSSegmentedCell"; 203.ibShadowedToolTips[3] = "Move bone and parent"; ObjectID = "203"; */
+"Move bone and parent" = "Move bone and parent";
+

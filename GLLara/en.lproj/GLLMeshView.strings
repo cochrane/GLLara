@@ -34,3 +34,15 @@
 /* Class = "NSTextFieldCell"; title = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!"; ObjectID = "384"; */
 "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
 
+/* Class = "NSTableColumn"; headerCell.title = "Textures"; ObjectID = "429"; */
+"Textures" = "Textures";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "432"; */
+"Text Cell" = "Text Cell";
+
+/* Class = "NSTextFieldCell"; title = "Diffuse or other texture (do not translate)"; ObjectID = "440"; */
+"Diffuse or other texture (do not translate)" = "Diffuse or other texture (do not translate)";
+
+/* Class = "NSTextFieldCell"; title = "Just a placeholder. Shorter, but should still be two lines. Do not translate!"; ObjectID = "442"; */
+"Just a placeholder. Shorter, but should still be two lines. Do not translate!" = "Just a placeholder. Shorter, but should still be two lines. Do not translate!";
+
