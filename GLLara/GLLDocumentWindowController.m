@@ -55,8 +55,6 @@
 
 @end
 
-static NSString *settingsGroupIdentifier = @"settings group identifier";
-
 @implementation GLLDocumentWindowController
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;

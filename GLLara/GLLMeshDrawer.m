@@ -34,11 +34,7 @@
 	if (!(self = [super init])) return nil;
 	
 	_modelMesh = mesh;
-	
-	// Set up shader
-	_program = [resourceManager programForDescriptor:mesh.shader error:error];
-	if (!_program) return nil;
-		
+			
 	// Create the element and vertex buffers, and spend a lot of time setting up the vertex attribute arrays and pointers.
 	glGenVertexArrays(1, &vertexArray);
 	glBindVertexArray(vertexArray);
@@ -90,15 +86,8 @@
 	return self;
 }
 
-- (void)drawWithState:(GLLDrawState *)state;
+- (void)draw;
 {
-	// Use this program, with the correct transformation.
-	if (state->activeProgram != self.program.programID)
-	{
-		glUseProgram(self.program.programID);
-		state->activeProgram = self.program.programID;
-	}
-	
 	// Load and draw the vertices
 	glBindVertexArray(vertexArray);
 	glDrawElements(GL_TRIANGLES, elementsCount, GL_UNSIGNED_INT, NULL);

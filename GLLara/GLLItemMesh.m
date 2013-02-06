@@ -22,28 +22,22 @@
 
 @interface GLLItemMesh ()
 
-- (void)_createTextureAssignments;
+- (void)_createTextureAndShaderAssignments;
 
 @end
 
 @implementation GLLItemMesh
 
-+ (NSSet *)keyPathsForValuesAffectingRenderSettings
-{
-	return [NSSet setWithObjects:@"isVisible", @"cullFaceMode", nil];
-}
-
 @dynamic cullFaceMode;
 @dynamic isVisible;
 @dynamic item;
 @dynamic renderParameters;
+@dynamic shaderName;
 @dynamic textures;
 
 @dynamic mesh;
 @dynamic meshIndex;
 @dynamic displayName;
-
-@synthesize renderSettings;
 
 - (void)setItem:(GLLItem *)item
 {
@@ -74,14 +68,67 @@
 		[renderParameters addObject:parameter];
 	}
 	
-	[self _createTextureAssignments];
+	[self _createTextureAndShaderAssignments];
 }
 
 - (void)awakeFromFetch
 {
 	NSMutableSet *textures = [self mutableSetValueForKey:@"textures"];
-	if (textures.count == 0)
-		[self _createTextureAssignments];
+	if (textures.count == 0 || self.shaderName == nil)
+		[self _createTextureAndShaderAssignments];
+}
+
+#pragma mark - Shader changes
+
+- (void)setShaderName:(NSString *)shaderName
+{
+	GLLModelParams *params = self.mesh.model.parameters;
+	GLLShaderDescription *shaderDescription = [params shaderNamed:shaderName];
+	if (!shaderDescription)
+	{
+		[self willChangeValueForKey:@"shaderName"];
+		[self setPrimitiveValue:nil forKey:@"shaderName"];
+		[self didChangeValueForKey:@"shaderName"];
+		return;
+	}
+	
+	[self willChangeValueForKey:@"shaderName"];
+	[self setPrimitiveValue:shaderName forKey:@"shaderName"];
+	[self didChangeValueForKey:@"shaderName"];
+	
+	// Set up render parameters that do not exist yet
+	for (NSString *renderParameterName in shaderDescription.parameterUniformNames)
+	{
+		if (![self renderParameterWithName:renderParameterName])
+		{
+			GLLRenderParameterDescription *description = [shaderDescription descriptionForParameter:renderParameterName];
+			
+			GLLRenderParameter *parameter;
+			
+			if ([description.type isEqual:GLLRenderParameterTypeFloat])
+				parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLFloatRenderParameter" inManagedObjectContext:self.managedObjectContext];
+			else if ([description.type isEqual:GLLRenderParameterTypeColor])
+				parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLColorRenderParameter" inManagedObjectContext:self.managedObjectContext];
+			else
+				continue; // Skip this param
+			
+			parameter.name = renderParameterName;
+			[parameter setValue:[params defaultValueForRenderParameter:renderParameterName] forKey:@"value"];
+			parameter.mesh = self;
+		}
+	}
+	
+	// Set up textures that do not exist yet.
+	for (NSString *textureName in shaderDescription.textureUniformNames)
+	{
+		if (![self textureWithIdentifier:textureName])
+		{
+			GLLItemMeshTexture *texture = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMeshTexture" inManagedObjectContext:self.managedObjectContext];
+			texture.identifier = textureName;
+			texture.textureURL = [params defaultValueForTexture:textureName];
+			texture.mesh = self;
+		}
+	}
 }
 
 #pragma mark - Derived
@@ -131,9 +178,14 @@
 	return NSNotApplicableMarker;
 }
 
+- (GLLShaderDescription *)shader
+{
+	return [self.mesh.model.parameters shaderNamed:self.shaderName];
+}
+
 #pragma mark - Private
 
-- (void)_createTextureAssignments;
+- (void)_createTextureAndShaderAssignments;
 {	
 	// Replace all textures
 	NSMutableSet *textures = [self mutableSetValueForKey:@"textures"];
@@ -145,6 +197,9 @@
 		texture.identifier = self.mesh.shader.textureUniformNames[i];
 		texture.textureURL = self.mesh.textures[i];
 	}
+	
+	// Find shader value
+	self.shaderName = self.mesh.shader.name;
 }
 
 @end

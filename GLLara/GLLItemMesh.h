@@ -13,6 +13,7 @@
 @class GLLItemMeshTexture;
 @class GLLModelMesh;
 @class GLLRenderParameter;
+@class GLLShaderDescription;
 
 /*!
  * @abstract Stores per-mesh data in the document.
@@ -26,15 +27,14 @@
 @property (nonatomic, retain) GLLItem *item;
 @property (nonatomic) int16_t cullFaceMode;
 @property (nonatomic, retain) NSSet *renderParameters;
+@property (nonatomic, copy) NSString *shaderName;
 @property (nonatomic, retain) NSSet *textures;
 
 // Derived
 @property (nonatomic, readonly) NSUInteger meshIndex;
 @property (nonatomic, retain, readonly) GLLModelMesh *mesh;
 @property (nonatomic, readonly, copy) NSString *displayName;
-
-// This key is just for observing. Don't try to actually read it.
-@property (nonatomic, retain) id renderSettings;
+@property (nonatomic, readonly) GLLShaderDescription *shader;
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
 - (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;

@@ -56,6 +56,7 @@ static NSCache *parameterCache;
 	NSString *defaultMeshGroup;
 	NSDictionary *ownRenderParameterDescriptions;
 	NSDictionary *ownTextureDescriptions;
+	NSDictionary *ownDefaultTextures;
 	
 	GLLModel *model;
 }
@@ -157,6 +158,9 @@ static NSCache *parameterCache;
 	}];
 	ownTextureDescriptions = [propertyList[@"textureDescriptions"] mapValues:^(id description){
 		return [[GLLTextureDescription alloc] initWithPlist:description];
+	}];
+	ownDefaultTextures = [propertyList[@"defaultTextures"] mapValues:^(NSString *name){
+		return [[NSBundle mainBundle] URLForResource:name withExtension:nil];
 	}];
 	
 	return self;
@@ -345,6 +349,24 @@ static NSCache *parameterCache;
 		return [self.base shaderNamed:name];
 	
 	return result;
+}
+
+- (id)defaultValueForRenderParameter:(NSString *)renderParameter;
+{
+	id ours = ownDefaultParameters[renderParameter];
+	if (!ours)
+		return [self.base defaultValueForRenderParameter:renderParameter];
+	else
+		return ours;
+}
+
+- (NSURL *)defaultValueForTexture:(NSString *)textureIdentifier;
+{
+	id ours = ownDefaultTextures[textureIdentifier];
+	if (!ours)
+		return [self.base defaultValueForTexture:textureIdentifier];
+	else
+		return ours;
 }
 
 #pragma mark - Render parameter descriptions

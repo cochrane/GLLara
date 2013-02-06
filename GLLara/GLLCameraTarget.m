@@ -92,7 +92,7 @@ static void *contextMarker = (void *) 0xdeadbeef;
 
 - (void)_updatePosition
 {
-	vec_float4 newPosition;
+	vec_float4 newPosition = simd_zero();
 	for (GLLItemBone *transform in self.bones)
 	{
 		vec_float4 transformPosition;

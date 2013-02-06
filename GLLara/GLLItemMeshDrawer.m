@@ -27,13 +27,15 @@
 {
 	GLuint renderParametersBuffer;
 	BOOL needsParameterBufferUpdate;
-	NSMutableArray *renderParameters;
+	NSSet *renderParameters;
 	NSSet *textureAssignments;
 	NSArray *textures;
 	BOOL needsTextureUpdate;
+	BOOL needsProgramUpdate;
 }
 - (void)_updateParameterBuffer;
 - (BOOL)_updateTexturesError:(NSError *__autoreleasing*)error;
+- (BOOL)_updateShaderError:(NSError *__autoreleasing*)error;
 
 @end
 
@@ -49,32 +51,36 @@
 	_meshDrawer = meshDrawer;
 	_itemMesh = itemMesh;
 	
-	// If there are render parameters to be set, create a uniform buffer for them and set their values from the mesh.
-	if (meshDrawer.program.renderParametersUniformBlockIndex != GL_INVALID_INDEX)
-	{
-		// Store the render parameters in our own container, because by the time unload is called, there is a chance that the relationship is already destroyed and we can't get them again.
-		renderParameters = [[NSMutableArray alloc] initWithCapacity:self.itemMesh.renderParameters.count];
-		glGenBuffers(1, &renderParametersBuffer);
-		needsParameterBufferUpdate = YES;
-		for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
-		{
-			[renderParameters addObject:parameter];
-			[parameter addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
-		}
-	}
+	[_itemMesh addObserver:self forKeyPath:@"shaderName" options:NSKeyValueObservingOptionNew context:NULL];
+	if (![self _updateShaderError:error])
+		return nil;
+	
+	glGenBuffers(1, &renderParametersBuffer);
+	needsParameterBufferUpdate = YES;
 	
 	if (![self _updateTexturesError:error])
 		return nil;
 	
-	textureAssignments = [[NSMutableSet alloc] init];
 	[_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
-	
+	[_itemMesh addObserver:self forKeyPath:@"renderParameters" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+		
 	return self;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:@"uniformValue"])
+	if ([keyPath isEqual:@"renderParameters"])
+	{
+		for (GLLRenderParameter *param in renderParameters)
+			[param removeObserver:self forKeyPath:@"uniformValue"];
+		
+		renderParameters = _itemMesh.renderParameters;
+		for (GLLRenderParameter *param in renderParameters)
+			[param addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
+
+		needsParameterBufferUpdate = YES;
+	}
+	else if ([keyPath isEqual:@"uniformValue"])
 	{
 		needsParameterBufferUpdate = YES;
 		self.itemDrawer.needsRedraw = YES;
@@ -94,14 +100,24 @@
 		needsTextureUpdate = YES;
 		self.itemDrawer.needsRedraw = YES;
 	}
+	else if ([keyPath isEqual:@"shaderName"])
+	{
+		needsTextureUpdate = YES;
+		needsProgramUpdate = YES;
+		self.itemDrawer.needsRedraw = YES;
+	}
 	else
-		[super observeValueForKeyPath:@"keyPath" ofObject:object change:change context:context];
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 - (void)drawWithState:(GLLDrawState *)state;
 {
 	if (!self.itemMesh.isVisible)
 		return;
+	if (!self.program)
+		return;
+	if (needsProgramUpdate)
+		[self _updateShaderError:NULL];
 	if (needsParameterBufferUpdate)
 		[self _updateParameterBuffer];
 	if (needsTextureUpdate)
@@ -141,7 +157,14 @@
 		glBindTexture(GL_TEXTURE_2D, [textures[i] textureID]);
 	}
 	
-	[self.meshDrawer drawWithState:state];
+	// Use this program, with the correct transformation.
+	if (state->activeProgram != self.program.programID)
+	{
+		glUseProgram(self.program.programID);
+		state->activeProgram = self.program.programID;
+	}
+	
+	[self.meshDrawer draw];
 }
 
 - (void)dealloc
@@ -164,18 +187,25 @@
 - (void)_updateParameterBuffer;
 {
 	GLint bufferLength;
-	glGetActiveUniformBlockiv(self.meshDrawer.program.programID, self.meshDrawer.program.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &bufferLength);
+	
+	if (!_program)
+		return;
+	
+	if (self.program.renderParametersUniformBlockIndex == GL_INVALID_INDEX)
+		return;
+	
+	glGetActiveUniformBlockiv(self.program.programID, self.program.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &bufferLength);
 	void *data = calloc(1, bufferLength);
 	
 	for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
 	{
 		NSString *fullName = [@"RenderParameters." stringByAppendingString:parameter.name];
 		GLuint uniformIndex;
-		glGetUniformIndices(self.meshDrawer.program.programID, 1, (const GLchar *[]) { fullName.UTF8String }, &uniformIndex);
+		glGetUniformIndices(self.program.programID, 1, (const GLchar *[]) { fullName.UTF8String }, &uniformIndex);
 		if (uniformIndex == GL_INVALID_INDEX) continue;
 		
 		GLint byteOffset;
-		glGetActiveUniformsiv(self.meshDrawer.program.programID, 1, &uniformIndex, GL_UNIFORM_OFFSET, &byteOffset);
+		glGetActiveUniformsiv(self.program.programID, 1, &uniformIndex, GL_UNIFORM_OFFSET, &byteOffset);
 		
 		[parameter.uniformValue getBytes:&data[byteOffset]];
 	}
@@ -191,7 +221,11 @@
 - (BOOL)_updateTexturesError:(NSError *__autoreleasing*)error;
 {
 	needsTextureUpdate = NO;
-	textures = [self.meshDrawer.modelMesh.shader.textureUniformNames map:^(NSString *identifier){
+	
+	if (!_program)
+		return YES;
+	
+	textures = [self.itemMesh.shader.textureUniformNames map:^(NSString *identifier){
 		GLLItemMeshTexture *textureAssignment = [self.itemMesh textureWithIdentifier:identifier];
 		return [[GLLResourceManager sharedResourceManager] textureForURL:textureAssignment.textureURL error:error];
 	}];
@@ -199,6 +233,27 @@
 		return NO;
 	else
 		return YES;
+}
+
+- (BOOL)_updateShaderError:(NSError *__autoreleasing*)error;
+{
+	needsParameterBufferUpdate = YES;
+	needsTextureUpdate = YES;
+	needsProgramUpdate = NO;
+	
+	if (self.itemMesh.shaderName == nil)
+	{
+		// Allow empty programs for objects
+		// that don't have a shader.
+		_program = nil;
+		return YES;
+	}
+	
+	_program = [[GLLResourceManager sharedResourceManager] programForDescriptor:self.itemMesh.shader error:error];
+	if (!self.program)
+		return NO;
+	
+	return YES;
 }
 
 @end

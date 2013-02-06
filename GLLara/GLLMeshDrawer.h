@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GLLDrawState.h"
 #import "simd_types.h"
 
 @class GLLModelMesh;
@@ -24,9 +23,8 @@
 - (id)initWithMesh:(GLLModelMesh *)mesh resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, retain, readonly) GLLModelMesh *modelMesh;
-@property (nonatomic, retain, readonly) GLLModelProgram *program;
 
-- (void)drawWithState:(GLLDrawState *)state;
+- (void)draw;
 
 - (void)unload;
 

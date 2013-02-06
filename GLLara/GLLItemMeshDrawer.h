@@ -13,6 +13,7 @@
 
 @class GLLItemDrawer;
 @class GLLMeshDrawer;
+@class GLLModelProgram;
 @class GLLItemMesh;
 
 /*!
@@ -26,6 +27,7 @@
 @property (nonatomic, weak, readonly) GLLItemDrawer *itemDrawer;
 @property (nonatomic, retain, readonly) GLLMeshDrawer *meshDrawer;
 @property (nonatomic, retain, readonly) GLLItemMesh *itemMesh;
+@property (nonatomic, retain, readonly) GLLModelProgram *program;
 
 - (void)drawWithState:(GLLDrawState *)state;
 
