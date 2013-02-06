@@ -139,6 +139,16 @@
 	</dict>
 	<key>defaultRenderParameters</key>
 	<dict>
+		<key>bump1UVScale</key>
+		<integer>1</integer>
+		<key>bumpUVScale</key>
+		<integer>1</integer>
+		<key>bump2UVScale</key>
+		<integer>1</integer>
+		<key>bumpSpecularAmount</key>
+		<real>0.5</real>
+		<key>reflectionAmount</key>
+		<real>0.5</real>
 		<key>bumpSpecularGloss</key>
 		<integer>10</integer>
 	</dict>
