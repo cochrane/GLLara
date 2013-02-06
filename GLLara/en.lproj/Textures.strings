@@ -1,5 +1,5 @@
 /* reflectionTexture */
-"Reflection Texture" = "Reflection Texture"
+"Reflection Texture" = "Reflection Texture";
 "Image that shows up in reflected parts." = "Image that shows up in reflected parts.";
 
 /* specularTexture */
