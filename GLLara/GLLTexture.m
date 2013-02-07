@@ -255,6 +255,12 @@ static BOOL isIntel;
 	[coordinator coordinateReadingItemAtURL:self.url options:NSFileCoordinatorReadingResolvesSymbolicLink error:&coordinationError byAccessor:^(NSURL *newURL){
 		NSAssert(CGLGetCurrentContext() != NULL, @"Context must exist");
 		
+		if (!newURL)
+		{
+			[self _loadDefaultTexture];
+			return;
+		}
+		
 		NSData *data = [NSData dataWithContentsOfURL:newURL options:0 error:&internalError];
 		
 		// Ensure that memcmp does not error out.
