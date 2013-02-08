@@ -23,6 +23,11 @@
 		52329F4C16C1D71E00338A0A /* GLLItemExportView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F4A16C1D71E00338A0A /* GLLItemExportView.strings */; };
 		52329F4F16C1D72600338A0A /* GLLPoseExportViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F4D16C1D72600338A0A /* GLLPoseExportViewController.strings */; };
 		52329F5216C1D76200338A0A /* Textures.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F5416C1D76200338A0A /* Textures.strings */; };
+		523AEEDA16C4883A0062C025 /* defaultBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED616C4883A0062C025 /* defaultBlack.png */; };
+		523AEEDB16C4883A0062C025 /* defaultBump.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED716C4883A0062C025 /* defaultBump.png */; };
+		523AEEDC16C4883A0062C025 /* defaultColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED816C4883A0062C025 /* defaultColor.png */; };
+		523AEEDD16C4883A0062C025 /* defaultWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED916C4883A0062C025 /* defaultWhite.png */; };
+		523AEEDF16C488960062C025 /* defaultReflection.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 523AEEDE16C488960062C025 /* defaultReflection.jpg */; };
 		523D368116BEB29F004FAD4B /* GLLSubItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523D368016BEB29F004FAD4B /* GLLSubItemController.m */; };
 		523D368516BED84B004FAD4B /* GLLItemMeshTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 523D368416BED84A004FAD4B /* GLLItemMeshTexture.m */; };
 		523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */; };
@@ -350,6 +355,11 @@
 		52329F4B16C1D71E00338A0A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLItemExportView.strings; sourceTree = "<group>"; };
 		52329F4E16C1D72600338A0A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLPoseExportViewController.strings; sourceTree = "<group>"; };
 		52329F5316C1D76200338A0A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Textures.strings; sourceTree = "<group>"; };
+		523AEED616C4883A0062C025 /* defaultBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultBlack.png; sourceTree = "<group>"; };
+		523AEED716C4883A0062C025 /* defaultBump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultBump.png; sourceTree = "<group>"; };
+		523AEED816C4883A0062C025 /* defaultColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultColor.png; sourceTree = "<group>"; };
+		523AEED916C4883A0062C025 /* defaultWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultWhite.png; sourceTree = "<group>"; };
+		523AEEDE16C488960062C025 /* defaultReflection.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = defaultReflection.jpg; sourceTree = "<group>"; };
 		523D367F16BEB29F004FAD4B /* GLLSubItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSubItemController.h; sourceTree = "<group>"; };
 		523D368016BEB29F004FAD4B /* GLLSubItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSubItemController.m; sourceTree = "<group>"; };
 		523D368316BED849004FAD4B /* GLLItemMeshTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemMeshTexture.h; sourceTree = "<group>"; };
@@ -788,6 +798,11 @@
 		52329F4916C1D68600338A0A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				523AEEDE16C488960062C025 /* defaultReflection.jpg */,
+				523AEED616C4883A0062C025 /* defaultBlack.png */,
+				523AEED716C4883A0062C025 /* defaultBump.png */,
+				523AEED816C4883A0062C025 /* defaultColor.png */,
+				523AEED916C4883A0062C025 /* defaultWhite.png */,
 				5267F1B31615B2C400987717 /* moveChildren.pdf */,
 				5267F1B41615B2C400987717 /* moveNodeOnly.pdf */,
 				5267F1B51615B2C400987717 /* moveParent.pdf */,
@@ -1650,6 +1665,11 @@
 				52329F4C16C1D71E00338A0A /* GLLItemExportView.strings in Resources */,
 				52329F4F16C1D72600338A0A /* GLLPoseExportViewController.strings in Resources */,
 				52329F5216C1D76200338A0A /* Textures.strings in Resources */,
+				523AEEDA16C4883A0062C025 /* defaultBlack.png in Resources */,
+				523AEEDB16C4883A0062C025 /* defaultBump.png in Resources */,
+				523AEEDC16C4883A0062C025 /* defaultColor.png in Resources */,
+				523AEEDD16C4883A0062C025 /* defaultWhite.png in Resources */,
+				523AEEDF16C488960062C025 /* defaultReflection.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

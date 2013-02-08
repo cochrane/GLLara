@@ -74,7 +74,7 @@
 		for (GLLRenderParameter *param in renderParameters)
 			[param removeObserver:self forKeyPath:@"uniformValue"];
 		
-		renderParameters = _itemMesh.renderParameters;
+		renderParameters = [_itemMesh.renderParameters copy];
 		for (GLLRenderParameter *param in renderParameters)
 			[param addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
 
@@ -90,7 +90,7 @@
 		for (GLLItemMeshTexture *texture in textureAssignments)
 			[texture removeObserver:self forKeyPath:@"textureURL"];
 		
-		textureAssignments = _itemMesh.textures;
+		textureAssignments = [_itemMesh.textures copy];
 		for (GLLItemMeshTexture *texture in textureAssignments)
 			[texture addObserver:self forKeyPath:@"textureURL" options:NSKeyValueObservingOptionNew context:NULL];
 		needsTextureUpdate = YES;

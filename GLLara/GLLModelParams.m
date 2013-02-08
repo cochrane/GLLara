@@ -178,6 +178,7 @@ static NSCache *parameterCache;
 	// Objects that the generic_item format does not support.
 	ownShaders = @{};
 	ownDefaultParameters = @{};
+	ownDefaultTextures = @{};
 	ownMeshSplitters = @{};
 	ownRenderParameterDescriptions = @{};
 	
@@ -367,6 +368,15 @@ static NSCache *parameterCache;
 		return [self.base defaultValueForTexture:textureIdentifier];
 	else
 		return ours;
+}
+
+- (NSArray *)allShaders
+{
+	NSArray *own = ownShaders.allValues;
+	NSArray *base = self.base.allShaders;
+	if (own && base) return [own arrayByAddingObjectsFromArray:base];
+	if (own && !base) return own;
+	return base;
 }
 
 #pragma mark - Render parameter descriptions

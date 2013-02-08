@@ -19,4 +19,7 @@
 
 @property (nonatomic) NSArray *selectedMeshes;
 
+@property (nonatomic) NSArray *possibleShaders;
+@property (nonatomic) id selectedShader;
+
 @end

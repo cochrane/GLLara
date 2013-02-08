@@ -56,6 +56,7 @@
 - (NSURL *)defaultValueForTexture:(NSString *)textureIdentifier;
 
 - (GLLShaderDescription *)shaderNamed:(NSString *)name;
+@property (nonatomic, readonly) NSArray *allShaders;
 
 /*
  * Render parameter and texture descriptions

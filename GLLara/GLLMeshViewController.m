@@ -77,8 +77,18 @@
 		return nil;
 	
 	meshes = [[NSArrayController alloc] init];
+	[self bind:@"selectedShader" toObject:meshes withKeyPath:@"selection.shader" options:nil];
 	
 	return self;
+}
+
+- (void)setSelectedShader:(id)selectedShader
+{
+	_selectedShader = selectedShader;
+	[meshes setValue:[selectedShader name] forKeyPath:@"selection.shaderName"];
+	dispatch_async(dispatch_get_current_queue(), ^(){
+		[self _findRenderParameterNames];
+	});
 }
 
 -(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
@@ -199,6 +209,10 @@
 	
 	meshes.content = self.selectedMeshes;
 	meshes.selectedObjects = self.selectedMeshes;
+	
+	// Find possible and actual shaders
+	_selectedShader = [meshes valueForKeyPath:@"selection.shader"];
+	self.possibleShaders = [meshes valueForKeyPath:@"arrangedObjects.@distinctUnionOfArrays.possibleShaderDescriptions"];
 	
 	[self.renderParametersView reloadData];
 	[self.textureAssignmentsView reloadData];

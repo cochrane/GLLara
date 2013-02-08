@@ -183,6 +183,11 @@
 	return [self.mesh.model.parameters shaderNamed:self.shaderName];
 }
 
+- (NSArray *)possibleShaderDescriptions
+{
+	return self.mesh.model.parameters.allShaders;
+}
+
 #pragma mark - Private
 
 - (void)_createTextureAndShaderAssignments;

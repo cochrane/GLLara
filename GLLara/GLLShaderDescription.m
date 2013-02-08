@@ -46,6 +46,11 @@
 		return [self.parameterUniformNames arrayByAddingObjectsFromArray:self.additionalUniformNames];
 }
 
+- (NSString *)localizedName
+{
+	return [[NSBundle mainBundle] localizedStringForKey:self.name value:nil table:@"Shaders"];
+}
+
 - (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
 {
 	return [self.parameters descriptionForParameter:parameterName];

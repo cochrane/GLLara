@@ -39,6 +39,8 @@
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
 - (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;
 
+@property (nonatomic, readonly) NSArray *possibleShaderDescriptions;
+
 @end
 
 @interface GLLItemMesh (CoreDataGeneratedAccessors)

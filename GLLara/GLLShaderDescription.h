@@ -60,6 +60,11 @@
 @property (nonatomic, retain, readonly) id<NSCopying> programIdentifier;
 
 /*
+ * Human-readable name for UI
+ */
+@property (nonatomic, copy, readonly) NSString *localizedName;
+
+/*
  * Description for a parameter, to set up an UI around it.
  */
 - (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
