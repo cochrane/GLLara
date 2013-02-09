@@ -151,7 +151,7 @@
 	[solidDrawers makeObjectsPerformSelector:@selector(unload)];
 	solidDrawers = nil;
 	
-	[solidDrawers makeObjectsPerformSelector:@selector(alphaDrawers)];
+	[alphaDrawers makeObjectsPerformSelector:@selector(unload)];
 	alphaDrawers = nil;
 	
 	glDeleteBuffers(1, &transformsBuffer);
