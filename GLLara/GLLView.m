@@ -15,6 +15,7 @@
 
 #import "GLLCamera.h"
 #import "GLLDocument.h"
+#import "GLLItem.h"
 #import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"
 #import "GLLSelection.h"
@@ -27,6 +28,7 @@
 {
 	BOOL inGesture;
 	BOOL shiftIsDown;
+	BOOL altIsDown;
 	BOOL inWASDMove;
 	BOOL showSelection;
 	
@@ -170,6 +172,20 @@ const double unitsPerSecond = 0.2;
 				bone.rotationZ += angle;
 		}
 	}
+	else if (theEvent.modifierFlags & NSAlternateKeyMask)
+	{
+		// Move the object in the x/z plane
+		vec_float4 delta = simd_make(theEvent.deltaX * 0.001f, 0.0f, theEvent.deltaY * 0.001f, 0.0f);
+		delta = simd_mat_vecunrotate(self.camera.viewMatrix, delta);
+		
+		for (GLLItem *item in [self.document.selection valueForKey:@"selectedItems"])
+		{
+			item.positionX += simd_extract(delta, 0);
+			item.positionZ += simd_extract(delta, 2);
+		}
+		
+		self.needsDisplay = YES;
+	}
 	else if (theEvent.modifierFlags & NSShiftKeyMask && !inWASDMove)
 	{
 		// This is a move event
@@ -301,6 +317,7 @@ const double unitsPerSecond = 0.2;
 				yDown = yDown || (firstCharacter == 'y');
 				zDown = zDown || (firstCharacter == 'z');
 				shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
+				altIsDown = (theEvent.modifierFlags & NSAlternateKeyMask) != 0;
 			}
 				break;
 			case NSKeyUp:
@@ -314,6 +331,7 @@ const double unitsPerSecond = 0.2;
 				yDown = yDown && (firstCharacter != 'y');
 				zDown = zDown && (firstCharacter != 'z');
 				shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
+				altIsDown = (theEvent.modifierFlags & NSAlternateKeyMask) != 0;
 			}
 				break;
 			case NSFlagsChanged:
@@ -332,7 +350,7 @@ const double unitsPerSecond = 0.2;
 				mouseDown = YES;
 				break;
 		}
-		if (!wDown && !aDown && !sDown && !dDown && !mouseDown && !xDown && !yDown && !zDown && !shiftIsDown) break;
+		if (!wDown && !aDown && !sDown && !dDown && !mouseDown && !xDown && !yDown && !zDown && !shiftIsDown && !altIsDown) break;
 		inWASDMove = wDown || aDown || sDown || dDown;
 		
 		// Perform actions
