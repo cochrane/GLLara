@@ -29,6 +29,10 @@
 	BOOL shiftIsDown;
 	BOOL inWASDMove;
 	BOOL showSelection;
+	
+	BOOL xDown;
+	BOOL yDown;
+	BOOL zDown;
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
@@ -152,7 +156,21 @@ const double unitsPerSecond = 0.2;
 {
 	if (self.camera.cameraLocked) return;
 	
-	if (theEvent.modifierFlags & NSShiftKeyMask && !inWASDMove)
+	if (xDown || yDown || zDown)
+	{
+		CGFloat angle = theEvent.deltaY / self.bounds.size.height;
+		
+		for (GLLItemBone *bone in [self.document.selection valueForKey:@"selectedBones"])
+		{
+			if (xDown)
+				bone.rotationX += angle;
+			if (yDown)
+				bone.rotationY += angle;
+			if (zDown)
+				bone.rotationZ += angle;
+		}
+	}
+	else if (theEvent.modifierFlags & NSShiftKeyMask && !inWASDMove)
 	{
 		// This is a move event
 		float deltaX = -theEvent.deltaX / self.bounds.size.width;
@@ -244,6 +262,9 @@ const double unitsPerSecond = 0.2;
 	BOOL sDown = NO;
 	BOOL dDown = NO;
 	BOOL mouseDown = NO;
+	xDown = NO;
+	yDown = NO;
+	zDown = NO;
 	
 	NSTimeInterval lastEvent = [NSDate timeIntervalSinceReferenceDate];
 	
@@ -276,6 +297,9 @@ const double unitsPerSecond = 0.2;
 				aDown = aDown || (firstCharacter == 'a');
 				sDown = sDown || (firstCharacter == 's');
 				dDown = dDown || (firstCharacter == 'd');
+				xDown = xDown || (firstCharacter == 'x');
+				yDown = yDown || (firstCharacter == 'y');
+				zDown = zDown || (firstCharacter == 'z');
 				shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
 			}
 				break;
@@ -286,6 +310,9 @@ const double unitsPerSecond = 0.2;
 				aDown = aDown && (firstCharacter != 'a');
 				sDown = sDown && (firstCharacter != 's');
 				dDown = dDown && (firstCharacter != 'd');
+				xDown = xDown && (firstCharacter != 'x');
+				yDown = yDown && (firstCharacter != 'y');
+				zDown = zDown && (firstCharacter != 'z');
 				shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
 			}
 				break;
@@ -305,7 +332,7 @@ const double unitsPerSecond = 0.2;
 				mouseDown = YES;
 				break;
 		}
-		if (!wDown && !aDown && !sDown && !dDown && !mouseDown && !shiftIsDown) break;
+		if (!wDown && !aDown && !sDown && !dDown && !mouseDown && !xDown && !yDown && !zDown && !shiftIsDown) break;
 		inWASDMove = wDown || aDown || sDown || dDown;
 		
 		// Perform actions
