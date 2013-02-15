@@ -16,7 +16,7 @@
  */
 @interface GLLTexture : NSObject <NSFilePresenter>
 
-- (id)initWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error;
+- (id)initWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error __attribute__((nonnull(1)));
 
 - (void)unload;
 

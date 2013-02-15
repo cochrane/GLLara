@@ -22,6 +22,7 @@
 
 - (id)initWithItem:(GLLItem *)item
 {
+	NSParameterAssert(item);
 	return [self initWithBones:item.combinedBones];
 }
 

@@ -18,7 +18,7 @@
  * @discussion These functions are not particularly interesting, but needed
  * both by the MTL and OBJ files.
  */
-std::string GLLStringFromFileURL(CFURLRef fileURL);
-CFURLRef GLLCreateURLFromString(const std::string &string, CFURLRef relativeTo);
+std::string GLLStringFromFileURL(CFURLRef fileURL) __attribute__((pure, nonnull(1)));
+CFURLRef GLLCreateURLFromString(const std::string &string, CFURLRef relativeTo) __attribute__((pure, nonnull(2)));
 
 #endif /* defined(__GLLara__GLLStringURLConversion__) */
