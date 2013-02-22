@@ -412,7 +412,8 @@ static NSCache *parameterCache;
 	if (self.base)
 		return [self.base.meshesToSplit arrayByAddingObjectsFromArray:ownMeshSplitters.allKeys];
 	else
-		return ownMeshSplitters.allKeys;
+		if (ownMeshSplitters) return ownMeshSplitters.allKeys;
+		else return @[];
 }
 - (NSArray *)meshSplittersForMesh:(NSString *)mesh;
 {
