@@ -44,6 +44,11 @@
 - (NSArray *)boneNamesForCameraTarget:(NSString *)cameraTarget;
 
 /*
+ * Mesh name
+ */
+- (NSString *)displayNameForMesh:(NSString *)mesh;
+
+/*
  * Rendering
  */
 - (NSString *)renderableMeshGroupForMesh:(NSString *)mesh;

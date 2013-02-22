@@ -584,6 +584,8 @@ void vec_addTo(float *a, float *b)
 	_shader = shader;
 	_renderParameterValues = [_model.parameters renderParametersForMesh:_name];
 	
+	_displayName = [_model.parameters displayNameForMesh:_name];
+	
 	if (!_shader)
 		NSLog(@"No shader for object %@", self.name);
 }

@@ -59,6 +59,7 @@
 		GLLModelMeshObj *mesh = [[GLLModelMeshObj alloc] initWithObjFile:file mtlFiles:materialFiles range:range inModel:self error:error];
 		if (!mesh) return nil;
 		mesh.name = [NSString stringWithFormat:NSLocalizedString(@"Mesh %lu", "Mesh name for obj format"), meshNumber++];
+		mesh.displayName = mesh.name;
 		[meshes addObject:mesh];
 	}
 	self.meshes = [meshes copy];

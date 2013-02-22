@@ -69,7 +69,7 @@
 	}
 	
 	// Set display name
-	self.displayName = self.mesh.name;
+	self.displayName = self.mesh.displayName;
 	
 	[self _createTextureAndShaderAssignments];
 }
@@ -81,7 +81,7 @@
 		[self _createTextureAndShaderAssignments];
 	
 	if (!self.displayName)
-		self.displayName = self.mesh.name;
+		self.displayName = self.mesh.displayName;
 }
 
 #pragma mark - Shader changes

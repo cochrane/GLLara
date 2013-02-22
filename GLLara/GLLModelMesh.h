@@ -36,6 +36,7 @@ typedef enum GLLCullFaceMode
 @property (nonatomic, weak) GLLModel *model;
 
 @property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *displayName;
 @property (nonatomic, retain) NSArray *textures;
 
 @property (nonatomic, assign) NSUInteger meshIndex;

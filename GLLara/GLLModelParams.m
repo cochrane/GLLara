@@ -61,7 +61,7 @@ static NSCache *parameterCache;
 	GLLModel *model;
 }
 
-- (void)_parseModelName:(NSString *)name meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)parameters cameraTargetName:(NSString *__autoreleasing*)name cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones;
+- (void)_parseModelName:(NSString *)meshName displayName:(NSString *__autoreleasing*)displayName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones;
 
 @end
 
@@ -198,7 +198,7 @@ static NSCache *parameterCache;
 	if (!ownMeshGroups && model)
 	{
 		NSString *groupName = nil;
-		[self _parseModelName:meshName meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
+		[self _parseModelName:meshName displayName:NULL meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
 		if (!groupName) return nil;
 		return @[ groupName ];
 	}
@@ -228,7 +228,7 @@ static NSCache *parameterCache;
 	{
 		NSArray *targets = [model.meshes map:^(GLLModelMesh *mesh){
 			NSString *cameraTargetName = nil;
-			[self _parseModelName:mesh.name meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:NULL];
+			[self _parseModelName:mesh.name displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:NULL];
 			return cameraTargetName;
 		}];
 		
@@ -252,7 +252,7 @@ static NSCache *parameterCache;
 		return [model.meshes mapAndJoin:^NSArray*(GLLModelMesh *mesh){
 			NSString *cameraTargetName = nil;
 			NSArray *cameraTargetBones;
-			[self _parseModelName:mesh.name meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:&cameraTargetBones];
+			[self _parseModelName:mesh.name displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:&cameraTargetBones];
 			if ([cameraTargetName isEqual:cameraTarget])
 				return cameraTargetBones;
 			else
@@ -267,6 +267,20 @@ static NSCache *parameterCache;
 		result = [result arrayByAddingObjectsFromArray:[self.base boneNamesForCameraTarget:cameraTarget]];
 	
 	return result;
+}
+
+#pragma mark - Mesh name
+
+- (NSString *)displayNameForMesh:(NSString *)meshName;
+{
+	if (!ownCameraTargets && model)
+	{
+		NSString *displayName = nil;
+		[self _parseModelName:meshName displayName:&displayName meshGroup:NULL renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
+		if (displayName) return displayName;
+	}
+	
+	return meshName;
 }
 
 #pragma mark - Rendering
@@ -321,7 +335,7 @@ static NSCache *parameterCache;
 	{
 		NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:[self.base renderParametersForMesh:mesh]];
 		NSDictionary *forThisMesh = nil;
-		[self _parseModelName:mesh meshGroup:NULL renderParameters:&forThisMesh cameraTargetName:NULL cameraTargetBones:NULL];
+		[self _parseModelName:mesh displayName:NULL meshGroup:NULL renderParameters:&forThisMesh cameraTargetName:NULL cameraTargetBones:NULL];
 		[result addEntriesFromDictionary:forThisMesh];
 		return result;
 	}
@@ -428,7 +442,7 @@ static NSCache *parameterCache;
 
 #pragma mark - Private methods
 
-- (void)_parseModelName:(NSString *)meshName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones;
+- (void)_parseModelName:(NSString *)meshName displayName:(NSString *__autoreleasing*)displayName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones;
 {
 	// Always use english locale, no matter what the user has set, for proper decimal separators.
 	NSNumberFormatter *englishNumberFormatter = [[NSNumberFormatter alloc] init];
@@ -465,7 +479,9 @@ static NSCache *parameterCache;
 	if (meshGroup)
 		*meshGroup = group;
 	
-	// 2nd match: mesh name - ignored.
+	// 2nd match: mesh name
+	if (displayName)
+		*displayName = [meshName substringWithRange:[components rangeAtIndex:2]];
 	
 	// 3rd, 4th, 5th match: render parameters
 	if (renderParameters)
