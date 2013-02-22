@@ -76,6 +76,7 @@
     </entity>
     <entity name="GLLItemMesh" representedClassName="GLLItemMesh" syncable="YES">
         <attribute name="cullFaceMode" optional="YES" attributeType="Integer 16" minValueString="0" maxValueString="2" defaultValueString="0" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isVisible" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="shaderName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="item" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItem" inverseName="meshes" inverseEntity="GLLItem" syncable="YES"/>
@@ -104,7 +105,7 @@
         <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLItem" positionX="0" positionY="0" width="128" height="404"/>
         <element name="GLLItemBone" positionX="0" positionY="0" width="128" height="165"/>
-        <element name="GLLItemMesh" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="GLLItemMesh" positionX="0" positionY="0" width="128" height="150"/>
         <element name="GLLItemMeshTexture" positionX="0" positionY="0" width="128" height="105"/>
         <element name="GLLLight" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLRenderParameter" positionX="0" positionY="0" width="128" height="75"/>

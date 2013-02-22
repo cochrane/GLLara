@@ -28,12 +28,12 @@
 @property (nonatomic) int16_t cullFaceMode;
 @property (nonatomic, retain) NSSet *renderParameters;
 @property (nonatomic, copy) NSString *shaderName;
+@property (nonatomic, copy) NSString *displayName;
 @property (nonatomic, retain) NSSet *textures;
 
 // Derived
 @property (nonatomic, readonly) NSUInteger meshIndex;
 @property (nonatomic, retain, readonly) GLLModelMesh *mesh;
-@property (nonatomic, readonly, copy) NSString *displayName;
 @property (nonatomic, readonly) GLLShaderDescription *shader;
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;

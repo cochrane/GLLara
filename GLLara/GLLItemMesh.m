@@ -44,7 +44,7 @@
 	[self willChangeValueForKey:@"item"];
 	[self setPrimitiveValue:item forKey:@"item"];
 	[self didChangeValueForKey:@"item"];
-	
+		
 	// Replace all render parameters
 	NSDictionary *values = self.mesh.renderParameterValues;
 	NSMutableSet *renderParameters = [self mutableSetValueForKey:@"renderParameters"];
@@ -68,6 +68,9 @@
 		[renderParameters addObject:parameter];
 	}
 	
+	// Set display name
+	self.displayName = self.mesh.name;
+	
 	[self _createTextureAndShaderAssignments];
 }
 
@@ -76,6 +79,9 @@
 	NSMutableSet *textures = [self mutableSetValueForKey:@"textures"];
 	if (textures.count == 0 || self.shaderName == nil)
 		[self _createTextureAndShaderAssignments];
+	
+	if (!self.displayName)
+		self.displayName = self.mesh.name;
 }
 
 #pragma mark - Shader changes
@@ -141,11 +147,6 @@
 - (GLLModelMesh *)mesh
 {
 	return self.item.model.meshes[self.meshIndex];
-}
-
-- (NSString *)displayName
-{
-	return self.mesh.name;
 }
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
