@@ -319,19 +319,13 @@
 			GLLItemBone *transform = self.bones[indices.firstIndex];
 			
 			float x = 0, y = 0, z = 0;
-			if ([scanner scanFloat:&x])
-				[transform setRotationX:x * M_PI / 180.0];
-			if ([scanner scanFloat:&y])
-				[transform setRotationY:y * M_PI / 180.0];
-			if ([scanner scanFloat:&z])
-				[transform setRotationZ:z * M_PI / 180.0];
+			if ([scanner scanFloat:&x]) transform.rotationX = x * M_PI / 180.0;
+			if ([scanner scanFloat:&y]) transform.rotationY = y * M_PI / 180.0;
+			if ([scanner scanFloat:&z]) transform.rotationZ = z * M_PI / 180.0;
 			
-			if ([scanner scanFloat:&x])
-				[transform setPositionX:x];
-			if ([scanner scanFloat:&y])
-				[transform setPositionY:y];
-			if ([scanner scanFloat:&z])
-				[transform setPositionZ:z];
+			if ([scanner scanFloat:&x]) transform.positionX = x;
+			if ([scanner scanFloat:&y]) transform.positionY = y;
+			if ([scanner scanFloat:&z]) transform.positionZ = z;
 		}
 	}
 	return YES;

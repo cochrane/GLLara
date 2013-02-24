@@ -273,7 +273,7 @@
 		NSView *newView = controller.view;
 		newView.frame = (NSRect) { { 0.0f, 0.0f }, self.placeholderView.frame.size };
 		[self.placeholderView addSubview:controller.view];
-		controller.representedObject = [selectionController selection];
+		controller.representedObject = selectionController.selection;
 		currentController = controller;
 	}
 }

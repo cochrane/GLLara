@@ -44,7 +44,7 @@
 {
     [super windowDidLoad];
 	
-	[self.popoverButton.image setTemplate:YES];
+	self.popoverButton.image.template = YES;
 	for (NSInteger i = 0; i < self.selectionModeControl.segmentCount; i++)
 		[[self.selectionModeControl imageForSegment:i] setTemplate:YES];
 	
@@ -74,7 +74,7 @@
 			[self close];
 			return;
 		}
-		[self.window setContentSize:NSMakeSize([change[NSKeyValueChangeNewKey] doubleValue], contentSize.height)];
+		self.window.contentSize = NSMakeSize([change[NSKeyValueChangeNewKey] doubleValue], contentSize.height);
 	}
 	else if ([keyPath isEqual:@"windowHeight"])
 	{
@@ -83,7 +83,7 @@
 			[self close];
 			return;
 		}
-		[self.window setContentSize:NSMakeSize(contentSize.width, [change[NSKeyValueChangeNewKey] doubleValue])];
+		self.window.contentSize = NSMakeSize(contentSize.width, [change[NSKeyValueChangeNewKey] doubleValue]);
 	}
 	else if ([keyPath isEqual:@"windowSizeLocked"])
 	{

@@ -79,9 +79,9 @@ const double unitsPerSecond = 0.2;
 		return nil;
 	}
 	
-	[self setPixelFormat:format];
-	[self setOpenGLContext:context];
-	[self setWantsBestResolutionOpenGLSurface:YES];
+	self.pixelFormat = format;
+	self.openGLContext = context;
+	self.wantsBestResolutionOpenGLSurface = YES;
 	
 	return self;
 };
@@ -137,7 +137,7 @@ const double unitsPerSecond = 0.2;
 {
 	inGesture = YES;
 	[self.camera.managedObjectContext.undoManager beginUndoGrouping];
-	[self.camera.managedObjectContext.undoManager setActionIsDiscardable:YES];
+	self.camera.managedObjectContext.undoManager.actionIsDiscardable = YES;
 }
 - (void)endGestureWithEvent:(NSEvent *)event
 {
