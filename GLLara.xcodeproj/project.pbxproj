@@ -153,6 +153,7 @@
 		5251BCE2162E248700973E0A /* GLLBasicBinaryModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE1162E248700973E0A /* GLLBasicBinaryModelTest.m */; };
 		5251BCE5162EA7F200973E0A /* GLLBasicASCIIModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE4162EA7F200973E0A /* GLLBasicASCIIModelTest.m */; };
 		5251BCE8162EB84F00973E0A /* GLLInvalidBinaryModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE7162EB84F00973E0A /* GLLInvalidBinaryModelTest.m */; };
+		5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5254601B16DAB41C00919729 /* NSCharacterSet+SetOperations.m */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -501,6 +502,8 @@
 		5251BCE4162EA7F200973E0A /* GLLBasicASCIIModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBasicASCIIModelTest.m; sourceTree = "<group>"; };
 		5251BCE6162EB84F00973E0A /* GLLInvalidBinaryModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLInvalidBinaryModelTest.h; sourceTree = "<group>"; };
 		5251BCE7162EB84F00973E0A /* GLLInvalidBinaryModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLInvalidBinaryModelTest.m; sourceTree = "<group>"; };
+		5254601A16DAB41C00919729 /* NSCharacterSet+SetOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+SetOperations.h"; sourceTree = "<group>"; };
+		5254601B16DAB41C00919729 /* NSCharacterSet+SetOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+SetOperations.m"; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -960,6 +963,8 @@
 				524BEB0C1612551800EA061D /* NSColor+Color32Bit.m */,
 				52ED9E3916999E370082EABB /* NSArray+Map.h */,
 				52ED9E3A16999E370082EABB /* NSArray+Map.m */,
+				5254601A16DAB41C00919729 /* NSCharacterSet+SetOperations.h */,
+				5254601B16DAB41C00919729 /* NSCharacterSet+SetOperations.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1808,6 +1813,7 @@
 				526756A416BF3B0700FB85CA /* GLLTextureAssignmentView.m in Sources */,
 				526756A716BF45EF00FB85CA /* GLLTextureDescription.m in Sources */,
 				526756AA16BF543800FB85CA /* GLLImageView.m in Sources */,
+				5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

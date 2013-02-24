@@ -21,20 +21,22 @@
 #import "GLLSelection.h"
 #import "GLLItemBone.h"
 #import "GLLViewDrawer.h"
+#import "NSCharacterSet+SetOperations.h"
 #import "simd_matrix.h"
 #import "simd_project.h"
+
+static NSCharacterSet *wasdCharacters;
+static NSCharacterSet *xyzCharacters;
+static NSMutableCharacterSet *interestingCharacters;
 
 @interface GLLView ()
 {
 	BOOL inGesture;
 	BOOL shiftIsDown;
 	BOOL altIsDown;
-	BOOL inWASDMove;
 	BOOL showSelection;
 	
-	BOOL xDown;
-	BOOL yDown;
-	BOOL zDown;
+	NSMutableCharacterSet *keysDown;
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
@@ -45,6 +47,14 @@
 const double unitsPerSecond = 0.2;
 
 @implementation GLLView
+
++ (void)initialize
+{
+	wasdCharacters = [NSCharacterSet characterSetWithCharactersInString:@"wasd"];
+	xyzCharacters = [NSCharacterSet characterSetWithCharactersInString:@"xyz"];
+	interestingCharacters = [NSMutableCharacterSet characterSetWithCharactersInString:@"wasdxyz"];
+	[interestingCharacters addCharactersInRange:NSMakeRange(NSUpArrowFunctionKey, 4)];
+}
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -82,6 +92,9 @@ const double unitsPerSecond = 0.2;
 	self.pixelFormat = format;
 	self.openGLContext = context;
 	self.wantsBestResolutionOpenGLSurface = YES;
+	
+	// Event handling
+	keysDown = [[NSMutableCharacterSet alloc] init];
 	
 	return self;
 };
@@ -158,18 +171,15 @@ const double unitsPerSecond = 0.2;
 {
 	if (self.camera.cameraLocked) return;
 	
-	if (xDown || yDown || zDown)
+	if ([xyzCharacters hasIntersectionWithSet:keysDown])
 	{
 		CGFloat angle = theEvent.deltaY / self.bounds.size.height;
 		
 		for (GLLItemBone *bone in [self.document.selection valueForKey:@"selectedBones"])
 		{
-			if (xDown)
-				bone.rotationX += angle;
-			if (yDown)
-				bone.rotationY += angle;
-			if (zDown)
-				bone.rotationZ += angle;
+			if ([keysDown characterIsMember:'x']) bone.rotationX += angle;
+			if ([keysDown characterIsMember:'y']) bone.rotationY += angle;
+			if ([keysDown characterIsMember:'z']) bone.rotationZ += angle;
 		}
 	}
 	else if (theEvent.modifierFlags & NSAlternateKeyMask)
@@ -186,7 +196,7 @@ const double unitsPerSecond = 0.2;
 		
 		self.needsDisplay = YES;
 	}
-	else if (theEvent.modifierFlags & NSShiftKeyMask && !inWASDMove)
+	else if (theEvent.modifierFlags & NSShiftKeyMask && ![wasdCharacters hasIntersectionWithSet:keysDown])
 	{
 		// This is a move event
 		float deltaX = -theEvent.deltaX / self.bounds.size.width;
@@ -273,18 +283,9 @@ const double unitsPerSecond = 0.2;
 {
 	if (self.camera.cameraLocked) return;
 	
-	BOOL wDown = NO;
-	BOOL aDown = NO;
-	BOOL sDown = NO;
-	BOOL dDown = NO;
 	BOOL mouseDown = NO;
-	xDown = NO;
-	yDown = NO;
-	zDown = NO;
 	
 	NSTimeInterval lastEvent = [NSDate timeIntervalSinceReferenceDate];
-	
-	//GLLItemBone *lastSelectedBone = nil;
 	
 	[NSEvent startPeriodicEventsAfterDelay:0.0 withPeriod:1.0 / 30.0];
 	
@@ -308,28 +309,14 @@ const double unitsPerSecond = 0.2;
 				break;
 			case NSKeyDown:
 			{
-				unichar firstCharacter = tolower([theEvent.charactersIgnoringModifiers characterAtIndex:0]);
-				wDown = wDown || (firstCharacter == 'w');
-				aDown = aDown || (firstCharacter == 'a');
-				sDown = sDown || (firstCharacter == 's');
-				dDown = dDown || (firstCharacter == 'd');
-				xDown = xDown || (firstCharacter == 'x');
-				yDown = yDown || (firstCharacter == 'y');
-				zDown = zDown || (firstCharacter == 'z');
+				[keysDown addCharactersInString:[theEvent.charactersIgnoringModifiers lowercaseString]];
 				shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
 				altIsDown = (theEvent.modifierFlags & NSAlternateKeyMask) != 0;
 			}
 				break;
 			case NSKeyUp:
 			{
-				unichar firstCharacter = tolower([theEvent.charactersIgnoringModifiers characterAtIndex:0]);
-				wDown = wDown && (firstCharacter != 'w');
-				aDown = aDown && (firstCharacter != 'a');
-				sDown = sDown && (firstCharacter != 's');
-				dDown = dDown && (firstCharacter != 'd');
-				xDown = xDown && (firstCharacter != 'x');
-				yDown = yDown && (firstCharacter != 'y');
-				zDown = zDown && (firstCharacter != 'z');
+				[keysDown removeCharactersInString:[theEvent.charactersIgnoringModifiers lowercaseString]];
 				shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
 				altIsDown = (theEvent.modifierFlags & NSAlternateKeyMask) != 0;
 			}
@@ -350,25 +337,69 @@ const double unitsPerSecond = 0.2;
 				mouseDown = YES;
 				break;
 		}
-		if (!wDown && !aDown && !sDown && !dDown && !mouseDown && !xDown && !yDown && !zDown && !shiftIsDown && !altIsDown) break;
-		inWASDMove = wDown || aDown || sDown || dDown;
+		if (![interestingCharacters hasIntersectionWithSet:keysDown] && !shiftIsDown && !altIsDown) break;
 		
 		// Perform actions
+		// - Move
 		float deltaX = 0, deltaY = 0, deltaZ = 0;
-		if (aDown && !dDown) deltaX = -diff * unitsPerSecond;
-		else if (!aDown & dDown) deltaX = diff * unitsPerSecond;
-		if (wDown && !sDown) deltaZ = -diff * unitsPerSecond;
-		else if (!wDown && sDown) deltaZ = diff * unitsPerSecond;
-		
+		if ([keysDown characterIsMember:'a'] && ![keysDown characterIsMember:'d']) deltaX = -diff * unitsPerSecond;
+		else if (![keysDown characterIsMember:'a'] & [keysDown characterIsMember:'d']) deltaX = diff * unitsPerSecond;
+		if ([keysDown characterIsMember:'w'] && ![keysDown characterIsMember:'s']) deltaZ = -diff * unitsPerSecond;
+		else if (![keysDown characterIsMember:'w'] && [keysDown characterIsMember:'s']) deltaZ = diff * unitsPerSecond;
 		[self.camera moveLocalX:deltaX y:deltaY z:deltaZ];
+
+		// Move bones with arrow keys
+		if ([xyzCharacters hasIntersectionWithSet:keysDown])
+		{
+			CGFloat delta = 0.0f;
+			if (([keysDown characterIsMember:NSLeftArrowFunctionKey] || [keysDown characterIsMember:NSUpArrowFunctionKey]) && !([keysDown characterIsMember:NSRightArrowFunctionKey] || [keysDown characterIsMember:NSDownArrowFunctionKey]))
+				delta = unitsPerSecond * diff * 0.1;
+			else if (!([keysDown characterIsMember:NSLeftArrowFunctionKey] || [keysDown characterIsMember:NSUpArrowFunctionKey]) && ([keysDown characterIsMember:NSRightArrowFunctionKey] || [keysDown characterIsMember:NSDownArrowFunctionKey]))
+				delta = unitsPerSecond * diff * -0.1;
+			
+			for (GLLItemBone *bone in [self.document.selection valueForKey:@"selectedBones"])
+			{
+				if ([keysDown characterIsMember:'x']) bone.positionX += delta;
+				if ([keysDown characterIsMember:'y']) bone.positionY += delta;
+				if ([keysDown characterIsMember:'z']) bone.positionZ += delta;
+			}
+		}
+		else if (theEvent.modifierFlags & NSAlternateKeyMask)
+		{
+			// Move the object up or down with arrow keys
+			CGFloat deltaY = 0;
+			if ([keysDown characterIsMember:NSUpArrowFunctionKey] && ![keysDown characterIsMember:NSDownArrowFunctionKey]) deltaY = diff * unitsPerSecond;
+			else if (![keysDown characterIsMember:NSUpArrowFunctionKey] && [keysDown characterIsMember:NSDownArrowFunctionKey]) deltaY = -diff * unitsPerSecond;
+			
+			for (GLLItem *item in [self.document.selection valueForKey:@"selectedItems"])
+				item.positionY += deltaY * 0.1;
+
+		}
+		else
+		{
+			// Move object in x/z plane with arrow keys
+			CGFloat deltaX = 0, deltaZ = 0;
+			if ([keysDown characterIsMember:NSLeftArrowFunctionKey] && ![keysDown characterIsMember:NSRightArrowFunctionKey]) deltaX = -diff * unitsPerSecond;
+			else if (![keysDown characterIsMember:NSLeftArrowFunctionKey] & [keysDown characterIsMember:NSRightArrowFunctionKey]) deltaX = diff * unitsPerSecond;
+			if ([keysDown characterIsMember:NSUpArrowFunctionKey] && ![keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = diff * unitsPerSecond;
+			else if (![keysDown characterIsMember:NSUpArrowFunctionKey] && [keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = -diff * unitsPerSecond;
 		
-		// Prepare for next move through the loop
+			vec_float4 delta = simd_make(deltaX * 0.1, 0.0f, deltaZ * 0.1, 0.0f);
+			delta = simd_mat_vecunrotate(self.camera.viewMatrix, delta);
+			
+			for (GLLItem *item in [self.document.selection valueForKey:@"selectedItems"])
+			{
+				item.positionX += simd_extract(delta, 0);
+				item.positionZ += simd_extract(delta, 2);
+			}
+		}
+		
+		// - Prepare for next move through the loop
 		self.needsDisplay = YES;
 		
 		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDownMask | NSLeftMouseUpMask | NSLeftMouseDraggedMask | NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSApplicationDeactivatedEventType untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
 	}
 	[NSEvent stopPeriodicEvents];
-	inWASDMove = NO;
 	
 	self.needsDisplay = YES;
 }
