@@ -1,20 +1,20 @@
 /* Class = "NSButtonCell"; title = "Is visible"; ObjectID = "4"; */
-"Is visible" = "Is visible";
+"Is visible" = "Sichtbar";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "35"; */
 "OtherViews" = "OtherViews";
 
 /* Class = "NSMenuItem"; title = "Counter-clockwise orientation"; ObjectID = "36"; */
-"Counter-clockwise orientation" = "Counter-clockwise orientation";
+"Counter-clockwise orientation" = "Gegen Uhrzeigersinn orientiert";
 
 /* Class = "NSMenuItem"; title = "Clockwise orientation"; ObjectID = "37"; */
-"Clockwise orientation" = "Clockwise orientation";
+"Clockwise orientation" = "Im Uhrzeigersinn orientiert";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "38"; */
 "None" = "None";
 
 /* Class = "NSTextFieldCell"; title = "Faces to cull:"; ObjectID = "44"; */
-"Faces to cull:" = "Faces to cull:";
+"Faces to cull:" = "Gecullte Flächen:";
 
 /* Class = "NSTableColumn"; headerCell.title = "Render parameters"; ObjectID = "73"; */
 "Render parameters" = "Render parameters";
@@ -35,7 +35,7 @@
 "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
 
 /* Class = "NSTableColumn"; headerCell.title = "Textures"; ObjectID = "429"; */
-"Textures" = "Textures";
+"Textures" = "Texturen";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "432"; */
 "Text Cell" = "Text Cell";
@@ -50,13 +50,13 @@
 "OtherViews" = "OtherViews";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "456"; */
-"None" = "None";
+"None" = "Keine";
 
 /* Class = "NSMenuItem"; title = "Clockwise orientation"; ObjectID = "457"; */
-"Clockwise orientation" = "Clockwise orientation";
+"Clockwise orientation" = "Im Uhrzeigersinn orientiert";
 
 /* Class = "NSMenuItem"; title = "Counter-clockwise orientation"; ObjectID = "458"; */
-"Counter-clockwise orientation" = "Counter-clockwise orientation";
+"Counter-clockwise orientation" = "Gegen Uhrzeigersinn orientiert";
 
 /* Class = "NSTextFieldCell"; title = "Shader:"; ObjectID = "461"; */
 "Shader:" = "Shader:";

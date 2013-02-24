@@ -1,0 +1,27 @@
+/* Class = "NSTextFieldCell"; title = "Rotation"; ObjectID = "3"; */
+"Rotation" = "Drehung";
+
+/* Class = "NSTextFieldCell"; title = "X"; ObjectID = "5"; */
+"X" = "X";
+
+/* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "7"; */
+"Y" = "Y";
+
+/* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "9"; */
+"Z" = "Z";
+
+/* Class = "NSTextFieldCell"; title = "Position"; ObjectID = "29"; */
+"Position" = "Position";
+
+/* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "51"; */
+"Z" = "Z";
+
+/* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "52"; */
+"Y" = "Y";
+
+/* Class = "NSTextFieldCell"; title = "X"; ObjectID = "53"; */
+"X" = "X";
+
+/* Class = "NSButtonCell"; title = "Reset all values"; ObjectID = "95"; */
+"Reset all values" = "Alle Werte zurücksetzen";
+

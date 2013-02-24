@@ -1,0 +1,30 @@
+/* Class = "NSWindow"; title = "Window"; ObjectID = "1"; */
+"Window" = "Window";
+
+/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "57"; */
+"OtherViews" = "OtherViews";
+
+/* Class = "NSMenuItem"; title = "items go here (do not localize)"; ObjectID = "58"; */
+"items go here (do not localize)" = "items go here (do not localize)";
+
+/* Class = "NSViewController"; title = "Window Settings Popover Controller"; ObjectID = "83"; */
+"Window Settings Popover Controller" = "Window Settings Popover Controller";
+
+/* Class = "IBBindingConnection"; ibShadowedIsNilPlaceholder = "No Camera Target"; ObjectID = "185"; */
+"No Camera Target" = "Kein Kameraziel";
+
+/* Class = "IBBindingConnection"; ibShadowedIsNilPlaceholder = "no null2"; ObjectID = "186"; */
+"no null2" = "no null2";
+
+/* Class = "NSSegmentedCell"; 203.ibShadowedToolTips[0] = "Move camera"; ObjectID = "203"; */
+"Move camera" = "Kamera bewegen";
+
+/* Class = "NSSegmentedCell"; 203.ibShadowedToolTips[1] = "Move bone and all children"; ObjectID = "203"; */
+"Move bone and all children" = "Bone und Kinder bewegen";
+
+/* Class = "NSSegmentedCell"; 203.ibShadowedToolTips[2] = "Move bone but not children"; ObjectID = "203"; */
+"Move bone but not children" = "Bone ohne Kinder bewegen";
+
+/* Class = "NSSegmentedCell"; 203.ibShadowedToolTips[3] = "Move bone and parent"; ObjectID = "203"; */
+"Move bone and parent" = "Bone und Eltern bewegen";
+

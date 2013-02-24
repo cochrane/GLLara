@@ -1,0 +1,9 @@
+/* Class = "NSButtonCell"; title = "Include transformation"; ObjectID = "4"; */
+"Include transformation" = "Position exportieren";
+
+/* Class = "NSButtonCell"; title = "Include vertex colors (non-standard)"; ObjectID = "8"; */
+"Include vertex colors (non-standard)" = "Vertex-Farben exportieren (nicht Standard)";
+
+/* Class = "NSTextFieldCell"; title = "Some data will be missing."; ObjectID = "21"; */
+"Some data will be missing." = "Nicht alle Daten können exportiert werden.";
+
