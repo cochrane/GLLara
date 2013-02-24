@@ -204,12 +204,43 @@ const double unitsPerSecond = 0.2;
 		
 		[self.camera moveLocalX:deltaX y:deltaY z:0.0f];
 	}
+	else if (theEvent.modifierFlags & NSControlKeyMask)
+	{
+		[self rightMouseDragged:theEvent];
+	}
 	else
 	{
 		// This is a rotate event
 		self.camera.longitude -= theEvent.deltaX * M_PI / self.bounds.size.width;
 		self.camera.latitude -= theEvent.deltaY * M_PI / self.bounds.size.height;
 	}
+}
+
+- (void)rightMouseDragged:(NSEvent *)theEvent
+{
+	CGFloat deltaX = theEvent.deltaX * M_PI / self.bounds.size.width;
+	CGFloat deltaY = theEvent.deltaY * M_PI / self.bounds.size.height;
+	
+	// Turn camera around it's current position. To do this:
+	// 1. Find current position
+	vec_float4 position = self.camera.cameraWorldPosition;
+	// 2. Calculate new position of target
+	float cameraRelativeLatitude = self.camera.latitude;
+	float cameraRelativeLongitude = self.camera.longitude;
+	
+	cameraRelativeLongitude -= deltaX;
+	cameraRelativeLatitude -= deltaY;
+	
+	vec_float4 viewDirection = simd_mat_vecmul(simd_mat_euler(simd_make(cameraRelativeLatitude, cameraRelativeLongitude, 0.0f, 0.0f), simd_e_w), simd_e_z);
+	
+	vec_float4 newTargetPosition = position - viewDirection * simd_splatf(self.camera.distance);
+	self.camera.positionX = simd_extract(newTargetPosition, 0);
+	self.camera.positionY = simd_extract(newTargetPosition, 1);
+	self.camera.positionZ = simd_extract(newTargetPosition, 2);
+	
+	// 3. Calculate new rotation of camera
+	self.camera.longitude -= deltaX;
+	self.camera.latitude -= deltaY;
 }
 
 - (void)reshape
@@ -330,6 +361,9 @@ const double unitsPerSecond = 0.2;
 			case NSLeftMouseDragged:
 				[self mouseDragged:theEvent];
 				break;
+			case NSRightMouseDragged:
+				[self rightMouseDragged:theEvent];
+				break;
 			case NSLeftMouseUp:
 				mouseDown = NO;
 				break;
@@ -397,7 +431,7 @@ const double unitsPerSecond = 0.2;
 		// - Prepare for next move through the loop
 		self.needsDisplay = YES;
 		
-		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDownMask | NSLeftMouseUpMask | NSLeftMouseDraggedMask | NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSApplicationDeactivatedEventType untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
+		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDownMask | NSLeftMouseUpMask | NSLeftMouseDraggedMask | NSRightMouseDraggedMask |NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSApplicationDeactivatedEventType untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
 	}
 	[NSEvent stopPeriodicEvents];
 	
