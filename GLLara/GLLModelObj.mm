@@ -10,6 +10,7 @@
 
 #import "GLLModelBone.h"
 #import "GLLModelMeshObj.h"
+#import "GLLModelParams.h"
 #import "GLLMtlFile.h"
 #import "GLLObjFile.h"
 
@@ -63,6 +64,10 @@
 		[meshes addObject:mesh];
 	}
 	self.meshes = [meshes copy];
+	
+	NSError *paramError = nil;
+	self.parameters = [GLLModelParams parametersForName:@"objFileParameters" error:&paramError];
+	NSAssert(self.parameters && !paramError, @"Should have params (are %@), no error (is %@)", self.parameters, paramError);
 	
 	return self;
 }
