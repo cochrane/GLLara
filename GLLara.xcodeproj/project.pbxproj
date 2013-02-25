@@ -13,6 +13,7 @@
 		5213263E1602BB8000787AA1 /* GLLSquareProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213263D1602BB8000787AA1 /* GLLSquareProgram.m */; };
 		5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */; };
 		5214470416DBBC42003E260F /* GLLLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470316DBBC42003E260F /* GLLLightViewController.m */; };
+		5214470716DBBE3A003E260F /* GLLExplicitLocalizingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470616DBBE39003E260F /* GLLExplicitLocalizingViewController.m */; };
 		52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52152CEE16B66951001AE54C /* GLLDDSFile.m */; };
 		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
 		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
@@ -363,6 +364,8 @@
 		5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAmbientLightViewController.m; sourceTree = "<group>"; };
 		5214470216DBBC41003E260F /* GLLLightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLightViewController.h; sourceTree = "<group>"; };
 		5214470316DBBC42003E260F /* GLLLightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLightViewController.m; sourceTree = "<group>"; };
+		5214470516DBBE39003E260F /* GLLExplicitLocalizingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLExplicitLocalizingViewController.h; sourceTree = "<group>"; };
+		5214470616DBBE39003E260F /* GLLExplicitLocalizingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLExplicitLocalizingViewController.m; sourceTree = "<group>"; };
 		52152CED16B66951001AE54C /* GLLDDSFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDDSFile.h; sourceTree = "<group>"; };
 		52152CEE16B66951001AE54C /* GLLDDSFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDDSFile.m; sourceTree = "<group>"; };
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
@@ -1402,6 +1405,8 @@
 				5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */,
 				5214470216DBBC41003E260F /* GLLLightViewController.h */,
 				5214470316DBBC42003E260F /* GLLLightViewController.m */,
+				5214470516DBBE39003E260F /* GLLExplicitLocalizingViewController.h */,
+				5214470616DBBE39003E260F /* GLLExplicitLocalizingViewController.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1853,6 +1858,7 @@
 				5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */,
 				5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */,
 				5214470416DBBC42003E260F /* GLLLightViewController.m in Sources */,
+				5214470716DBBE3A003E260F /* GLLExplicitLocalizingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
