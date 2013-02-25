@@ -333,31 +333,6 @@ static NSCache *cachedModels;
 	return self;
 }
 
-#pragma mark - Export
-
-- (NSString *)writeASCII;
-{
-	NSMutableString *result = [NSMutableString string];
-	[result appendFormat:@"%lu\n", self.bones.count];
-	[result appendString:[[self.bones valueForKey:@"writeASCII"] componentsJoinedByString:@""]];
-	[result appendFormat:@"%lu\n", self.meshes.count];
-	[result appendString:[[self.meshes valueForKey:@"writeASCII"] componentsJoinedByString:@""]];
-	
-	return [result copy];
-}
-- (NSData *)writeBinary;
-{
-	TROutDataStream *stream = [[TROutDataStream alloc] init];
-	[stream appendUint32:(uint32_t) self.bones.count];
-	for (GLLModelBone *bone in self.bones)
-		[stream appendData:[bone writeBinary]];
-	[stream appendUint32:(uint32_t) self.meshes.count];
-	for (GLLModelMesh *mesh in self.meshes)
-		[stream appendData:[mesh writeBinary]];
-	
-	return stream.data;
-}
-
 #pragma mark - Accessors
 
 - (BOOL)hasBones

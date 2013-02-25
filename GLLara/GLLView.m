@@ -314,8 +314,6 @@ const double unitsPerSecond = 0.2;
 {
 	if (self.camera.cameraLocked) return;
 	
-	BOOL mouseDown = NO;
-	
 	NSTimeInterval lastEvent = [NSDate timeIntervalSinceReferenceDate];
 	
 	[NSEvent startPeriodicEventsAfterDelay:0.0 withPeriod:1.0 / 30.0];
@@ -363,12 +361,6 @@ const double unitsPerSecond = 0.2;
 				break;
 			case NSRightMouseDragged:
 				[self rightMouseDragged:theEvent];
-				break;
-			case NSLeftMouseUp:
-				mouseDown = NO;
-				break;
-			case NSLeftMouseDown:
-				mouseDown = YES;
 				break;
 		}
 		if (![interestingCharacters hasIntersectionWithSet:keysDown] && !shiftIsDown && !altIsDown) break;
@@ -431,7 +423,7 @@ const double unitsPerSecond = 0.2;
 		// - Prepare for next move through the loop
 		self.needsDisplay = YES;
 		
-		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDownMask | NSLeftMouseUpMask | NSLeftMouseDraggedMask | NSRightMouseDraggedMask |NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSApplicationDeactivatedEventType untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
+		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDraggedMask | NSRightMouseDraggedMask |NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSApplicationDeactivatedEventType untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
 	}
 	[NSEvent stopPeriodicEvents];
 	

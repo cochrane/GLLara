@@ -229,7 +229,7 @@
 		GLLItemMeshTexture *textureAssignment = [self.itemMesh textureWithIdentifier:identifier];
 		return [[GLLResourceManager sharedResourceManager] textureForURL:textureAssignment.textureURL error:error];
 	}];
-	if (textures.count < self.meshDrawer.modelMesh.shader.textureUniformNames.count)
+	if (textures.count < self.itemMesh.shader.textureUniformNames.count)
 		return NO;
 	else
 		return YES;

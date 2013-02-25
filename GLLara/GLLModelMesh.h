@@ -105,7 +105,7 @@ typedef enum GLLCullFaceMode
 - (BOOL)validateVertexData:(NSData *)vertexData indexData:(NSData *)indicesData error:(NSError *__autoreleasing*)error;
 
 // Ensures that all bone weights are correct
-- (NSData *)normalizeBoneWeightsInVertices:(NSData *)vertexData;
+- (NSData *)normalizeBoneWeightsInVertices:(NSData *)vertexData __attribute__((nonnull(1)));
 
 // Finalize loading. In particular, load render parameters.
 - (void)finishLoading;
@@ -115,7 +115,7 @@ typedef enum GLLCullFaceMode
 @property (nonatomic, assign, readonly) GLLCullFaceMode cullFaceMode;
 
 // Export
-- (NSString *)writeASCII;
-- (NSData *)writeBinary;
+- (NSString *)writeASCIIWithName:(NSString *)name texture:(NSArray *)textures __attribute__((nonnull(1,2)));
+- (NSData *)writeBinaryWithName:(NSString *)name texture:(NSArray *)textures __attribute__((nonnull(1,2)));
 
 @end

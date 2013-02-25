@@ -170,6 +170,7 @@
 						NSMutableDictionary *localizedOptions = [[displayPatternInfo objectForKey:NSOptionsKey] mutableCopy];
 						[localizedOptions setObject:localizedDisplayPattern forKey:NSDisplayPatternBindingOption];
 						[textField bind:@"displayPatternValue1" toObject:[displayPatternInfo objectForKey:NSObservedObjectKey] withKeyPath:[displayPatternInfo objectForKey:NSObservedKeyPathKey] options:localizedOptions];
+						[localizedOptions release];
 					}
 				}
 			}

@@ -14,6 +14,7 @@
 #import "GLLDirectionalLight.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLItem.h"
+#import "GLLItem+MeshExport.h"
 #import "GLLItemBone.h"
 #import "GLLItemExportViewController.h"
 #import "GLLItemMesh.h"
@@ -266,6 +267,74 @@
 		NSError *error = nil;
 		if (![exporter.poseDescription writeToURL:panel.URL atomically:YES encoding:NSUTF8StringEncoding error:&error])
 			[self.windowForSheet presentError:error];
+	}];
+}
+- (IBAction)exportItem:(id)sender;
+{
+	if ([[self.selection valueForKeyPath:@"selectedItems"] count] != 1)
+	{
+		NSBeep();
+		return;
+	}
+	
+	GLLItem *item = [[self.selection valueForKeyPath:@"selectedItems"] objectAtIndex:0];
+	
+	NSSavePanel *panel = [NSSavePanel savePanel];
+	panel.canCreateDirectories = YES;
+	panel.allowedFileTypes = @[ (__bridge NSString *) kUTTypeFolder ];
+	
+	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
+		if (result != NSOKButton) return;
+		
+		NSFileManager *manager = [NSFileManager defaultManager];
+		NSError *error = nil;
+		
+		// Create new folder
+		if (![manager createDirectoryAtURL:panel.URL withIntermediateDirectories:YES attributes:nil error:&error])
+		{
+			[self.windowForSheet presentError:error];
+			return;
+		}
+		
+		// Copy textures to folder
+		NSMutableSet *copiedTextures = [NSMutableSet set];
+		for (GLLItemMesh *mesh in [item valueForKeyPath:@"meshes"])
+		{
+			for (NSURL *textureURL in [mesh valueForKeyPath:@"textures.textureURL.absoluteURL"])
+			{
+				if ([copiedTextures containsObject:textureURL])
+					continue;
+				
+				[copiedTextures addObject:textureURL];
+				
+				NSURL *targetURL = [panel.URL URLByAppendingPathComponent:textureURL.lastPathComponent];
+				if ([targetURL checkResourceIsReachableAndReturnError:NULL])
+					continue;
+				if (![manager copyItemAtURL:textureURL toURL:targetURL error:&error])
+				{
+					[manager removeItemAtURL:panel.URL error:NULL];
+					[self.windowForSheet presentError:error];
+					return;
+				}
+			}
+		}
+		
+		// Save mesh file there - both with and without ascii
+		NSString *ascii = [item writeASCII];
+		if (![ascii writeToURL:[panel.URL URLByAppendingPathComponent:@"generic_item.mesh.ascii"] atomically:YES encoding:NSUTF8StringEncoding error:&error])
+		{
+			[manager removeItemAtURL:panel.URL error:NULL];
+			[self.windowForSheet presentError:error];
+			return;
+		}
+		
+		NSData *binary = [item writeBinary];
+		if (![binary writeToURL:[panel.URL URLByAppendingPathComponent:@"generic_item.mesh"] options:NSDataWritingAtomic error:&error])
+		{
+			[manager removeItemAtURL:panel.URL error:NULL];
+			[self.windowForSheet presentError:error];
+			return;
+		}
 	}];
 }
 

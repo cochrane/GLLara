@@ -62,10 +62,16 @@ void vec_addTo(float *a, float *b)
 	for (NSUInteger i = 0; i < numTextures; i++)
 	{
 		NSString *textureName = [stream readPascalString];
-		[stream readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
+		
 		NSString *finalPathComponent = [[textureName componentsSeparatedByString:@"\\"] lastObject];
-		if (!finalPathComponent) return nil;
+		if (!finalPathComponent)
+		{
+			return nil;
+		}
 		[textures addObject:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:model.baseURL]];
+		
+		
+		[stream readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
 	}
 	_textures = [textures copy];
 	
@@ -80,6 +86,14 @@ void vec_addTo(float *a, float *b)
 	
 	_countOfVertices = [stream readUint32];
 	NSData *rawVertexData = [stream dataWithLength:_countOfVertices * self.stride];
+	if (!rawVertexData)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error"),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The vertex data for a mesh could not be loaded.", @"Premature end of file error") }];
+		return nil;
+	}
 	_vertexData = [[self normalizeBoneWeightsInVertices:rawVertexData] copy];
 	
 	_countOfElements = 3 * [stream readUint32]; // File saves number of triangles
@@ -344,13 +358,16 @@ void vec_addTo(float *a, float *b)
 
 #pragma mark - Export
 
-- (NSString *)writeASCII;
+- (NSString *)writeASCIIWithName:(NSString *)name texture:(NSArray *)textures;
 {
+	NSParameterAssert(name);
+	NSParameterAssert(textures);
+	
 	NSMutableString *result = [NSMutableString string];
-	[result appendFormat:@"%@\n", self.name];
+	[result appendFormat:@"%@\n", name];
 	[result appendFormat:@"%lu\n", self.countOfUVLayers];
-	[result appendFormat:@"%lu\n", self.textures.count];
-	for (NSURL *texture in self.textures)
+	[result appendFormat:@"%lu\n", textures.count];
+	for (NSURL *texture in textures)
 		[result appendFormat:@"%@\n0\n", texture.lastPathComponent];
 	
 	[result appendFormat:@"%lu\n", self.countOfVertices];
@@ -388,13 +405,16 @@ void vec_addTo(float *a, float *b)
 	return [result copy];
 }
 
-- (NSData *)writeBinary;
+- (NSData *)writeBinaryWithName:(NSString *)name texture:(NSArray *)textures;
 {
+	NSParameterAssert(name);
+	NSParameterAssert(textures);
+	
 	TROutDataStream *stream = [[TROutDataStream alloc] init];
-	[stream appendPascalString:self.name];
+	[stream appendPascalString:name];
 	[stream appendUint32:(uint32_t) self.countOfUVLayers];
-	[stream appendUint32:(uint32_t) self.textures.count];
-	for (NSURL *texture in self.textures)
+	[stream appendUint32:(uint32_t) textures.count];
+	for (NSURL *texture in textures)
 	{
 		[stream appendPascalString:texture.lastPathComponent];
 		[stream appendUint32:0];
@@ -548,6 +568,8 @@ void vec_addTo(float *a, float *b)
 
 - (NSData *)normalizeBoneWeightsInVertices:(NSData *)vertexData;
 {
+	NSParameterAssert(vertexData);
+	
 	if (!self.hasBoneWeights)
 		return vertexData; // No processing necessary
 	

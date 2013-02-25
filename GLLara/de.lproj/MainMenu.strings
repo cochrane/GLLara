@@ -376,8 +376,10 @@
 /* Class = "NSMenuItem"; title = "Add Model…"; ObjectID = "543"; */
 "Add Model…" = "Modell hinzufügen…";
 
+"Export selected Model…" = "Ausgewähltes Modell exportieren…";
+
 /* Class = "NSMenuItem"; title = "Export selected model…"; ObjectID = "545"; */
-"Export selected model…" = "Ausgewähltes Modell exportieren…";
+"Export posed Model…" = "Posiertes Modell exportieren…";
 
 /* Class = "NSMenuItem"; title = "View"; ObjectID = "547"; */
 "View" = "Ansicht";
