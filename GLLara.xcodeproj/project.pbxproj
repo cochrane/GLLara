@@ -671,7 +671,7 @@
 		52B9E09616027FC800641518 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		52B9E09C16027FC800641518 /* xibLocalizationPostprocessor-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "xibLocalizationPostprocessor-Prefix.pch"; sourceTree = "<group>"; };
 		52B9E0A316027FEE00641518 /* xibLocalizationPostprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = xibLocalizationPostprocessor.m; path = DMLocalizedNibBundle/xibLocalizationPostprocessor.m; sourceTree = SOURCE_ROOT; };
-		52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DMLocalizedNibBundle.m; path = DMLocalizedNibBundle/DMLocalizedNibBundle.m; sourceTree = SOURCE_ROOT; };
+		52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DMLocalizedNibBundle.m; path = GLLara/DMLocalizedNibBundle.m; sourceTree = SOURCE_ROOT; };
 		52B9E0AA1602811D00641518 /* GLLDocument.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLDocument.xib; sourceTree = "<group>"; };
 		52B9E0AB1602811D00641518 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		52B9E0AF1602815800641518 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RenderParameters.strings; sourceTree = "<group>"; };
