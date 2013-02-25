@@ -10,31 +10,32 @@
 
 #import "NSArray+Map.h"
 #import "GLLAmbientLight.h"
-#import "GLLItemBone.h"
+#import "GLLAmbientLightViewController.h"
 #import "GLLBoneViewController.h"
-#import "GLLItemMesh.h"
-#import "GLLMeshViewController.h"
-#import "GLLModel.h"
 #import "GLLDirectionalLight.h"
 #import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLItem+OBJExport.h"
+#import "GLLItemBone.h"
 #import "GLLItemController.h"
 #import "GLLItemExportViewController.h"
 #import "GLLItemListController.h"
+#import "GLLItemMesh.h"
 #import "GLLItemViewController.h"
 #import "GLLLightsListController.h"
-#import "GLLItemListController.h"
+#import "GLLLightViewController.h"
+#import "GLLMeshViewController.h"
+#import "GLLModel.h"
 #import "GLLSelection.h"
 #import "GLLSettingsListController.h"
 
 @interface GLLDocumentWindowController ()
 {
-	NSViewController *ambientLightViewController;
+	GLLAmbientLightViewController *ambientLightViewController;
 	GLLBoneViewController *boneViewController;
 	GLLItemViewController *itemViewController;
 	GLLMeshViewController *meshViewController;
-	NSViewController *lightViewController;
+	GLLLightViewController *lightViewController;
 	
 	GLLLightsListController *lightsListController;
 	GLLItemListController *itemListController;
@@ -63,11 +64,11 @@
     
 	_managedObjectContext = managedObjectContext;
 	
-	ambientLightViewController = [[NSViewController alloc] initWithNibName:@"GLLAmbientLightView" bundle:[NSBundle mainBundle]];
+	ambientLightViewController = [[GLLAmbientLightViewController alloc] init];
 	boneViewController = [[GLLBoneViewController alloc] init];
 	itemViewController = [[GLLItemViewController alloc] init];
 	meshViewController = [[GLLMeshViewController alloc] init];
-	lightViewController = [[NSViewController alloc] initWithNibName:@"GLLLightView" bundle:[NSBundle mainBundle]];
+	lightViewController = [[GLLLightViewController alloc] init];
 	
 	selectionController = [[NSArrayController alloc] init];
 	[selectionController bind:@"contentArray" toObject:self withKeyPath:@"selection.selectedObjects" options:nil];

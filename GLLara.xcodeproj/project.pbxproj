@@ -11,6 +11,8 @@
 		521326391602B19700787AA1 /* Square.fs in Resources */ = {isa = PBXBuildFile; fileRef = 521326381602B19700787AA1 /* Square.fs */; };
 		5213263B1602B1AA00787AA1 /* Square.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5213263A1602B1AA00787AA1 /* Square.vs */; };
 		5213263E1602BB8000787AA1 /* GLLSquareProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213263D1602BB8000787AA1 /* GLLSquareProgram.m */; };
+		5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */; };
+		5214470416DBBC42003E260F /* GLLLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470316DBBC42003E260F /* GLLLightViewController.m */; };
 		52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52152CEE16B66951001AE54C /* GLLDDSFile.m */; };
 		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
 		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
@@ -357,6 +359,10 @@
 		521446FC16DAD8C3003E260F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/RenderParameters.strings; sourceTree = "<group>"; };
 		521446FD16DAD8C3003E260F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = de; path = de.lproj/Credits.rtf; sourceTree = "<group>"; };
 		521446FE16DAD8C4003E260F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		521446FF16DBBBEA003E260F /* GLLAmbientLightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAmbientLightViewController.h; sourceTree = "<group>"; };
+		5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAmbientLightViewController.m; sourceTree = "<group>"; };
+		5214470216DBBC41003E260F /* GLLLightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLightViewController.h; sourceTree = "<group>"; };
+		5214470316DBBC42003E260F /* GLLLightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLightViewController.m; sourceTree = "<group>"; };
 		52152CED16B66951001AE54C /* GLLDDSFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDDSFile.h; sourceTree = "<group>"; };
 		52152CEE16B66951001AE54C /* GLLDDSFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDDSFile.m; sourceTree = "<group>"; };
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
@@ -1392,6 +1398,10 @@
 				526756A316BF3B0600FB85CA /* GLLTextureAssignmentView.m */,
 				526756A816BF543800FB85CA /* GLLImageView.h */,
 				526756A916BF543800FB85CA /* GLLImageView.m */,
+				521446FF16DBBBEA003E260F /* GLLAmbientLightViewController.h */,
+				5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */,
+				5214470216DBBC41003E260F /* GLLLightViewController.h */,
+				5214470316DBBC42003E260F /* GLLLightViewController.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1841,6 +1851,8 @@
 				526756A716BF45EF00FB85CA /* GLLTextureDescription.m in Sources */,
 				526756AA16BF543800FB85CA /* GLLImageView.m in Sources */,
 				5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */,
+				5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */,
+				5214470416DBBC42003E260F /* GLLLightViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

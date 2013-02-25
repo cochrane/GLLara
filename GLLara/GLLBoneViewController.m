@@ -22,6 +22,12 @@
 	return self;
 }
 
+- (void)loadView
+{
+	// Load explicitly with this method, to make sure it goes through DMLocalizedNibBundle.
+	[NSBundle loadNibNamed:self.nibName owner:self];
+}
+
 - (IBAction)resetAllValues:(id)sender;
 {
 	[self.representedObject setValue:@0 forKey:@"rotationX"];

@@ -32,6 +32,12 @@
     return self;
 }
 
+- (void)loadView
+{
+	// Load explicitly with this method, to make sure it goes through DMLocalizedNibBundle.
+	[NSBundle loadNibNamed:self.nibName owner:self];
+}
+
 - (void)setSelectedFileType:(NSDictionary *)selectedFileType
 {
 	_selectedFileType = selectedFileType;
