@@ -338,6 +338,24 @@
 	}];
 }
 
+- (BOOL)validateUserInterfaceItem:(id < NSValidatedUserInterfaceItem >)item
+{
+	// Always valid
+	if (item.action == @selector(openNewRenderView:)) return YES;
+	else if (item.action == @selector(loadMesh:)) return YES;
+	// Conditional
+	if (item.action == @selector(delete:))
+		return self.selection.selectedObjects.count == 1;
+	else if (item.action == @selector(exportSelectedModel:))
+		return self.selection.selectedObjects.count == 1;
+	else if (item.action == @selector(exportSelectedPose:))
+		return [[self.selection valueForKeyPath:@"selectedItems"] count] <= 1 && [[self.selection valueForKeyPath:@"selectedBones"] count] != 0;
+	else if (item.action == @selector(exportItem:))
+		return [[self.selection valueForKeyPath:@"selectedItems"] count] == 1;
+	else
+		return [super validateUserInterfaceItem:item];
+}
+
 #pragma mark - Accessors
 
 - (GLLSourceListController *)sourceListController
