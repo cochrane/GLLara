@@ -9,6 +9,8 @@
 #import "GLLSelection.h"
 
 #import "GLLItem.h"
+#import "GLLItemBone.h"
+#import "GLLItemMesh.h"
 #import "LionSubscripting.h"
 #import "NSArray+Map.h"
 
@@ -42,17 +44,26 @@
 
 - (NSArray *)selectedBones;
 {
-	NSArray *selectedBones = [[self selectedObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"entity.name == \"GLLItemBone\""]];
-	NSArray *selectedBonesFromItems = [[self valueForKeyPath:@"selectedItems"] mapAndJoin:^(GLLItem *item) {
-		return item.bones.array;
-	}];
-
-	return [selectedBones arrayByAddingObjectsFromArray:selectedBonesFromItems];
+	if ([self.selectedObjects.lastObject isKindOfClass:[GLLItemBone class]])
+		return self.selectedObjects;
+	else if ([self.selectedObjects.lastObject isKindOfClass:[GLLItem class]])
+		return [self.selectedItems mapAndJoin:^(GLLItem *item){
+			return item.bones.array;
+		}];
+	else
+		return @[];
 }
 
 - (NSArray *)selectedItems
 {
-	return [[self selectedObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"entity.name == \"GLLItem\""]];
+	if ([self.selectedObjects.lastObject isKindOfClass:[GLLItem class]])
+		return self.selectedObjects;
+	else if ([self.selectedObjects.lastObject isKindOfClass:[GLLItemBone class]])
+		return [self.selectedObjects valueForKeyPath:@"@distinctUnionOfObjects.item"];
+	else if ([self.selectedObjects.lastObject isKindOfClass:[GLLItemBone class]])
+		return [self.selectedObjects valueForKeyPath:@"@distinctUnionOfObjects.items"];
+	else
+		return @[];
 }
 
 - (NSArray *)selectedLights
@@ -64,7 +75,14 @@
 
 - (NSArray *)selectedMeshes
 {
-	return [[self selectedObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"entity.name == \"GLLItemMesh\""]];
+	if ([self.selectedObjects.lastObject isKindOfClass:[GLLItemMesh class]])
+		return self.selectedObjects;
+	else if ([self.selectedObjects.lastObject isKindOfClass:[GLLItem class]])
+		return [self.selectedItems mapAndJoin:^(GLLItem *item){
+			return item.meshes.array;
+		}];
+	else
+		return @[];
 }
 
 - (NSUInteger)countOfSelectedBones;
