@@ -128,7 +128,7 @@ struct GLLSkeletonDrawer_Vertex {
 	for (GLLItemBone *bone in _selectedBones)
 		[bone removeObserver:self forKeyPath:@"globalPosition"];
 	
-	_selectedBones = selectedBones;
+	_selectedBones = [selectedBones copy];
 	for (GLLItemBone *bone in _selectedBones)
 		[bone addObserver:self forKeyPath:@"globalPosition" options:0 context:0];
 	id objects = [_selectedBones valueForKeyPath:@"@distinctUnionOfObjects.item"];
