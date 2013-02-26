@@ -15,7 +15,7 @@
 
 @implementation GLLItem (MeshExport)
 
-- (NSData *)writeBinary;
+- (NSData *)writeBinaryError:(NSError *__autoreleasing*)error;
 {
 	TROutDataStream *stream = [[TROutDataStream alloc] init];
 	
@@ -25,11 +25,15 @@
 	
 	[stream appendUint32:(uint32_t) self.meshes.count];
 	for (GLLItemMesh *mesh in self.meshes)
-		[stream appendData:[mesh writeBinary]];
+	{
+		NSData *meshData = [mesh writeBinaryError:error];
+		if (!meshData) return nil;
+		[stream appendData:meshData];
+	}
 	
 	return stream.data;
 }
-- (NSString *)writeASCII;
+- (NSString *)writeASCIIError:(NSError *__autoreleasing*)error;
 {
 	NSMutableString *string = [NSMutableString string];
 	
@@ -39,7 +43,11 @@
 	
 	[string appendFormat:@"%lu\n", self.meshes.count];
 	for (GLLItemMesh *mesh in self.meshes)
-		[string appendFormat:@"%@\n", [mesh writeASCII]];
+	{
+		NSString *meshString = [mesh writeASCIIError:error];
+		if (!meshString) return nil;
+		[string appendFormat:@"%@\n", meshString];
+	}
 	
 	return string;
 }

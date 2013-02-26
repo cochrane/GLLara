@@ -10,7 +10,7 @@
 
 @interface GLLItem (MeshExport)
 
-- (NSData *)writeBinary;
-- (NSString *)writeASCII;
+- (NSData *)writeBinaryError:(NSError *__autoreleasing*)error;
+- (NSString *)writeASCIIError:(NSError *__autoreleasing*)error;
 
 @end

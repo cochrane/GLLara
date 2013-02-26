@@ -10,10 +10,11 @@
 
 @interface GLLItemMesh (MeshExport)
 
-@property (nonatomic, readonly) NSString *genericItemName;
+- (NSString *)genericItemNameError:(NSError *__autoreleasing*)error;
+
 @property (nonatomic, readonly) NSArray *textureURLsInShaderOrder;
 
-- (NSString *)writeASCII;
-- (NSData *)writeBinary;
+- (NSString *)writeASCIIError:(NSError *__autoreleasing*)error;
+- (NSData *)writeBinaryError:(NSError *__autoreleasing*)error;
 
 @end

@@ -290,7 +290,13 @@
 		}
 		
 		// Save mesh file there - both with and without ascii
-		NSString *ascii = [item writeASCII];
+		NSString *ascii = [item writeASCIIError:&error];
+		if (!ascii)
+		{
+			[manager removeItemAtURL:panel.URL error:NULL];
+			[self.windowForSheet presentError:error];
+			return;
+		}
 		if (![ascii writeToURL:[panel.URL URLByAppendingPathComponent:@"generic_item.mesh.ascii"] atomically:YES encoding:NSUTF8StringEncoding error:&error])
 		{
 			[manager removeItemAtURL:panel.URL error:NULL];
@@ -298,13 +304,10 @@
 			return;
 		}
 		
-		NSData *binary = [item writeBinary];
-		if (![binary writeToURL:[panel.URL URLByAppendingPathComponent:@"generic_item.mesh"] options:NSDataWritingAtomic error:&error])
-		{
-			[manager removeItemAtURL:panel.URL error:NULL];
-			[self.windowForSheet presentError:error];
-			return;
-		}
+		// Ignore if writing binary fails; the mesh.ascii version includes all data already.
+		NSData *binary = [item writeBinaryError:NULL];
+		if (!binary) return;
+		if (![binary writeToURL:[panel.URL URLByAppendingPathComponent:@"generic_item.mesh"] options:NSDataWritingAtomic error:&error]) return;
 	}];
 }
 

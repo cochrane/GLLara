@@ -16,7 +16,7 @@
 
 @implementation GLLItemMesh (MeshExport)
 
-- (NSString *)genericItemName
+- (NSString *)genericItemNameError:(NSError *__autoreleasing*)error
 {
 	NSMutableString *genericItemName = [NSMutableString string];
 	
@@ -32,6 +32,15 @@
 		[genericItemName appendString:@"_"];
 		break;
 	}
+	if (genericItemName.length == 0)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"GLLMeshExporting" code:1 userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"Could not export model.", @"no mesh group found for model to export"),
+	   NSLocalizedRecoverySuggestionErrorKey : [NSString stringWithFormat:NSLocalizedString(@"No XNALara Mesh Group number corresponds to the shader %@.", @"can't write meshes without tangents"), self.shader.localizedName]}];
+		return nil;
+	}
+		
 	NSAssert(genericItemName.length > 0, @"Did not find group for mesh %@ with shader name %@", self.displayName, self.shaderName);
 	
 	// 2 - add display name, removing all underscores and newlines
@@ -57,13 +66,25 @@
 	}];
 }
 
-- (NSString *)writeASCII;
+- (NSString *)writeASCIIError:(NSError *__autoreleasing*)error;
 {
-	return [self.mesh writeASCIIWithName:self.genericItemName texture:self.textureURLsInShaderOrder];
+	NSString *name = [self genericItemNameError:error];
+	if (!name) return nil;
+	return [self.mesh writeASCIIWithName:name texture:self.textureURLsInShaderOrder];
 }
-- (NSData *)writeBinary;
+- (NSData *)writeBinaryError:(NSError *__autoreleasing*)error;
 {
-	return [self.mesh writeBinaryWithName:self.genericItemName texture:self.textureURLsInShaderOrder];
+	if (!self.mesh.hasTangents)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"GLLMeshExporting" code:1 userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"Could not export model.", @"can't write meshes without tangents"),
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Meshes that originally had no tangents cannot be exported at this time.", @"can't write meshes without tangents")}];
+		return nil;
+	}
+	NSString *name = [self genericItemNameError:error];
+	if (!name) return nil;
+	return [self.mesh writeBinaryWithName:name texture:self.textureURLsInShaderOrder];
 }
 
 @end
