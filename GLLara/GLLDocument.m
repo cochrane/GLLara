@@ -157,34 +157,16 @@
 
 - (IBAction)delete:(id)sender;
 {
-	BOOL shouldBeep = NO;
-	for (id selectedObject in self.selection.selectedObjects)
-	{
-		if ([selectedObject isKindOfClass:[GLLItem class]])
-			[self.managedObjectContext deleteObject:selectedObject];
-		else
-			shouldBeep = YES;
-	}
-	if (shouldBeep) NSBeep();
+	NSAssert([[self.selection valueForKeyPath:@"selectedItems"] count] >= 1, @"Can only delete if at least one item is selected.");
+	
+	for (GLLItem *item in [self.selection valueForKeyPath:@"selectedItems"])
+		[self.managedObjectContext deleteObject:item];
 }
 
 - (IBAction)exportSelectedModel:(id)sender
 {
-	if (self.selection.selectedObjects.count != 1)
-	{
-		NSBeep();
-		return;
-	}
-	
-	id selectedObject = [self.selection.selectedObjects objectAtIndex:0];
-	GLLItem *item = nil;
-	if ([selectedObject isKindOfClass:[GLLItem class]])
-		item = selectedObject;
-	else if ([selectedObject isKindOfClass:[GLLItemBone class]])
-		item = [selectedObject item];
-	else if ([selectedObject isKindOfClass:[GLLItemMesh class]])
-		item = [selectedObject item];
-	if (!item) return;
+	NSAssert([[self.selection valueForKeyPath:@"selectedItems"] count] == 1, @"Can only export if exactly one item is selected");
+	GLLItem *item = [[self.selection valueForKeyPath:@"selectedItems"] objectAtIndex:0];
 	
 	NSSavePanel *panel = [NSSavePanel savePanel];
 	panel.allowedFileTypes = @[ @"obj" ];
@@ -223,16 +205,8 @@
 
 - (IBAction)exportSelectedPose:(id)sender;
 {
-	if ([[self.selection valueForKeyPath:@"selectedItems"] count] > 1)
-	{
-		NSBeep();
-		return;
-	}
-	if ([[self.selection valueForKeyPath:@"selectedBones"] count] == 0)
-	{
-		NSBeep();
-		return;
-	}
+	NSAssert([[self.selection valueForKeyPath:@"selectedItems"] count] == 1, @"Can only export if exactly one item is selected");
+	NSAssert([[self.selection valueForKeyPath:@"selectedBones"] count] != 0, @"Can only export if some bones are selected");
 	
 	NSSavePanel *panel = [NSSavePanel savePanel];
 	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.pose" ];
@@ -271,11 +245,7 @@
 }
 - (IBAction)exportItem:(id)sender;
 {
-	if ([[self.selection valueForKeyPath:@"selectedItems"] count] != 1)
-	{
-		NSBeep();
-		return;
-	}
+	NSAssert([[self.selection valueForKeyPath:@"selectedItems"] count] == 1, @"Can only export if exactly one item is selected");
 	
 	GLLItem *item = [[self.selection valueForKeyPath:@"selectedItems"] objectAtIndex:0];
 	
@@ -345,9 +315,9 @@
 	else if (item.action == @selector(loadMesh:)) return YES;
 	// Conditional
 	if (item.action == @selector(delete:))
-		return self.selection.selectedObjects.count == 1;
+		return [[self.selection valueForKeyPath:@"selectedItems"] count] >= 1;
 	else if (item.action == @selector(exportSelectedModel:))
-		return self.selection.selectedObjects.count == 1;
+		return [[self.selection valueForKeyPath:@"selectedItems"] count] == 1;
 	else if (item.action == @selector(exportSelectedPose:))
 		return [[self.selection valueForKeyPath:@"selectedItems"] count] <= 1 && [[self.selection valueForKeyPath:@"selectedBones"] count] != 0;
 	else if (item.action == @selector(exportItem:))
