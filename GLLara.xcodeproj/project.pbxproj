@@ -16,6 +16,7 @@
 		5214470716DBBE3A003E260F /* GLLExplicitLocalizingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470616DBBE39003E260F /* GLLExplicitLocalizingViewController.m */; };
 		5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */; };
 		5214470D16DC2312003E260F /* GLLItem+MeshExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470C16DC2312003E260F /* GLLItem+MeshExport.m */; };
+		5214471116DE22E1003E260F /* GLLara.help in Resources */ = {isa = PBXBuildFile; fileRef = 5214471016DE22E0003E260F /* GLLara.help */; };
 		52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52152CEE16B66951001AE54C /* GLLDDSFile.m */; };
 		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
 		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
@@ -370,6 +371,7 @@
 		5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItemMesh+MeshExport.m"; sourceTree = "<group>"; };
 		5214470B16DC2312003E260F /* GLLItem+MeshExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLItem+MeshExport.h"; sourceTree = "<group>"; };
 		5214470C16DC2312003E260F /* GLLItem+MeshExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItem+MeshExport.m"; sourceTree = "<group>"; };
+		5214471016DE22E0003E260F /* GLLara.help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GLLara.help; sourceTree = "<group>"; };
 		52152CED16B66951001AE54C /* GLLDDSFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDDSFile.h; sourceTree = "<group>"; };
 		52152CEE16B66951001AE54C /* GLLDDSFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDDSFile.m; sourceTree = "<group>"; };
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
@@ -990,6 +992,7 @@
 		525ACD5215F0F1A700534E7D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5214471016DE22E0003E260F /* GLLara.help */,
 				52329F4916C1D68600338A0A /* Images */,
 				521446EC16DAD8A1003E260F /* Strings */,
 				52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */,
@@ -1463,7 +1466,8 @@
 				525ACD4315F0F1A700534E7D /* Sources */,
 				525ACD4415F0F1A700534E7D /* Frameworks */,
 				525ACD4515F0F1A700534E7D /* Resources */,
-				52B9E0A91602802500641518 /* ShellScript */,
+				52B9E0A91602802500641518 /* Run Script (localization strings) */,
+				523F73B616DE2564003AE788 /* Run Script (help indexing) */,
 			);
 			buildRules = (
 			);
@@ -1725,6 +1729,7 @@
 				523AEEDC16C4883A0062C025 /* defaultColor.png in Resources */,
 				523AEEDD16C4883A0062C025 /* defaultWhite.png in Resources */,
 				523AEEDF16C488960062C025 /* defaultReflection.jpg in Resources */,
+				5214471116DE22E1003E260F /* GLLara.help in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1740,6 +1745,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		523F73B616DE2564003AE788 /* Run Script (help indexing) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script (help indexing)";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "HELP_DIR=$BUILT_PRODUCTS_DIR/GLLara.app/Contents/Resources/GLLara.help/Contents/Resources\nhiutil -Caf $HELP_DIR/en.lproj/GLLara.helpindex -stopwords=en $HELP_DIR/en.lproj/\nhiutil -Caf $HELP_DIR/de.lproj/GLLara.helpindex -stopwords=de $HELP_DIR/de.lproj/";
+			showEnvVarsInLog = 0;
+		};
 		525ACD6915F0F1A700534E7D /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1753,13 +1773,14 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
-		52B9E0A91602802500641518 /* ShellScript */ = {
+		52B9E0A91602802500641518 /* Run Script (localization strings) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script (localization strings)";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
