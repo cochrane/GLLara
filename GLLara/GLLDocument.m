@@ -155,8 +155,11 @@
 		
 		self.undoManager.actionName = NSLocalizedString(@"Add item", @"load mesh undo action name");
 		
-		[self.selection.selectedObjects removeAllObjects];
-		[self.selection.selectedObjects addObject:newItem];
+		// Set selection next time the main loop comes around to ensure everything's set up properly by then.
+		dispatch_async(dispatch_get_main_queue(), ^(){
+			NSMutableArray *selectedItems = [self.selection mutableArrayValueForKeyPath:@"selectedItems"];
+			[selectedItems replaceObjectsInRange:NSMakeRange(0, selectedItems.count) withObjectsFromArray:@[ newItem ] range:NSMakeRange(0, 1)];
+		});
 	}];
 }
 
