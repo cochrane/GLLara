@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Meshes</title>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../shared/styles.css" />
+		<meta name="description" content="Meshes are parts of models that use the same settings for rendering." />
+	</head>
+	<body>
+		<h1><a name="meshes" id="meshes">Meshes</a></h1>
+		<p>A model in GLLara consists of one or more meshes. Meshes are parts of models that use the same settings for rendering.</p>
+		<p class="notice">Note: Meshes are completely independent of <a href="help:anchor=bones bookID=de.ferroequinologist.GLLara.help">Bones</a>. A mesh typically contains several bones, and the area of a model controlled by a bone can span several meshes.</p>
+		<p>You can find the meshes of an object in the <a href="help:anchor=documentwindow bookID=de.ferroequinologist.GLLara.help">document window</a>, under its object in the ”Meshes” area. Here, there are several options for each mesh.</p>
+		<p><img src="localimages/meshview.png" /></p>
+		<h2>Visibility</h2>
+		<p>You can make meshes visible or invisible. This can be used for example to select optional items like weapons.</p>
+		<h2>Culling</h2>
+		<p>By default, GLLara does not render the back of objects (relative to the camera). This setting can be used to change which side is considered the back. You can also render both sides, which can have different results particularly for transparent objects.</p>
+		<h2>Appearance</h2>
+		<p>You can alter the appearance further by modifying more settings:</p>
+		<ul>
+			<li><a href="textures.html">Textures</a></li>
+			<li><a href="renderparameters.html">Render Parameters</a></li>
+			<li><a href="shaders.html">Shaders</a></li>
+		</ul>
+	</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Posing models</title>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" type="text/css" href="../shared/styles.css" />
+		<meta name="description" content="Models that can be posed consists of bones. These bones can be positioned freely and control they appearance of the model." />
+	</head>
+	<body>
+		<h1>Posing models</h1>
+		<p><a name="bones" id="bones">Models that can be posed consists of bones. These bones can be positioned freely and control they appearance of the model.</a></p>
+		<p><img src="../shared/skeleton.png" /></p>
+		<p>They form a connected skeleton. This is shown by default if you select a model or one or more bones. The selected bones are in red. Childs of the bone are yellow, while all other bones in the model are yellow. You can disable this display in the “View” menu. When <a href="help:anchor=createimages bookID=de.ferroequinologist.GLLara.help">rendering to image files</a>, this view is always disabled.</p>
+		<h2>Premade poses</h2>
+		<p>You can download poses on the internet and apply them to your models. To do this select the model in the <a href="help:anchor=documentwindow bookID=de.ferroequinologist.GLLara.help">document window</a> and click the “Load pose”-button. If you want, you can edit the pose further.</p>
+		<h2><a name="documentwindowbones" id="documentwindowbones">Pose in the document window</a></h2>
+		<p><img src="localimages/pose-bones.png" alt="" /></p>
+		<p>You can create your own poses by selecting the bones. You find them under each model, under the item Bones. Then you can select position and rotation directly or via the sliders. It is usually sufficient to adjust only rotations. You can edit several bones at once, which can reduce effort e.g. with hands.</p>
+		<h2>Pose in the render window</h2>
+		<p>You can select bones in the <a href="help:anchor=renderwindow bookID=de.ferroequinologist.GLLara.help">render window</a> by clicking. The selection in render window and document window are always the same. You can also adjust the positions directly in the render window:</p>
+		<table>
+			<tr>
+				<th>Input</th>
+				<th>Change</th>
+			</tr>
+			<tr>
+				<td><strong>Click and drag</strong> with <strong>X, Y</strong> and/or <strong>Z</strong> key pressed</td>
+				<td>Rotates the bone around the selected axis(es).</td>
+			</tr>
+			<tr>
+				<td><strong>Arrow keys</strong> with <strong>X, Y</strong> and/or <strong>Z</strong> key pressed</td>
+				<td>Moves the bone in the selected direction(s). Movement is faster if you press the shift key, too.</td>
+			</tr>
+		</table>
+	</body>
+</html>

@@ -55,6 +55,10 @@ p.notice {
 	background-color:#EEF;
 	border: solid 1px #CCE;
 }
+span.languagewarning {
+	font-size: 0.75em;
+	color:#666;
+}
 
 /* Tables */
 table {
