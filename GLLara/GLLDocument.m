@@ -152,6 +152,9 @@
 		
 		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
 		newItem.model = model;
+		
+		[self.selection.selectedObjects removeAllObjects];
+		[self.selection.selectedObjects addObject:newItem];
 	}];
 }
 
