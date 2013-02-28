@@ -10,4 +10,6 @@
 
 @interface GLLAmbientLightViewController : NSViewController
 
+- (IBAction)help:(id)sender;
+
 @end

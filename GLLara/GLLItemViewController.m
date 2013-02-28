@@ -35,6 +35,12 @@
 	[NSBundle loadNibNamed:self.nibName owner:self];
 }
 
+- (IBAction)help:(id)sender;
+{
+	NSString *locBookName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleHelpBookName"];
+	[[NSHelpManager sharedHelpManager] openHelpAnchor:@"models" inBook:locBookName];
+}
+
 - (void)loadPose:(id)sender
 {
 	NSOpenPanel *panel = [NSOpenPanel openPanel];

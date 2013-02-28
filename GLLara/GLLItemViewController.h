@@ -20,5 +20,6 @@
 - (IBAction)loadPose:(id)sender;
 - (IBAction)loadChildModel:(id)sender;
 - (IBAction)loadTexturePack:(id)sender;
+- (IBAction)help:(id)sender;
 
 @end

@@ -97,6 +97,16 @@
 	});
 }
 
+#pragma mark - Actions
+
+- (IBAction)help:(id)sender;
+{
+	NSString *locBookName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleHelpBookName"];
+	[[NSHelpManager sharedHelpManager] openHelpAnchor:@"meshes" inBook:locBookName];
+}
+
+#pragma mark - Table view
+
 -(NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
 	if (tableView == self.renderParametersView)

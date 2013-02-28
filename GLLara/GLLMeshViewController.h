@@ -22,4 +22,7 @@
 @property (nonatomic) NSArray *possibleShaders;
 @property (nonatomic) id selectedShader;
 
+// Help
+- (IBAction)help:(id)sender;
+
 @end

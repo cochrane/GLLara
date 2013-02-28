@@ -30,4 +30,10 @@
 	[NSBundle loadNibNamed:self.nibName owner:self];
 }
 
+- (IBAction)help:(id)sender;
+{
+	NSString *locBookName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleHelpBookName"];
+	[[NSHelpManager sharedHelpManager] openHelpAnchor:@"ambientlight" inBook:locBookName];
+}
+
 @end

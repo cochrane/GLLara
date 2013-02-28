@@ -38,4 +38,10 @@
 	[self.representedObject setValue:@0 forKey:@"positionZ"];
 }
 
+- (IBAction)help:(id)sender;
+{
+	NSString *locBookName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleHelpBookName"];
+	[[NSHelpManager sharedHelpManager] openHelpAnchor:@"bones" inBook:locBookName];
+}
+
 @end
