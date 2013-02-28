@@ -73,6 +73,8 @@
 		523DE12A1604E0C700BB9F61 /* tiger2.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE1291604E0C500BB9F61 /* tiger2.modelparams.plist */; };
 		523DE12D1604E10D00BB9F61 /* thailand_mirror_statue_left.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */; };
 		523DE12E1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */; };
+		523F73BA16DFEC64003AE788 /* GLLNoSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523F73B816DFEC63003AE788 /* GLLNoSelectionViewController.m */; };
+		523F73BB16DFEC64003AE788 /* GLLNoSelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523F73B916DFEC63003AE788 /* GLLNoSelectionView.xib */; };
 		52421C1316BDAD5500D41EAA /* GLLModelMeshV3.m in Sources */ = {isa = PBXBuildFile; fileRef = 52421C1216BDAD5500D41EAA /* GLLModelMeshV3.m */; };
 		52421C1516BDB78100D41EAA /* DiffuseSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52421C1416BDB78100D41EAA /* DiffuseSpecular.fs */; };
 		52421C1816BDBF4800D41EAA /* GLLV3Mesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 52421C1716BDBF4800D41EAA /* GLLV3Mesh.m */; };
@@ -436,6 +438,9 @@
 		523DE1291604E0C500BB9F61 /* tiger2.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tiger2.modelparams.plist; sourceTree = "<group>"; };
 		523DE12B1604E10C00BB9F61 /* thailand_mirror_statue_left.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = thailand_mirror_statue_left.modelparams.plist; sourceTree = "<group>"; };
 		523DE12C1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = thailand_mirror_statue_right.modelparams.plist; sourceTree = "<group>"; };
+		523F73B716DFEC62003AE788 /* GLLNoSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLNoSelectionViewController.h; sourceTree = "<group>"; };
+		523F73B816DFEC63003AE788 /* GLLNoSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLNoSelectionViewController.m; sourceTree = "<group>"; };
+		523F73B916DFEC63003AE788 /* GLLNoSelectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLNoSelectionView.xib; sourceTree = "<group>"; };
 		52421C0F16BDA65B00D41EAA /* GLLSceneModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		52421C1116BDAD5500D41EAA /* GLLModelMeshV3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelMeshV3.h; sourceTree = "<group>"; };
 		52421C1216BDAD5500D41EAA /* GLLModelMeshV3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelMeshV3.m; sourceTree = "<group>"; };
@@ -1418,6 +1423,9 @@
 				5214470316DBBC42003E260F /* GLLLightViewController.m */,
 				5214470516DBBE39003E260F /* GLLExplicitLocalizingViewController.h */,
 				5214470616DBBE39003E260F /* GLLExplicitLocalizingViewController.m */,
+				523F73B716DFEC62003AE788 /* GLLNoSelectionViewController.h */,
+				523F73B816DFEC63003AE788 /* GLLNoSelectionViewController.m */,
+				523F73B916DFEC63003AE788 /* GLLNoSelectionView.xib */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1730,6 +1738,7 @@
 				523AEEDD16C4883A0062C025 /* defaultWhite.png in Resources */,
 				523AEEDF16C488960062C025 /* defaultReflection.jpg in Resources */,
 				5214471116DE22E1003E260F /* GLLara.help in Resources */,
+				523F73BB16DFEC64003AE788 /* GLLNoSelectionView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1890,6 +1899,7 @@
 				5214470716DBBE3A003E260F /* GLLExplicitLocalizingViewController.m in Sources */,
 				5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.m in Sources */,
 				5214470D16DC2312003E260F /* GLLItem+MeshExport.m in Sources */,
+				523F73BA16DFEC64003AE788 /* GLLNoSelectionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
