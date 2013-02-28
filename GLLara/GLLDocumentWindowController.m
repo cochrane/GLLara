@@ -26,11 +26,14 @@
 #import "GLLLightViewController.h"
 #import "GLLMeshViewController.h"
 #import "GLLModel.h"
+#import "GLLNoSelectionViewController.h"
 #import "GLLSelection.h"
 #import "GLLSettingsListController.h"
 
 @interface GLLDocumentWindowController ()
 {
+	GLLNoSelectionViewController *noSelectionViewController;
+	
 	GLLAmbientLightViewController *ambientLightViewController;
 	GLLBoneViewController *boneViewController;
 	GLLItemViewController *itemViewController;
@@ -63,6 +66,8 @@
     if (!(self = [super initWithWindowNibName:@"GLLDocument"])) return nil;
     
 	_managedObjectContext = managedObjectContext;
+	
+	noSelectionViewController = [[GLLNoSelectionViewController alloc] init];
 	
 	ambientLightViewController = [[GLLAmbientLightViewController alloc] init];
 	boneViewController = [[GLLBoneViewController alloc] init];
@@ -103,6 +108,8 @@
 		
 	[meshViewController bind:@"selectedMeshes" toObject:self.selection withKeyPath:@"selectedMeshes" options:nil];
 	[itemViewController bind:@"selectedItems" toObject:self.selection withKeyPath:@"selectedItems" options:nil];
+	
+	[self _setRightHandController:noSelectionViewController];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
