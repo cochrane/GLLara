@@ -77,10 +77,6 @@
 {
 	if ([self.selectedObjects.lastObject isKindOfClass:[GLLItemMesh class]])
 		return self.selectedObjects;
-	else if ([self.selectedObjects.lastObject isKindOfClass:[GLLItem class]])
-		return [self.selectedItems mapAndJoin:^(GLLItem *item){
-			return item.meshes.array;
-		}];
 	else
 		return @[];
 }
