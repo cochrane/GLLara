@@ -10,4 +10,6 @@
 
 @interface GLLNoSelectionViewController : GLLExplicitLocalizingViewController
 
+- (IBAction)help:(id)sender;
+
 @end
