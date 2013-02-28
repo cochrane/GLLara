@@ -1757,7 +1757,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "HELP_DIR=$BUILT_PRODUCTS_DIR/GLLara.app/Contents/Resources/GLLara.help/Contents/Resources\nhiutil -Caf $HELP_DIR/en.lproj/GLLara.helpindex -stopwords=en $HELP_DIR/en.lproj/\nhiutil -Caf $HELP_DIR/de.lproj/GLLara.helpindex -stopwords=de $HELP_DIR/de.lproj/";
+			shellScript = "HELP_DIR=$BUILT_PRODUCTS_DIR/GLLara.app/Contents/Resources/GLLara.help/Contents/Resources\nhiutil --create --anchors --verbose --stopwords=en --generate-summaries --file $HELP_DIR/en.lproj/GLLara.helpindex $HELP_DIR/en.lproj/\nhiutil --create --anchors --verbose --stopwords=de --generate-summaries --file $HELP_DIR/de.lproj/GLLara.helpindex $HELP_DIR/de.lproj/";
 			showEnvVarsInLog = 0;
 		};
 		525ACD6915F0F1A700534E7D /* ShellScript */ = {
