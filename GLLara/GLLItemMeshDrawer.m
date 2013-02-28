@@ -67,6 +67,22 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	NSAssert(renderParametersBuffer == 0, @"Did not call unload before calling dealloc!");
+	
+	// Unregister observers
+	for (GLLRenderParameter *param in renderParameters)
+		[param removeObserver:self forKeyPath:@"uniformValue"];
+	[_itemMesh removeObserver:self forKeyPath:@"renderParameters"];
+	
+	for (GLLItemMeshTexture *texture in textureAssignments)
+		[texture removeObserver:self forKeyPath:@"textureURL"];
+	[_itemMesh removeObserver:self forKeyPath:@"textures"];
+	
+	[_itemMesh removeObserver:self forKeyPath:@"shaderName"];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if ([keyPath isEqual:@"renderParameters"])
@@ -165,11 +181,6 @@
 	}
 	
 	[self.meshDrawer draw];
-}
-
-- (void)dealloc
-{
-	NSAssert(renderParametersBuffer == 0, @"Did not call unload before calling dealloc!");
 }
 
 - (void)unload
