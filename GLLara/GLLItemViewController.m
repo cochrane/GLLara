@@ -57,6 +57,7 @@
 			return;
 		}
 		
+		self.undoManager.actionName = NSLocalizedString(@"Load pose", @"load pose undo action name");
 		for (GLLItem *item in self.selectedItems)
 		{
 			if (![item loadPose:file error:&error])
@@ -90,6 +91,8 @@
 			return;
 		}
 		
+		self.undoManager.actionName = NSLocalizedString(@"Load outift", @"load child model undo action name");
+		
 		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:item.managedObjectContext];
 		newItem.parent = item;
 		newItem.model = model;
@@ -104,6 +107,8 @@
 		if (result != NSOKButton) return;
 		
 		NSURL *directoryURL = panel.URL;
+		
+		self.undoManager.actionName = NSLocalizedString(@"Load texture pack", @"load texture pack undo action name");
 		
 		for (GLLItem *item in self.selectedItems)
 		{

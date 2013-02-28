@@ -153,6 +153,8 @@
 		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
 		newItem.model = model;
 		
+		self.undoManager.actionName = NSLocalizedString(@"Add item", @"load mesh undo action name");
+		
 		[self.selection.selectedObjects removeAllObjects];
 		[self.selection.selectedObjects addObject:newItem];
 	}];
@@ -164,6 +166,8 @@
 	
 	for (GLLItem *item in [self.selection valueForKeyPath:@"selectedItems"])
 		[self.managedObjectContext deleteObject:item];
+	
+	self.undoManager.actionName = NSLocalizedString(@"Delete item", @"delete item undo action name");
 }
 
 - (IBAction)exportSelectedModel:(id)sender
