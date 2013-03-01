@@ -11,15 +11,18 @@
 #import <OpenGL/gl3.h>
 
 #import "GLLItemDrawer.h"
+#import "GLLItemMesh.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLMeshDrawer.h"
+#import "GLLModel.h"
 #import "GLLModelMesh.h"
-#import "GLLItemMesh.h"
+#import "GLLModelParams.h"
 #import "GLLModelProgram.h"
 #import "GLLRenderParameter.h"
 #import "GLLResourceManager.h"
 #import "GLLShaderDescription.h"
 #import "GLLTexture.h"
+#import "GLLTextureDescription.h"
 #import "GLLUniformBlockBindings.h"
 #import "NSArray+Map.h"
 
@@ -58,11 +61,14 @@
 	glGenBuffers(1, &renderParametersBuffer);
 	needsParameterBufferUpdate = YES;
 	
-	if (![self _updateTexturesError:error])
-		return nil;
-	
 	[_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
 	[_itemMesh addObserver:self forKeyPath:@"renderParameters" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+	
+	if (![self _updateTexturesError:error])
+	{
+		[self unload];
+		return nil;
+	}
 		
 	return self;
 }
@@ -238,7 +244,14 @@
 	
 	textures = [self.itemMesh.shader.textureUniformNames map:^(NSString *identifier){
 		GLLItemMeshTexture *textureAssignment = [self.itemMesh textureWithIdentifier:identifier];
-		return [[GLLResourceManager sharedResourceManager] textureForURL:textureAssignment.textureURL error:error];
+		GLLTexture *texture = [[GLLResourceManager sharedResourceManager] textureForURL:textureAssignment.textureURL error:error];
+		if (texture)
+			return texture;
+		
+		// Texture not found. Try to find default texture
+		NSURL *defaultTexture = [self.itemMesh.mesh.model.parameters defaultValueForTexture:identifier];
+		
+		return [[GLLResourceManager sharedResourceManager] textureForURL:defaultTexture error:error];
 	}];
 	if (textures.count < self.itemMesh.shader.textureUniformNames.count)
 		return NO;
