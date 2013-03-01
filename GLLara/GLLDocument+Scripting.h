@@ -14,6 +14,7 @@
 
 @property (nonatomic, retain, readonly) NSArray *diffuseLights;
 @property (nonatomic, retain, readonly) NSArray *items;
+@property (nonatomic, retain, readonly) NSArray *renderWindows;
 @property (nonatomic, retain, readonly) GLLAmbientLight *ambientLight;
 
 @end

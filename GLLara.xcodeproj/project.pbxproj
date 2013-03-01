@@ -32,6 +32,9 @@
 		5237E9BC16E142510092C49F /* GLLAmbientLight+Scripting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5237E9BB16E142510092C49F /* GLLAmbientLight+Scripting.m */; };
 		5237E9BF16E142F60092C49F /* GLLDirectionalLight+Scripting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5237E9BE16E142F60092C49F /* GLLDirectionalLight+Scripting.m */; };
 		5237E9C116E1499E0092C49F /* NSColor_SKTScripting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5237E9C016E1499D0092C49F /* NSColor_SKTScripting.m */; };
+		5237E9C416E153DA0092C49F /* GLLRenderWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 5237E9C316E153DA0092C49F /* GLLRenderWindow.m */; };
+		5237E9C516E1634F0092C49F /* GLLExportBinaryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD80FA163B58F100534475 /* GLLExportBinaryTest.m */; };
+		5237E9C616E163530092C49F /* GLLExportASCIITest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD80F7163B58E400534475 /* GLLExportASCIITest.m */; };
 		523AEEDA16C4883A0062C025 /* defaultBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED616C4883A0062C025 /* defaultBlack.png */; };
 		523AEEDB16C4883A0062C025 /* defaultBump.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED716C4883A0062C025 /* defaultBump.png */; };
 		523AEEDC16C4883A0062C025 /* defaultColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED816C4883A0062C025 /* defaultColor.png */; };
@@ -407,6 +410,8 @@
 		5237E9BD16E142F60092C49F /* GLLDirectionalLight+Scripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLDirectionalLight+Scripting.h"; sourceTree = "<group>"; };
 		5237E9BE16E142F60092C49F /* GLLDirectionalLight+Scripting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLDirectionalLight+Scripting.m"; sourceTree = "<group>"; };
 		5237E9C016E1499D0092C49F /* NSColor_SKTScripting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColor_SKTScripting.m; sourceTree = "<group>"; };
+		5237E9C216E153DA0092C49F /* GLLRenderWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderWindow.h; sourceTree = "<group>"; };
+		5237E9C316E153DA0092C49F /* GLLRenderWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderWindow.m; sourceTree = "<group>"; };
 		523AEED616C4883A0062C025 /* defaultBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultBlack.png; sourceTree = "<group>"; };
 		523AEED716C4883A0062C025 /* defaultBump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultBump.png; sourceTree = "<group>"; };
 		523AEED816C4883A0062C025 /* defaultColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultColor.png; sourceTree = "<group>"; };
@@ -973,6 +978,8 @@
 				5237E9BB16E142510092C49F /* GLLAmbientLight+Scripting.m */,
 				5237E9BD16E142F60092C49F /* GLLDirectionalLight+Scripting.h */,
 				5237E9BE16E142F60092C49F /* GLLDirectionalLight+Scripting.m */,
+				5237E9C216E153DA0092C49F /* GLLRenderWindow.h */,
+				5237E9C316E153DA0092C49F /* GLLRenderWindow.m */,
 			);
 			name = Scripting;
 			sourceTree = "<group>";
@@ -1969,6 +1976,7 @@
 				5237E9BC16E142510092C49F /* GLLAmbientLight+Scripting.m in Sources */,
 				5237E9BF16E142F60092C49F /* GLLDirectionalLight+Scripting.m in Sources */,
 				5237E9C116E1499E0092C49F /* NSColor_SKTScripting.m in Sources */,
+				5237E9C416E153DA0092C49F /* GLLRenderWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1985,6 +1993,8 @@
 				52C7B5DD16AA15A100FC2927 /* MapTests.m in Sources */,
 				52C7B5E116ABEB3000FC2927 /* GLLModelParametersTest.m in Sources */,
 				52421C1816BDBF4800D41EAA /* GLLV3Mesh.m in Sources */,
+				5237E9C516E1634F0092C49F /* GLLExportBinaryTest.m in Sources */,
+				5237E9C616E163530092C49F /* GLLExportASCIITest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

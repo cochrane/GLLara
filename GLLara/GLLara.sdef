@@ -280,19 +280,42 @@
 		</class>
 		
 		<class name="render window" code="Rwnd" extends="window" description="Scene render window">
-			<cocoa class="NSWindow" />
-			<property name="width" code="Witd" type="integer" description="Width of the window" />
-			<property name="height" code="Higt" type="integer" description="Height of the window" />
-			<property name="size locked" code="sLok" type="boolean" description="Is the size of the window locked against accidental inputs? (It can still be changed from scripts" />
+			<cocoa class="GLLRenderWindow" />
+			<contents name="camera" code="Camr" type="camera" description="The camera of this window." access="r" />
+		</class>
+		
+		<class name="camera" code="Camr" description="Stores render settings">
+			<cocoa class="GLLCamera" />
+			<property name="width" code="Witd" type="integer" description="Width of the window">
+				<cocoa key="windowWidth" />
+			</property>
+			<property name="height" code="Higt" type="integer" description="Height of the window">
+				<cocoa key="windowHeight" />
+			</property>
+			<property name="size locked" code="sLok" type="boolean" description="Is the size of the window locked against accidental inputs? (It can still be changed from scripts">
+				<cocoa key="windowSizeLocked" />
+			</property>
 			<property name="field of view" code="FovY" type="integer" description="Field of view" />
 			<property name="distance to target" code="Dist" type="integer" description="Distance to where the camera is looking at" />
-			<property name="target position x" code="tarX" type="integer" description="Where the camera is looking at" />
-			<property name="target position y" code="tarY" type="integer" description="Where the camera is looking at" />
-			<property name="target position z" code="tarZ" type="integer" description="Where the camera is looking at" />
+			<property name="position x" code="posX" type="integer" description="Where the camera is looking at">
+				<cocoa key="currentPositionX">
+				</property>
+			<property name="position y" code="posY" type="integer" description="Where the camera is looking at">
+				<cocoa key="currentPositionY">
+				</property>
+			<property name="position z" code="posZ" type="integer" description="Where the camera is looking at">
+				<cocoa key="currentPositionZ">
+			</property>
 			<property name="longitude" code="LoTd" type="real" description="Direction of the camera." />
 			<property name="latitude" code="LaTd" type="real" description="Direction of the camera." />
 			<property name="camera locked" code="cLok" type="boolean" description="Is the camera locked against accidental inputs? (It can still be changed from scripts)" />
 		</class>
+		
+		<enumeration name="saveable file format" code="savf">
+			<enumerator name="GLLara scene" code="GllS" description="The GLLara file format">
+				<cocoa string-value="de.ferroequinologist.gllara.scene"/>
+			</enumerator>
+		</enumeration>
 		
 		<!-- Commands: Add mesh (let user choose or from script), save pose, save model, save posed model, save image. -->
 		

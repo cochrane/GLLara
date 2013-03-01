@@ -8,7 +8,10 @@
 
 #import "GLLDocument+Scripting.h"
 
-#import <CoreData/CoreData.h>
+#import <Cocoa/Cocoa.h>
+
+#import "GLLRenderWindowController.h"
+#import "NSArray+Map.h"
 
 @implementation GLLDocument (Scripting)
 
@@ -24,6 +27,16 @@
 	NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 	fetchRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"displayName" ascending:YES] ];
 	return [self.managedObjectContext executeFetchRequest:fetchRequest error:NULL];
+}
+
+- (NSArray *)renderWindows
+{
+	return [self.windowControllers map:^(NSWindowController *controller){
+		if ([controller isMemberOfClass:[GLLRenderWindowController class]])
+			return [controller window];
+		else
+			return (NSWindow *) nil;
+	}];
 }
 
 - (GLLAmbientLight *)ambientLight
