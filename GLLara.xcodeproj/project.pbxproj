@@ -76,6 +76,7 @@
 		523F73BA16DFEC64003AE788 /* GLLNoSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523F73B816DFEC63003AE788 /* GLLNoSelectionViewController.m */; };
 		523F73BB16DFEC64003AE788 /* GLLNoSelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 523F73B916DFEC63003AE788 /* GLLNoSelectionView.xib */; };
 		523F73BE16DFFB43003AE788 /* GLLNoSelectionView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 523F73C016DFFB43003AE788 /* GLLNoSelectionView.strings */; };
+		523F73C316E01BD0003AE788 /* GLLara.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 523F73C216E01BCF003AE788 /* GLLara.sdef */; };
 		52421C1316BDAD5500D41EAA /* GLLModelMeshV3.m in Sources */ = {isa = PBXBuildFile; fileRef = 52421C1216BDAD5500D41EAA /* GLLModelMeshV3.m */; };
 		52421C1516BDB78100D41EAA /* DiffuseSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52421C1416BDB78100D41EAA /* DiffuseSpecular.fs */; };
 		52421C1816BDBF4800D41EAA /* GLLV3Mesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 52421C1716BDBF4800D41EAA /* GLLV3Mesh.m */; };
@@ -444,6 +445,7 @@
 		523F73B916DFEC63003AE788 /* GLLNoSelectionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLNoSelectionView.xib; sourceTree = "<group>"; };
 		523F73BF16DFFB43003AE788 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/GLLNoSelectionView.strings; sourceTree = "<group>"; };
 		523F73C116DFFB47003AE788 /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/GLLNoSelectionView.strings; sourceTree = "<group>"; };
+		523F73C216E01BCF003AE788 /* GLLara.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GLLara.sdef; sourceTree = "<group>"; };
 		52421C0F16BDA65B00D41EAA /* GLLSceneModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		52421C1116BDAD5500D41EAA /* GLLModelMeshV3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelMeshV3.h; sourceTree = "<group>"; };
 		52421C1216BDAD5500D41EAA /* GLLModelMeshV3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelMeshV3.m; sourceTree = "<group>"; };
@@ -1001,6 +1003,7 @@
 		525ACD5215F0F1A700534E7D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				523F73C216E01BCF003AE788 /* GLLara.sdef */,
 				5214471016DE22E0003E260F /* GLLara.help */,
 				52329F4916C1D68600338A0A /* Images */,
 				521446EC16DAD8A1003E260F /* Strings */,
@@ -1744,6 +1747,7 @@
 				5214471116DE22E1003E260F /* GLLara.help in Resources */,
 				523F73BB16DFEC64003AE788 /* GLLNoSelectionView.xib in Resources */,
 				523F73BE16DFFB43003AE788 /* GLLNoSelectionView.strings in Resources */,
+				523F73C316E01BD0003AE788 /* GLLara.sdef in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
