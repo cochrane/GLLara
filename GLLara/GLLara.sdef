@@ -5,13 +5,121 @@
 
 	<xi:include href="file://localhost/System/Library/ScriptingDefinitions/CocoaStandard.sdef" xpointer="xpointer(/dictionary/suite)"/>
 	
-	<suite named="GLLara suite" code="glla" description="Terms and Events for controlling GLLara.">
+	<!-- Copied from Sketch, since there seems to be nothing to xinclude here. -->
+	<suite name="Text Suite" code="????" description="Common text classes for all applications.">
 		
-		<class-extension extends="document" description="A GLLara document">
+		<value-type name="RGB color" code="cRGB">
+			<cocoa class="NSColor"/>
+		</value-type>
+		
+		<class name="rich text" plural="rich text" code="ctxt" description="Rich (styled) text.">
+			<cocoa class="NSTextStorage"/>
+			<type type="text"/>
+			<property name="color" code="colr" type="RGB color" description="The color of the text's first character.">
+				<cocoa key="foregroundColor"/>
+			</property>
+			<property name="font" code="font" type="text" description="The name of the font of the text's first character.">
+				<cocoa key="fontName"/>
+			</property>
+			<property name="size" code="ptsz" type="integer" description="The size in points of the text's first character.">
+				<cocoa key="fontSize"/>
+			</property>
+			<element type="character"/>
+			<element type="paragraph"/>
+			<element type="word"/>
+			<element type="attribute run"/>
+			<element type="attachment"/>
+		</class>
+		
+		<class name="character" code="cha " description="One of some text's characters.">
+			<cocoa class="NSTextStorage"/>
+			<type type="text"/>
+			<property name="color" code="colr" type="RGB color" description="Its color.">
+				<cocoa key="foregroundColor"/>
+			</property>
+			<property name="font" code="font" type="text" description="The name of its font.">
+				<cocoa key="fontName"/>
+			</property>
+			<property name="size" code="ptsz" type="integer" description="Its size, in points.">
+				<cocoa key="fontSize"/>
+			</property>
+			<element type="character"/>
+			<element type="paragraph"/>
+			<element type="word"/>
+			<element type="attribute run"/>
+			<element type="attachment"/>
+		</class>
+		
+		<class name="paragraph" code="cpar" description="One of some text's paragraphs.">
+			<cocoa class="NSTextStorage"/>
+			<type type="text"/>
+			<property name="color" code="colr" type="RGB color" description="The color of the paragraph's first character.">
+				<cocoa key="foregroundColor"/>
+			</property>
+			<property name="font" code="font" type="text" description="The name of the font of the paragraph's first character.">
+				<cocoa key="fontName"/>
+			</property>
+			<property name="size" code="ptsz" type="integer" description="The size in points of the paragraph's first character.">
+				<cocoa key="fontSize"/>
+			</property>
+			<element type="character"/>
+			<element type="paragraph"/>
+			<element type="word"/>
+			<element type="attribute run"/>
+			<element type="attachment"/>
+		</class>
+		
+		<class name="word" code="cwor" description="One of some text's words.">
+			<cocoa class="NSTextStorage"/>
+			<type type="text"/>
+			<property name="color" code="colr" type="RGB color" description="The color of the word's first character.">
+				<cocoa key="foregroundColor"/>
+			</property>
+			<property name="font" code="font" type="text" description="The name of the font of the word's first character.">
+				<cocoa key="fontName"/>
+			</property>
+			<property name="size" code="ptsz" type="integer" description="The size in points of the word's first character.">
+				<cocoa key="fontSize"/>
+			</property>
+			<element type="character"/>
+			<element type="paragraph"/>
+			<element type="word"/>
+			<element type="attribute run"/>
+			<element type="attachment"/>
+		</class>
+		
+		<class name="attribute run" code="catr" description="A chunk of text that all has the same attributes.">
+			<cocoa class="NSTextStorage"/>
+			<type type="text"/>
+			<property name="color" code="colr" type="RGB color" description="Its color.">
+				<cocoa key="foregroundColor"/>
+			</property>
+			<property name="font" code="font" type="text" description="The name of its font.">
+				<cocoa key="fontName"/>
+			</property>
+			<property name="size" code="ptsz" type="integer" description="Its size, in points.">
+				<cocoa key="fontSize"/>
+			</property>
+			<element type="character"/>
+			<element type="paragraph"/>
+			<element type="word"/>
+			<element type="attribute run"/>
+			<element type="attachment"/>
+		</class>
+		
+		<class name="attachment" code="atts" inherits="rich text" description="A file embedded in text. This is just for use when embedding a file using the make command.">
+			<cocoa class="NSAttachmentTextStorage"/>
+			<property name="file name" code="atfn" type="text" description="The path to the embedded file.">
+				<cocoa key="filename"/>
+			</property>
+		</class>
+		
+	</suite>
+	
+	<suite name="GLLara suite" code="GLLs" description="Terms and Events for controlling GLLara.">
+		
+		<class-extension extends="document" code="docu" description="A GLLara document">
 			<cocoa class="GLLDocument" />
-			<element type="ambient light">
-				<cocoa key="ambientLights" />
-			</element>
 			<element type="diffuse light">
 				<cocoa key="diffuseLights" />
 			</element>
@@ -21,135 +129,169 @@
 			<element type="render window">
 				<cocoa key="renderWindows" />
 			</element>
+			<property name="ambient light" type="ambient light" code="Ambl" description="Ambient light source" />
 		</class-extension>
 		
-		<class name="object" code="obct" description="An object in the scene, possibly posed.">
+		<class name="object" code="Obct" description="An object in the scene, possibly posed.">
 			<cocoa class="GLLItem" />
 			<element type="mesh">
-				<cocoa key="meshes" />
+				<cocoa key="scriptingMeshes" />
 			</element>
 			<element type="bone">
-				<cocoa key="bones" />
+				<cocoa key="scriptingBones" />
 			</element>
-			<property name="position x" code="posx" type="real" description="X coordinate of world position">
+			<property name="position x" code="posX" type="real" description="X coordinate of world position">
 				<cocoa key="positionX" />
 			</property>
-			<property name="position y" code="posy" type="real" description="Y coordinate of world position">
+			<property name="position y" code="posY" type="real" description="Y coordinate of world position">
 				<cocoa key="positionY" />
 			</property>
-			<property name="position z" code="posz" type="real" description="Z coordinate of world position">
+			<property name="position z" code="posZ" type="real" description="Z coordinate of world position">
 				<cocoa key="positionZ" />
 			</property>
-			<property name="rotation x" code="rotx" type="real" description="X coordinate of world rotation">
+			<property name="rotation x" code="rotX" type="real" description="X coordinate of world rotation">
 				<cocoa key="rotationX" />
 			</property>
-			<property name="rotation y" code="roty" type="real" description="Y coordinate of world rotation">
+			<property name="rotation y" code="rotY" type="real" description="Y coordinate of world rotation">
 				<cocoa key="rotationY" />
 			</property>
-			<property name="rotation z" code="rotz" type="real" description="Z coordinate of world rotation">
+			<property name="rotation z" code="rotZ" type="real" description="Z coordinate of world rotation">
 				<cocoa key="rotationZ" />
 			</property>
-			<property name="scale x" code="scax" type="real" description="X coordinate of world scale">
+			<property name="scale x" code="scaX" type="real" description="X coordinate of world scale">
 				<cocoa key="scaleX" />
 			</property>
-			<property name="scale y" code="scay" type="real" description="Y coordinate of world scale">
+			<property name="scale y" code="scaY" type="real" description="Y coordinate of world scale">
 				<cocoa key="scaleY" />
 			</property>
-			<property name="scale z" code="scaz" type="real" description="Z coordinate of world scale">
+			<property name="scale z" code="scaZ" type="real" description="Z coordinate of world scale">
 				<cocoa key="scaleZ" />
 			</property>
-			<property name="name" code="name" type="text" description="The name" />
-			<property name="source" code="srce" type="file" description="The file from which the model was loaded" access="r" />
+			<property name="name" code="pnam" type="text" description="The name">
+				<cocoa key="displayName" />
+			</property>
+			<property name="source" code="Srce" type="file" description="The file from which the model was loaded" access="r">
+				<cocoa key="itemURL" />
+			</property>
 		</class>
 		
-		<class name="bone" code="bone" description="A poseable bone.">
+		<class name="bone" code="Bone" description="A poseable bone.">
 			<cocoa class="GLLItemBone" />
-			<element type="bone" name="children" />
-			<property name="position x" code="posx" type="real" description="X coordinate of world position">
+			<property name="position x" code="posX" type="real" description="X coordinate of world position">
 				<cocoa key="positionX" />
 			</property>
-			<property name="position y" code="posy" type="real" description="Y coordinate of world position">
+			<property name="position y" code="posY" type="real" description="Y coordinate of world position">
 				<cocoa key="positionY" />
 			</property>
-			<property name="position z" code="posz" type="real" description="Z coordinate of world position">
+			<property name="position z" code="posZ" type="real" description="Z coordinate of world position">
 				<cocoa key="positionZ" />
 			</property>
-			<property name="rotation x" code="rotx" type="real" description="X coordinate of world rotation">
+			<property name="rotation x" code="rotX" type="real" description="X coordinate of world rotation">
 				<cocoa key="rotationX" />
 			</property>
-			<property name="rotation y" code="roty" type="real" description="Y coordinate of world rotation">
+			<property name="rotation y" code="rotY" type="real" description="Y coordinate of world rotation">
 				<cocoa key="rotationY" />
 			</property>
-			<property name="rotation z" code="rotz" type="real" description="Z coordinate of world rotation">
+			<property name="rotation z" code="rotZ" type="real" description="Z coordinate of world rotation">
 				<cocoa key="rotationZ" />
 			</property>
-			<property name="name" code="name" type="text" access="r" description="The name" />
+			<property name="name" code="pnam" type="text" access="r" description="The name">
+				<cocoa key="name" />
+			</property>
 		</class>
 		
-		<class name="mesh" plural="meshes" code="mesh" description="A part of an object with its own rendering settings.">
+		<class name="mesh" plural="meshes" code="Mesh" description="A part of an object with its own rendering settings.">
 			<cocoa class="GLLItemMesh" />
 			<element type="texture">
-				<cocoa key="textures" />
+				<cocoa key="scriptingTextures" />
 			</element>
 			<element type="render parameter">
-				<cocoa key="renderParameters" />
+				<cocoa key="scriptingRenderParameters" />
 			</element>
-			<property name="name" code="name" type="text" description="The name" />
-			<property name="visible" code="vsbl" type="boolean" description="Whether it is rendered" />
-			<property name="culling mode" code="name" type="face orientation" description="Which faces are culled." />
-			<property name="shader" code="shdr" type="text" description="Name of the selected shader" />
+			<property name="name" code="pnam" type="text" description="The name">
+				<cocoa key="displayName" />
+			</property>
+			<property name="visible" code="pvis" type="boolean" description="Whether it is rendered">
+				<cocoa key="isVisible" />
+			</property>
+			<property name="culling mode" code="Cull" type="cull face" description="Which faces are culled.">
+				<cocoa key="cullFaceMode" />
+			</property>
+			<property name="shader" code="Shdr" type="text" description="Name of the selected shader">
+				<cocoa key="shaderName" />
+			</property>
 		</class>
 		
-		<enumeration name="face orientation" code="faor">
+		<enumeration name="cull face" code="FaOr">
+			<enumerator name="none" code="CFNo" description="Don't cull any faces">
+				<cocoa integer-value="2" />
+			</enumerator>
+			<enumerator name="clockwise" code="CFCW" description="Cull faces with clockwise winding order">
+				<cocoa integer-value="1" />
+			</enumerator>
+			<enumerator name="counter-clockwise" code="CFCC" description="Cull faces with counter-clockwise winding order">
+				<cocoa integer-value="0" />
+			</enumerator>
 		</enumeration>
 		
 		<class name="texture" code="txtr" description="An image that is used to render part of an object.">
-			<cocoa class="GLLItemTexture" />
-			<property name="name" code="name" access="r" type="text" description="Name of the texture use." />
-			<property name="image" code="imag" type="file" description="Image file that the data is taken from." />
+			<cocoa class="GLLItemMeshTexture" />
+			<property name="name" code="pnam" access="r" type="text" description="Name of the texture use.">
+				<cocoa key="identifier" />
+			</property>
+			<contents type="file" description="Image file that the data is taken from.">
+				<cocoa key="textureURL" />
+			</contents>
 		</class>
 		
-		<class name="render parameter" code="rprm" description="A shader's adjustable value.">
+		<class name="render parameter" code="Rprm" description="A shader's adjustable value.">
 			<cocoa class="GLLRenderParameter" />
-			<property name="name" code="name" description="The name" type="text" />
+			<property name="name" code="pnam" description="The name" type="text" />
 		</class>
 		
-		<class name="float render parameter" code="flpr" description="A shader parameter that stores a single number." extends="render parameter">
+		<class name="float render parameter" code="Flpr" description="A shader parameter that stores a single number." inherits="render parameter">
 			<cocoa class="GLLFloatRenderParameter" />
-			<property name="value" code="valu" description="The current value" type="real" />
+			<contents description="The current value" type="real">
+				<cocoa key="value" />
+			</contents>
 		</class>
 		
-		<class name="color render parameter" code="copr" description="A shader parameter that stores a color." extends="render parameter">
-			<cocoa class="GLLFloatRenderParameter" />
-			<property name="value" code="valu" description="The current value" type="RGB color" />
+		<class name="color render parameter" code="Copr" description="A shader parameter that stores a color." inherits="render parameter">
+			<cocoa class="GLLColorRenderParameter" />
+			<contents description="The current value" type="RGB color">
+				<cocoa key="value" />
+			</contents>
 		</class>
 		
-		<class name="ambient light" code="ambl" description="General scene light">
+		<class name="ambient light" code="Ambl" description="General scene light">
 			<cocoa class="GLLAmbientLight" />
-			<property name="color" code="colr" description="The current color" type="RGB color" />
+			<property name="color" code="colr" description="The current color" type="RGB color">
+				<cocoa key="color" />
+			</property>
 		</class>
 		
-		<class name="diffuse light" code="difl" description="Directional light">
-			<cocoa class="GLLLight" />
-			<property name="diffuse color" code="dicl" description="Main color of the light" type="RGB color" />
-			<property name="enabled" code="enab" type="boolean" description="Is the light turned on?" />
-			<property name="longitude" code="lotd" type="real" description="Direction the light is shining from." />
-			<property name="latitude" code="latd" type="real" description="Direction the light is shining from." />
+		<class name="diffuse light" code="Difl" description="Directional light">
+			<cocoa class="GLLDirectionalLight" />
+			<property name="diffuse color" code="DiCl" description="Main color of the light" type="RGB color" />
+			<property name="specular color" code="SpCl" description="Main color of the light" type="RGB color" />
+			<property name="enabled" code="Enab" type="boolean" description="Is the light turned on?" />
+			<property name="longitude" code="LoTd" type="real" description="Direction the light is shining from." />
+			<property name="latitude" code="LaTd" type="real" description="Direction the light is shining from." />
 		</class>
 		
-		<class name="render window" code="rwnd" extends="window" description="Scene render window">
+		<class name="render window" code="Rwnd" extends="window" description="Scene render window">
 			<cocoa class="NSWindow" />
-			<property name="width" code="witd" type="integer" description="Width of the window" />
-			<property name="height" code="witd" type="integer" description="Height of the window" />
-			<property name="size locked" code="witd" type="boolean" description="Is the size of the window locked against accidental inputs? (It can still be changed from scripts" />
-			<property name="field of view" code="witd" type="integer" description="Field of view" />
-			<property name="distance to target" code="witd" type="integer" description="Distance to where teh camera is looking at" />
-			<property name="target position x" code="witd" type="integer" description="Where the camera is looking at" />
-			<property name="target position y" code="witd" type="integer" description="Where the camera is looking at" />
-			<property name="target position z" code="witd" type="integer" description="Where the camera is looking at" />
-			<property name="longitude" code="lotd" type="real" description="Direction of the camera." />
-			<property name="latitude" code="latd" type="real" description="Direction of the camera." />
-			<property name="camera locked" type="boolean" description="Is the camera locked against accidental inputs? (It can still be changed from scripts)" />
+			<property name="width" code="Witd" type="integer" description="Width of the window" />
+			<property name="height" code="Higt" type="integer" description="Height of the window" />
+			<property name="size locked" code="sLok" type="boolean" description="Is the size of the window locked against accidental inputs? (It can still be changed from scripts" />
+			<property name="field of view" code="FovY" type="integer" description="Field of view" />
+			<property name="distance to target" code="Dist" type="integer" description="Distance to where the camera is looking at" />
+			<property name="target position x" code="tarX" type="integer" description="Where the camera is looking at" />
+			<property name="target position y" code="tarY" type="integer" description="Where the camera is looking at" />
+			<property name="target position z" code="tarZ" type="integer" description="Where the camera is looking at" />
+			<property name="longitude" code="LoTd" type="real" description="Direction of the camera." />
+			<property name="latitude" code="LaTd" type="real" description="Direction of the camera." />
+			<property name="camera locked" code="cLok" type="boolean" description="Is the camera locked against accidental inputs? (It can still be changed from scripts)" />
 		</class>
 		
 		<!-- Commands: Add mesh (let user choose or from script), save pose, save model, save posed model, save image. -->

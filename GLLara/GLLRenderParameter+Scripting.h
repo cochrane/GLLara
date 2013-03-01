@@ -1,0 +1,15 @@
+//
+//  GLLRenderParameter+Scripting.h
+//  GLLara
+//
+//  Created by Torsten Kammer on 01.03.13.
+//  Copyright (c) 2013 Torsten Kammer. All rights reserved.
+//
+
+#import "GLLRenderParameter.h"
+
+@interface GLLRenderParameter (Scripting)
+
+- (NSScriptObjectSpecifier *)objectSpecifier;
+
+@end

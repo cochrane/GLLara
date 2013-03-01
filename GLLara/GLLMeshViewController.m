@@ -152,6 +152,8 @@
 	}
 	else if (tableView == self.textureAssignmentsView)
 	{
+		if ((NSInteger) textureNames.count <= row) return nil;
+		
 		NSString *textureName = [textureNames objectAtIndex:row];
 		
 		GLLTextureAssignmentView *result = [tableView makeViewWithIdentifier:@"TextureAssignment" owner:self];
