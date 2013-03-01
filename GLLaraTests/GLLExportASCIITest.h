@@ -7,7 +7,11 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import <CoreData/CoreData.h>
 
 @interface GLLExportASCIITest : SenTestCase
+
+@property (nonatomic) NSPersistentStoreCoordinator *coordinator;
+@property (nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end

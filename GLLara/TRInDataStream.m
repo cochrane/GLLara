@@ -181,7 +181,7 @@
 }
 - (TRInDataStream *)substreamWithLength:(NSUInteger)count;
 {
-	if (count == 0) return nil;
+	if (count == 0) return [[TRInDataStream alloc] initWithData:[NSData data]];
 	if (!self.isValid) return nil;
 	
 	if (_position + count > _levelData.length)
@@ -198,7 +198,7 @@
 
 - (NSData *)dataWithLength:(NSUInteger)count
 {
-	if (count == 0) return nil;
+	if (count == 0) return [NSData data];
 	if (!self.isValid) return nil;
 
 	NSData *underlyingData = (_position + count <= _levelData.length) ? [_levelData subdataWithRange:NSMakeRange(_position, count)] : nil;

@@ -8,11 +8,29 @@
 
 #import "GLLExportASCIITest.h"
 
+#import "GLLItem.h"
+#import "GLLItem+MeshExport.h"
 #import "GLLModel.h"
 #import "GLLModelBone.h"
 #import "GLLModelMesh.h"
 
 @implementation GLLExportASCIITest
+
+- (void)setUp
+{
+	NSError *error = nil;
+	self.coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[NSManagedObjectModel mergedModelFromBundles:nil]];
+	NSPersistentStore *inMemoryStore = [self.coordinator addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:&error];
+	STAssertNotNil(inMemoryStore, @"Couldn't create store: %@", error);
+	self.managedObjectContext = [[NSManagedObjectContext alloc] init];
+	self.managedObjectContext.persistentStoreCoordinator = self.coordinator;
+}
+
+- (void)tearDown
+{
+	self.coordinator = nil;
+	self.managedObjectContext = nil;
+}
 
 - (void)testASCIIFromASCII
 {
@@ -26,7 +44,7 @@
 	0.50 0 0.0\n\
 	\n\
 	1 # the count of them meshes\n\
-	Test\n\
+	32_Test_1\n\
 	1 # uv layers\n\
 	1 # textures\n\
 	tex.tga\n\
@@ -55,10 +73,17 @@
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	GLLModel *originalModel = [[GLLModel alloc] initASCIIFromString:string baseURL:baseURL parent:nil error:NULL];
 	
-	NSString *exported = [originalModel writeASCII];
-	GLLModel *model = [[GLLModel alloc] initASCIIFromString:exported baseURL:baseURL parent:nil error:NULL];
+	GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
+	newItem.model = originalModel;
 	
+	NSError *error = nil;
+	NSString *exported = [newItem writeASCIIError:&error];
+	STAssertNotNil(exported, @"Should have written something");
+	STAssertNil(error, @"Should not be an error, is %@", error);
+	GLLModel *model = [[GLLModel alloc] initASCIIFromString:exported baseURL:baseURL parent:nil error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
+	STAssertNil(error, @"Should not be an error, is %@", error);
+	if (!model) return;
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 2, @"Model should have two bones.");
 	STAssertEquals(model.meshes.count, (NSUInteger) 1, @"Model should have one mesh.");
@@ -83,7 +108,7 @@
 	STAssertEquals(bone2.positionZ, 0.0f, @"incorrect position");
 	
 	GLLModelMesh *mesh = model.meshes[0];
-	STAssertEqualObjects(mesh.name, @"Test", @"Incorrect name of mesh");
+	STAssertEqualObjects(mesh.displayName, @"Test", @"Incorrect name of mesh");
 	STAssertEquals(mesh.textures.count, (NSUInteger) 1, @"Mesh should have textures");
 	STAssertEqualObjects([mesh.textures[0] absoluteURL], [NSURL fileURLWithPath:@"/tmp/tex.tga"], @"Incorrect URL");
 	STAssertEquals(mesh.countOfElements, (NSUInteger) 3, @"Not enough indices");
@@ -132,7 +157,7 @@
 		0x00, 0x00, 0x00, 0x00, // Position Z
 		
 		0x01, 0x00, 0x00, 0x00, // Count of meshes
-		0x04, 'T', 'e', 's', 't', // Name
+		0x09, '3', '2', '_', 'T', 'e', 's', 't', '_',  '1', // Name
 		0x01, 0x00, 0x00, 0x00, // Count of UV layers
 		0x01, 0x00, 0x00, 0x00, // Count of textures
 		0x07, 't', 'e', 'x', '.', 't', 'g', 'a', // tex name 1
@@ -202,10 +227,17 @@
 	
 	GLLModel *originalModel = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:NULL];
 	
-	NSString *exported = [originalModel writeASCII];
-	GLLModel *model = [[GLLModel alloc] initASCIIFromString:exported baseURL:baseURL parent:nil error:NULL];
+	GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
+	newItem.model = originalModel;
 	
+	NSError *error = nil;
+	NSString *exported = [newItem writeASCIIError:&error];
+	STAssertNotNil(exported, @"Should have written something");
+	STAssertNil(error, @"Should not be an error, is %@", error);
+	GLLModel *model = [[GLLModel alloc] initASCIIFromString:exported baseURL:baseURL parent:nil error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
+	STAssertNil(error, @"Should not be an error, is %@", error);
+	if (!model) return;
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 2, @"Model should have two bones.");
 	STAssertEquals(model.meshes.count, (NSUInteger) 1, @"Model should have one mesh.");
@@ -230,7 +262,7 @@
 	STAssertEquals(bone2.positionZ, 0.0f, @"incorrect position");
 	
 	GLLModelMesh *mesh = model.meshes[0];
-	STAssertEqualObjects(mesh.name, @"Test", @"Incorrect name of mesh");
+	STAssertEqualObjects(mesh.displayName, @"Test", @"Incorrect name of mesh");
 	STAssertEquals(mesh.textures.count, (NSUInteger) 1, @"Mesh should have textures");
 	STAssertEqualObjects([mesh.textures[0] absoluteURL], [NSURL fileURLWithPath:@"/tmp/tex.tga"], @"Incorrect URL");
 	STAssertEquals(mesh.countOfElements, (NSUInteger) 3, @"Not enough indices");
