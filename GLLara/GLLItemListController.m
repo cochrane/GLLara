@@ -36,20 +36,21 @@
 		__strong GLLItemListController *self = weakSelf;
 		if (!self) return;
 		
-		
-		NSArray *removedItemControllers = [self.itemControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"item in %@", notification.userInfo[NSDeletedObjectsKey]]];
-		[self.itemControllers removeObjectsInArray:removedItemControllers];
-		
-		NSSet *addedItems = [notification.userInfo[NSInsertedObjectsKey] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"entity.name == \"GLLItem\""]];
-		NSArray *addedItemControllers = [addedItems map:^(GLLItem *item){
-			if ([notification.userInfo[NSDeletedObjectsKey] containsObject:item]) return (id) nil; // Objects that were deleted again before this was called.
-			if (item.parent != nil) return (id) nil;
-			return (id) [[GLLItemController alloc] initWithItem:item outlineView:self.outlineView parent:self];
-		}];
-		[self.itemControllers addObjectsFromArray:addedItemControllers];
-		[self.itemControllers sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"item.displayName" ascending:YES] ]];
-		
-		[self.outlineView reloadItem:self reloadChildren:YES];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			NSArray *removedItemControllers = [self.itemControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"item in %@", notification.userInfo[NSDeletedObjectsKey]]];
+			[self.itemControllers removeObjectsInArray:removedItemControllers];
+			
+			NSSet *addedItems = [notification.userInfo[NSInsertedObjectsKey] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"entity.name == \"GLLItem\""]];
+			NSArray *addedItemControllers = [addedItems map:^(GLLItem *item){
+				if ([notification.userInfo[NSDeletedObjectsKey] containsObject:item]) return (id) nil; // Objects that were deleted again before this was called.
+				if (item.parent != nil) return (id) nil;
+				return (id) [[GLLItemController alloc] initWithItem:item outlineView:self.outlineView parent:self];
+			}];
+			[self.itemControllers addObjectsFromArray:addedItemControllers];
+			[self.itemControllers sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"item.displayName" ascending:YES] ]];
+			
+			[self.outlineView reloadItem:self reloadChildren:YES];
+		});
 	}];
 	
 	// Get initial items

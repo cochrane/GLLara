@@ -27,6 +27,7 @@
 
 static NSCharacterSet *wasdCharacters;
 static NSCharacterSet *xyzCharacters;
+static NSCharacterSet *arrowCharacters;
 static NSMutableCharacterSet *interestingCharacters;
 
 @interface GLLView ()
@@ -52,6 +53,7 @@ const double unitsPerSecond = 0.2;
 {
 	wasdCharacters = [NSCharacterSet characterSetWithCharactersInString:@"wasd"];
 	xyzCharacters = [NSCharacterSet characterSetWithCharactersInString:@"xyz"];
+	arrowCharacters = [NSCharacterSet characterSetWithRange:NSMakeRange(NSUpArrowFunctionKey, 4)];
 	interestingCharacters = [NSMutableCharacterSet characterSetWithCharactersInString:@"wasdxyz"];
 	[interestingCharacters addCharactersInRange:NSMakeRange(NSUpArrowFunctionKey, 4)];
 }
@@ -173,7 +175,10 @@ const double unitsPerSecond = 0.2;
 	
 	if ([xyzCharacters hasIntersectionWithSet:keysDown])
 	{
-		CGFloat angle = theEvent.deltaY / self.bounds.size.height;
+		CGFloat amountX = theEvent.deltaX / self.bounds.size.width;
+		CGFloat amountY = theEvent.deltaY / self.bounds.size.height;
+		
+		CGFloat angle = amountX + amountY;
 		
 		for (GLLItemBone *bone in [self.document.selection valueForKey:@"selectedBones"])
 		{
@@ -185,7 +190,8 @@ const double unitsPerSecond = 0.2;
 	else if (theEvent.modifierFlags & NSAlternateKeyMask)
 	{
 		// Move the object in the x/z plane
-		vec_float4 delta = simd_make(theEvent.deltaX * 0.001f, 0.0f, theEvent.deltaY * 0.001f, 0.0f);
+		CGFloat factor = (theEvent.modifierFlags & NSShiftKeyMask) ? 0.01f : 0.001f;
+		vec_float4 delta = simd_make(theEvent.deltaX * factor, 0.0f, theEvent.deltaY * factor, 0.0f);
 		delta = simd_mat_vecunrotate(self.camera.viewMatrix, delta);
 		
 		for (GLLItem *item in [self.document.selection valueForKey:@"selectedItems"])
@@ -401,7 +407,7 @@ const double unitsPerSecond = 0.2;
 				item.positionY += deltaY * 0.1;
 
 		}
-		else
+		else if ([arrowCharacters hasIntersectionWithSet:keysDown])
 		{
 			// Move object in x/z plane with arrow keys
 			CGFloat deltaX = 0, deltaZ = 0;

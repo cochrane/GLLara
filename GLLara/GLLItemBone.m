@@ -19,6 +19,7 @@
 @interface GLLItemBone ()
 
 - (void)_standardSetValue:(id)value forKey:(NSString *)key;
+- (void)_standardSetAngle:(float)value forKey:(NSString *)key;
 - (void)_updateRelativeTransform;
 
 @end
@@ -76,19 +77,19 @@
 	[self _updateRelativeTransform];
 }
 
-- (void)setRotationX:(float)position
+- (void)setRotationX:(float)angle
 {
-	[self _standardSetValue:@(position) forKey:@"rotationX"];
+	[self _standardSetAngle:angle forKey:@"rotationX"];
 	[self _updateRelativeTransform];
 }
-- (void)setRotationY:(float)position
+- (void)setRotationY:(float)angle
 {
-	[self _standardSetValue:@(position) forKey:@"rotationY"];
+	[self _standardSetAngle:angle forKey:@"rotationY"];
 	[self _updateRelativeTransform];
 }
-- (void)setRotationZ:(float)position
+- (void)setRotationZ:(float)angle
 {
-	[self _standardSetValue:@(position) forKey:@"rotationZ"];
+	[self _standardSetAngle:angle forKey:@"rotationZ"];
 	[self _updateRelativeTransform];
 }
 
@@ -151,6 +152,14 @@
 	[self willChangeValueForKey:key];
 	[self setPrimitiveValue:value forKey:key];
 	[self didChangeValueForKey:key];
+}
+
+- (void)_standardSetAngle:(float)value forKey:(NSString *)key;
+{
+	value = fmodf(value, M_PI * 2.0);
+	if (value < 0.0f)
+		value = M_PI * 2.0 - value;
+	[self _standardSetValue:@(value) forKey:key];
 }
 
 - (void)_updateRelativeTransform
