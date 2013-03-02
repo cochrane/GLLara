@@ -81,6 +81,8 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 		// New objects includes absolutely anything. Restrict this to items.
 		for (NSManagedObject *newItem in notification.userInfo[NSInsertedObjectsKey])
 		{
+			if ([notification.userInfo[NSDeletedObjectsKey] containsObject:newItem])
+				continue; // Objects that were deleted again before this was called.
 			if ([newItem.entity isKindOfEntity:itemEntity])
 				[self _addDrawerForItem:(GLLItem *) newItem];
 		}
@@ -182,9 +184,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 		if (item.objectID.isTemporaryID)
 		{
 			// Temporary ID means this was not loaded from a file. Get rid of it.
-			dispatch_async(dispatch_get_current_queue(), ^(){
-				[item.managedObjectContext deleteObject:item];
-			});
+			[item.managedObjectContext deleteObject:item];
 		}
 		
 		return;

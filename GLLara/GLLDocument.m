@@ -79,8 +79,7 @@
 
 - (void)makeWindowControllers
 {
-	self.selection = [[GLLSelection alloc] init];
-	self.selection.managedObjectContext = self.managedObjectContext;
+	self.selection = [[GLLSelection alloc] initWithManagedObjectContext:self.managedObjectContext];
 	
 	sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext];
 	[sceneDrawer bind:@"selectedBones" toObject:self.selection withKeyPath:@"selectedBones" options:nil];
@@ -158,7 +157,7 @@
 		// Set selection next time the main loop comes around to ensure everything's set up properly by then.
 		dispatch_async(dispatch_get_main_queue(), ^(){
 			NSMutableArray *selectedItems = [self.selection mutableArrayValueForKeyPath:@"selectedItems"];
-			[selectedItems replaceObjectsInRange:NSMakeRange(0, selectedItems.count) withObjectsFromArray:@[ newItem ] range:NSMakeRange(0, 1)];
+			[selectedItems replaceObjectsInRange:NSMakeRange(0, selectedItems.count) withObjectsFromArray:@[ newItem ]];
 		});
 	}];
 }

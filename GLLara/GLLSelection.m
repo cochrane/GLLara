@@ -33,11 +33,19 @@
 	return [NSSet setWithObject:@"selectedObjects"];
 }
 
-- (instancetype)init
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context;
 {
 	if (!(self = [super init])) return nil;
 	
 	self.selectedObjects = [NSMutableArray array];
+	self.managedObjectContext = context;
+	
+	__weak id weakSelf = self;
+	[[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:self.managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
+		__strong GLLSelection *self = weakSelf;
+		
+		[[self mutableArrayValueForKeyPath:@"selectedObjects"]  removeObjectsInArray:[notification.userInfo[NSDeletedObjectsKey] allObjects]];
+	}];
 	
 	return self;
 }

@@ -16,6 +16,7 @@
 @interface GLLItemListController ()
 
 @property (nonatomic) NSMutableArray *itemControllers;
+@property (nonatomic) NSOperationQueue *operationQueue;
 
 @end
 
@@ -27,14 +28,21 @@
 	
 	_managedObjectContext = managedObjectContext;
 	_outlineView = outlineView;
+	_operationQueue = [[NSOperationQueue alloc] init];
+	_operationQueue.maxConcurrentOperationCount = 1;
 	
-	[[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:_managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
+	__weak id weakSelf = self;
+	[[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:_managedObjectContext queue:self.operationQueue usingBlock:^(NSNotification *notification){
+		__strong GLLItemListController *self = weakSelf;
+		if (!self) return;
+		
 		
 		NSArray *removedItemControllers = [self.itemControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"item in %@", notification.userInfo[NSDeletedObjectsKey]]];
 		[self.itemControllers removeObjectsInArray:removedItemControllers];
 		
 		NSSet *addedItems = [notification.userInfo[NSInsertedObjectsKey] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"entity.name == \"GLLItem\""]];
 		NSArray *addedItemControllers = [addedItems map:^(GLLItem *item){
+			if ([notification.userInfo[NSDeletedObjectsKey] containsObject:item]) return (id) nil; // Objects that were deleted again before this was called.
 			if (item.parent != nil) return (id) nil;
 			return (id) [[GLLItemController alloc] initWithItem:item outlineView:self.outlineView parent:self];
 		}];

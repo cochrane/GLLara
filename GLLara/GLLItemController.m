@@ -34,6 +34,7 @@
 		
 		NSSet *addedItems = [notification.userInfo[NSInsertedObjectsKey] filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"entity.name == \"GLLItem\""]];
 		NSArray *addedItemControllers = [addedItems map:^(GLLItem *item){
+			if ([notification.userInfo[NSDeletedObjectsKey] containsObject:item]) return (id) nil; // Objects that were deleted again before this was called.
 			if (item.parent != self.item) return (id) nil;
 			return (id) [[GLLSubItemController alloc] initWithItem:item outlineView:self.outlineView parent:self];
 		}];
