@@ -18,5 +18,18 @@
             <pubDate>Wed, 09 Jan 2006 19:20:11 +0000</pubDate>
             <enclosure url="http://ferroequinologist.de/gllara/GLLara-0.2beta-sparkletest.zip" sparkle:version="2.1" sparkle:shortVersionString="0.2 Beta" length="3086838" type="application/octet-stream" />
 		</item>
+		<item>
+            <title>Sparkle Test Release - 0.2 beta 2</title>
+			<description xml:lang="en"><![CDATA[
+				<p>This fixes several bugs that made the app almost unusuable.</p>
+				<p>(Release notes will get longer for the full release)</p>
+			]]></description>
+			<description xml:lang="de"><![CDATA[
+				<p>Dies behebt mehrere Fehler, wegen denen die App fast nutzlos war.</p>
+				<p>(Längere Hinweise gibt es dann für die Vollversion)</p>
+			]]></description>
+            <pubDate>Fri, 02 Mar 2013 21:12:00 +0100</pubDate>
+            <enclosure url="http://ferroequinologist.de/gllara/GLLara-0.2beta2.zip" sparkle:version="2.2" sparkle:shortVersionString="0.2 Beta 2" length="3088418" type="application/octet-stream" />
+		</item>
 	</channel>
 </rss>
