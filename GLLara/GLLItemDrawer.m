@@ -70,12 +70,18 @@
 		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
 	}];
 	if (alphaDrawers.count < modelDrawer.alphaMeshDrawers.count)
+	{
+		[self unload];
 		return nil;
+	}
 	solidDrawers = [modelDrawer.solidMeshDrawers map:^(GLLMeshDrawer *drawer) {
 		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
 	}];
 	if (solidDrawers.count < modelDrawer.solidMeshDrawers.count)
+	{
+		[self unload];
 		return nil;
+	}
 	
 	glGenBuffers(1, &transformsBuffer);
 	needToUpdateTransforms = YES;

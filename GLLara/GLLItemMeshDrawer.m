@@ -193,8 +193,6 @@
 {
 	glDeleteBuffers(1, &renderParametersBuffer);
 	renderParametersBuffer = 0;
-	for (GLLRenderParameter *parameter in renderParameters)
-		[parameter removeObserver:self forKeyPath:@"uniformValue"];
 	
 	renderParameters = nil;
 }

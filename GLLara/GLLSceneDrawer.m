@@ -179,6 +179,14 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	if (!drawer)
 	{
 		[NSApp presentError:error];
+		if (item.objectID.isTemporaryID)
+		{
+			// Temporary ID means this was not loaded from a file. Get rid of it.
+			dispatch_async(dispatch_get_current_queue(), ^(){
+				[item.managedObjectContext deleteObject:item];
+			});
+		}
+		
 		return;
 	}
 	
