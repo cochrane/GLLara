@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+	<channel>
+		<title>GLLara's' Changelog</title>
+		<link>https://raw.github.com/cochrane/GLLara/master/appcast.xml</link>
+		<description>Most recent changes with links to updates.</description>
+		<language>en</language>
+		<item>
+            <title>Sparkle Test Release - 0.2 beta</title>
+			<description xml:lang="en"><![CDATA[
+				<h1>This is just a test</h1>
+				<p>Hi there!</p>
+			]]></description>
+			<description xml:lang="en"><![CDATA[
+				<h1>Dies ist nur ein Test</h1>
+				<p>Hallo!</p>
+			]]></description>
+            <pubDate>Wed, 09 Jan 2006 19:20:11 +0000</pubDate>
+            <enclosure url="http://ferroequinologist.de/gllara/GLLara-0.2beta-sparkletest" sparkle:version="2.1" sparkle:shortVersionString="0.2 Beta" length="3086838" type="application/octet-stream" />
+		</item>
+	</channel>
+</rss>

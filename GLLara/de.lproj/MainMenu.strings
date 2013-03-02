@@ -22,6 +22,8 @@
 /* Class = "NSMenuItem"; title = "About GLLara"; ObjectID = "58"; */
 "About GLLara" = "Über GLLara";
 
+"Check for Updates…" = "Softwareaktualisierung…";
+
 /* Class = "NSMenuItem"; title = "Open…"; ObjectID = "72"; */
 "Open…" = "Öffnen…";
 
