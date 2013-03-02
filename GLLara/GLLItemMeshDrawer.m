@@ -58,11 +58,14 @@
 	glGenBuffers(1, &renderParametersBuffer);
 	needsParameterBufferUpdate = YES;
 	
-	if (![self _updateTexturesError:error])
-		return nil;
-	
 	[_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
 	[_itemMesh addObserver:self forKeyPath:@"renderParameters" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+	
+	if (![self _updateTexturesError:error])
+	{
+		[self unload];
+		return nil;
+	}
 		
 	return self;
 }
@@ -187,8 +190,6 @@
 {
 	glDeleteBuffers(1, &renderParametersBuffer);
 	renderParametersBuffer = 0;
-	for (GLLRenderParameter *parameter in renderParameters)
-		[parameter removeObserver:self forKeyPath:@"uniformValue"];
 	
 	renderParameters = nil;
 }
