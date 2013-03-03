@@ -31,5 +31,18 @@
             <pubDate>Fri, 02 Mar 2013 21:12:00 +0100</pubDate>
             <enclosure url="http://ferroequinologist.de/gllara/GLLara-0.2beta2.zip" sparkle:version="2.2" sparkle:shortVersionString="0.2 Beta 2" length="3088418" type="application/octet-stream" />
 		</item>
+		<item>
+            <title>GLLara 0.2 beta 3</title>
+			<description xml:lang="en"><![CDATA[
+				<p>This fixes an issue with incorrect texture coordinates when exporting OBJ files.</p>
+				<p>(Release notes will get longer for the full release)</p>
+			]]></description>
+			<description xml:lang="de"><![CDATA[
+				<p>Dies behebt ein Fehler mit falschen Texturkoordinaten, wenn man OBJ-Dateien exportieren.</p>
+				<p>(Längere Hinweise gibt es dann für die Vollversion)</p>
+			]]></description>
+            <pubDate>Fri, 03 Mar 2013 01:33:00 +0100</pubDate>
+            <enclosure url="http://ferroequinologist.de/gllara/GLLara-0.2beta3.zip" sparkle:version="2.3" sparkle:shortVersionString="0.2 Beta 3" length="3089542" type="application/octet-stream" />
+		</item>
 	</channel>
 </rss>
