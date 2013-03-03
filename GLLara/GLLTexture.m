@@ -124,16 +124,14 @@ static GLint renderer;
 static BOOL isIntel;
 
 @interface GLLTexture ()
-{
-	dispatch_source_t dispatchSource;
-	int fileHandle;
-}
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (void)_loadCGCompatibleTexture:(NSData *)data;
 - (void)_loadDefaultTexture;
 
 - (BOOL)_loadDataError:(NSError *__autoreleasing*)error;
+
+- (void)_setupGCDObserving;
 
 @end
 
@@ -172,16 +170,7 @@ static BOOL isIntel;
 		isIntel = (renderer == kCGLRendererIntelHD4000ID) || (renderer == kCGLRendererIntelHDID);
 	}
 	
-	const char *path = self.url.path.fileSystemRepresentation;
-	fileHandle = open(path, O_EVTONLY);
-	
-	__block __weak id weakSelf = self;
-	
-	dispatchSource = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, fileHandle, DISPATCH_VNODE_WRITE, dispatch_get_main_queue());
-	dispatch_source_set_event_handler(dispatchSource, ^(){
-		[weakSelf _loadDataError:NULL];
-	});
-	dispatch_resume(dispatchSource);
+	[self _setupGCDObserving];
 	
 	glGenTextures(1, &_textureID);
 	
@@ -200,8 +189,29 @@ static BOOL isIntel;
 
 - (void)dealloc
 {
-	close(fileHandle);
 	NSAssert(_textureID == 0, @"did not call unload before dealloc");
+}
+
+- (void)_setupGCDObserving;
+{
+	// Inspired by http://www.davidhamrick.com/2011/10/13/Monitoring-Files-With-GCD-Being-Edited-With-A-Text-Editor.html because Photoshop follows the same annoying pattern.
+	int fileHandle = open(self.url.path.fileSystemRepresentation, O_EVTONLY);
+	
+	__block __weak id weakSelf = self;
+	__block dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, fileHandle, DISPATCH_VNODE_DELETE | DISPATCH_VNODE_WRITE | DISPATCH_VNODE_EXTEND | DISPATCH_VNODE_ATTRIB | DISPATCH_VNODE_LINK | DISPATCH_VNODE_RENAME | DISPATCH_VNODE_REVOKE, dispatch_get_main_queue());
+	dispatch_source_set_event_handler(source, ^(){
+		__strong id self = weakSelf;
+		if (dispatch_source_get_data(source))
+		{
+			dispatch_source_cancel(source);
+			[self _setupGCDObserving];
+		}
+		[self _loadDataError:NULL];
+	});
+	dispatch_source_set_cancel_handler(source, ^(){
+		close(fileHandle);
+	});
+	dispatch_resume(source);
 }
 
 #pragma mark - File Presenter
