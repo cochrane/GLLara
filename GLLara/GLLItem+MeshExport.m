@@ -23,8 +23,9 @@
 	for (GLLItemBone *bone in self.bones)
 		[stream appendData:[bone.bone writeBinary]];
 	
-	[stream appendUint32:(uint32_t) self.meshes.count];
-	for (GLLItemMesh *mesh in self.meshes)
+	NSArray *toExport = [self.meshes.array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"shouldExport == YES"]];
+	[stream appendUint32:(uint32_t) toExport.count];
+	for (GLLItemMesh *mesh in toExport)
 	{
 		NSData *meshData = [mesh writeBinaryError:error];
 		if (!meshData) return nil;
@@ -41,8 +42,9 @@
 	for (GLLItemBone *bone in self.bones)
 		[string appendFormat:@"%@\n", [bone.bone writeASCII]];
 	
-	[string appendFormat:@"%lu\n", self.meshes.count];
-	for (GLLItemMesh *mesh in self.meshes)
+	NSArray *toExport = [self.meshes.array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"shouldExport == YES"]];
+	[string appendFormat:@"%lu\n", toExport.count];
+	for (GLLItemMesh *mesh in toExport)
 	{
 		NSString *meshString = [mesh writeASCIIError:error];
 		if (!meshString) return nil;

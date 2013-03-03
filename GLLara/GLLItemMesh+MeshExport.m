@@ -26,7 +26,7 @@
 	for (NSString *groupName in possibleGroups)
 	{
 		NSTextCheckingResult *match = [meshGroupNameRegexp firstMatchInString:groupName options:NSMatchingAnchored range:NSMakeRange(0, groupName.length)];
-		if (match.range.location == NSNotFound) continue;
+		if (!match || match.range.location == NSNotFound) continue;
 		
 		[genericItemName appendString:[groupName substringWithRange:[match rangeAtIndex:1]]];
 		[genericItemName appendString:@"_"];
@@ -85,6 +85,11 @@
 	NSString *name = [self genericItemNameError:error];
 	if (!name) return nil;
 	return [self.mesh writeBinaryWithName:name texture:self.textureURLsInShaderOrder];
+}
+
+- (BOOL)shouldExport
+{
+	return (self.shaderName != nil) && (self.shader != nil) && self.isVisible;
 }
 
 @end
