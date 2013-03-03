@@ -39,12 +39,8 @@
 @dynamic meshIndex;
 @dynamic displayName;
 
-- (void)setItem:(GLLItem *)item
-{
-	[self willChangeValueForKey:@"item"];
-	[self setPrimitiveValue:item forKey:@"item"];
-	[self didChangeValueForKey:@"item"];
-		
+- (void)prepareGraphicsData;
+{		
 	// Replace all render parameters
 	NSDictionary *values = self.mesh.renderParameterValues;
 	NSMutableSet *renderParameters = [self mutableSetValueForKey:@"renderParameters"];

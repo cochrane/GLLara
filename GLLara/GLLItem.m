@@ -157,6 +157,18 @@
 		[self setPrimitiveValue:nil forKey:@"itemURLBookmark"];
 }
 
+- (void)prepareForDeletion
+{
+	[super prepareForDeletion];
+	for (GLLItemBone *bone in self.bones)
+	{
+		if ([[bone valueForKeyPath:@"items"] count] == 1)
+		{
+			[self.managedObjectContext deleteObject:bone];
+		}
+	}
+}
+
 - (void)setModel:(GLLModel *)model
 {
 	[self willChangeValueForKey:@"model"];
@@ -167,11 +179,13 @@
 	// They have appropriate default values, so they need no setting of parameters.
 	NSMutableOrderedSet *meshes = [self mutableOrderedSetValueForKey:@"meshes"];
 	[meshes removeAllObjects];
-	[meshes addObjectsFromArray:[model.meshes map:^(GLLModelMesh *modelMesh) {
+	for (GLLModelMesh *modelMesh in model.meshes)
+	{
 		GLLItemMesh *itemMesh = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext];
 		itemMesh.cullFaceMode = modelMesh.cullFaceMode;
-		return itemMesh;
-	}]];
+		itemMesh.item = self;
+		[itemMesh prepareGraphicsData];
+	}
 	
 	NSMutableOrderedSet *bones = [self mutableOrderedSetValueForKey:@"bones"];
 	[bones removeAllObjects];

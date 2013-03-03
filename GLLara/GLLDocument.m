@@ -108,6 +108,14 @@
 	return [super configurePersistentStoreCoordinatorForURL:url ofType:fileType modelConfiguration:configuration storeOptions:allOptions error:error];
 }
 
+- (BOOL)writeToURL:(NSURL *)absoluteURL ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation originalContentsURL:(NSURL *)absoluteOriginalContentsURL error:(NSError **)error
+{
+	BOOL result = [super writeToURL:absoluteURL ofType:typeName forSaveOperation:saveOperation originalContentsURL:absoluteOriginalContentsURL error:error];
+	if (!result)
+		NSLog(@"couldn't save. Error: %@", error ? *error : nil);
+	return result;
+}
+
 #pragma mark - Actions
 
 - (IBAction)openNewRenderView:(id)sender
@@ -168,6 +176,7 @@
 	
 	for (GLLItem *item in [self.selection valueForKeyPath:@"selectedItems"])
 		[self.managedObjectContext deleteObject:item];
+	[self.managedObjectContext processPendingChanges];
 	
 	self.undoManager.actionName = NSLocalizedString(@"Delete item", @"delete item undo action name");
 }
