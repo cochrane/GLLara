@@ -426,8 +426,8 @@ const double unitsPerSecond = 0.2;
 			CGFloat deltaX = 0, deltaZ = 0;
 			if ([keysDown characterIsMember:NSLeftArrowFunctionKey] && ![keysDown characterIsMember:NSRightArrowFunctionKey]) deltaX = -diff * unitsPerSecond;
 			else if (![keysDown characterIsMember:NSLeftArrowFunctionKey] & [keysDown characterIsMember:NSRightArrowFunctionKey]) deltaX = diff * unitsPerSecond;
-			if ([keysDown characterIsMember:NSUpArrowFunctionKey] && ![keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = diff * unitsPerSecond;
-			else if (![keysDown characterIsMember:NSUpArrowFunctionKey] && [keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = -diff * unitsPerSecond;
+			if ([keysDown characterIsMember:NSUpArrowFunctionKey] && ![keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = -diff * unitsPerSecond;
+			else if (![keysDown characterIsMember:NSUpArrowFunctionKey] && [keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = diff * unitsPerSecond;
 		
 			vec_float4 delta = simd_make(deltaX * 0.1, 0.0f, deltaZ * 0.1, 0.0f);
 			delta = simd_mat_vecunrotate(self.camera.viewMatrix, delta);
