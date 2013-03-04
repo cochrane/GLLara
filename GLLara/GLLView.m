@@ -182,8 +182,6 @@ const double unitsPerSecond = 0.2;
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-	if (self.camera.cameraLocked) return;
-	
 	if ([xyzCharacters hasIntersectionWithSet:keysDown])
 	{
 		CGFloat amountX = theEvent.deltaX / self.bounds.size.width;
@@ -216,6 +214,7 @@ const double unitsPerSecond = 0.2;
 	else if (theEvent.modifierFlags & NSShiftKeyMask && ![wasdCharacters hasIntersectionWithSet:keysDown])
 	{
 		// This is a move event
+		if (self.camera.cameraLocked) return;
 		float deltaX = -theEvent.deltaX / self.bounds.size.width;
 		float deltaY = theEvent.deltaY / self.bounds.size.height;
 		
@@ -228,6 +227,7 @@ const double unitsPerSecond = 0.2;
 	else
 	{
 		// This is a rotate event
+		if (self.camera.cameraLocked) return;
 		self.camera.longitude -= theEvent.deltaX * M_PI / self.bounds.size.width;
 		self.camera.latitude -= theEvent.deltaY * M_PI / self.bounds.size.height;
 	}
@@ -235,6 +235,8 @@ const double unitsPerSecond = 0.2;
 
 - (void)rightMouseDragged:(NSEvent *)theEvent
 {
+	if (self.camera.cameraLocked) return;
+	
 	CGFloat deltaX = theEvent.deltaX * M_PI / self.bounds.size.width;
 	CGFloat deltaY = theEvent.deltaY * M_PI / self.bounds.size.height;
 	
@@ -287,7 +289,6 @@ const double unitsPerSecond = 0.2;
 
 - (void)keyDown:(NSEvent *)theEvent;
 {
-	if (self.camera.cameraLocked) return;
 	[self _processEventsStartingWith:theEvent];
 }
 
@@ -328,9 +329,7 @@ const double unitsPerSecond = 0.2;
 #pragma mark - Private methods
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
-{
-	if (self.camera.cameraLocked) return;
-	
+{	
 	NSTimeInterval lastEvent = [NSDate timeIntervalSinceReferenceDate];
 	
 	[NSEvent startPeriodicEventsAfterDelay:0.0 withPeriod:1.0 / 30.0];
@@ -384,12 +383,15 @@ const double unitsPerSecond = 0.2;
 		
 		// Perform actions
 		// - Move
-		float deltaX = 0, deltaY = 0, deltaZ = 0;
-		if ([keysDown characterIsMember:'a'] && ![keysDown characterIsMember:'d']) deltaX = -diff * unitsPerSecond;
-		else if (![keysDown characterIsMember:'a'] & [keysDown characterIsMember:'d']) deltaX = diff * unitsPerSecond;
-		if ([keysDown characterIsMember:'w'] && ![keysDown characterIsMember:'s']) deltaZ = -diff * unitsPerSecond;
-		else if (![keysDown characterIsMember:'w'] && [keysDown characterIsMember:'s']) deltaZ = diff * unitsPerSecond;
-		[self.camera moveLocalX:deltaX y:deltaY z:deltaZ];
+		if (!self.camera.cameraLocked)
+		{
+			float deltaX = 0, deltaY = 0, deltaZ = 0;
+			if ([keysDown characterIsMember:'a'] && ![keysDown characterIsMember:'d']) deltaX = -diff * unitsPerSecond;
+			else if (![keysDown characterIsMember:'a'] & [keysDown characterIsMember:'d']) deltaX = diff * unitsPerSecond;
+			if ([keysDown characterIsMember:'w'] && ![keysDown characterIsMember:'s']) deltaZ = -diff * unitsPerSecond;
+			else if (![keysDown characterIsMember:'w'] && [keysDown characterIsMember:'s']) deltaZ = diff * unitsPerSecond;
+			[self.camera moveLocalX:deltaX y:deltaY z:deltaZ];
+		}
 
 		// Move bones with arrow keys
 		if ([xyzCharacters hasIntersectionWithSet:keysDown])
