@@ -16,10 +16,11 @@
 #import "GLLCamera.h"
 #import "GLLDocument.h"
 #import "GLLItem.h"
+#import "GLLItemBone.h"
 #import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"
 #import "GLLSelection.h"
-#import "GLLItemBone.h"
+#import "GLLTexture.h"
 #import "GLLViewDrawer.h"
 #import "NSCharacterSet+SetOperations.h"
 #import "simd_matrix.h"
@@ -38,6 +39,8 @@ static NSMutableCharacterSet *interestingCharacters;
 	BOOL showSelection;
 	
 	NSMutableCharacterSet *keysDown;
+	
+	id textureChangeObserver;
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
@@ -98,6 +101,13 @@ const double unitsPerSecond = 0.2;
 	// Event handling
 	keysDown = [[NSMutableCharacterSet alloc] init];
 	
+	__weak GLLView *weakSelf = self;
+	textureChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:GLLTextureChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
+		dispatch_async(dispatch_get_main_queue(), ^(){
+			weakSelf.needsDisplay = YES;
+		});
+	}];
+	
 	return self;
 };
 
@@ -114,6 +124,7 @@ const double unitsPerSecond = 0.2;
 
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:textureChangeObserver];
 	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:@"values.showsSkeleton"];
 }
 

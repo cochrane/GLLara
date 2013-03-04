@@ -22,6 +22,8 @@
 #define kCGLRendererIntelHD4000ID 0x0024400
 #endif
 
+NSString *GLLTextureChangeNotification = @"GLL Texture Change Notification";
+
 #pragma mark - Private DDS loading functions
 
 GLenum _dds_get_compressed_texture_format(GLLDDSFile *file)
@@ -285,6 +287,8 @@ static BOOL isIntel;
 			[self _loadCGCompatibleTexture:data];
 		
 		if (internalError != nil) NSLog(@"Error loading texture %@: %@", self.url, internalError);
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:GLLTextureChangeNotification object:self];
 	}];
 	
 	if (coordinationError)
