@@ -440,7 +440,7 @@ const double unitsPerSecond = 0.2;
 		// - Prepare for next move through the loop
 		self.needsDisplay = YES;
 		
-		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDraggedMask | NSRightMouseDraggedMask |NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSApplicationDeactivatedEventType untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
+		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDraggedMask | NSRightMouseDraggedMask |NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSAppKitDefined untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
 	}
 	[NSEvent stopPeriodicEvents];
 	
