@@ -93,7 +93,7 @@
 					<li>Zu viele Bugs behoben, um sie alle hier aufzuführen. Ich freue mich immer über Berichte von weiteren Bugs!
 				</ul>
 			]]></description>
-            <pubDate>Fri, 03 Mar 2013 01:33:00 +0100</pubDate>
-            <enclosure url="http://ferroequinologist.de/gllara/GLLara-0.2beta4.zip" sparkle:version="3.0" sparkle:shortVersionString="0.2" length="3089812" type="application/octet-stream" />
+            <pubDate>Fri, 04 Mar 2013 23:20:00 +0100</pubDate>
+            <enclosure url="http://ferroequinologist.de/gllara/GLLara-0.2.zip" sparkle:version="3.0" sparkle:shortVersionString="0.2" length="3089812" type="application/octet-stream" />
 	</channel>
 </rss>
