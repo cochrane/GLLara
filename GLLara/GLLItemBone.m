@@ -159,6 +159,12 @@
 	value = fmodf(value, M_PI * 2.0);
 	if (value < 0.0f)
 		value = M_PI * 2.0 - value;
+	
+	// Ugly hotfix for Bug #63 - limit range to shortly under 2π
+	// TODO: In the Managed Object Model, up the limit for the angles to something like 7.0 and let this code here handle the details of keeping it in the 0…2π range.
+	if (value > 6.283)
+		value = 6.283;
+	
 	[self _standardSetValue:@(value) forKey:key];
 }
 
