@@ -31,6 +31,8 @@
  */
 @interface GLLSelection : NSObject
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context;
+
 @property (nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic) NSMutableArray *selectedObjects;

@@ -16,10 +16,11 @@
 #import "GLLCamera.h"
 #import "GLLDocument.h"
 #import "GLLItem.h"
+#import "GLLItemBone.h"
 #import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"
 #import "GLLSelection.h"
-#import "GLLItemBone.h"
+#import "GLLTexture.h"
 #import "GLLViewDrawer.h"
 #import "NSCharacterSet+SetOperations.h"
 #import "simd_matrix.h"
@@ -27,6 +28,7 @@
 
 static NSCharacterSet *wasdCharacters;
 static NSCharacterSet *xyzCharacters;
+static NSCharacterSet *arrowCharacters;
 static NSMutableCharacterSet *interestingCharacters;
 
 @interface GLLView ()
@@ -37,6 +39,8 @@ static NSMutableCharacterSet *interestingCharacters;
 	BOOL showSelection;
 	
 	NSMutableCharacterSet *keysDown;
+	
+	id textureChangeObserver;
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
@@ -52,6 +56,7 @@ const double unitsPerSecond = 0.2;
 {
 	wasdCharacters = [NSCharacterSet characterSetWithCharactersInString:@"wasd"];
 	xyzCharacters = [NSCharacterSet characterSetWithCharactersInString:@"xyz"];
+	arrowCharacters = [NSCharacterSet characterSetWithRange:NSMakeRange(NSUpArrowFunctionKey, 4)];
 	interestingCharacters = [NSMutableCharacterSet characterSetWithCharactersInString:@"wasdxyz"];
 	[interestingCharacters addCharactersInRange:NSMakeRange(NSUpArrowFunctionKey, 4)];
 }
@@ -96,6 +101,13 @@ const double unitsPerSecond = 0.2;
 	// Event handling
 	keysDown = [[NSMutableCharacterSet alloc] init];
 	
+	__weak GLLView *weakSelf = self;
+	textureChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:GLLTextureChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
+		dispatch_async(dispatch_get_main_queue(), ^(){
+			weakSelf.needsDisplay = YES;
+		});
+	}];
+	
 	return self;
 };
 
@@ -112,6 +124,7 @@ const double unitsPerSecond = 0.2;
 
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:textureChangeObserver];
 	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:@"values.showsSkeleton"];
 }
 
@@ -169,11 +182,12 @@ const double unitsPerSecond = 0.2;
 
 - (void)mouseDragged:(NSEvent *)theEvent
 {
-	if (self.camera.cameraLocked) return;
-	
 	if ([xyzCharacters hasIntersectionWithSet:keysDown])
 	{
-		CGFloat angle = theEvent.deltaY / self.bounds.size.height;
+		CGFloat amountX = theEvent.deltaX / self.bounds.size.width;
+		CGFloat amountY = theEvent.deltaY / self.bounds.size.height;
+		
+		CGFloat angle = amountX + amountY;
 		
 		for (GLLItemBone *bone in [self.document.selection valueForKey:@"selectedBones"])
 		{
@@ -185,7 +199,8 @@ const double unitsPerSecond = 0.2;
 	else if (theEvent.modifierFlags & NSAlternateKeyMask)
 	{
 		// Move the object in the x/z plane
-		vec_float4 delta = simd_make(theEvent.deltaX * 0.001f, 0.0f, theEvent.deltaY * 0.001f, 0.0f);
+		CGFloat factor = (theEvent.modifierFlags & NSShiftKeyMask) ? 0.01f : 0.001f;
+		vec_float4 delta = simd_make(theEvent.deltaX * factor, 0.0f, theEvent.deltaY * factor, 0.0f);
 		delta = simd_mat_vecunrotate(self.camera.viewMatrix, delta);
 		
 		for (GLLItem *item in [self.document.selection valueForKey:@"selectedItems"])
@@ -199,6 +214,7 @@ const double unitsPerSecond = 0.2;
 	else if (theEvent.modifierFlags & NSShiftKeyMask && ![wasdCharacters hasIntersectionWithSet:keysDown])
 	{
 		// This is a move event
+		if (self.camera.cameraLocked) return;
 		float deltaX = -theEvent.deltaX / self.bounds.size.width;
 		float deltaY = theEvent.deltaY / self.bounds.size.height;
 		
@@ -211,6 +227,7 @@ const double unitsPerSecond = 0.2;
 	else
 	{
 		// This is a rotate event
+		if (self.camera.cameraLocked) return;
 		self.camera.longitude -= theEvent.deltaX * M_PI / self.bounds.size.width;
 		self.camera.latitude -= theEvent.deltaY * M_PI / self.bounds.size.height;
 	}
@@ -218,6 +235,8 @@ const double unitsPerSecond = 0.2;
 
 - (void)rightMouseDragged:(NSEvent *)theEvent
 {
+	if (self.camera.cameraLocked) return;
+	
 	CGFloat deltaX = theEvent.deltaX * M_PI / self.bounds.size.width;
 	CGFloat deltaY = theEvent.deltaY * M_PI / self.bounds.size.height;
 	
@@ -270,7 +289,6 @@ const double unitsPerSecond = 0.2;
 
 - (void)keyDown:(NSEvent *)theEvent;
 {
-	if (self.camera.cameraLocked) return;
 	[self _processEventsStartingWith:theEvent];
 }
 
@@ -311,9 +329,7 @@ const double unitsPerSecond = 0.2;
 #pragma mark - Private methods
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
-{
-	if (self.camera.cameraLocked) return;
-	
+{	
 	NSTimeInterval lastEvent = [NSDate timeIntervalSinceReferenceDate];
 	
 	[NSEvent startPeriodicEventsAfterDelay:0.0 withPeriod:1.0 / 30.0];
@@ -367,12 +383,15 @@ const double unitsPerSecond = 0.2;
 		
 		// Perform actions
 		// - Move
-		float deltaX = 0, deltaY = 0, deltaZ = 0;
-		if ([keysDown characterIsMember:'a'] && ![keysDown characterIsMember:'d']) deltaX = -diff * unitsPerSecond;
-		else if (![keysDown characterIsMember:'a'] & [keysDown characterIsMember:'d']) deltaX = diff * unitsPerSecond;
-		if ([keysDown characterIsMember:'w'] && ![keysDown characterIsMember:'s']) deltaZ = -diff * unitsPerSecond;
-		else if (![keysDown characterIsMember:'w'] && [keysDown characterIsMember:'s']) deltaZ = diff * unitsPerSecond;
-		[self.camera moveLocalX:deltaX y:deltaY z:deltaZ];
+		if (!self.camera.cameraLocked)
+		{
+			float deltaX = 0, deltaY = 0, deltaZ = 0;
+			if ([keysDown characterIsMember:'a'] && ![keysDown characterIsMember:'d']) deltaX = -diff * unitsPerSecond;
+			else if (![keysDown characterIsMember:'a'] & [keysDown characterIsMember:'d']) deltaX = diff * unitsPerSecond;
+			if ([keysDown characterIsMember:'w'] && ![keysDown characterIsMember:'s']) deltaZ = -diff * unitsPerSecond;
+			else if (![keysDown characterIsMember:'w'] && [keysDown characterIsMember:'s']) deltaZ = diff * unitsPerSecond;
+			[self.camera moveLocalX:deltaX y:deltaY z:deltaZ];
+		}
 
 		// Move bones with arrow keys
 		if ([xyzCharacters hasIntersectionWithSet:keysDown])
@@ -401,14 +420,14 @@ const double unitsPerSecond = 0.2;
 				item.positionY += deltaY * 0.1;
 
 		}
-		else
+		else if ([arrowCharacters hasIntersectionWithSet:keysDown])
 		{
 			// Move object in x/z plane with arrow keys
 			CGFloat deltaX = 0, deltaZ = 0;
 			if ([keysDown characterIsMember:NSLeftArrowFunctionKey] && ![keysDown characterIsMember:NSRightArrowFunctionKey]) deltaX = -diff * unitsPerSecond;
 			else if (![keysDown characterIsMember:NSLeftArrowFunctionKey] & [keysDown characterIsMember:NSRightArrowFunctionKey]) deltaX = diff * unitsPerSecond;
-			if ([keysDown characterIsMember:NSUpArrowFunctionKey] && ![keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = diff * unitsPerSecond;
-			else if (![keysDown characterIsMember:NSUpArrowFunctionKey] && [keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = -diff * unitsPerSecond;
+			if ([keysDown characterIsMember:NSUpArrowFunctionKey] && ![keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = -diff * unitsPerSecond;
+			else if (![keysDown characterIsMember:NSUpArrowFunctionKey] && [keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = diff * unitsPerSecond;
 		
 			vec_float4 delta = simd_make(deltaX * 0.1, 0.0f, deltaZ * 0.1, 0.0f);
 			delta = simd_mat_vecunrotate(self.camera.viewMatrix, delta);
@@ -423,7 +442,7 @@ const double unitsPerSecond = 0.2;
 		// - Prepare for next move through the loop
 		self.needsDisplay = YES;
 		
-		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDraggedMask | NSRightMouseDraggedMask |NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSApplicationDeactivatedEventType untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
+		theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDraggedMask | NSRightMouseDraggedMask |NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSAppKitDefined untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
 	}
 	[NSEvent stopPeriodicEvents];
 	

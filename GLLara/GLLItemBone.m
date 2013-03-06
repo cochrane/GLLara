@@ -19,6 +19,7 @@
 @interface GLLItemBone ()
 
 - (void)_standardSetValue:(id)value forKey:(NSString *)key;
+- (void)_standardSetAngle:(float)value forKey:(NSString *)key;
 - (void)_updateRelativeTransform;
 
 @end
@@ -76,19 +77,19 @@
 	[self _updateRelativeTransform];
 }
 
-- (void)setRotationX:(float)position
+- (void)setRotationX:(float)angle
 {
-	[self _standardSetValue:@(position) forKey:@"rotationX"];
+	[self _standardSetAngle:angle forKey:@"rotationX"];
 	[self _updateRelativeTransform];
 }
-- (void)setRotationY:(float)position
+- (void)setRotationY:(float)angle
 {
-	[self _standardSetValue:@(position) forKey:@"rotationY"];
+	[self _standardSetAngle:angle forKey:@"rotationY"];
 	[self _updateRelativeTransform];
 }
-- (void)setRotationZ:(float)position
+- (void)setRotationZ:(float)angle
 {
-	[self _standardSetValue:@(position) forKey:@"rotationZ"];
+	[self _standardSetAngle:angle forKey:@"rotationZ"];
 	[self _updateRelativeTransform];
 }
 
@@ -151,6 +152,20 @@
 	[self willChangeValueForKey:key];
 	[self setPrimitiveValue:value forKey:key];
 	[self didChangeValueForKey:key];
+}
+
+- (void)_standardSetAngle:(float)value forKey:(NSString *)key;
+{
+	value = fmodf(value, M_PI * 2.0);
+	if (value < 0.0f)
+		value = M_PI * 2.0 - value;
+	
+	// Ugly hotfix for Bug #63 - limit range to shortly under 2π
+	// TODO: In the Managed Object Model, up the limit for the angles to something like 7.0 and let this code here handle the details of keeping it in the 0…2π range.
+	if (value > 6.283)
+		value = 6.283;
+	
+	[self _standardSetValue:@(value) forKey:key];
 }
 
 - (void)_updateRelativeTransform

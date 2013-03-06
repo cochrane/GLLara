@@ -17,4 +17,6 @@
 - (NSString *)writeASCIIError:(NSError *__autoreleasing*)error;
 - (NSData *)writeBinaryError:(NSError *__autoreleasing*)error;
 
+@property (nonatomic, readonly) BOOL shouldExport;
+
 @end

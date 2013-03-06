@@ -79,8 +79,7 @@
 
 - (void)makeWindowControllers
 {
-	self.selection = [[GLLSelection alloc] init];
-	self.selection.managedObjectContext = self.managedObjectContext;
+	self.selection = [[GLLSelection alloc] initWithManagedObjectContext:self.managedObjectContext];
 	
 	sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext];
 	[sceneDrawer bind:@"selectedBones" toObject:self.selection withKeyPath:@"selectedBones" options:nil];
@@ -107,6 +106,14 @@
 	if (storeOptions)
 		[allOptions addEntriesFromDictionary:storeOptions];
 	return [super configurePersistentStoreCoordinatorForURL:url ofType:fileType modelConfiguration:configuration storeOptions:allOptions error:error];
+}
+
+- (BOOL)writeToURL:(NSURL *)absoluteURL ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation originalContentsURL:(NSURL *)absoluteOriginalContentsURL error:(NSError **)error
+{
+	BOOL result = [super writeToURL:absoluteURL ofType:typeName forSaveOperation:saveOperation originalContentsURL:absoluteOriginalContentsURL error:error];
+	if (!result)
+		NSLog(@"couldn't save. Error: %@", error ? *error : nil);
+	return result;
 }
 
 #pragma mark - Actions
@@ -158,7 +165,7 @@
 		// Set selection next time the main loop comes around to ensure everything's set up properly by then.
 		dispatch_async(dispatch_get_main_queue(), ^(){
 			NSMutableArray *selectedItems = [self.selection mutableArrayValueForKeyPath:@"selectedItems"];
-			[selectedItems replaceObjectsInRange:NSMakeRange(0, selectedItems.count) withObjectsFromArray:@[ newItem ] range:NSMakeRange(0, 1)];
+			[selectedItems replaceObjectsInRange:NSMakeRange(0, selectedItems.count) withObjectsFromArray:@[ newItem ]];
 		});
 	}];
 }
@@ -169,6 +176,7 @@
 	
 	for (GLLItem *item in [self.selection valueForKeyPath:@"selectedItems"])
 		[self.managedObjectContext deleteObject:item];
+	[self.managedObjectContext processPendingChanges];
 	
 	self.undoManager.actionName = NSLocalizedString(@"Delete item", @"delete item undo action name");
 }

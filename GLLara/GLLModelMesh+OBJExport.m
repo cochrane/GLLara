@@ -42,8 +42,8 @@
 		[objString appendFormat:@"v %f %f %f\n", simd_extract(transformedPosition, 0), simd_extract(transformedPosition, 1), simd_extract(transformedPosition, 2)];
 		[objString appendFormat:@"vn %f %f %f\n", simd_extract(transformedNormal, 0), simd_extract(transformedNormal, 1), simd_extract(transformedNormal, 2)];
 		
-		const float *texCoords = self.vertexData.bytes + self.stride*i + [self offsetForTexCoordLayer:0];
-		[objString appendFormat:@"vt %f %f\n", texCoords[0], texCoords[1]];
+		const float *texCoords = (const float *) (self.vertexData.bytes + self.stride*i + [self offsetForTexCoordLayer:0]);
+		[objString appendFormat:@"vt %f %f\n", texCoords[0], 1.0 - texCoords[1]]; // Turn tex coords around (because I don't want to swap the whole image)
 		
 		if (includeColors)
 		{

@@ -441,7 +441,7 @@
 		5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItemMesh+MeshExport.m"; sourceTree = "<group>"; };
 		5214470B16DC2312003E260F /* GLLItem+MeshExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLItem+MeshExport.h"; sourceTree = "<group>"; };
 		5214470C16DC2312003E260F /* GLLItem+MeshExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItem+MeshExport.m"; sourceTree = "<group>"; };
-		5214471016DE22E0003E260F /* GLLara.help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GLLara.help; sourceTree = "<group>"; };
+		5214471016DE22E0003E260F /* GLLara.help */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GLLara.help; sourceTree = "<group>"; };
 		52152CED16B66951001AE54C /* GLLDDSFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDDSFile.h; sourceTree = "<group>"; };
 		52152CEE16B66951001AE54C /* GLLDDSFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDDSFile.m; sourceTree = "<group>"; };
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };

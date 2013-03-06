@@ -31,6 +31,9 @@
 @property (nonatomic, copy) NSString *displayName;
 @property (nonatomic, retain) NSSet *textures;
 
+// Called by the Item; fills the various values correctly
+- (void)prepareGraphicsData;
+
 // Derived
 @property (nonatomic, readonly) NSUInteger meshIndex;
 @property (nonatomic, retain, readonly) GLLModelMesh *mesh;
