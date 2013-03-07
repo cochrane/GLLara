@@ -251,7 +251,6 @@
 		52B9E0AC1602811E00641518 /* GLLDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0AA1602811D00641518 /* GLLDocument.xib */; };
 		52B9E0AD1602811E00641518 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0AB1602811D00641518 /* MainMenu.xib */; };
 		52B9E0AE1602815800641518 /* RenderParameters.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B01602815800641518 /* RenderParameters.strings */; };
-		52B9E0C41602817000641518 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B91602817000641518 /* InfoPlist.strings */; };
 		52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206715F8275E00937450 /* doppelganger.modelparams.plist */; };
 		52BB206A15F82B4200937450 /* Shadeless.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206915F82B4200937450 /* Shadeless.fs */; };
 		52BB206C15F82D9A00937450 /* lara_bathing_suit.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */; };
@@ -754,7 +753,6 @@
 		52B9E0AA1602811D00641518 /* GLLDocument.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLDocument.xib; sourceTree = "<group>"; };
 		52B9E0AB1602811D00641518 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		52B9E0AF1602815800641518 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RenderParameters.strings; sourceTree = "<group>"; };
-		52B9E0B91602817000641518 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
 		52BB206715F8275E00937450 /* doppelganger.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = doppelganger.modelparams.plist; sourceTree = "<group>"; };
 		52BB206915F82B4200937450 /* Shadeless.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Shadeless.fs; sourceTree = "<group>"; };
 		52BB206B15F82D9A00937450 /* lara_bathing_suit.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_bathing_suit.modelparams.plist; sourceTree = "<group>"; };
@@ -898,7 +896,6 @@
 				524C706916087B260038823B /* GLLMeshView.strings */,
 				524C706C16087B290038823B /* GLLRenderWindowController.strings */,
 				524C706F16087B2C0038823B /* GLLWindowSettingsPopoverView.strings */,
-				52B9E0B91602817000641518 /* InfoPlist.strings */,
 				524C707216087B310038823B /* Localizable.strings */,
 				524C707516087B350038823B /* MainMenu.strings */,
 				52329F5416C1D76200338A0A /* Textures.strings */,
@@ -1745,7 +1742,6 @@
 				524C706716087B260038823B /* GLLMeshView.strings in Resources */,
 				524C706A16087B290038823B /* GLLRenderWindowController.strings in Resources */,
 				524C706D16087B2C0038823B /* GLLWindowSettingsPopoverView.strings in Resources */,
-				52B9E0C41602817000641518 /* InfoPlist.strings in Resources */,
 				524C707016087B310038823B /* Localizable.strings in Resources */,
 				524C707316087B350038823B /* MainMenu.strings in Resources */,
 				52D3D72516029699006CB743 /* GLLRenderAccessoryView.xib in Resources */,
