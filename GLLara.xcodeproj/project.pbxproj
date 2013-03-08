@@ -31,6 +31,8 @@
 		52329F5216C1D76200338A0A /* Textures.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F5416C1D76200338A0A /* Textures.strings */; };
 		5233BD0816E9511600DD77BE /* GLLTestObjectWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233BD0716E9511600DD77BE /* GLLTestObjectWriter.m */; };
 		5233BD0B16E9542E00DD77BE /* GLLTestObjectWriterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233BD0A16E9542E00DD77BE /* GLLTestObjectWriterTest.m */; };
+		5233BD0E16EA87A200DD77BE /* generic_item.mesh.ascii in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD0D16EA87A200DD77BE /* generic_item.mesh.ascii */; };
+		5233BD0F16EA87B600DD77BE /* defaultColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED816C4883A0062C025 /* defaultColor.png */; };
 		5237E9DB16E176DB0092C49F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
 		5237E9DD16E176E60092C49F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
 		523AEEDA16C4883A0062C025 /* defaultBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED616C4883A0062C025 /* defaultBlack.png */; };
@@ -294,7 +296,6 @@
 		52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m */; };
 		52D6A0A315F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */; };
 		52DD80F3163B464200534475 /* GLLRenderingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD80F2163B464200534475 /* GLLRenderingTest.m */; };
-		52DD80F5163B47E100534475 /* cube.mesh.ascii in Resources */ = {isa = PBXBuildFile; fileRef = 52DD80F4163B47E100534475 /* cube.mesh.ascii */; };
 		52ED9E1E168399AE0082EABB /* GLLSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E1D168399AE0082EABB /* GLLSelection.m */; };
 		52ED9E26169332540082EABB /* GLLMeshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E25169332540082EABB /* GLLMeshController.m */; };
 		52ED9E29169333050082EABB /* GLLBoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E28169333050082EABB /* GLLBoneController.m */; };
@@ -451,6 +452,7 @@
 		5233BD0716E9511600DD77BE /* GLLTestObjectWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLTestObjectWriter.m; sourceTree = "<group>"; };
 		5233BD0916E9542E00DD77BE /* GLLTestObjectWriterTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTestObjectWriterTest.h; sourceTree = "<group>"; };
 		5233BD0A16E9542E00DD77BE /* GLLTestObjectWriterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLTestObjectWriterTest.m; sourceTree = "<group>"; };
+		5233BD0D16EA87A200DD77BE /* generic_item.mesh.ascii */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = generic_item.mesh.ascii; path = testobject/generic_item.mesh.ascii; sourceTree = "<group>"; };
 		5237E9C716E176A70092C49F /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		5237E9DF16E17A610092C49F /* appcast.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = appcast.xml; sourceTree = "<group>"; };
 		523AEED616C4883A0062C025 /* defaultBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultBlack.png; sourceTree = "<group>"; };
@@ -817,7 +819,6 @@
 		52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBump3Specular.fs; sourceTree = "<group>"; };
 		52DD80F1163B464200534475 /* GLLRenderingTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderingTest.h; sourceTree = "<group>"; };
 		52DD80F2163B464200534475 /* GLLRenderingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderingTest.m; sourceTree = "<group>"; };
-		52DD80F4163B47E100534475 /* cube.mesh.ascii */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = cube.mesh.ascii; sourceTree = "<group>"; };
 		52DD80F6163B58E400534475 /* GLLExportASCIITest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLExportASCIITest.h; sourceTree = "<group>"; };
 		52DD80F7163B58E400534475 /* GLLExportASCIITest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLExportASCIITest.m; sourceTree = "<group>"; };
 		52DD80F9163B58F100534475 /* GLLExportBinaryTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLExportBinaryTest.h; sourceTree = "<group>"; };
@@ -944,6 +945,7 @@
 		5233BD0C16EA06DE00DD77BE /* Test objects */ = {
 			isa = PBXGroup;
 			children = (
+				5233BD0D16EA87A200DD77BE /* generic_item.mesh.ascii */,
 				5233BD0616E9511600DD77BE /* GLLTestObjectWriter.h */,
 				5233BD0716E9511600DD77BE /* GLLTestObjectWriter.m */,
 				5233BD0916E9542E00DD77BE /* GLLTestObjectWriterTest.h */,
@@ -1141,7 +1143,6 @@
 			children = (
 				525ACD7315F0F1A700534E7D /* GLLaraTests-Info.plist */,
 				525ACD7415F0F1A700534E7D /* InfoPlist.strings */,
-				52DD80F4163B47E100534475 /* cube.mesh.ascii */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1883,7 +1884,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */,
-				52DD80F5163B47E100534475 /* cube.mesh.ascii in Resources */,
+				5233BD0E16EA87A200DD77BE /* generic_item.mesh.ascii in Resources */,
+				5233BD0F16EA87B600DD77BE /* defaultColor.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
