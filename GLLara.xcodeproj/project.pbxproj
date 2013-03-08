@@ -29,6 +29,8 @@
 		52329F4C16C1D71E00338A0A /* GLLItemExportView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F4A16C1D71E00338A0A /* GLLItemExportView.strings */; };
 		52329F4F16C1D72600338A0A /* GLLPoseExportViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F4D16C1D72600338A0A /* GLLPoseExportViewController.strings */; };
 		52329F5216C1D76200338A0A /* Textures.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F5416C1D76200338A0A /* Textures.strings */; };
+		5233BD0816E9511600DD77BE /* GLLTestObjectWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233BD0716E9511600DD77BE /* GLLTestObjectWriter.m */; };
+		5233BD0B16E9542E00DD77BE /* GLLTestObjectWriterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233BD0A16E9542E00DD77BE /* GLLTestObjectWriterTest.m */; };
 		5237E9DB16E176DB0092C49F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
 		5237E9DD16E176E60092C49F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
 		523AEEDA16C4883A0062C025 /* defaultBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED616C4883A0062C025 /* defaultBlack.png */; };
@@ -445,6 +447,10 @@
 		52329F4B16C1D71E00338A0A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLItemExportView.strings; sourceTree = "<group>"; };
 		52329F4E16C1D72600338A0A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLPoseExportViewController.strings; sourceTree = "<group>"; };
 		52329F5316C1D76200338A0A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Textures.strings; sourceTree = "<group>"; };
+		5233BD0616E9511600DD77BE /* GLLTestObjectWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTestObjectWriter.h; sourceTree = "<group>"; };
+		5233BD0716E9511600DD77BE /* GLLTestObjectWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLTestObjectWriter.m; sourceTree = "<group>"; };
+		5233BD0916E9542E00DD77BE /* GLLTestObjectWriterTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTestObjectWriterTest.h; sourceTree = "<group>"; };
+		5233BD0A16E9542E00DD77BE /* GLLTestObjectWriterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLTestObjectWriterTest.m; sourceTree = "<group>"; };
 		5237E9C716E176A70092C49F /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		5237E9DF16E17A610092C49F /* appcast.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = appcast.xml; sourceTree = "<group>"; };
 		523AEED616C4883A0062C025 /* defaultBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultBlack.png; sourceTree = "<group>"; };
@@ -935,6 +941,17 @@
 			path = ../Images;
 			sourceTree = "<group>";
 		};
+		5233BD0C16EA06DE00DD77BE /* Test objects */ = {
+			isa = PBXGroup;
+			children = (
+				5233BD0616E9511600DD77BE /* GLLTestObjectWriter.h */,
+				5233BD0716E9511600DD77BE /* GLLTestObjectWriter.m */,
+				5233BD0916E9542E00DD77BE /* GLLTestObjectWriterTest.h */,
+				5233BD0A16E9542E00DD77BE /* GLLTestObjectWriterTest.m */,
+			);
+			name = "Test objects";
+			sourceTree = "<group>";
+		};
 		5237E9C816E176A70092C49F /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1114,6 +1131,7 @@
 				52C7B5E016ABEB3000FC2927 /* GLLModelParametersTest.m */,
 				52421C1616BDBF4800D41EAA /* GLLV3Mesh.h */,
 				52421C1716BDBF4800D41EAA /* GLLV3Mesh.m */,
+				5233BD0C16EA06DE00DD77BE /* Test objects */,
 			);
 			path = GLLaraTests;
 			sourceTree = "<group>";
@@ -2034,6 +2052,8 @@
 				52C7B5DD16AA15A100FC2927 /* MapTests.m in Sources */,
 				52C7B5E116ABEB3000FC2927 /* GLLModelParametersTest.m in Sources */,
 				52421C1816BDBF4800D41EAA /* GLLV3Mesh.m in Sources */,
+				5233BD0816E9511600DD77BE /* GLLTestObjectWriter.m in Sources */,
+				5233BD0B16E9542E00DD77BE /* GLLTestObjectWriterTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
