@@ -123,6 +123,11 @@
 	GLLModel *model = [GLLModel cachedModelFromFile:url parent:nil error:error];
 	if (!model) return nil;
 	
+	return [self addModel:model];
+}
+
+- (GLLItem *)addModel:(GLLModel *)model;
+{
 	GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
 	newItem.model = model;
 	
