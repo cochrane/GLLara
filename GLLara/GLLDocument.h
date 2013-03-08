@@ -9,6 +9,7 @@
 #import <AppKit/NSPersistentDocument.h>
 #import <Foundation/Foundation.h>
 
+@class GLLItem;
 @class GLLView;
 @class GLLSourceListController;
 @class GLLSelection;
@@ -19,6 +20,8 @@
  * It also sets up the view controllers.
  */
 @interface GLLDocument : NSPersistentDocument
+
+- (GLLItem *)addModelAtURL:(NSURL *)url error:(NSError *__autoreleasing*)error;
 
 - (IBAction)openNewRenderView:(id)sender;
 - (IBAction)loadMesh:(id)sender;
