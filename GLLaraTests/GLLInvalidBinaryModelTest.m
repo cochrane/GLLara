@@ -288,4 +288,39 @@
 	STAssertNotNil(error, @"Model should have written an error message");
 }
 
+- (void)testASCIIAsBinary
+{
+	const char *string = "0\n\
+	1 # the count of them meshes\n\
+	Test\n\
+	1 # uv layers\n\
+	1 # textures\n\
+	tex.tga\n\
+	0\n\
+	3 # num verts\n\
+	-.5 0 0\n\
+	0 0 1\n\
+	255 0 0 255\n\
+	0 0\n\
+	0.5 0 0\n\
+	0 0 1\n\
+	0 255 0  255\n\
+	1 0\n\
+	0.0 1.000000 0\n\
+	0 0 1\n\
+	0 0 255 255\n\
+	0 1\n\
+	1 # count of tris\n\
+	0 1 2	";
+	
+	NSData *data = [NSData dataWithBytes:string length:strlen(string)];
+	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
+	
+	GLLModel *model;
+	NSError *error = nil;
+	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
+	STAssertNil(model, @"This model should not have loaded");
+	STAssertNotNil(error, @"Model should have written an error message");
+}
+
 @end

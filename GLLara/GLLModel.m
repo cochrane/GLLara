@@ -188,7 +188,16 @@ static NSCache *cachedModels;
 		header = [stream readUint32];
 	}
 	
-	NSUInteger numBones = header;	
+	NSUInteger numBones = header;
+	if (numBones*15 > (stream.levelData.length - stream.position)) // Sanity check: The shortest bone is 15 bytes
+	{
+		if (error)
+			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
+				   NSLocalizedDescriptionKey : NSLocalizedString(@"The file cannot contain as many bones as it claims.", @"numBones too large error (short description)"),
+	   NSLocalizedRecoverySuggestionErrorKey : [NSString stringWithFormat:NSLocalizedString(@"The file declares that it contains %lu bones, but it is shorter than the minimum size required to store all of them. This can happen if a file in the ASCII format is read as Binary.", @"numBones too large error (long description)"), numBones]}];
+		return nil;
+	}
+	
 	NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
 	for (NSUInteger i = 0; i < numBones; i++)
 	{
