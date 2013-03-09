@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class GLLSelection;
+
 /*
  * @abstract View controller for a mesh.
  * @discussion The main logic included here is to provide the views for the view-based NSTableView.
@@ -17,10 +19,13 @@
 @property (nonatomic, assign) IBOutlet NSTableView *renderParametersView;
 @property (nonatomic, assign) IBOutlet NSTableView *textureAssignmentsView;
 
-@property (nonatomic) NSArray *selectedMeshes;
+@property (nonatomic) IBOutlet NSArrayController *allMeshes;
+
+@property (nonatomic) GLLSelection *selection;
 
 @property (nonatomic) NSArray *possibleShaders;
-@property (nonatomic) id selectedShader;
+
+@property (nonatomic) NSManagedObjectContext *managedObjectContext;
 
 // Help
 - (IBAction)help:(id)sender;

@@ -180,6 +180,11 @@
 	return [self.mesh.model.parameters shaderNamed:self.shaderName];
 }
 
+- (void)setShader:(GLLShaderDescription *)shader
+{
+	self.shaderName = shader.name;
+}
+
 - (NSArray *)possibleShaderDescriptions
 {
 	return self.mesh.model.parameters.allShaders;

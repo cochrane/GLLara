@@ -116,6 +116,31 @@
 	return result;
 }
 
+#pragma mark - Adding models
+
+- (GLLItem *)addModelAtURL:(NSURL *)url error:(NSError *__autoreleasing*)error;
+{
+	GLLModel *model = [GLLModel cachedModelFromFile:url parent:nil error:error];
+	if (!model) return nil;
+	
+	return [self addModel:model];
+}
+
+- (GLLItem *)addModel:(GLLModel *)model;
+{
+	GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
+	newItem.model = model;
+	
+	self.undoManager.actionName = NSLocalizedString(@"Add item", @"load mesh undo action name");
+	
+	// Set selection next time the main loop comes around to ensure everything's set up properly by then.
+	dispatch_async(dispatch_get_main_queue(), ^(){
+		NSMutableArray *selectedItems = [self.selection mutableArrayValueForKeyPath:@"selectedItems"];
+		[selectedItems replaceObjectsInRange:NSMakeRange(0, selectedItems.count) withObjectsFromArray:@[ newItem ]];
+	});
+	return newItem;
+}
+
 #pragma mark - Actions
 
 - (IBAction)openNewRenderView:(id)sender
@@ -149,24 +174,8 @@
 		if (result != NSOKButton) return;
 		
 		NSError *error = nil;
-		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL parent:nil error:&error];
-		
-		if (!model)
-		{
-			[self.windowForSheet presentError:error];
-			return;
-		}
-		
-		GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
-		newItem.model = model;
-		
-		self.undoManager.actionName = NSLocalizedString(@"Add item", @"load mesh undo action name");
-		
-		// Set selection next time the main loop comes around to ensure everything's set up properly by then.
-		dispatch_async(dispatch_get_main_queue(), ^(){
-			NSMutableArray *selectedItems = [self.selection mutableArrayValueForKeyPath:@"selectedItems"];
-			[selectedItems replaceObjectsInRange:NSMakeRange(0, selectedItems.count) withObjectsFromArray:@[ newItem ]];
-		});
+		if (![self addModelAtURL:panel.URL error:&error])
+			[self presentError:error modalForWindow:self.windowForSheet delegate:nil didPresentSelector:NULL contextInfo:NULL];
 	}];
 }
 

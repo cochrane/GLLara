@@ -440,6 +440,23 @@ static NSCache *parameterCache;
 	return result;
 }
 
+#pragma mark - Equality
+- (BOOL)isEqual:(id)object
+{
+	if (![object isKindOfClass:[self class]]) return NO;
+	
+	GLLModelParams *param = (GLLModelParams *)object;
+#define EQUAL_OR_BOTH_NIL(o) ((o == nil && param->o == nil) || ([o isEqual:param->o]))
+	
+	return EQUAL_OR_BOTH_NIL(ownCameraTargets) && EQUAL_OR_BOTH_NIL(ownDefaultParameters) && EQUAL_OR_BOTH_NIL(ownDefaultTextures) && EQUAL_OR_BOTH_NIL(ownMeshGroups) && EQUAL_OR_BOTH_NIL(ownMeshSplitters) && EQUAL_OR_BOTH_NIL(ownRenderParameterDescriptions) && EQUAL_OR_BOTH_NIL(ownRenderParameters) && EQUAL_OR_BOTH_NIL(ownShaders) && EQUAL_OR_BOTH_NIL(ownTextureDescriptions);
+#undef EQUAL_OR_BOTH_NIL
+}
+
+- (NSUInteger)hash
+{
+	return ownDefaultTextures.hash | ownCameraTargets.hash | ownDefaultParameters.hash | ownMeshGroups.hash | ownMeshSplitters.hash | ownRenderParameterDescriptions.hash | ownRenderParameters.hash | ownShaders.hash | ownTextureDescriptions.hash | model.hash | self.base.hash;
+}
+
 #pragma mark - Private methods
 
 - (void)_parseModelName:(NSString *)meshName displayName:(NSString *__autoreleasing*)displayName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones;
