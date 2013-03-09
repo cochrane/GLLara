@@ -131,6 +131,7 @@ static NSURL *testDocumentURL;
 
 - (void)testBoneRotationLimit
 {
+	// Issue #61
 	float rotationNearLimit = M_PI*2.0 - 0.0001;
 	
 	NSError *error = nil;

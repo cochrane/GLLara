@@ -73,6 +73,7 @@
 	boneViewController = [[GLLBoneViewController alloc] init];
 	itemViewController = [[GLLItemViewController alloc] init];
 	meshViewController = [[GLLMeshViewController alloc] init];
+	meshViewController.managedObjectContext = _managedObjectContext;
 	lightViewController = [[GLLLightViewController alloc] init];
 	
 	selectionController = [[NSArrayController alloc] init];
@@ -86,7 +87,6 @@
 
 - (void)dealloc
 {
-	[meshViewController unbind:@"selectedMeshes"];
 	[itemViewController unbind:@"selectedItems"];
 	[self removeObserver:self forKeyPath:@"selection.selectedObjects"];
 }
@@ -105,8 +105,8 @@
 	[self.sourceView expandItem:lightsListController];
 	[self.sourceView expandItem:itemListController];
 	[self.sourceView expandItem:settingsListController];
-		
-	[meshViewController bind:@"selectedMeshes" toObject:self.selection withKeyPath:@"selectedMeshes" options:nil];
+	
+	meshViewController.selection = self.selection;
 	[itemViewController bind:@"selectedItems" toObject:self.selection withKeyPath:@"selectedItems" options:nil];
 	
 	[self _setRightHandController:noSelectionViewController];

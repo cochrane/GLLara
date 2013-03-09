@@ -37,7 +37,7 @@
 // Derived
 @property (nonatomic, readonly) NSUInteger meshIndex;
 @property (nonatomic, retain, readonly) GLLModelMesh *mesh;
-@property (nonatomic, readonly) GLLShaderDescription *shader;
+@property (nonatomic) GLLShaderDescription *shader;
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
 - (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;
