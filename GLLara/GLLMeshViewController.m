@@ -90,6 +90,8 @@
 
 - (void)setSelectedShader:(id)selectedShader
 {
+	if (selectedShader == nil) return;
+	
 	_selectedShader = selectedShader;
 	[meshes setValue:[selectedShader name] forKeyPath:@"selection.shaderName"];
 	dispatch_async(dispatch_get_current_queue(), ^(){

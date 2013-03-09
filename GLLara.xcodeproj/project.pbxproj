@@ -35,6 +35,7 @@
 		5233BD0F16EA87B600DD77BE /* defaultColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED816C4883A0062C025 /* defaultColor.png */; };
 		5233BD1216EA889900DD77BE /* GLLDocumentTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233BD1116EA889900DD77BE /* GLLDocumentTest.m */; };
 		5233BD1516EA981000DD77BE /* GLLMeshSelectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233BD1416EA981000DD77BE /* GLLMeshSelectionTest.m */; };
+		5233BD1616EAB36000DD77BE /* defaultReflection.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 523AEEDE16C488960062C025 /* defaultReflection.jpg */; };
 		5237E9DB16E176DB0092C49F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
 		5237E9DD16E176E60092C49F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
 		523AEEDA16C4883A0062C025 /* defaultBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED616C4883A0062C025 /* defaultBlack.png */; };
@@ -1896,6 +1897,7 @@
 				525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */,
 				5233BD0E16EA87A200DD77BE /* generic_item.mesh.ascii in Resources */,
 				5233BD0F16EA87B600DD77BE /* defaultColor.png in Resources */,
+				5233BD1616EAB36000DD77BE /* defaultReflection.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

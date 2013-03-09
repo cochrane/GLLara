@@ -29,6 +29,9 @@ static NSURL *testDocumentURL;
 - (void)tearDown
 {
 	[[NSFileManager defaultManager] removeItemAtURL:testDocumentURL error:NULL];
+	for (NSDocument *doc in [[NSDocumentController sharedDocumentController] documents])
+		[doc close];
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 }
 
 - (void)testCreateSaveCloseLoad
@@ -43,28 +46,36 @@ static NSURL *testDocumentURL;
 	GLLItem *item = [doc addModelAtURL:testModelURL error:&error];
 	STAssertNotNil(item, @"Should have added model");
 	STAssertNil(error, @"Should not have error (got %@)", error);
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	
+	__block BOOL completedOuter = NO;
 	[doc saveToURL:testDocumentURL ofType:@"Scene" forSaveOperation:NSSaveOperation completionHandler:^(NSError *errorOrNil){
 		STAssertNil(errorOrNil, @"Should save without error");
-		
+				
 		[doc close];
 		
+		__block BOOL completedInner = NO;
 		[[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:testDocumentURL display:YES completionHandler:^(NSDocument *document, BOOL wasAlreadyOpen, NSError *error){
 			STAssertNil(error, @"Shouldn't have had an error, got %@", error);
 			STAssertFalse(wasAlreadyOpen, @"Should have been closed");
 			STAssertNotNil(document, @"Should have a document here");
 			STAssertTrue([document isKindOfClass:[GLLDocument class]], @"Wrong document subclass");
+			completedInner = YES;
 			
 			NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 			NSArray *items = [((GLLDocument *)document).managedObjectContext executeFetchRequest:request error:NULL];
 			STAssertEquals(items.count, 1UL, @"Should have one item");
 			STAssertEqualObjects([[items objectAtIndex:0] itemURL], testModelURL, @"Should have test model URL");
+			
+			[document close];
 		}];
-		[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+		while (!completedInner)
+			[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+		
+		completedOuter = YES;
 	}];
-	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-	
-	[doc close];
+	while (!completedOuter)
+		[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
 }
 
 - (void)testCreateRemoveSave
@@ -88,11 +99,13 @@ static NSURL *testDocumentURL;
 	
 	[doc.managedObjectContext deleteObject:item];
 	
+	__block BOOL doneWithOuter = NO;
 	[doc saveToURL:testDocumentURL ofType:@"Scene" forSaveOperation:NSSaveOperation completionHandler:^(NSError *errorOrNil){
 		STAssertNil(errorOrNil, @"Should save without error");
-		
+				
 		[doc close];
 		
+		__block BOOL doneWithInner = NO;
 		[[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:testDocumentURL display:YES completionHandler:^(NSDocument *document, BOOL wasAlreadyOpen, NSError *error){
 			STAssertNil(error, @"Shouldn't have had an error, got %@", error);
 			STAssertFalse(wasAlreadyOpen, @"Should have been closed");
@@ -102,12 +115,18 @@ static NSURL *testDocumentURL;
 			NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 			NSArray *items = [((GLLDocument *)document).managedObjectContext executeFetchRequest:request error:NULL];
 			STAssertEquals(items.count, 0UL, @"Should have no item");
+			
+			doneWithInner = YES;
+			
+			[document close];
 		}];
-		[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+		while (!doneWithInner)
+			[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+		
+		doneWithOuter = YES;
 	}];
-	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-	
-	[doc close];
+	while (!doneWithOuter)
+		[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
 }
 
 @end

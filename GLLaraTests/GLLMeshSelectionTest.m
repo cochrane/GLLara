@@ -11,6 +11,7 @@
 #import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLItemMesh.h"
+#import "GLLItemMeshTexture.h"
 #import "GLLModel.h"
 #import "GLLSelection.h"
 
@@ -31,6 +32,13 @@ static NSURL *testDocumentURL;
 	testDocumentURL = [NSURL URLWithString:[[[NSBundle bundleForClass:self] bundleIdentifier] stringByAppendingFormat:@"-testdocument.gllsc"] relativeToURL:temporaryDirectoryURL];
 }
 
+- (void)tearDown
+{
+	for (NSDocument *doc in [[NSDocumentController sharedDocumentController] documents])
+		[doc close];
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.01]];
+}
+
 - (void)testSelectTwoMeshes
 {
 	NSError *error = nil;
@@ -47,18 +55,20 @@ static NSURL *testDocumentURL;
 	STAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[0] shaderName]);
 	STAssertEqualObjects([item.meshes[1] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[1] shaderName]);
 
-	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
 	
 	[[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] removeAllObjects];
 	[[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] addObjectsFromArray:item.meshes.array];
-	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
 	
 	STAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[0] shaderName]);
 	STAssertEqualObjects([item.meshes[1] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[1] shaderName]);
+	
+	[doc close];
 }
 
 - (void)testSelectTwoMeshesWithDifferentShaders
-{	
+{
 	NSError *error = nil;
 	GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
 	
@@ -73,7 +83,7 @@ static NSURL *testDocumentURL;
 	[writer addTextureFilename:@"defaultColor.png" uvLayer:0 toMesh:0];
 	[writer setNumUVLayers:1 forMesh:1];
 	[writer setRenderGroup:10 renderParameterValues:@[] forMesh:1];
-	[writer addTextureFilename:@"defaultColor.png" uvLayer:0 toMesh:1];
+	[writer addTextureFilename:@"defaultReflection.jpg" uvLayer:0 toMesh:1];
 	
 	error = nil;
 	GLLModel *model = [[GLLModel alloc] initASCIIFromString:writer.testFileString baseURL:testModelURL parent:nil error:&error];
@@ -88,14 +98,22 @@ static NSURL *testDocumentURL;
 	STAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[0] shaderName]);
 	STAssertEqualObjects([item.meshes[1] shaderName], @"Shadeless", @"shader name should  be shadeless, not %@", [item.meshes[1] shaderName]);
 	
-	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
 	
 	[[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] removeAllObjects];
 	[[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] addObjectsFromArray:item.meshes.array];
-	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
 	
 	STAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[0] shaderName]);
 	STAssertEqualObjects([item.meshes[1] shaderName], @"Shadeless", @"shader name should still be shadeless, not %@", [item.meshes[1] shaderName]);
+	
+	STAssertEquals([[item.meshes[0] textures] count], 1UL, @"Should have one texture");
+	STAssertEqualObjects([[[item.meshes[0] textureWithIdentifier:@"diffuseTexture"] textureURL] lastPathComponent], @"defaultColor.png", @"Should have one texture");
+	
+	STAssertEquals([[item.meshes[1] textures] count], 1UL, @"Should have one texture");
+	STAssertEqualObjects([[[item.meshes[1] textureWithIdentifier:@"diffuseTexture"] textureURL] lastPathComponent], @"defaultReflection.jpg", @"Should have one texture");
+	
+	[doc close];
 }
 
 @end
