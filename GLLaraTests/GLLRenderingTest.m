@@ -35,7 +35,8 @@
 	[[NSFileManager defaultManager] createDirectoryAtURL:targetURL withIntermediateDirectories:YES attributes:nil error:NULL];
 	NSURL *testModelURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"generic_item" withExtension:@"mesh.ascii"];
 	
-	BOOL shouldKeepDirectory = NO;
+	NSURL *expectedURL = [[[[NSFileManager defaultManager] URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:NULL] URLByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier] isDirectory:YES] URLByAppendingPathComponent:@"test-expected" isDirectory:YES];
+	[[NSFileManager defaultManager] createDirectoryAtURL:expectedURL withIntermediateDirectories:YES attributes:nil error:NULL];
 	
 	for (NSString *shaderName in shadersList[@"shaders"])
 	{
@@ -124,11 +125,11 @@
 			[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
 			
 			// Compare to expected (if exists)
-			NSURL *existingImageURL = [[NSBundle bundleForClass:[self class]] URLForResource:[@"test" stringByAppendingString:shaderName] withExtension:@"png"];
-			if (!existingImageURL)
+			NSURL *existingImageURL = [expectedURL URLByAppendingPathComponent:[NSString stringWithFormat:@"test%@.png", shaderName] isDirectory:NO];
+			if (![existingImageURL checkResourceIsReachableAndReturnError:NULL])
 			{
-				NSLog(@"Expected image for %@ not found. You can use the one generated now; it'll be in %@", shaderName, targetURL);
-				shouldKeepDirectory = YES;
+				NSLog(@"Expected image for %@ not found. Using generated as new expected", shaderName);
+				[[NSFileManager defaultManager] copyItemAtURL:generatedImageURL toURL:existingImageURL error:NULL];
 				continue;
 			}
 			
@@ -169,7 +170,8 @@
 		}
 	}
 	
-	if (!shouldKeepDirectory)
+	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"tests-keepGenerated": @(NO) }];
+	if (![[NSUserDefaults standardUserDefaults] boolForKey:@"tests-keepGenerated"])
 		[[NSFileManager defaultManager] removeItemAtURL:targetURL error:NULL];
 }
 

@@ -18,23 +18,6 @@
 		5214470D16DC2312003E260F /* GLLItem+MeshExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470C16DC2312003E260F /* GLLItem+MeshExport.m */; };
 		5214471116DE22E1003E260F /* GLLara.help in Resources */ = {isa = PBXBuildFile; fileRef = 5214471016DE22E0003E260F /* GLLara.help */; };
 		52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52152CEE16B66951001AE54C /* GLLDDSFile.m */; };
-		5220DA2C16ECFE8F0069AB78 /* testDiffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA1B16ECFE8F0069AB78 /* testDiffuse.png */; };
-		5220DA2D16ECFE8F0069AB78 /* testDiffuseBump.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA1C16ECFE8F0069AB78 /* testDiffuseBump.png */; };
-		5220DA2E16ECFE8F0069AB78 /* testDiffuseBumpEmission.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA1D16ECFE8F0069AB78 /* testDiffuseBumpEmission.png */; };
-		5220DA2F16ECFE8F0069AB78 /* testDiffuseLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA1E16ECFE8F0069AB78 /* testDiffuseLightmap.png */; };
-		5220DA3016ECFE8F0069AB78 /* testDiffuseLightmapBump.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA1F16ECFE8F0069AB78 /* testDiffuseLightmapBump.png */; };
-		5220DA3116ECFE8F0069AB78 /* testDiffuseLightmapBump3.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2016ECFE8F0069AB78 /* testDiffuseLightmapBump3.png */; };
-		5220DA3216ECFE8F0069AB78 /* testDiffuseLightmapBump3Specular.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2116ECFE8F0069AB78 /* testDiffuseLightmapBump3Specular.png */; };
-		5220DA3316ECFE8F0069AB78 /* testDiffuseLightmapBumpSpecular.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2216ECFE8F0069AB78 /* testDiffuseLightmapBumpSpecular.png */; };
-		5220DA3416ECFE8F0069AB78 /* testDiffuseSpecular.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2316ECFE8F0069AB78 /* testDiffuseSpecular.png */; };
-		5220DA3516ECFE8F0069AB78 /* testMetallic.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2416ECFE8F0069AB78 /* testMetallic.png */; };
-		5220DA3616ECFE8F0069AB78 /* testMetallicBump3.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2516ECFE8F0069AB78 /* testMetallicBump3.png */; };
-		5220DA3716ECFE8F0069AB78 /* testShadeless.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2616ECFE8F0069AB78 /* testShadeless.png */; };
-		5220DA3816ECFE8F0069AB78 /* testStaticTRLBasic.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2716ECFE8F0069AB78 /* testStaticTRLBasic.png */; };
-		5220DA3916ECFE8F0069AB78 /* testStaticTRLNextGen.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2816ECFE8F0069AB78 /* testStaticTRLNextGen.png */; };
-		5220DA3A16ECFE8F0069AB78 /* testStaticTRLShadeless.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2916ECFE8F0069AB78 /* testStaticTRLShadeless.png */; };
-		5220DA3B16ECFE8F0069AB78 /* testStaticTRUDiffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2A16ECFE8F0069AB78 /* testStaticTRUDiffuse.png */; };
-		5220DA3C16ECFE8F0069AB78 /* testStaticTRUDiffuseLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2B16ECFE8F0069AB78 /* testStaticTRUDiffuseLightmap.png */; };
 		5220DA3D16ED061E0069AB78 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
 		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
 		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
@@ -477,23 +460,6 @@
 		5214471016DE22E0003E260F /* GLLara.help */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GLLara.help; sourceTree = "<group>"; };
 		52152CED16B66951001AE54C /* GLLDDSFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDDSFile.h; sourceTree = "<group>"; };
 		52152CEE16B66951001AE54C /* GLLDDSFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDDSFile.m; sourceTree = "<group>"; };
-		5220DA1B16ECFE8F0069AB78 /* testDiffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuse.png; sourceTree = "<group>"; };
-		5220DA1C16ECFE8F0069AB78 /* testDiffuseBump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseBump.png; sourceTree = "<group>"; };
-		5220DA1D16ECFE8F0069AB78 /* testDiffuseBumpEmission.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseBumpEmission.png; sourceTree = "<group>"; };
-		5220DA1E16ECFE8F0069AB78 /* testDiffuseLightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseLightmap.png; sourceTree = "<group>"; };
-		5220DA1F16ECFE8F0069AB78 /* testDiffuseLightmapBump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseLightmapBump.png; sourceTree = "<group>"; };
-		5220DA2016ECFE8F0069AB78 /* testDiffuseLightmapBump3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseLightmapBump3.png; sourceTree = "<group>"; };
-		5220DA2116ECFE8F0069AB78 /* testDiffuseLightmapBump3Specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseLightmapBump3Specular.png; sourceTree = "<group>"; };
-		5220DA2216ECFE8F0069AB78 /* testDiffuseLightmapBumpSpecular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseLightmapBumpSpecular.png; sourceTree = "<group>"; };
-		5220DA2316ECFE8F0069AB78 /* testDiffuseSpecular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseSpecular.png; sourceTree = "<group>"; };
-		5220DA2416ECFE8F0069AB78 /* testMetallic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testMetallic.png; sourceTree = "<group>"; };
-		5220DA2516ECFE8F0069AB78 /* testMetallicBump3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testMetallicBump3.png; sourceTree = "<group>"; };
-		5220DA2616ECFE8F0069AB78 /* testShadeless.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testShadeless.png; sourceTree = "<group>"; };
-		5220DA2716ECFE8F0069AB78 /* testStaticTRLBasic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRLBasic.png; sourceTree = "<group>"; };
-		5220DA2816ECFE8F0069AB78 /* testStaticTRLNextGen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRLNextGen.png; sourceTree = "<group>"; };
-		5220DA2916ECFE8F0069AB78 /* testStaticTRLShadeless.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRLShadeless.png; sourceTree = "<group>"; };
-		5220DA2A16ECFE8F0069AB78 /* testStaticTRUDiffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRUDiffuse.png; sourceTree = "<group>"; };
-		5220DA2B16ECFE8F0069AB78 /* testStaticTRUDiffuseLightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRUDiffuseLightmap.png; sourceTree = "<group>"; };
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
 		5224C8E415FA4F18002A6C76 /* GLLDirectionalLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDirectionalLight.h; sourceTree = "<group>"; };
 		5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDirectionalLight.m; sourceTree = "<group>"; };
@@ -1007,31 +973,6 @@
 			name = Strings;
 			sourceTree = "<group>";
 		};
-		5220DA1616ECFE7D0069AB78 /* Expected images */ = {
-			isa = PBXGroup;
-			children = (
-				5220DA1B16ECFE8F0069AB78 /* testDiffuse.png */,
-				5220DA1C16ECFE8F0069AB78 /* testDiffuseBump.png */,
-				5220DA1D16ECFE8F0069AB78 /* testDiffuseBumpEmission.png */,
-				5220DA1E16ECFE8F0069AB78 /* testDiffuseLightmap.png */,
-				5220DA1F16ECFE8F0069AB78 /* testDiffuseLightmapBump.png */,
-				5220DA2016ECFE8F0069AB78 /* testDiffuseLightmapBump3.png */,
-				5220DA2116ECFE8F0069AB78 /* testDiffuseLightmapBump3Specular.png */,
-				5220DA2216ECFE8F0069AB78 /* testDiffuseLightmapBumpSpecular.png */,
-				5220DA2316ECFE8F0069AB78 /* testDiffuseSpecular.png */,
-				5220DA2416ECFE8F0069AB78 /* testMetallic.png */,
-				5220DA2516ECFE8F0069AB78 /* testMetallicBump3.png */,
-				5220DA2616ECFE8F0069AB78 /* testShadeless.png */,
-				5220DA2716ECFE8F0069AB78 /* testStaticTRLBasic.png */,
-				5220DA2816ECFE8F0069AB78 /* testStaticTRLNextGen.png */,
-				5220DA2916ECFE8F0069AB78 /* testStaticTRLShadeless.png */,
-				5220DA2A16ECFE8F0069AB78 /* testStaticTRUDiffuse.png */,
-				5220DA2B16ECFE8F0069AB78 /* testStaticTRUDiffuseLightmap.png */,
-			);
-			name = "Expected images";
-			path = expected;
-			sourceTree = "<group>";
-		};
 		52329F4816C1D63300338A0A /* Drawing infrastructure */ = {
 			isa = PBXGroup;
 			children = (
@@ -1065,7 +1006,6 @@
 		5233BD0C16EA06DE00DD77BE /* Test objects */ = {
 			isa = PBXGroup;
 			children = (
-				5220DA1616ECFE7D0069AB78 /* Expected images */,
 				5233BD1C16ECA9F800DD77BE /* testBumptexture.png */,
 				5233BD1D16ECA9F800DD77BE /* testBump1Texture.png */,
 				5233BD1E16ECA9F900DD77BE /* testBump2Texture.png */,
@@ -2060,23 +2000,6 @@
 				5233BD2916ECA9FA00DD77BE /* testMasktexture.png in Resources */,
 				5233BD2A16ECA9FA00DD77BE /* testReflectiontexture.png in Resources */,
 				5233BD2B16ECA9FA00DD77BE /* testSpeculartexture.png in Resources */,
-				5220DA2C16ECFE8F0069AB78 /* testDiffuse.png in Resources */,
-				5220DA2D16ECFE8F0069AB78 /* testDiffuseBump.png in Resources */,
-				5220DA2E16ECFE8F0069AB78 /* testDiffuseBumpEmission.png in Resources */,
-				5220DA2F16ECFE8F0069AB78 /* testDiffuseLightmap.png in Resources */,
-				5220DA3016ECFE8F0069AB78 /* testDiffuseLightmapBump.png in Resources */,
-				5220DA3116ECFE8F0069AB78 /* testDiffuseLightmapBump3.png in Resources */,
-				5220DA3216ECFE8F0069AB78 /* testDiffuseLightmapBump3Specular.png in Resources */,
-				5220DA3316ECFE8F0069AB78 /* testDiffuseLightmapBumpSpecular.png in Resources */,
-				5220DA3416ECFE8F0069AB78 /* testDiffuseSpecular.png in Resources */,
-				5220DA3516ECFE8F0069AB78 /* testMetallic.png in Resources */,
-				5220DA3616ECFE8F0069AB78 /* testMetallicBump3.png in Resources */,
-				5220DA3716ECFE8F0069AB78 /* testShadeless.png in Resources */,
-				5220DA3816ECFE8F0069AB78 /* testStaticTRLBasic.png in Resources */,
-				5220DA3916ECFE8F0069AB78 /* testStaticTRLNextGen.png in Resources */,
-				5220DA3A16ECFE8F0069AB78 /* testStaticTRLShadeless.png in Resources */,
-				5220DA3B16ECFE8F0069AB78 /* testStaticTRUDiffuse.png in Resources */,
-				5220DA3C16ECFE8F0069AB78 /* testStaticTRUDiffuseLightmap.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2551,7 +2474,7 @@
 		525ACD7D15F0F1A700534E7D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application: Torsten Kammer";
+				CODE_SIGN_IDENTITY = "Mac Developer: Torsten Kammer (T7AV5E4TN9)";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2563,7 +2486,7 @@
 		525ACD7E15F0F1A700534E7D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application: Torsten Kammer";
+				CODE_SIGN_IDENTITY = "Mac Developer: Torsten Kammer (T7AV5E4TN9)";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
