@@ -12,6 +12,7 @@
 #import "GLLItemMesh.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLModel.h"
+#import "LionSubscripting.h"
 
 @interface GLLItemViewController ()
 

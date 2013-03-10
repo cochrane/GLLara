@@ -8,6 +8,8 @@
 
 #import "GLLTestObjectWriter.h"
 
+#import "LionSubscripting.h"
+
 enum quadPosition
 {
 	LowerLeft,
