@@ -8,7 +8,9 @@
 
 #import "GLLRenderingTest.h"
 
+#import <Accelerate/Accelerate.h>
 #import <Cocoa/Cocoa.h>
+
 #import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
 #import "GLLDocument.h"
@@ -144,7 +146,26 @@
 			STAssertEquals(generatedRep.bytesPerRow, expectedRep.bytesPerRow, @"different formats");
 			STAssertEquals(generatedRep.isPlanar, expectedRep.isPlanar, @"different formats");
 			STAssertEquals(generatedRep.samplesPerPixel, expectedRep.samplesPerPixel, @"different formats");
+			
+			NSUInteger numElements = 400*400*4;
+			float averageAbsoluteDifference = 0;
+			float maximumAbsoluteDifference = 0;
+			float *generatedFloat = malloc(sizeof(float) * numElements);
+			float *expectedFloat = malloc(sizeof(float) * numElements);
+			float *difference = malloc(sizeof(float) * numElements);
+			vDSP_vfltu8(generatedRep.bitmapData, 1, generatedFloat, 1, numElements);
+			vDSP_vfltu8(expectedRep.bitmapData, 1, expectedFloat, 1, numElements);
+			vDSP_vsub(generatedFloat, 1, expectedFloat, 1, difference, 1, numElements);
+			free(generatedFloat);
+			free(expectedFloat);
+			vDSP_maxmgv(difference, 1, &maximumAbsoluteDifference, numElements);
+			vDSP_meamgv(difference, 1, &averageAbsoluteDifference, numElements);
+			free(difference);
+			
+			NSLog(@"average absolute diff: %f maximum absolute diff: %f", averageAbsoluteDifference, maximumAbsoluteDifference);
 			STAssertEquals(memcmp(generatedRep.bitmapData, expectedRep.bitmapData, 400*generatedRep.bytesPerRow), 0, @"Different data");
+			STAssertTrue(averageAbsoluteDifference < 0.1f, @"Average absolute difference too high (%f)", averageAbsoluteDifference);
+			STAssertTrue(maximumAbsoluteDifference < 20.0f, @"Maximum absolute difference too high (%f)", maximumAbsoluteDifference);
 		}
 	}
 	

@@ -35,6 +35,7 @@
 		5220DA3A16ECFE8F0069AB78 /* testStaticTRLShadeless.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2916ECFE8F0069AB78 /* testStaticTRLShadeless.png */; };
 		5220DA3B16ECFE8F0069AB78 /* testStaticTRUDiffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2A16ECFE8F0069AB78 /* testStaticTRUDiffuse.png */; };
 		5220DA3C16ECFE8F0069AB78 /* testStaticTRUDiffuseLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 5220DA2B16ECFE8F0069AB78 /* testStaticTRUDiffuseLightmap.png */; };
+		5220DA3D16ED061E0069AB78 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
 		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
 		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
 		5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */; };
@@ -956,6 +957,7 @@
 			files = (
 				525ACD6D15F0F1A700534E7D /* SenTestingKit.framework in Frameworks */,
 				525ACD6E15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
+				5220DA3D16ED061E0069AB78 /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
