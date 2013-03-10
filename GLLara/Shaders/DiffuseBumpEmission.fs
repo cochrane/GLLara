@@ -64,12 +64,13 @@ void main()
 		// Specular term
 		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normal);
 		float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
+		if (diffuseFactor <= 0.001) specularFactor = 0;
 		color += lightData.lights[i].specularColor * specularFactor;
 	}
 	
 	// Emission texture
 	vec4 emission = texture(emissionTexture, outTexCoord);
-	screenColor += emission;
+	color += emission;
 	
 	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
 	screenColor = vec4(color.rgb, alpha);

@@ -249,6 +249,21 @@ static GLLResourceManager *sharedManager;
 	return _skeletonProgram;
 }
 
+#pragma mark - Testing
+
+- (void)clearInternalCaches;
+{
+	[models.allValues makeObjectsPerformSelector:@selector(unload)];
+	[textures.allValues makeObjectsPerformSelector:@selector(unload)];
+	[programs.allValues makeObjectsPerformSelector:@selector(unload)];
+	[shaders.allValues makeObjectsPerformSelector:@selector(unload)];
+
+	[models removeAllObjects];
+	[textures removeAllObjects];
+	[programs removeAllObjects];
+	[shaders removeAllObjects];
+}
+
 #pragma mark - Private methods
 
 - (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;

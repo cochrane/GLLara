@@ -59,6 +59,7 @@ void main()
 		// Specular term
 		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normalWorld);
 		float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
+		if (diffuseFactor <= 0.001) specularFactor = 0;
 		color += lightData.lights[i].specularColor * specularFactor;
 	}
 	

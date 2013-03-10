@@ -13,6 +13,7 @@
 #import "GLLItemMesh.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLModel.h"
+#import "GLLResourceManager.h"
 #import "GLLSelection.h"
 
 #import "GLLTestObjectWriter.h"
@@ -37,6 +38,7 @@ static NSURL *testDocumentURL;
 	for (NSDocument *doc in [[NSDocumentController sharedDocumentController] documents])
 		[doc close];
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+	[[GLLResourceManager sharedResourceManager] clearInternalCaches];
 }
 
 - (void)testSelectTwoMeshes

@@ -265,7 +265,7 @@ enum quadDirection
 	[result appendFormat:@"%f %f %f\n", z[0], z[1], z[2]];
 	[result appendString:@"255 255 255 255\n"];
 	for (NSUInteger i = 0; i < numTexCoords; i++)
-		[result appendFormat:@"%f %f\n", texCoords[0], texCoords[1]];
+		[result appendFormat:@"%f %f\n", texCoords[0]*(i+1), texCoords[1]*(i+1)];
 	[result appendFormat:@"%u %u %u %u\n", boneIndices[0], boneIndices[1], boneIndices[2], boneIndices[3]];
 	[result appendFormat:@"%f %f %f %f\n", boneWeights[0], boneWeights[1], boneWeights[2], boneWeights[3]];
 	
