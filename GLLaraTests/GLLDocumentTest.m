@@ -10,6 +10,7 @@
 
 #import "GLLDocument.h"
 #import "GLLItem.h"
+#import "GLLResourceManager.h"
 
 #import <Cocoa/Cocoa.h>
 
@@ -32,6 +33,7 @@ static NSURL *testDocumentURL;
 	for (NSDocument *doc in [[NSDocumentController sharedDocumentController] documents])
 		[doc close];
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+	[[GLLResourceManager sharedResourceManager] clearInternalCaches];
 }
 
 - (void)testCreateSaveCloseLoad

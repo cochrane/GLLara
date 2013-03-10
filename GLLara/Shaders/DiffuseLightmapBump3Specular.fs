@@ -69,7 +69,7 @@ void main()
 	vec3 cameraDirection = normalize(lightData.cameraPosition.xyz - positionWorld);
 	
 	vec4 color = lightData.ambientColor * diffuseColor;
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 1/*3*/; i++)
 	{
 		// Diffuse term
 		float diffuseFactor = max(dot(-normal, lightData.lights[i].direction.xyz), 0);
@@ -78,6 +78,7 @@ void main()
 		// Specular term
 		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normal);
 		float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), parameters.bumpSpecularGloss) * parameters.bumpSpecularAmount;
+		if (diffuseFactor <= 0.001) specularFactor = 0;
 		color += specularColor * lightData.lights[i].specularColor * specularFactor;
 	}
 	

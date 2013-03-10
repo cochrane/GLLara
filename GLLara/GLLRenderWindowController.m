@@ -137,8 +137,13 @@
 		NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
 		NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
 		
-		[self.renderView.viewDrawer writeImageToURL:savePanel.URL fileType:savePanelAccessoryViewController.selectedTypeIdentifier size:CGSizeMake(width, height)];
+		[self renderToFile:savePanel.URL type:savePanelAccessoryViewController.selectedTypeIdentifier width:width height:height];
 	}];
+}
+
+- (void)renderToFile:(NSURL *)file type:(NSString *)typeUTI width:(NSUInteger)width height:(NSUInteger)height;
+{
+	[self.renderView.viewDrawer writeImageToURL:file fileType:typeUTI size:CGSizeMake(width, height)];
 }
 
 #pragma mark - Popover

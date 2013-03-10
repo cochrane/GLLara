@@ -47,4 +47,7 @@
 @property (nonatomic) GLuint alphaTestPassGreaterBuffer;
 @property (nonatomic) GLuint alphaTestPassLessBuffer;
 
+// Specifically used for testing
+- (void)clearInternalCaches;
+
 @end

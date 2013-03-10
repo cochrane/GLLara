@@ -36,6 +36,16 @@
 		5233BD1216EA889900DD77BE /* GLLDocumentTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233BD1116EA889900DD77BE /* GLLDocumentTest.m */; };
 		5233BD1516EA981000DD77BE /* GLLMeshSelectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233BD1416EA981000DD77BE /* GLLMeshSelectionTest.m */; };
 		5233BD1616EAB36000DD77BE /* defaultReflection.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 523AEEDE16C488960062C025 /* defaultReflection.jpg */; };
+		5233BD1B16ECA72000DD77BE /* testDiffusetexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD1A16ECA71F00DD77BE /* testDiffusetexture.png */; };
+		5233BD2416ECA9FA00DD77BE /* testBumptexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD1C16ECA9F800DD77BE /* testBumptexture.png */; };
+		5233BD2516ECA9FA00DD77BE /* testBump1Texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD1D16ECA9F800DD77BE /* testBump1Texture.png */; };
+		5233BD2616ECA9FA00DD77BE /* testBump2Texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD1E16ECA9F900DD77BE /* testBump2Texture.png */; };
+		5233BD2716ECA9FA00DD77BE /* testEmissiontexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD1F16ECA9F900DD77BE /* testEmissiontexture.png */; };
+		5233BD2816ECA9FA00DD77BE /* testLightmaptexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD2016ECA9F900DD77BE /* testLightmaptexture.png */; };
+		5233BD2916ECA9FA00DD77BE /* testMasktexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD2116ECA9F900DD77BE /* testMasktexture.png */; };
+		5233BD2A16ECA9FA00DD77BE /* testReflectiontexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD2216ECA9F900DD77BE /* testReflectiontexture.png */; };
+		5233BD2B16ECA9FA00DD77BE /* testSpeculartexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD2316ECA9F900DD77BE /* testSpeculartexture.png */; };
+		5233BD2C16ECB01A00DD77BE /* DiffuseBumpEmission.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52629397163DDB6500AC1088 /* DiffuseBumpEmission.fs */; };
 		5237E9DB16E176DB0092C49F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
 		5237E9DD16E176E60092C49F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
 		523AEEDA16C4883A0062C025 /* defaultBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED616C4883A0062C025 /* defaultBlack.png */; };
@@ -460,6 +470,15 @@
 		5233BD1116EA889900DD77BE /* GLLDocumentTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDocumentTest.m; sourceTree = "<group>"; };
 		5233BD1316EA981000DD77BE /* GLLMeshSelectionTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshSelectionTest.h; sourceTree = "<group>"; };
 		5233BD1416EA981000DD77BE /* GLLMeshSelectionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshSelectionTest.m; sourceTree = "<group>"; };
+		5233BD1A16ECA71F00DD77BE /* testDiffusetexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testDiffusetexture.png; path = Images/testDiffusetexture.png; sourceTree = SOURCE_ROOT; };
+		5233BD1C16ECA9F800DD77BE /* testBumptexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testBumptexture.png; path = Images/testBumptexture.png; sourceTree = SOURCE_ROOT; };
+		5233BD1D16ECA9F800DD77BE /* testBump1Texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testBump1Texture.png; path = Images/testBump1Texture.png; sourceTree = SOURCE_ROOT; };
+		5233BD1E16ECA9F900DD77BE /* testBump2Texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testBump2Texture.png; path = Images/testBump2Texture.png; sourceTree = SOURCE_ROOT; };
+		5233BD1F16ECA9F900DD77BE /* testEmissiontexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testEmissiontexture.png; path = Images/testEmissiontexture.png; sourceTree = SOURCE_ROOT; };
+		5233BD2016ECA9F900DD77BE /* testLightmaptexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testLightmaptexture.png; path = Images/testLightmaptexture.png; sourceTree = SOURCE_ROOT; };
+		5233BD2116ECA9F900DD77BE /* testMasktexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testMasktexture.png; path = Images/testMasktexture.png; sourceTree = SOURCE_ROOT; };
+		5233BD2216ECA9F900DD77BE /* testReflectiontexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testReflectiontexture.png; path = Images/testReflectiontexture.png; sourceTree = SOURCE_ROOT; };
+		5233BD2316ECA9F900DD77BE /* testSpeculartexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testSpeculartexture.png; path = Images/testSpeculartexture.png; sourceTree = SOURCE_ROOT; };
 		5237E9C716E176A70092C49F /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		5237E9DF16E17A610092C49F /* appcast.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = appcast.xml; sourceTree = "<group>"; };
 		523AEED616C4883A0062C025 /* defaultBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultBlack.png; sourceTree = "<group>"; };
@@ -952,6 +971,15 @@
 		5233BD0C16EA06DE00DD77BE /* Test objects */ = {
 			isa = PBXGroup;
 			children = (
+				5233BD1C16ECA9F800DD77BE /* testBumptexture.png */,
+				5233BD1D16ECA9F800DD77BE /* testBump1Texture.png */,
+				5233BD1E16ECA9F900DD77BE /* testBump2Texture.png */,
+				5233BD1F16ECA9F900DD77BE /* testEmissiontexture.png */,
+				5233BD2016ECA9F900DD77BE /* testLightmaptexture.png */,
+				5233BD2116ECA9F900DD77BE /* testMasktexture.png */,
+				5233BD2216ECA9F900DD77BE /* testReflectiontexture.png */,
+				5233BD2316ECA9F900DD77BE /* testSpeculartexture.png */,
+				5233BD1A16ECA71F00DD77BE /* testDiffusetexture.png */,
 				5233BD0D16EA87A200DD77BE /* generic_item.mesh.ascii */,
 				5233BD0616E9511600DD77BE /* GLLTestObjectWriter.h */,
 				5233BD0716E9511600DD77BE /* GLLTestObjectWriter.m */,
@@ -1708,6 +1736,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52421C1516BDB78100D41EAA /* DiffuseSpecular.fs in Resources */,
+				5233BD2C16ECB01A00DD77BE /* DiffuseBumpEmission.fs in Resources */,
 				5275F6C21607E19C00978779 /* TexturelessOBJ.fs in Resources */,
 				522C4BFB1609331D0043FCBA /* DiffuseSpecularNormalOBJ.fs in Resources */,
 				521326391602B19700787AA1 /* Square.fs in Resources */,
@@ -1898,6 +1927,15 @@
 				5233BD0E16EA87A200DD77BE /* generic_item.mesh.ascii in Resources */,
 				5233BD0F16EA87B600DD77BE /* defaultColor.png in Resources */,
 				5233BD1616EAB36000DD77BE /* defaultReflection.jpg in Resources */,
+				5233BD1B16ECA72000DD77BE /* testDiffusetexture.png in Resources */,
+				5233BD2416ECA9FA00DD77BE /* testBumptexture.png in Resources */,
+				5233BD2516ECA9FA00DD77BE /* testBump1Texture.png in Resources */,
+				5233BD2616ECA9FA00DD77BE /* testBump2Texture.png in Resources */,
+				5233BD2716ECA9FA00DD77BE /* testEmissiontexture.png in Resources */,
+				5233BD2816ECA9FA00DD77BE /* testLightmaptexture.png in Resources */,
+				5233BD2916ECA9FA00DD77BE /* testMasktexture.png in Resources */,
+				5233BD2A16ECA9FA00DD77BE /* testReflectiontexture.png in Resources */,
+				5233BD2B16ECA9FA00DD77BE /* testSpeculartexture.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
