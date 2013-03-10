@@ -12,6 +12,7 @@
 #import "GLLBoneListController.h"
 #import "GLLMeshListController.h"
 #import "GLLSubItemController.h"
+#import "LionSubscripting.h"
 #import "NSArray+Map.h"
 
 @implementation GLLItemController

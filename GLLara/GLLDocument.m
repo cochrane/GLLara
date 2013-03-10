@@ -26,6 +26,7 @@
 #import "GLLRenderWindowController.h"
 #import "GLLSceneDrawer.h"
 #import "GLLSelection.h"
+#import "LionSubscripting.h"
 
 @interface GLLDocument () <NSOpenSavePanelDelegate>
 {

@@ -67,7 +67,7 @@
 	
 	NSError *paramError = nil;
 	self.parameters = [GLLModelParams parametersForName:@"objFileParameters" error:&paramError];
-	NSAssert(self.parameters && !paramError, @"Should have params (are %@), no error (is %@)", self.parameters, paramError);
+	//NSAssert(self.parameters && !paramError, @"Should have params (are %@), no error (is %@)", self.parameters, paramError);
 	
 	return self;
 }

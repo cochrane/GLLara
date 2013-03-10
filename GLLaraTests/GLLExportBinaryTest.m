@@ -12,6 +12,7 @@
 #import "GLLModel.h"
 #import "GLLModelBone.h"
 #import "GLLModelMesh.h"
+#import "LionSubscripting.h"
 
 @implementation GLLExportBinaryTest
 

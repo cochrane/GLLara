@@ -21,6 +21,7 @@
 #import "GLLRenderWindowController.h"
 #import "GLLResourceManager.h"
 #import "GLLView.h"
+#import "LionSubscripting.h"
 #import "NSArray+Map.h"
 
 @implementation GLLRenderingTest

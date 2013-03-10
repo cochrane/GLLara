@@ -15,8 +15,8 @@
 #import "GLLModel.h"
 #import "GLLResourceManager.h"
 #import "GLLSelection.h"
-
 #import "GLLTestObjectWriter.h"
+#import "LionSubscripting.h"
 
 #import <Cocoa/Cocoa.h>
 

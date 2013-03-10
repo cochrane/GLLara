@@ -24,6 +24,7 @@
 #import "GLLTexture.h"
 #import "GLLTextureDescription.h"
 #import "GLLUniformBlockBindings.h"
+#import "LionSubscripting.h"
 #import "NSArray+Map.h"
 
 @interface GLLItemMeshDrawer ()
