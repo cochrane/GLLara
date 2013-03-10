@@ -23,15 +23,17 @@
 
 @implementation GLLRenderingTest
 
-- (void)testGenerateExpected
+- (void)testAndGenerateExpected
 {
 	NSData *shadersListData = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] URLForResource:@"xnaLaraDefault.modelparams" withExtension:@"plist"]];
 	NSDictionary *shadersList = [NSPropertyListSerialization propertyListWithData:shadersListData options:NSPropertyListImmutable format:NULL error:NULL];
 	
-	NSURL *targetURL = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:@"GLLara-expected" isDirectory:YES];
+	NSURL *targetURL = [[NSURL fileURLWithPath:NSTemporaryDirectory()] URLByAppendingPathComponent:@"GLLara-rendered" isDirectory:YES];
 	NSLog(@"Will find file at %@", targetURL);
 	[[NSFileManager defaultManager] createDirectoryAtURL:targetURL withIntermediateDirectories:YES attributes:nil error:NULL];
 	NSURL *testModelURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"generic_item" withExtension:@"mesh.ascii"];
+	
+	BOOL shouldKeepDirectory = NO;
 	
 	for (NSString *shaderName in shadersList[@"shaders"])
 	{
@@ -112,15 +114,42 @@
 			
 			[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
 			
-			[controller renderToFile:[targetURL URLByAppendingPathComponent:[NSString stringWithFormat:@"test%@.png", shaderName] isDirectory:NO] type:(__bridge NSString *)kUTTypePNG width:400 height:400];
+			NSURL *generatedImageURL = [targetURL URLByAppendingPathComponent:[NSString stringWithFormat:@"test%@.png", shaderName] isDirectory:NO];
+			[controller renderToFile:generatedImageURL type:(__bridge NSString *)kUTTypePNG width:400 height:400];
 			
 			[doc close];
 			[[GLLResourceManager sharedResourceManager] clearInternalCaches];
 			[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
 			
 			// Compare to expected (if exists)
+			NSURL *existingImageURL = [[NSBundle bundleForClass:[self class]] URLForResource:[@"test" stringByAppendingString:shaderName] withExtension:@"png"];
+			if (!existingImageURL)
+			{
+				NSLog(@"Expected image for %@ not found. You can use the one generated now; it'll be in %@", shaderName, targetURL);
+				shouldKeepDirectory = YES;
+				continue;
+			}
+			
+			NSImage *generated = [[NSImage alloc] initByReferencingURL:generatedImageURL];
+			STAssertNotNil(generated, @"couldn't load generated image");
+			
+			NSImage *expected = [[NSImage alloc] initByReferencingURL:existingImageURL];
+			STAssertNotNil(expected, @"couldn't load expected image even though bundle claims it exists.");
+			
+			NSBitmapImageRep *generatedRep = generated.representations[0];
+			NSBitmapImageRep *expectedRep = expected.representations[0];
+			
+			STAssertEquals(generatedRep.bitmapFormat, expectedRep.bitmapFormat, @"different formats");
+			STAssertEquals(generatedRep.bitsPerPixel, expectedRep.bitsPerPixel, @"different formats");
+			STAssertEquals(generatedRep.bytesPerRow, expectedRep.bytesPerRow, @"different formats");
+			STAssertEquals(generatedRep.isPlanar, expectedRep.isPlanar, @"different formats");
+			STAssertEquals(generatedRep.samplesPerPixel, expectedRep.samplesPerPixel, @"different formats");
+			STAssertEquals(memcmp(generatedRep.bitmapData, expectedRep.bitmapData, 400*generatedRep.bytesPerRow), 0, @"Different data");
 		}
 	}
+	
+	if (!shouldKeepDirectory)
+		[[NSFileManager defaultManager] removeItemAtURL:targetURL error:NULL];
 }
 
 @end
