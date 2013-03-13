@@ -180,8 +180,18 @@ struct GLLLightBlock
 	CGDataProviderRelease(dataProvider);
 	CGColorSpaceRelease(colorSpace);
 	
+	NSDictionary *metadata = @{
+							(__bridge NSString *)kCGImagePropertyTIFFSoftware : [NSString stringWithFormat:@"%@ %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"],[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]],
+	   (__bridge NSString *)kCGImagePropertyTIFFModel : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"],
+	   (__bridge NSString *)kCGImagePropertyTIFFMake : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GLLExifMake"]
+	   };
+	CFDictionaryRef properties = (__bridge CFDictionaryRef) @{
+														   (__bridge NSString *) kCGImagePropertyTIFFDictionary: metadata
+				 };
+	
 	CGImageDestinationRef imageDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef) url, (__bridge CFStringRef) type, 1, NULL);
-	CGImageDestinationAddImage(imageDestination, image, NULL);
+	CGImageDestinationSetProperties(imageDestination, properties);
+	CGImageDestinationAddImage(imageDestination, image, properties);
 	CGImageDestinationFinalize(imageDestination);
 	
 	CGImageRelease(image);

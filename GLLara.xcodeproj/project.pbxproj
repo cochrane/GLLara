@@ -19,6 +19,7 @@
 		5214471116DE22E1003E260F /* GLLara.help in Resources */ = {isa = PBXBuildFile; fileRef = 5214471016DE22E0003E260F /* GLLara.help */; };
 		52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52152CEE16B66951001AE54C /* GLLDDSFile.m */; };
 		5220DA3D16ED061E0069AB78 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
+		5220DC3916EE98F70069AB78 /* GLLEXIFTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5220DC3816EE98F70069AB78 /* GLLEXIFTest.m */; };
 		5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */; };
 		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
 		5224C8EB15FA5F33002A6C76 /* GLLLightView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5224C8EA15FA5F33002A6C76 /* GLLLightView.xib */; };
@@ -460,6 +461,8 @@
 		5214471016DE22E0003E260F /* GLLara.help */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GLLara.help; sourceTree = "<group>"; };
 		52152CED16B66951001AE54C /* GLLDDSFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDDSFile.h; sourceTree = "<group>"; };
 		52152CEE16B66951001AE54C /* GLLDDSFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDDSFile.m; sourceTree = "<group>"; };
+		5220DC3716EE98F70069AB78 /* GLLEXIFTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLEXIFTest.h; sourceTree = "<group>"; };
+		5220DC3816EE98F70069AB78 /* GLLEXIFTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLEXIFTest.m; sourceTree = "<group>"; };
 		5224C8D915F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBumpSpecular.fs; sourceTree = "<group>"; };
 		5224C8E415FA4F18002A6C76 /* GLLDirectionalLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDirectionalLight.h; sourceTree = "<group>"; };
 		5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDirectionalLight.m; sourceTree = "<group>"; };
@@ -1236,6 +1239,8 @@
 				5233BD1116EA889900DD77BE /* GLLDocumentTest.m */,
 				5233BD1316EA981000DD77BE /* GLLMeshSelectionTest.h */,
 				5233BD1416EA981000DD77BE /* GLLMeshSelectionTest.m */,
+				5220DC3716EE98F70069AB78 /* GLLEXIFTest.h */,
+				5220DC3816EE98F70069AB78 /* GLLEXIFTest.m */,
 			);
 			path = GLLaraTests;
 			sourceTree = "<group>";
@@ -2184,6 +2189,7 @@
 				5233BD0B16E9542E00DD77BE /* GLLTestObjectWriterTest.m in Sources */,
 				5233BD1216EA889900DD77BE /* GLLDocumentTest.m in Sources */,
 				5233BD1516EA981000DD77BE /* GLLMeshSelectionTest.m in Sources */,
+				5220DC3916EE98F70069AB78 /* GLLEXIFTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
