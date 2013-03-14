@@ -8,6 +8,7 @@
 
 #import "GLLRenderWindow.h"
 
+#import "GLLCamera.h"
 #import "GLLView.h"
 
 @implementation GLLRenderWindow
@@ -15,6 +16,33 @@
 - (GLLCamera *)camera
 {
 	return self.renderView.camera;
+}
+
+- (BOOL)scriptingLocked
+{
+	return self.camera.windowSizeLocked;
+}
+- (void)setScriptingLocked:(BOOL)scriptingLocked
+{
+	self.camera.windowSizeLocked = scriptingLocked;
+}
+
+- (CGFloat)scriptingHeight
+{
+	return self.camera.latestWindowHeight;
+}
+- (void)setScriptingHeight:(CGFloat)scriptingHeight
+{
+	self.camera.latestWindowHeight = scriptingHeight;
+}
+
+- (CGFloat)scriptingWidth
+{
+	return self.camera.latestWindowWidth;
+}
+- (void)setScriptingWidth:(CGFloat)scriptingWidth
+{
+	self.camera.latestWindowWidth = scriptingWidth;
 }
 
 @end

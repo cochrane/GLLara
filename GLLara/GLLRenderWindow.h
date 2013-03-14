@@ -18,4 +18,8 @@
 
 @property (nonatomic, readonly) GLLCamera *camera;
 
+@property (nonatomic) BOOL scriptingLocked;
+@property (nonatomic) CGFloat scriptingHeight;
+@property (nonatomic) CGFloat scriptingWidth;
+
 @end
