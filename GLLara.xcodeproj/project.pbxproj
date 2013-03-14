@@ -51,7 +51,6 @@
 		5237E9BC16E142510092C49F /* GLLAmbientLight+Scripting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5237E9BB16E142510092C49F /* GLLAmbientLight+Scripting.m */; };
 		5237E9BF16E142F60092C49F /* GLLDirectionalLight+Scripting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5237E9BE16E142F60092C49F /* GLLDirectionalLight+Scripting.m */; };
 		5237E9C116E1499E0092C49F /* NSColor_SKTScripting.m in Sources */ = {isa = PBXBuildFile; fileRef = 5237E9C016E1499D0092C49F /* NSColor_SKTScripting.m */; };
-		5237E9C416E153DA0092C49F /* GLLRenderWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 5237E9C316E153DA0092C49F /* GLLRenderWindow.m */; };
 		5237E9C516E1634F0092C49F /* GLLExportBinaryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD80FA163B58F100534475 /* GLLExportBinaryTest.m */; };
 		5237E9C616E163530092C49F /* GLLExportASCIITest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD80F7163B58E400534475 /* GLLExportASCIITest.m */; };
 		5237E9DB16E176DB0092C49F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
@@ -176,6 +175,10 @@
 		52474B1B16A73B6C007A0223 /* GLLMtlFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52474B1916A73B6C007A0223 /* GLLMtlFile.cpp */; };
 		52474B1E16A73CB2007A0223 /* GLLStringURLConversion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52474B1C16A73CB2007A0223 /* GLLStringURLConversion.cpp */; };
 		52474B2116A7518C007A0223 /* GLLBasicOBJModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52474B2016A7518C007A0223 /* GLLBasicOBJModelTest.m */; };
+		524B891016F0AEE00078D25C /* GLLAppleScriptTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 524B890F16F0AEE00078D25C /* GLLAppleScriptTest.m */; };
+		524B891716F1CAC70078D25C /* GLLRenderWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 524B891616F1CAC70078D25C /* GLLRenderWindow.m */; };
+		524B891A16F1CB780078D25C /* GLLCamera+Scripting.m in Sources */ = {isa = PBXBuildFile; fileRef = 524B891916F1CB780078D25C /* GLLCamera+Scripting.m */; };
+		524B891D16F28AA80078D25C /* GLLAddModelScriptCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 524B891C16F28AA80078D25C /* GLLAddModelScriptCommand.m */; };
 		524BEAFF1611250C00EA061D /* GLLSkeletonDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */; };
 		524BEB0316120FCF00EA061D /* GLLSkeletonProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */; };
 		524BEB06161211E400EA061D /* Skeleton.fs in Resources */ = {isa = PBXBuildFile; fileRef = 524BEB04161211E400EA061D /* Skeleton.fs */; };
@@ -501,8 +504,6 @@
 		5237E9BD16E142F60092C49F /* GLLDirectionalLight+Scripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLDirectionalLight+Scripting.h"; sourceTree = "<group>"; };
 		5237E9BE16E142F60092C49F /* GLLDirectionalLight+Scripting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLDirectionalLight+Scripting.m"; sourceTree = "<group>"; };
 		5237E9C016E1499D0092C49F /* NSColor_SKTScripting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColor_SKTScripting.m; sourceTree = "<group>"; };
-		5237E9C216E153DA0092C49F /* GLLRenderWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderWindow.h; sourceTree = "<group>"; };
-		5237E9C316E153DA0092C49F /* GLLRenderWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderWindow.m; sourceTree = "<group>"; };
 		5237E9C716E176A70092C49F /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		5237E9DF16E17A610092C49F /* appcast.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = appcast.xml; sourceTree = "<group>"; };
 		523AEED616C4883A0062C025 /* defaultBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultBlack.png; sourceTree = "<group>"; };
@@ -642,6 +643,14 @@
 		52474B1D16A73CB2007A0223 /* GLLStringURLConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLStringURLConversion.h; sourceTree = "<group>"; };
 		52474B1F16A7518C007A0223 /* GLLBasicOBJModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBasicOBJModelTest.h; sourceTree = "<group>"; };
 		52474B2016A7518C007A0223 /* GLLBasicOBJModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBasicOBJModelTest.m; sourceTree = "<group>"; };
+		524B890E16F0AEE00078D25C /* GLLAppleScriptTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAppleScriptTest.h; sourceTree = "<group>"; };
+		524B890F16F0AEE00078D25C /* GLLAppleScriptTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAppleScriptTest.m; sourceTree = "<group>"; };
+		524B891516F1CAC70078D25C /* GLLRenderWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderWindow.h; sourceTree = "<group>"; };
+		524B891616F1CAC70078D25C /* GLLRenderWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderWindow.m; sourceTree = "<group>"; };
+		524B891816F1CB780078D25C /* GLLCamera+Scripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLCamera+Scripting.h"; sourceTree = "<group>"; };
+		524B891916F1CB780078D25C /* GLLCamera+Scripting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLCamera+Scripting.m"; sourceTree = "<group>"; };
+		524B891B16F28AA80078D25C /* GLLAddModelScriptCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAddModelScriptCommand.h; sourceTree = "<group>"; };
+		524B891C16F28AA80078D25C /* GLLAddModelScriptCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAddModelScriptCommand.m; sourceTree = "<group>"; };
 		524BEAFD1611250C00EA061D /* GLLSkeletonDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonDrawer.h; sourceTree = "<group>"; };
 		524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSkeletonDrawer.m; sourceTree = "<group>"; };
 		524BEB0116120FCF00EA061D /* GLLSkeletonProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonProgram.h; sourceTree = "<group>"; };
@@ -1086,6 +1095,8 @@
 		52429C9116E1193F001B0308 /* Scripting */ = {
 			isa = PBXGroup;
 			children = (
+				524B891516F1CAC70078D25C /* GLLRenderWindow.h */,
+				524B891616F1CAC70078D25C /* GLLRenderWindow.m */,
 				5237E9C016E1499D0092C49F /* NSColor_SKTScripting.m */,
 				52429C9216E1194F001B0308 /* GLLDocument+Scripting.h */,
 				52429C9316E1194F001B0308 /* GLLDocument+Scripting.m */,
@@ -1103,8 +1114,10 @@
 				5237E9BB16E142510092C49F /* GLLAmbientLight+Scripting.m */,
 				5237E9BD16E142F60092C49F /* GLLDirectionalLight+Scripting.h */,
 				5237E9BE16E142F60092C49F /* GLLDirectionalLight+Scripting.m */,
-				5237E9C216E153DA0092C49F /* GLLRenderWindow.h */,
-				5237E9C316E153DA0092C49F /* GLLRenderWindow.m */,
+				524B891816F1CB780078D25C /* GLLCamera+Scripting.h */,
+				524B891916F1CB780078D25C /* GLLCamera+Scripting.m */,
+				524B891B16F28AA80078D25C /* GLLAddModelScriptCommand.h */,
+				524B891C16F28AA80078D25C /* GLLAddModelScriptCommand.m */,
 			);
 			name = Scripting;
 			sourceTree = "<group>";
@@ -1241,6 +1254,8 @@
 				5233BD1416EA981000DD77BE /* GLLMeshSelectionTest.m */,
 				5220DC3716EE98F70069AB78 /* GLLEXIFTest.h */,
 				5220DC3816EE98F70069AB78 /* GLLEXIFTest.m */,
+				524B890E16F0AEE00078D25C /* GLLAppleScriptTest.h */,
+				524B890F16F0AEE00078D25C /* GLLAppleScriptTest.m */,
 			);
 			path = GLLaraTests;
 			sourceTree = "<group>";
@@ -2166,7 +2181,9 @@
 				5237E9BC16E142510092C49F /* GLLAmbientLight+Scripting.m in Sources */,
 				5237E9BF16E142F60092C49F /* GLLDirectionalLight+Scripting.m in Sources */,
 				5237E9C116E1499E0092C49F /* NSColor_SKTScripting.m in Sources */,
-				5237E9C416E153DA0092C49F /* GLLRenderWindow.m in Sources */,
+				524B891716F1CAC70078D25C /* GLLRenderWindow.m in Sources */,
+				524B891A16F1CB780078D25C /* GLLCamera+Scripting.m in Sources */,
+				524B891D16F28AA80078D25C /* GLLAddModelScriptCommand.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2190,6 +2207,7 @@
 				5233BD1216EA889900DD77BE /* GLLDocumentTest.m in Sources */,
 				5233BD1516EA981000DD77BE /* GLLMeshSelectionTest.m in Sources */,
 				5220DC3916EE98F70069AB78 /* GLLEXIFTest.m in Sources */,
+				524B891016F0AEE00078D25C /* GLLAppleScriptTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

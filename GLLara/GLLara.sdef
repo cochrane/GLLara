@@ -118,6 +118,17 @@
 	
 	<suite name="GLLara suite" code="GLLs" description="Terms and Events for controlling GLLara.">
 		
+		<command name="add model" code="GLLsAddM" description="Add a model to a document">
+			<cocoa class="GLLAddModelScriptCommand" />
+			<direct-parameter description="The model to add.">
+				<type type="file" list="no" />
+			</direct-parameter>
+			<parameter name="to" code="insh" optional="no" type="document" description="The document to which the model should be added.">
+				<cocoa key="DocumentToAddTo" />
+			</parameter>
+			<result type="object" description="The model that was just added." />
+		</command>
+		
 		<class-extension extends="document" code="docu" description="A GLLara document">
 			<cocoa class="GLLDocument" />
 			<element type="diffuse light">
@@ -281,30 +292,30 @@
 		
 		<class name="render window" code="Rwnd" extends="window" description="Scene render window">
 			<cocoa class="GLLRenderWindow" />
+			<property name="width" code="Witd" type="integer" description="Width of the window">
+				<cocoa key="scriptingWidth" />
+			</property>
+			<property name="height" code="Higt" type="integer" description="Height of the window">
+				<cocoa key="scriptingHeight" />
+			</property>
+			<property name="size locked" code="sLok" type="boolean" description="Is the size of the window locked against accidental inputs? (It can still be changed from scripts">
+				<cocoa key="scriptingLocked" />
+			</property>
 			<contents name="camera" code="Camr" type="camera" description="The camera of this window." access="r" />
 		</class>
 		
 		<class name="camera" code="Camr" description="Stores render settings">
 			<cocoa class="GLLCamera" />
-			<property name="width" code="Witd" type="integer" description="Width of the window">
-				<cocoa key="windowWidth" />
-			</property>
-			<property name="height" code="Higt" type="integer" description="Height of the window">
-				<cocoa key="windowHeight" />
-			</property>
-			<property name="size locked" code="sLok" type="boolean" description="Is the size of the window locked against accidental inputs? (It can still be changed from scripts">
-				<cocoa key="windowSizeLocked" />
-			</property>
 			<property name="field of view" code="FovY" type="integer" description="Field of view" />
 			<property name="distance to target" code="Dist" type="integer" description="Distance to where the camera is looking at" />
 			<property name="position x" code="posX" type="integer" description="Where the camera is looking at">
-				<cocoa key="currentPositionX">
-				</property>
+				<cocoa key="currentPositionX" />
+			</property>
 			<property name="position y" code="posY" type="integer" description="Where the camera is looking at">
-				<cocoa key="currentPositionY">
-				</property>
+				<cocoa key="currentPositionY" />
+			</property>
 			<property name="position z" code="posZ" type="integer" description="Where the camera is looking at">
-				<cocoa key="currentPositionZ">
+				<cocoa key="currentPositionZ" />
 			</property>
 			<property name="longitude" code="LoTd" type="real" description="Direction of the camera." />
 			<property name="latitude" code="LaTd" type="real" description="Direction of the camera." />

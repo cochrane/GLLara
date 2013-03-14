@@ -8,7 +8,13 @@
 
 #import "GLLRenderWindow.h"
 
+#import "GLLView.h"
+
 @implementation GLLRenderWindow
 
+- (GLLCamera *)camera
+{
+	return self.renderView.camera;
+}
 
 @end
