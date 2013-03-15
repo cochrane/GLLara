@@ -298,7 +298,7 @@
 			<property name="height" code="Higt" type="integer" description="Height of the window">
 				<cocoa key="scriptingHeight" />
 			</property>
-			<property name="size locked" code="sLok" type="boolean" description="Is the size of the window locked against accidental inputs? (It can still be changed from scripts">
+			<property name="size locked" code="sLok" type="boolean" description="Is the size of the window locked against accidental inputs (It can still be changed from scripts)?">
 				<cocoa key="scriptingLocked" />
 			</property>
 			<contents name="camera" code="Camr" type="camera" description="The camera of this window." access="r" />
@@ -319,7 +319,7 @@
 			</property>
 			<property name="longitude" code="LoTd" type="real" description="Direction of the camera." />
 			<property name="latitude" code="LaTd" type="real" description="Direction of the camera." />
-			<property name="camera locked" code="cLok" type="boolean" description="Is the camera locked against accidental inputs? (It can still be changed from scripts)" />
+			<property name="camera locked" code="cLok" type="boolean" description="Is the camera locked against accidental inputs (It can still be changed from scripts)?" />
 		</class>
 		
 		<enumeration name="saveable file format" code="savf">
