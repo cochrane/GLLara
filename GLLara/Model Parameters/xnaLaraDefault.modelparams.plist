@@ -91,6 +91,46 @@
 	</dict>
 	<key>renderParameterDescriptions</key>
 	<dict>
+		<key>ambientColor</key>
+		<dict>
+			<key>title</key>
+			<string>Ambient Color</string>
+			<key>type</key>
+			<string>color</string>
+			<key>description</key>
+			<string>Color of the unlit parts</string>
+		</dict>
+		<key>diffuseColor</key>
+		<dict>
+			<key>title</key>
+			<string>Diffuse Color</string>
+			<key>type</key>
+			<string>color</string>
+			<key>description</key>
+			<string>Color of the lit parts</string>
+		</dict>
+		<key>specularColor</key>
+		<dict>
+			<key>title</key>
+			<string>Specular Color</string>
+			<key>type</key>
+			<string>color</string>
+			<key>description</key>
+			<string>Color of the highlights.</string>
+		</dict>
+		<key>specularExponent</key>
+		<dict>
+			<key>max</key>
+			<string>1000</string>
+			<key>min</key>
+			<string>0</string>
+			<key>title</key>
+			<string>Specular Gloss</string>
+			<key>type</key>
+			<string>float</string>
+			<key>description</key>
+			<string>Sharpness of the highlights. Higher values produce smaller, more focused highlights.</string>
+		</dict>
 		<key>bump2UVScale</key>
 		<dict>
 			<key>title</key>
@@ -160,6 +200,29 @@
 	</dict>
 	<key>defaultRenderParameters</key>
 	<dict>
+		<key>ambientColor</key>
+		<array>
+			<integer>1</integer>
+			<integer>1</integer>
+			<integer>1</integer>
+			<integer>1</integer>
+		</array>
+		<key>diffuseColor</key>
+		<array>
+			<integer>1</integer>
+			<integer>1</integer>
+			<integer>1</integer>
+			<integer>1</integer>
+		</array>
+		<key>specularColor</key>
+		<array>
+			<integer>1</integer>
+			<integer>1</integer>
+			<integer>1</integer>
+			<integer>1</integer>
+		</array>
+		<key>specularExponent</key>
+		<integer>10</integer>
 		<key>bump1UVScale</key>
 		<integer>1</integer>
 		<key>bumpUVScale</key>
@@ -175,6 +238,32 @@
 	</dict>
 	<key>shaders</key>
 	<dict>
+		<key>DiffuseColor</key>
+		<dict>
+			<key>alphaMeshGroups</key>
+			<array/>
+			<key>solidMeshGroups</key>
+			<array>
+				<string>MeshGroup34</string>
+			</array>
+			<key>vertex</key>
+			<string>Basic.vs</string>
+			<key>fragment</key>
+			<string>DiffuseOBJ.fs</string>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+			</array>
+			<key>additionalParameters</key>
+			<array>
+				<string>specularExponent</string>
+				<string>specularColor</string>
+				<string>diffuseColor</string>
+				<string>ambientColor</string>
+			</array>
+			<key>parameters</key>
+			<array/>
+		</dict>
 		<key>DiffuseSpecular</key>
 		<dict>
 			<key>additionalParameters</key>

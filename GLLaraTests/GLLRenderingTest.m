@@ -12,6 +12,8 @@
 #import <Cocoa/Cocoa.h>
 
 #import "GLLCamera.h"
+#import "GLLItemMesh.h"
+#import "GLLColorRenderParameter.h"
 #import "GLLDirectionalLight.h"
 #import "GLLDocument.h"
 #import "GLLItem.h"
@@ -62,6 +64,7 @@
 			
 			// Prepare render parameters
 			NSArray *renderParameters = [shader[@"parameters"] map:^(NSString *paramName){
+				if ([shadersList[@"renderParameterDescriptions"][@"type"] isEqual:@"color"]) return (NSNumber *) nil;
 				double min = [shadersList[@"renderParameterDescriptions"][paramName][@"min"] doubleValue];
 				double max = [shadersList[@"renderParameterDescriptions"][paramName][@"max"] doubleValue];
 				return @((max-min)*0.5);
@@ -92,6 +95,13 @@
 			[item.bones[1] setRotationX:0.5];
 			[item.bones[1] setRotationY:0.5];
 			[item.bones[1] setRotationZ:0.5];
+			
+			// Set colors
+			for (GLLRenderParameter *parameter in [item.meshes[0] renderParameters])
+			{
+				if ([parameter.entity.name isEqual:@"GLLColorRenderParameter"])
+					[parameter setValue:[NSColor redColor] forKey:@"value"];
+			}
 			
 			// Ensure it didn't get automatically removed as punishment for failing to load
 			NSFetchRequest *itemsRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];

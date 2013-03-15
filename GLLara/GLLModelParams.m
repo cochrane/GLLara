@@ -8,6 +8,8 @@
 
 #import "GLLModelParams.h"
 
+#import <AppKit/NSColor.h>
+
 #import "NSArray+Map.h"
 #import "GLLModelMesh.h"
 #import "GLLMeshSplitter.h"
@@ -136,7 +138,15 @@ static NSCache *parameterCache;
 	ownMeshGroups = propertyList[@"meshGroupNames"];
 	ownShaders = propertyList[@"shaders"];
 	ownRenderParameters = propertyList[@"renderParameters"];
-	ownDefaultParameters = propertyList[@"defaultRenderParameters"];
+	ownDefaultParameters = [propertyList[@"defaultRenderParameters"] mapValues:^(id value){
+		if ([value isKindOfClass:[NSArray class]])
+		{
+			NSAssert([value count] == 4, @"default color must have four elements");
+			return (id)[NSColor colorWithDeviceRed:[value[0] doubleValue] green:[value[1] doubleValue] blue:[value[2] doubleValue] alpha:[value[3] doubleValue]];
+		}
+		else
+			return (id)value;
+	}];
 	ownCameraTargets = propertyList[@"cameraTargets"];
 	defaultMeshGroup = propertyList[@"defaultMeshGroup"];
 	
