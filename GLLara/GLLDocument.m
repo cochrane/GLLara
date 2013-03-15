@@ -129,6 +129,8 @@
 
 - (GLLItem *)addModel:(GLLModel *)model;
 {
+	NSParameterAssert(model);
+	
 	GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
 	newItem.model = model;
 	

@@ -23,7 +23,7 @@
 @interface GLLDocument : NSPersistentDocument
 
 - (GLLItem *)addModelAtURL:(NSURL *)url error:(NSError *__autoreleasing*)error;
-- (GLLItem *)addModel:(GLLModel *)model;
+- (GLLItem *)addModel:(GLLModel *)model __attribute__((nonnull(1)));
 
 - (IBAction)openNewRenderView:(id)sender;
 - (IBAction)loadMesh:(id)sender;
