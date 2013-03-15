@@ -15,6 +15,8 @@
  */
 @interface GLLItemMesh (OBJExport)
 
++ (NSString *)relativePathFrom:(NSURL *)ownLocation to:(NSURL *)textureLocation;
+
 @property (nonatomic, readonly) BOOL willLoseDataWhenConvertedToOBJ;
 - (NSString *)writeMTLWithBaseURL:(NSURL *)baseURL;
 - (NSString *)writeOBJWithTransformations:(const mat_float16 *)transforms baseIndex:(uint32_t)baseIndex includeColors:(BOOL)includeColors;

@@ -25,11 +25,11 @@
 	return NO;
 }
 
-- (BOOL)writeOBJToLocation:(NSURL *)location withTransform:(BOOL)transform withColor:(BOOL)color error:(NSError *__autoreleasing*)error;
+- (NSString *)objStringForFilename:(NSString *)name withTransform:(BOOL)transform withColor:(BOOL)color error:(NSError *__autoreleasing*)error;
 {
 	NSMutableString *obj = [NSMutableString string];
 	
-	NSString *materialLibraryName = [[location.lastPathComponent stringByDeletingPathExtension] stringByAppendingPathExtension:@"mtl"];
+	NSString *materialLibraryName = [[name stringByDeletingPathExtension] stringByAppendingPathExtension:@"mtl"];
 	[obj appendFormat:@"mtllib %@\n", materialLibraryName];
 	
 	mat_float16 *transforms = malloc(sizeof(mat_float16) * self.bones.count);
@@ -51,16 +51,24 @@
 	}
 	
 	free(transforms);
-	return [obj writeToURL:location atomically:YES encoding:NSUTF8StringEncoding error:error];
+
+	return obj;
+}
+- (NSString *)mtlStringForLocation:(NSURL *)location error:(NSError *__autoreleasing*)error;
+{
+	return [[self.meshes map:^(GLLItemMesh *mesh) {
+		return [mesh writeMTLWithBaseURL:location];
+	}] componentsJoinedByString:@"\n"];
+}
+
+- (BOOL)writeOBJToLocation:(NSURL *)location withTransform:(BOOL)transform withColor:(BOOL)color error:(NSError *__autoreleasing*)error;
+{
+	return [[self objStringForFilename:location.lastPathComponent withTransform:transform withColor:color error:error] writeToURL:location atomically:YES encoding:NSUTF8StringEncoding error:error];
 }
 
 - (BOOL)writeMTLToLocation:(NSURL *)location error:(NSError *__autoreleasing*)error;
 {
-	NSString *mtl = [[self.meshes map:^(GLLItemMesh *mesh) {
-		return [mesh writeMTLWithBaseURL:location];
-	}] componentsJoinedByString:@"\n"];
-	
-	return [mtl writeToURL:location atomically:YES encoding:NSUTF8StringEncoding error:error];
+	return [[self mtlStringForLocation:location error:error] writeToURL:location atomically:YES encoding:NSUTF8StringEncoding error:error];
 }
 
 @end
