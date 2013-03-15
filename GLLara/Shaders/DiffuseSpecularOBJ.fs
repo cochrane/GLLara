@@ -6,13 +6,11 @@
 in vec4 outColor;
 in vec2 outTexCoord;
 in vec3 positionWorld;
-in mat3 tangentToWorld;
+in vec3 normalWorld;
 
 out vec4 screenColor;
 
 uniform sampler2D diffuseTexture;
-uniform sampler2D bumpTexture;
-
 uniform sampler2D specularTexture;
 
 struct Light {
@@ -53,9 +51,7 @@ void main()
 	vec4 specularColor = texture(specularTexture, outTexCoord);
 	
 	// Calculate normal
-	vec4 normalMap = texture(bumpTexture, outTexCoord);
-	vec3 normalFromMap = normalMap.rgb * 2 - 1;
-	vec3 normal = normalize(tangentToWorld * normalFromMap);
+	vec3 normal = normalWorld;
 	
 	// Direction to camera
 	vec3 cameraDirection = normalize(lightData.cameraPosition.xyz - positionWorld);

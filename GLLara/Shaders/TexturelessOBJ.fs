@@ -47,7 +47,7 @@ void main()
 	{
 		// Diffuse term
 		float diffuseFactor = max(dot(-normalWorld, lightData.lights[i].direction.xyz), 0);
-		color += diffuseTexColor * lightData.lights[i].diffuseColor * diffuseFactor * parameters.diffuseColor;
+		color += lightData.lights[i].diffuseColor * diffuseFactor * parameters.diffuseColor;
 		
 		// Specular term
 		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normalWorld);

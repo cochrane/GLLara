@@ -34,7 +34,7 @@
 
 - (GLLModelDrawer *)drawerForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 - (GLLModelProgram *)programForDescriptor:(GLLShaderDescription *)descriptor error:(NSError *__autoreleasing*)error;
-- (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error;
+- (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error __attribute__((nonnull(1)));
 - (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 
 // Shared programs and buffers that everyone needs sometime

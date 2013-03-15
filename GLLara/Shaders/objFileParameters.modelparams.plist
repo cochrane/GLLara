@@ -2,6 +2,27 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>defaultTextures</key>
+	<dict>
+		<key>diffuseTexture</key>
+		<string>defaultColor.png</string>
+		<key>maskTexture</key>
+		<string>defaultWhite.png</string>
+		<key>bump2Texture</key>
+		<string>defaultBump.png</string>
+		<key>bump1Texture</key>
+		<string>defaultBump.png</string>
+		<key>bumpTexture</key>
+		<string>defaultBump.png</string>
+		<key>emissionTexture</key>
+		<string>defaultBlack.png</string>
+		<key>lightmapTexture</key>
+		<string>defaultWhite.png</string>
+		<key>specularTexture</key>
+		<string>defaultWhite.png</string>
+		<key>reflectionTexture</key>
+		<string>defaultReflection.jpg</string>
+	</dict>
 	<key>textureDescriptions</key>
 	<dict>
 		<key>specularTexture</key>

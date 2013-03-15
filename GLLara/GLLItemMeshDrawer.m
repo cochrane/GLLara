@@ -56,14 +56,14 @@
 	_itemMesh = itemMesh;
 	
 	[_itemMesh addObserver:self forKeyPath:@"shaderName" options:NSKeyValueObservingOptionNew context:NULL];
+	[_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+	[_itemMesh addObserver:self forKeyPath:@"renderParameters" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+	
 	if (![self _updateShaderError:error])
 		return nil;
 	
 	glGenBuffers(1, &renderParametersBuffer);
 	needsParameterBufferUpdate = YES;
-	
-	[_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
-	[_itemMesh addObserver:self forKeyPath:@"renderParameters" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
 	
 	if (![self _updateTexturesError:error])
 	{

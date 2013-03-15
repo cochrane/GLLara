@@ -143,6 +143,8 @@ static GLLResourceManager *sharedManager;
 
 - (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error;
 {
+	NSParameterAssert(textureURL);
+	
 	id result = [textures objectForKey:textureURL];
 	if (!result)
 	{

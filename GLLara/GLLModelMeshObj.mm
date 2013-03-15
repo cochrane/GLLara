@@ -68,15 +68,14 @@
 		// Add to element buffer
 		[elements appendBytes:&index length:sizeof(index)];
 	}
-	
-	// Necessary postprocessing
-	[self calculateTangents:vertices];
-	
-	// Set up other attributes
-	self.vertexData = [vertices copy];
-	self.elementData = [elements copy];
+	// Set up attributes
 	self.countOfVertices = globalToLocalVertices.size();
 	self.countOfElements = range.end - range.start;
+	
+	// Set data + necessary postprocessing
+	self.elementData = [elements copy];
+	[self calculateTangents:vertices];
+	self.vertexData = [vertices copy];
 	
 	// Setup material
 	// Three options: Diffuse, DiffuseSpecular, DiffuseNormal, DiffuseSpecularNormal

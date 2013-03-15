@@ -19,10 +19,16 @@
 @property (nonatomic) NSUInteger numBones;
 @property (nonatomic) NSUInteger numMeshes;
 
+@property (nonatomic) NSString *mtlLibName;
+
 - (void)setNumUVLayers:(NSUInteger)layers forMesh:(NSUInteger)mesh;
 - (void)addTextureFilename:(NSString *)name uvLayer:(NSUInteger)layer toMesh:(NSUInteger)mesh;
+- (void)addTextureFilename:(NSString *)name uvLayer:(NSUInteger)layer objIdentifier:(NSString *)objIdentifier toMesh:(NSUInteger)mesh;
 - (void)setRenderGroup:(NSUInteger)group renderParameterValues:(NSArray *)values forMesh:(NSUInteger)mesh;
 
 @property (nonatomic, readonly) NSString *testFileString;
+
+@property (nonatomic, readonly) NSString *testFileStringOBJ;
+@property (nonatomic, readonly) NSString *testFileStringMTL;
 
 @end

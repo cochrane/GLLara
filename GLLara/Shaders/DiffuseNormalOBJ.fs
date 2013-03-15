@@ -59,7 +59,7 @@ void main()
 	for (int i = 0; i < 3; i++)
 	{
 		// Diffuse term
-		float diffuseFactor = max(dot(-normalWorld, lightData.lights[i].direction.xyz), 0);
+		float diffuseFactor = max(dot(-normal, lightData.lights[i].direction.xyz), 0);
 		color += diffuseTexColor * lightData.lights[i].diffuseColor * diffuseFactor * parameters.diffuseColor;
 		
 		// Specular term

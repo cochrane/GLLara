@@ -26,14 +26,21 @@ enum quadDirection
 	ZPlus,
 	ZMinus
 };
+enum vertexType
+{
+	XNALara,
+	OBJ
+};
 
 @interface GLLTestObjectWriter ()
 {
 	NSMutableArray *meshes;
 }
 
-- (NSString *)_vertexAt:(enum quadPosition)position direction:(enum quadDirection)direction quadCenter:(const float *)center bonesLowX:(const uint16_t *)bonesLowX bonesHighX:(const uint16_t *)bonesHighX numTexCoords:(NSUInteger)numTexCoords;
-- (NSString *)_quadWithDirection:(enum quadDirection)direction cubeCenter:(const float *)center bonesLowX:(const uint16_t *)bonesLowX bonesHighX:(const uint16_t *)bonesHighX numTexCoords:(NSUInteger)numTexCoords;
+- (NSString *)_vertexAt:(const float *)at normal:(const float *)normal texCoords:(const float *)texCoords boneIndices:(const uint16_t *)boneIndices boneWeights:(const float *)boneWeights numTexCoords:(NSUInteger)numTexCoords vertexType:(enum vertexType)type;
+
+- (NSString *)_vertexAt:(enum quadPosition)position direction:(enum quadDirection)direction quadCenter:(const float *)center bonesLowX:(const uint16_t *)bonesLowX bonesHighX:(const uint16_t *)bonesHighX numTexCoords:(NSUInteger)numTexCoords vertexType:(enum vertexType)type;
+- (NSString *)_quadWithDirection:(enum quadDirection)direction cubeCenter:(const float *)center bonesLowX:(const uint16_t *)bonesLowX bonesHighX:(const uint16_t *)bonesHighX numTexCoords:(NSUInteger)numTexCoords vertexType:(enum vertexType)type;
 
 @end
 
@@ -64,7 +71,15 @@ enum quadDirection
 
 - (void)addTextureFilename:(NSString *)name uvLayer:(NSUInteger)layer toMesh:(NSUInteger)mesh
 {
-	[meshes[mesh][@"textures"] addObject:@{ @"name" : name, @"layer" : @(layer) }];
+	[self addTextureFilename:name uvLayer:layer objIdentifier:@"" toMesh:mesh];
+}
+- (void)addTextureFilename:(NSString *)name uvLayer:(NSUInteger)layer objIdentifier:(NSString *)objIdentifier toMesh:(NSUInteger)mesh;
+{
+	[meshes[mesh][@"textures"] addObject:@{
+	 @"name" : name,
+	 @"layer" : @(layer),
+	 @"objIdentifier" : objIdentifier
+	 }];
 }
 
 - (void)setRenderGroup:(NSUInteger)group renderParameterValues:(NSArray *)values forMesh:(NSUInteger)mesh;
@@ -110,7 +125,7 @@ enum quadDirection
 		
 		
 		if (mustWriteStartCap)
-			[result appendString:[self _quadWithDirection:XMinus cubeCenter:(float [3]) { 0.0f, 0.0f, 0.0f } bonesLowX:(const uint16_t [4]) { 0, 0, 0, 0 } bonesHighX:NULL numTexCoords:numTexCoords]];
+			[result appendString:[self _quadWithDirection:XMinus cubeCenter:(float [3]) { 0.0f, 0.0f, 0.0f } bonesLowX:(const uint16_t [4]) { 0, 0, 0, 0 } bonesHighX:NULL numTexCoords:numTexCoords vertexType:XNALara]];
 		
 		for (NSInteger j = 0; j < (NSInteger) sectionsToWrite; j++)
 		{
@@ -129,26 +144,30 @@ enum quadDirection
 											   cubeCenter:cubeCenter
 												bonesLowX:bonesLowX
 											   bonesHighX:bonesHighX
-											 numTexCoords:numTexCoords]];
+											 numTexCoords:numTexCoords
+											   vertexType:XNALara]];
 			[result appendString:[self _quadWithDirection:YPlus
 											   cubeCenter:cubeCenter
 												bonesLowX:bonesLowX
 											   bonesHighX:bonesHighX
-											 numTexCoords:numTexCoords]];
+											 numTexCoords:numTexCoords
+											   vertexType:XNALara]];
 			[result appendString:[self _quadWithDirection:ZMinus
 											   cubeCenter:cubeCenter
 												bonesLowX:bonesLowX
 											   bonesHighX:bonesHighX
-											 numTexCoords:numTexCoords]];
+											 numTexCoords:numTexCoords
+											   vertexType:XNALara]];
 			[result appendString:[self _quadWithDirection:YMinus
 											   cubeCenter:cubeCenter
 												bonesLowX:bonesLowX
 											   bonesHighX:bonesHighX
-											 numTexCoords:numTexCoords]];
+											 numTexCoords:numTexCoords
+											   vertexType:XNALara]];
 		}
 		
 		if (mustWriteEndCap)
-			[result appendString:[self _quadWithDirection:XPlus cubeCenter:(float [3]) { (float)(i+sectionsToWrite-1), 0.0f, 0.0f } bonesLowX:(const uint16_t [4]) { self.numBones-1, 0, 0, 0 } bonesHighX:NULL numTexCoords:numTexCoords]];
+			[result appendString:[self _quadWithDirection:XPlus cubeCenter:(float [3]) { (float)(i+sectionsToWrite-1), 0.0f, 0.0f } bonesLowX:(const uint16_t [4]) { self.numBones-1, 0, 0, 0 } bonesHighX:NULL numTexCoords:numTexCoords vertexType:XNALara]];
 		
 		// Write elements
 		[result appendFormat:@"%lu\n", numVertices/2]; // 4 vertices -> 2 triangles
@@ -162,19 +181,124 @@ enum quadDirection
 	return [result copy];
 }
 
-#pragma mark - Private methods
-
-- (NSString *)_quadWithDirection:(enum quadDirection)direction cubeCenter:(const float *)center bonesLowX:(const uint16_t *)bonesLowX bonesHighX:(const uint16_t *)bonesHighX numTexCoords:(NSUInteger)numTexCoords;
+- (NSString *)testFileStringOBJ
 {
 	NSMutableString *result = [NSMutableString string];
 	
-	for (NSUInteger i = 0; i < 4; i++)
-		[result appendString:[self _vertexAt:(enum quadPosition)i direction:direction quadCenter:center bonesLowX:bonesLowX bonesHighX:bonesHighX numTexCoords:numTexCoords]];
+	// Write materials
+	[result appendFormat:@"mtllib %@\n", self.mtlLibName];
+	
+	// Write meshes
+	NSUInteger offset = 0;
+	for (NSInteger i = 0; i < (NSInteger) self.numMeshes; i++)
+	{
+		[result appendFormat:@"g mesh%ld\n", i];
+		[result appendFormat:@"usemtl mesh%ld_mtl\n", i];
+		
+		BOOL mustWriteStartCap = (i == 0);
+		BOOL mustWriteEndCap = (i == (NSInteger) self.numMeshes - 1);
+		NSUInteger sectionsToWrite = 1;
+		if (mustWriteEndCap && self.numMeshes < self.numBones)
+			sectionsToWrite = 1 + self.numBones - self.numMeshes;
+		
+		NSUInteger numVertices = sectionsToWrite * 4 * 4 + (mustWriteEndCap ? 4 : 0) + (mustWriteStartCap ? 4 : 0);		
+		
+		if (mustWriteStartCap)
+			[result appendString:[self _quadWithDirection:XMinus cubeCenter:(float [3]) { 0.0f, 0.0f, 0.0f } bonesLowX:(const uint16_t [4]) { 0, 0, 0, 0 } bonesHighX:NULL numTexCoords:1 vertexType:OBJ]];
+		
+		for (NSInteger j = 0; j < (NSInteger) sectionsToWrite; j++)
+		{
+			// Find bone indices.
+			NSInteger thisBone = MAX(MIN(i+j, (NSInteger) self.numBones-1), 0);
+			NSInteger prevBone = MAX(MIN(i+j-1, (NSInteger) self.numBones-1), 0);
+			NSInteger nextBone = MAX(MIN(i+j+1, (NSInteger) self.numBones-1), 0);
+			
+			// Find values to write
+			uint16_t bonesLowX[4] = { thisBone, prevBone, 0, 0 };
+			uint16_t bonesHighX[4] = { thisBone, nextBone, 0, 0 };
+			float cubeCenter[3] = { (float)(i+j), 0.0f, 0.0f };
+			
+			// Write
+			[result appendString:[self _quadWithDirection:ZPlus
+											   cubeCenter:cubeCenter
+												bonesLowX:bonesLowX
+											   bonesHighX:bonesHighX
+											 numTexCoords:1
+											   vertexType:OBJ]];
+			[result appendString:[self _quadWithDirection:YPlus
+											   cubeCenter:cubeCenter
+												bonesLowX:bonesLowX
+											   bonesHighX:bonesHighX
+											 numTexCoords:1
+											   vertexType:OBJ]];
+			[result appendString:[self _quadWithDirection:ZMinus
+											   cubeCenter:cubeCenter
+												bonesLowX:bonesLowX
+											   bonesHighX:bonesHighX
+											 numTexCoords:1
+											   vertexType:OBJ]];
+			[result appendString:[self _quadWithDirection:YMinus
+											   cubeCenter:cubeCenter
+												bonesLowX:bonesLowX
+											   bonesHighX:bonesHighX
+											 numTexCoords:1
+											   vertexType:OBJ]];
+		}
+		
+		if (mustWriteEndCap)
+			[result appendString:[self _quadWithDirection:XPlus cubeCenter:(float [3]) { (float)(i+sectionsToWrite-1), 0.0f, 0.0f } bonesLowX:(const uint16_t [4]) { self.numBones-1, 0, 0, 0 } bonesHighX:NULL numTexCoords:1 vertexType:OBJ]];
+		
+		// Write elements
+		for (NSUInteger j = 0; j < (numVertices/4); j++)
+		{
+			[result appendFormat:@"f %1$lu/%1$lu/%1$lu %2$lu/%2$lu/%2$lu %3$lu/%3$lu/%3$lu\n",
+			 offset + j*4 + 0 +1,
+			 offset + j*4 + 2 +1,
+			 offset + j*4 + 1 +1];
+			[result appendFormat:@"f %1$lu/%1$lu/%1$lu %2$lu/%2$lu/%2$lu %3$lu/%3$lu/%3$lu\n",
+			 offset + j*4 + 2 +1,
+			 offset + j*4 + 0 +1,
+			 offset + j*4 + 3 +1];
+		}
+		offset += numVertices;
+	}
 	
 	return [result copy];
 }
 
-- (NSString *)_vertexAt:(enum quadPosition)position direction:(enum quadDirection)direction quadCenter:(const float *)center bonesLowX:(const uint16_t *)bonesLowX bonesHighX:(const uint16_t *)bonesHighX numTexCoords:(NSUInteger)numTexCoords;
+- (NSString *)testFileStringMTL
+{
+	NSMutableString *result = [NSMutableString string];
+	
+	for (NSInteger i = 0; i < (NSInteger) self.numMeshes; i++)
+	{
+		NSDictionary *description = meshes[i];
+
+		[result appendFormat:@"newmtl mesh%ld_mtl\n", i];
+		for (NSDictionary *texture in description[@"textures"])
+			[result appendFormat:@"%@ %@\n", texture[@"objIdentifier"], texture[@"name"]];
+		[result appendString:@"Ns 10\n"];
+		[result appendString:@"Ka 0.1 0.1 0.1 1.0\n"];
+		[result appendString:@"Kd 0.5 0.5 0.5 1.0\n"];
+		[result appendString:@"Ks 1.0 1.0 1.0 1.0\n"];
+	}
+	
+	return [result copy];
+}
+
+#pragma mark - Private methods
+
+- (NSString *)_quadWithDirection:(enum quadDirection)direction cubeCenter:(const float *)center bonesLowX:(const uint16_t *)bonesLowX bonesHighX:(const uint16_t *)bonesHighX numTexCoords:(NSUInteger)numTexCoords vertexType:(enum vertexType)type;
+{
+	NSMutableString *result = [NSMutableString string];
+	
+	for (NSUInteger i = 0; i < 4; i++)
+		[result appendString:[self _vertexAt:(enum quadPosition)i direction:direction quadCenter:center bonesLowX:bonesLowX bonesHighX:bonesHighX numTexCoords:numTexCoords vertexType:type]];
+	
+	return [result copy];
+}
+
+- (NSString *)_vertexAt:(enum quadPosition)position direction:(enum quadDirection)direction quadCenter:(const float *)center bonesLowX:(const uint16_t *)bonesLowX bonesHighX:(const uint16_t *)bonesHighX numTexCoords:(NSUInteger)numTexCoords vertexType:(enum vertexType)type;
 {
 	float pos[3] = { center[0], center[1], center[2] };
 	float x[3] = { 0.0f, 0.0f, 0.0f };
@@ -262,16 +386,34 @@ enum quadDirection
 		boneWeights[0] = boneWeights[1] = 0.5f;
 	
 	// Write it all out
-	NSMutableString *result = [NSMutableString string];
-	[result appendFormat:@"%f %f %f\n", pos[0], pos[1], pos[2]];
-	[result appendFormat:@"%f %f %f\n", z[0], z[1], z[2]];
-	[result appendString:@"255 255 255 255\n"];
-	for (NSUInteger i = 0; i < numTexCoords; i++)
-		[result appendFormat:@"%f %f\n", texCoords[0]*(i+1), texCoords[1]*(i+1)];
-	[result appendFormat:@"%u %u %u %u\n", boneIndices[0], boneIndices[1], boneIndices[2], boneIndices[3]];
-	[result appendFormat:@"%f %f %f %f\n", boneWeights[0], boneWeights[1], boneWeights[2], boneWeights[3]];
-	
-	return [result copy];
+	return [self _vertexAt:pos normal:z texCoords:texCoords boneIndices:boneIndices boneWeights:boneWeights numTexCoords:numTexCoords vertexType:type];
+}
+
+- (NSString *)_vertexAt:(const float *)pos normal:(const float *)normal texCoords:(const float *)texCoords boneIndices:(const uint16_t *)boneIndices boneWeights:(const float *)boneWeights numTexCoords:(NSUInteger)numTexCoords vertexType:(enum vertexType)type;
+{
+	if (type == XNALara)
+	{
+		NSMutableString *result = [NSMutableString string];
+		[result appendFormat:@"%f %f %f\n", pos[0], pos[1], pos[2]];
+		[result appendFormat:@"%f %f %f\n", normal[0], normal[1], normal[2]];
+		[result appendString:@"255 255 255 255\n"];
+		for (NSUInteger i = 0; i < numTexCoords; i++)
+			[result appendFormat:@"%f %f\n", texCoords[0]*(i+1), texCoords[1]*(i+1)];
+		[result appendFormat:@"%u %u %u %u\n", boneIndices[0], boneIndices[1], boneIndices[2], boneIndices[3]];
+		[result appendFormat:@"%f %f %f %f\n", boneWeights[0], boneWeights[1], boneWeights[2], boneWeights[3]];
+		
+		return [result copy];
+	}
+	else if (type == OBJ)
+	{
+		NSMutableString *result = [NSMutableString string];
+		[result appendFormat:@"v %f %f %f\n", pos[0], pos[1], pos[2]];
+		[result appendFormat:@"vn %f %f %f\n", normal[0], normal[1], normal[2]];
+		[result appendFormat:@"vt %f %f\n", texCoords[0], 1.0 - texCoords[1]];
+		return [result copy];
+	}
+	else
+		return nil;
 }
 
 @end
