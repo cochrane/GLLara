@@ -631,6 +631,101 @@
 	CFRelease(secondImage);
 }
 
+- (void)testOBJExportWithTextures
+{
+	NSURL *testModelURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"generic_item" withExtension:@"mesh.ascii"];
+	
+	GLLTestObjectWriter *writer = [[GLLTestObjectWriter alloc] init];
+	writer.numBones = 2;
+	writer.numMeshes = 1;
+	[writer setNumUVLayers:2 forMesh:0]; // Some shaders need this
+	
+	// Diffuse
+	[writer setRenderGroup:5 renderParameterValues:@[] forMesh:0];
+	
+	// Add textures
+	[writer addTextureFilename:@"testDiffusetexture.png" uvLayer:0 toMesh:0];
+	
+	// Create a document
+	NSError *error = nil;
+	GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
+	STAssertNotNil(doc, @"No document");
+	STAssertNil(error, @"Got error: %@", error);
+	
+	GLLModel *model = [[GLLModel alloc] initASCIIFromString:writer.testFileString baseURL:testModelURL parent:nil error:&error];
+	STAssertNotNil(model, @"Should have created model");
+	STAssertNil(error, @"Should not have error (got %@)", error);
+	
+	error = nil;
+	GLLItem *item = [doc addModel:model];
+	STAssertNotNil(item, @"Should have added model");
+	STAssertNil(error, @"Should not have error (got %@)", error);
+	
+	[doc.managedObjectContext processPendingChanges];
+	
+	// Ensure it didn't get automatically removed as punishment for failing to load
+	NSFetchRequest *itemsRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
+	NSArray *items = [doc.managedObjectContext executeFetchRequest:itemsRequest error:NULL];
+	STAssertEquals(items.count, 1UL, @"Item no longer in document");
+	
+	// Render the file
+	[self setStandardLightAndCameraInDocument:doc];
+	
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
+	
+	GLLRenderWindowController *controller = doc.windowControllers[1];
+	STAssertTrue([controller isKindOfClass:[GLLRenderWindowController class]], @"Should be a render window");
+	CGImageRef originalImage = [controller createImageOfSize:CGSizeMake(400, 400)];
+	
+	// Rotate the bones
+	[item.bones[1] setRotationX:0.5];
+	[item.bones[1] setRotationY:0.5];
+	[item.bones[1] setRotationZ:0.5];
+	
+	// Export this as OBJ
+	error = nil;
+	NSArray *fileWrappers = [item exportAsType:GLLItemExportTypeOBJ targetLocation:self.tempFileURL packageWithTextures:YES poseType:GLLDefaultPoseStatic error:&error];
+	STAssertNotNil(fileWrappers, @"Should have created file wrappers");
+	STAssertEquals(fileWrappers.count, 1UL, @"Should be only one directory wrapper");
+	STAssertNil(error, @"Should not have error'd out, got %@", error);
+	for (NSFileWrapper *wrapper in fileWrappers)
+	{
+		NSURL *targetURL = [NSURL URLWithString:wrapper.filename relativeToURL:self.tempFileURL];
+		error = nil;
+		BOOL result = [wrapper writeToURL:targetURL options:0 originalContentsURL:NULL error:&error];
+		STAssertTrue(result, @"Should have written.");
+		STAssertNil(error, @"Should not have given an error, got %@.", error);
+	}
+	
+	// Remove it
+	[doc.managedObjectContext deleteObject:item];
+	item = nil;
+	[doc.managedObjectContext processPendingChanges];
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
+	
+	// Add it again
+	error = nil;
+	GLLItem *item2 = [doc addModelAtURL:[self.tempFileURL URLByAppendingPathComponent:@"testfile.obj"] error:&error];
+	STAssertNotNil(item2, @"Should have loaded new item");
+	STAssertNil(error, @"Should not have error'd out, got %@", error);
+	
+	
+	// Render the new thing
+	[doc.managedObjectContext processPendingChanges];
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
+	CGImageRef secondImage = [controller createImageOfSize:CGSizeMake(400, 400)];
+	
+	
+	[doc close];
+	[[GLLResourceManager sharedResourceManager] clearInternalCaches];
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
+	
+	// Compare to expected (if exists)
+	[self compareImage:originalImage toImage:secondImage maxDifferenceLimit:20.0f avgDifferenceLimit:0.1f];
+	CFRelease(originalImage);
+	CFRelease(secondImage);
+}
+
 - (void)setStandardLightAndCameraInDocument:(GLLDocument *)doc;
 {
 	STAssertEquals(doc.windowControllers.count, 2UL, @"Should have two windows");

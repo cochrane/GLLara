@@ -62,8 +62,10 @@
 		// Prepare file wrappers
 		NSFileWrapper *objWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:[objString dataUsingEncoding:NSUTF8StringEncoding]];
 		objWrapper.filename = objFilename;
+		objWrapper.preferredFilename = objFilename;
 		NSFileWrapper *mtlWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:[mtlString dataUsingEncoding:NSUTF8StringEncoding]];
 		mtlWrapper.filename = mtlFilename;
+		mtlWrapper.preferredFilename = mtlFilename;
 		
 		modelFileWrappers = @[ objWrapper, mtlWrapper ];
 	}
@@ -78,6 +80,7 @@
 		if (!meshASCIIData) return nil;
 		NSFileWrapper *meshASCIIWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:meshASCIIData];
 		meshASCIIWrapper.filename = [binaryFileName stringByAppendingPathExtension:@"ascii"];
+		meshASCIIWrapper.preferredFilename = [binaryFileName stringByAppendingPathExtension:@"ascii"];
 		
 		// Get as .mesh. This may fail if the file has no tangents, but since
 		// .mesh.ascii exists, this can be accepted.
@@ -90,6 +93,7 @@
 		{
 			NSFileWrapper *meshBinaryWrapper = [[NSFileWrapper alloc] initRegularFileWithContents:meshBinaryData];
 			meshBinaryWrapper.filename = binaryFileName;
+			meshBinaryWrapper.preferredFilename = binaryFileName;
 			modelFileWrappers = @[ meshBinaryWrapper, meshASCIIWrapper ];
 		}
 	}
