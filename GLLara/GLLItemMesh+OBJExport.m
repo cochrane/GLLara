@@ -8,6 +8,10 @@
 
 #import "GLLItemMesh+OBJExport.h"
 
+#import <AppKit/NSColorSpace.h>
+
+#import "GLLColorRenderParameter.h"
+#import "GLLFloatRenderParameter.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLModelMesh+OBJExport.h"
 #import "LionSubscripting.h"
@@ -66,6 +70,43 @@
 	{
 		[mtlString appendFormat:@"map_Ks %@\n", [[self class] relativePathFrom:baseURL to:specular.textureURL]];
 	}
+	
+	GLLItemMeshTexture *bump = [self textureWithIdentifier:@"bumpTexture"];
+	if (bump)
+	{
+		[mtlString appendFormat:@"bump %@\n", [[self class] relativePathFrom:baseURL to:bump.textureURL]];
+	}
+	
+	GLLColorRenderParameter *diffuseColor = (GLLColorRenderParameter *) [self renderParameterWithName:@"diffuseColor"];
+	if (diffuseColor)
+	{
+		CGFloat r,g,b,a;
+		[[diffuseColor.value colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
+		[mtlString appendFormat:@"Kd %f %f %f %f\n", r, g, b, a];
+	}
+	
+	GLLColorRenderParameter *specularColor = (GLLColorRenderParameter *) [self renderParameterWithName:@"specularColor"];
+	if (specularColor)
+	{
+		CGFloat r,g,b,a;
+		[[specularColor.value colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
+		[mtlString appendFormat:@"Ks %f %f %f %f\n", r, g, b, a];
+	}
+	
+	GLLColorRenderParameter *ambientColor = (GLLColorRenderParameter *) [self renderParameterWithName:@"ambientColor"];
+	if (ambientColor)
+	{
+		CGFloat r,g,b,a;
+		[[ambientColor.value colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&r green:&g blue:&b alpha:&a];
+		[mtlString appendFormat:@"Ka %f %f %f %f\n", r, g, b, a];
+	}
+	
+	GLLFloatRenderParameter *specularExponent = (GLLFloatRenderParameter *) [self renderParameterWithName:@"specularExponent"];
+	GLLFloatRenderParameter *bumpSpecularGloss = (GLLFloatRenderParameter *) [self renderParameterWithName:@"bumpSpecularGloss"];
+	if (specularExponent)
+		[mtlString appendFormat:@"Ns %f\n", specularExponent.value];
+	else if (bumpSpecularGloss)
+		[mtlString appendFormat:@"Ns %f\n", bumpSpecularGloss.value];
 	
 	return [mtlString copy];
 }

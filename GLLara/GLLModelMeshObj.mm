@@ -114,6 +114,14 @@
 			self.shader = [objModelParams shaderNamed:@"TexturelessOBJ"];
 		}
 	}
+	else if (material->diffuseTexture == NULL)
+	{
+		if (error)
+			*error = [NSError errorWithDomain:@"GLLMeshObj" code:2 userInfo:@{
+				   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Files with specular or normal texture have to have diffuse texture", @"error description: specular or normal set, diffuse not"), range.materialName.c_str()],
+	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If a file has a specular or normal texture, it has to have a diffuse texture, too. This one does not.", @"error description: specular or normal set, diffuse not") }];
+		return nil;
+	}
 	else if (material->specularTexture != NULL && material->normalTexture == NULL)
 	{
 		self.textures = @[ (__bridge NSURL *) material->diffuseTexture, (__bridge NSURL *) material->specularTexture ];
