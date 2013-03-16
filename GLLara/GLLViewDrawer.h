@@ -35,5 +35,6 @@
 // Basic support for render to file
 - (void)writeImageToURL:(NSURL *)url fileType:(NSString *)type size:(CGSize)size;
 - (void)renderImageOfSize:(CGSize)size toColorBuffer:(void *)colorData;
+- (CGImageRef)createImageOfSize:(CGSize)size;
 
 @end

@@ -82,6 +82,11 @@ static NSCache *cachedModels;
 	return result;
 }
 
++ (void)clearCache
+{
+	[cachedModels removeAllObjects];
+}
+
 - (id)initBinaryFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 {	
 	NSData *data = [NSData dataWithContentsOfURL:file options:0 error:error];

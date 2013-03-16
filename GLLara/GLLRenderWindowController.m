@@ -145,6 +145,10 @@
 {
 	[self.renderView.viewDrawer writeImageToURL:file fileType:typeUTI size:CGSizeMake(width, height)];
 }
+- (CGImageRef)createImageOfSize:(CGSize)size;
+{
+	return [self.renderView.viewDrawer createImageOfSize:size];
+}
 
 #pragma mark - Popover
 

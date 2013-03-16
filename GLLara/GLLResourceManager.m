@@ -260,6 +260,8 @@ static GLLResourceManager *sharedManager;
 	[programs.allValues makeObjectsPerformSelector:@selector(unload)];
 	[shaders.allValues makeObjectsPerformSelector:@selector(unload)];
 
+	[GLLModel clearCache];
+	
 	[models removeAllObjects];
 	[textures removeAllObjects];
 	[programs removeAllObjects];

@@ -33,6 +33,11 @@ extern NSString *GLLModelLoadingErrorDomain;
  */
 + (id)cachedModelFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 
+/*!
+ * @abstract Removes all models from the cache.
+ * @discussion Mostly interesting for testing, although in the future, it might be useful if models observed themselves somehow, too, at least enough to leave the cache.
+ */
++ (void)clearCache;
 
 - (id)initBinaryFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 - (id)initBinaryFromData:(NSData *)data baseURL:(NSURL *)baseURL parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;

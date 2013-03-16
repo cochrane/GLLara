@@ -156,6 +156,28 @@ struct GLLLightBlock
 
 - (void)writeImageToURL:(NSURL *)url fileType:(NSString *)type size:(CGSize)size;
 {
+	CGImageRef image = [self createImageOfSize:size];
+	
+	NSDictionary *metadata = @{
+							(__bridge NSString *)kCGImagePropertyTIFFSoftware : [NSString stringWithFormat:@"%@ %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"],[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]],
+	   (__bridge NSString *)kCGImagePropertyTIFFModel : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"],
+	   (__bridge NSString *)kCGImagePropertyTIFFMake : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GLLExifMake"]
+	   };
+	CFDictionaryRef properties = (__bridge CFDictionaryRef) @{
+														   (__bridge NSString *) kCGImagePropertyTIFFDictionary: metadata
+				 };
+	
+	CGImageDestinationRef imageDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef) url, (__bridge CFStringRef) type, 1, NULL);
+	CGImageDestinationSetProperties(imageDestination, properties);
+	CGImageDestinationAddImage(imageDestination, image, properties);
+	CGImageDestinationFinalize(imageDestination);
+	
+	CGImageRelease(image);
+	CFRelease(imageDestination);
+}
+
+- (CGImageRef)createImageOfSize:(CGSize)size
+{
 	NSUInteger dataSize = size.width * size.height * 4;
 	void *data = malloc(dataSize);
 	[self renderImageOfSize:size toColorBuffer:data];
@@ -180,22 +202,7 @@ struct GLLLightBlock
 	CGDataProviderRelease(dataProvider);
 	CGColorSpaceRelease(colorSpace);
 	
-	NSDictionary *metadata = @{
-							(__bridge NSString *)kCGImagePropertyTIFFSoftware : [NSString stringWithFormat:@"%@ %@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"],[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]],
-	   (__bridge NSString *)kCGImagePropertyTIFFModel : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"],
-	   (__bridge NSString *)kCGImagePropertyTIFFMake : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"GLLExifMake"]
-	   };
-	CFDictionaryRef properties = (__bridge CFDictionaryRef) @{
-														   (__bridge NSString *) kCGImagePropertyTIFFDictionary: metadata
-				 };
-	
-	CGImageDestinationRef imageDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef) url, (__bridge CFStringRef) type, 1, NULL);
-	CGImageDestinationSetProperties(imageDestination, properties);
-	CGImageDestinationAddImage(imageDestination, image, properties);
-	CGImageDestinationFinalize(imageDestination);
-	
-	CGImageRelease(image);
-	CFRelease(imageDestination);
+	return image;
 }
 
 - (void)renderImageOfSize:(CGSize)size toColorBuffer:(void *)colorData;

@@ -13,6 +13,7 @@
 #import "GLLItemMesh+OBJExport.h"
 #import "GLLModelBone.h"
 #import "GLLModelMesh.h"
+#import "simd_matrix.h"
 
 @implementation GLLItem (OBJExport)
 
@@ -39,7 +40,7 @@
 		if (transform)
 			[bone.globalTransform getValue:&transforms[boneIndex]];
 		else
-			transforms[boneIndex] = bone.bone.positionMatrix;
+			transforms[boneIndex] = simd_mat_identity();
 		boneIndex += 1;
 	}
 	

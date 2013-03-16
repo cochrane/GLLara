@@ -34,5 +34,6 @@
 - (IBAction)renderToFile:(id)sender;
 
 - (void)renderToFile:(NSURL *)file type:(NSString *)typeUTI width:(NSUInteger)width height:(NSUInteger)height;
+- (CGImageRef)createImageOfSize:(CGSize)size;
 
 @end
