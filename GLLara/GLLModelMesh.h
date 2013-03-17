@@ -67,6 +67,11 @@ typedef enum GLLCullFaceMode
 @property (nonatomic, assign, readonly) NSUInteger stride;
 
 /*
+ * Stride used for reading. Can be lower in subclasses if they add their own postprocessing.
+ */
+@property (nonatomic, assign, readonly) NSUInteger rawStride;
+
+/*
  * Element buffer (format always uint32_ts arranged as triangles)
  */
 @property (nonatomic, retain) NSData *elementData;

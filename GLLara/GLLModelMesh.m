@@ -85,7 +85,7 @@ void vec_addTo(float *a, float *b)
 	}
 	
 	_countOfVertices = [stream readUint32];
-	NSData *rawVertexData = [stream dataWithLength:_countOfVertices * self.stride];
+	NSData *rawVertexData = [stream dataWithLength:_countOfVertices * self.rawStride];
 	if (!rawVertexData)
 	{
 		if (error)
@@ -99,7 +99,7 @@ void vec_addTo(float *a, float *b)
 	_countOfElements = 3 * [stream readUint32]; // File saves number of triangles
 	_elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
 	
-	if (![self validateVertexData:rawVertexData indexData:_elementData error:error])
+	if (![self validateVertexData:_vertexData indexData:_elementData error:error])
 		return nil;
 	
 	if (![stream isValid])
@@ -253,6 +253,10 @@ void vec_addTo(float *a, float *b)
 - (NSUInteger)stride
 {
 	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0) + (self.hasBoneWeights ? (sizeof(uint16_t [4]) + sizeof(float [4])) : 0);
+}
+- (NSUInteger)rawStride
+{
+	return self.stride;
 }
 
 #pragma mark - Properties

@@ -69,8 +69,10 @@
 	NSData *data = [NSData dataWithBytes:bytes length:sizeof(bytes)];
 	NSURL *baseURL = [NSURL fileURLWithPath:@"/tmp/generic_item.mesh"];
 	
-	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:NULL];
+	NSError *error = nil;
+	GLLModel *model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error];
 	STAssertNotNil(model, @"Model has to be loaded.");
+	STAssertNil(error, @"Should be no error (got %@)", error);
 	
 	STAssertEquals(model.bones.count, (NSUInteger) 0, @"Model should have no bones.");
 	STAssertEquals(model.meshes.count, (NSUInteger) 1, @"Model should have one mesh.");
@@ -83,14 +85,14 @@
 	STAssertEquals(mesh.countOfUVLayers, (NSUInteger) 1, @"Not enough UV layers");
 	STAssertEquals(mesh.countOfVertices, (NSUInteger) 3, @"Not enough vertices");
 	
-	STAssertEquals(mesh.vertexData.length, (NSUInteger) 108, @"Vertex data count wrong");
+	STAssertEquals(mesh.vertexData.length, (NSUInteger) 156, @"Vertex data count wrong");
 	STAssertEquals(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
-	STAssertEquals(mesh.stride, (NSUInteger) 36, @"Wrong stride");
+	STAssertEquals(mesh.stride, (NSUInteger) 52, @"Wrong stride");
 	STAssertEquals(mesh.offsetForPosition, (NSUInteger) 0, @"Wrong offset");
 	STAssertEquals(mesh.offsetForNormal, (NSUInteger) 12, @"Wrong offset");
 	STAssertEquals(mesh.offsetForColor, (NSUInteger) 24, @"Wrong offset");
 	STAssertEquals([mesh offsetForTexCoordLayer:0], (NSUInteger) 28, @"Wrong offset");
-	STAssertFalse(mesh.hasTangents, @"Mesh has no tangents");
+	STAssertTrue(mesh.hasTangents, @"Mesh has tangents now");
 	
 	const uint32_t *elements = mesh.elementData.bytes;
 	STAssertTrue(memcmp(elements, (const uint32_t []) { 0, 1, 2 }, sizeof(uint32_t [3])) == 0, @"incorrect indices");
@@ -223,15 +225,15 @@
 	STAssertEquals(mesh.countOfUVLayers, (NSUInteger) 1, @"Not enough UV layers");
 	STAssertEquals(mesh.countOfVertices, (NSUInteger) 3, @"Not enough vertices");
 	
-	STAssertEquals(mesh.vertexData.length, (NSUInteger) 180, @"Vertex data count wrong");
+	STAssertEquals(mesh.vertexData.length, (NSUInteger) 228, @"Vertex data count wrong");
 	STAssertEquals(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
-	STAssertEquals(mesh.stride, (NSUInteger) 60, @"Wrong stride");
+	STAssertEquals(mesh.stride, (NSUInteger) 76, @"Wrong stride");
 	STAssertEquals(mesh.offsetForPosition, (NSUInteger) 0, @"Wrong offset");
 	STAssertEquals(mesh.offsetForNormal, (NSUInteger) 12, @"Wrong offset");
 	STAssertEquals(mesh.offsetForColor, (NSUInteger) 24, @"Wrong offset");
 	STAssertEquals([mesh offsetForTexCoordLayer:0], (NSUInteger) 28, @"Wrong offset");
-	STAssertEquals(mesh.offsetForBoneIndices, (NSUInteger) 36, @"Wrong offset");
-	STAssertEquals(mesh.offsetForBoneWeights, (NSUInteger) 44, @"Wrong offset");
+	STAssertEquals(mesh.offsetForBoneIndices, (NSUInteger) 52, @"Wrong offset");
+	STAssertEquals(mesh.offsetForBoneWeights, (NSUInteger) 60, @"Wrong offset");
 	
 	const uint32_t *elements = mesh.elementData.bytes;
 	STAssertTrue(memcmp(elements, (const uint32_t []) { 0, 1, 2 }, sizeof(uint32_t [3])) == 0, @"incorrect indices");

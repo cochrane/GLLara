@@ -17,6 +17,7 @@
  */
 @interface GLLModelMeshV3 : GLLModelMesh
 
-@property (nonatomic, readonly) BOOL hasTangents;
+- (NSData *)normalizeBoneWeightsInVertices:(NSData *)vertexData __attribute__((nonnull(1)));
+- (NSUInteger)rawStride;
 
 @end
