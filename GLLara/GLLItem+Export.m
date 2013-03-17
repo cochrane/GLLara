@@ -72,7 +72,7 @@
 	else if (type == GLLItemExportTypeXNALara)
 	{
 		// Find file names
-		NSString *binaryFileName = packageWithTextures ? targetLocation.lastPathComponent : @"generic_item.mesh";
+		NSString *binaryFileName = packageWithTextures ? @"generic_item.mesh" : targetLocation.lastPathComponent;
 		
 		// Get as .mesh.ascii. This should always work if an export is possible.
 		NSString *meshASCIIString = [self writeASCIIError:error];
