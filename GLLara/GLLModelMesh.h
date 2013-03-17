@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "simd_types.h"
+
 @class GLLASCIIScanner;
 @class GLLMeshSplitter;
 @class GLLModel;
@@ -120,6 +122,8 @@ typedef enum GLLCullFaceMode
 @property (nonatomic, assign, readonly) GLLCullFaceMode cullFaceMode;
 
 // Export
+- (NSData *)staticVertexDataWithTransforms:(const mat_float16 *)transforms;
+
 - (NSString *)writeASCIIWithName:(NSString *)name texture:(NSArray *)textures __attribute__((nonnull(1,2)));
 - (NSData *)writeBinaryWithName:(NSString *)name texture:(NSArray *)textures __attribute__((nonnull(1,2)));
 

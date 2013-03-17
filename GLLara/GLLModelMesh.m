@@ -13,6 +13,7 @@
 #import "GLLModel.h"
 #import "GLLModelParams.h"
 #import "LionSubscripting.h"
+#import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
@@ -361,6 +362,52 @@ void vec_addTo(float *a, float *b)
 }
 
 #pragma mark - Export
+
+- (NSData *)staticVertexDataWithTransforms:(const mat_float16 *)transforms;
+{
+	NSUInteger newStride = self.hasBoneWeights ? (self.stride - sizeof(uint16_t [4]) - sizeof(float [4])): self.stride;
+	NSUInteger oldStride = self.stride;
+	NSUInteger newDataLength = self.countOfVertices * newStride;
+	NSMutableData *result = [NSMutableData dataWithLength:newDataLength];
+	
+	uint8_t *resultBytes = result.mutableBytes;
+	const void *originalBytes = self.vertexData.bytes;
+	for (NSUInteger i = 0; i < self.countOfVertices; i++)
+	{
+		// Transform position and normals
+		const float *position = originalBytes + self.stride*i + self.offsetForPosition;
+		const float *normal = originalBytes + self.stride*i + self.offsetForNormal;
+		
+		mat_float16 transform = transforms[0];
+		if (self.hasBoneWeights)
+		{
+			const uint16_t *boneIndices = self.vertexData.bytes + self.stride*i + self.offsetForBoneIndices;
+			const float *boneWeights = self.vertexData.bytes + self.stride*i + self.offsetForBoneWeights;
+			
+			transform = simd_mat_scale(transforms[boneIndices[0]], boneWeights[0]);
+			transform = simd_mat_add(transform, simd_mat_scale(transforms[boneIndices[1]], boneWeights[1]));
+			transform = simd_mat_add(transform, simd_mat_scale(transforms[boneIndices[2]], boneWeights[2]));
+			transform = simd_mat_add(transform, simd_mat_scale(transforms[boneIndices[3]], boneWeights[3]));
+		}
+		
+		vec_float4 transformedPosition = simd_mat_vecmul(transform, simd_make(position[0], position[1], position[2], 1.0f));
+		vec_float4 transformedNormal = simd_mat_vecrotate(transform, simd_make(normal[0], normal[1], normal[2], 0.0f));
+		
+		memcpy(resultBytes + self.offsetForPosition + newStride*i, &transformedPosition, sizeof(float [3]));
+		memcpy(resultBytes + self.offsetForNormal + newStride*i, &transformedNormal, sizeof(float [3]));
+		
+		// Copy rest over
+		memcpy(resultBytes + self.offsetForColor + newStride*i, originalBytes + self.offsetForColor + oldStride*i, sizeof(uint8_t [4]));
+		
+		for (NSUInteger layer = 0; layer < self.countOfUVLayers; layer++)
+		{
+			memcpy(resultBytes + [self offsetForTexCoordLayer:layer] + newStride*i, originalBytes + [self offsetForTexCoordLayer:layer] + oldStride*i, sizeof(float [2]));
+			memcpy(resultBytes + [self offsetForTangentLayer:layer] + newStride*i, originalBytes + [self offsetForTangentLayer:layer] + oldStride*i, sizeof(float [4]));
+		}
+	}
+	
+	return result;
+}
 
 - (NSString *)writeASCIIWithName:(NSString *)name texture:(NSArray *)textures;
 {

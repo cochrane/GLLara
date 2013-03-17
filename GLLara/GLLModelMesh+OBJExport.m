@@ -16,38 +16,26 @@
 {
 	NSMutableString *objString = [[NSMutableString alloc] init];
 	
+	NSData *vertexData = [self staticVertexDataWithTransforms:transforms];
+	NSUInteger staticStride = vertexData.length / self.countOfVertices;
+	
 	[objString appendFormat:@"g %@\n", [[self.name componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] componentsJoinedByString:@"_"]];
 	[objString appendFormat:@"usemtl material%lu\n", self.meshIndex];
 	
 	for (NSUInteger i = 0; i < self.countOfVertices; i++)
 	{
-		const float *position = self.vertexData.bytes + self.stride*i + self.offsetForPosition;
-		const float *normal = self.vertexData.bytes + self.stride*i + self.offsetForNormal;
-		
-		mat_float16 transform = transforms[0];
-		if (self.hasBoneWeights)
-		{
-			const uint16_t *boneIndices = self.vertexData.bytes + self.stride*i + self.offsetForBoneIndices;
-			const float *boneWeights = self.vertexData.bytes + self.stride*i + self.offsetForBoneWeights;
-			
-			transform = simd_mat_scale(transforms[boneIndices[0]], boneWeights[0]);
-			transform = simd_mat_add(transform, simd_mat_scale(transforms[boneIndices[1]], boneWeights[1]));
-			transform = simd_mat_add(transform, simd_mat_scale(transforms[boneIndices[2]], boneWeights[2]));
-			transform = simd_mat_add(transform, simd_mat_scale(transforms[boneIndices[3]], boneWeights[3]));
-		}
-		
-		vec_float4 transformedPosition = simd_mat_vecmul(transform, simd_make(position[0], position[1], position[2], 1.0f));
-		vec_float4 transformedNormal = simd_mat_vecrotate(transform, simd_make(normal[0], normal[1], normal[2], 0.0f));
+		const float *position = vertexData.bytes + staticStride*i + self.offsetForPosition;
+		const float *normal = vertexData.bytes + staticStride*i + self.offsetForNormal;
 
-		[objString appendFormat:@"v %f %f %f\n", simd_extract(transformedPosition, 0), simd_extract(transformedPosition, 1), simd_extract(transformedPosition, 2)];
-		[objString appendFormat:@"vn %f %f %f\n", simd_extract(transformedNormal, 0), simd_extract(transformedNormal, 1), simd_extract(transformedNormal, 2)];
+		[objString appendFormat:@"v %f %f %f\n", position[0], position[1], position[2]];
+		[objString appendFormat:@"vn %f %f %f\n", normal[0], normal[1], normal[2]];
 		
-		const float *texCoords = (const float *) (self.vertexData.bytes + self.stride*i + [self offsetForTexCoordLayer:0]);
+		const float *texCoords = (const float *) (vertexData.bytes + staticStride*i + [self offsetForTexCoordLayer:0]);
 		[objString appendFormat:@"vt %f %f\n", texCoords[0], 1.0 - texCoords[1]]; // Turn tex coords around (because I don't want to swap the whole image)
 		
 		if (includeColors)
 		{
-			const uint8_t *color = self.vertexData.bytes + self.stride*i + self.offsetForColor;
+			const uint8_t *color = vertexData.bytes + staticStride*i + self.offsetForColor;
 			[objString appendFormat:@"vc %f %f %f %f\n", (float) color[0] / 255.0f, (float) color[1] / 255.0f, (float) color[2] / 255.0f, (float) color[3] / 255.0f];
 		}
 	}
