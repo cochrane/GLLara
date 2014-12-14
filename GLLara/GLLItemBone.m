@@ -40,7 +40,6 @@
 @dynamic boneIndex;
 
 @synthesize parent;
-@synthesize children;
 @synthesize relativeTransform;
 @synthesize globalTransform;
 @synthesize globalPosition;
