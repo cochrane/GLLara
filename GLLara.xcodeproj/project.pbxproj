@@ -13,7 +13,6 @@
 		5213263E1602BB8000787AA1 /* GLLSquareProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213263D1602BB8000787AA1 /* GLLSquareProgram.m */; };
 		5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */; };
 		5214470416DBBC42003E260F /* GLLLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470316DBBC42003E260F /* GLLLightViewController.m */; };
-		5214470716DBBE3A003E260F /* GLLExplicitLocalizingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470616DBBE39003E260F /* GLLExplicitLocalizingViewController.m */; };
 		5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */; };
 		5214470D16DC2312003E260F /* GLLItem+MeshExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470C16DC2312003E260F /* GLLItem+MeshExport.m */; };
 		5214471116DE22E1003E260F /* GLLara.help in Resources */ = {isa = PBXBuildFile; fileRef = 5214471016DE22E0003E260F /* GLLara.help */; };
@@ -260,7 +259,6 @@
 		52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */; };
 		52B9E07D16020A8300641518 /* DiffuseOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E07C16020A8300641518 /* DiffuseOBJ.fs */; };
 		52B9E07F16021ECD00641518 /* DiffuseNormalOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */; };
-		52B9E0A61602800300641518 /* DMLocalizedNibBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		52B9E0AC1602811E00641518 /* GLLDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0AA1602811D00641518 /* GLLDocument.xib */; };
 		52B9E0AD1602811E00641518 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0AB1602811D00641518 /* MainMenu.xib */; };
 		52B9E0AE1602815800641518 /* RenderParameters.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B01602815800641518 /* RenderParameters.strings */; };
@@ -374,8 +372,6 @@
 		5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAmbientLightViewController.m; sourceTree = "<group>"; };
 		5214470216DBBC41003E260F /* GLLLightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLightViewController.h; sourceTree = "<group>"; };
 		5214470316DBBC42003E260F /* GLLLightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLightViewController.m; sourceTree = "<group>"; };
-		5214470516DBBE39003E260F /* GLLExplicitLocalizingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLExplicitLocalizingViewController.h; sourceTree = "<group>"; };
-		5214470616DBBE39003E260F /* GLLExplicitLocalizingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLExplicitLocalizingViewController.m; sourceTree = "<group>"; };
 		5214470816DBF205003E260F /* GLLItemMesh+MeshExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLItemMesh+MeshExport.h"; sourceTree = "<group>"; };
 		5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItemMesh+MeshExport.m"; sourceTree = "<group>"; };
 		5214470B16DC2312003E260F /* GLLItem+MeshExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLItem+MeshExport.h"; sourceTree = "<group>"; };
@@ -716,7 +712,6 @@
 		52B9E07C16020A8300641518 /* DiffuseOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseOBJ.fs; sourceTree = "<group>"; };
 		52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseNormalOBJ.fs; sourceTree = "<group>"; };
 		52B9E09616027FC800641518 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DMLocalizedNibBundle.m; path = GLLara/DMLocalizedNibBundle.m; sourceTree = SOURCE_ROOT; };
 		52B9E0AA1602811D00641518 /* GLLDocument.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLDocument.xib; sourceTree = "<group>"; };
 		52B9E0AB1602811D00641518 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		52B9E0AF1602815800641518 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RenderParameters.strings; sourceTree = "<group>"; };
@@ -1035,7 +1030,6 @@
 				5214471016DE22E0003E260F /* GLLara.help */,
 				52329F4916C1D68600338A0A /* Images */,
 				521446EC16DAD8A1003E260F /* Strings */,
-				52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */,
 				525ACD5315F0F1A700534E7D /* GLLara-Info.plist */,
 				525ACD5715F0F1A700534E7D /* main.m */,
 				525ACD5A15F0F1A700534E7D /* Credits.rtf */,
@@ -1460,8 +1454,6 @@
 				5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */,
 				5214470216DBBC41003E260F /* GLLLightViewController.h */,
 				5214470316DBBC42003E260F /* GLLLightViewController.m */,
-				5214470516DBBE39003E260F /* GLLExplicitLocalizingViewController.h */,
-				5214470616DBBE39003E260F /* GLLExplicitLocalizingViewController.m */,
 				523F73B716DFEC62003AE788 /* GLLNoSelectionViewController.h */,
 				523F73B816DFEC63003AE788 /* GLLNoSelectionViewController.m */,
 				523F73B916DFEC63003AE788 /* GLLNoSelectionView.xib */,
@@ -1857,7 +1849,6 @@
 				52C9F61D1600A8D3003272E1 /* GLLModelMeshObj.mm in Sources */,
 				52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */,
 				52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */,
-				52B9E0A61602800300641518 /* DMLocalizedNibBundle.m in Sources */,
 				52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */,
 				521326351602ACBE00787AA1 /* GLLProgram.m in Sources */,
 				5213263E1602BB8000787AA1 /* GLLSquareProgram.m in Sources */,
@@ -1898,7 +1889,6 @@
 				5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */,
 				5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */,
 				5214470416DBBC42003E260F /* GLLLightViewController.m in Sources */,
-				5214470716DBBE3A003E260F /* GLLExplicitLocalizingViewController.m in Sources */,
 				5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.m in Sources */,
 				5214470D16DC2312003E260F /* GLLItem+MeshExport.m in Sources */,
 				523F73BA16DFEC64003AE788 /* GLLNoSelectionViewController.m in Sources */,

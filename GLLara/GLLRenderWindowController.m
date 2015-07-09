@@ -132,7 +132,7 @@
 	savePanel.allowedFileTypes = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
 	
 	[savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
+		if (result != NSModalResponseOK) return;
 		
 		NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
 		NSUInteger height = [saveData[@"height"] unsignedIntegerValue];

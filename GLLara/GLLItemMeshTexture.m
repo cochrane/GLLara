@@ -38,7 +38,7 @@
 	NSURL *textureURL = [self primitiveValueForKey:@"textureURL"];
 	if (textureURL)
 	{
-		NSData *bookmark = [textureURL bookmarkDataWithOptions:NSURLBookmarkCreationPreferFileIDResolution includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
+		NSData *bookmark = [textureURL bookmarkDataWithOptions:0 includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
 		[self setPrimitiveValue:bookmark forKey:@"textureBookmarkData"];
 	}
 	else

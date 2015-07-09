@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLExplicitLocalizingViewController.h"
+#import <Cocoa/Cocoa.h>
 
-@interface GLLNoSelectionViewController : GLLExplicitLocalizingViewController
+@interface GLLNoSelectionViewController : NSViewController
 
 - (IBAction)help:(id)sender;
 
