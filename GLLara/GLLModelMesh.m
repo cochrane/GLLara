@@ -12,7 +12,6 @@
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "GLLModelParams.h"
-#import "LionSubscripting.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"

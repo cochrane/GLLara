@@ -8,8 +8,6 @@
 
 #import "NSArray+Map.h"
 
-#import "LionSubscripting.h"
-
 @implementation NSArray (Map)
 
 - (NSArray *)map:(id (^)(id))block;

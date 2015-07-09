@@ -14,7 +14,6 @@
 #import "GLLFloatRenderParameter.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLModelMesh+OBJExport.h"
-#import "LionSubscripting.h"
 
 @implementation GLLItemMesh (OBJExport)
 

@@ -13,7 +13,6 @@
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
-#import "LionSubscripting.h"
 
 @implementation GLLModelBone
 
@@ -86,7 +85,7 @@
 	NSMutableString *result = [NSMutableString string];
 	
 	[result appendFormat:@"%@\n", self.name];
-	[result appendFormat:@"%d\n", self.parentIndex != NSNotFound ? (int) self.parentIndex : -1];
+	[result appendFormat:@"%d\n", self.hasParent ? (int) self.parentIndex : -1];
 	[result appendFormat:@"%f %f %f\n", self.positionX, self.positionY, self.positionZ];
 	
 	return [result copy];

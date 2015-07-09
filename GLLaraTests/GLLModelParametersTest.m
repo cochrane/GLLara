@@ -9,7 +9,6 @@
 #import "GLLModelParametersTest.h"
 
 #import "GLLModelParams.h"
-#import "LionSubscripting.h"
 
 @implementation GLLModelParametersTest
 

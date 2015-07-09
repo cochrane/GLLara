@@ -8,8 +8,6 @@
 
 #import "GLLTextureDescription.h"
 
-#import "LionSubscripting.h"
-
 @implementation GLLTextureDescription
 
 - (id)initWithPlist:(NSDictionary *)plist;

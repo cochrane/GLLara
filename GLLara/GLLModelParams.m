@@ -17,7 +17,6 @@
 #import "GLLRenderParameterDescription.h"
 #import "GLLShaderDescription.h"
 #import "GLLTextureDescription.h"
-#import "LionSubscripting.h"
 
 /*
  * Parsing of mesh names for generic item

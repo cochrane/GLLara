@@ -9,7 +9,6 @@
 #import "GLLSubItemController.h"
 
 #import "GLLMeshListController.h"
-#import "LionSubscripting.h"
 
 @implementation GLLSubItemController
 

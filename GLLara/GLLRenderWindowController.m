@@ -14,7 +14,6 @@
 #import "GLLRenderAccessoryViewController.h"
 #import "GLLSceneDrawer.h"
 #import "GLLViewDrawer.h"
-#import "LionSubscripting.h"
 
 @interface GLLRenderWindowController ()
 {

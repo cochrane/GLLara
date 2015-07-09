@@ -17,7 +17,6 @@
 #import "GLLUniformBlockBindings.h"
 #import "GLLResourceManager.h"
 #import "GLLTexture.h"
-#import "LionSubscripting.h"
 
 @interface GLLMeshDrawer ()
 {

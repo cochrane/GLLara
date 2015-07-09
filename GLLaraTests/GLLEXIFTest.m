@@ -10,7 +10,6 @@
 
 #import "GLLDocument.h"
 #import "GLLRenderWindowController.h"
-#import "LionSubscripting.h"
 
 @interface GLLEXIFTest ()
 

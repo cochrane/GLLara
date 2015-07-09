@@ -10,7 +10,6 @@
 
 #import "GLLModelMesh.h"
 #import "GLLModelObj.h"
-#import "LionSubscripting.h"
 
 @interface GLLBasicOBJModelTest ()
 

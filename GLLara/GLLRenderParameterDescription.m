@@ -8,8 +8,6 @@
 
 #import "GLLRenderParameterDescription.h"
 
-#import "LionSubscripting.h"
-
 NSString *GLLRenderParameterTypeFloat = @"float";
 NSString *GLLRenderParameterTypeColor = @"color";
 

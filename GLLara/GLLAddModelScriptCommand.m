@@ -9,7 +9,6 @@
 #import "GLLAddModelScriptCommand.h"
 
 #import "GLLDocument.h"
-#import "LionSubscripting.h"
 
 @implementation GLLAddModelScriptCommand
 

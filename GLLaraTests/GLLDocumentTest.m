@@ -11,7 +11,6 @@
 #import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLResourceManager.h"
-#import "LionSubscripting.h"
 
 #import <Cocoa/Cocoa.h>
 

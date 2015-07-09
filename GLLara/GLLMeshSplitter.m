@@ -8,8 +8,6 @@
 
 #import "GLLMeshSplitter.h"
 
-#import "LionSubscripting.h"
-
 @interface GLLMeshSplitter ()
 {
 	float min[3];

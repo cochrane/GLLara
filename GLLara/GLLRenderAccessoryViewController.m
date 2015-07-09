@@ -8,7 +8,6 @@
 
 #import "GLLRenderAccessoryViewController.h"
 
-#import "LionSubscripting.h"
 #import "NSArray+Map.h"
 
 @interface GLLRenderAccessoryViewController ()
