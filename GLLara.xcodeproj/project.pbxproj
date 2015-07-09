@@ -46,8 +46,6 @@
 		5233BD2A16ECA9FA00DD77BE /* testReflectiontexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD2216ECA9F900DD77BE /* testReflectiontexture.png */; };
 		5233BD2B16ECA9FA00DD77BE /* testSpeculartexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 5233BD2316ECA9F900DD77BE /* testSpeculartexture.png */; };
 		5233BD2C16ECB01A00DD77BE /* DiffuseBumpEmission.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52629397163DDB6500AC1088 /* DiffuseBumpEmission.fs */; };
-		5237E9DB16E176DB0092C49F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
-		5237E9DD16E176E60092C49F /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5237E9D016E176A80092C49F /* Sparkle.framework */; };
 		523AEEDA16C4883A0062C025 /* defaultBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED616C4883A0062C025 /* defaultBlack.png */; };
 		523AEEDB16C4883A0062C025 /* defaultBump.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED716C4883A0062C025 /* defaultBump.png */; };
 		523AEEDC16C4883A0062C025 /* defaultColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED816C4883A0062C025 /* defaultColor.png */; };
@@ -262,8 +260,6 @@
 		52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */; };
 		52B9E07D16020A8300641518 /* DiffuseOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E07C16020A8300641518 /* DiffuseOBJ.fs */; };
 		52B9E07F16021ECD00641518 /* DiffuseNormalOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */; };
-		52B9E09716027FC800641518 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B9E09616027FC800641518 /* Foundation.framework */; };
-		52B9E0A416027FEE00641518 /* xibLocalizationPostprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B9E0A316027FEE00641518 /* xibLocalizationPostprocessor.m */; };
 		52B9E0A61602800300641518 /* DMLocalizedNibBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		52B9E0AC1602811E00641518 /* GLLDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0AA1602811D00641518 /* GLLDocument.xib */; };
 		52B9E0AD1602811E00641518 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0AB1602811D00641518 /* MainMenu.xib */; };
@@ -318,61 +314,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5237E9CF16E176A80092C49F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5237E9C716E176A70092C49F /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = Sparkle;
-		};
-		5237E9D116E176A80092C49F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5237E9C716E176A70092C49F /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 61B5F90209C4CEE200B25A18;
-			remoteInfo = "Sparkle Test App";
-		};
-		5237E9D316E176A80092C49F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5237E9C716E176A70092C49F /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 612279D90DB5470200AB99EA;
-			remoteInfo = "Sparkle Unit Tests";
-		};
-		5237E9D516E176A80092C49F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5237E9C716E176A70092C49F /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5D06E8D00FD68C7C005AE3F6;
-			remoteInfo = BinaryDelta;
-		};
-		5237E9D716E176A80092C49F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5237E9C716E176A70092C49F /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55C14BB7136EEF1500649790;
-			remoteInfo = finish_installation;
-		};
-		5237E9D916E176D00092C49F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5237E9C716E176A70092C49F /* Sparkle.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = Sparkle;
-		};
 		525ACD6F15F0F1A700534E7D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 525ACD3E15F0F1A700534E7D /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 525ACD4615F0F1A700534E7D;
 			remoteInfo = GLLara;
-		};
-		52B9E0A71602801F00641518 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 525ACD3E15F0F1A700534E7D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 52B9E09316027FC800641518;
-			remoteInfo = xibLocalizationPostprocessor;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -383,20 +330,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5237E9DD16E176E60092C49F /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		523DE0DC1604A5ED00BB9F61 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-		52B9E09216027FC800641518 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -479,7 +416,6 @@
 		5233BD2116ECA9F900DD77BE /* testMasktexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testMasktexture.png; path = Images/testMasktexture.png; sourceTree = SOURCE_ROOT; };
 		5233BD2216ECA9F900DD77BE /* testReflectiontexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testReflectiontexture.png; path = Images/testReflectiontexture.png; sourceTree = SOURCE_ROOT; };
 		5233BD2316ECA9F900DD77BE /* testSpeculartexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = testSpeculartexture.png; path = Images/testSpeculartexture.png; sourceTree = SOURCE_ROOT; };
-		5237E9C716E176A70092C49F /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		5237E9DF16E17A610092C49F /* appcast.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = appcast.xml; sourceTree = "<group>"; };
 		523AEED616C4883A0062C025 /* defaultBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultBlack.png; sourceTree = "<group>"; };
 		523AEED716C4883A0062C025 /* defaultBump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultBump.png; sourceTree = "<group>"; };
@@ -779,10 +715,7 @@
 		52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = objFileParameters.modelparams.plist; path = ../Shaders/objFileParameters.modelparams.plist; sourceTree = "<group>"; };
 		52B9E07C16020A8300641518 /* DiffuseOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseOBJ.fs; sourceTree = "<group>"; };
 		52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseNormalOBJ.fs; sourceTree = "<group>"; };
-		52B9E09416027FC800641518 /* xibLocalizationPostprocessor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = xibLocalizationPostprocessor; sourceTree = BUILT_PRODUCTS_DIR; };
 		52B9E09616027FC800641518 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		52B9E09C16027FC800641518 /* xibLocalizationPostprocessor-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "xibLocalizationPostprocessor-Prefix.pch"; sourceTree = "<group>"; };
-		52B9E0A316027FEE00641518 /* xibLocalizationPostprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = xibLocalizationPostprocessor.m; path = DMLocalizedNibBundle/xibLocalizationPostprocessor.m; sourceTree = SOURCE_ROOT; };
 		52B9E0A51602800300641518 /* DMLocalizedNibBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DMLocalizedNibBundle.m; path = GLLara/DMLocalizedNibBundle.m; sourceTree = SOURCE_ROOT; };
 		52B9E0AA1602811D00641518 /* GLLDocument.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLLDocument.xib; sourceTree = "<group>"; };
 		52B9E0AB1602811D00641518 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
@@ -879,7 +812,6 @@
 				529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */,
 				525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
 				529692E615F289EB00DF2FA3 /* OpenGL.framework in Frameworks */,
-				5237E9DB16E176DB0092C49F /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -889,14 +821,6 @@
 			files = (
 				525ACD6D15F0F1A700534E7D /* SenTestingKit.framework in Frameworks */,
 				525ACD6E15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		52B9E09116027FC800641518 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				52B9E09716027FC800641518 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -989,18 +913,6 @@
 			name = "Test objects";
 			sourceTree = "<group>";
 		};
-		5237E9C816E176A70092C49F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5237E9D016E176A80092C49F /* Sparkle.framework */,
-				5237E9D216E176A80092C49F /* Sparkle Test App.app */,
-				5237E9D416E176A80092C49F /* Sparkle Unit Tests.octest */,
-				5237E9D616E176A80092C49F /* BinaryDelta */,
-				5237E9D816E176A80092C49F /* finish_installation.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		523DE0E11604A5ED00BB9F61 /* parseItems */ = {
 			isa = PBXGroup;
 			children = (
@@ -1053,11 +965,9 @@
 				529692D515F258E600DF2FA3 /* Documentation */,
 				525ACD5115F0F1A700534E7D /* GLLara */,
 				525ACD7115F0F1A700534E7D /* GLLaraTests */,
-				52B9E09816027FC800641518 /* xibLocalizationPostprocessor */,
 				523DE0E11604A5ED00BB9F61 /* parseItems */,
 				525ACD4A15F0F1A700534E7D /* Frameworks */,
 				525ACD4815F0F1A700534E7D /* Products */,
-				5237E9C716E176A70092C49F /* Sparkle.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1066,7 +976,6 @@
 			children = (
 				525ACD4715F0F1A700534E7D /* GLLara.app */,
 				525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */,
-				52B9E09416027FC800641518 /* xibLocalizationPostprocessor */,
 				523DE0DE1604A5ED00BB9F61 /* parseItems */,
 			);
 			name = Products;
@@ -1560,23 +1469,6 @@
 			name = "Document and UI";
 			sourceTree = "<group>";
 		};
-		52B9E09816027FC800641518 /* xibLocalizationPostprocessor */ = {
-			isa = PBXGroup;
-			children = (
-				52B9E0A316027FEE00641518 /* xibLocalizationPostprocessor.m */,
-				52B9E09B16027FC800641518 /* Supporting Files */,
-			);
-			path = xibLocalizationPostprocessor;
-			sourceTree = "<group>";
-		};
-		52B9E09B16027FC800641518 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				52B9E09C16027FC800641518 /* xibLocalizationPostprocessor-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1604,15 +1496,12 @@
 				525ACD4315F0F1A700534E7D /* Sources */,
 				525ACD4415F0F1A700534E7D /* Frameworks */,
 				525ACD4515F0F1A700534E7D /* Resources */,
-				52B9E0A91602802500641518 /* Run Script (localization strings) */,
 				523F73B616DE2564003AE788 /* Run Script (help indexing) */,
 				5237E9DC16E176DF0092C49F /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5237E9DA16E176D00092C49F /* PBXTargetDependency */,
-				52B9E0A81602801F00641518 /* PBXTargetDependency */,
 			);
 			name = GLLara;
 			productName = GLLara;
@@ -1636,24 +1525,7 @@
 			name = GLLaraTests;
 			productName = GLLaraTests;
 			productReference = 525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */;
-			productType = "com.apple.product-type.bundle";
-		};
-		52B9E09316027FC800641518 /* xibLocalizationPostprocessor */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 52B9E0A116027FC800641518 /* Build configuration list for PBXNativeTarget "xibLocalizationPostprocessor" */;
-			buildPhases = (
-				52B9E09016027FC800641518 /* Sources */,
-				52B9E09116027FC800641518 /* Frameworks */,
-				52B9E09216027FC800641518 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = xibLocalizationPostprocessor;
-			productName = xibLocalizationPostprocessor;
-			productReference = 52B9E09416027FC800641518 /* xibLocalizationPostprocessor */;
-			productType = "com.apple.product-type.tool";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -1662,7 +1534,8 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = GLL;
-				LastUpgradeCheck = 0440;
+				LastTestingUpgradeCheck = 0620;
+				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = "Torsten Kammer";
 			};
 			buildConfigurationList = 525ACD4115F0F1A700534E7D /* Build configuration list for PBXProject "GLLara" */;
@@ -1676,59 +1549,14 @@
 			mainGroup = 525ACD3C15F0F1A700534E7D;
 			productRefGroup = 525ACD4815F0F1A700534E7D /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 5237E9C816E176A70092C49F /* Products */;
-					ProjectRef = 5237E9C716E176A70092C49F /* Sparkle.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				525ACD4615F0F1A700534E7D /* GLLara */,
 				525ACD6A15F0F1A700534E7D /* GLLaraTests */,
-				52B9E09316027FC800641518 /* xibLocalizationPostprocessor */,
 				523DE0DD1604A5ED00BB9F61 /* parseItems */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		5237E9D016E176A80092C49F /* Sparkle.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Sparkle.framework;
-			remoteRef = 5237E9CF16E176A80092C49F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5237E9D216E176A80092C49F /* Sparkle Test App.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "Sparkle Test App.app";
-			remoteRef = 5237E9D116E176A80092C49F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5237E9D416E176A80092C49F /* Sparkle Unit Tests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Sparkle Unit Tests.octest";
-			remoteRef = 5237E9D316E176A80092C49F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5237E9D616E176A80092C49F /* BinaryDelta */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = BinaryDelta;
-			remoteRef = 5237E9D516E176A80092C49F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5237E9D816E176A80092C49F /* finish_installation.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = finish_installation.app;
-			remoteRef = 5237E9D716E176A80092C49F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		525ACD4515F0F1A700534E7D /* Resources */ = {
@@ -1970,20 +1798,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
-		52B9E0A91602802500641518 /* Run Script (localization strings) */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script (localization strings)";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/zsh;
-			shellScript = "DEVELOPMENT_LANGUAGE=en\n${SRCROOT}/DMLocalizedNibBundle/slurpLocalizableStrings.zsh";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -2111,31 +1925,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		52B9E09016027FC800641518 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				52B9E0A416027FEE00641518 /* xibLocalizationPostprocessor.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5237E9DA16E176D00092C49F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Sparkle;
-			targetProxy = 5237E9D916E176D00092C49F /* PBXContainerItemProxy */;
-		};
 		525ACD7015F0F1A700534E7D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 525ACD4615F0F1A700534E7D /* GLLara */;
 			targetProxy = 525ACD6F15F0F1A700534E7D /* PBXContainerItemProxy */;
-		};
-		52B9E0A81602801F00641518 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 52B9E09316027FC800641518 /* xibLocalizationPostprocessor */;
-			targetProxy = 52B9E0A71602801F00641518 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2336,7 +2132,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -2355,7 +2150,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = "";
 				WARNING_CFLAGS = (
@@ -2371,7 +2166,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -2384,7 +2178,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				SDKROOT = "";
 				WARNING_CFLAGS = (
 					"-Wextra",
@@ -2445,26 +2239,6 @@
 			};
 			name = Release;
 		};
-		52B9E09F16027FC800641518 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "xibLocalizationPostprocessor/xibLocalizationPostprocessor-Prefix.pch";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		52B9E0A016027FC800641518 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_ARC = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "xibLocalizationPostprocessor/xibLocalizationPostprocessor-Prefix.pch";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2500,15 +2274,6 @@
 			buildConfigurations = (
 				525ACD8015F0F1A700534E7D /* Debug */,
 				525ACD8115F0F1A700534E7D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		52B9E0A116027FC800641518 /* Build configuration list for PBXNativeTarget "xibLocalizationPostprocessor" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				52B9E09F16027FC800641518 /* Debug */,
-				52B9E0A016027FC800641518 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

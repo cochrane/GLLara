@@ -78,6 +78,11 @@ static NSCache *parameterCache;
 
 + (id)parametersForModel:(GLLModel *)model error:(NSError *__autoreleasing *)error;
 {
+	// Check whether it is an XPS file
+	NSArray *typeIdentifiersForFile = (__bridge_transfer NSArray *)UTTypeCreateAllIdentifiersForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)model.baseURL.pathExtension, NULL);
+	if ([typeIdentifiersForFile containsObject:@"com.home-forum.xnalara.xpsmesh"])
+		return [[self alloc] initWithModel:model error:error];
+	
 	NSString *name = [[model.baseURL.lastPathComponent stringByDeletingPathExtension] stringByDeletingPathExtension];
 	if ([[name lowercaseString] isEqual:@"generic_item"])
 		return [[self alloc] initWithModel:model error:error];

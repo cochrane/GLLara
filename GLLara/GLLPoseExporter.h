@@ -22,6 +22,6 @@
 
 @property (nonatomic) BOOL skipUnused;
 
-@property (nonatomic) NSString *poseDescription;
+@property (nonatomic, readonly) NSString *poseDescription;
 
 @end

@@ -63,38 +63,53 @@
 				<h1>0.2 Full release</h1>
 				<p>If you’re seeing this, you had previously used a beta version without any release notes, so here they are:</p>
 				<ul>
-					<li>Online help (in the "Help" menu), to explain both how to get started and give an overview over the advanced functions. You can also access relevant parts directly from many points in the program.</li>
-					<li>Full german localization, including the online help. I'd be happy to add more languages, but I'll need volunteer translators to help me do this!</li>
-					<li>Additional ways of editing bones with keyboard and mouse, like XNALara (though not exactly the same, since some keys were already used by the system or assigned differently before. Look at the help for the full list).</li>
-					<li>Automatic updates (as you can see).</li>
-					<li>Simple modding features:<ul>
-						<li>Change all textures. If you edit a texture (e.g. in Photoshop), GLLara will load the newest version every time you save.</li>
-						<li>Shaders (known as Mesh Groups in XNALara) can be changed.</li>
-						<li>Edited objects can be saved. They are fully compatible with XNALara and XPS.</li>
-						<li>Texture packs and outfit features from the newest versions of XPS are supported.</li>
-					</ul></li>
-					<li>Fixed too many bugs to list here. I'm always happy about new bug reports!</li>
+				<li>Online help (in the "Help" menu), to explain both how to get started and give an overview over the advanced functions. You can also access relevant parts directly from many points in the program.</li>
+				<li>Full german localization, including the online help. I'd be happy to add more languages, but I'll need volunteer translators to help me do this!</li>
+				<li>Additional ways of editing bones with keyboard and mouse, like XNALara (though not exactly the same, since some keys were already used by the system or assigned differently before. Look at the help for the full list).</li>
+				<li>Automatic updates (as you can see).</li>
+				<li>Simple modding features:<ul>
+				<li>Change all textures. If you edit a texture (e.g. in Photoshop), GLLara will load the newest version every time you save.</li>
+				<li>Shaders (known as Mesh Groups in XNALara) can be changed.</li>
+				<li>Edited objects can be saved. They are fully compatible with XNALara and XPS.</li>
+				<li>Texture packs and outfit features from the newest versions of XPS are supported.</li>
+				</ul></li>
+				<li>Fixed too many bugs to list here. I'm always happy about new bug reports!</li>
 				</ul>
 			]]></description>
 			<description xml:lang="de"><![CDATA[
 				<h1>0.2 Vollversion</h1>
 				<p>Wenn sie dies sehen, hatten sie vorher eine Betaversion ohne Releasenotes, daher hier noch mal alle für 0.2:</p>
 				<ul>
-					<li>Online-Hilfe (im Menü "Hilfe"), um die wichtigsten und häufigsten Fragen zu beantworten und einen Überblick über die fortgeschrittenen Features zu bieten. Die Hilfe ist auch von vielen Punkten im Programm aufrufbar.</li>
-					<li>Volle deutsche Lokalisierung. Das betrifft natürlich auch die Hilfe. Ich bin auch gerne bereit, weitere Sprachen hinzuzufügen, aber ich brauche freiwillige Übersetzer dafür!
-					<li>Zusätzliche Möglichkeiten, um Bones mit Tastatur und Maus zu bearbeiten, analog zu XNALara (aber nicht genau gleich, weil manche Tasten anders belegt sind, von mir oder von Mac OS X. Die volle Liste steht in der Hilfe).
-					<li>Automatische Updates.
-					<li>Einfaches Modding:<ul>
-						<li>Alle Texturen lassen sich ändern. Wenn man die Textur (z.B. in Photoshop) bearbeitet, lädt GLLara die neue Version, sobald man speichert.</li>
-						<li>Shader (in XNALara bekannt als Mesh Group) können getauscht werden.</li>
-						<li>Bearbeitete Objekte können natürlich auch gespeichert werden, und sind dann komplett mit XNALara und XPS kompatibel.</li>
-						<li>Texturpakete und Outfits aus den neuesten Versionen von XPS werden unterstützt.</li>
-					</ul></li>
-					<li>Zu viele Bugs behoben, um sie alle hier aufzuführen. Ich freue mich immer über Berichte von weiteren Bugs!
+				<li>Online-Hilfe (im Menü "Hilfe"), um die wichtigsten und häufigsten Fragen zu beantworten und einen Überblick über die fortgeschrittenen Features zu bieten. Die Hilfe ist auch von vielen Punkten im Programm aufrufbar.</li>
+				<li>Volle deutsche Lokalisierung. Das betrifft natürlich auch die Hilfe. Ich bin auch gerne bereit, weitere Sprachen hinzuzufügen, aber ich brauche freiwillige Übersetzer dafür!
+				<li>Zusätzliche Möglichkeiten, um Bones mit Tastatur und Maus zu bearbeiten, analog zu XNALara (aber nicht genau gleich, weil manche Tasten anders belegt sind, von mir oder von Mac OS X. Die volle Liste steht in der Hilfe).
+				<li>Automatische Updates.
+				<li>Einfaches Modding:<ul>
+				<li>Alle Texturen lassen sich ändern. Wenn man die Textur (z.B. in Photoshop) bearbeitet, lädt GLLara die neue Version, sobald man speichert.</li>
+				<li>Shader (in XNALara bekannt als Mesh Group) können getauscht werden.</li>
+				<li>Bearbeitete Objekte können natürlich auch gespeichert werden, und sind dann komplett mit XNALara und XPS kompatibel.</li>
+				<li>Texturpakete und Outfits aus den neuesten Versionen von XPS werden unterstützt.</li>
+				</ul></li>
+				<li>Zu viele Bugs behoben, um sie alle hier aufzuführen. Ich freue mich immer über Berichte von weiteren Bugs!
 				</ul>
 			]]></description>
             <pubDate>Fri, 04 Mar 2013 23:20:00 +0100</pubDate>
             <enclosure url="http://ferroequinologist.de/gllara/GLLara-0.2.zip" sparkle:version="3.0" sparkle:shortVersionString="0.2" length="3089812" type="application/octet-stream" />
+		</item>
+		<item>
+			<title>GLLara 0.2.1</title>
+			<description xml:lang="en"><![CDATA[
+				<h1>Version 0.2.1</h1>
+				<p>GLLara can now open some .xps files.</p>
+				<p>Fixes a bug that causes black or other dark textures on graphics cards with less than 512 MB Video RAM.</p>
+			]]></description>
+			<description xml:lang="de"><![CDATA[
+				<h1>GLLara 0.2.1n</h1>
+				<p>GLLara kann jetzt (manche) .xps-Dateien öffnen.</p>
+				<p>Behebt einen Bug, der schwarze oder anderweitig dunkle Texturen auf Grafikkarten mit weniger als 512 MB Video RAM erzeugt.</p>
+			]]></description>
+            <pubDate>Fri, 22 Apr 2013 12:20:00 +0200</pubDate>
+            <enclosure url="http://ferroequinologist.de/gllara/GLLara-0.2.1.zip" sparkle:version="3.2" sparkle:shortVersionString="0.2.1" length="3120832" type="application/octet-stream" />
 		</item>
 	</channel>
 </rss>
