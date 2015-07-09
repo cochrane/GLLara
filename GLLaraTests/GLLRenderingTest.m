@@ -70,17 +70,17 @@
 			// Create a document
 			NSError *error = nil;
 			GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
-			STAssertNotNil(doc, @"No document");
-			STAssertNil(error, @"Got error: %@", error);
+			XCTAssertNotNil(doc, @"No document");
+			XCTAssertNil(error, @"Got error: %@", error);
 
 			GLLModel *model = [[GLLModel alloc] initASCIIFromString:writer.testFileString baseURL:testModelURL parent:nil error:&error];
-			STAssertNotNil(model, @"Should have created model");
-			STAssertNil(error, @"Should not have error (got %@)", error);
+			XCTAssertNotNil(model, @"Should have created model");
+			XCTAssertNil(error, @"Should not have error (got %@)", error);
 			
 			error = nil;
 			GLLItem *item = [doc addModel:model];
-			STAssertNotNil(item, @"Should have added model");
-			STAssertNil(error, @"Should not have error (got %@)", error);
+			XCTAssertNotNil(item, @"Should have added model");
+			XCTAssertNil(error, @"Should not have error (got %@)", error);
 			
 			[doc.managedObjectContext processPendingChanges];
 			[item.bones[1] setRotationX:0.5];
@@ -90,12 +90,12 @@
 			// Ensure it didn't get automatically removed as punishment for failing to load
 			NSFetchRequest *itemsRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 			NSArray *items = [doc.managedObjectContext executeFetchRequest:itemsRequest error:NULL];
-			STAssertEquals(items.count, 1UL, @"Item no longer in document");
+			XCTAssertEqual(items.count, 1UL, @"Item no longer in document");
 			
 			// Render the file
-			STAssertEquals(doc.windowControllers.count, 2UL, @"Should have two windows");
+			XCTAssertEqual(doc.windowControllers.count, 2UL, @"Should have two windows");
 			GLLRenderWindowController *controller = doc.windowControllers[1];
-			STAssertTrue([controller isKindOfClass:[GLLRenderWindowController class]], @"Should be a render window");
+			XCTAssertTrue([controller isKindOfClass:[GLLRenderWindowController class]], @"Should be a render window");
 			controller.renderView.camera.latitude = -0.5;
 			controller.renderView.camera.longitude = -0.89;
 			controller.renderView.camera.distance = 2.0;
@@ -104,9 +104,9 @@
 			firstDiffuseFetchRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES] ];
 			firstDiffuseFetchRequest.fetchLimit = 1;
 			NSArray *lights = [doc.managedObjectContext executeFetchRequest:firstDiffuseFetchRequest error:NULL];
-			STAssertEquals(lights.count, 1UL, @"Should have a light");
+			XCTAssertEqual(lights.count, 1UL, @"Should have a light");
 			GLLDirectionalLight *light = lights[0];
-			STAssertTrue(light.isEnabled, @"Light should be turned on");
+			XCTAssertTrue(light.isEnabled, @"Light should be turned on");
 			light.latitude = -0.2;
 			light.longitude = 0.5;
 			

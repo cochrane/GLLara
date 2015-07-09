@@ -184,7 +184,6 @@
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
 		525ACD5C15F0F1A700534E7D /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5A15F0F1A700534E7D /* Credits.rtf */; };
 		525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5E15F0F1A700534E7D /* GLLDocument.m */; };
-		525ACD6D15F0F1A700534E7D /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD6C15F0F1A700534E7D /* SenTestingKit.framework */; };
 		525ACD6E15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD7415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD8415F0F33700534E7D /* GLLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8315F0F33700534E7D /* GLLModel.m */; };
@@ -578,7 +577,6 @@
 		525ACD5D15F0F1A700534E7D /* GLLDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLDocument.h; sourceTree = "<group>"; };
 		525ACD5E15F0F1A700534E7D /* GLLDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLDocument.m; sourceTree = "<group>"; };
 		525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLLaraTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		525ACD6C15F0F1A700534E7D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		525ACD7315F0F1A700534E7D /* GLLaraTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GLLaraTests-Info.plist"; sourceTree = "<group>"; };
 		525ACD7515F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		525ACD8215F0F33700534E7D /* GLLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModel.h; sourceTree = "<group>"; };
@@ -814,7 +812,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				525ACD6D15F0F1A700534E7D /* SenTestingKit.framework in Frameworks */,
 				525ACD6E15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -983,7 +980,6 @@
 				529692D015F2374F00DF2FA3 /* libz.dylib */,
 				525ACD4B15F0F1A700534E7D /* Cocoa.framework */,
 				529692E515F289EB00DF2FA3 /* OpenGL.framework */,
-				525ACD6C15F0F1A700534E7D /* SenTestingKit.framework */,
 				52B9E09616027FC800641518 /* Foundation.framework */,
 				525ACD4D15F0F1A700534E7D /* Other Frameworks */,
 			);
@@ -1517,7 +1513,7 @@
 			name = GLLaraTests;
 			productName = GLLaraTests;
 			productReference = 525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */;
-			productType = "com.apple.product-type.bundle.ocunit-test";
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -2208,11 +2204,13 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GLLara.app/Contents/MacOS/GLLara";
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "GLLaraTests/GLLaraTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -2221,11 +2219,13 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GLLara.app/Contents/MacOS/GLLara";
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "GLLaraTests/GLLaraTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};

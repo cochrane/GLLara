@@ -41,33 +41,33 @@ static NSURL *testDocumentURL;
 	NSError *error = nil;
 	GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
 	
-	STAssertNotNil(doc, @"Should open empty document");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(doc, @"Should open empty document");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	
 	error = nil;
 	GLLItem *item = [doc addModelAtURL:testModelURL error:&error];
-	STAssertNotNil(item, @"Should have added model");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(item, @"Should have added model");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	
 	__block BOOL completedOuter = NO;
 	[doc saveToURL:testDocumentURL ofType:@"Scene" forSaveOperation:NSSaveOperation completionHandler:^(NSError *errorOrNil){
-		STAssertNil(errorOrNil, @"Should save without error");
+		XCTAssertNil(errorOrNil, @"Should save without error");
 				
 		[doc close];
 		
 		__block BOOL completedInner = NO;
 		[[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:testDocumentURL display:YES completionHandler:^(NSDocument *document, BOOL wasAlreadyOpen, NSError *error){
-			STAssertNil(error, @"Shouldn't have had an error, got %@", error);
-			STAssertFalse(wasAlreadyOpen, @"Should have been closed");
-			STAssertNotNil(document, @"Should have a document here");
-			STAssertTrue([document isKindOfClass:[GLLDocument class]], @"Wrong document subclass");
+			XCTAssertNil(error, @"Shouldn't have had an error, got %@", error);
+			XCTAssertFalse(wasAlreadyOpen, @"Should have been closed");
+			XCTAssertNotNil(document, @"Should have a document here");
+			XCTAssertTrue([document isKindOfClass:[GLLDocument class]], @"Wrong document subclass");
 			completedInner = YES;
 			
 			NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 			NSArray *items = [((GLLDocument *)document).managedObjectContext executeFetchRequest:request error:NULL];
-			STAssertEquals(items.count, 1UL, @"Should have one item");
-			STAssertEqualObjects([[items objectAtIndex:0] itemURL], testModelURL, @"Should have test model URL");
+			XCTAssertEqual(items.count, 1UL, @"Should have one item");
+			XCTAssertEqualObjects([[items objectAtIndex:0] itemURL], testModelURL, @"Should have test model URL");
 			
 			[document close];
 		}];
@@ -90,33 +90,33 @@ static NSURL *testDocumentURL;
 	NSError *error = nil;
 	GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
 	
-	STAssertNotNil(doc, @"Should open empty document");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(doc, @"Should open empty document");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	
 	error = nil;
 	GLLItem *item = [doc addModelAtURL:testModelURL error:&error];
-	STAssertNotNil(item, @"Should have added model");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(item, @"Should have added model");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	
 	[doc.managedObjectContext deleteObject:item];
 	
 	__block BOOL doneWithOuter = NO;
 	[doc saveToURL:testDocumentURL ofType:@"Scene" forSaveOperation:NSSaveOperation completionHandler:^(NSError *errorOrNil){
-		STAssertNil(errorOrNil, @"Should save without error");
+		XCTAssertNil(errorOrNil, @"Should save without error");
 				
 		[doc close];
 		
 		__block BOOL doneWithInner = NO;
 		[[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:testDocumentURL display:YES completionHandler:^(NSDocument *document, BOOL wasAlreadyOpen, NSError *error){
-			STAssertNil(error, @"Shouldn't have had an error, got %@", error);
-			STAssertFalse(wasAlreadyOpen, @"Should have been closed");
-			STAssertNotNil(document, @"Should have a document here");
-			STAssertTrue([document isKindOfClass:[GLLDocument class]], @"Wrong document subclass");
+			XCTAssertNil(error, @"Shouldn't have had an error, got %@", error);
+			XCTAssertFalse(wasAlreadyOpen, @"Should have been closed");
+			XCTAssertNotNil(document, @"Should have a document here");
+			XCTAssertTrue([document isKindOfClass:[GLLDocument class]], @"Wrong document subclass");
 			
 			NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 			NSArray *items = [((GLLDocument *)document).managedObjectContext executeFetchRequest:request error:NULL];
-			STAssertEquals(items.count, 0UL, @"Should have no item");
+			XCTAssertEqual(items.count, 0UL, @"Should have no item");
 			
 			doneWithInner = YES;
 			
@@ -139,13 +139,13 @@ static NSURL *testDocumentURL;
 	NSError *error = nil;
 	GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
 	
-	STAssertNotNil(doc, @"Should open empty document");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(doc, @"Should open empty document");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	
 	error = nil;
 	GLLItem *item = [doc addModelAtURL:testModelURL error:&error];
-	STAssertNotNil(item, @"Should have added model");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(item, @"Should have added model");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	
 	[item.bones[0] setRotationY:rotationNearLimit];
@@ -153,24 +153,24 @@ static NSURL *testDocumentURL;
 	
 	__block BOOL completedOuter = NO;
 	[doc saveToURL:testDocumentURL ofType:@"Scene" forSaveOperation:NSSaveOperation completionHandler:^(NSError *errorOrNil){
-		STAssertNil(errorOrNil, @"Should save without error");
+		XCTAssertNil(errorOrNil, @"Should save without error");
 		
 		[doc close];
 		
 		__block BOOL completedInner = NO;
 		[[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:testDocumentURL display:YES completionHandler:^(NSDocument *document, BOOL wasAlreadyOpen, NSError *error){
-			STAssertNil(error, @"Shouldn't have had an error, got %@", error);
-			STAssertFalse(wasAlreadyOpen, @"Should have been closed");
-			STAssertNotNil(document, @"Should have a document here");
-			STAssertTrue([document isKindOfClass:[GLLDocument class]], @"Wrong document subclass");
+			XCTAssertNil(error, @"Shouldn't have had an error, got %@", error);
+			XCTAssertFalse(wasAlreadyOpen, @"Should have been closed");
+			XCTAssertNotNil(document, @"Should have a document here");
+			XCTAssertTrue([document isKindOfClass:[GLLDocument class]], @"Wrong document subclass");
 			completedInner = YES;
 			
 			NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 			NSArray *items = [((GLLDocument *)document).managedObjectContext executeFetchRequest:request error:NULL];
-			STAssertEquals(items.count, 1UL, @"Should have one item");
-			STAssertEqualObjects([[items objectAtIndex:0] itemURL], testModelURL, @"Should have test model URL");
-			STAssertEquals([item.bones[0] rotationY], rotationNearLimit, @"Should have kept rotation near limit exactly.");
-			STAssertEquals([item.bones[0] rotationZ], 1.0f, @"Should have kept rotation far from limit exactly.");
+			XCTAssertEqual(items.count, 1UL, @"Should have one item");
+			XCTAssertEqualObjects([[items objectAtIndex:0] itemURL], testModelURL, @"Should have test model URL");
+			XCTAssertEqual([item.bones[0] rotationY], rotationNearLimit, @"Should have kept rotation near limit exactly.");
+			XCTAssertEqual([item.bones[0] rotationZ], 1.0f, @"Should have kept rotation far from limit exactly.");
 
 			
 			[document close];

@@ -20,8 +20,8 @@
 		return @(index);
 	}];
 	
-	STAssertNotNil(result, @"Should return empty (but non-nil) array");
-	STAssertEquals(result.count, 0UL, @"Should have no elements");
+	XCTAssertNotNil(result, @"Should return empty (but non-nil) array");
+	XCTAssertEqual(result.count, 0UL, @"Should have no elements");
 }
 
 @end

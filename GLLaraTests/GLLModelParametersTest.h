@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Torsten Kammer. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface GLLModelParametersTest : SenTestCase
+@interface GLLModelParametersTest : XCTestCase
 
 @end
