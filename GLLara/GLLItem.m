@@ -150,7 +150,7 @@
 	NSURL *itemURL = [self primitiveValueForKey:@"itemURL"];
 	if (itemURL)
 	{
-		NSData *bookmark = [itemURL bookmarkDataWithOptions:NSURLBookmarkCreationPreferFileIDResolution includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
+		NSData *bookmark = [itemURL bookmarkDataWithOptions:0 includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
 		[self setPrimitiveValue:bookmark forKey:@"itemURLBookmark"];
 	}
 	else

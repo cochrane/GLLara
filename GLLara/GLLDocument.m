@@ -174,7 +174,7 @@
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
 	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj" ];
 	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
+		if (result != NSModalResponseOK) return;
 		
 		NSError *error = nil;
 		if (![self addModelAtURL:panel.URL error:&error])
@@ -212,7 +212,7 @@
 	panel.accessoryView = controller.view;
 	
 	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
+		if (result != NSModalResponseOK) return;
 		
 		NSURL *objURL = panel.URL;
 		NSString *materialLibraryName = [[objURL.lastPathComponent stringByDeletingPathExtension] stringByAppendingString:@".mtl"];
@@ -252,7 +252,7 @@
 	controller.exportOnlySelectedBones = [[NSUserDefaults standardUserDefaults] boolForKey:@"exportPose-onlySelected"];
 	
 	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
+		if (result != NSModalResponseOK) return;
 		
 		[[NSUserDefaults standardUserDefaults] setBool:controller.exportUnusedBones forKey:@"exportPose-includeUnused"];
 		[[NSUserDefaults standardUserDefaults] setBool:controller.exportOnlySelectedBones forKey:@"exportPose-onlySelected"];
@@ -284,7 +284,7 @@
 	panel.allowedFileTypes = @[ (__bridge NSString *) kUTTypeFolder ];
 	
 	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
+		if (result != NSModalResponseOK) return;
 		
 		NSFileManager *manager = [NSFileManager defaultManager];
 		NSError *error = nil;
@@ -397,9 +397,14 @@
 	
 	if ([mtlURL checkResourceIsReachableAndReturnError:NULL])
 	{
-		NSAlert *mtlExistsAlert = [NSAlert alertWithMessageText:NSLocalizedString(@"An MTL file with this name already exists", @"export: has such mtl already") defaultButton:nil alternateButton:NSLocalizedString(@"Cancel", @"export: cancel") otherButton:nil informativeTextWithFormat:NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. This will overwrite an existing file of the same name.", @"export: suffix = mtl")];
+        NSAlert *mtlExistsAlert = [[NSAlert alloc] init];
+        mtlExistsAlert.messageText = NSLocalizedString(@"An MTL file with this name already exists", @"export: has such mtl already");
+        mtlExistsAlert.informativeText = NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. This will overwrite an existing file of the same name.", @"export: suffix = mtl");
+        [mtlExistsAlert addButtonWithTitle:NSLocalizedString(@"Cancel", @"export: cancel")];
+        [mtlExistsAlert addButtonWithTitle:@"OK"];
+        
 		NSInteger result = [mtlExistsAlert runModal];
-		return result == NSOKButton;
+		return result == NSAlertSecondButtonReturn;
 	}
 	
 	return YES;

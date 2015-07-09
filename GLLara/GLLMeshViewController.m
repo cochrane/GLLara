@@ -86,8 +86,7 @@
 
 - (void)loadView
 {
-	// Load explicitly with this method, to make sure it goes through DMLocalizedNibBundle.
-	[NSBundle loadNibNamed:self.nibName owner:self];
+    [super loadView];
 	
 	// Set up other things I'd like to have
 	NSAssert(self.allMeshes != nil, @"Outlet not set in time");

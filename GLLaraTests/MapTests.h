@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Torsten Kammer. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface MapTests : SenTestCase
+@interface MapTests : XCTestCase
 
 @end

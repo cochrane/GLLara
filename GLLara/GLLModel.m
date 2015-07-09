@@ -50,6 +50,11 @@ static NSCache *cachedModels;
 			result = [[self alloc] initBinaryFromFile:file parent:parent error:error];
 			if (!result) return nil;
 		}
+		else if ([file.path hasSuffix:@".xps"])
+		{
+			result = [[self alloc] initBinaryFromFile:file parent:parent error:error];
+			if (!result) return nil;
+		}
 		else if ([file.path hasSuffix:@".mesh.ascii"])
 		{
 			result = [[self alloc] initASCIIFromFile:file parent:parent error:error];

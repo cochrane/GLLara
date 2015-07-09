@@ -123,7 +123,7 @@ Boolean _dds_upload_texture_data(GLLDDSFile *file, CFIndex mipmapLevel)
 
 static NSOperationQueue *imageInformationQueue = nil;
 static GLint renderer;
-static BOOL isIntel;
+static BOOL lowVRAM;
 
 @interface GLLTexture ()
 
@@ -166,10 +166,37 @@ static BOOL isIntel;
 	{
 		CGLContextObj context = CGLGetCurrentContext();
 		CGLGetParameter(context, kCGLCPCurrentRendererID, &renderer);
-		renderer &= kCGLRendererIDMatchingMask;
 		
-		// Compare with Intel HD (3000) and HD 4000. Earlier Intel GPU's aren't supported by 10.8 anyway.
-		isIntel = (renderer == kCGLRendererIntelHD4000ID) || (renderer == kCGLRendererIntelHDID);
+		CGLPixelFormatObj pfa = CGLGetPixelFormat(context);
+		GLint numScreens;
+		CGLDescribePixelFormat(pfa, 0, kCGLPFAVirtualScreenCount, &numScreens);
+		
+		lowVRAM = NO;
+		for (GLint screen = 0; screen < numScreens; screen++)
+		{
+			GLuint displayMask;
+			CGLDescribePixelFormat(pfa, screen, kCGLPFADisplayMask, (GLint *) &displayMask);
+			
+			CGLRendererInfoObj renderers;
+			GLint numRenderers;
+			CGLQueryRendererInfo(displayMask, &renderers, &numRenderers);
+			
+			for (GLint rendererNum = 0; rendererNum < numRenderers; rendererNum++)
+			{
+				GLint rendererID;
+				CGLDescribeRenderer(renderers, rendererNum, kCGLRPRendererID, &rendererID);
+				if (rendererID != renderer)
+					continue;
+				
+				GLint vram;
+				CGLDescribeRenderer(renderers, rendererNum, kCGLRPVideoMemoryMegabytes, &vram);
+				
+				if (vram < 512)
+					lowVRAM = YES;
+			}
+			
+			CGLDestroyRendererInfo(renderers);
+		}
 	}
 	
 	[self _setupGCDObserving];
@@ -367,11 +394,11 @@ static BOOL isIntel;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, isIntel ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, lowVRAM ? GL_LINEAR : GL_LINEAR_MIPMAP_LINEAR);
 	
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) width, (GLsizei) height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
 	
-	if (!isIntel)
+	if (!lowVRAM)
 		glGenerateMipmap(GL_TEXTURE_2D);
 	
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);

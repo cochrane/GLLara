@@ -378,6 +378,8 @@ const double unitsPerSecond = 0.2;
 			case NSRightMouseDragged:
 				[self rightMouseDragged:theEvent];
 				break;
+			default:
+				break;
 		}
 		if (![interestingCharacters hasIntersectionWithSet:keysDown] && !shiftIsDown && !altIsDown) break;
 		

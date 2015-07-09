@@ -59,7 +59,7 @@
 				[item addObserver:self forKeyPath:@"childItems" options: NSKeyValueObservingOptionInitial context:NULL];
 		
 		// Run only after delay, to ensure that everything has been set correctly by the time this code gets active.
-		dispatch_async(dispatch_get_current_queue(), ^{
+		dispatch_async(dispatch_get_main_queue(), ^{
 			NSOrderedSet *newBones = self.item.combinedBones;
 			
 			// Find existing bones

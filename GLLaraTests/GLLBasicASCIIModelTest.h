@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface GLLBasicASCIIModelTest : SenTestCase
+@interface GLLBasicASCIIModelTest : XCTestCase
 
 @end

@@ -46,16 +46,16 @@ static NSURL *testDocumentURL;
 	NSError *error = nil;
 	GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
 	
-	STAssertNotNil(doc, @"Should open empty document");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(doc, @"Should open empty document");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	
 	error = nil;
 	GLLItem *item = [doc addModelAtURL:testModelURL error:&error];
-	STAssertNotNil(item, @"Should have added model");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(item, @"Should have added model");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	
-	STAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[0] shaderName]);
-	STAssertEqualObjects([item.meshes[1] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[1] shaderName]);
+	XCTAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[0] shaderName]);
+	XCTAssertEqualObjects([item.meshes[1] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[1] shaderName]);
 
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	
@@ -63,8 +63,8 @@ static NSURL *testDocumentURL;
 	[[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] addObjectsFromArray:item.meshes.array];
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	
-	STAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[0] shaderName]);
-	STAssertEqualObjects([item.meshes[1] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[1] shaderName]);
+	XCTAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[0] shaderName]);
+	XCTAssertEqualObjects([item.meshes[1] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[1] shaderName]);
 	
 	[doc close];
 }
@@ -75,8 +75,8 @@ static NSURL *testDocumentURL;
 	NSError *error = nil;
 	GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
 	
-	STAssertNotNil(doc, @"Should open empty document");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(doc, @"Should open empty document");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	
 	GLLTestObjectWriter *writer = [[GLLTestObjectWriter alloc] init];
 	writer.numBones = 1;
@@ -90,16 +90,16 @@ static NSURL *testDocumentURL;
 	
 	error = nil;
 	GLLModel *model = [[GLLModel alloc] initASCIIFromString:writer.testFileString baseURL:testModelURL parent:nil error:&error];
-	STAssertNotNil(model, @"Should have created model");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(model, @"Should have created model");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	
 	error = nil;
 	GLLItem *item = [doc addModel:model];
-	STAssertNotNil(item, @"Should have added model");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(item, @"Should have added model");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	
-	STAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[0] shaderName]);
-	STAssertEqualObjects([item.meshes[1] shaderName], @"Shadeless", @"shader name should  be shadeless, not %@", [item.meshes[1] shaderName]);
+	XCTAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[0] shaderName]);
+	XCTAssertEqualObjects([item.meshes[1] shaderName], @"Shadeless", @"shader name should  be shadeless, not %@", [item.meshes[1] shaderName]);
 	
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	
@@ -107,14 +107,14 @@ static NSURL *testDocumentURL;
 	[[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] addObjectsFromArray:item.meshes.array];
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	
-	STAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[0] shaderName]);
-	STAssertEqualObjects([item.meshes[1] shaderName], @"Shadeless", @"shader name should still be shadeless, not %@", [item.meshes[1] shaderName]);
+	XCTAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[0] shaderName]);
+	XCTAssertEqualObjects([item.meshes[1] shaderName], @"Shadeless", @"shader name should still be shadeless, not %@", [item.meshes[1] shaderName]);
 	
-	STAssertEquals([[item.meshes[0] textures] count], 1UL, @"Should have one texture");
-	STAssertEqualObjects([[[item.meshes[0] textureWithIdentifier:@"diffuseTexture"] textureURL] lastPathComponent], @"defaultColor.png", @"Should have one texture");
+	XCTAssertEqual([[item.meshes[0] textures] count], 1UL, @"Should have one texture");
+	XCTAssertEqualObjects([[[item.meshes[0] textureWithIdentifier:@"diffuseTexture"] textureURL] lastPathComponent], @"defaultColor.png", @"Should have one texture");
 	
-	STAssertEquals([[item.meshes[1] textures] count], 1UL, @"Should have one texture");
-	STAssertEqualObjects([[[item.meshes[1] textureWithIdentifier:@"diffuseTexture"] textureURL] lastPathComponent], @"defaultReflection.jpg", @"Should have one texture");
+	XCTAssertEqual([[item.meshes[1] textures] count], 1UL, @"Should have one texture");
+	XCTAssertEqualObjects([[[item.meshes[1] textureWithIdentifier:@"diffuseTexture"] textureURL] lastPathComponent], @"defaultReflection.jpg", @"Should have one texture");
 	
 	[doc close];
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
@@ -126,16 +126,16 @@ static NSURL *testDocumentURL;
 	NSError *error = nil;
 	GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
 	
-	STAssertNotNil(doc, @"Should open empty document");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(doc, @"Should open empty document");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	
 	error = nil;
 	GLLItem *item = [doc addModelAtURL:testModelURL error:&error];
-	STAssertNotNil(item, @"Should have added model");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(item, @"Should have added model");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	
-	STAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[0] shaderName]);
-	STAssertEqualObjects([item.meshes[1] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[1] shaderName]);
+	XCTAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[0] shaderName]);
+	XCTAssertEqualObjects([item.meshes[1] shaderName], @"Diffuse", @"shader name should  be diffuse, not %@", [item.meshes[1] shaderName]);
 	
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	
@@ -143,12 +143,12 @@ static NSURL *testDocumentURL;
 	[[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] addObjectsFromArray:item.meshes.array];
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	
-	STAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[0] shaderName]);
-	STAssertEqualObjects([item.meshes[1] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[1] shaderName]);
+	XCTAssertEqualObjects([item.meshes[0] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[0] shaderName]);
+	XCTAssertEqualObjects([item.meshes[1] shaderName], @"Diffuse", @"shader name should still be diffuse, not %@", [item.meshes[1] shaderName]);
 	
-	STAssertNoThrow([[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] removeAllObjects], @"clearing selection to add bones instead");
-	STAssertNoThrow([[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] addObjectsFromArray:item.bones.array], @"adding bones instead");
-	STAssertNoThrow([[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]], @"Processing of this change shouldn't throw");
+	XCTAssertNoThrow([[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] removeAllObjects], @"clearing selection to add bones instead");
+	XCTAssertNoThrow([[doc.selection mutableArrayValueForKeyPath:@"selectedObjects"] addObjectsFromArray:item.bones.array], @"adding bones instead");
+	XCTAssertNoThrow([[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]], @"Processing of this change shouldn't throw");
 	
 	[doc close];
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];

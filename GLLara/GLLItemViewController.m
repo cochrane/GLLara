@@ -30,12 +30,6 @@
     return self;
 }
 
-- (void)loadView
-{
-	// Load explicitly with this method, to make sure it goes through DMLocalizedNibBundle.
-	[NSBundle loadNibNamed:self.nibName owner:self];
-}
-
 - (IBAction)help:(id)sender;
 {
 	NSString *locBookName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleHelpBookName"];
@@ -47,7 +41,7 @@
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
 	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.pose" ];
 	[panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
+		if (result != NSModalResponseOK) return;
 		
 		NSError *error = nil;
 		NSString *file = [NSString stringWithContentsOfURL:panel.URL usedEncoding:NULL error:&error];
@@ -81,7 +75,7 @@
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
 	panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj" ];
 	[panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
+		if (result != NSModalResponseOK) return;
 		
 		NSError *error = nil;
 		GLLModel *model = [GLLModel cachedModelFromFile:panel.URL parent:item.model error:&error];
@@ -105,7 +99,7 @@
 	panel.canChooseDirectories = YES;
 	panel.canChooseFiles = NO;
 	[panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result){
-		if (result != NSOKButton) return;
+		if (result != NSModalResponseOK) return;
 		
 		NSURL *directoryURL = panel.URL;
 		

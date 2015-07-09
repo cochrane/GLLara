@@ -41,7 +41,7 @@ typedef enum GLLCullFaceMode
 @property (nonatomic, copy) NSString *displayName;
 @property (nonatomic, retain) NSArray *textures;
 
-@property (nonatomic, assign) NSUInteger meshIndex;
+@property (nonatomic, assign, readonly) NSUInteger meshIndex;
 
 /*
  * Vertex buffer (format described below)

@@ -19,9 +19,9 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
-	STAssertNil(model, @"This model should not have loaded");
-	STAssertNotNil(error, @"Model should have written an error message");
+	XCTAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
+	XCTAssertNil(model, @"This model should not have loaded");
+	XCTAssertNotNil(error, @"Model should have written an error message");
 }
 
 - (void)testTooManyBonesFile
@@ -35,9 +35,9 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
-	STAssertNil(model, @"This model should not have loaded");
-	STAssertNotNil(error, @"Model should have written an error message");	
+	XCTAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
+	XCTAssertNil(model, @"This model should not have loaded");
+	XCTAssertNotNil(error, @"Model should have written an error message");	
 }
 
 - (void)testTooManyMeshesFile
@@ -51,9 +51,9 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
-	STAssertNil(model, @"This model should not have loaded");
-	STAssertNotNil(error, @"Model should have written an error message");
+	XCTAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
+	XCTAssertNil(model, @"This model should not have loaded");
+	XCTAssertNotNil(error, @"Model should have written an error message");
 }
 
 - (void)testBoneParentOutOfRange
@@ -77,9 +77,9 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
-	STAssertNil(model, @"This model should not have loaded");
-	STAssertNotNil(error, @"Model should have written an error message");
+	XCTAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
+	XCTAssertNil(model, @"This model should not have loaded");
+	XCTAssertNotNil(error, @"Model should have written an error message");
 }
 
 - (void)testBoneParentCircle
@@ -103,9 +103,9 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
-	STAssertNil(model, @"This model should not have loaded");
-	STAssertNotNil(error, @"Model should have written an error message");
+	XCTAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
+	XCTAssertNil(model, @"This model should not have loaded");
+	XCTAssertNotNil(error, @"Model should have written an error message");
 }
 
 - (void)testBoneIndexOutOfRange
@@ -193,9 +193,9 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
-	STAssertNil(model, @"This model should not have loaded");
-	STAssertNotNil(error, @"Model should have written an error message");
+	XCTAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
+	XCTAssertNil(model, @"This model should not have loaded");
+	XCTAssertNotNil(error, @"Model should have written an error message");
 }
 
 - (void)testVertexElementOutOfRange
@@ -283,9 +283,9 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
-	STAssertNil(model, @"This model should not have loaded");
-	STAssertNotNil(error, @"Model should have written an error message");
+	XCTAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
+	XCTAssertNil(model, @"This model should not have loaded");
+	XCTAssertNotNil(error, @"Model should have written an error message");
 }
 
 - (void)testASCIIAsBinary
@@ -318,9 +318,9 @@
 	
 	GLLModel *model;
 	NSError *error = nil;
-	STAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
-	STAssertNil(model, @"This model should not have loaded");
-	STAssertNotNil(error, @"Model should have written an error message");
+	XCTAssertNoThrow(model = [[GLLModel alloc] initBinaryFromData:data baseURL:baseURL parent:nil error:&error], @"Loading should never throw");
+	XCTAssertNil(model, @"This model should not have loaded");
+	XCTAssertNotNil(error, @"Model should have written an error message");
 }
 
 @end

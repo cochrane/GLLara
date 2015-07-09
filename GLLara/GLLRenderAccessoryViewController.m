@@ -24,18 +24,14 @@
 	NSArray *typeNames = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
 	
 	self.fileTypes = [typeNames map:^(NSString *type){
+		NSString *description = (__bridge_transfer NSString *) UTTypeCopyDescription((__bridge CFStringRef) type);
+		if (!description) description = type;
 		return @{ @"type" : type,
-		@"typeDescription" : (__bridge_transfer NSString *) UTTypeCopyDescription((__bridge CFStringRef) type) };
+		@"typeDescription" : description };
 	}];
 	self.selectedFileType = self.fileTypes[0];
 	
     return self;
-}
-
-- (void)loadView
-{
-	// Load explicitly with this method, to make sure it goes through DMLocalizedNibBundle.
-	[NSBundle loadNibNamed:self.nibName owner:self];
 }
 
 - (void)setSelectedFileType:(NSDictionary *)selectedFileType
