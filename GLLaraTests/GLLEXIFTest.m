@@ -28,13 +28,13 @@
 
 	NSError *error = nil;
 	GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
-	STAssertNotNil(doc, @"No document");
-	STAssertNil(error, @"Got error: %@", error);
+	XCTAssertNotNil(doc, @"No document");
+	XCTAssertNil(error, @"Got error: %@", error);
 	
 	// Render the file
-	STAssertEquals(doc.windowControllers.count, 2UL, @"Should have two windows");
+	XCTAssertEqual(doc.windowControllers.count, 2UL, @"Should have two windows");
 	GLLRenderWindowController *controller = doc.windowControllers[1];
-	STAssertTrue([controller isKindOfClass:[GLLRenderWindowController class]], @"Should be a render window");
+	XCTAssertTrue([controller isKindOfClass:[GLLRenderWindowController class]], @"Should be a render window");
 	
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
 	
@@ -54,12 +54,12 @@
 	CGImageSourceRef source = CGImageSourceCreateWithURL((__bridge CFURLRef) self.imageURL, NULL);
 	
 	NSDictionary *properties = (__bridge_transfer NSDictionary *) CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
-	STAssertNotNil(properties, @"Image should have associated properties");
+	XCTAssertNotNil(properties, @"Image should have associated properties");
 	
 	NSDictionary *tiffDict = properties[(__bridge NSString *) kCGImagePropertyTIFFDictionary];
-	STAssertNotNil(tiffDict, @"Image should have TIFF dictionary");
+	XCTAssertNotNil(tiffDict, @"Image should have TIFF dictionary");
 	
-	STAssertTrue([tiffDict[(__bridge NSString *)kCGImagePropertyTIFFSoftware] hasPrefix:@"GLLara"], @"Software field should exist and start with GLLara");
+	XCTAssertTrue([tiffDict[(__bridge NSString *)kCGImagePropertyTIFFSoftware] hasPrefix:@"GLLara"], @"Software field should exist and start with GLLara");
 	
 	CFRelease(source);
 }

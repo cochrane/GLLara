@@ -6,10 +6,10 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import <CoreData/CoreData.h>
 
-@interface GLLExportBinaryTest : SenTestCase
+@interface GLLExportBinaryTest : XCTestCase
 
 @property (nonatomic) NSPersistentStoreCoordinator *coordinator;
 @property (nonatomic) NSManagedObjectContext *managedObjectContext;

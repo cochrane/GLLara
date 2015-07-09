@@ -31,7 +31,7 @@
 	NSError *error = nil;
 	BOOL hasDirectory = [[NSFileManager defaultManager] createDirectoryAtURL:self.tmpDirectoryURL withIntermediateDirectories:YES attributes:nil error:&error];
 	
-	STAssertTrue(hasDirectory, @"Directory not available. Error: %@.", error);
+	XCTAssertTrue(hasDirectory, @"Directory not available. Error: %@.", error);
 }
 
 - (void)tearDown
@@ -207,35 +207,35 @@
 	[writer setRenderGroup:1 renderParameterValues:@[ @(12) ] forMesh:0];
 	writer.mtlLibName = @"testSimple.mtl";
 	NSString *contentsOBJ = writer.testFileStringOBJ;
-	STAssertNotNil(contentsOBJ, @"Writer didn't write anything.");
+	XCTAssertNotNil(contentsOBJ, @"Writer didn't write anything.");
 	NSString *contentsMTL = writer.testFileStringMTL;
-	STAssertNotNil(contentsOBJ, @"Writer didn't write anything.");
+	XCTAssertNotNil(contentsOBJ, @"Writer didn't write anything.");
 	
 	[self writeString:contentsOBJ toTmpFile:@"testSimple.obj"];
 	[self writeString:contentsMTL toTmpFile:@"testSimple.mtl"];
 	
 	NSError *error = nil;
 	GLLModelObj *model = [[GLLModelObj alloc] initWithContentsOfURL:[self.tmpDirectoryURL URLByAppendingPathComponent:@"testSimple.obj"] error:&error];
-	STAssertNotNil(model, @"Couldn't read test object");
-	STAssertNil(error, @"Produced error: %@", error);
+	XCTAssertNotNil(model, @"Couldn't read test object");
+	XCTAssertNil(error, @"Produced error: %@", error);
 	
-	STAssertEquals(model.bones.count, 1UL, @"Should have one bone!");
-	STAssertEquals(model.meshes.count, 1UL, @"Should have one mesh!");
+	XCTAssertEqual(model.bones.count, 1UL, @"Should have one bone!");
+	XCTAssertEqual(model.meshes.count, 1UL, @"Should have one mesh!");
 	
 	// Test bone
 	GLLModelBone *bone = [model.bones objectAtIndex:0];
-	STAssertEqualObjects(bone.name, @"Root bone", @"incorrect name");
-	STAssertNil(bone.parent, @"should not have a parent, has %@", bone.parent);
-	STAssertEqualsWithAccuracy(bone.positionX, 0.0f, 0.001f, @"wrong position");
-	STAssertEqualsWithAccuracy(bone.positionY, 0.0f, 0.001f, @"wrong position");
-	STAssertEqualsWithAccuracy(bone.positionZ, 0.0f, 0.001f, @"wrong position");
+	XCTAssertEqualObjects(bone.name, @"Root bone", @"incorrect name");
+	XCTAssertNil(bone.parent, @"should not have a parent, has %@", bone.parent);
+	XCTAssertEqualWithAccuracy(bone.positionX, 0.0f, 0.001f, @"wrong position");
+	XCTAssertEqualWithAccuracy(bone.positionY, 0.0f, 0.001f, @"wrong position");
+	XCTAssertEqualWithAccuracy(bone.positionZ, 0.0f, 0.001f, @"wrong position");
 	
 	// Test mesh
 	GLLModelMesh *mesh = [model.meshes objectAtIndex:0];
-	STAssertEqualObjects(mesh.name, @"Mesh 1", @"incorrect mesh name");
-	STAssertEquals(mesh.countOfUVLayers, 1UL, @"Incorrect number of UV layers");
-	STAssertEquals(mesh.countOfVertices, 24UL, @"Incorrect number of vertices for cube (with no sharing due to normals)");
-	STAssertEquals(mesh.countOfElements, 36UL, @"Incorrect number of elements for cube");
+	XCTAssertEqualObjects(mesh.name, @"Mesh 1", @"incorrect mesh name");
+	XCTAssertEqual(mesh.countOfUVLayers, 1UL, @"Incorrect number of UV layers");
+	XCTAssertEqual(mesh.countOfVertices, 24UL, @"Incorrect number of vertices for cube (with no sharing due to normals)");
+	XCTAssertEqual(mesh.countOfElements, 36UL, @"Incorrect number of elements for cube");
 }
 
 #pragma mark - Helpers
@@ -245,8 +245,8 @@
 	NSError *error = nil;
 	NSURL *url = [self.tmpDirectoryURL URLByAppendingPathComponent:filename];
 	BOOL result = [string writeToURL:url atomically:NO encoding:NSUTF8StringEncoding error:&error];
-	STAssertTrue(result, @"Couldn't write test data");
-	STAssertNil(error, @"Got error with test data: %@", error);
+	XCTAssertTrue(result, @"Couldn't write test data");
+	XCTAssertNil(error, @"Got error with test data: %@", error);
 }
 
 @end

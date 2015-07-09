@@ -31,13 +31,13 @@
 {
 	NSError *error = nil;
 	self.document = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
-	STAssertNotNil(self.document, @"No document");
-	STAssertNil(error, @"Got error: %@", error);
+	XCTAssertNotNil(self.document, @"No document");
+	XCTAssertNil(error, @"Got error: %@", error);
 
 	error = nil;
 	self.item = [self.document addModelAtURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"generic_item" withExtension:@"mesh.ascii"] error:&error];
-	STAssertNotNil(self.item, @"Should have added model");
-	STAssertNil(error, @"Should not have error (got %@)", error);
+	XCTAssertNotNil(self.item, @"Should have added model");
+	XCTAssertNil(error, @"Should not have error (got %@)", error);
 	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 }
 
@@ -59,11 +59,11 @@
 	NSAppleScript *script = [[NSAppleScript alloc] initWithSource:testScript];
 	NSDictionary *errorDescription = nil;
 	NSAppleEventDescriptor *descriptor = [script executeAndReturnError:&errorDescription];
-	STAssertNotNil(descriptor, @"Should have gotten result");
-	STAssertNil(errorDescription, @"Should have no error, got %@", errorDescription);
+	XCTAssertNotNil(descriptor, @"Should have gotten result");
+	XCTAssertNil(errorDescription, @"Should have no error, got %@", errorDescription);
 	
 	GLLItemBone *firstBone = self.item.bones[0];
-	STAssertEqualsWithAccuracy(firstBone.rotationX, 1.0f, 1e-4f, @"Rotation not set to value in script, is %f", firstBone.rotationX);
+	XCTAssertEqualWithAccuracy(firstBone.rotationX, 1.0f, 1e-4f, @"Rotation not set to value in script, is %f", firstBone.rotationX);
 }
 
 - (void)testBoneValueRead
@@ -78,24 +78,24 @@
 	NSAppleScript *script = [[NSAppleScript alloc] initWithSource:testScript];
 	NSDictionary *errorDescription = nil;
 	NSAppleEventDescriptor *descriptor = [script executeAndReturnError:&errorDescription];
-	STAssertNotNil(descriptor, @"Should have gotten result");
-	STAssertNil(errorDescription, @"Should have no error, got %@", errorDescription);
+	XCTAssertNotNil(descriptor, @"Should have gotten result");
+	XCTAssertNil(errorDescription, @"Should have no error, got %@", errorDescription);
 	
 	NSAppleEventDescriptor *doubleDescriptor = [descriptor coerceToDescriptorType:'doub'];
-	STAssertNotNil(doubleDescriptor, @"should be able to coerce data to double");
+	XCTAssertNotNil(doubleDescriptor, @"should be able to coerce data to double");
 	NSData *doubleData = doubleDescriptor.data;
-	STAssertNotNil(doubleData, @"Data should exist");
-	STAssertEquals(doubleData.length, 8UL, @"Size of double data should be 8 bytes.");
+	XCTAssertNotNil(doubleData, @"Data should exist");
+	XCTAssertEqual(doubleData.length, 8UL, @"Size of double data should be 8 bytes.");
 	double value = 0;
 	[doubleData getBytes:&value length:sizeof(double)];
-	STAssertEqualsWithAccuracy(value, 1.0, 1e-4, @"Should have value that was previously set");
+	XCTAssertEqualWithAccuracy(value, 1.0, 1e-4, @"Should have value that was previously set");
 }
 
 - (void)testCameraChange
 {
 	NSFetchRequest *camerasRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLCamera"];
 	NSArray *result = [self.document.managedObjectContext executeFetchRequest:camerasRequest error:NULL];
-	STAssertEquals(result.count, 1UL, @"Should have exactly one camera");
+	XCTAssertEqual(result.count, 1UL, @"Should have exactly one camera");
 	
 	GLLCamera *cam = result[0];
 	cam.longitude = 1.0;
@@ -108,10 +108,10 @@
 	NSAppleScript *script = [[NSAppleScript alloc] initWithSource:testScript];
 	NSDictionary *errorDescription = nil;
 	NSAppleEventDescriptor *descriptor = [script executeAndReturnError:&errorDescription];
-	STAssertNotNil(descriptor, @"Should have gotten result");
-	STAssertNil(errorDescription, @"Should have no error, got %@", errorDescription);
+	XCTAssertNotNil(descriptor, @"Should have gotten result");
+	XCTAssertNil(errorDescription, @"Should have no error, got %@", errorDescription);
 
-	STAssertEqualsWithAccuracy(cam.longitude, 2.0f, 1e-4f, @"Should have updated camera");
+	XCTAssertEqualWithAccuracy(cam.longitude, 2.0f, 1e-4f, @"Should have updated camera");
 }
 
 - (void)testAddModel
@@ -127,12 +127,12 @@
 	NSAppleScript *script = [[NSAppleScript alloc] initWithSource:testScript];
 	NSDictionary *errorDescription = nil;
 	NSAppleEventDescriptor *descriptor = [script executeAndReturnError:&errorDescription];
-	STAssertNotNil(descriptor, @"Should have gotten result");
-	STAssertNil(errorDescription, @"Should have no error, got %@", errorDescription);
+	XCTAssertNotNil(descriptor, @"Should have gotten result");
+	XCTAssertNil(errorDescription, @"Should have no error, got %@", errorDescription);
 	
 	NSFetchRequest *itemsRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 	NSArray *items = [self.document.managedObjectContext executeFetchRequest:itemsRequest error:NULL];
-	STAssertEquals(items.count, 2UL, @"Should have two items now.");
+	XCTAssertEqual(items.count, 2UL, @"Should have two items now.");
 }
 
 - (void)testTextureChange
@@ -148,11 +148,11 @@
 	NSAppleScript *script = [[NSAppleScript alloc] initWithSource:testScript];
 	NSDictionary *errorDescription = nil;
 	NSAppleEventDescriptor *descriptor = [script executeAndReturnError:&errorDescription];
-	STAssertNotNil(descriptor, @"Should have gotten result");
-	STAssertNil(errorDescription, @"Should have no error, got %@", errorDescription);
+	XCTAssertNotNil(descriptor, @"Should have gotten result");
+	XCTAssertNil(errorDescription, @"Should have no error, got %@", errorDescription);
 
 	GLLItemMesh *mesh = self.item.meshes[0];
-	STAssertEqualObjects([[[mesh textureWithIdentifier:@"diffuseTexture"] textureURL] lastPathComponent], @"testDiffusetexture.png", @"Does not have new texture");
+	XCTAssertEqualObjects([[[mesh textureWithIdentifier:@"diffuseTexture"] textureURL] lastPathComponent], @"testDiffusetexture.png", @"Does not have new texture");
 }
 
 @end

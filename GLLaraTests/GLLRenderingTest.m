@@ -106,12 +106,12 @@
 			// Ensure it didn't get automatically removed as punishment for failing to load
 			NSFetchRequest *itemsRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 			NSArray *items = [doc.managedObjectContext executeFetchRequest:itemsRequest error:NULL];
-			STAssertEquals(items.count, 1UL, @"Item no longer in document");
+			XCTAssertEqual(items.count, 1UL, @"Item no longer in document");
 			
 			// Render the file
-			STAssertEquals(doc.windowControllers.count, 2UL, @"Should have two windows");
+			XCTAssertEqual(doc.windowControllers.count, 2UL, @"Should have two windows");
 			GLLRenderWindowController *controller = doc.windowControllers[1];
-			STAssertTrue([controller isKindOfClass:[GLLRenderWindowController class]], @"Should be a render window");
+			XCTAssertTrue([controller isKindOfClass:[GLLRenderWindowController class]], @"Should be a render window");
 			controller.renderView.camera.latitude = -0.5;
 			controller.renderView.camera.longitude = -0.89;
 			controller.renderView.camera.distance = 2.0;
@@ -120,9 +120,9 @@
 			firstDiffuseFetchRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"index" ascending:YES] ];
 			firstDiffuseFetchRequest.fetchLimit = 1;
 			NSArray *lights = [doc.managedObjectContext executeFetchRequest:firstDiffuseFetchRequest error:NULL];
-			STAssertEquals(lights.count, 1UL, @"Should have a light");
+			XCTAssertEqual(lights.count, 1UL, @"Should have a light");
 			GLLDirectionalLight *light = lights[0];
-			STAssertTrue(light.isEnabled, @"Light should be turned on");
+			XCTAssertTrue(light.isEnabled, @"Light should be turned on");
 			light.latitude = -0.2;
 			light.longitude = 0.5;
 			
@@ -145,19 +145,19 @@
 			}
 			
 			NSImage *generated = [[NSImage alloc] initByReferencingURL:generatedImageURL];
-			STAssertNotNil(generated, @"couldn't load generated image");
+			XCTAssertNotNil(generated, @"couldn't load generated image");
 			
 			NSImage *expected = [[NSImage alloc] initByReferencingURL:existingImageURL];
-			STAssertNotNil(expected, @"couldn't load expected image even though bundle claims it exists.");
+			XCTAssertNotNil(expected, @"couldn't load expected image even though bundle claims it exists.");
 			
 			NSBitmapImageRep *generatedRep = generated.representations[0];
 			NSBitmapImageRep *expectedRep = expected.representations[0];
 			
-			STAssertEquals(generatedRep.bitmapFormat, expectedRep.bitmapFormat, @"different formats");
-			STAssertEquals(generatedRep.bitsPerPixel, expectedRep.bitsPerPixel, @"different formats");
-			STAssertEquals(generatedRep.bytesPerRow, expectedRep.bytesPerRow, @"different formats");
-			STAssertEquals(generatedRep.isPlanar, expectedRep.isPlanar, @"different formats");
-			STAssertEquals(generatedRep.samplesPerPixel, expectedRep.samplesPerPixel, @"different formats");
+			XCTAssertEqual(generatedRep.bitmapFormat, expectedRep.bitmapFormat, @"different formats");
+			XCTAssertEqual(generatedRep.bitsPerPixel, expectedRep.bitsPerPixel, @"different formats");
+			XCTAssertEqual(generatedRep.bytesPerRow, expectedRep.bytesPerRow, @"different formats");
+			XCTAssertEqual(generatedRep.isPlanar, expectedRep.isPlanar, @"different formats");
+			XCTAssertEqual(generatedRep.samplesPerPixel, expectedRep.samplesPerPixel, @"different formats");
 			
 			NSUInteger numElements = 400*400*4;
 			float averageAbsoluteDifference = 0;
@@ -175,9 +175,9 @@
 			free(difference);
 			
 			NSLog(@"average absolute diff: %f maximum absolute diff: %f", averageAbsoluteDifference, maximumAbsoluteDifference);
-			STAssertEquals(memcmp(generatedRep.bitmapData, expectedRep.bitmapData, 400*generatedRep.bytesPerRow), 0, @"Different data");
-			STAssertTrue(averageAbsoluteDifference < 0.1f, @"Average absolute difference too high (%f)", averageAbsoluteDifference);
-			STAssertTrue(maximumAbsoluteDifference < 20.0f, @"Maximum absolute difference too high (%f)", maximumAbsoluteDifference);
+			XCTAssertEqual(memcmp(generatedRep.bitmapData, expectedRep.bitmapData, 400*generatedRep.bytesPerRow), 0, @"Different data");
+			XCTAssertTrue(averageAbsoluteDifference < 0.1f, @"Average absolute difference too high (%f)", averageAbsoluteDifference);
+			XCTAssertTrue(maximumAbsoluteDifference < 20.0f, @"Maximum absolute difference too high (%f)", maximumAbsoluteDifference);
 		}
 	}
 	
@@ -238,15 +238,15 @@
 			// Create a document
 			NSError *error = nil;
 			GLLDocument *doc = [[NSDocumentController sharedDocumentController] openUntitledDocumentAndDisplay:YES error:&error];
-			STAssertNotNil(doc, @"No document");
-			STAssertNil(error, @"Got error: %@", error);
+			XCTAssertNotNil(doc, @"No document");
+			XCTAssertNil(error, @"Got error: %@", error);
 			
 			error = nil;
 			GLLItem *item = [doc addModelAtURL:objTemporaryURL error:&error];
-			STAssertNotNil(item, @"Should have added model");
-			STAssertNil(error, @"Should not have error (got %@)", error);
+			XCTAssertNotNil(item, @"Should have added model");
+			XCTAssertNil(error, @"Should not have error (got %@)", error);
 			
-			STAssertEqualObjects(shaderName, [item.meshes[0] shaderName], @"Wrong shader chosen for mesh.");
+			XCTAssertEqualObjects(shaderName, [item.meshes[0] shaderName], @"Wrong shader chosen for mesh.");
 			
 			[doc.managedObjectContext processPendingChanges];
 			
@@ -292,19 +292,19 @@
 			}
 			
 			NSImage *generated = [[NSImage alloc] initByReferencingURL:generatedImageURL];
-			STAssertNotNil(generated, @"couldn't load generated image");
+			XCTAssertNotNil(generated, @"couldn't load generated image");
 			
 			NSImage *expected = [[NSImage alloc] initByReferencingURL:existingImageURL];
-			STAssertNotNil(expected, @"couldn't load expected image even though bundle claims it exists.");
+			XCTAssertNotNil(expected, @"couldn't load expected image even though bundle claims it exists.");
 			
 			NSBitmapImageRep *generatedRep = generated.representations[0];
 			NSBitmapImageRep *expectedRep = expected.representations[0];
 			
-			STAssertEquals(generatedRep.bitmapFormat, expectedRep.bitmapFormat, @"different formats");
-			STAssertEquals(generatedRep.bitsPerPixel, expectedRep.bitsPerPixel, @"different formats");
-			STAssertEquals(generatedRep.bytesPerRow, expectedRep.bytesPerRow, @"different formats");
-			STAssertEquals(generatedRep.isPlanar, expectedRep.isPlanar, @"different formats");
-			STAssertEquals(generatedRep.samplesPerPixel, expectedRep.samplesPerPixel, @"different formats");
+			XCTAssertEqual(generatedRep.bitmapFormat, expectedRep.bitmapFormat, @"different formats");
+			XCTAssertEqual(generatedRep.bitsPerPixel, expectedRep.bitsPerPixel, @"different formats");
+			XCTAssertEqual(generatedRep.bytesPerRow, expectedRep.bytesPerRow, @"different formats");
+			XCTAssertEqual(generatedRep.isPlanar, expectedRep.isPlanar, @"different formats");
+			XCTAssertEqual(generatedRep.samplesPerPixel, expectedRep.samplesPerPixel, @"different formats");
 			
 			NSUInteger numElements = 400*400*4;
 			float averageAbsoluteDifference = 0;
@@ -322,9 +322,9 @@
 			free(difference);
 			
 			NSLog(@"average absolute diff: %f maximum absolute diff: %f", averageAbsoluteDifference, maximumAbsoluteDifference);
-			STAssertEquals(memcmp(generatedRep.bitmapData, expectedRep.bitmapData, 400*generatedRep.bytesPerRow), 0, @"Different data");
-			STAssertTrue(averageAbsoluteDifference < 0.1f, @"Average absolute difference too high (%f)", averageAbsoluteDifference);
-			STAssertTrue(maximumAbsoluteDifference < 20.0f, @"Maximum absolute difference too high (%f)", maximumAbsoluteDifference);
+			XCTAssertEqual(memcmp(generatedRep.bitmapData, expectedRep.bitmapData, 400*generatedRep.bytesPerRow), 0, @"Different data");
+			XCTAssertTrue(averageAbsoluteDifference < 0.1f, @"Average absolute difference too high (%f)", averageAbsoluteDifference);
+			XCTAssertTrue(maximumAbsoluteDifference < 20.0f, @"Maximum absolute difference too high (%f)", maximumAbsoluteDifference);
 		}
 	}
 	
