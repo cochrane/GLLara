@@ -1503,7 +1503,6 @@
 				525ACD6615F0F1A700534E7D /* Sources */,
 				525ACD6715F0F1A700534E7D /* Frameworks */,
 				525ACD6815F0F1A700534E7D /* Resources */,
-				525ACD6915F0F1A700534E7D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1772,19 +1771,6 @@
 			shellPath = /bin/sh;
 			shellScript = "HELP_DIR=$BUILT_PRODUCTS_DIR/GLLara.app/Contents/Resources/GLLara.help/Contents/Resources\nhiutil --create --anchors --verbose --stopwords=en --generate-summaries --file $HELP_DIR/en.lproj/GLLara.helpindex $HELP_DIR/en.lproj/\nhiutil --create --anchors --verbose --stopwords=de --generate-summaries --file $HELP_DIR/de.lproj/GLLara.helpindex $HELP_DIR/de.lproj/";
 			showEnvVarsInLog = 0;
-		};
-		525ACD6915F0F1A700534E7D /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
