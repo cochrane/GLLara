@@ -17,14 +17,13 @@
 
 @implementation GLLModelBone
 
-- (id)initWithModel:(GLLModel *)model;
+@dynamic hasParent;
+
+- (id)init;
 {
 	if (!(self = [super init])) return nil;
 	
-	_model = model;
-	
 	_parentIndex = UINT16_MAX;
-	_children = @[];
 	
 	_positionX = 0;
 	_positionY = 0;
@@ -52,9 +51,7 @@
 					  }];
 		return nil;
 	}
-	
-	_model = model;
-	
+		
 	_name = [stream readPascalString];
 	_parentIndex = [stream readUint16];
 	_positionX = [stream readFloat32];
@@ -77,46 +74,9 @@
 	return self;
 }
 
-- (GLLModelBone *)parent
+- (BOOL)hasParent
 {
-	if (self.parentIndex >= self.model.bones.count) return nil;
-	return self.model.bones[self.parentIndex];
-}
-
-#pragma mark - Finishing loading
-
-- (BOOL)findParentsAndChildrenError:(NSError *__autoreleasing*)error;
-{
-	if (self.parentIndex != UINT16_MAX && self.parentIndex >= self.model.bones.count)
-	{
-		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{
-				   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Parent of bone \"%@\" does not exist.", @"The parent index of this bone is invalid."), self.name],
-	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"All bones have to have a parent that exists or no parent at all.", @"The parent index of this bone is invalid.")
-					  }];
-
-		return NO;
-	}
-	
-	GLLModelBone *parent = self.parent;
-	NSMutableSet *encounteredBones = [NSMutableSet setWithObject:self];
-	while (parent != nil)
-	{
-		if ([encounteredBones containsObject:parent])
-		{
-			if (error)
-				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_CircularReference userInfo:@{
-					   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Bone \"%@\" has itself as an ancestor.", @"Found a circle in the bone relationships."), self.name],
-		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The bones would form an infinite loop.", @"Found a circle in a bone relationship")}];
-			
-			return NO;
-		}
-		[encounteredBones addObject:parent];
-		parent = parent.parent;
-	}
-	
-	_children = [self.model.bones filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"parent == %@", self]];
-	return YES;
+    return self.parentIndex != 0xFFFF;
 }
 
 #pragma mark - Export

@@ -60,4 +60,7 @@ extern NSString *GLLModelLoadingErrorDomain;
 
 - (GLLModelBone *)boneForName:(NSString *)name;
 
+- (GLLModelBone *)parentForBone:(GLLModelBone *)bone;
+- (NSArray *)childrenForBone:(GLLModelBone *)bone;
+
 @end

@@ -43,6 +43,19 @@
 	return result;
 }
 
+- (NSArray *)filter:(int (^)(id))block;
+{
+    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
+    
+    for (id object in self)
+    {
+        if (block(object))
+            [result addObject:object];
+    }
+    
+    return [result copy];
+}
+
 @end
 
 @implementation NSOrderedSet (Map)

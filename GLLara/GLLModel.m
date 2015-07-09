@@ -216,9 +216,6 @@ static NSCache *cachedModels;
 		[bones addObject:bone];
 	}
 	_bones = [bones copy];
-	for (GLLModelBone *bone in _bones)
-		if (![bone findParentsAndChildrenError:error])
-			return nil;
 	
 	if (!stream.isValid)
 	{
@@ -316,9 +313,6 @@ static NSCache *cachedModels;
 			[bones addObject:bone];
 	}
 	_bones = [bones copy];
-	for (GLLModelBone *bone in _bones)
-		if (![bone findParentsAndChildrenError:error])
-			return nil;
 	
 	if (!scanner.isValid)
 	{
@@ -379,6 +373,21 @@ static NSCache *cachedModels;
 		if ([bone.name isEqual:name])
 			return bone;
 	return nil;
+}
+
+#pragma mark - Bone hierarchy
+
+- (GLLModelBone *)parentForBone:(GLLModelBone *)bone;
+{
+    if (!bone.hasParent)
+        return nil;
+    return self.bones[bone.parentIndex];
+}
+
+- (NSArray *)childrenForBone:(GLLModelBone *)bone;
+{
+    return [self.bones filter:^(GLLModelBone *child) { return [self parentForBone:child] == bone;
+    }];
 }
 
 #pragma mark - Private methods

@@ -50,7 +50,7 @@
 	}
 	
 	// 1. Set up bones. We only have the one.
-	self.bones = @[ [[GLLModelBone alloc] initWithModel:self] ];
+	self.bones = @[ [[GLLModelBone alloc] init] ];
 	
 	// 2. Set up meshes. We use one mesh per material group.
 	NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:file->getMaterialRanges().size()];

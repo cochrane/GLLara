@@ -59,7 +59,7 @@
 	// Test bone
 	GLLModelBone *bone = [model.bones objectAtIndex:0];
 	XCTAssertEqualObjects(bone.name, @"bone0", @"incorrect name");
-	XCTAssertNil(bone.parent, @"should not have a parent, has %@", bone.parent);
+	XCTAssertNil([model parentForBone:bone], @"should not have a parent, has %@", [model parentForBone:bone]);
 	XCTAssertEqualWithAccuracy(bone.positionX, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionY, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionZ, 0.0f, 0.001f, @"wrong position");
@@ -92,14 +92,14 @@
 	// Test bone
 	GLLModelBone *bone = [model.bones objectAtIndex:0];
 	XCTAssertEqualObjects(bone.name, @"bone0", @"incorrect name");
-	XCTAssertNil(bone.parent, @"should not have a parent, has %@", bone.parent);
+	XCTAssertNil([model parentForBone:bone], @"should not have a parent, has %@", [model parentForBone:bone]);
 	XCTAssertEqualWithAccuracy(bone.positionX, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionY, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionZ, 0.0f, 0.001f, @"wrong position");
 	
 	bone = [model.bones objectAtIndex:1];
 	XCTAssertEqualObjects(bone.name, @"bone1", @"incorrect name");
-	XCTAssertEqualObjects(bone.parent, [model.bones objectAtIndex:0], @"should have previous as parent");
+	XCTAssertEqualObjects([model parentForBone:bone], [model.bones objectAtIndex:0], @"should have previous as parent");
 	XCTAssertEqualWithAccuracy(bone.positionX, 1.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionY, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionZ, 0.0f, 0.001f, @"wrong position");
@@ -133,7 +133,7 @@
 	// Test bone
 	GLLModelBone *bone = [model.bones objectAtIndex:0];
 	XCTAssertEqualObjects(bone.name, @"bone0", @"incorrect name");
-	XCTAssertNil(bone.parent, @"should not have a parent, has %@", bone.parent);
+	XCTAssertNil([model parentForBone:bone], @"should not have a parent, has %@", [model parentForBone:bone]);
 	XCTAssertEqualWithAccuracy(bone.positionX, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionY, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionZ, 0.0f, 0.001f, @"wrong position");
@@ -173,14 +173,14 @@
 	// Test bone
 	GLLModelBone *bone = [model.bones objectAtIndex:0];
 	XCTAssertEqualObjects(bone.name, @"bone0", @"incorrect name");
-	XCTAssertNil(bone.parent, @"should not have a parent, has %@", bone.parent);
+	XCTAssertNil([model parentForBone:bone], @"should not have a parent, has %@", [model parentForBone:bone]);
 	XCTAssertEqualWithAccuracy(bone.positionX, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionY, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionZ, 0.0f, 0.001f, @"wrong position");
 	
 	bone = [model.bones objectAtIndex:1];
 	XCTAssertEqualObjects(bone.name, @"bone1", @"incorrect name");
-	XCTAssertEqualObjects(bone.parent, [model.bones objectAtIndex:0], @"should have previous as parent");
+	XCTAssertEqualObjects([model parentForBone:bone], [model.bones objectAtIndex:0], @"should have previous as parent");
 	XCTAssertEqualWithAccuracy(bone.positionX, 1.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionY, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionZ, 0.0f, 0.001f, @"wrong position");
@@ -225,7 +225,7 @@
 	// Test bone
 	GLLModelBone *bone = [model.bones objectAtIndex:0];
 	XCTAssertEqualObjects(bone.name, @"Root bone", @"incorrect name");
-	XCTAssertNil(bone.parent, @"should not have a parent, has %@", bone.parent);
+	XCTAssertNil([model parentForBone:bone], @"should not have a parent, has %@", [model parentForBone:bone]);
 	XCTAssertEqualWithAccuracy(bone.positionX, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionY, 0.0f, 0.001f, @"wrong position");
 	XCTAssertEqualWithAccuracy(bone.positionZ, 0.0f, 0.001f, @"wrong position");

@@ -13,6 +13,7 @@
 - (NSArray *)map:(id (^)(id))block;
 - (NSMutableArray *)mapMutable:(id (^)(id))block;
 - (NSArray *)mapAndJoin:(NSArray *(^)(id))block;
+- (NSArray *)filter:(int (^)(id))block;
 
 @end
 

@@ -44,8 +44,8 @@
 	GLLModelBone *bone = model.bones[0];
 	XCTAssertEqualObjects(bone.name, @"Test", @"Incorrect name of bone");
 	XCTAssertEqual(bone.parentIndex, (NSUInteger) UINT16_MAX, @"Bone parent index should be invalid");
-	XCTAssertNil(bone.parent, @"Bone should not have a parent");
-	XCTAssertTrue(bone.children == nil || bone.children.count == 0, @"Bone should not have children");
+	XCTAssertNil([model parentForBone:bone], @"Bone should not have a parent");
+	XCTAssertTrue([model childrenForBone:bone] == nil || [model childrenForBone:bone].count == 0, @"Bone should not have children");
 	XCTAssertEqual(bone.positionX, 0.0f, @"incorrect position");
 	XCTAssertEqual(bone.positionY, 0.0f, @"incorrect position");
 	XCTAssertEqual(bone.positionZ, 0.0f, @"incorrect position");
@@ -126,17 +126,17 @@
 	GLLModelBone *bone2 = model.bones[1];
 	XCTAssertEqualObjects(bone1.name, @"Bone1", @"Incorrect name of bone");
 	XCTAssertEqual(bone1.parentIndex, (NSUInteger) UINT16_MAX, @"Bone parent index should be invalid");
-	XCTAssertNil(bone1.parent, @"Bone should not have a parent");
-	XCTAssertEqual(bone1.children.count, 1UL, @"Bone should not have children");
-	XCTAssertEqualObjects(bone1.children, @[ bone2 ], @"bone 2 should be child of bone 1");
+	XCTAssertNil([model parentForBone:bone1], @"Bone should not have a parent");
+	XCTAssertEqual([model childrenForBone:bone1].count, 1UL, @"Bone should not have children");
+	XCTAssertEqualObjects([model childrenForBone:bone1], @[ bone2 ], @"bone 2 should be child of bone 1");
 	XCTAssertEqual(bone1.positionX, -0.5f, @"incorrect position");
 	XCTAssertEqual(bone1.positionY, 0.0f, @"incorrect position");
 	XCTAssertEqual(bone1.positionZ, 0.0f, @"incorrect position");
 	
 	XCTAssertEqualObjects(bone2.name, @"Bone2", @"Incorrect name of bone");
 	XCTAssertEqual(bone2.parentIndex, (NSUInteger) 0, @"Bone parent index should be 0");
-	XCTAssertEqualObjects(bone2.parent, bone1, @"bone 2 should have bone 1 as parent");
-	XCTAssertTrue(bone2.children == nil || bone2.children.count == 0, @"Bone 2 should not have children");
+	XCTAssertEqualObjects([model parentForBone:bone2], bone1, @"bone 2 should have bone 1 as parent");
+	XCTAssertTrue([model childrenForBone:bone2] == nil || [model childrenForBone:bone2].count == 0, @"Bone 2 should not have children");
 	XCTAssertEqual(bone2.positionX, 0.5f, @"incorrect position");
 	XCTAssertEqual(bone2.positionY, 0.0f, @"incorrect position");
 	XCTAssertEqual(bone2.positionZ, 0.0f, @"incorrect position");

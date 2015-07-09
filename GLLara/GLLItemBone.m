@@ -106,7 +106,7 @@
 
 - (GLLItemBone *)parent
 {
-	if (!self.bone.parent) return nil;
+	if (!self.bone.hasParent) return nil;
 	
 	if (parent == nil)
 		parent = self.item.bones[self.bone.parentIndex];

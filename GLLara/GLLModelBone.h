@@ -21,7 +21,7 @@
 @interface GLLModelBone : NSObject
 
 // Bone without parent, children at position 0, 0, 0. No need to call setupParent afterwards.
-- (id)initWithModel:(GLLModel *)model;
+- (id)init;
 
 // Stream must be either a GLLASCIIScanner or a TRInDataStream.
 - (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
@@ -30,30 +30,17 @@
 - (NSString *)writeASCII;
 - (NSData *)writeBinary;
 
-@property (nonatomic, weak, readonly) GLLModel *model;
-
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, assign, readonly) NSUInteger parentIndex;
 @property (nonatomic, assign, readonly) float positionX;
 @property (nonatomic, assign, readonly) float positionY;
 @property (nonatomic, assign, readonly) float positionZ;
+@property (nonatomic, assign, readonly) BOOL hasParent;
 
 /*
  * Transformations for the bone.
  */
 @property (nonatomic, assign) mat_float16 inversePositionMatrix;
 @property (nonatomic, assign) mat_float16 positionMatrix;
-
-/*
- * Access the bones as a tree. Right now, these methods do not
- * cache their results in any way.
- */
-@property (nonatomic, weak, readonly) GLLModelBone *parent;
-@property (nonatomic, retain, readonly) NSArray *children;
-
-/*
- * Called as part of the model loading process;
- */
-- (BOOL)findParentsAndChildrenError:(NSError *__autoreleasing*)error;
 
 @end
