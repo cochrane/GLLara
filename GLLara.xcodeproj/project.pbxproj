@@ -576,7 +576,7 @@
 		525ACD5B15F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		525ACD5D15F0F1A700534E7D /* GLLDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLDocument.h; sourceTree = "<group>"; };
 		525ACD5E15F0F1A700534E7D /* GLLDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLDocument.m; sourceTree = "<group>"; };
-		525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLLaraTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		525ACD6B15F0F1A700534E7D /* GLLaraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLLaraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD7315F0F1A700534E7D /* GLLaraTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GLLaraTests-Info.plist"; sourceTree = "<group>"; };
 		525ACD7515F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		525ACD8215F0F33700534E7D /* GLLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModel.h; sourceTree = "<group>"; };
@@ -967,7 +967,7 @@
 			isa = PBXGroup;
 			children = (
 				525ACD4715F0F1A700534E7D /* GLLara.app */,
-				525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */,
+				525ACD6B15F0F1A700534E7D /* GLLaraTests.xctest */,
 				523DE0DE1604A5ED00BB9F61 /* parseItems */,
 			);
 			name = Products;
@@ -1511,7 +1511,7 @@
 			);
 			name = GLLaraTests;
 			productName = GLLaraTests;
-			productReference = 525ACD6B15F0F1A700534E7D /* GLLaraTests.octest */;
+			productReference = 525ACD6B15F0F1A700534E7D /* GLLaraTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */

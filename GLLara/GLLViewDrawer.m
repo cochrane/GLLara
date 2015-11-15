@@ -278,7 +278,11 @@ struct GLLLightBlock
 			combinedMatrix = simd_mat_mul(partOfCameraMatrix, combinedMatrix);
 			
 			glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
-			glBufferData(GL_UNIFORM_BUFFER, sizeof(combinedMatrix), &combinedMatrix, GL_STREAM_DRAW);
+			glBufferData(GL_UNIFORM_BUFFER, sizeof(combinedMatrix), NULL, GL_STREAM_DRAW);
+            
+            mat_float16 *data = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
+            memcpy(data, &combinedMatrix, sizeof(combinedMatrix));
+            glUnmapBuffer(GL_UNIFORM_BUFFER);
 			
 			// Enable blend for entire scene. That way, new alpha are correctly combined with values in the buffer (instead of stupidly overwriting them), giving the rendered image a correct alpha channel.
 			glEnable(GL_BLEND);

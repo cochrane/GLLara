@@ -206,8 +206,11 @@
 	if (self.program.renderParametersUniformBlockIndex == GL_INVALID_INDEX)
 		return;
 	
-	glGetActiveUniformBlockiv(self.program.programID, self.program.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &bufferLength);
-	void *data = calloc(1, bufferLength);
+    glGetActiveUniformBlockiv(self.program.programID, self.program.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &bufferLength);
+    
+    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingRenderParameters, renderParametersBuffer);
+    glBufferData(GL_UNIFORM_BUFFER, bufferLength, NULL, GL_STREAM_DRAW);
+	void *data = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
 	
 	for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
 	{
@@ -221,11 +224,8 @@
 		
 		[parameter.uniformValue getBytes:&data[byteOffset] length:bufferLength - byteOffset];
 	}
-	
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingRenderParameters, renderParametersBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, bufferLength, data, GL_STREAM_DRAW);
-	
-	free(data);
+    
+    glUnmapBuffer(data);
 
 	needsParameterBufferUpdate = NO;
 }
