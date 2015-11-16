@@ -23,6 +23,7 @@
 {
 	GLuint vertexArray;
 	GLsizei elementsCount;
+    GLenum elementType;
 }
 
 @end
@@ -73,12 +74,32 @@
 			glEnableVertexAttribArray(GLLVertexAttribTangent0 + 2*i);
 			glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_FLOAT, GL_FALSE, (GLsizei) mesh.stride, (GLvoid *) [mesh offsetForTangentLayer:i]);
 		}
-	}
-	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.elementData.length, mesh.elementData.bytes, GL_STATIC_DRAW);
-	
-	elementsCount = (GLsizei) mesh.countOfElements;
+    }
+    
+    elementsCount = (GLsizei) mesh.countOfElements;
+    const GLuint *elements = mesh.elementData.bytes;
+    
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
+    if (mesh.countOfVertices < UINT8_MAX) {
+        elementType = GL_UNSIGNED_BYTE;
+        uint8_t *data = malloc(elementsCount * 2);
+        for (GLsizei i = 0; i < elementsCount; i++)
+            data[i] = (uint8_t) elements[i];
+        
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementsCount, data, GL_STATIC_DRAW);
+        free(data);
+    } else if (mesh.countOfVertices < UINT16_MAX) {
+        elementType = GL_UNSIGNED_SHORT;
+        uint16_t *data = malloc(elementsCount * 2);
+        for (GLsizei i = 0; i < elementsCount; i++)
+            data[i] = (uint16_t) elements[i];
+        
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementsCount * 2, data, GL_STATIC_DRAW);
+        free(data);
+    } else {
+        elementType = GL_UNSIGNED_INT;
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementsCount * 4, elements, GL_STATIC_DRAW);
+    }
 	
 	glBindVertexArray(0);
 	glDeleteBuffers(2, buffers);
@@ -97,7 +118,7 @@
 	
 	// Load and draw the vertices
 	glBindVertexArray(vertexArray);
-	glDrawElements(GL_TRIANGLES, elementsCount, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, elementsCount, elementType, NULL);
 }
 
 - (void)unload
