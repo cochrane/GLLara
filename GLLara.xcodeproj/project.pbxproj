@@ -23,6 +23,7 @@
 		5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */; };
 		5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
 		5227832F1BFA6A4E002E43FD /* GLLVertexFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 5227832E1BFA6A4E002E43FD /* GLLVertexFormat.m */; };
+		522783321BFA712A002E43FD /* GLLVertexArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 522783311BFA712A002E43FD /* GLLVertexArray.m */; };
 		522C4A691608D2640043FCBA /* LionSubscripting.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4A681608D2640043FCBA /* LionSubscripting.m */; };
 		522C4BFB1609331D0043FCBA /* DiffuseSpecularNormalOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */; };
 		522C4C141609B1F10043FCBA /* GLLModelMesh+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */; };
@@ -387,6 +388,8 @@
 		5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAngleRangeValueTransformer.m; sourceTree = "<group>"; };
 		5224C8EF15FABC92002A6C76 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		5227832E1BFA6A4E002E43FD /* GLLVertexFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLVertexFormat.m; sourceTree = "<group>"; };
+		522783301BFA712A002E43FD /* GLLVertexArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLVertexArray.h; sourceTree = "<group>"; };
+		522783311BFA712A002E43FD /* GLLVertexArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLVertexArray.m; sourceTree = "<group>"; };
 		522C4A671608D2640043FCBA /* LionSubscripting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LionSubscripting.h; sourceTree = "<group>"; };
 		522C4A681608D2640043FCBA /* LionSubscripting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LionSubscripting.m; sourceTree = "<group>"; };
 		522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = DiffuseSpecularNormalOBJ.fs; sourceTree = "<group>"; };
@@ -1343,6 +1346,8 @@
 				5296942215F411CC00DF2FA3 /* GLLModelDrawer.h */,
 				5296942315F411CC00DF2FA3 /* GLLModelDrawer.m */,
 				5227832E1BFA6A4E002E43FD /* GLLVertexFormat.m */,
+				522783301BFA712A002E43FD /* GLLVertexArray.h */,
+				522783311BFA712A002E43FD /* GLLVertexArray.m */,
 			);
 			name = "Drawing parts";
 			sourceTree = "<group>";
@@ -1792,6 +1797,7 @@
 			files = (
 				525ACD5815F0F1A700534E7D /* main.m in Sources */,
 				525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */,
+				522783321BFA712A002E43FD /* GLLVertexArray.m in Sources */,
 				525ACD8415F0F33700534E7D /* GLLModel.m in Sources */,
 				525ACD8715F0F3ED00534E7D /* GLLModelMesh.m in Sources */,
 				529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */,

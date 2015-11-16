@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 
 #import "simd_types.h"
+#import "GLLDrawState.h"
 
 @class GLLModelMesh;
 @class GLLModelProgram;
 @class GLLResourceManager;
+@class GLLVertexArray;
 
 /*!
  * @abstract Draws a single mesh.
@@ -20,11 +22,11 @@
  */
 @interface GLLMeshDrawer : NSObject
 
-- (id)initWithMesh:(GLLModelMesh *)mesh resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
+- (id)initWithMesh:(GLLModelMesh *)mesh vertexArray:(GLLVertexArray *)vertexArray resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, retain, readonly) GLLModelMesh *modelMesh;
 
-- (void)draw;
+- (void)drawWithState:(GLLDrawState *)state;
 
 - (void)unload;
 

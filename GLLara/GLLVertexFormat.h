@@ -25,7 +25,7 @@ enum GLLVertexAttrib
 	GLLVertexAttribTangent0
 };
 
-@interface GLLVertexFormat : NSObject
+@interface GLLVertexFormat : NSObject<NSCopying>
 
 - (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;
 

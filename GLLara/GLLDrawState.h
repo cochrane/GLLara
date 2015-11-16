@@ -20,6 +20,7 @@
  */
 typedef struct __GLLDrawState {
 	GLuint activeProgram;
+    GLuint activeVertexArray;
 	int16_t cullFaceMode;
     GLuint activeTexture[GLL_DRAW_STATE_MAX_ACTIVE_TEXTURES];
 } GLLDrawState;

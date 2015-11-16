@@ -188,7 +188,7 @@
 		state->activeProgram = self.program.programID;
 	}
 	
-	[self.meshDrawer draw];
+    [self.meshDrawer drawWithState:state];
 }
 
 - (void)unload

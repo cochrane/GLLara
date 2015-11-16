@@ -11,6 +11,14 @@
 #import "GLLMeshDrawer.h"
 #import "GLLModel.h"
 #import "GLLModelMesh.h"
+#import "GLLVertexArray.h"
+#import "GLLVertexFormat.h"
+
+@interface GLLModelDrawer ()
+
+@property (nonatomic, retain, readonly) NSArray *vertexArrays;
+
+@end
 
 @implementation GLLModelDrawer
 
@@ -23,13 +31,20 @@
 	
 	NSMutableArray *mutableSolidMeshDrawers = [[NSMutableArray alloc] init];
 	NSMutableArray *mutableAlphaMeshDrawers = [[NSMutableArray alloc] init];
+    NSMutableDictionary *mutableVertexArrays = [[NSMutableDictionary alloc] init];
 	for (GLLModelMesh *mesh in model.meshes)
 	{
 		// Ignore objects that can't be rendered.
 		if (!mesh.shader)
 			continue;
 		
-		GLLMeshDrawer *drawer = [[GLLMeshDrawer alloc] initWithMesh:mesh resourceManager:resourceManager error:error];
+        GLLVertexArray *array = mutableVertexArrays[mesh.vertexFormat];
+        if (!array) {
+            array = [[GLLVertexArray alloc] initWithFormat:mesh.vertexFormat];
+            mutableVertexArrays[mesh.vertexFormat] = array;
+        }
+        
+        GLLMeshDrawer *drawer = [[GLLMeshDrawer alloc] initWithMesh:mesh vertexArray:array resourceManager:resourceManager error:error];
 		if (!drawer)
 		{
 			for (GLLMeshDrawer *drawer in mutableSolidMeshDrawers)
@@ -45,8 +60,14 @@
 		else
 			[mutableSolidMeshDrawers addObject:drawer];
 	}
+    
 	_solidMeshDrawers = [mutableSolidMeshDrawers copy];
 	_alphaMeshDrawers = [mutableAlphaMeshDrawers copy];
+    _vertexArrays = [[mutableVertexArrays allValues] copy];
+    
+    for (GLLVertexArray *array in _vertexArrays) {
+        [array upload];
+    }
 	
 	return self;
 }
@@ -54,10 +75,12 @@
 - (void)unload;
 {
 	[self.solidMeshDrawers makeObjectsPerformSelector:@selector(unload)];
-	[self.alphaMeshDrawers makeObjectsPerformSelector:@selector(unload)];
+    [self.alphaMeshDrawers makeObjectsPerformSelector:@selector(unload)];
+    [self.vertexArrays makeObjectsPerformSelector:@selector(unload)];
 	
 	_solidMeshDrawers = nil;
 	_alphaMeshDrawers = nil;
+    _vertexArrays = nil;
 }
 
 @end
