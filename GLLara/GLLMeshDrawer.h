@@ -30,4 +30,9 @@
 
 - (void)unload;
 
+/*!
+ * Compares this with another mesh drawer to figure out an order in which they cause the fewest state changes. The only guarantee is that the order is stable, and that if no state has to be changed, the result will be equal.
+ */
+- (NSComparisonResult)compareTo:(GLLMeshDrawer *)other;
+
 @end

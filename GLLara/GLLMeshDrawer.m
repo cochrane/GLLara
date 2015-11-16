@@ -80,4 +80,13 @@
 	NSAssert(vertexArray == 0 && elementsCount == 0, @"Did not call unload before calling dealloc!");
 }
 
+- (NSComparisonResult)compareTo:(GLLMeshDrawer *)other;
+{
+    if (vertexArray != other->vertexArray) {
+        return vertexArray < other->vertexArray ? NSOrderedAscending : NSOrderedDescending;
+    }
+    
+    return NSOrderedSame;
+}
+
 @end

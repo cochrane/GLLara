@@ -82,6 +82,13 @@
 		[self unload];
 		return nil;
 	}
+    
+    solidDrawers = [solidDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshDrawer *a, GLLItemMeshDrawer *b) {
+        return [a compareTo:b];
+    }];
+    alphaDrawers = [alphaDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshDrawer *a, GLLItemMeshDrawer *b) {
+        return [a compareTo:b];
+    }];
 	
 	glGenBuffers(1, &transformsBuffer);
 	needToUpdateTransforms = YES;

@@ -33,4 +33,6 @@
 
 - (void)unload;
 
+- (NSComparisonResult)compareTo:(GLLItemMeshDrawer *)other;
+
 @end

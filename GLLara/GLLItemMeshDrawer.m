@@ -199,6 +199,22 @@
 	renderParameters = nil;
 }
 
+- (NSComparisonResult)compareTo:(GLLItemMeshDrawer *)other {
+    NSComparisonResult result = [self.meshDrawer compareTo:other.meshDrawer];
+    if (result != NSOrderedSame)
+        return result;
+    
+    if (textures.count != other->textures.count) {
+        return textures.count > other->textures.count ? NSOrderedDescending : NSOrderedAscending;
+    }
+    
+    if (self.program.programID != other.program.programID) {
+        return self.program.programID > other.program.programID ? NSOrderedDescending : NSOrderedAscending;
+    }
+    
+    return NSOrderedSame;
+}
+
 #pragma mark - Private methods
 
 - (void)_updateParameterBuffer;
