@@ -77,6 +77,9 @@
 	self.elementData = [elements copy];
 	self.countOfVertices = globalToLocalVertices.size();
 	self.countOfElements = range.end - range.start;
+    
+    // Previous actions may have disturbed vertex format (because it also depends on count of vertices) so uncache it.
+    self.vertexFormat = nil;
 	
 	// Setup material
 	// Three options: Diffuse, DiffuseSpecular, DiffuseNormal, DiffuseSpecularNormal

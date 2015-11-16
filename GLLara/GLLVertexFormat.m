@@ -33,7 +33,7 @@
 
 - (NSUInteger)hash
 {
-    return ((_hasTangents != 0) << 4) + (_countOfUVLayers << 2) + (_hasBoneWeights != 0);
+    return (_numElementBytes << 6) + ((_hasTangents != 0) << 4) + (_countOfUVLayers << 2) + (_hasBoneWeights != 0);
 }
 
 - (BOOL)isEqual:(id)object
@@ -42,7 +42,7 @@
         return NO;
     
     GLLVertexFormat *format = (GLLVertexFormat *) object;
-    return format.countOfUVLayers == _countOfUVLayers && format.hasBoneWeights == _hasBoneWeights && format.hasTangents == _hasTangents;
+    return format.countOfUVLayers == _countOfUVLayers && format.hasBoneWeights == _hasBoneWeights && format.hasTangents == _hasTangents && format.numElementBytes == _numElementBytes;
 }
 
 - (NSUInteger)offsetForPosition
