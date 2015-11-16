@@ -222,10 +222,10 @@
 		GLint byteOffset;
 		glGetActiveUniformsiv(self.program.programID, 1, &uniformIndex, GL_UNIFORM_OFFSET, &byteOffset);
 		
-		[parameter.uniformValue getBytes:&data[byteOffset] length:bufferLength - byteOffset];
+		[parameter.uniformValue getBytes:data + byteOffset length:bufferLength - byteOffset];
 	}
     
-    glUnmapBuffer(data);
+    glUnmapBuffer(GL_UNIFORM_BUFFER);
 
 	needsParameterBufferUpdate = NO;
 }
