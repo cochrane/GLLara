@@ -45,32 +45,32 @@ void _dds_get_texture_format(GLLDDSFile *file, GLenum *internalFormat, GLenum *f
 	switch(file.dataFormat)
 	{
 		case GLL_DDS_RGB_8:
-			*internalFormat = GL_RGB;
+			*internalFormat = GL_RGB8;
 			*format = GL_RGB;
 			*type = GL_UNSIGNED_BYTE;
 			break;
 		case GLL_DDS_RGB_565:
-			*internalFormat = GL_RGB;
+			*internalFormat = GL_RGB8;
 			*format = GL_RGB;
 			*type = GL_UNSIGNED_SHORT_5_6_5;
 			break;
 		case GLL_DDS_ARGB_8:
-			*internalFormat = GL_RGBA;
+			*internalFormat = GL_RGBA8;
 			*format = GL_BGRA;
 			*type = GL_UNSIGNED_INT_8_8_8_8_REV;
 			break;
 		case GLL_DDS_ARGB_4:
-			*internalFormat = GL_RGBA;
+			*internalFormat = GL_RGBA8;
 			*format = GL_BGRA;
 			*type = GL_UNSIGNED_SHORT_4_4_4_4_REV;
 			break;
 		case GLL_DDS_ARGB_1555:
-			*internalFormat = GL_RGBA;
+			*internalFormat = GL_RGBA8;
 			*format = GL_BGRA;
 			*type = GL_UNSIGNED_SHORT_1_5_5_5_REV;
 			break;
 		case GLL_DDS_BGRX_8:
-			*internalFormat = GL_RGB;
+			*internalFormat = GL_RGB8;
 			*format = GL_BGRA;
 			*type = GL_UNSIGNED_BYTE;
 			break;
@@ -346,19 +346,25 @@ static NSOperationQueue *imageInformationQueue = nil;
 	vImage_Buffer output = { .height = height, .width = width, .rowBytes = 4*width, .data = unpremultipliedBufferData };
 	vImageUnpremultiplyData_ARGB8888(&input, &output, 0);
 	free(bufferData);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) width, (GLsizei) height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
+    long widerDimension = MAX(width, height);
+    int firstBit = flsl(widerDimension); // Computes floor(log2(x)). We want ceil(log2(x))
+    int numberOfLevels = firstBit;
+    if ((widerDimension & ~(1 << firstBit)) == 0)
+        numberOfLevels = firstBit - 1;
+    
+    glTexStorage2D(GL_TEXTURE_2D, (GLsizei) numberOfLevels, GL_RGBA8, (GLsizei) width, (GLsizei) height);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, (GLsizei) width, (GLsizei) height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
+    
+    free(unpremultipliedBufferData);
 	
 	glGenerateMipmap(GL_TEXTURE_2D);
-	
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
-	
-	free(unpremultipliedBufferData);
 }
 
 - (void)_loadDefaultTexture;
@@ -375,7 +381,8 @@ static NSOperationQueue *imageInformationQueue = nil;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, defaultTexture);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, 2, 2);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 2, 2, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, defaultTexture);
 }
 
 @end
