@@ -12,6 +12,7 @@
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "GLLModelParams.h"
+#import "GLLVertexFormat.h"
 #import "LionSubscripting.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
@@ -85,7 +86,7 @@ void vec_addTo(float *a, float *b)
 	}
 	
 	_countOfVertices = [stream readUint32];
-	NSData *rawVertexData = [stream dataWithLength:_countOfVertices * self.stride];
+	NSData *rawVertexData = [stream dataWithLength:_countOfVertices * self.vertexFormat.stride];
 	if (!rawVertexData)
 	{
 		if (error)
@@ -138,7 +139,7 @@ void vec_addTo(float *a, float *b)
 	_textures = [textures copy];
 	
 	_countOfVertices = [scanner readUint32];
-	NSMutableData *rawVertexData = [[NSMutableData alloc] initWithCapacity:_countOfVertices * self.stride];
+	NSMutableData *rawVertexData = [[NSMutableData alloc] initWithCapacity:_countOfVertices * self.vertexFormat.stride];
 	for (NSUInteger i = 0; i < self.countOfVertices; i++)
 	{
 		// Vertices + normals
@@ -215,44 +216,11 @@ void vec_addTo(float *a, float *b)
 
 #pragma mark - Describe mesh data
 
-- (NSUInteger)offsetForPosition
-{
-	return 0;
-}
-- (NSUInteger)offsetForNormal
-{
-	return sizeof(float [3]);
-}
-- (NSUInteger)offsetForColor
-{
-	return sizeof(float [6]);
-}
-- (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer
-{
-	NSAssert(layer < self.countOfUVLayers, @"Asking for layer %lu but we only have %lu", layer, self.countOfUVLayers);
-	
-	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*layer;
-}
-- (NSUInteger)offsetForTangentLayer:(NSUInteger)layer
-{
-	NSAssert(layer < self.countOfUVLayers, @"Asking for layer %lu but we only have %lu", layer, self.countOfUVLayers);
-	
-	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + sizeof(float [4])*layer;
-}
-- (NSUInteger)offsetForBoneIndices
-{
-	NSAssert(self.hasBoneWeights, @"Asking for offset for bone indices in mesh that doesn't have any.");
-	
-	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0);
-}
-- (NSUInteger)offsetForBoneWeights
-{
-	NSAssert(self.hasBoneWeights, @"Asking for offset for bone indices in mesh that doesn't have any.");
-	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0) + sizeof(uint16_t [4]);
-}
-- (NSUInteger)stride
-{
-	return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0) + (self.hasBoneWeights ? (sizeof(uint16_t [4]) + sizeof(float [4])) : 0);
+- (GLLVertexFormat *)vertexFormat {
+    if (!_vertexFormat) {
+        _vertexFormat = [[GLLVertexFormat alloc] initWithBoneWeights:self.hasBoneWeights tangents:self.hasTangents countOfUVLayers:self.countOfUVLayers countOfVertices:self.countOfVertices];
+    }
+    return _vertexFormat;
 }
 
 #pragma mark - Properties
@@ -285,9 +253,10 @@ void vec_addTo(float *a, float *b)
 	NSMutableData *newElements = [[NSMutableData alloc] init];
 	NSUInteger newVerticesCount = 0;
 	NSMutableDictionary *oldToNewVertices = [[NSMutableDictionary alloc] init];
-		
-	const NSUInteger stride = self.stride;
-	const NSUInteger positionOffset = self.offsetForPosition;
+    
+    GLLVertexFormat *vertexFormat = self.vertexFormat;
+	const NSUInteger stride = vertexFormat.stride;
+	const NSUInteger positionOffset = vertexFormat.offsetForPosition;
 	const NSUInteger countOfFaces = self.countOfElements / 3;
 	
 	const void *oldBytes = self.vertexData.bytes;
@@ -362,6 +331,8 @@ void vec_addTo(float *a, float *b)
 {
 	NSParameterAssert(name);
 	NSParameterAssert(textures);
+    
+    GLLVertexFormat *vertexFormat = self.vertexFormat;
 	
 	NSMutableString *result = [NSMutableString string];
 	[result appendFormat:@"%@\n", name];
@@ -374,23 +345,23 @@ void vec_addTo(float *a, float *b)
 	const void *vertexBytes = self.vertexData.bytes;
 	for (NSUInteger i = 0; i < self.countOfVertices; i++)
 	{
-		const float *position = (const float *) (vertexBytes + i*self.stride + self.offsetForPosition);
+		const float *position = (const float *) (vertexBytes + i*vertexFormat.stride + vertexFormat.offsetForPosition);
 		[result appendFormat:@"%f %f %f ", position[0], position[1], position[2]];
-		const float *normal = (const float *) (vertexBytes + i*self.stride + self.offsetForNormal);
+		const float *normal = (const float *) (vertexBytes + i*vertexFormat.stride + vertexFormat.offsetForNormal);
 		[result appendFormat:@"%f %f %f ", normal[0], normal[1], normal[2]];
-		const uint8_t *colors = (const uint8_t *) (vertexBytes + i*self.stride + self.offsetForColor);
+		const uint8_t *colors = (const uint8_t *) (vertexBytes + i*vertexFormat.stride + vertexFormat.offsetForColor);
 		[result appendFormat:@"%u %u %u %u ", colors[0], colors[1], colors[2], colors[3]];
 		for (NSUInteger uvlayer = 0; uvlayer < self.countOfUVLayers; uvlayer++)
 		{
-			const float *texCoords = (const float *) (vertexBytes + i*self.stride + [self offsetForTexCoordLayer:0]);
+			const float *texCoords = (const float *) (vertexBytes + i*vertexFormat.stride + [vertexFormat offsetForTexCoordLayer:0]);
 			[result appendFormat:@"%f %f ", texCoords[0], texCoords[1]];
 		}
 		if (self.hasBoneWeights)
 		{
-			const uint16_t *boneIndices = (const uint16_t *) (vertexBytes + i*self.stride + self.offsetForBoneIndices);
+			const uint16_t *boneIndices = (const uint16_t *) (vertexBytes + i*vertexFormat.stride + vertexFormat.offsetForBoneIndices);
 			[result appendFormat:@"%u %u %u %u ", boneIndices[0], boneIndices[1], boneIndices[2], boneIndices[3]];
 
-			const float *boneWeights = (const float *) (vertexBytes + i*self.stride + self.offsetForBoneWeights);
+			const float *boneWeights = (const float *) (vertexBytes + i*vertexFormat.stride + vertexFormat.offsetForBoneWeights);
 			[result appendFormat:@"%f %f %f %f ", boneWeights[0], boneWeights[1], boneWeights[2], boneWeights[3]];
 		}
 		[result appendString:@"\n"];
@@ -431,16 +402,18 @@ void vec_addTo(float *a, float *b)
 
 - (void)calculateTangents:(NSMutableData *)vertexData;
 {
-	const NSUInteger stride = self.stride;
-	const NSUInteger positionOffset = self.offsetForPosition;
-	const NSUInteger normalOffset = self.offsetForNormal;
+    GLLVertexFormat *vertexFormat = self.vertexFormat;
+    
+	const NSUInteger stride = vertexFormat.stride;
+	const NSUInteger positionOffset = vertexFormat.offsetForPosition;
+	const NSUInteger normalOffset = vertexFormat.offsetForNormal;
 	
 	void *bytes = vertexData.mutableBytes;
 	const uint32_t *elements = self.elementData.bytes;
 	
 	for (NSUInteger layer = 0; layer < self.countOfUVLayers; layer++)
 	{
-		const NSUInteger texCoordOffset = [self offsetForTexCoordLayer:layer];
+		const NSUInteger texCoordOffset = [vertexFormat offsetForTexCoordLayer:layer];
 		
 		float tangentsU[3*self.countOfVertices];
 		float tangentsV[3*self.countOfVertices];
@@ -493,7 +466,7 @@ void vec_addTo(float *a, float *b)
 			}
 		}
 		
-		const NSUInteger tangentOffset = [self offsetForTangentLayer:layer];
+		const NSUInteger tangentOffset = [vertexFormat offsetForTangentLayer:layer];
 		for (NSUInteger vertex = 0; vertex < self.countOfVertices; vertex++)
 		{
 			float *tangentU = &tangentsU[vertex*3];
@@ -525,13 +498,15 @@ void vec_addTo(float *a, float *b)
 
 - (BOOL)validateVertexData:(NSData *)vertices indexData:(NSData *)indexData error:(NSError *__autoreleasing*)error;
 {
+    GLLVertexFormat *vertexFormat = self.vertexFormat;
+    
 	// Check bone indices
 	if (self.hasBoneWeights)
 	{
 		const void *vertexData = vertices.bytes;
 		for (NSUInteger i = 0; i < self.countOfVertices; i++)
 		{
-			const uint16_t *indices = vertexData + i*self.stride + self.offsetForBoneIndices;
+			const uint16_t *indices = vertexData + i*vertexFormat.stride + vertexFormat.offsetForBoneIndices;
 			
 			for (NSUInteger j = 0; j < 4; j++)
 			{
@@ -575,8 +550,8 @@ void vec_addTo(float *a, float *b)
 	
 	NSMutableData *mutableVertices = [vertexData mutableCopy];
 	void *bytes = mutableVertices.mutableBytes;
-	const NSUInteger boneWeightOffset = self.offsetForBoneWeights;
-	const NSUInteger stride = self.stride;
+	const NSUInteger boneWeightOffset = self.vertexFormat.offsetForBoneWeights;
+	const NSUInteger stride = self.vertexFormat.stride;
 		
 	for (NSUInteger i = 0; i < self.countOfVertices; i++)
 	{

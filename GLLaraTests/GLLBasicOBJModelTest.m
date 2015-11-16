@@ -10,6 +10,7 @@
 
 #import "GLLModelMesh.h"
 #import "GLLModelObj.h"
+#import "GLLVertexFormat.h"
 
 @interface GLLBasicOBJModelTest ()
 
@@ -87,27 +88,27 @@ f 1/1/1/1 2/2/2/2 3/3/3/3";
 	
 	XCTAssertEqual(mesh.vertexData.length, (NSUInteger) 156, @"Vertex data count wrong");
 	XCTAssertEqual(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
-	XCTAssertEqual(mesh.stride, (NSUInteger) 52, @"Wrong stride");
-	XCTAssertEqual(mesh.offsetForPosition, (NSUInteger) 0, @"Wrong offset");
-	XCTAssertEqual(mesh.offsetForNormal, (NSUInteger) 12, @"Wrong offset");
-	XCTAssertEqual(mesh.offsetForColor, (NSUInteger) 24, @"Wrong offset");
-	XCTAssertEqual([mesh offsetForTexCoordLayer:0], (NSUInteger) 28, @"Wrong offset");
-	XCTAssertEqual([mesh offsetForTangentLayer:0], (NSUInteger) 36, @"Wrong offset");
+	XCTAssertEqual(mesh.vertexFormat.stride, (NSUInteger) 52, @"Wrong stride");
+	XCTAssertEqual(mesh.vertexFormat.offsetForPosition, (NSUInteger) 0, @"Wrong offset");
+	XCTAssertEqual(mesh.vertexFormat.offsetForNormal, (NSUInteger) 12, @"Wrong offset");
+	XCTAssertEqual(mesh.vertexFormat.offsetForColor, (NSUInteger) 24, @"Wrong offset");
+	XCTAssertEqual([mesh.vertexFormat offsetForTexCoordLayer:0], (NSUInteger) 28, @"Wrong offset");
+	XCTAssertEqual([mesh.vertexFormat offsetForTangentLayer:0], (NSUInteger) 36, @"Wrong offset");
 	
 	const uint32_t *elements = mesh.elementData.bytes;
 	XCTAssertTrue(memcmp(elements, (const uint32_t []) { 0, 1, 2 }, sizeof(uint32_t [3])) == 0, @"incorrect indices");
 	
 	const void *vertices = mesh.vertexData.bytes;
-	XCTAssertTrue(memcmp(vertices + mesh.stride*0 + mesh.offsetForPosition,
+	XCTAssertTrue(memcmp(vertices + mesh.vertexFormat.stride*0 + mesh.vertexFormat.offsetForPosition,
 						(float [3]) { -0.5, 0.0, 0.0 },
 						sizeof(float [3])) == 0,
 				 @"Vertex position 0");
 	// Note that the loader reverses the winding order to match XNALara standards
-	XCTAssertTrue(memcmp(vertices + mesh.stride*1 + mesh.offsetForPosition,
+	XCTAssertTrue(memcmp(vertices + mesh.vertexFormat.stride*1 + mesh.vertexFormat.offsetForPosition,
 						(float [3]) { 0.0, 1.0, 0.0 },
 						sizeof(float [3])) == 0,
 				 @"Vertex position 1");
-	XCTAssertTrue(memcmp(vertices + mesh.stride*2 + mesh.offsetForPosition,
+	XCTAssertTrue(memcmp(vertices + mesh.vertexFormat.stride*2 + mesh.vertexFormat.offsetForPosition,
 						(float [3]) { 0.5, 0.0, 0.0 },
 						sizeof(float [3])) == 0,
 				 @"Vertex position 2");

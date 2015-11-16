@@ -12,6 +12,7 @@
 @class GLLMeshSplitter;
 @class GLLModel;
 @class GLLShaderDescription;
+@class GLLVertexFormat;
 @class TRInDataStream;
 
 typedef enum GLLCullFaceMode
@@ -47,24 +48,7 @@ typedef enum GLLCullFaceMode
 @property (nonatomic, retain) NSData *vertexData;
 @property (nonatomic, assign) NSUInteger countOfVertices;
 
-/*
- * Description of vertex buffer.
- *
- * Position and normal are 3 floats
- * Color is 4 uint8_ts (r, g, b, a)
- * Any texcoord is two floats.
- * Any tangent is four floats (x, y, z, w)
- * Bone indices is 4 uint16_ts, and are indices in the boneIndices array
- * Bone weights is 4 floats.
- */
-@property (nonatomic, assign, readonly) NSUInteger offsetForPosition;
-@property (nonatomic, assign, readonly) NSUInteger offsetForNormal;
-@property (nonatomic, assign, readonly) NSUInteger offsetForColor;
-- (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer;
-- (NSUInteger)offsetForTangentLayer:(NSUInteger)layer;
-@property (nonatomic, assign, readonly) NSUInteger offsetForBoneIndices;
-@property (nonatomic, assign, readonly) NSUInteger offsetForBoneWeights;
-@property (nonatomic, assign, readonly) NSUInteger stride;
+@property (nonatomic, copy) GLLVertexFormat *vertexFormat;
 
 /*
  * Element buffer (format always uint32_ts arranged as triangles)

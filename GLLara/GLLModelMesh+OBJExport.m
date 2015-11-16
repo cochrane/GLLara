@@ -8,6 +8,8 @@
 
 #import "GLLModelMesh+OBJExport.h"
 
+#import "GLLVertexFormat.h"
+
 #import "simd_matrix.h"
 
 @implementation GLLModelMesh (OBJExport)
@@ -18,17 +20,19 @@
 	
 	[objString appendFormat:@"g %@\n", [[self.name componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] componentsJoinedByString:@"_"]];
 	[objString appendFormat:@"usemtl material%lu\n", self.meshIndex];
+    
+    GLLVertexFormat *vertexFormat = self.vertexFormat;
 	
 	for (NSUInteger i = 0; i < self.countOfVertices; i++)
 	{
-		const float *position = self.vertexData.bytes + self.stride*i + self.offsetForPosition;
-		const float *normal = self.vertexData.bytes + self.stride*i + self.offsetForNormal;
+		const float *position = self.vertexData.bytes + vertexFormat.stride*i + vertexFormat.offsetForPosition;
+		const float *normal = self.vertexData.bytes + vertexFormat.stride*i + vertexFormat.offsetForNormal;
 		
 		mat_float16 transform = transforms[0];
 		if (self.hasBoneWeights)
 		{
-			const uint16_t *boneIndices = self.vertexData.bytes + self.stride*i + self.offsetForBoneIndices;
-			const float *boneWeights = self.vertexData.bytes + self.stride*i + self.offsetForBoneWeights;
+			const uint16_t *boneIndices = self.vertexData.bytes + vertexFormat.stride*i + vertexFormat.offsetForBoneIndices;
+			const float *boneWeights = self.vertexData.bytes + vertexFormat.stride*i + vertexFormat.offsetForBoneWeights;
 			
 			transform = simd_mat_scale(transforms[boneIndices[0]], boneWeights[0]);
 			transform = simd_mat_add(transform, simd_mat_scale(transforms[boneIndices[1]], boneWeights[1]));
@@ -42,12 +46,12 @@
 		[objString appendFormat:@"v %f %f %f\n", simd_extract(transformedPosition, 0), simd_extract(transformedPosition, 1), simd_extract(transformedPosition, 2)];
 		[objString appendFormat:@"vn %f %f %f\n", simd_extract(transformedNormal, 0), simd_extract(transformedNormal, 1), simd_extract(transformedNormal, 2)];
 		
-		const float *texCoords = (const float *) (self.vertexData.bytes + self.stride*i + [self offsetForTexCoordLayer:0]);
+		const float *texCoords = (const float *) (self.vertexData.bytes + vertexFormat.stride*i + [vertexFormat offsetForTexCoordLayer:0]);
 		[objString appendFormat:@"vt %f %f\n", texCoords[0], 1.0 - texCoords[1]]; // Turn tex coords around (because I don't want to swap the whole image)
 		
 		if (includeColors)
 		{
-			const uint8_t *color = self.vertexData.bytes + self.stride*i + self.offsetForColor;
+			const uint8_t *color = self.vertexData.bytes + vertexFormat.stride*i + vertexFormat.offsetForColor;
 			[objString appendFormat:@"vc %f %f %f %f\n", (float) color[0] / 255.0f, (float) color[1] / 255.0f, (float) color[2] / 255.0f, (float) color[3] / 255.0f];
 		}
 	}

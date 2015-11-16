@@ -47,32 +47,32 @@
 	glBufferData(GL_ARRAY_BUFFER, mesh.vertexData.length, mesh.vertexData.bytes, GL_STATIC_DRAW);
 	
 	glEnableVertexAttribArray(GLLVertexAttribPosition);
-	glVertexAttribPointer(GLLVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, (GLsizei) mesh.stride, (GLvoid *) mesh.offsetForPosition);
+	glVertexAttribPointer(GLLVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, (GLsizei) mesh.vertexFormat.stride, (GLvoid *) mesh.vertexFormat.offsetForPosition);
 	
 	glEnableVertexAttribArray(GLLVertexAttribNormal);
-	glVertexAttribPointer(GLLVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, (GLsizei) mesh.stride, (GLvoid *) mesh.offsetForNormal);
+	glVertexAttribPointer(GLLVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, (GLsizei) mesh.vertexFormat.stride, (GLvoid *) mesh.vertexFormat.offsetForNormal);
 	
 	glEnableVertexAttribArray(GLLVertexAttribColor);
-	glVertexAttribPointer(GLLVertexAttribColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, (GLsizei) mesh.stride, (GLvoid *) mesh.offsetForColor);
+	glVertexAttribPointer(GLLVertexAttribColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, (GLsizei) mesh.vertexFormat.stride, (GLvoid *) mesh.vertexFormat.offsetForColor);
 	
 	if (mesh.hasBoneWeights)
 	{
 		glEnableVertexAttribArray(GLLVertexAttribBoneIndices);
-		glVertexAttribIPointer(GLLVertexAttribBoneIndices, 4, GL_UNSIGNED_SHORT, (GLsizei) mesh.stride, (GLvoid *) mesh.offsetForBoneIndices);
+		glVertexAttribIPointer(GLLVertexAttribBoneIndices, 4, GL_UNSIGNED_SHORT, (GLsizei) mesh.vertexFormat.stride, (GLvoid *) mesh.vertexFormat.offsetForBoneIndices);
 		
 		glEnableVertexAttribArray(GLLVertexAttribBoneWeights);
-		glVertexAttribPointer(GLLVertexAttribBoneWeights, 4, GL_FLOAT, GL_FALSE, (GLsizei) mesh.stride, (GLvoid *) mesh.offsetForBoneWeights);
+		glVertexAttribPointer(GLLVertexAttribBoneWeights, 4, GL_FLOAT, GL_FALSE, (GLsizei) mesh.vertexFormat.stride, (GLvoid *) mesh.vertexFormat.offsetForBoneWeights);
 	}
 	
 	for (GLuint i = 0; i < mesh.countOfUVLayers; i++)
 	{
 		glEnableVertexAttribArray(GLLVertexAttribTexCoord0 + 2*i);
-		glVertexAttribPointer(GLLVertexAttribTexCoord0 + 2*i, 2, GL_FLOAT, GL_FALSE, (GLsizei) mesh.stride, (GLvoid *) [mesh offsetForTexCoordLayer:i]);
+		glVertexAttribPointer(GLLVertexAttribTexCoord0 + 2*i, 2, GL_FLOAT, GL_FALSE, (GLsizei) mesh.vertexFormat.stride, (GLvoid *) [mesh.vertexFormat offsetForTexCoordLayer:i]);
 		
 		if (mesh.hasTangents)
 		{
 			glEnableVertexAttribArray(GLLVertexAttribTangent0 + 2*i);
-			glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_FLOAT, GL_FALSE, (GLsizei) mesh.stride, (GLvoid *) [mesh offsetForTangentLayer:i]);
+			glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_FLOAT, GL_FALSE, (GLsizei) mesh.vertexFormat.stride, (GLvoid *) [mesh.vertexFormat offsetForTangentLayer:i]);
 		}
     }
     
