@@ -11,6 +11,8 @@
 
 #include <OpenGL/gltypes.h>
 
+#define GLL_DRAW_STATE_MAX_ACTIVE_TEXTURES 10
+
 /*!
  * @abstract Stores the current rendering state.
  * @discussion Everything that draws has to update this. It can use these
@@ -19,6 +21,7 @@
 typedef struct __GLLDrawState {
 	GLuint activeProgram;
 	int16_t cullFaceMode;
+    GLuint activeTexture[GLL_DRAW_STATE_MAX_ACTIVE_TEXTURES];
 } GLLDrawState;
 
 #endif

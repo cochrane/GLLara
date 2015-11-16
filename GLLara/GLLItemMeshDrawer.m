@@ -172,8 +172,13 @@
 	
 	for (NSUInteger i = 0; i < textures.count; i++)
 	{
-		glActiveTexture(GL_TEXTURE0 + (GLenum) i);
-		glBindTexture(GL_TEXTURE_2D, [textures[i] textureID]);
+        GLuint textureId = [textures[i] textureID];
+        if (i >= GLL_DRAW_STATE_MAX_ACTIVE_TEXTURES || state->activeTexture[i] != textureId) {
+            glActiveTexture(GL_TEXTURE0 + (GLenum) i);
+            glBindTexture(GL_TEXTURE_2D, textureId);
+            if (i < GLL_DRAW_STATE_MAX_ACTIVE_TEXTURES)
+                state->activeTexture[i] = textureId;
+        }
 	}
 	
 	// Use this program, with the correct transformation.
