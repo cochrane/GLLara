@@ -64,6 +64,8 @@
     NSInteger offset = -8; // For normal
     if (self.format.hasBoneWeights)
         offset -= 8; // For bone weights;
+    if (self.format.hasTangents)
+        offset -= 12 * self.format.countOfUVLayers; // For tangents
     return self.format.stride + offset;
 }
 
@@ -79,29 +81,40 @@
 
 - (NSUInteger)offsetForColor
 {
-    return self.format.offsetForColor - 8;
+    NSInteger offset = -8; // For normal
+    return self.format.offsetForColor + offset;
 }
 
 - (NSUInteger)offsetForBoneIndices
 {
-    return self.format.offsetForBoneIndices - 8;
+    NSInteger offset = -8; // For normal
+    if (self.format.hasTangents)
+        offset -= 12 * self.format.countOfUVLayers; // For tangents
+    return self.format.offsetForBoneIndices + offset;
 }
 
 - (NSUInteger)offsetForBoneWeights
 {
-    return self.format.offsetForBoneWeights - 8;
+    NSInteger offset = -8; // For normal
+    if (self.format.hasTangents)
+        offset -= 12 * self.format.countOfUVLayers; // For tangents
+    return self.format.offsetForBoneWeights + offset;
 }
 
 - (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer
 {
-    NSUInteger offset = 8; // For normal
-    return [self.format offsetForTexCoordLayer:layer] - offset;
+    NSInteger offset = -8; // For normal
+    if (self.format.hasTangents)
+        offset -= 12 * layer; // For tangents
+    return [self.format offsetForTexCoordLayer:layer] + offset;
 }
 
 - (NSUInteger)offsetForTangentLayer:(NSUInteger)layer
 {
-    NSUInteger offset = 8; // For normal
-    return [self.format offsetForTangentLayer:layer] - offset;
+    NSInteger offset = -8; // For normal
+    if (self.format.hasTangents)
+        offset -= 12 * layer; // For tangents
+    return [self.format offsetForTangentLayer:layer] + offset;
 }
 
 - (void)addVertices:(NSData *)vertices elements:(NSData *)elementsUInt32;
@@ -111,6 +124,8 @@
     NSUInteger actualStride = self.actualStride;
     NSUInteger numElements = vertices.length / originalStride;
     void *newBytes = malloc(numElements * actualStride);
+    NSUInteger countOfUVLayers = self.format.countOfUVLayers;
+    BOOL hasTangents = self.format.hasTangents;
     
     for (NSUInteger i = 0; i < numElements; i++) {
         const void *originalVertex = vertices.bytes + originalStride * i;
@@ -122,7 +137,7 @@
         originalVertex += 12;
         
         // Normal. Compress from float[3] to int_2_10_10_10_rev format
-        int32_t *value = vertex;
+        uint32_t *value = vertex;
         const float *normal = originalVertex;
         *value = 0;
         *value += ((int) (normal[0] * 512.0) & 0x3FF);
@@ -136,16 +151,28 @@
         vertex += 4;
         originalVertex += 4;
         
-        // Tex coords
-        memcpy(vertex, originalVertex, 2 * 4 * self.format.countOfUVLayers);
-        vertex += 2 * 4 * self.format.countOfUVLayers;
-        originalVertex += 2 * 4 * self.format.countOfUVLayers;
-        
-        // Tangents
-        if (self.format.hasTangents) {
-            memcpy(vertex, originalVertex, 4 * 4 * self.format.countOfUVLayers);
-            vertex += 4 * 4 * self.format.countOfUVLayers;
-            originalVertex += 4 * 4 * self.format.countOfUVLayers;
+        // Tex coords + tangents
+        for (NSUInteger j = 0; j < countOfUVLayers; j++) {
+            memcpy(vertex, originalVertex, 8);
+            vertex += 8;
+            originalVertex += 8;
+            
+            if (hasTangents) {
+                uint32_t *value = vertex;
+                const float *tangent = originalVertex;
+                *value = 0;
+                *value += ((int) (tangent[0] * 512.0) & 0x3FF);
+                *value += (((int) (tangent[1] * 512.0) & 0x3FF)) << 10;
+                *value += (((int) (tangent[2] * 512.0) & 0x3FF)) << 20;
+                if (tangent[3] > 0.0f) {
+                    *value += (1 & 0x3) << 30;
+                } else {
+                    *value += (-1 & 0x3) << 30;
+                }
+                
+                vertex += 4;
+                originalVertex += 16;
+            }
         }
         
         // Bone weights (if applicable)
@@ -166,7 +193,6 @@
     
     [vertexData appendBytes:newBytes length:numElements * self.actualStride];
     free(newBytes);
-    
     
     // Compress elements
     if (self.format.numElementBytes == 4) {
@@ -236,7 +262,7 @@
         if (self.format.hasTangents)
         {
             glEnableVertexAttribArray(GLLVertexAttribTangent0 + 2*i);
-            glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_FLOAT, GL_FALSE, actualStride, (GLvoid *) [self offsetForTangentLayer:i]);
+            glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_INT_2_10_10_10_REV, GL_TRUE, actualStride, (GLvoid *) [self offsetForTangentLayer:i]);
         }
     }
     
