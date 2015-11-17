@@ -17,6 +17,7 @@
 #import "GLLItemMesh.h"
 #import "GLLModelProgram.h"
 #import "GLLRenderParameter.h"
+#import "GLLRenderParameterDescription.h"
 #import "GLLResourceManager.h"
 #import "GLLShaderDescription.h"
 #import "GLLTexture.h"
@@ -200,18 +201,46 @@
 }
 
 - (NSComparisonResult)compareTo:(GLLItemMeshDrawer *)other {
+    if (self.itemMesh.cullFaceMode > other.itemMesh.cullFaceMode)
+        return NSOrderedAscending;
+    else if (self.itemMesh.cullFaceMode < other.itemMesh.cullFaceMode)
+        return NSOrderedDescending;
+    
     NSComparisonResult result = [self.meshDrawer compareTo:other.meshDrawer];
     if (result != NSOrderedSame)
         return result;
-    
-    if (textures.count != other->textures.count) {
-        return textures.count > other->textures.count ? NSOrderedDescending : NSOrderedAscending;
-    }
     
     if (self.program.programID != other.program.programID) {
         return self.program.programID > other.program.programID ? NSOrderedDescending : NSOrderedAscending;
     }
     
+    if (textures.count != other->textures.count) {
+        return textures.count > other->textures.count ? NSOrderedDescending : NSOrderedAscending;
+    }
+    
+    for (NSUInteger i = 0; i < textures.count; i++) {
+        if (textures[i] > other->textures[i])
+            return NSOrderedDescending;
+        else if (textures[i] < other->textures[i])
+            return NSOrderedAscending;
+    }
+
+    // Check render parameters. Sadly O(n^2), but with n < 10 (typ). What can you do.
+    for (GLLRenderParameter *parameter in self.itemMesh.renderParameters) {
+        BOOL foundOther = NO;
+        for (GLLRenderParameter *otherParam in other.itemMesh.renderParameters) {
+            if ([parameter.parameterDescription isEqual:otherParam.parameterDescription] && [parameter.uniformValue isEqualToData:otherParam.uniformValue]) {
+                foundOther = YES;
+                break;
+            }
+        }
+        if (!foundOther) {
+            if (self < other)
+                return NSOrderedAscending;
+            else
+                return NSOrderedDescending;
+        }
+    }
     return NSOrderedSame;
 }
 
