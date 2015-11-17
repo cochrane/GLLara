@@ -63,8 +63,10 @@ void main()
 	vec4 color = lightData.ambientColor * diffuseColor * parameters.ambientColor;
 	for (int i = 0; i < 3; i++)
 	{
-		// Diffuse term; this version does not use specular
-		color += diffuseTexColor * lightData.lights[i].diffuseColor * max(dot(-normal, lightData.lights[i].direction.xyz), 0) * parameters.diffuseColor;
+        float diffuseFactor = max(dot(-normalWorld, lightData.lights[i].direction.xyz), 0);
+        
+        // Diffuse term
+        color += lightData.lights[i].diffuseColor * diffuseFactor * parameters.diffuseColor;
 		
 		// Specular term
 		vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normal);
