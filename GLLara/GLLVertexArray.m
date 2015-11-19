@@ -155,7 +155,7 @@ static inline uint16_t halfFloat(float value) {
     offset -= 8; // For normal
     offset -= 4 * self.format.countOfUVLayers; // For tex coords
     if (self.format.hasTangents)
-        offset -= 8 * self.format.countOfUVLayers; // For tangents
+        offset -= 12 * self.format.countOfUVLayers; // For tangents
     return self.format.offsetForBoneIndices + offset;
 }
 
@@ -165,7 +165,7 @@ static inline uint16_t halfFloat(float value) {
     offset -= 8; // For normal
     offset -= 4 * self.format.countOfUVLayers; // For tex coords
     if (self.format.hasTangents)
-        offset -= 8 * self.format.countOfUVLayers; // For tangents
+        offset -= 12 * self.format.countOfUVLayers; // For tangents
     return self.format.offsetForBoneWeights + offset;
 }
 
@@ -183,7 +183,7 @@ static inline uint16_t halfFloat(float value) {
     offset -= 8; // For normal
     offset -= 4 * layer; // For tex coords
     if (self.format.hasTangents)
-        offset -= 8 * layer; // For tangents
+        offset -= 12 * layer; // For tangents
     return [self.format offsetForTangentLayer:layer] + offset;
 }
 
@@ -236,12 +236,14 @@ static inline uint16_t halfFloat(float value) {
         if (hasTangents) {
             for (NSUInteger j = 0; j < countOfUVLayers; j++) {
                 const float *tangents = originalVertex;
-                uint16_t *normalized = vertex;
-                normalized[0] = halfFloat(tangents[0]);
-                normalized[1] = halfFloat(tangents[1]);
-                normalized[2] = halfFloat(tangents[2]);
-                normalized[3] = halfFloat(tangents[3]);
-                vertex += 8;
+                uint32_t *normalized = vertex;
+                float invLength = 1.0f / sqrtf(tangents[0]*tangents[0] + tangents[1]*tangents[1] + tangents[2]*tangents[2]);
+                *normalized = 0;
+                *normalized += packSignedFloat(tangents[0] * invLength, 10);
+                *normalized += packSignedFloat(tangents[1] * invLength, 10) << 10;
+                *normalized += packSignedFloat(tangents[2] * invLength, 10) << 20;
+                *normalized += packSignedFloat(copysign(tangents[3], 1.0f), 2) << 30;
+                vertex += 4;
                 originalVertex += 16;
             }
         }
@@ -326,7 +328,7 @@ static inline uint16_t halfFloat(float value) {
         for (GLuint i = 0; i < self.format.countOfUVLayers; i++)
         {
             glEnableVertexAttribArray(GLLVertexAttribTangent0 + 2*i);
-            glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_HALF_FLOAT, GL_FALSE, actualStride, (GLvoid *) [self offsetForTangentLayer:i]);
+            glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_INT_2_10_10_10_REV, GL_TRUE, actualStride, (GLvoid *) [self offsetForTangentLayer:i]);
         }
     }
     
