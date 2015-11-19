@@ -30,6 +30,67 @@
 
 @end
 
+static inline uint32_t packSignedFloat(float value, int bits)
+{
+    /*
+     f(1.0) = max
+     f(-1.0) = min
+     1.0 * m + a = max
+     -1.0 * m + a = min
+     2a = max + min
+     a = 0.5*(max+min)
+     1.0 * m + 0.5*(max+min) = max
+     m = max - 0.5*(max+min)
+     
+     */
+    
+    int32_t max = (1 << (bits-1)) - 1;
+    int32_t min = -(1 << (bits-1));
+    float offset = 0.5 * (max+min);
+    float factor = max - offset;
+    float scaled = value * factor + offset;
+    int32_t signedValue = (int32_t) scaled;
+    uint32_t mask = (1 << bits) - 1;
+    return signedValue & mask;
+}
+
+static inline uint32_t reduceFloat(float value, unsigned exponentBits, unsigned mantissaBits, unsigned signBits) {
+    uint32_t valueBits = *((uint32_t *) &value);
+    
+    uint32_t mantissa = valueBits & ((1 << 23) - 1);
+    int32_t exponent = ((valueBits >> 23) & 0xFF) - 127;
+    uint32_t sign = (valueBits >> 31) & 0x1;
+    
+    uint32_t bias = (1 << (exponentBits - 1)) - 1;
+    int32_t newExponent = exponent + bias;
+    int32_t maxBiasedExponent = (1 << exponentBits) - 1;
+    if (newExponent <= 0) {
+        // Set to 0. Don't muck around with denormals
+        newExponent = 0;
+        mantissa = 0;
+    } else if (newExponent >= maxBiasedExponent) {
+        // Set to inf.
+        exponent = maxBiasedExponent;
+        mantissa = 0;
+    }
+    
+    uint32_t result = 0;
+    // Mantissa
+    result |= mantissa >> (23 - mantissaBits);
+    
+    // Exponent
+    result |= newExponent << mantissaBits;
+    
+    if (signBits > 0) {
+        result |= sign << (exponentBits + mantissaBits);
+    }
+    return result;
+}
+
+static inline uint16_t halfFloat(float value) {
+    return (uint16_t) reduceFloat(value, 5, 10, 1);
+}
+
 @implementation GLLVertexArray
 
 @dynamic countOfVertices;
@@ -61,11 +122,13 @@
 
 - (NSUInteger)actualStride
 {
-    NSInteger offset = -8; // For normal
+    NSInteger offset = 0;
+    offset -= 8; // For normal
     if (self.format.hasBoneWeights)
         offset -= 8; // For bone weights;
+    offset -= 4 * self.format.countOfUVLayers; // For tex coords
     if (self.format.hasTangents)
-        offset -= 12 * self.format.countOfUVLayers; // For tangents
+        offset -= 8 * self.format.countOfUVLayers; // For tangents
     return self.format.stride + offset;
 }
 
@@ -81,39 +144,46 @@
 
 - (NSUInteger)offsetForColor
 {
-    NSInteger offset = -8; // For normal
+    NSInteger offset = 0;
+    offset -= 8; // For normal
     return self.format.offsetForColor + offset;
 }
 
 - (NSUInteger)offsetForBoneIndices
 {
-    NSInteger offset = -8; // For normal
+    NSInteger offset = 0;
+    offset -= 8; // For normal
+    offset -= 4 * self.format.countOfUVLayers; // For tex coords
     if (self.format.hasTangents)
-        offset -= 12 * self.format.countOfUVLayers; // For tangents
+        offset -= 8 * self.format.countOfUVLayers; // For tangents
     return self.format.offsetForBoneIndices + offset;
 }
 
 - (NSUInteger)offsetForBoneWeights
 {
-    NSInteger offset = -8; // For normal
+    NSInteger offset = 0;
+    offset -= 8; // For normal
+    offset -= 4 * self.format.countOfUVLayers; // For tex coords
     if (self.format.hasTangents)
-        offset -= 12 * self.format.countOfUVLayers; // For tangents
+        offset -= 8 * self.format.countOfUVLayers; // For tangents
     return self.format.offsetForBoneWeights + offset;
 }
 
 - (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer
 {
-    NSInteger offset = -8; // For normal
-    if (self.format.hasTangents)
-        offset -= 12 * layer; // For tangents
+    NSInteger offset = 0;
+    offset -= 8; // For normal
+    offset -= 4 * layer; // For tex coords
     return [self.format offsetForTexCoordLayer:layer] + offset;
 }
 
 - (NSUInteger)offsetForTangentLayer:(NSUInteger)layer
 {
-    NSInteger offset = -8; // For normal
+    NSInteger offset = 0;
+    offset -= 8; // For normal
+    offset -= 4 * layer; // For tex coords
     if (self.format.hasTangents)
-        offset -= 12 * layer; // For tangents
+        offset -= 8 * layer; // For tangents
     return [self.format offsetForTangentLayer:layer] + offset;
 }
 
@@ -126,6 +196,8 @@
     void *newBytes = malloc(numElements * actualStride);
     NSUInteger countOfUVLayers = self.format.countOfUVLayers;
     BOOL hasTangents = self.format.hasTangents;
+    
+    halfFloat(4.0f);
     
     for (NSUInteger i = 0; i < numElements; i++) {
         const void *originalVertex = vertices.bytes + originalStride * i;
@@ -140,9 +212,9 @@
         uint32_t *value = vertex;
         const float *normal = originalVertex;
         *value = 0;
-        *value += ((int) (normal[0] * 512.0) & 0x3FF);
-        *value += (((int) (normal[1] * 512.0) & 0x3FF)) << 10;
-        *value += (((int) (normal[2] * 512.0) & 0x3FF)) << 20;
+        *value += packSignedFloat(normal[0], 10);
+        *value += packSignedFloat(normal[1], 10) << 10;
+        *value += packSignedFloat(normal[2], 10) << 20;
         vertex += 4;
         originalVertex += 12;
         
@@ -153,24 +225,23 @@
         
         // Tex coords + tangents
         for (NSUInteger j = 0; j < countOfUVLayers; j++) {
-            memcpy(vertex, originalVertex, 8);
-            vertex += 8;
+            uint16_t *intTexCoords = vertex;
+            const float *floatTexCoords = originalVertex;
+            intTexCoords[0] = halfFloat(floatTexCoords[0]);
+            intTexCoords[1] = halfFloat(floatTexCoords[1]);
+            vertex += 4;
             originalVertex += 8;
-            
-            if (hasTangents) {
-                uint32_t *value = vertex;
-                const float *tangent = originalVertex;
-                *value = 0;
-                *value += ((int) (tangent[0] * 512.0) & 0x3FF);
-                *value += (((int) (tangent[1] * 512.0) & 0x3FF)) << 10;
-                *value += (((int) (tangent[2] * 512.0) & 0x3FF)) << 20;
-                if (tangent[3] > 0.0f) {
-                    *value += (1 & 0x3) << 30;
-                } else {
-                    *value += (-1 & 0x3) << 30;
-                }
-                
-                vertex += 4;
+        }
+        
+        if (hasTangents) {
+            for (NSUInteger j = 0; j < countOfUVLayers; j++) {
+                const float *tangents = originalVertex;
+                uint16_t *normalized = vertex;
+                normalized[0] = halfFloat(tangents[0]);
+                normalized[1] = halfFloat(tangents[1]);
+                normalized[2] = halfFloat(tangents[2]);
+                normalized[3] = halfFloat(tangents[3]);
+                vertex += 8;
                 originalVertex += 16;
             }
         }
@@ -245,6 +316,20 @@
     glEnableVertexAttribArray(GLLVertexAttribColor);
     glVertexAttribPointer(GLLVertexAttribColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, actualStride, (GLvoid *) self.offsetForColor);
     
+    for (GLuint i = 0; i < self.format.countOfUVLayers; i++)
+    {
+        glEnableVertexAttribArray(GLLVertexAttribTexCoord0 + 2*i);
+        glVertexAttribPointer(GLLVertexAttribTexCoord0 + 2*i, 2, GL_HALF_FLOAT, GL_FALSE, actualStride, (GLvoid *) [self offsetForTexCoordLayer:i]);
+    }
+    if (self.format.hasTangents)
+    {
+        for (GLuint i = 0; i < self.format.countOfUVLayers; i++)
+        {
+            glEnableVertexAttribArray(GLLVertexAttribTangent0 + 2*i);
+            glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_HALF_FLOAT, GL_FALSE, actualStride, (GLvoid *) [self offsetForTangentLayer:i]);
+        }
+    }
+    
     if (self.format.hasBoneWeights)
     {
         glEnableVertexAttribArray(GLLVertexAttribBoneIndices);
@@ -253,19 +338,6 @@
         glEnableVertexAttribArray(GLLVertexAttribBoneWeights);
         glVertexAttribPointer(GLLVertexAttribBoneWeights, 4, GL_UNSIGNED_SHORT, GL_TRUE, actualStride, (GLvoid *) self.offsetForBoneWeights);
     }
-    
-    for (GLuint i = 0; i < self.format.countOfUVLayers; i++)
-    {
-        glEnableVertexAttribArray(GLLVertexAttribTexCoord0 + 2*i);
-        glVertexAttribPointer(GLLVertexAttribTexCoord0 + 2*i, 2, GL_FLOAT, GL_FALSE, actualStride, (GLvoid *) [self offsetForTexCoordLayer:i]);
-        
-        if (self.format.hasTangents)
-        {
-            glEnableVertexAttribArray(GLLVertexAttribTangent0 + 2*i);
-            glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_INT_2_10_10_10_REV, GL_TRUE, actualStride, (GLvoid *) [self offsetForTangentLayer:i]);
-        }
-    }
-    
     
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.length, elementData.bytes, GL_STATIC_DRAW);
