@@ -13,6 +13,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 /*!
  * @abstract A fairly normal OBJ loader, extended for XNALara compatibilitiy.
@@ -55,11 +56,19 @@ private:
 		bool operator<(const GLLObjFile::IndexSet &other) const;
 		bool operator>(const GLLObjFile::IndexSet &other) const
 			{ return other < *this; }
+        bool operator==(const GLLObjFile::IndexSet &other) const;
+        size_t hash() const;
 	};
 	std::vector<IndexSet> originalIndices;
+    
+    struct IndexSetHash {
+        size_t operator()(const IndexSet &set) const {
+            return set.hash();
+        }
+    };
 	
 	// Mapping from a/b/c to single indices
-	std::map<IndexSet, unsigned> vertexDataIndexForSet;
+    std::unordered_map<IndexSet, unsigned, IndexSetHash> vertexDataIndexForSet;
 	
 	// Vertex buffer, used by OpenGL
 	std::vector<VertexData> vertexData;

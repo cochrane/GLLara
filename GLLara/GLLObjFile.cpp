@@ -31,6 +31,20 @@ bool GLLObjFile::IndexSet::operator<(const GLLObjFile::IndexSet &other) const
 	return false;
 }
 
+size_t GLLObjFile::IndexSet::hash() const {
+    size_t hash = vertex;
+    hash = 31 * hash + normal;
+    hash = 31 * hash + texCoord;
+    hash = 31 * hash + color;
+    return hash;
+}
+
+
+bool GLLObjFile::IndexSet::operator==(const GLLObjFile::IndexSet &other) const
+{
+    return vertex == other.vertex && normal == other.normal && texCoord == other.texCoord && color == other.color;
+}
+
 void GLLObjFile::parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw()
 {
 	float vals[4];
@@ -97,7 +111,7 @@ void GLLObjFile::parseFace(std::istream &stream)
 
 unsigned GLLObjFile::unifiedIndex(const IndexSet &indexSet)
 {
-	std::map<IndexSet, unsigned>::iterator iter(vertexDataIndexForSet.find(indexSet));
+	auto iter(vertexDataIndexForSet.find(indexSet));
 	if (iter == vertexDataIndexForSet.end())
 	{
 		VertexData data;
