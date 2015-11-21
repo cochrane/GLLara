@@ -73,8 +73,8 @@
 	[self calculateTangents:vertices];
 	
 	// Set up other attributes
-	self.vertexData = [vertices copy];
-	self.elementData = [elements copy];
+	self.vertexData = vertices;
+	self.elementData = elements;
 	self.countOfVertices = globalToLocalVertices.size();
 	self.countOfElements = range.end - range.start;
     

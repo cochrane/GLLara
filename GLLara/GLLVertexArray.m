@@ -256,8 +256,16 @@ static inline uint16_t halfFloat(float value) {
             
             const float *weights = originalVertex;
             uint16_t *intWeights = vertex;
-            for (int j = 0; j < 4; j++) {
-                intWeights[j] = (uint16_t) (weights[j] * UINT16_MAX);
+            float sum = weights[0] + weights[1] + weights[2] + weights[3];
+            if (sum == 0.0f) {
+                intWeights[0] = UINT16_MAX;
+                intWeights[1] = 0;
+                intWeights[2] = 0;
+                intWeights[3] = 0;
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    intWeights[j] = (uint16_t) ((weights[j] / sum) * UINT16_MAX);
+                }
             }
             originalVertex += 16;
             vertex += 8;

@@ -95,7 +95,7 @@ void vec_addTo(float *a, float *b)
 	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The vertex data for a mesh could not be loaded.", @"Premature end of file error") }];
 		return nil;
 	}
-	_vertexData = [[self normalizeBoneWeightsInVertices:rawVertexData] copy];
+	_vertexData = rawVertexData;
 	
 	_countOfElements = 3 * [stream readUint32]; // File saves number of triangles
 	_elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
