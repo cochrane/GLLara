@@ -89,7 +89,7 @@ static NSCache *cachedModels;
 
 - (id)initBinaryFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 {	
-	NSData *data = [NSData dataWithContentsOfURL:file options:0 error:error];
+	NSData *data = [NSData dataWithContentsOfURL:file options:NSDataReadingMappedIfSafe error:error];
 	if (!data) return nil;
 	
 	return [self initBinaryFromData:data baseURL:file parent:parent error:error];
