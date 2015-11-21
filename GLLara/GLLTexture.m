@@ -356,9 +356,31 @@ static NSOperationQueue *imageInformationQueue = nil;
     glTexStorage2D(GL_TEXTURE_2D, (GLsizei) numberOfLevels, GL_RGBA8, (GLsizei) width, (GLsizei) height);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, (GLsizei) width, (GLsizei) height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
     
-    free(unpremultipliedBufferData);
-	
-	glGenerateMipmap(GL_TEXTURE_2D);
+    // Load mipmaps
+    vImage_Buffer lastBuffer = output;
+    uint8_t *tempBuffer = NULL;
+    size_t tempBufferSize = 0;
+    for (int i = 1; i < numberOfLevels; i++) {
+        vImage_Buffer smallerBuffer;
+        smallerBuffer.width = MAX(width >> i, 1);
+        smallerBuffer.height = MAX(height >> i, 1);
+        smallerBuffer.rowBytes = smallerBuffer.width * 4;
+        smallerBuffer.data = calloc(smallerBuffer.height * smallerBuffer.width, 4);
+        
+        size_t newTempSize = vImageScale_ARGB8888(&lastBuffer, &smallerBuffer, 0, kvImageGetTempBufferSize);
+        if (newTempSize > tempBufferSize) {
+            tempBufferSize = newTempSize;
+            free(tempBuffer);
+            tempBuffer = malloc(newTempSize);
+        }
+        
+        vImageScale_ARGB8888(&lastBuffer, &smallerBuffer, tempBuffer, kvImageEdgeExtend);
+        glTexSubImage2D(GL_TEXTURE_2D, i, 0, 0, (GLsizei) smallerBuffer.width, (GLsizei) smallerBuffer.height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, smallerBuffer.data);
+        free(lastBuffer.data);
+        lastBuffer = smallerBuffer;
+    }
+    free(tempBuffer);
+    free(lastBuffer.data);
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
