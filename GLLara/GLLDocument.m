@@ -174,7 +174,8 @@
 		if (result != NSModalResponseOK) return;
 		
 		NSError *error = nil;
-		if (![self addModelAtURL:panel.URL error:&error])
+        [self addModelAtURL:panel.URL error:&error];
+        if (error)
 			[self presentError:error modalForWindow:self.windowForSheet delegate:nil didPresentSelector:NULL contextInfo:NULL];
 	}];
 }

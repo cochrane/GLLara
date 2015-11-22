@@ -264,7 +264,6 @@ static NSCache *cachedModels;
 				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
 					   NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error"),
 		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The Generic Item 2 footer section is incomplete. The file may be damaged.", @"Premature end of file error") }];
-			return nil;
 		}
 	}
 	
