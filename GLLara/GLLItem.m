@@ -16,7 +16,6 @@
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
-#import "LionSubscripting.h"
 #import "NSArray+Map.h"
 
 @interface GLLItem ()

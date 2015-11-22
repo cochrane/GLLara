@@ -17,7 +17,6 @@
 #import "GLLUniformBlockBindings.h"
 #import "GLLSceneDrawer.h"
 #import "GLLView.h"
-#import "LionSubscripting.h"
 #import "simd_matrix.h"
 #import "simd_project.h"
 

@@ -12,7 +12,6 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLModelBone.h"
-#import "LionSubscripting.h"
 
 @interface GLLBoneController ()
 {

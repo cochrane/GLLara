@@ -16,7 +16,6 @@
 #import "GLLRenderParameterDescription.h"
 #import "GLLSelection.h"
 #import "GLLTextureAssignmentView.h"
-#import "LionSubscripting.h"
 
 /************************************************************************
  A very high-level overview:

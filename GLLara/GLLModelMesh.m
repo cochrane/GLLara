@@ -13,7 +13,6 @@
 #import "GLLModel.h"
 #import "GLLModelParams.h"
 #import "GLLVertexFormat.h"
-#import "LionSubscripting.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 

@@ -11,7 +11,6 @@
 #import "NSArray+Map.h"
 #import "GLLItem.h"
 #import "GLLBoneController.h"
-#import "LionSubscripting.h"
 
 @interface GLLBoneListController ()
 

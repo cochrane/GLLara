@@ -9,7 +9,6 @@
 #import "GLLLightsListController.h"
 
 #import "GLLLightController.h"
-#import "LionSubscripting.h"
 #import "NSArray+Map.h"
 
 @interface GLLLightsListController ()

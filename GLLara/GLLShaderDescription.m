@@ -9,7 +9,6 @@
 #import "GLLShaderDescription.h"
 
 #import "GLLModelParams.h"
-#import "LionSubscripting.h"
 
 @implementation GLLShaderDescription
 

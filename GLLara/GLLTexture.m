@@ -16,7 +16,6 @@
 #import <OpenGL/CGLRenderers.h>
 
 #import "GLLDDSFile.h"
-#import "LionSubscripting.h"
 
 NSString *GLLTextureChangeNotification = @"GLL Texture Change Notification";
 

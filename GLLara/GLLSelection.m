@@ -11,7 +11,6 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
-#import "LionSubscripting.h"
 #import "NSArray+Map.h"
 
 @implementation GLLSelection
