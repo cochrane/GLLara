@@ -117,6 +117,15 @@ Boolean _dds_upload_texture_data(GLLDDSFile *file, CFIndex mipmapLevel)
 	return 1;
 }
 
+static int numMipmapLevels(long width, long height) {
+    long widerDimension = MAX(width, height);
+    int firstBit = flsl(widerDimension); // Computes floor(log2(x)). We want ceil(log2(x))
+    int numberOfLevels = firstBit;
+    if ((widerDimension & ~(1 << firstBit)) == 0)
+        return firstBit - 1;
+    return numberOfLevels;
+}
+
 static NSOperationQueue *imageInformationQueue = nil;
 
 @interface GLLTexture ()
@@ -309,11 +318,18 @@ static NSOperationQueue *imageInformationQueue = nil;
 	
 	NSUInteger mipmap = 0;
 	while (_dds_upload_texture_data(file, mipmap))
-		mipmap += 1;
+        mipmap += 1;
+    
+    int numberOfLevels = numMipmapLevels(file.width, file.height);
+    if (mipmap < (NSUInteger) numberOfLevels) {
+        // Generate missing mipmap levels
+        // A DDS file is not required to have all of them. Since I can't decode S3TC and/or reencode it, generating these mipmap levels manually is not an option, so OpenGL has to do this.
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, (GLint) (mipmap - 1));
+        glGenerateMipmap(GL_TEXTURE_2D);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+    }
 	
-	glGenerateMipmap(GL_TEXTURE_2D);
-	
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 4.0f);
 	
 	return YES;
 }
@@ -347,11 +363,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 	vImageUnpremultiplyData_ARGB8888(&input, &output, 0);
 	free(bufferData);
 	
-    long widerDimension = MAX(width, height);
-    int firstBit = flsl(widerDimension); // Computes floor(log2(x)). We want ceil(log2(x))
-    int numberOfLevels = firstBit;
-    if ((widerDimension & ~(1 << firstBit)) == 0)
-        numberOfLevels = firstBit - 1;
+    int numberOfLevels = numMipmapLevels(width, height);
     
     glTexStorage2D(GL_TEXTURE_2D, (GLsizei) numberOfLevels, GL_RGBA8, (GLsizei) width, (GLsizei) height);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, (GLsizei) width, (GLsizei) height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
@@ -386,7 +398,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 4.0f);
 }
 
 - (void)_loadDefaultTexture;
