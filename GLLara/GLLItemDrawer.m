@@ -13,6 +13,7 @@
 #import "NSArray+Map.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
+#import "GLLItemMesh.h"
 #import "GLLMeshDrawer.h"
 #import "GLLModelDrawer.h"
 #import "GLLResourceManager.h"
@@ -30,11 +31,28 @@
 	NSArray *solidDrawers;
 	
 	NSArray *bones;
+    
+    // Base arrays for runs
+    // Size is alpha drawers + solid drawers
+    GLsizei *allCounts;
+    GLsizeiptr *allIndices;
+    GLint *allBaseVertices;
+    
+    // Arrays for each run. Each element is an index into the base arrays.
+    GLsizei solidRunCounts;
+    GLsizei alphaRunCounts;
+    GLsizei *runLengths;
+    GLsizei *runStarts;
+    NSArray *runStartDrawers;
+    
+    BOOL needsUpdateRuns;
 }
 
 - (void)_updateTransforms;
 
 - (vec_float4)_permutationTableColumn:(int16_t)mapping;
+
+- (void)_findRuns;
 
 @end
 
@@ -83,16 +101,11 @@
 		return nil;
 	}
     
-    solidDrawers = [solidDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshDrawer *a, GLLItemMeshDrawer *b) {
-        return [a compareTo:b];
-    }];
-    alphaDrawers = [alphaDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshDrawer *a, GLLItemMeshDrawer *b) {
-        return [a compareTo:b];
-    }];
-	
 	glGenBuffers(1, &transformsBuffer);
 	needToUpdateTransforms = YES;
 	_needsRedraw = YES;
+    
+    [self _findRuns];
 	
 	return self;
 }
@@ -131,22 +144,36 @@
 - (void)drawSolidWithState:(GLLDrawState *)state;
 {
 	if (needToUpdateTransforms) [self _updateTransforms];
+    if (needsUpdateRuns) [self _findRuns];
 	
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
-	
-	for (GLLItemMeshDrawer *drawer in solidDrawers)
-		[drawer drawWithState:state];
+    
+    for (GLsizei run = 0; run < solidRunCounts; run++) {
+        GLLItemMeshDrawer *drawer = runStartDrawers[run];
+        [drawer setupState:state];
+        
+        GLsizei runStart = runStarts[run];
+        GLsizei runLength = runLengths[run];
+        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, drawer.meshDrawer.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
+    }
 	
 	self.needsRedraw = NO;
 }
 - (void)drawAlphaWithState:(GLLDrawState *)state;
 {
-	if (needToUpdateTransforms) [self _updateTransforms];
+    if (needToUpdateTransforms) [self _updateTransforms];
+    if (needsUpdateRuns) [self _findRuns];
 	
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
-	
-	for (GLLItemMeshDrawer *drawer in alphaDrawers)
-		[drawer drawWithState:state];
+    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
+    
+    for (GLsizei run = solidRunCounts; run < (solidRunCounts + alphaRunCounts); run++) {
+        GLLItemMeshDrawer *drawer = runStartDrawers[run];
+        [drawer setupState:state];
+        
+        GLsizei runStart = runStarts[run];
+        GLsizei runLength = runLengths[run];
+        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, drawer.meshDrawer.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
+    }
 	
 	self.needsRedraw = NO;
 }
@@ -204,6 +231,95 @@
 		case GLLTangentVNeg: return -simd_e_x; break;
 		default: return simd_zero();
 	}
+}
+
+- (void)_findRuns {
+    solidDrawers = [solidDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshDrawer *a, GLLItemMeshDrawer *b) {
+        return [a compareTo:b];
+    }];
+    alphaDrawers = [alphaDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshDrawer *a, GLLItemMeshDrawer *b) {
+        return [a compareTo:b];
+    }];
+
+    
+    NSUInteger totalMeshes = solidDrawers.count + alphaDrawers.count;
+    if (!allCounts)
+        allCounts = calloc(sizeof(GLsizei), totalMeshes);
+    if (!allBaseVertices)
+        allBaseVertices = calloc(sizeof(GLint), totalMeshes);
+    if (!allIndices)
+        allIndices = calloc(sizeof(GLvoid *), totalMeshes);
+    if (!runLengths)
+        runLengths = calloc(sizeof(GLsizei), totalMeshes);
+    if (!runStarts)
+        runStarts = calloc(sizeof(GLsizei), totalMeshes);
+    runStartDrawers = nil;
+    NSMutableArray *startDrawers = [NSMutableArray array];
+    
+    NSUInteger nextRun = 0;
+    GLsizei meshesAdded = 0;
+    alphaRunCounts = 0;
+    solidRunCounts = 0;
+    
+    // Find runs in solid meshes
+    GLLItemMeshDrawer *last = nil;
+    for (GLLItemMeshDrawer *drawer in solidDrawers) {
+        if (!drawer.itemMesh.isVisible) {
+            continue;
+        }
+        
+        if (last == nil || [drawer compareTo:last] != NSOrderedSame) {
+            // Starts new run
+            runStarts[nextRun] = meshesAdded;
+            runLengths[nextRun] = 1;
+            [startDrawers addObject:drawer];
+            last = drawer;
+            solidRunCounts += 1;
+            nextRun += 1;
+        } else {
+            // Continues last run
+            runLengths[nextRun - 1] += 1;
+        }
+        allBaseVertices[meshesAdded] = drawer.meshDrawer.baseVertex;
+        allIndices[meshesAdded] = drawer.meshDrawer.indicesStart;
+        allCounts[meshesAdded] = drawer.meshDrawer.elementsCount;
+        
+        meshesAdded += 1;
+    }
+    
+    // Find runs in alpha meshes
+    last = nil;
+    for (GLLItemMeshDrawer *drawer in alphaDrawers) {
+        if (!drawer.itemMesh.isVisible) {
+            continue;
+        }
+        
+        if (last == nil || [drawer compareTo:last] != NSOrderedSame) {
+            // Starts new run
+            runStarts[nextRun] = meshesAdded;
+            runLengths[nextRun] = 1;
+            [startDrawers addObject:drawer];
+            last = drawer;
+            alphaRunCounts += 1;
+            nextRun += 1;
+        } else {
+            // Continues last run
+            runLengths[nextRun - 1] += 1;
+        }
+        allBaseVertices[meshesAdded] = drawer.meshDrawer.baseVertex;
+        allIndices[meshesAdded] = drawer.meshDrawer.indicesStart;
+        allCounts[meshesAdded] = drawer.meshDrawer.elementsCount;
+        
+        meshesAdded += 1;
+    }
+    
+    runStartDrawers = startDrawers;
+    needsUpdateRuns = NO;
+}
+
+- (void)propertiesChanged {
+    self.needsRedraw = YES;
+    needsUpdateRuns = YES;
 }
 
 @end

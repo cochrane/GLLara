@@ -26,7 +26,7 @@
 	GLsizei elementsCount;
     GLenum elementType;
     GLint baseVertex;
-    GLvoid *indicesStart;
+    GLsizeiptr indicesStart;
 }
 
 @end
@@ -62,13 +62,6 @@
 	return self;
 }
 
-- (void)drawWithState:(GLLDrawState *)state;
-{	
-	// Load and draw the vertices
-    [vertexArray bindWithState:state];
-	glDrawElementsBaseVertex(GL_TRIANGLES, elementsCount, elementType, indicesStart, baseVertex);
-}
-
 - (void)unload
 {
 	vertexArray = nil;
@@ -78,6 +71,31 @@
 - (void)dealloc
 {
 	NSAssert(vertexArray == 0 && elementsCount == 0, @"Did not call unload before calling dealloc!");
+}
+
+- (GLenum)elementType
+{
+    return elementType;
+}
+
+- (GLint)baseVertex
+{
+    return baseVertex;
+}
+
+- (GLsizeiptr)indicesStart
+{
+    return indicesStart;
+}
+
+- (GLsizei)elementsCount
+{
+    return elementsCount;
+}
+
+- (GLuint)vertexArray
+{
+    return vertexArray.vertexArrayIndex;
 }
 
 - (NSComparisonResult)compareTo:(GLLMeshDrawer *)other;

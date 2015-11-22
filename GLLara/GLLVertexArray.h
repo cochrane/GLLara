@@ -24,7 +24,7 @@
 @property (nonatomic, readonly, assign) NSUInteger elementDataLength;
 
 - (void)upload;
-- (void)bindWithState:(GLLDrawState *)state;
+@property (nonatomic, readonly, assign) GLuint vertexArrayIndex;
 
 - (void)unload;
 

@@ -98,12 +98,13 @@
 		for (GLLRenderParameter *param in renderParameters)
 			[param addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
 
-		needsParameterBufferUpdate = YES;
+        needsParameterBufferUpdate = YES;
+        [self.itemDrawer propertiesChanged];
 	}
 	else if ([keyPath isEqual:@"uniformValue"])
 	{
-		needsParameterBufferUpdate = YES;
-		self.itemDrawer.needsRedraw = YES;
+        needsParameterBufferUpdate = YES;
+        [self.itemDrawer propertiesChanged];
 	}
 	else if ([keyPath isEqual:@"textures"])
 	{
@@ -112,25 +113,25 @@
 		
 		textureAssignments = [_itemMesh.textures copy];
 		for (GLLItemMeshTexture *texture in textureAssignments)
-			[texture addObserver:self forKeyPath:@"textureURL" options:NSKeyValueObservingOptionNew context:NULL];
-		needsTextureUpdate = YES;
+            [texture addObserver:self forKeyPath:@"textureURL" options:NSKeyValueObservingOptionNew context:NULL];
+        [self.itemDrawer propertiesChanged];
 	}
 	else if ([keyPath isEqual:@"textureURL"])
 	{
-		needsTextureUpdate = YES;
-		self.itemDrawer.needsRedraw = YES;
+        needsTextureUpdate = YES;
+        [self.itemDrawer propertiesChanged];
 	}
 	else if ([keyPath isEqual:@"shaderName"])
 	{
 		needsTextureUpdate = YES;
 		needsProgramUpdate = YES;
-		self.itemDrawer.needsRedraw = YES;
+        [self.itemDrawer propertiesChanged];
 	}
 	else
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
-- (void)drawWithState:(GLLDrawState *)state;
+- (void)setupState:(GLLDrawState *)state;
 {
 	if (!self.itemMesh.isVisible)
 		return;
@@ -188,8 +189,11 @@
 		glUseProgram(self.program.programID);
 		state->activeProgram = self.program.programID;
 	}
-	
-    [self.meshDrawer drawWithState:state];
+    
+    if (state->activeVertexArray != self.meshDrawer.vertexArray) {
+        glBindVertexArray(self.meshDrawer.vertexArray);
+        state->activeVertexArray = self.meshDrawer.vertexArray;
+    }
 }
 
 - (void)unload

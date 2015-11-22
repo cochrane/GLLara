@@ -25,8 +25,11 @@
 - (id)initWithMesh:(GLLModelMesh *)mesh vertexArray:(GLLVertexArray *)vertexArray resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, retain, readonly) GLLModelMesh *modelMesh;
-
-- (void)drawWithState:(GLLDrawState *)state;
+@property (nonatomic, assign, readonly) GLenum elementType;
+@property (nonatomic, assign, readonly) GLint baseVertex;
+@property (nonatomic, assign, readonly) GLsizeiptr indicesStart;
+@property (nonatomic, assign, readonly) GLsizei elementsCount;
+@property (nonatomic, assign, readonly) GLuint vertexArray;
 
 - (void)unload;
 

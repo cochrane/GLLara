@@ -357,12 +357,9 @@ static inline uint16_t halfFloat(const float *value) {
     elementData = nil;
 }
 
-- (void)bindWithState:(GLLDrawState *)state
+- (GLuint)vertexArrayIndex
 {
-    if (state->activeVertexArray != vertexArrayIndex) {
-        glBindVertexArray(vertexArrayIndex);
-        state->activeVertexArray = vertexArrayIndex;
-    }
+    return vertexArrayIndex;
 }
 
 - (void)unload

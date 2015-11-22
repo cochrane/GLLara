@@ -29,7 +29,7 @@
 @property (nonatomic, retain, readonly) GLLItemMesh *itemMesh;
 @property (nonatomic, retain, readonly) GLLModelProgram *program;
 
-- (void)drawWithState:(GLLDrawState *)state;
+- (void)setupState:(GLLDrawState *)state;
 
 - (void)unload;
 
