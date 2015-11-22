@@ -54,8 +54,8 @@ static inline uint32_t packSignedFloat(float value, int bits)
     return signedValue & mask;
 }
 
-static inline uint32_t reduceFloat(float value, unsigned exponentBits, unsigned mantissaBits, unsigned signBits) {
-    uint32_t valueBits = *((uint32_t *) &value);
+static inline uint32_t reduceFloat(const float *value, unsigned exponentBits, unsigned mantissaBits, unsigned signBits) {
+    uint32_t valueBits = ((uint32_t *) value)[0];
     
     uint32_t mantissa = valueBits & ((1 << 23) - 1);
     int32_t exponent = ((valueBits >> 23) & 0xFF) - 127;
@@ -87,7 +87,7 @@ static inline uint32_t reduceFloat(float value, unsigned exponentBits, unsigned 
     return result;
 }
 
-static inline uint16_t halfFloat(float value) {
+static inline uint16_t halfFloat(const float *value) {
     return (uint16_t) reduceFloat(value, 5, 10, 1);
 }
 
@@ -197,8 +197,6 @@ static inline uint16_t halfFloat(float value) {
     NSUInteger countOfUVLayers = self.format.countOfUVLayers;
     BOOL hasTangents = self.format.hasTangents;
     
-    halfFloat(4.0f);
-    
     for (NSUInteger i = 0; i < numElements; i++) {
         const void *originalVertex = vertices.bytes + originalStride * i;
         void *vertex = newBytes + actualStride * i;
@@ -227,8 +225,8 @@ static inline uint16_t halfFloat(float value) {
         for (NSUInteger j = 0; j < countOfUVLayers; j++) {
             uint16_t *intTexCoords = vertex;
             const float *floatTexCoords = originalVertex;
-            intTexCoords[0] = halfFloat(floatTexCoords[0]);
-            intTexCoords[1] = halfFloat(floatTexCoords[1]);
+            intTexCoords[0] = halfFloat(floatTexCoords + 0);
+            intTexCoords[1] = halfFloat(floatTexCoords + 1);
             vertex += 4;
             originalVertex += 8;
         }
@@ -264,7 +262,7 @@ static inline uint16_t halfFloat(float value) {
                 intWeights[3] = 0;
             } else {
                 for (int j = 0; j < 4; j++) {
-                    intWeights[j] = (uint16_t) ((weights[j] / sum) * UINT16_MAX);
+                    intWeights[j] = (uint16_t) packSignedFloat(weights[j] / sum, 16);
                 }
             }
             originalVertex += 16;
