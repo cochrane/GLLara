@@ -56,6 +56,9 @@ static NSCache *parameterCache;
 	NSDictionary *ownRenderParameterDescriptions;
 	NSDictionary *ownTextureDescriptions;
 	NSDictionary *ownDefaultTextures;
+    
+    // Cached, because in some situations this can take too much run time.
+    NSArray *allShaders;
 	
 	GLLModel *model;
 }
@@ -390,11 +393,18 @@ static NSCache *parameterCache;
 
 - (NSArray *)allShaders
 {
-	NSArray *own = ownShaders.allValues;
-	NSArray *base = self.base.allShaders;
-	if (own && base) return [own arrayByAddingObjectsFromArray:base];
-	if (own && !base) return own;
-	return base;
+    if (!allShaders) {
+        NSArray *own = ownShaders.allValues;
+        NSArray *base = self.base.allShaders;
+        if (own && base) {
+            allShaders = [own arrayByAddingObjectsFromArray:base];
+        } else if (own && !base) {
+            allShaders = own;
+        } else {
+            allShaders = base;
+        }
+    }
+    return allShaders;
 }
 
 #pragma mark - Render parameter descriptions

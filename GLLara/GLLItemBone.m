@@ -16,6 +16,9 @@
 #import "TROutDataStream.h"
 
 @interface GLLItemBone ()
+{
+    NSArray *children;
+}
 
 - (void)_standardSetValue:(id)value forKey:(NSString *)key;
 - (void)_standardSetAngle:(float)value forKey:(NSString *)key;
@@ -115,11 +118,14 @@
 
 - (NSArray *)children
 {
-	NSOrderedSet *combinedBones = self.item.combinedBones;
-	NSIndexSet *childIndices = [combinedBones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
-		return bone.parent == self;
-	}];
-	return [combinedBones objectsAtIndexes:childIndices];
+    if (!children) {
+        NSOrderedSet *combinedBones = self.item.combinedBones;
+        NSIndexSet *childIndices = [combinedBones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
+            return bone.parent == self;
+        }];
+        children = [combinedBones objectsAtIndexes:childIndices];
+    }
+    return children;
 }
 
 - (NSUInteger)parentIndexInCombined

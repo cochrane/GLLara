@@ -20,6 +20,9 @@
 #import "GLLShaderDescription.h"
 
 @interface GLLItemMesh ()
+{
+    __weak GLLModelMesh *underlyingMesh;
+}
 
 - (void)_createTextureAndShaderAssignments;
 
@@ -141,7 +144,9 @@
 
 - (GLLModelMesh *)mesh
 {
-	return self.item.model.meshes[self.meshIndex];
+    if (!underlyingMesh)
+        underlyingMesh = self.item.model.meshes[self.meshIndex];
+    return underlyingMesh;
 }
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
