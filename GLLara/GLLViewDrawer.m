@@ -151,6 +151,18 @@ struct GLLLightBlock
 	[self.sceneDrawer drawShowingSelection:selection];
 }
 
+- (void)drawWithNewStateShowingSelection:(BOOL)selection;
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    if (needsUpdateMatrices) [self _updateMatrices];
+    if (needsUpdateLights) [self _updateLights];
+    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
+    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
+    
+    [self.sceneDrawer drawWithNewStateShowingSelection:selection];
+}
+
 #pragma mark - Image rendering
 
 - (void)writeImageToURL:(NSURL *)url fileType:(NSString *)type size:(CGSize)size;
@@ -286,7 +298,7 @@ struct GLLLightBlock
 			// Enable blend for entire scene. That way, new alpha are correctly combined with values in the buffer (instead of stupidly overwriting them), giving the rendered image a correct alpha channel.
 			glEnable(GL_BLEND);
 			
-			[self drawShowingSelection:NO];
+			[self drawWithNewStateShowingSelection:NO];
 			
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			

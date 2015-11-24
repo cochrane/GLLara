@@ -31,6 +31,7 @@
 @property (nonatomic, readonly) GLLSceneDrawer *sceneDrawer;
 
 - (void)drawShowingSelection:(BOOL)selection;
+- (void)drawWithNewStateShowingSelection:(BOOL)selection;
 
 // Basic support for render to file
 - (void)writeImageToURL:(NSURL *)url fileType:(NSString *)type size:(CGSize)size;

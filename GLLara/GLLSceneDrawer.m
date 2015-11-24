@@ -122,6 +122,12 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	}
 }
 
+- (void)drawWithNewStateShowingSelection:(BOOL)showSelection;
+{
+    bzero(&state, sizeof(state));
+    [self drawShowingSelection:showSelection];
+}
+
 - (void)drawShowingSelection:(BOOL)showSelection;
 {
 	// 1st pass: Draw items that do not need blending, without alpha test
