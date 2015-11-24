@@ -364,7 +364,7 @@ static inline uint16_t halfFloat(const float *value) {
 
 - (void)unload
 {
-    glDeleteVertexArrays(1, vertexArrayIndex);
+    glDeleteVertexArrays(1, &vertexArrayIndex);
     vertexArrayIndex = 0;
 }
 
