@@ -5,11 +5,11 @@ author: cochrane
 
 GLLara is a Mac OS X tool to create 3D scenes and take pictures of them, like this:
 
-![Picture]({{site.baseurl}}/screenshots/image 01 - 800.jpg)
+![Picture](/{{site.baseurl}}/screenshots/image 01 - 800.jpg)
 
 When you run it, it looks like this:
 
-![Screenshot]({{site.baseurl}}/screenshots/Bildschirmfoto%202012-09-27%20um%2019.28.33.jpg)
+![Screenshot](/{{site.baseurl}}/screenshots/Bildschirmfoto%202012-09-27%20um%2019.28.33.jpg)
 
 The whole thing is a reimplementation of [XNALara by Dusan](http://www.tombraiderforums.com/showthread.php?t=147100), which did the same thing before on Windows. GLLara is partly based on it and is (hopefully) compatible with all the files XNALara uses. There's also [XPS](http://xnalara.home-forum.com/), which continues the XNALara development. GLLara attempts to be compatible with files for that as well.
 

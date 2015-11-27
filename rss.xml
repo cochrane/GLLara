@@ -7,7 +7,7 @@ layout:
         <title>GLLara Development Blog</title>
         <link>{{ site.baseurl }}</link>
         <description>News from development of GLLara</description>
-        <atom:link href="{{ site.baseurl }}/rss.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="/{{site.baseurl}}/rss.xml" rel="self" type="application/rss+xml" />
         {% for post in site.posts %}
         <item>
             <title>{{ post.title }}</title>
