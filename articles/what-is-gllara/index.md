@@ -5,7 +5,7 @@ author: cochrane
 
 GLLara is a Mac OS X tool to create 3D scenes and take pictures of them, like this:
 
-![Picture]({{site.github.url}}/screenshots/image 01 - 800.jpg)
+![Picture]({{site.github.url}}/screenshots/image%2001%20-%20800.jpg)
 
 When you run it, it looks like this:
 
