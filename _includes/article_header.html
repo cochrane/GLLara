@@ -1,5 +1,5 @@
 <header>
-    <h1><a href="/{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></h1>
+    <h1><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></h1>
     <p>by <a href="https://github.com/{{ page.author }}/" class="author">{{ page.author }}</a>
     {% if page.date %}
     on <time datetime="{{ page.date }}">{{ page.date | date_to_long_string }}</time></p>
