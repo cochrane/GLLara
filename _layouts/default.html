@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GLLara Development Blog - {{ page.title }}</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/styles/default.css">
+    </head>
+    <body>
+        {% include nav.html %}
+        <main>
+            <article>
+                {% include article_header.html %}
+                {{ content }}
+            </article>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,148 @@
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 12pt;
+    margin: 0;
+    padding: 0;
+    background-color: #F0F0F0;
+}
+
+nav {
+    display: block;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #DDD;
+    margin: 0;
+    padding: 0;
+    background-color: #EAEAEA;
+    font-size: 0.9em;
+    
+    background:linear-gradient(#FFF, #EAEAEA);
+}
+
+nav h2 {
+    display: table-cell;
+    padding: 0.65em 1em;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1em;
+    border-right: solid 1px #ddd;
+    float:left;
+}
+
+nav ul {
+    display: table-cell;
+    padding: 0px;
+    margin: 0px;
+}
+
+nav li {
+    display: table-cell;
+    padding: 0.65em 1em;
+    margin: 0;
+    font-size: 1em;
+    border-right: solid 1px #ddd;
+    float:left;
+}
+
+nav a:link, nav a:visited {
+    text-decoration: none;
+    color: #6F6F6F;
+}
+
+nav a:hover, nav a:active {
+    text-decoration: underline;
+    color: #6F6F6F;
+}
+
+main {
+    margin: 2em;
+    padding: 0;
+}
+
+article {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5em;
+    margin-bottom: 2em;
+    padding: 2em;
+    background-color: #FFF;
+    border: solid 1px #ddd;
+    border-radius: 1em;
+    line-height: 1.5em;
+    text-align:justify;
+}
+
+article header {
+    padding: 0.0em;
+    margin: 0em;
+    border-bottom: solid 1px #ddd;
+}
+
+article header h1 {
+    font-size: 2em;
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+article header h1 a:link, article header h1 a:visited {
+    text-decoration: none;
+    color: #000;
+}
+
+article header p {
+    font-size: 0.8em;
+    margin: 0.75em 0.1em;
+    padding: 0;
+    color: #6F6F6F;
+}
+
+article a:link {
+    color: #33F;
+}
+
+article a:visited {
+    color: #D1D;
+}
+
+article a:hover {
+    color: #00F;
+}
+
+article a:active {
+    color: #F33;
+}
+
+article header p time {
+    color: #000;
+}
+
+article h2 {
+    font-size: 1.5em;
+    font-weight: normal;
+    margin: 1em 0em;
+}
+
+article li {
+    margin: 0.5em 0em;
+}
+
+footer {
+    margin: 2em;
+    padding: 0;
+}
+
+footer ul {
+    text-align:center;
+    margin: 0;
+    padding: 0;
+}
+
+footer li {
+    display: inline-block;
+    margin: 0;
+    padding: 0.5em;
+    background-color: #FFF;
+    border: solid 1px #ddd;
+}
