@@ -5,16 +5,16 @@ layout:
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>GLLara Development Blog</title>
-        <link>{{ site.baseurl }}</link>
+        <link>{{site.github.url}}</link>
         <description>News from development of GLLara</description>
-        <atom:link href="/{{site.baseurl}}/rss.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="{{site.github.url}}/rss.xml" rel="self" type="application/rss+xml" />
         {% for post in site.posts %}
         <item>
             <title>{{ post.title }}</title>
-            <link>{{ site.baseurl }}{{ post.url }}</link>
+            <link>{{site.github.url}}/{{ post.url }}</link>
             <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
             <author>{{ post.author }}</author>
-            <guid isPermaLink="true">{{ site.baseurl }}{{ post.url }}</guid>
+            <guid isPermaLink="true">{{site.github.url}}/{{ post.url }}</guid>
             <description>{{ post.content | xml_escape }}</description>
         </item>
         {% endfor %}
