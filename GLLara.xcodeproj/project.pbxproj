@@ -403,6 +403,30 @@
 		522783721C0A60E7002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLNoSelectionView.xib; sourceTree = "<group>"; };
 		522783751C0A6188002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		522783771C0A62AB002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		522783791C0A65A8002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLRenderWindowController.strings; sourceTree = "<group>"; };
+		5227837B1C0A65AB002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLRenderWindowController.strings; sourceTree = "<group>"; };
+		5227837D1C0A65E5002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLDocument.strings; sourceTree = "<group>"; };
+		5227837F1C0A65E9002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLDocument.strings; sourceTree = "<group>"; };
+		522783811C0A65FF002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLBoneView.strings; sourceTree = "<group>"; };
+		522783831C0A6601002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLBoneView.strings; sourceTree = "<group>"; };
+		522783851C0A662B002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLMeshView.strings; sourceTree = "<group>"; };
+		522783871C0A662E002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLMeshView.strings; sourceTree = "<group>"; };
+		522783891C0A66E9002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLLightView.strings; sourceTree = "<group>"; };
+		5227838B1C0A66ED002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLLightView.strings; sourceTree = "<group>"; };
+		5227838D1C0A6743002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLItemView.strings; sourceTree = "<group>"; };
+		5227838F1C0A6745002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLItemView.strings; sourceTree = "<group>"; };
+		522783911C0A67A3002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLAmbientLightView.strings; sourceTree = "<group>"; };
+		522783931C0A67A6002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLAmbientLightView.strings; sourceTree = "<group>"; };
+		522783951C0A67BB002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLWindowSettingsPopoverView.strings; sourceTree = "<group>"; };
+		522783971C0A67BE002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLWindowSettingsPopoverView.strings; sourceTree = "<group>"; };
+		522783991C0A67F3002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLRenderAccessoryView.strings; sourceTree = "<group>"; };
+		5227839B1C0A67F6002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLRenderAccessoryView.strings; sourceTree = "<group>"; };
+		5227839D1C0A680C002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLItemExportView.strings; sourceTree = "<group>"; };
+		5227839F1C0A680F002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLItemExportView.strings; sourceTree = "<group>"; };
+		522783A11C0A6832002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLPoseExportViewController.strings; sourceTree = "<group>"; };
+		522783A31C0A6835002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLPoseExportViewController.strings; sourceTree = "<group>"; };
+		522783A51C0A686E002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLNoSelectionView.strings; sourceTree = "<group>"; };
+		522783A71C0A6871002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLNoSelectionView.strings; sourceTree = "<group>"; };
 		522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = DiffuseSpecularNormalOBJ.fs; sourceTree = "<group>"; };
 		522C4C121609B1F10043FCBA /* GLLModelMesh+OBJExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLModelMesh+OBJExport.h"; sourceTree = "<group>"; };
 		522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLModelMesh+OBJExport.m"; sourceTree = "<group>"; };
@@ -1919,6 +1943,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				522783721C0A60E7002E43FD /* Base */,
+				522783A51C0A686E002E43FD /* en */,
+				522783A71C0A6871002E43FD /* de */,
 			);
 			name = GLLNoSelectionView.xib;
 			sourceTree = "<group>";
@@ -1927,6 +1953,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				522783711C0A60E7002E43FD /* Base */,
+				522783A11C0A6832002E43FD /* en */,
+				522783A31C0A6835002E43FD /* de */,
 			);
 			name = GLLPoseExportViewController.xib;
 			sourceTree = "<group>";
@@ -1935,6 +1963,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				522783701C0A60E7002E43FD /* Base */,
+				5227839D1C0A680C002E43FD /* en */,
+				5227839F1C0A680F002E43FD /* de */,
 			);
 			name = GLLItemExportView.xib;
 			sourceTree = "<group>";
@@ -1943,6 +1973,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				5227836F1C0A60E7002E43FD /* Base */,
+				522783991C0A67F3002E43FD /* en */,
+				5227839B1C0A67F6002E43FD /* de */,
 			);
 			name = GLLRenderAccessoryView.xib;
 			sourceTree = "<group>";
@@ -1951,6 +1983,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				5227836E1C0A60E6002E43FD /* Base */,
+				522783951C0A67BB002E43FD /* en */,
+				522783971C0A67BE002E43FD /* de */,
 			);
 			name = GLLWindowSettingsPopoverView.xib;
 			sourceTree = "<group>";
@@ -1959,6 +1993,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				5227836D1C0A60E6002E43FD /* Base */,
+				522783911C0A67A3002E43FD /* en */,
+				522783931C0A67A6002E43FD /* de */,
 			);
 			name = GLLAmbientLightView.xib;
 			sourceTree = "<group>";
@@ -1967,6 +2003,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				5227836C1C0A60E6002E43FD /* Base */,
+				5227838D1C0A6743002E43FD /* en */,
+				5227838F1C0A6745002E43FD /* de */,
 			);
 			name = GLLItemView.xib;
 			sourceTree = "<group>";
@@ -1975,6 +2013,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				5227836B1C0A60E6002E43FD /* Base */,
+				522783891C0A66E9002E43FD /* en */,
+				5227838B1C0A66ED002E43FD /* de */,
 			);
 			name = GLLLightView.xib;
 			sourceTree = "<group>";
@@ -1983,6 +2023,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				5227836A1C0A60E6002E43FD /* Base */,
+				522783851C0A662B002E43FD /* en */,
+				522783871C0A662E002E43FD /* de */,
 			);
 			name = GLLMeshView.xib;
 			sourceTree = "<group>";
@@ -1991,6 +2033,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				522783691C0A60E6002E43FD /* Base */,
+				522783811C0A65FF002E43FD /* en */,
+				522783831C0A6601002E43FD /* de */,
 			);
 			name = GLLBoneView.xib;
 			sourceTree = "<group>";
@@ -1999,6 +2043,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				522783681C0A60E6002E43FD /* Base */,
+				5227837D1C0A65E5002E43FD /* en */,
+				5227837F1C0A65E9002E43FD /* de */,
 			);
 			name = GLLDocument.xib;
 			sourceTree = "<group>";
@@ -2007,6 +2053,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				522783671C0A60E6002E43FD /* Base */,
+				522783791C0A65A8002E43FD /* en */,
+				5227837B1C0A65AB002E43FD /* de */,
 			);
 			name = GLLRenderWindowController.xib;
 			sourceTree = "<group>";

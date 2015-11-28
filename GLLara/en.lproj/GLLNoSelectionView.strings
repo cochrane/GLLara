@@ -1,6 +1,6 @@
+
 /* Class = "NSTextFieldCell"; title = "No selection."; ObjectID = "8"; */
-"No selection." = "No selection.";
+"8.title" = "No selection.";
 
-/* Class = "NSButtonCell"; title = "Add a model"; ObjectID = "14"; */
-"Add a model…" = "Add a model…";
-
+/* Class = "NSButtonCell"; title = "Add a model…"; ObjectID = "14"; */
+"14.title" = "Add a model…";

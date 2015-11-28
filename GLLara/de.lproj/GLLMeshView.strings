@@ -1,63 +1,63 @@
+
 /* Class = "NSButtonCell"; title = "Is visible"; ObjectID = "4"; */
-"Is visible" = "Sichtbar";
+"4.title" = "Sichtbar";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "35"; */
-"OtherViews" = "OtherViews";
+"35.title" = "OtherViews";
 
 /* Class = "NSMenuItem"; title = "Counter-clockwise orientation"; ObjectID = "36"; */
-"Counter-clockwise orientation" = "Gegen Uhrzeigersinn orientiert";
+"36.title" = "Gegen Uhrzeigersinn orientiert";
 
 /* Class = "NSMenuItem"; title = "Clockwise orientation"; ObjectID = "37"; */
-"Clockwise orientation" = "Im Uhrzeigersinn orientiert";
+"37.title" = "Im Uhrzeigersinn orientiert";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "38"; */
-"None" = "None";
+"38.title" = "None";
 
 /* Class = "NSTextFieldCell"; title = "Faces to cull:"; ObjectID = "44"; */
-"Faces to cull:" = "Gecullte Flächen:";
+"44.title" = "Gecullte Flächen:";
 
 /* Class = "NSTableColumn"; headerCell.title = "Render parameters"; ObjectID = "73"; */
-"Render parameters" = "Render parameters";
+"73.headerCell.title" = "Render parameters";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "76"; */
-"Text Cell" = "Text Cell";
+"76.title" = "Text Cell";
 
 /* Class = "NSTextFieldCell"; title = "Bump 1 Specular UV Scale Thingy (do not translate)"; ObjectID = "363"; */
-"Bump 1 Specular UV Scale Thingy (do not translate)" = "Bump 1 Specular UV Scale Thingy (do not translate)";
+"363.title" = "Bump 1 Specular UV Scale Thingy (do not translate)";
 
 /* Class = "NSTextFieldCell"; title = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!"; ObjectID = "367"; */
-"This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
+"367.title" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
 
 /* Class = "NSTextFieldCell"; title = "Bump 1 Specular UV Scale Thingy (do not translate)"; ObjectID = "382"; */
-"Bump 1 Specular UV Scale Thingy (do not translate)" = "Bump 1 Specular UV Scale Thingy (do not translate)";
+"382.title" = "Bump 1 Specular UV Scale Thingy (do not translate)";
 
 /* Class = "NSTextFieldCell"; title = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!"; ObjectID = "384"; */
-"This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
+"384.title" = "This is a lengthy label which should have enough space for two lines. To make sure that is the case, I'm writing a lot of useless text here.Do not translate it!";
 
 /* Class = "NSTableColumn"; headerCell.title = "Textures"; ObjectID = "429"; */
-"Textures" = "Texturen";
+"429.title" = "Texturen";
 
 /* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "432"; */
-"Text Cell" = "Text Cell";
+"432.title" = "Text Cell";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse or other texture (do not translate)"; ObjectID = "440"; */
-"Diffuse or other texture (do not translate)" = "Diffuse or other texture (do not translate)";
+"440.title" = "Diffuse or other texture (do not translate)";
 
 /* Class = "NSTextFieldCell"; title = "Just a placeholder. Shorter, but should still be two lines. Do not translate!"; ObjectID = "442"; */
-"Just a placeholder. Shorter, but should still be two lines. Do not translate!" = "Just a placeholder. Shorter, but should still be two lines. Do not translate!";
+"442.title" = "Just a placeholder. Shorter, but should still be two lines. Do not translate!";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "455"; */
-"OtherViews" = "OtherViews";
+"455.title" = "OtherViews";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "456"; */
-"None" = "Keine";
+"456.title" = "Keine";
 
 /* Class = "NSMenuItem"; title = "Clockwise orientation"; ObjectID = "457"; */
-"Clockwise orientation" = "Im Uhrzeigersinn orientiert";
+"457.title" = "Im Uhrzeigersinn orientiert";
 
 /* Class = "NSMenuItem"; title = "Counter-clockwise orientation"; ObjectID = "458"; */
-"Counter-clockwise orientation" = "Gegen Uhrzeigersinn orientiert";
+"458.title" = "Gegen Uhrzeigersinn orientiert";
 
 /* Class = "NSTextFieldCell"; title = "Shader:"; ObjectID = "461"; */
-"Shader:" = "Shader:";
-
+"461.title" = "Shader:";
