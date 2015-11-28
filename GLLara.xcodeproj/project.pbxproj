@@ -401,6 +401,8 @@
 		522783701C0A60E7002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLItemExportView.xib; sourceTree = "<group>"; };
 		522783711C0A60E7002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLPoseExportViewController.xib; sourceTree = "<group>"; };
 		522783721C0A60E7002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLNoSelectionView.xib; sourceTree = "<group>"; };
+		522783751C0A6188002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		522783771C0A62AB002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = DiffuseSpecularNormalOBJ.fs; sourceTree = "<group>"; };
 		522C4C121609B1F10043FCBA /* GLLModelMesh+OBJExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLModelMesh+OBJExport.h"; sourceTree = "<group>"; };
 		522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLModelMesh+OBJExport.m"; sourceTree = "<group>"; };
@@ -2013,6 +2015,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				522783661C0A60E6002E43FD /* Base */,
+				522783751C0A6188002E43FD /* de */,
+				522783771C0A62AB002E43FD /* en */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
