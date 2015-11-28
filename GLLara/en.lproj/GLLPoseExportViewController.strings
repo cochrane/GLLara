@@ -1,15 +1,15 @@
+
 /* Class = "NSButtonCell"; title = "Radio"; ObjectID = "4"; */
-"Radio" = "Radio";
+"4.title" = "Radio";
 
 /* Class = "NSButtonCell"; title = "Only selected bones"; ObjectID = "5"; */
-"Only selected bones" = "Only selected bones";
+"5.title" = "Only selected bones";
 
 /* Class = "NSButtonCell"; title = "Entire item"; ObjectID = "6"; */
-"Entire item" = "Entire item";
+"6.title" = "Entire item";
 
 /* Class = "NSButtonCell"; title = "Include bones named \"unnused\""; ObjectID = "13"; */
-"Include bones named \"unnused\"" = "Include bones named \"unnused\"";
+"13.title" = "Include bones named \"unnused\"";
 
 /* Class = "NSTextFieldCell"; title = "Export:"; ObjectID = "21"; */
-"Export:" = "Export:";
-
+"21.title" = "Export:";

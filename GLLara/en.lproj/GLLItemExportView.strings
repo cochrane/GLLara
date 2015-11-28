@@ -1,9 +1,9 @@
+
 /* Class = "NSButtonCell"; title = "Include transformation"; ObjectID = "4"; */
-"Include transformation" = "Include transformation";
+"4.title" = "Include transformation";
 
 /* Class = "NSButtonCell"; title = "Include vertex colors (non-standard)"; ObjectID = "8"; */
-"Include vertex colors (non-standard)" = "Include vertex colors (non-standard)";
+"8.title" = "Include vertex colors (non-standard)";
 
 /* Class = "NSTextFieldCell"; title = "Some data will be missing."; ObjectID = "21"; */
-"Some data will be missing." = "Some data will be missing.";
-
+"21.title" = "Some data will be missing.";

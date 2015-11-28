@@ -1,120 +1,120 @@
+
 /* Class = "NSButtonCell"; title = "Load pose"; ObjectID = "8"; */
-"Load pose" = "Pose laden";
+"8.title" = "Pose laden";
 
 /* Class = "NSTextFieldCell"; title = "Position"; ObjectID = "55"; */
-"Position" = "Position";
+"55.title" = "Position";
 
 /* Class = "NSTextFieldCell"; title = "Rotation"; ObjectID = "68"; */
-"Rotation" = "Drehung";
+"68.title" = "Drehung";
 
 /* Class = "NSTextFieldCell"; title = "Scale"; ObjectID = "91"; */
-"Scale" = "Größe";
+"91.title" = "Größe";
 
 /* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "144"; */
-"Z" = "Z";
+"144.title" = "Z";
 
 /* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "145"; */
-"Y" = "Y";
+"145.title" = "Y";
 
 /* Class = "NSTextFieldCell"; title = "X"; ObjectID = "146"; */
-"X" = "X";
+"146.title" = "X";
 
 /* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "150"; */
-"Z" = "Z";
+"150.title" = "Z";
 
 /* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "151"; */
-"Y" = "Y";
+"151.title" = "Y";
 
 /* Class = "NSTextFieldCell"; title = "X"; ObjectID = "152"; */
-"X" = "X";
+"152.title" = "X";
 
 /* Class = "NSTextFieldCell"; title = "Z"; ObjectID = "222"; */
-"Z" = "Z";
+"222.title" = "Z";
 
 /* Class = "NSTextFieldCell"; title = "Y"; ObjectID = "223"; */
-"Y" = "Y";
+"223.title" = "Y";
 
 /* Class = "NSTextFieldCell"; title = "X"; ObjectID = "224"; */
-"X" = "X";
+"224.title" = "X";
 
 /* Class = "NSTextFieldCell"; title = "Bump maps"; ObjectID = "227"; */
-"Bump maps" = "Bump maps";
+"227.title" = "Bump maps";
 
 /* Class = "NSTextFieldCell"; title = "Red:"; ObjectID = "229"; */
-"Red:" = "Rot:";
+"229.title" = "Rot:";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "232"; */
-"OtherViews" = "OtherViews";
+"232.title" = "OtherViews";
 
 /* Class = "NSMenuItem"; title = "Normal +"; ObjectID = "233"; */
-"Normal +" = "Normale +";
+"233.title" = "Normale +";
 
 /* Class = "NSMenuItem"; title = "Normal - "; ObjectID = "234"; */
-"Normal - " = "Normale - ";
+"234.title" = "Normale - ";
 
 /* Class = "NSMenuItem"; title = "Tangent U +"; ObjectID = "235"; */
-"Tangent U +" = "Tangente U +";
+"235.title" = "Tangente U +";
 
 /* Class = "NSMenuItem"; title = "Tangent U -"; ObjectID = "236"; */
-"Tangent U -" = "Tangente U -";
+"236.title" = "Tangente U -";
 
 /* Class = "NSMenuItem"; title = "Tangent V +"; ObjectID = "237"; */
-"Tangent V +" = "Tangente V +";
+"237.title" = "Tangente V +";
 
 /* Class = "NSMenuItem"; title = "Tangent V -"; ObjectID = "238"; */
-"Tangent V -" = "Tangente V -";
+"238.title" = "Tangente V -";
 
 /* Class = "NSTextFieldCell"; title = "Green:"; ObjectID = "249"; */
-"Green:" = "Grün:";
+"249.title" = "Grün:";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "263"; */
-"OtherViews" = "OtherViews";
+"263.title" = "OtherViews";
 
 /* Class = "NSMenuItem"; title = "Tangent V -"; ObjectID = "264"; */
-"Tangent V -" = "Tangente V -";
+"264.title" = "Tangente V -";
 
 /* Class = "NSMenuItem"; title = "Tangent V +"; ObjectID = "265"; */
-"Tangent V +" = "Tangente V +";
+"265.title" = "Tangente V +";
 
 /* Class = "NSMenuItem"; title = "Tangent U -"; ObjectID = "266"; */
-"Tangent U -" = "Tangente U -";
+"266.title" = "Tangente U -";
 
 /* Class = "NSMenuItem"; title = "Tangent U +"; ObjectID = "267"; */
-"Tangent U +" = "Tangente U +";
+"267.title" = "Tangente U +";
 
 /* Class = "NSMenuItem"; title = "Normal - "; ObjectID = "268"; */
-"Normal - " = "Normale - ";
+"268.title" = "Normale - ";
 
 /* Class = "NSMenuItem"; title = "Normal +"; ObjectID = "269"; */
-"Normal +" = "Normale +";
+"269.title" = "Normale +";
 
 /* Class = "NSMenu"; title = "OtherViews"; ObjectID = "273"; */
-"OtherViews" = "OtherViews";
+"273.title" = "OtherViews";
 
 /* Class = "NSMenuItem"; title = "Normal +"; ObjectID = "274"; */
-"Normal +" = "Normale +";
+"274.title" = "Normale +";
 
 /* Class = "NSMenuItem"; title = "Normal - "; ObjectID = "275"; */
-"Normal - " = "Normale - ";
+"275.title" = "Normale - ";
 
 /* Class = "NSMenuItem"; title = "Tangent U +"; ObjectID = "276"; */
-"Tangent U +" = "Tangente U +";
+"276.title" = "Tangente U +";
 
 /* Class = "NSMenuItem"; title = "Tangent U -"; ObjectID = "277"; */
-"Tangent U -" = "Tangente U -";
+"277.title" = "Tangente U -";
 
 /* Class = "NSMenuItem"; title = "Tangent V +"; ObjectID = "278"; */
-"Tangent V +" = "Tangente V +";
+"278.title" = "Tangente V +";
 
 /* Class = "NSMenuItem"; title = "Tangent V -"; ObjectID = "279"; */
-"Tangent V -" = "Tangente V -";
+"279.title" = "Tangente V -";
 
 /* Class = "NSTextFieldCell"; title = "Blue:"; ObjectID = "280"; */
-"Blue:" = "Blau:";
+"280.title" = "Blau:";
 
 /* Class = "NSButtonCell"; title = "Load outfit"; ObjectID = "292"; */
-"Load outfit" = "Outfit laden";
+"292.title" = "Outfit laden";
 
 /* Class = "NSButtonCell"; title = "Load texture pack"; ObjectID = "296"; */
-"Load texture pack" = "Texturpaket laden";
-
+"296.title" = "Texturpaket laden";

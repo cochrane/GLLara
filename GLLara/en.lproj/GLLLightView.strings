@@ -1,15 +1,15 @@
+
 /* Class = "NSButtonCell"; title = "Enabled"; ObjectID = "4"; */
-"Enabled" = "Enabled";
+"4.title" = "Enabled";
 
 /* Class = "NSTextFieldCell"; title = "Diffuse color:"; ObjectID = "8"; */
-"Diffuse color:" = "Diffuse color:";
+"8.title" = "Diffuse color:";
 
 /* Class = "NSTextFieldCell"; title = "Angle to ground:"; ObjectID = "13"; */
-"Angle to ground:" = "Angle to ground:";
+"13.title" = "Angle to ground:";
 
 /* Class = "NSTextFieldCell"; title = "Rotation:"; ObjectID = "17"; */
-"Rotation:" = "Rotation:";
+"17.title" = "Rotation:";
 
 /* Class = "NSTextFieldCell"; title = "Specular color:"; ObjectID = "174"; */
-"Specular color:" = "Specular color:";
-
+"174.title" = "Specular color:";

@@ -1,60 +1,61 @@
+
 /* Class = "NSTextFieldCell"; title = "Camera"; ObjectID = "4"; */
-"Camera" = "Kamera";
+"4.title" = "Kamera";
 
 /* Class = "NSTextFieldCell"; title = "Window"; ObjectID = "8"; */
-"Window" = "Fenster";
+"8.title" = "Fenster";
 
 /* Class = "NSButtonCell"; title = "Lock settings"; ObjectID = "15"; */
-"Lock settings" = "Geschützt";
+"15.title" = "Geschützt";
 
 /* Class = "NSTextFieldCell"; title = "Field of view:"; ObjectID = "20"; */
-"Field of view:" = "Sichtfeld:";
+"20.title" = "Sichtfeld:";
 
 /* Class = "NSTextFieldCell"; title = "Distance to target:"; ObjectID = "24"; */
-"Distance to target:" = "Entfernung zum Ziel:";
+"24.title" = "Entfernung zum Ziel:";
 
 /* Class = "NSTextFieldCell"; title = "Position:"; ObjectID = "33"; */
-"Position:" = "Position:";
+"33.title" = "Position:";
 
 /* Class = "NSTextFieldCell"; title = "180,99 °"; ObjectID = "38"; */
-"180,99 °" = "180,99 °";
+"38.title" = "180,99 °";
 
 /* Class = "NSTextFieldCell"; title = "180,99 °"; ObjectID = "71"; */
-"180,99 °" = "180,99 °";
+"71.title" = "180,99 °";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Z"; ObjectID = "83"; */
-"Z" = "Z";
+"83.title" = "Z";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Y"; ObjectID = "88"; */
-"Y" = "Y";
+"88.title" = "Y";
 
 /* Class = "NSTextFieldCell"; placeholderString = "X"; ObjectID = "94"; */
-"X" = "X";
+"94.title" = "X";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Width"; ObjectID = "114"; */
-"Width" = "Höhe";
+"114.title" = "Höhe";
 
 /* Class = "NSTextFieldCell"; placeholderString = "Height"; ObjectID = "120"; */
-"Height" = "Breite";
+"120.title" = "Breite";
 
 /* Class = "NSTextFieldCell"; title = "Size:"; ObjectID = "132"; */
-"Size:" = "Größe:";
+"132.title" = "Größe:";
 
 /* Class = "NSTextFieldCell"; title = "Angle above ground:"; ObjectID = "233"; */
-"Angle above ground:" = "Winkel zum Grund:";
+"233.title" = "Winkel zum Grund:";
 
 /* Class = "NSTextFieldCell"; title = "180,99 °"; ObjectID = "249"; */
-"180,99 °" = "180,99 °";
+"249.title" = "180,99 °";
 
 /* Class = "NSTextFieldCell"; title = "Rotation:"; ObjectID = "251"; */
-"Rotation:" = "Drehung:";
+"251.title" = "Drehung:";
 
 /* Class = "NSButtonCell"; title = "Lock settings"; ObjectID = "306"; */
-"Lock settings" = "Geschützt";
+"306.title" = "Geschützt";
 
 /* Class = "NSTextFieldCell"; title = "x"; ObjectID = "314"; */
-"x" = "x";
+"314.title" = "x";
 
 /* Class = "NSTextFieldCell"; title = "180°"; ObjectID = "512"; */
-"180°" = "180°";
+"512.title" = "180°";
 

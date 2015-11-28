@@ -1,6 +1,18 @@
+
 /* Class = "NSTextFieldCell"; title = "Width:"; ObjectID = "11"; */
-"Width:" = "Breite:";
+"11.title" = "Breite:";
 
 /* Class = "NSTextFieldCell"; title = "Height:"; ObjectID = "21"; */
-"Height:" = "Höhe:";
+"21.title" = "Höhe:";
 
+/* Class = "NSMenu"; title = "OtherViews"; ObjectID = "72"; */
+"72.title" = "OtherViews";
+
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "73"; */
+"73.title" = "Item 1";
+
+/* Class = "NSMenuItem"; title = "Item 2"; ObjectID = "74"; */
+"74.title" = "Item 2";
+
+/* Class = "NSMenuItem"; title = "Item 3"; ObjectID = "75"; */
+"75.title" = "Item 3";
