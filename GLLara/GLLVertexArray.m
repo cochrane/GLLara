@@ -181,7 +181,7 @@ static inline uint16_t halfFloat(const float *value) {
 {
     NSInteger offset = 0;
     offset -= 8; // For normal
-    offset -= 4 * layer; // For tex coords
+    offset -= 4 * self.format.countOfUVLayers; // For tex coords
     if (self.format.hasTangents)
         offset -= 12 * layer; // For tangents
     return [self.format offsetForTangentLayer:layer] + offset;
