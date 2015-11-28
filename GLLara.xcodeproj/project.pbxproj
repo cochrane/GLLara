@@ -388,19 +388,19 @@
 		5227832E1BFA6A4E002E43FD /* GLLVertexFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLVertexFormat.m; sourceTree = "<group>"; };
 		522783301BFA712A002E43FD /* GLLVertexArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLVertexArray.h; sourceTree = "<group>"; };
 		522783311BFA712A002E43FD /* GLLVertexArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLVertexArray.m; sourceTree = "<group>"; };
-		522783401C0A6074002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLNoSelectionView.xib; sourceTree = "<group>"; };
-		522783431C0A6079002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLPoseExportViewController.xib; sourceTree = "<group>"; };
-		522783461C0A607E002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLItemExportView.xib; sourceTree = "<group>"; };
-		522783491C0A6083002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLRenderAccessoryView.xib; sourceTree = "<group>"; };
-		5227834C1C0A6088002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLWindowSettingsPopoverView.xib; sourceTree = "<group>"; };
-		5227834F1C0A608D002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLAmbientLightView.xib; sourceTree = "<group>"; };
-		522783521C0A6091002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLItemView.xib; sourceTree = "<group>"; };
-		522783551C0A6096002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLLightView.xib; sourceTree = "<group>"; };
-		522783581C0A609B002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLMeshView.xib; sourceTree = "<group>"; };
-		5227835B1C0A60A0002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLBoneView.xib; sourceTree = "<group>"; };
-		5227835E1C0A60A4002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLDocument.xib; sourceTree = "<group>"; };
-		522783611C0A60A9002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GLLRenderWindowController.xib; sourceTree = "<group>"; };
-		522783641C0A60B0002E43FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		522783661C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		522783671C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLRenderWindowController.xib; sourceTree = "<group>"; };
+		522783681C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLDocument.xib; sourceTree = "<group>"; };
+		522783691C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLBoneView.xib; sourceTree = "<group>"; };
+		5227836A1C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLMeshView.xib; sourceTree = "<group>"; };
+		5227836B1C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLLightView.xib; sourceTree = "<group>"; };
+		5227836C1C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLItemView.xib; sourceTree = "<group>"; };
+		5227836D1C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLAmbientLightView.xib; sourceTree = "<group>"; };
+		5227836E1C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLWindowSettingsPopoverView.xib; sourceTree = "<group>"; };
+		5227836F1C0A60E7002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLRenderAccessoryView.xib; sourceTree = "<group>"; };
+		522783701C0A60E7002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLItemExportView.xib; sourceTree = "<group>"; };
+		522783711C0A60E7002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLPoseExportViewController.xib; sourceTree = "<group>"; };
+		522783721C0A60E7002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLNoSelectionView.xib; sourceTree = "<group>"; };
 		522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = DiffuseSpecularNormalOBJ.fs; sourceTree = "<group>"; };
 		522C4C121609B1F10043FCBA /* GLLModelMesh+OBJExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLModelMesh+OBJExport.h"; sourceTree = "<group>"; };
 		522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLModelMesh+OBJExport.m"; sourceTree = "<group>"; };
@@ -1535,6 +1535,7 @@
 			knownRegions = (
 				en,
 				de,
+				Base,
 			);
 			mainGroup = 525ACD3C15F0F1A700534E7D;
 			productRefGroup = 525ACD4815F0F1A700534E7D /* Products */;
@@ -1915,7 +1916,7 @@
 		522783411C0A6074002E43FD /* GLLNoSelectionView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				522783401C0A6074002E43FD /* en */,
+				522783721C0A60E7002E43FD /* Base */,
 			);
 			name = GLLNoSelectionView.xib;
 			sourceTree = "<group>";
@@ -1923,7 +1924,7 @@
 		522783441C0A6079002E43FD /* GLLPoseExportViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				522783431C0A6079002E43FD /* en */,
+				522783711C0A60E7002E43FD /* Base */,
 			);
 			name = GLLPoseExportViewController.xib;
 			sourceTree = "<group>";
@@ -1931,7 +1932,7 @@
 		522783471C0A607E002E43FD /* GLLItemExportView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				522783461C0A607E002E43FD /* en */,
+				522783701C0A60E7002E43FD /* Base */,
 			);
 			name = GLLItemExportView.xib;
 			sourceTree = "<group>";
@@ -1939,7 +1940,7 @@
 		5227834A1C0A6083002E43FD /* GLLRenderAccessoryView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				522783491C0A6083002E43FD /* en */,
+				5227836F1C0A60E7002E43FD /* Base */,
 			);
 			name = GLLRenderAccessoryView.xib;
 			sourceTree = "<group>";
@@ -1947,7 +1948,7 @@
 		5227834D1C0A6088002E43FD /* GLLWindowSettingsPopoverView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				5227834C1C0A6088002E43FD /* en */,
+				5227836E1C0A60E6002E43FD /* Base */,
 			);
 			name = GLLWindowSettingsPopoverView.xib;
 			sourceTree = "<group>";
@@ -1955,7 +1956,7 @@
 		522783501C0A608D002E43FD /* GLLAmbientLightView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				5227834F1C0A608D002E43FD /* en */,
+				5227836D1C0A60E6002E43FD /* Base */,
 			);
 			name = GLLAmbientLightView.xib;
 			sourceTree = "<group>";
@@ -1963,7 +1964,7 @@
 		522783531C0A6091002E43FD /* GLLItemView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				522783521C0A6091002E43FD /* en */,
+				5227836C1C0A60E6002E43FD /* Base */,
 			);
 			name = GLLItemView.xib;
 			sourceTree = "<group>";
@@ -1971,7 +1972,7 @@
 		522783561C0A6096002E43FD /* GLLLightView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				522783551C0A6096002E43FD /* en */,
+				5227836B1C0A60E6002E43FD /* Base */,
 			);
 			name = GLLLightView.xib;
 			sourceTree = "<group>";
@@ -1979,7 +1980,7 @@
 		522783591C0A609B002E43FD /* GLLMeshView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				522783581C0A609B002E43FD /* en */,
+				5227836A1C0A60E6002E43FD /* Base */,
 			);
 			name = GLLMeshView.xib;
 			sourceTree = "<group>";
@@ -1987,7 +1988,7 @@
 		5227835C1C0A60A0002E43FD /* GLLBoneView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				5227835B1C0A60A0002E43FD /* en */,
+				522783691C0A60E6002E43FD /* Base */,
 			);
 			name = GLLBoneView.xib;
 			sourceTree = "<group>";
@@ -1995,7 +1996,7 @@
 		5227835F1C0A60A4002E43FD /* GLLDocument.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				5227835E1C0A60A4002E43FD /* en */,
+				522783681C0A60E6002E43FD /* Base */,
 			);
 			name = GLLDocument.xib;
 			sourceTree = "<group>";
@@ -2003,7 +2004,7 @@
 		522783621C0A60A9002E43FD /* GLLRenderWindowController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				522783611C0A60A9002E43FD /* en */,
+				522783671C0A60E6002E43FD /* Base */,
 			);
 			name = GLLRenderWindowController.xib;
 			sourceTree = "<group>";
@@ -2011,7 +2012,7 @@
 		522783651C0A60B0002E43FD /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				522783641C0A60B0002E43FD /* en */,
+				522783661C0A60E6002E43FD /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
