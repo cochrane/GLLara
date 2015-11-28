@@ -128,7 +128,7 @@ static inline uint16_t halfFloat(const float *value) {
         offset -= 8; // For bone weights;
     offset -= 4 * self.format.countOfUVLayers; // For tex coords
     if (self.format.hasTangents)
-        offset -= 8 * self.format.countOfUVLayers; // For tangents
+        offset -= 12 * self.format.countOfUVLayers; // For tangents
     return self.format.stride + offset;
 }
 
