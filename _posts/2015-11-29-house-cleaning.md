@@ -6,7 +6,7 @@ layout: default
 
 It's been about three years since I last did any real work on this app, so a lot of stuff has accumulated that isn't necessary and/or doesn't work anymore. Now it's finally gone.
 
-First of all, localization. I'm a big fan of it and GLLara is and will continue to be available in german and english. The problem was that the german version didn't work. This was in turn because I used DHLocalization, a non-standard system with individual string files and manual fix-up methods afterwards. It worked well while it lasted, but needed updating for newer OS X.
+First of all, localization. I'm a big fan of it and GLLara is and will continue to be available in german and english. The problem was that the german version didn't work. This was in turn because I used DMLocalization, a non-standard system with individual string files and manual fix-up methods afterwards. It worked well while it lasted, but needed updating for newer OS X.
 
 But in the meantime, Apple introduced base localizations, which work essentially exactly the same as DHLocalization, down to using the same type of string files, except for some minor differences that some Regexp use could take care of. This is done now, so starting in version 0.2.6 (or 0.2.5 final? I have no idea what version numbering to use), GLLara will appear fully in German once more. If you want your own language to appear, contact me and I'll write a guide on how to do it. Or if you're really curious, just poke around in the code (look for folders called `de.lproj` and `en.lproj` and compare them) and see for yourself. It's not hard
 
