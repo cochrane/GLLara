@@ -47,7 +47,6 @@
     }];
     
     multipleSelectionMarker = NSMultipleValuesMarker;
-    emptySelectionMarker = NSNoSelectionMarker;
 
     return self;
 }
