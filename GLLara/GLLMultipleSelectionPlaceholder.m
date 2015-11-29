@@ -24,7 +24,6 @@
 @implementation GLLMultipleSelectionPlaceholder
 
 @synthesize multipleSelectionMarker;
-@synthesize emptySelectionMarker;
 @synthesize value;
 
 - (instancetype)initWithSelection:(GLLSelection *)selection typeKey:(NSString *)selectionTypeKey;

@@ -30,11 +30,8 @@
  */
 @property (nonatomic, retain) id value;
 
-/*! The multiple selection marker returned for value. Defaults to NSMultipleSelectionMarker. */
+/*! The multiple selection marker returned for value. Defaults to NSMultipleValuesMarker. */
 @property (nonatomic, retain) id multipleSelectionMarker;
-
-/*! The empty selection marker returned for value. Defaults to NSMultipleSelectionMarker. */
-@property (nonatomic, retain) id emptySelectionMarker;
 
 /*!
  * Updates the value, firing the appropriate change notifications.
