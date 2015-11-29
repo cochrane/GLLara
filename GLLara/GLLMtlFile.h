@@ -10,7 +10,7 @@
 #define __GLLara__GLLMtlFile__
 
 #include <CoreFoundation/CoreFoundation.h>
-#include <map>
+#include <unordered_map>
 #include <string>
 
 /*!
@@ -45,7 +45,7 @@ public:
 	};
 private:
 	// Handling of materials
-	std::map<std::string, Material *> materials;
+	std::unordered_map<std::string, Material *> materials;
 	
 public:
 	GLLMtlFile(CFURLRef location);
