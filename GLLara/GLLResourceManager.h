@@ -33,9 +33,9 @@
 @property (nonatomic, readonly) NSOpenGLContext *openGLContext;
 
 - (GLLModelDrawer *)drawerForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
-- (GLLModelProgram *)programForDescriptor:(GLLShaderDescription *)descriptor error:(NSError *__autoreleasing*)error;
+- (GLLModelProgram *)programForDescriptor:(GLLShaderDescription *)description withAlpha:(BOOL)alpha error:(NSError *__autoreleasing*)error;
 - (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error;
-- (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 
 // Shared programs and buffers that everyone needs sometime
 
@@ -43,7 +43,6 @@
 @property (nonatomic) GLLProgram *squareProgram;
 @property (nonatomic) GLuint squareVertexArray;
 
-@property (nonatomic) GLuint alphaTestDisabledBuffer;
 @property (nonatomic) GLuint alphaTestPassGreaterBuffer;
 @property (nonatomic) GLuint alphaTestPassLessBuffer;
 

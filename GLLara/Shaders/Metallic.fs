@@ -1,7 +1,6 @@
 /*
  * Now this one's a weird shader. It uses bump maps and reflection, but does not add any specular highlights. I'll be damned if I know why. I use the normal maps for the diffuse component anyway.
  */
-#version 150
 
 in vec4 outColor;
 in vec2 outTexCoord;
@@ -30,17 +29,22 @@ uniform RenderParameters {
 	float reflectionAmount;
 } parameters;
 
+#ifdef USE_ALPHA_TEST
 layout(std140) uniform AlphaTest {
-	uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
-	float reference;
+    uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
+    float reference;
 } alphaTest;
+#endif
 
 void main()
 {
 	// Find diffuse texture and do alpha test.
-	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
-		discard;
+    vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
+    
+#ifdef USE_ALPHA_TEST
+    if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
+        discard;
+#endif
 	
 	// Base diffuse color
 	vec4 diffuseColor = diffuseTexColor * outColor;
@@ -70,6 +74,10 @@ void main()
 	vec2 reflectionTexCoord = scaleFactor * reflectionDir.xy;
 	vec4 reflectionColor = texture(reflectionTexture, reflectionTexCoord * 0.5 + 0.5);
 	
-	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+#ifdef USE_ALPHA_TEST
+    float alpha = diffuseTexColor.a;
+#else
+    float alpha = 1.0;
+#endif
 	screenColor = vec4(mix(color.rgb, reflectionColor.rgb, parameters.reflectionAmount), alpha);
 }

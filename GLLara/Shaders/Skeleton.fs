@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#version 150
-
 in vec4 outColor;
 
 out vec4 screenColor;

@@ -12,7 +12,7 @@
 
 @implementation GLLShader
 
-- (id)initWithSource:(NSString *)sourceString name:(NSString *)name type:(GLenum)type error:(NSError *__autoreleasing*)error;
+- (id)initWithSource:(NSString *)sourceString name:(NSString *)name additionalDefines:(NSDictionary *)defines type:(GLenum)type error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
@@ -28,10 +28,26 @@
 	_name = [name copy];
 	
 	_shaderID = glCreateShader(type);
-	const GLchar *source = [sourceString UTF8String];
-	const GLsizei length = (GLsizei) strlen(source);
-	glShaderSource(_shaderID, 1, &source, &length);
-	glCompileShader(_shaderID);
+    const GLsizei sourcesLength = (GLsizei) (2 + defines.count);
+    const GLchar **sources = calloc(sizeof(GLchar *), sourcesLength);
+    GLsizei *lengths = calloc(sizeof(GLsizei), sourcesLength);
+    
+    sources[0] = "#version 150\n";
+    
+    GLsizei defined = 1;
+    for (NSString *key in defines) {
+        NSString *value = defines[key];
+        NSString *define = [NSString stringWithFormat:@"#define %@ %@\n", key, value];
+        sources[defined++] = [define UTF8String];
+    }
+    
+	sources[sourcesLength - 1] = [sourceString UTF8String];
+    for (GLsizei i = 0; i < sourcesLength; i++)
+        lengths[i] = (GLsizei) strlen(sources[i]);
+	glShaderSource(_shaderID, sourcesLength, sources, lengths);
+    glCompileShader(_shaderID);
+    free(sources);
+    free(lengths);
 	
 	GLint compileStatus;
 	glGetShaderiv(_shaderID, GL_COMPILE_STATUS, &compileStatus);

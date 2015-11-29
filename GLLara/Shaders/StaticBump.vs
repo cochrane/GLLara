@@ -1,7 +1,6 @@
 /*
  * Basically the same thing as Bump.vs, but without the bone weights. It uses boneMatrices[0] as the model matrix.
  */
-#version 150
 
 layout(std140) uniform Transform {
 	mat4 viewProjection;

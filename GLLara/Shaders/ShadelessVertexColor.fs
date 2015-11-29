@@ -1,7 +1,6 @@
 /*
  * Like Shadeless, but uses the vertex color
  */
-#version 150
 
 in vec4 outColor;
 in vec2 outTexCoord;
@@ -23,18 +22,27 @@ layout(std140) uniform LightData {
 	Light lights[3];
 } lightData;
 
+#ifdef USE_ALPHA_TEST
 layout(std140) uniform AlphaTest {
-	uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
-	float reference;
+    uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
+    float reference;
 } alphaTest;
+#endif
 
 void main()
 {
 	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	vec4 diffuseColor = diffuseTexColor * outColor;
-	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
-		discard;
+    vec4 diffuseColor = diffuseTexColor * outColor;
+    
+#ifdef USE_ALPHA_TEST
+    if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
+        discard;
+#endif
 	
-	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+#ifdef USE_ALPHA_TEST
+    float alpha = diffuseTexColor.a;
+#else
+    float alpha = 1.0;
+#endif
 	screenColor = vec4(diffuseTexColor.rgb, alpha);
 }

@@ -21,7 +21,7 @@
  */
 @interface GLLModelProgram : GLLProgram
 
-- (id)initWithDescriptor:(GLLShaderDescription *)descriptor resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
+- (id)initWithDescriptor:(GLLShaderDescription *)descriptor alpha:(BOOL)alpha resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 
 // Uniforms set by model
 @property (nonatomic, assign, readonly) GLuint boneMatricesUniformBlockIndex;

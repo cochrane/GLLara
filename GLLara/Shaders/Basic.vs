@@ -1,7 +1,6 @@
 /*
  * Simple vertex shader that transforms the vertex and normal, taking into account the bone weights.
  */
-#version 150
 
 layout(std140) uniform Transform {
 	mat4 viewProjection;

@@ -1,7 +1,6 @@
 /*
  * Like Basic, but not using bone weights (the first bone matrix is used as the model matrix)
  */
-#version 150
 
 layout(std140) uniform Transform {
 	mat4 viewProjection;

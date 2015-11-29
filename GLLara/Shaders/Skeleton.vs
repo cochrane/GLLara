@@ -6,8 +6,6 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#version 150
-
 layout(std140) uniform Transform {
 	mat4 viewProjection;
 } transform;

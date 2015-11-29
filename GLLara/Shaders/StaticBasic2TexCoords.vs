@@ -1,7 +1,6 @@
 /*
  * Like StaticBasic, but passing through two texture coordinates.
  */
-#version 150
 
 layout(std140) uniform Transform {
 	mat4 viewProjection;

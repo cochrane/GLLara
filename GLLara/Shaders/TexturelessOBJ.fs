@@ -1,7 +1,6 @@
 /*
  * Like DiffuseOBJ, but without texture.
  */
-#version 150
 
 in vec4 outColor;
 in vec2 outTexCoord;
@@ -22,10 +21,12 @@ layout(std140) uniform LightData {
 	Light lights[3];
 } lightData;
 
+#ifdef USE_ALPHA_TEST
 layout(std140) uniform AlphaTest {
-	uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
-	float reference;
+    uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
+    float reference;
 } alphaTest;
+#endif
 
 uniform RenderParameters {
 	vec4 ambientColor;

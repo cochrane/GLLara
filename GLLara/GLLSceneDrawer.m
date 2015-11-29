@@ -130,9 +130,7 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 
 - (void)drawShowingSelection:(BOOL)showSelection;
 {
-	// 1st pass: Draw items that do not need blending, without alpha test
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestDisabledBuffer);
-	
+	// 1st pass: Draw items that do not need blending. They use shaders without alpha test
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[drawer drawSolidWithState:&state];
 	

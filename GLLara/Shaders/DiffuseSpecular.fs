@@ -3,7 +3,6 @@
  * beginning, but XPS implemented it only recently. It's a copy of DiffuseBump
  * that does not use a bump map.
  */
-#version 150
 
 in vec4 outColor;
 in vec2 outTexCoord;
@@ -31,17 +30,22 @@ uniform RenderParameters {
 	float bumpSpecularAmount;
 } parameters;
 
+#ifdef USE_ALPHA_TEST
 layout(std140) uniform AlphaTest {
-	uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
-	float reference;
+    uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
+    float reference;
 } alphaTest;
+#endif
 
 void main()
 {
 	// Find diffuse texture and do alpha test.
-	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
-		discard;
+    vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
+    
+#ifdef USE_ALPHA_TEST
+    if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
+        discard;
+#endif
 	
 	// Base diffuse color
 	vec4 diffuseColor = diffuseTexColor * outColor;
@@ -63,6 +67,10 @@ void main()
 		color += lightData.lights[i].specularColor * specularFactor;
 	}
 	
-	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+#ifdef USE_ALPHA_TEST
+    float alpha = diffuseTexColor.a;
+#else
+	float alpha = 1.0;
+#endif
 	screenColor = vec4(color.rgb, alpha);
 }

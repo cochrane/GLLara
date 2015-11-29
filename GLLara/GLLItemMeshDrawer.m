@@ -315,7 +315,7 @@
 		return YES;
 	}
 	
-	_program = [[GLLResourceManager sharedResourceManager] programForDescriptor:self.itemMesh.shader error:error];
+    _program = [[GLLResourceManager sharedResourceManager] programForDescriptor:self.itemMesh.shader withAlpha:self.itemMesh.mesh.usesAlphaBlending error:error];
 	if (!self.program)
 		return NO;
 	

@@ -1,7 +1,6 @@
 /*
  * Same as DiffuseBump, except for the lightmap, which is multiplied into the color at every step. Come to think of it, I could multiply it at the end, too, but either way, I'm not 100% certain why this texture exists.
  */
-#version 150
 
 in vec4 outColor;
 in vec2 outTexCoord;
@@ -33,24 +32,29 @@ uniform RenderParameters {
 	float bumpSpecularAmount;
 } parameters;
 
+#ifdef USE_ALPHA_TEST
 layout(std140) uniform AlphaTest {
-	uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
-	float reference;
+    uint mode; // 0 - none, 1 - pass if greater than, 2 - pass if less than.
+    float reference;
 } alphaTest;
+#endif
 
 void main()
 {
 	// Find diffuse texture and do alpha test.
-	vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
-	if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
-		discard;
+    vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
+    
+#ifdef USE_ALPHA_TEST
+    if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
+        discard;
+#endif
 	
 	// Base diffuse color
 	vec4 diffuseColor = diffuseTexColor * outColor;
 	
 	// Calculate normal
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
-	vec3 normalFromMap = normalMap.rgb * 2 - 1;
+    vec3 normalFromMap = normalMap.rgb * 2 - 1;
 	vec3 normal = normalize(tangentToWorld * normalFromMap);
 	
 	// Direction to camera
@@ -73,6 +77,10 @@ void main()
 	// Lightmap
 	color *= texture(lightmapTexture, outTexCoord);
 	
-	float alpha = alphaTest.mode == 0U ? 1.0 : diffuseTexColor.a;
+#ifdef USE_ALPHA_TEST
+    float alpha = diffuseTexColor.a;
+#else
+    float alpha = 1.0;
+#endif
 	screenColor = vec4(color.rgb, alpha);
 }

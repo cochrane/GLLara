@@ -18,9 +18,13 @@
 
 @implementation GLLModelProgram
 
-- (id)initWithDescriptor:(GLLShaderDescription *)descriptor resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
+- (id)initWithDescriptor:(GLLShaderDescription *)descriptor alpha:(BOOL)alpha resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 {
-	if (!(self = [super initWithName:descriptor.name fragmentShaderName:descriptor.fragmentName geometryShaderName:descriptor.geometryName vertexShaderName:descriptor.vertexName baseURL:descriptor.baseURL resourceManager:manager error:error])) return nil;
+    NSDictionary *additionalDefines = @{};
+    if (alpha)
+        additionalDefines = @{ @"USE_ALPHA_TEST" : @"1" };
+    
+    if (!(self = [super initWithName:descriptor.name fragmentShaderName:descriptor.fragmentName geometryShaderName:descriptor.geometryName vertexShaderName:descriptor.vertexName baseURL:descriptor.baseURL additionalDefines:additionalDefines resourceManager:manager error:error])) return nil;
 	
 	_lightsUniformBlockIndex = glGetUniformBlockIndex(self.programID, "LightData");
 	if (_lightsUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(self.programID, _lightsUniformBlockIndex, GLLUniformBlockBindingLights);

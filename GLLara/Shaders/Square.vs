@@ -1,7 +1,6 @@
 /*
  * Simple shader that draws a textured square
  */
-#version 150
 
 in vec2 position;
 

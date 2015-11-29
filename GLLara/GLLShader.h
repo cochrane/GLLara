@@ -15,7 +15,7 @@
  */
 @interface GLLShader : NSObject
 
-- (id)initWithSource:(NSString *)sourceString name:(NSString *)name type:(GLenum)type error:(NSError *__autoreleasing*)error;
+- (id)initWithSource:(NSString *)sourceString name:(NSString *)name additionalDefines:(NSDictionary *)defines type:(GLenum)type error:(NSError *__autoreleasing*)error;
 
 - (void)unload;
 

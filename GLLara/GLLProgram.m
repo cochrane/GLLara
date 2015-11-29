@@ -15,12 +15,12 @@
 
 @implementation GLLProgram
 
-- (id)initWithName:(NSString *)name fragmentShaderName:(NSString *)fragmentName geometryShaderName:(NSString *)geometryName vertexShaderName:(NSString *)vertexName baseURL:(NSURL *)base resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
+- (id)initWithName:(NSString *)name fragmentShaderName:(NSString *)fragmentName geometryShaderName:(NSString *)geometryName vertexShaderName:(NSString *)vertexName baseURL:(NSURL *)base additionalDefines:(NSDictionary *)additionalDefines resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 {
 	GLLShader *vertex, *fragment, *geometry;
 	if (vertexName)
 	{
-		vertex = [manager shaderForName:vertexName type:GL_VERTEX_SHADER baseURL:base error:error];
+		vertex = [manager shaderForName:vertexName additionalDefines:additionalDefines type:GL_VERTEX_SHADER baseURL:base error:error];
 		if (!vertex)
 		{
 			[self unload];
@@ -29,7 +29,7 @@
 	}
 	if (geometryName)
 	{
-		fragment = [manager shaderForName:geometryName type:GL_GEOMETRY_SHADER baseURL:base error:error];
+		fragment = [manager shaderForName:geometryName additionalDefines:additionalDefines type:GL_GEOMETRY_SHADER baseURL:base error:error];
 		if (!fragment)
 		{
 			[self unload];
@@ -38,7 +38,7 @@
 	}
 	if (fragmentName)
 	{
-		fragment = [manager shaderForName:fragmentName type:GL_FRAGMENT_SHADER baseURL:base error:error];
+		fragment = [manager shaderForName:fragmentName additionalDefines:additionalDefines type:GL_FRAGMENT_SHADER baseURL:base error:error];
 		if (!fragment)
 		{
 			[self unload];

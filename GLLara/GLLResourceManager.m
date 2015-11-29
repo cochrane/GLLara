@@ -71,13 +71,9 @@ static GLLResourceManager *sharedManager;
 	models = [[NSMutableDictionary alloc] init];
 	
 	// Alpha test buffers
-	glGenBuffers(1, &_alphaTestDisabledBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestDisabledBuffer);
-	struct GLLAlphaTestBlock alphaBlock = { .mode = 0, .reference = .9 };
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
 	glGenBuffers(1, &_alphaTestPassGreaterBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestPassGreaterBuffer);
-	alphaBlock.mode = 1;
+    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestPassGreaterBuffer);
+    struct GLLAlphaTestBlock alphaBlock = { .mode = 1, .reference = .9 };
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
 	glGenBuffers(1, &_alphaTestPassLessBuffer);
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestPassLessBuffer);
@@ -123,20 +119,23 @@ static GLLResourceManager *sharedManager;
 	return result;
 }
 
-- (GLLModelProgram *)programForDescriptor:(GLLShaderDescription *)description error:(NSError *__autoreleasing*)error;
+- (GLLModelProgram *)programForDescriptor:(GLLShaderDescription *)description withAlpha:(BOOL)alpha error:(NSError *__autoreleasing*)error;
 {
-	NSAssert(description != nil, @"Empty shader descriptor passed in. This should never happen.");
+    NSParameterAssert(description);
+    
+    NSDictionary *key = @{ @"identifier": description.programIdentifier,
+                           @"alpha": @(alpha) };
 	
-	id result = [programs objectForKey:description.programIdentifier];
+	id result = [programs objectForKey:key];
 	if (!result)
 	{
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLModelProgram alloc] initWithDescriptor:description resourceManager:self error:error];
+        result = [[GLLModelProgram alloc] initWithDescriptor:description alpha:alpha resourceManager:self error:error];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;
-		[programs setObject:result forKey:description.programIdentifier];
+		[programs setObject:result forKey:key];
 	}
 	return result;
 }
@@ -168,11 +167,15 @@ static GLLResourceManager *sharedManager;
 	return result;
 }
 
-- (GLLShader *)shaderForName:(NSString *)shaderName type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
-	NSAssert(shaderName != nil, @"Empty shader name passed in. This should never happen.");
-	
-	GLLShader *result = [shaders objectForKey:shaderName];
+    NSParameterAssert(shaderName);
+    NSParameterAssert(defines);
+    
+    NSDictionary *key = @{ @"name" : shaderName,
+                           @"defines": defines };
+    
+	GLLShader *result = [shaders objectForKey:key];
 	if (!result)
 	{
 		NSString *shaderSource = [self _utf8StringForFilename:shaderName baseURL:baseURL error:error];
@@ -181,11 +184,11 @@ static GLLResourceManager *sharedManager;
 		// Actual loading
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLShader alloc] initWithSource:shaderSource name:shaderName type:type error:error];
+        result = [[GLLShader alloc] initWithSource:shaderSource name:shaderName additionalDefines:defines type:type error:error];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;
-		[shaders setObject:result forKey:shaderName];
+		[shaders setObject:result forKey:key];
 	}
 	return result;
 }

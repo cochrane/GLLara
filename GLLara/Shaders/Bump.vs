@@ -1,7 +1,6 @@
 /*
  * More complicated vertex shader, also using bone weights. The main difference is that it outputs the tangents matrix, and also a position in global model space. I'm not entirely sure that the normal is needed here; but getting rid of that and having per-pixel diffuse lighting has to wait for another day.
  */
-#version 150
 
 layout(std140) uniform Transform {
 	mat4 viewProjection;
