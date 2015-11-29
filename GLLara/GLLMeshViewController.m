@@ -11,6 +11,7 @@
 #import "GLLColorRenderParameterView.h"
 #import "GLLFloatRenderParameterView.h"
 #import "GLLItemMesh.h"
+#import "GLLItemMeshSelectionPlaceholder.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLItemMeshTextureSelectionPlaceholder.h"
 #import "GLLRenderParameter.h"
@@ -75,31 +76,33 @@
 
 @implementation GLLMeshViewController
 
-- (id)init
+- (id)initWithSelection:(GLLSelection *)selection managedObjectContext:(NSManagedObjectContext *)context
 {
 	if (!(self = [super initWithNibName:@"GLLMeshView" bundle:[NSBundle mainBundle]]))
 		return nil;
     
     viewsForRenderParameters = [[NSMutableDictionary alloc] init];
     viewsForTextureNames = [[NSMutableDictionary alloc] init];
-	
+    
+    _selection = selection;
+    [_selection addObserver:self forKeyPath:@"selectedMeshes" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
+    _managedObjectContext = context;
+    
+    _visible = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"isVisible" selection:selection];
+	_selectedShader = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"shader" selection:selection];
+    _cullFace = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"cullFaceMode" selection:selection];
+    
 	return self;
 }
 
 - (void)dealloc
 {
-	[self.selection removeObserver:self forKeyPath:@"selectedMeshes"];
+	[_selection removeObserver:self forKeyPath:@"selectedMeshes"];
 }
 
 - (void)loadView
 {
     [super loadView];
-	
-	// Set up other things I'd like to have
-	NSAssert(self.allMeshes != nil, @"Outlet not set in time");
-	[self.allMeshes fetchWithRequest:nil merge:YES error:NULL];
-	self.allMeshes.selectedObjects = [self.selection valueForKey:@"selectedMeshes"];
-	[self.allMeshes addObserver:self forKeyPath:@"selection.shader" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -107,8 +110,6 @@
 	if ([keyPath isEqual:@"selectedMeshes"])
 	{
 		[self _findRenderParameterNames];
-		self.allMeshes.selectedObjects = [self.selection valueForKey:@"selectedMeshes"];
-		
 	}
 	else if ([keyPath isEqual:@"selection.shader"])
 	{
@@ -169,14 +170,14 @@
 		{
 			GLLFloatRenderParameterView *result = [tableView makeViewWithIdentifier:@"FloatRenderParameterView" owner:self];
             
-            GLLRenderParameterSelectionPlaceholder *descriptionPlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterNameName:parameterName keyPath:@"parameterDescription" selection:self.selection];
+            GLLRenderParameterSelectionPlaceholder *descriptionPlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterName:parameterName keyPath:@"parameterDescription" selection:self.selection];
 			
 			[result.parameterTitle bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedTitle" options:nil];
 			[result.parameterDescription bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedDescription" options:nil];
 			[result.parameterSlider bind:@"minValue" toObject:descriptionPlaceholder withKeyPath:@"value.min" options:nil];
 			[result.parameterSlider bind:@"maxValue" toObject:descriptionPlaceholder withKeyPath:@"value.max" options:nil];
             
-            GLLRenderParameterSelectionPlaceholder *valuePlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterNameName:parameterName keyPath:@"value" selection:self.selection];
+            GLLRenderParameterSelectionPlaceholder *valuePlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterName:parameterName keyPath:@"value" selection:self.selection];
 			[result.parameterSlider bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
             [result.parameterValueField bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
             
@@ -213,12 +214,6 @@
 		return nil;
 }
 
-- (void)setSelection:(GLLSelection *)selection
-{
-	_selection = selection;
-	[_selection addObserver:self forKeyPath:@"selectedMeshes" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
-}
-
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
 	if (tableView == self.renderParametersView)
@@ -230,20 +225,14 @@
 }
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	if (tableView == self.renderParametersView)
-		return [self.allMeshes.selection valueForKeyPath:[renderParameterNames objectAtIndex:row]];
-	else if (tableView == self.textureAssignmentsView)
-		return [self.allMeshes.selection valueForKeyPath:[textureNames objectAtIndex:row]];
-	else
-		return nil;
+    // We're using direct bindings instead; the result of this method is completely ignored.
+    return nil;
 }
 
 #pragma mark - Private methods
 
 - (void)_findRenderParameterNames;
 {
-	[self.allMeshes fetch:nil];
-	
 	NSArray *selectedMeshes = [self.selection valueForKey:@"selectedMeshes"];
 	
 	if (selectedMeshes.count == 0)
@@ -267,7 +256,7 @@
 	textureNames = [textureNamesSet sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
 	
 	// Find possible and actual shaders
-	self.possibleShaders = [self.allMeshes valueForKeyPath:@"arrangedObjects.@distinctUnionOfArrays.possibleShaderDescriptions"];
+	self.possibleShaders = [selectedMeshes valueForKeyPath:@"@distinctUnionOfArrays.possibleShaderDescriptions"];
 	
 	[self.renderParametersView reloadData];
 	[self.textureAssignmentsView reloadData];

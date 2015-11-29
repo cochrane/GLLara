@@ -61,19 +61,19 @@
 
 @implementation GLLDocumentWindowController
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext selection:(GLLSelection *)selection;
 {
     if (!(self = [super initWithWindowNibName:@"GLLDocument"])) return nil;
     
 	_managedObjectContext = managedObjectContext;
+    _selection = selection;
 	
 	noSelectionViewController = [[GLLNoSelectionViewController alloc] init];
 	
 	ambientLightViewController = [[GLLAmbientLightViewController alloc] init];
 	boneViewController = [[GLLBoneViewController alloc] init];
 	itemViewController = [[GLLItemViewController alloc] init];
-	meshViewController = [[GLLMeshViewController alloc] init];
-	meshViewController.managedObjectContext = _managedObjectContext;
+	meshViewController = [[GLLMeshViewController alloc] initWithSelection:_selection managedObjectContext:_managedObjectContext];
 	lightViewController = [[GLLLightViewController alloc] init];
 	
 	selectionController = [[NSArrayController alloc] init];
@@ -106,7 +106,6 @@
 	[self.sourceView expandItem:itemListController];
 	[self.sourceView expandItem:settingsListController];
 	
-	meshViewController.selection = self.selection;
 	[itemViewController bind:@"selectedItems" toObject:self.selection withKeyPath:@"selectedItems" options:nil];
 	
 	[self _setRightHandController:noSelectionViewController];

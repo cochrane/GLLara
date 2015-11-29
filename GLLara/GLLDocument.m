@@ -79,13 +79,12 @@
 
 - (void)makeWindowControllers
 {
-	self.selection = [[GLLSelection alloc] initWithManagedObjectContext:self.managedObjectContext];
+	_selection = [[GLLSelection alloc] initWithManagedObjectContext:self.managedObjectContext];
 	
 	sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext];
 	[sceneDrawer bind:@"selectedBones" toObject:self.selection withKeyPath:@"selectedBones" options:nil];
 	
-	documentWindowController = [[GLLDocumentWindowController alloc] initWithManagedObjectContext:self.managedObjectContext];
-	documentWindowController.selection = self.selection;
+    documentWindowController = [[GLLDocumentWindowController alloc] initWithManagedObjectContext:self.managedObjectContext selection:self.selection];
 	[self addWindowController:documentWindowController];
 
 	NSFetchRequest *camerasFetchRequest = [[NSFetchRequest alloc] init];

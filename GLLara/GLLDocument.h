@@ -34,7 +34,7 @@
 - (IBAction)exportItem:(id)sender;
 
 @property (nonatomic, readonly) GLLSourceListController *sourceListController;
-@property (nonatomic) GLLSelection *selection;
+@property (nonatomic, readonly) GLLSelection *selection;
 @property (nonatomic, readonly) NSArray *allBones;
 
 @end
