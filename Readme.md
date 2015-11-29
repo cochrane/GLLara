@@ -9,16 +9,6 @@ Current versions work, more or less, but there's still a lot of ground to cover.
 
 [xnalara]: http://www.tombraiderforums.com/showthread.php?t=147100
 
-Note for developers
--------------------
-
-This project uses submodules. So after cloning, you have to do
-
-	git submodule init
-	git submodule update
-
-to get all the code needed to build the program.
-
 Some license stuff
 ------------------
 

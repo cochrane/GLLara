@@ -1,6 +1,0 @@
-[submodule "DMLocalizedNibBundle"]
-	path = DMLocalizedNibBundle
-	url = https://github.com/incbee/DMLocalizedNibBundle.git
-[submodule "Sparkle"]
-	path = Sparkle
-	url = https://github.com/andymatuschak/Sparkle.git
