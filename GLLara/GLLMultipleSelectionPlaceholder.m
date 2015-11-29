@@ -8,6 +8,8 @@
 
 #import "GLLMultipleSelectionPlaceholder.h"
 
+#import <AppKit/AppKit.h>
+
 #import "GLLSelection.h"
 
 @interface GLLMultipleSelectionPlaceholder()
@@ -44,6 +46,9 @@
     _redoNotificationRegistration = [[NSNotificationCenter defaultCenter] addObserverForName:NSUndoManagerDidRedoChangeNotification object:nil queue:nil usingBlock:^(NSNotification *n) {
         [weakSelf update];
     }];
+    
+    multipleSelectionMarker = NSMultipleValuesMarker;
+    emptySelectionMarker = NSNoSelectionMarker;
 
     return self;
 }

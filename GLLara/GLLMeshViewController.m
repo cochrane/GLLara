@@ -15,6 +15,7 @@
 #import "GLLItemMeshTextureSelectionPlaceholder.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
+#import "GLLRenderParameterSelectionPlaceholder.h"
 #import "GLLSelection.h"
 #import "GLLTextureAssignmentView.h"
 #import "GLLMultipleSelectionPlaceholder.h"
@@ -62,8 +63,10 @@
 
 @interface GLLMeshViewController ()
 {
-	NSArray *renderParameterNames;
-	NSArray *textureNames;
+    NSArray *renderParameterNames;
+    NSArray *textureNames;
+    NSMutableDictionary *viewsForRenderParameters;
+    NSMutableDictionary *viewsForTextureNames;
 }
 
 - (void)_findRenderParameterNames;
@@ -76,6 +79,9 @@
 {
 	if (!(self = [super initWithNibName:@"GLLMeshView" bundle:[NSBundle mainBundle]]))
 		return nil;
+    
+    viewsForRenderParameters = [[NSMutableDictionary alloc] init];
+    viewsForTextureNames = [[NSMutableDictionary alloc] init];
 	
 	return self;
 }
@@ -126,7 +132,10 @@
 {
 	if (tableView == self.renderParametersView)
 	{
-		NSString *parameterName = [renderParameterNames objectAtIndex:row];
+        NSString *parameterName = [renderParameterNames objectAtIndex:row];
+        NSView *result = viewsForRenderParameters[parameterName];
+        if (result)
+            return result;
 		
 		GLLRenderParameterDescription *descriptionForName = nil;
 		for (GLLItemMesh *mesh in [self.selection valueForKey:@"selectedMeshes"])
@@ -137,28 +146,41 @@
 		
 		if (!descriptionForName)
 			return nil;
+        
 		
 		if ([descriptionForName.type isEqual:GLLRenderParameterTypeColor])
 		{
 			GLLColorRenderParameterView *result = [tableView makeViewWithIdentifier:@"ColorRenderParameterView" owner:self];
 			
-			[result.parameterTitle bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.localizedTitle", parameterName] options:nil];
-			[result.parameterDescription bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.localizedDescription", parameterName] options:nil];
-			[result.parameterValue bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.value", parameterName] options:nil];
+            GLLRenderParameterSelectionPlaceholder *descriptionPlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterNameName:parameterName keyPath:@"parameterDescription" selection:self.selection];
+            
+            [result.parameterTitle bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedTitle" options:nil];
+            [result.parameterDescription bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedDescription" options:nil];
+
+            GLLRenderParameterSelectionPlaceholder *valuePlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterNameName:parameterName keyPath:@"value" selection:self.selection];
+            [result.parameterValue bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
 			
+            viewsForRenderParameters[parameterName] = result;
+            
 			return result;
 			
 		}
 		else if ([descriptionForName.type isEqual:GLLRenderParameterTypeFloat])
 		{
 			GLLFloatRenderParameterView *result = [tableView makeViewWithIdentifier:@"FloatRenderParameterView" owner:self];
+            
+            GLLRenderParameterSelectionPlaceholder *descriptionPlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterNameName:parameterName keyPath:@"parameterDescription" selection:self.selection];
 			
-			[result.parameterTitle bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.localizedTitle", parameterName] options:nil];
-			[result.parameterDescription bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.localizedDescription", parameterName] options:nil];
-			[result.parameterSlider bind:@"minValue" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.min", parameterName] options:nil];
-			[result.parameterSlider bind:@"maxValue" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.max", parameterName] options:nil];
-			[result.parameterSlider bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.value", parameterName] options:nil];
-			[result.parameterValueField bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.value", parameterName] options:nil];
+			[result.parameterTitle bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedTitle" options:nil];
+			[result.parameterDescription bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedDescription" options:nil];
+			[result.parameterSlider bind:@"minValue" toObject:descriptionPlaceholder withKeyPath:@"value.min" options:nil];
+			[result.parameterSlider bind:@"maxValue" toObject:descriptionPlaceholder withKeyPath:@"value.max" options:nil];
+            
+            GLLRenderParameterSelectionPlaceholder *valuePlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterNameName:parameterName keyPath:@"value" selection:self.selection];
+			[result.parameterSlider bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
+            [result.parameterValueField bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
+            
+            viewsForRenderParameters[parameterName] = result;
 			
 			return result;
 		}
@@ -168,8 +190,11 @@
 	else if (tableView == self.textureAssignmentsView)
 	{
         NSString *textureName = [textureNames objectAtIndex:row];
+        GLLTextureAssignmentView *result = viewsForTextureNames[textureName];
+        if (result)
+            return result;
 
-        GLLTextureAssignmentView *result = [tableView makeViewWithIdentifier:@"TextureAssignment" owner:self];
+        result = [tableView makeViewWithIdentifier:@"TextureAssignment" owner:self];
 
         GLLMultipleSelectionPlaceholder *textureDescriptionPlaceholder = [[GLLItemMeshTextureSelectionPlaceholder alloc] initWithTextureName:textureName keyPath:@"textureDescription" selection:self.selection];
 
@@ -180,6 +205,8 @@
 
         [result.textureImage bind:@"imageURL" toObject:textureURLPlaceholder withKeyPath:@"value" options:nil];
 		
+        viewsForTextureNames[textureName] = result;
+        
 		return result;
 	}
 	else
