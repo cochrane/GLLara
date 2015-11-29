@@ -152,12 +152,12 @@
 		{
 			GLLColorRenderParameterView *result = [tableView makeViewWithIdentifier:@"ColorRenderParameterView" owner:self];
 			
-            GLLRenderParameterSelectionPlaceholder *descriptionPlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterNameName:parameterName keyPath:@"parameterDescription" selection:self.selection];
+            GLLRenderParameterSelectionPlaceholder *descriptionPlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterName:parameterName keyPath:@"parameterDescription" selection:self.selection];
             
             [result.parameterTitle bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedTitle" options:nil];
             [result.parameterDescription bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedDescription" options:nil];
 
-            GLLRenderParameterSelectionPlaceholder *valuePlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterNameName:parameterName keyPath:@"value" selection:self.selection];
+            GLLRenderParameterSelectionPlaceholder *valuePlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterName:parameterName keyPath:@"value" selection:self.selection];
             [result.parameterValue bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
 			
             viewsForRenderParameters[parameterName] = result;

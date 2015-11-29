@@ -10,6 +10,6 @@
 
 @interface GLLRenderParameterSelectionPlaceholder : GLLMultipleSelectionPlaceholder
 
-- (instancetype)initWithParameterNameName:(NSString *)parameterName keyPath:(NSString *)keyPath selection:(GLLSelection *)selection;
+- (instancetype)initWithParameterName:(NSString *)parameterName keyPath:(NSString *)keyPath selection:(GLLSelection *)selection;
 
 @end

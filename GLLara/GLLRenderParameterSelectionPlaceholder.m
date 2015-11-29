@@ -20,7 +20,7 @@
 
 @implementation GLLRenderParameterSelectionPlaceholder
 
-- (instancetype)initWithParameterNameName:(NSString *)parameterName keyPath:(NSString *)keyPath selection:(GLLSelection *)selection;
+- (instancetype)initWithParameterName:(NSString *)parameterName keyPath:(NSString *)keyPath selection:(GLLSelection *)selection;
 {
     NSParameterAssert(parameterName);
     NSParameterAssert(keyPath);
