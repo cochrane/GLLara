@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLLSelection;
+
 /*!
  * Class that handles a selection of a property on one or more objects, handling placeholders for empty or no selection.
  *
@@ -15,16 +17,13 @@
  */
 @interface GLLMultipleSelectionPlaceholder : NSObject
 
+- (instancetype)initWithSelection:(GLLSelection *)selection typeKey:(NSString *)selectionTypeKey;
+
 /*! Must be implemented in subclasses: Get the value from a given object, which will be part of the underlying selection. */
 - (id)valueFrom:(id)sourceObject;
 
 /*! Must be implemented in subclasses: Set the new value on a given object, which is part of the underlying selection. */
 - (void)setValue:(id)value onSourceObject:(id)object;
-
-/*!
- * The selection. When updating, this is where the placeholder gets its value from.
- */
-@property (nonatomic, retain) id selection;
 
 /*!
  * The value stored here. Observable. Will return multiple selection makrers or empty selection markers as necessary.

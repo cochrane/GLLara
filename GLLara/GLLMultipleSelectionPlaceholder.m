@@ -8,7 +8,14 @@
 
 #import "GLLMultipleSelectionPlaceholder.h"
 
+#import "GLLSelection.h"
+
 @interface GLLMultipleSelectionPlaceholder()
+
+@property (nonatomic, retain) GLLSelection *selection;
+@property (nonatomic, retain) NSString *selectionTypeKey;
+@property (nonatomic, retain) id undoNotificationRegistration;
+@property (nonatomic, retain) id redoNotificationRegistration;
 
 @end
 
@@ -17,6 +24,43 @@
 @synthesize multipleSelectionMarker;
 @synthesize emptySelectionMarker;
 @synthesize value;
+
+- (instancetype)initWithSelection:(GLLSelection *)selection typeKey:(NSString *)selectionTypeKey;
+{
+    NSParameterAssert(selection);
+    NSParameterAssert(selectionTypeKey);
+    
+    if (!(self = [super init]))
+        return nil;
+    
+    _selection = selection;
+    _selectionTypeKey = selectionTypeKey;
+    [selection addObserver:self forKeyPath:selectionTypeKey options:NSKeyValueObservingOptionNew context:0];
+    __weak GLLMultipleSelectionPlaceholder *weakSelf = self;
+    
+    _undoNotificationRegistration = [[NSNotificationCenter defaultCenter] addObserverForName:NSUndoManagerDidUndoChangeNotification object:nil queue:nil usingBlock:^(NSNotification *n) {
+        [weakSelf update];
+    }];
+    _redoNotificationRegistration = [[NSNotificationCenter defaultCenter] addObserverForName:NSUndoManagerDidRedoChangeNotification object:nil queue:nil usingBlock:^(NSNotification *n) {
+        [weakSelf update];
+    }];
+
+    return self;
+}
+
+- (void)dealloc
+{
+    [_selection removeObserver:self forKeyPath:_selectionTypeKey];
+    [[NSNotificationCenter defaultCenter] removeObserver:_undoNotificationRegistration];
+    [[NSNotificationCenter defaultCenter] removeObserver:_redoNotificationRegistration];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([object isEqual:self.selection]) {
+        [self update];
+    }
+}
 
 - (id)valueFrom:(id)sourceObject
 {
@@ -34,7 +78,7 @@
     [self willChangeValueForKey:@"value"];
     
     value = nil;
-    for (id object in self.selection) {
+    for (id object in [self.selection valueForKeyPath:self.selectionTypeKey]) {
         id newValue = [self valueFrom:object];
         if (!value) {
             value = newValue;
@@ -52,7 +96,7 @@
     [self willChangeValueForKey:@"value"];
     
     value = aValue;
-    for (id object in self.selection) {
+    for (id object in [self.selection valueForKeyPath:self.selectionTypeKey]) {
         [self setValue:value onSourceObject:object];
     }
     

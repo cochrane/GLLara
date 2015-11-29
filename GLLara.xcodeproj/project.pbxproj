@@ -37,6 +37,7 @@
 		522783601C0A60A9002E43FD /* GLLRenderWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522783621C0A60A9002E43FD /* GLLRenderWindowController.xib */; };
 		522783631C0A60B0002E43FD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522783651C0A60B0002E43FD /* MainMenu.xib */; };
 		522783AA1C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 522783A91C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.m */; };
+		522783AD1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 522783AC1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m */; };
 		522C4BFB1609331D0043FCBA /* DiffuseSpecularNormalOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */; };
 		522C4C141609B1F10043FCBA /* GLLModelMesh+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */; };
 		52329F4C16C1D71E00338A0A /* GLLItemExportView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F4A16C1D71E00338A0A /* GLLItemExportView.strings */; };
@@ -430,6 +431,8 @@
 		522783A71C0A6871002E43FD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLNoSelectionView.strings; sourceTree = "<group>"; };
 		522783A81C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMultipleSelectionPlaceholder.h; sourceTree = "<group>"; };
 		522783A91C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMultipleSelectionPlaceholder.m; sourceTree = "<group>"; };
+		522783AB1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemMeshTextureSelectionPlaceholder.h; sourceTree = "<group>"; };
+		522783AC1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemMeshTextureSelectionPlaceholder.m; sourceTree = "<group>"; };
 		522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; path = DiffuseSpecularNormalOBJ.fs; sourceTree = "<group>"; };
 		522C4C121609B1F10043FCBA /* GLLModelMesh+OBJExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLModelMesh+OBJExport.h"; sourceTree = "<group>"; };
 		522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLModelMesh+OBJExport.m"; sourceTree = "<group>"; };
@@ -1485,6 +1488,8 @@
 				522783411C0A6074002E43FD /* GLLNoSelectionView.xib */,
 				522783A81C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.h */,
 				522783A91C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.m */,
+				522783AB1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.h */,
+				522783AC1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1902,6 +1907,7 @@
 				526756A416BF3B0700FB85CA /* GLLTextureAssignmentView.m in Sources */,
 				522783AA1C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.m in Sources */,
 				526756A716BF45EF00FB85CA /* GLLTextureDescription.m in Sources */,
+				522783AD1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m in Sources */,
 				526756AA16BF543800FB85CA /* GLLImageView.m in Sources */,
 				5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */,
 				5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */,

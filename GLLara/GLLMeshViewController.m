@@ -12,10 +12,12 @@
 #import "GLLFloatRenderParameterView.h"
 #import "GLLItemMesh.h"
 #import "GLLItemMeshTexture.h"
+#import "GLLItemMeshTextureSelectionPlaceholder.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
 #import "GLLSelection.h"
 #import "GLLTextureAssignmentView.h"
+#import "GLLMultipleSelectionPlaceholder.h"
 
 /************************************************************************
  A very high-level overview:
@@ -165,13 +167,18 @@
 	}
 	else if (tableView == self.textureAssignmentsView)
 	{
-		NSString *textureName = [textureNames objectAtIndex:row];
-		
-		GLLTextureAssignmentView *result = [tableView makeViewWithIdentifier:@"TextureAssignment" owner:self];
-		
-		[result.textureTitle bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.textureDescription.localizedTitle", textureName] options:nil];
-		[result.textureDescription bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.textureDescription.localizedDescription", textureName] options:nil];
-		[result.textureImage bind:@"imageURL" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.textureURL", textureName] options:nil];
+        NSString *textureName = [textureNames objectAtIndex:row];
+
+        GLLTextureAssignmentView *result = [tableView makeViewWithIdentifier:@"TextureAssignment" owner:self];
+
+        GLLMultipleSelectionPlaceholder *textureDescriptionPlaceholder = [[GLLItemMeshTextureSelectionPlaceholder alloc] initWithTextureName:textureName keyPath:@"textureDescription" selection:self.selection];
+
+        [result.textureTitle bind:@"value" toObject:textureDescriptionPlaceholder withKeyPath:@"value.localizedTitle" options:nil];
+        [result.textureDescription bind:@"value" toObject:textureDescriptionPlaceholder withKeyPath:@"value.localizedDescription" options:nil];
+
+        GLLMultipleSelectionPlaceholder *textureURLPlaceholder = [[GLLItemMeshTextureSelectionPlaceholder alloc] initWithTextureName:textureName keyPath:@"textureURL" selection:self.selection];
+
+        [result.textureImage bind:@"imageURL" toObject:textureURLPlaceholder withKeyPath:@"value" options:nil];
 		
 		return result;
 	}
