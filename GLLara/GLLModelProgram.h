@@ -28,6 +28,7 @@
 
 // Uniforms set by mesh
 @property (nonatomic, assign, readonly) GLuint renderParametersUniformBlockIndex;
+@property (nonatomic, assign, readonly) GLsizei renderParametersBufferSize;
 
 // Uniforms set by scene drawer
 @property (nonatomic, assign, readonly) GLuint lightsUniformBlockIndex;

@@ -13,6 +13,12 @@
 #import "GLLResourceManager.h"
 #import "GLLShader.h"
 
+@interface GLLProgram () {
+	NSMutableDictionary *uniformOffsets;
+}
+
+@end
+
 @implementation GLLProgram
 
 - (id)initWithName:(NSString *)name fragmentShaderName:(NSString *)fragmentName geometryShaderName:(NSString *)geometryName vertexShaderName:(NSString *)vertexName baseURL:(NSURL *)base additionalDefines:(NSDictionary *)additionalDefines resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
@@ -52,6 +58,8 @@
 - (id)initWithName:(NSString *)name fragmentShader:(GLLShader *)fragment geometryShader:(GLLShader *)geometry vertexShader:(GLLShader *)vertex error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
+	
+	uniformOffsets = [[NSMutableDictionary alloc] init];
 	
 	_name = name;
 	
@@ -104,6 +112,29 @@
 {
 	glDeleteProgram(_programID);
 	_programID = 0;
+}
+
+- (NSInteger)offsetForUniform:(NSString *)uniformName inBlock:(NSString *)blockName
+{
+	return [self offsetForUniform:[NSString stringWithFormat:@"%@.%@", blockName, uniformName]];
+}
+
+- (NSInteger)offsetForUniform:(NSString *)uniformName
+{
+	NSNumber *result = uniformOffsets[uniformName];
+	if (!result) {
+		GLuint uniformIndex;
+		glGetUniformIndices(self.programID, 1, (const GLchar *[]) { uniformName.UTF8String }, &uniformIndex);
+		if (uniformIndex == GL_INVALID_INDEX) {
+			result = @(-1);
+		} else {
+			GLint byteOffset;
+			glGetActiveUniformsiv(self.programID, 1, &uniformIndex, GL_UNIFORM_OFFSET, &byteOffset);
+			result = @(byteOffset);
+		}
+		uniformOffsets[uniformName] = result;
+	}
+	return result.integerValue;
 }
 
 @end

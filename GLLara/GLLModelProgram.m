@@ -30,7 +30,12 @@
 	if (_lightsUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(self.programID, _lightsUniformBlockIndex, GLLUniformBlockBindingLights);
 
 	_renderParametersUniformBlockIndex = glGetUniformBlockIndex(self.programID, "RenderParameters");
-	if (_renderParametersUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(self.programID, _renderParametersUniformBlockIndex, GLLUniformBlockBindingRenderParameters);
+    if (_renderParametersUniformBlockIndex != GL_INVALID_INDEX) {
+        glUniformBlockBinding(self.programID, _renderParametersUniformBlockIndex, GLLUniformBlockBindingRenderParameters);
+        glGetActiveUniformBlockiv(self.programID, self.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &_renderParametersBufferSize);
+    } else {
+        _renderParametersBufferSize = 0;
+    }
 
 	_transformUniformBlockIndex = glGetUniformBlockIndex(self.programID, "Transform");
 	if (_transformUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(self.programID, _transformUniformBlockIndex, GLLUniformBlockBindingTransforms);

@@ -32,4 +32,10 @@
 
 - (void)unload;
 
+// Get uniform offset. Internally cached. Returns < 0 if not found.
+- (NSInteger)offsetForUniform:(NSString *)uniformName;
+
+// Get uniform offset in block. Returns < 0 if not found.
+- (NSInteger)offsetForUniform:(NSString *)uniformName inBlock:(NSString *)blockName;
+
 @end

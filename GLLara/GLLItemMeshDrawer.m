@@ -258,15 +258,13 @@
 
 - (void)_updateParameterBuffer;
 {
-	GLint bufferLength;
-	
 	if (!_program)
 		return;
 	
 	if (self.program.renderParametersUniformBlockIndex == GL_INVALID_INDEX)
 		return;
 	
-    glGetActiveUniformBlockiv(self.program.programID, self.program.renderParametersUniformBlockIndex, GL_UNIFORM_BLOCK_DATA_SIZE, &bufferLength);
+    GLsizei bufferLength = self.program.renderParametersBufferSize;
     
     glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingRenderParameters, renderParametersBuffer);
     glBufferData(GL_UNIFORM_BUFFER, bufferLength, NULL, GL_STREAM_DRAW);
@@ -274,13 +272,9 @@
 	
 	for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
 	{
-		NSString *fullName = [@"RenderParameters." stringByAppendingString:parameter.name];
-		GLuint uniformIndex;
-		glGetUniformIndices(self.program.programID, 1, (const GLchar *[]) { fullName.UTF8String }, &uniformIndex);
-		if (uniformIndex == GL_INVALID_INDEX) continue;
-		
-		GLint byteOffset;
-		glGetActiveUniformsiv(self.program.programID, 1, &uniformIndex, GL_UNIFORM_OFFSET, &byteOffset);
+        NSInteger byteOffset = [self.program offsetForUniform:parameter.name inBlock:@"RenderParameters"];
+        if (byteOffset < 0)
+            continue;
 		
 		[parameter.uniformValue getBytes:data + byteOffset length:bufferLength - byteOffset];
 	}
