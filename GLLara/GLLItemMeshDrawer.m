@@ -53,6 +53,7 @@
 	_itemMesh = itemMesh;
 	
 	[_itemMesh addObserver:self forKeyPath:@"shaderName" options:NSKeyValueObservingOptionNew context:NULL];
+    [_itemMesh addObserver:self forKeyPath:@"isVisible" options:NSKeyValueObservingOptionNew context:NULL];
 	if (![self _updateShaderError:error])
 		return nil;
 	
@@ -84,7 +85,8 @@
 		[texture removeObserver:self forKeyPath:@"textureURL"];
 	[_itemMesh removeObserver:self forKeyPath:@"textures"];
 	
-	[_itemMesh removeObserver:self forKeyPath:@"shaderName"];
+    [_itemMesh removeObserver:self forKeyPath:@"isVisible"];
+    [_itemMesh removeObserver:self forKeyPath:@"shaderName"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -106,6 +108,10 @@
         needsParameterBufferUpdate = YES;
         [self.itemDrawer propertiesChanged];
 	}
+    else if ([keyPath isEqual:@"isVisible"])
+    {
+        [self.itemDrawer propertiesChanged];
+    }
 	else if ([keyPath isEqual:@"textures"])
 	{
 		for (GLLItemMeshTexture *texture in textureAssignments)
