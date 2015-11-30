@@ -1087,19 +1087,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">selectedObject: cullFace.value</string>
+						<string key="label">selectedIndex: cullFace.value</string>
 						<reference key="source" ref="286309238"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="286309238"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">selectedObject: cullFace.value</string>
-							<string key="NSBinding">selectedObject</string>
+							<string key="NSLabel">selectedIndex: cullFace.value</string>
+							<string key="NSBinding">selectedIndex</string>
 							<string key="NSKeyPath">cullFace.value</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">502</int>
+					<int key="connectionID">507</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1795,7 +1795,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">506</int>
+			<int key="maxID">507</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
