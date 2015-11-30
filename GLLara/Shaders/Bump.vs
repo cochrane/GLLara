@@ -43,7 +43,7 @@ void main()
 	
 	// Tangents
 	vec3 tangentU = normalize(tangent.xyz);
-	vec3 tangentV = normalize(cross(normal, tangentU) * tangent.w);
+	vec3 tangentV = normalize(cross(normal, tangentU) * sign(tangent.w));
 	vec3 normal = normalize(normal);
 	
 	tangentToWorld = mat3(bones.transforms[0]) * mat3(tangentU, tangentV, normal) * mat3(bones.normalPermute);
