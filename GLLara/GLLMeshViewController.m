@@ -11,11 +11,15 @@
 #import "GLLColorRenderParameterView.h"
 #import "GLLFloatRenderParameterView.h"
 #import "GLLItemMesh.h"
+#import "GLLItemMeshSelectionPlaceholder.h"
 #import "GLLItemMeshTexture.h"
+#import "GLLItemMeshTextureSelectionPlaceholder.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
+#import "GLLRenderParameterSelectionPlaceholder.h"
 #import "GLLSelection.h"
 #import "GLLTextureAssignmentView.h"
+#import "GLLMultipleSelectionPlaceholder.h"
 
 /************************************************************************
  A very high-level overview:
@@ -60,8 +64,10 @@
 
 @interface GLLMeshViewController ()
 {
-	NSArray *renderParameterNames;
-	NSArray *textureNames;
+    NSArray *renderParameterNames;
+    NSArray *textureNames;
+    NSMutableDictionary *viewsForRenderParameters;
+    NSMutableDictionary *viewsForTextureNames;
 }
 
 - (void)_findRenderParameterNames;
@@ -70,28 +76,33 @@
 
 @implementation GLLMeshViewController
 
-- (id)init
+- (id)initWithSelection:(GLLSelection *)selection managedObjectContext:(NSManagedObjectContext *)context
 {
 	if (!(self = [super initWithNibName:@"GLLMeshView" bundle:[NSBundle mainBundle]]))
 		return nil;
-	
+    
+    viewsForRenderParameters = [[NSMutableDictionary alloc] init];
+    viewsForTextureNames = [[NSMutableDictionary alloc] init];
+    
+    _selection = selection;
+    [_selection addObserver:self forKeyPath:@"selectedMeshes" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
+    _managedObjectContext = context;
+    
+    _visible = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"isVisible" selection:selection];
+	_selectedShader = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"shader" selection:selection];
+    _cullFace = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"cullFaceMode" selection:selection];
+    
 	return self;
 }
 
 - (void)dealloc
 {
-	[self.selection removeObserver:self forKeyPath:@"selectedMeshes"];
+	[_selection removeObserver:self forKeyPath:@"selectedMeshes"];
 }
 
 - (void)loadView
 {
     [super loadView];
-	
-	// Set up other things I'd like to have
-	NSAssert(self.allMeshes != nil, @"Outlet not set in time");
-	[self.allMeshes fetchWithRequest:nil merge:YES error:NULL];
-	self.allMeshes.selectedObjects = [self.selection valueForKey:@"selectedMeshes"];
-	[self.allMeshes addObserver:self forKeyPath:@"selection.shader" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -99,8 +110,6 @@
 	if ([keyPath isEqual:@"selectedMeshes"])
 	{
 		[self _findRenderParameterNames];
-		self.allMeshes.selectedObjects = [self.selection valueForKey:@"selectedMeshes"];
-		
 	}
 	else if ([keyPath isEqual:@"selection.shader"])
 	{
@@ -124,7 +133,10 @@
 {
 	if (tableView == self.renderParametersView)
 	{
-		NSString *parameterName = [renderParameterNames objectAtIndex:row];
+        NSString *parameterName = [renderParameterNames objectAtIndex:row];
+        NSView *result = viewsForRenderParameters[parameterName];
+        if (result)
+            return result;
 		
 		GLLRenderParameterDescription *descriptionForName = nil;
 		for (GLLItemMesh *mesh in [self.selection valueForKey:@"selectedMeshes"])
@@ -135,28 +147,41 @@
 		
 		if (!descriptionForName)
 			return nil;
+        
 		
 		if ([descriptionForName.type isEqual:GLLRenderParameterTypeColor])
 		{
 			GLLColorRenderParameterView *result = [tableView makeViewWithIdentifier:@"ColorRenderParameterView" owner:self];
 			
-			[result.parameterTitle bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.localizedTitle", parameterName] options:nil];
-			[result.parameterDescription bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.localizedDescription", parameterName] options:nil];
-			[result.parameterValue bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.value", parameterName] options:nil];
+            GLLRenderParameterSelectionPlaceholder *descriptionPlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterName:parameterName keyPath:@"parameterDescription" selection:self.selection];
+            
+            [result.parameterTitle bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedTitle" options:nil];
+            [result.parameterDescription bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedDescription" options:nil];
+
+            GLLRenderParameterSelectionPlaceholder *valuePlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterName:parameterName keyPath:@"value" selection:self.selection];
+            [result.parameterValue bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
 			
+            viewsForRenderParameters[parameterName] = result;
+            
 			return result;
 			
 		}
 		else if ([descriptionForName.type isEqual:GLLRenderParameterTypeFloat])
 		{
 			GLLFloatRenderParameterView *result = [tableView makeViewWithIdentifier:@"FloatRenderParameterView" owner:self];
+            
+            GLLRenderParameterSelectionPlaceholder *descriptionPlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterName:parameterName keyPath:@"parameterDescription" selection:self.selection];
 			
-			[result.parameterTitle bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.localizedTitle", parameterName] options:nil];
-			[result.parameterDescription bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.localizedDescription", parameterName] options:nil];
-			[result.parameterSlider bind:@"minValue" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.min", parameterName] options:nil];
-			[result.parameterSlider bind:@"maxValue" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.parameterDescription.max", parameterName] options:nil];
-			[result.parameterSlider bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.value", parameterName] options:nil];
-			[result.parameterValueField bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.value", parameterName] options:nil];
+			[result.parameterTitle bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedTitle" options:nil];
+			[result.parameterDescription bind:@"value" toObject:descriptionPlaceholder withKeyPath:@"value.localizedDescription" options:nil];
+			[result.parameterSlider bind:@"minValue" toObject:descriptionPlaceholder withKeyPath:@"value.min" options:nil];
+			[result.parameterSlider bind:@"maxValue" toObject:descriptionPlaceholder withKeyPath:@"value.max" options:nil];
+            
+            GLLRenderParameterSelectionPlaceholder *valuePlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterName:parameterName keyPath:@"value" selection:self.selection];
+			[result.parameterSlider bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
+            [result.parameterValueField bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
+            
+            viewsForRenderParameters[parameterName] = result;
 			
 			return result;
 		}
@@ -165,24 +190,28 @@
 	}
 	else if (tableView == self.textureAssignmentsView)
 	{
-		NSString *textureName = [textureNames objectAtIndex:row];
+        NSString *textureName = [textureNames objectAtIndex:row];
+        GLLTextureAssignmentView *result = viewsForTextureNames[textureName];
+        if (result)
+            return result;
+
+        result = [tableView makeViewWithIdentifier:@"TextureAssignment" owner:self];
+
+        GLLMultipleSelectionPlaceholder *textureDescriptionPlaceholder = [[GLLItemMeshTextureSelectionPlaceholder alloc] initWithTextureName:textureName keyPath:@"textureDescription" selection:self.selection];
+
+        [result.textureTitle bind:@"value" toObject:textureDescriptionPlaceholder withKeyPath:@"value.localizedTitle" options:nil];
+        [result.textureDescription bind:@"value" toObject:textureDescriptionPlaceholder withKeyPath:@"value.localizedDescription" options:nil];
+
+        GLLMultipleSelectionPlaceholder *textureURLPlaceholder = [[GLLItemMeshTextureSelectionPlaceholder alloc] initWithTextureName:textureName keyPath:@"textureURL" selection:self.selection];
+
+        [result.textureImage bind:@"imageURL" toObject:textureURLPlaceholder withKeyPath:@"value" options:nil];
 		
-		GLLTextureAssignmentView *result = [tableView makeViewWithIdentifier:@"TextureAssignment" owner:self];
-		
-		[result.textureTitle bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.textureDescription.localizedTitle", textureName] options:nil];
-		[result.textureDescription bind:@"value" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.textureDescription.localizedDescription", textureName] options:nil];
-		[result.textureImage bind:@"imageURL" toObject:self.allMeshes withKeyPath:[NSString stringWithFormat:@"selection.%@.textureURL", textureName] options:nil];
-		
+        viewsForTextureNames[textureName] = result;
+        
 		return result;
 	}
 	else
 		return nil;
-}
-
-- (void)setSelection:(GLLSelection *)selection
-{
-	_selection = selection;
-	[_selection addObserver:self forKeyPath:@"selectedMeshes" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
@@ -196,20 +225,14 @@
 }
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
-	if (tableView == self.renderParametersView)
-		return [self.allMeshes.selection valueForKeyPath:[renderParameterNames objectAtIndex:row]];
-	else if (tableView == self.textureAssignmentsView)
-		return [self.allMeshes.selection valueForKeyPath:[textureNames objectAtIndex:row]];
-	else
-		return nil;
+    // We're using direct bindings instead; the result of this method is completely ignored.
+    return nil;
 }
 
 #pragma mark - Private methods
 
 - (void)_findRenderParameterNames;
 {
-	[self.allMeshes fetch:nil];
-	
 	NSArray *selectedMeshes = [self.selection valueForKey:@"selectedMeshes"];
 	
 	if (selectedMeshes.count == 0)
@@ -233,7 +256,7 @@
 	textureNames = [textureNamesSet sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
 	
 	// Find possible and actual shaders
-	self.possibleShaders = [self.allMeshes valueForKeyPath:@"arrangedObjects.@distinctUnionOfArrays.possibleShaderDescriptions"];
+	self.possibleShaders = [selectedMeshes valueForKeyPath:@"@distinctUnionOfArrays.possibleShaderDescriptions"];
 	
 	[self.renderParametersView reloadData];
 	[self.textureAssignmentsView reloadData];

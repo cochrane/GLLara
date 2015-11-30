@@ -18,13 +18,13 @@
  */
 @interface GLLDocumentWindowController : NSWindowController <NSOutlineViewDelegate, NSOutlineViewDataSource>
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext selection:(GLLSelection *)selection;
 
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, retain) IBOutlet NSOutlineView *sourceView;
 @property (nonatomic, retain) IBOutlet NSView *placeholderView;
 
-@property (nonatomic) GLLSelection *selection;
+@property (nonatomic, readonly) GLLSelection *selection;
 
 @end

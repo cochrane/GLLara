@@ -11,7 +11,6 @@
 			<string key="NS.object.0">6250</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
-			<string>NSArrayController</string>
 			<string>NSButton</string>
 			<string>NSButtonCell</string>
 			<string>NSColorWell</string>
@@ -52,15 +51,6 @@
 			</object>
 			<object class="NSCustomObject" id="1004">
 				<string key="NSClassName">NSApplication</string>
-			</object>
-			<object class="NSArrayController" id="91748003">
-				<bool key="NSEditable">YES</bool>
-				<object class="_NSManagedProxy" key="_NSManagedProxy">
-					<string key="NSEntityName">GLLItemMesh</string>
-				</object>
-				<bool key="_NSIsUsingManagedProxy">YES</bool>
-				<bool key="NSPreservesSelection">YES</bool>
-				<bool key="NSFilterRestrictsInsertion">YES</bool>
 			</object>
 			<object class="NSCustomView" id="1005">
 				<reference key="NSNextResponder"/>
@@ -477,7 +467,7 @@
 												<string key="NSFrameSize">{490, 211}</string>
 												<reference key="NSSuperview" ref="220608875"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="1012442872"/>
+												<reference key="NSNextKeyView" ref="382639998"/>
 												<string key="NSReuseIdentifierKey">_NS:13</string>
 												<bool key="NSEnabled">YES</bool>
 												<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -632,7 +622,7 @@
 								<string key="NSFrameSize">{490, 228}</string>
 								<reference key="NSSuperview" ref="925863077"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="220608875"/>
+								<reference key="NSNextKeyView" ref="1012442872"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSDoNotTranslateAutoresizingMask">YES</bool>
 								<int key="NSsFlags">133680</int>
@@ -744,7 +734,7 @@
 												<string key="NSFrameSize">{490, 167}</string>
 												<reference key="NSSuperview" ref="1006133420"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="742292470"/>
+												<reference key="NSNextKeyView" ref="559481086"/>
 												<string key="NSReuseIdentifierKey">_NS:13</string>
 												<bool key="NSEnabled">YES</bool>
 												<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -829,6 +819,7 @@
 										<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 										<reference key="NSSuperview" ref="1065152199"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:58</string>
 										<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 										<string key="NSControlAction">_doScroller:</string>
@@ -841,7 +832,7 @@
 									<object class="NSScroller" id="599101135">
 										<reference key="NSNextResponder" ref="1065152199"/>
 										<int key="NSvFlags">-2147483392</int>
-										<string key="NSFrame">{{1, 109.7745532989502}, {219.8472900390625, 16}}</string>
+										<string key="NSFrame">{{1, 110}, {220, 16}}</string>
 										<reference key="NSSuperview" ref="1065152199"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="16870102"/>
@@ -874,7 +865,7 @@
 								<string key="NSFrame">{{0, 238}, {490, 184}}</string>
 								<reference key="NSSuperview" ref="925863077"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="1006133420"/>
+								<reference key="NSNextKeyView" ref="742292470"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="NSDoNotTranslateAutoresizingMask">YES</bool>
 								<int key="NSsFlags">133680</int>
@@ -1063,44 +1054,52 @@
 					<int key="connectionID">473</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">allMeshes</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="91748003"/>
-					</object>
-					<int key="connectionID">481</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.isVisible</string>
+						<string key="label">value: visible.value</string>
 						<reference key="source" ref="1017327570"/>
-						<reference key="destination" ref="91748003"/>
+						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="1017327570"/>
-							<reference key="NSDestination" ref="91748003"/>
-							<string key="NSLabel">value: selection.isVisible</string>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: visible.value</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.isVisible</string>
+							<string key="NSKeyPath">visible.value</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">480</int>
+					<int key="connectionID">491</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">selectedIndex: selection.cullFaceMode</string>
-						<reference key="source" ref="286309238"/>
-						<reference key="destination" ref="91748003"/>
+						<string key="label">value: visible.value</string>
+						<reference key="source" ref="1060123871"/>
+						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="286309238"/>
-							<reference key="NSDestination" ref="91748003"/>
-							<string key="NSLabel">selectedIndex: selection.cullFaceMode</string>
-							<string key="NSBinding">selectedIndex</string>
-							<string key="NSKeyPath">selection.cullFaceMode</string>
+							<reference key="NSSource" ref="1060123871"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">value: visible.value</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">visible.value</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">478</int>
+					<int key="connectionID">495</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">selectedIndex: cullFace.value</string>
+						<reference key="source" ref="286309238"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="286309238"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">selectedIndex: cullFace.value</string>
+							<string key="NSBinding">selectedIndex</string>
+							<string key="NSKeyPath">cullFace.value</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">507</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1249,36 +1248,20 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">selectedObject: selection.shader</string>
+						<string key="label">selectedObject: selectedShader.value</string>
 						<reference key="source" ref="979383292"/>
-						<reference key="destination" ref="91748003"/>
+						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="979383292"/>
-							<reference key="NSDestination" ref="91748003"/>
-							<string key="NSLabel">selectedObject: selection.shader</string>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">selectedObject: selectedShader.value</string>
 							<string key="NSBinding">selectedObject</string>
-							<string key="NSKeyPath">selection.shader</string>
+							<string key="NSKeyPath">selectedShader.value</string>
 							<reference key="NSPreviousConnector" ref="598211093"/>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">485</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">managedObjectContext: managedObjectContext</string>
-						<reference key="source" ref="91748003"/>
-						<reference key="destination" ref="1001"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="91748003"/>
-							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">managedObjectContext: managedObjectContext</string>
-							<string key="NSBinding">managedObjectContext</string>
-							<string key="NSKeyPath">managedObjectContext</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">484</int>
+					<int key="connectionID">506</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1722,12 +1705,6 @@
 						<reference key="object" ref="773009389"/>
 						<reference key="parent" ref="1063100254"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">474</int>
-						<reference key="object" ref="91748003"/>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">Meshes</string>
-					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1800,7 +1777,6 @@
 				<string key="461.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="471.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="472.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="474.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="68.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="69.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<boolean value="YES" key="69.ibExternalAutomaticallyCalculatesRowSizeFromViewHeight"/>
@@ -1819,7 +1795,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">485</int>
+			<int key="maxID">507</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1905,15 +1881,10 @@
 						</object>
 					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="allMeshes">NSArrayController</string>
 						<string key="renderParametersView">NSTableView</string>
 						<string key="textureAssignmentsView">NSTableView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="allMeshes">
-							<string key="name">allMeshes</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="renderParametersView">
 							<string key="name">renderParametersView</string>
 							<string key="candidateClassName">NSTableView</string>
@@ -1992,14 +1963,6 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">NSArrayController</string>
-					<string key="superclassName">NSObjectController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">AppKit.framework/Headers/NSArrayController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">NSButton</string>
 					<string key="superclassName">NSControl</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -2040,14 +2003,6 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">NSController</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">AppKit.framework/Headers/NSController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">NSFormatter</string>
 					<string key="superclassName">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -2069,14 +2024,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">AppKit.framework/Headers/NSImageView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSManagedObjectContext</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">CoreData.framework/Headers/NSManagedObjectContext.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -2109,14 +2056,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSNumberFormatter.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObjectController</string>
-					<string key="superclassName">NSController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">AppKit.framework/Headers/NSObjectController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import "GLLMultipleSelectionPlaceholder.h"
+
 @class GLLSelection;
 
 /*
@@ -16,16 +18,20 @@
  */
 @interface GLLMeshViewController : NSViewController <NSTableViewDataSource, NSTableViewDelegate>
 
+- (id)initWithSelection:(GLLSelection *)selection managedObjectContext:(NSManagedObjectContext *)context;
+
 @property (nonatomic, assign) IBOutlet NSTableView *renderParametersView;
 @property (nonatomic, assign) IBOutlet NSTableView *textureAssignmentsView;
 
-@property (nonatomic) IBOutlet NSArrayController *allMeshes;
+@property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *visible;
+@property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *selectedShader;
+@property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *cullFace;
 
-@property (nonatomic) GLLSelection *selection;
+@property (nonatomic, readonly) GLLSelection *selection;
 
 @property (nonatomic) NSArray *possibleShaders;
 
-@property (nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 
 // Help
 - (IBAction)help:(id)sender;

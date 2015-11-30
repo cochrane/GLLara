@@ -12,7 +12,7 @@
 "37.title" = "Im Uhrzeigersinn orientiert";
 
 /* Class = "NSMenuItem"; title = "None"; ObjectID = "38"; */
-"38.title" = "None";
+"38.title" = "Keine";
 
 /* Class = "NSTextFieldCell"; title = "Faces to cull:"; ObjectID = "44"; */
 "44.title" = "Gecullte Flächen:";
