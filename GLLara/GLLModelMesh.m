@@ -410,6 +410,9 @@ void vec_addTo(float *a, float *b)
 	void *bytes = vertexData.mutableBytes;
 	const uint32_t *elements = self.elementData.bytes;
 	
+    if (self.countOfVertices == 0)
+        return;
+    
 	for (NSUInteger layer = 0; layer < self.countOfUVLayers; layer++)
 	{
 		const NSUInteger texCoordOffset = [vertexFormat offsetForTexCoordLayer:layer];

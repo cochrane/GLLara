@@ -70,7 +70,7 @@ static inline uint32_t reduceFloat(const float *value, unsigned exponentBits, un
         mantissa = 0;
     } else if (newExponent >= maxBiasedExponent) {
         // Set to inf.
-        exponent = maxBiasedExponent;
+        newExponent = maxBiasedExponent;
         mantissa = 0;
     }
     
@@ -265,8 +265,9 @@ static inline uint16_t halfFloat(const float *value) {
                     intWeights[j] = (uint16_t) packSignedFloat(weights[j] / sum, 16);
                 }
             }
-            originalVertex += 16;
-            vertex += 8;
+// Skip because unnecessary
+//            originalVertex += 16;
+//            vertex += 8;
         }
     }
     

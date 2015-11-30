@@ -248,7 +248,7 @@
     if (!allBaseVertices)
         allBaseVertices = calloc(sizeof(GLint), totalMeshes);
     if (!allIndices)
-        allIndices = calloc(sizeof(GLvoid *), totalMeshes);
+        allIndices = calloc(sizeof(GLsizeiptr), totalMeshes);
     if (!runLengths)
         runLengths = calloc(sizeof(GLsizei), totalMeshes);
     if (!runStarts)
