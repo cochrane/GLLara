@@ -34,6 +34,8 @@
 	BOOL needsTextureUpdate;
 	BOOL needsProgramUpdate;
 }
+
+- (void)_updateParameters;
 - (void)_updateParameterBuffer;
 - (BOOL)_updateTexturesError:(NSError *__autoreleasing*)error;
 - (BOOL)_updateShaderError:(NSError *__autoreleasing*)error;
@@ -57,8 +59,10 @@
 	if (![self _updateShaderError:error])
 		return nil;
 	
+    [self _updateParameters];
+    
 	glGenBuffers(1, &renderParametersBuffer);
-	needsParameterBufferUpdate = YES;
+	[self _updateParameters];
 	
 	[_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
 	[_itemMesh addObserver:self forKeyPath:@"renderParameters" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
@@ -100,12 +104,12 @@
 		for (GLLRenderParameter *param in renderParameters)
 			[param addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
 
-        needsParameterBufferUpdate = YES;
+        [self _updateParameters];
         [self.itemDrawer propertiesChanged];
 	}
 	else if ([keyPath isEqual:@"uniformValue"])
 	{
-        needsParameterBufferUpdate = YES;
+        [self _updateParameters];
         [self.itemDrawer propertiesChanged];
 	}
     else if ([keyPath isEqual:@"isVisible"])
@@ -235,26 +239,43 @@
             return NSOrderedAscending;
     }
 
-    // Check render parameters. Sadly O(n^2), but with n < 10 (typ). What can you do.
-    for (GLLRenderParameter *parameter in self.itemMesh.renderParameters) {
-        BOOL foundOther = NO;
-        for (GLLRenderParameter *otherParam in other.itemMesh.renderParameters) {
-            if ([parameter.parameterDescription isEqual:otherParam.parameterDescription] && [parameter.uniformValue isEqualToData:otherParam.uniformValue]) {
-                foundOther = YES;
-                break;
-            }
-        }
-        if (!foundOther) {
-            if (self < other)
-                return NSOrderedAscending;
-            else
-                return NSOrderedDescending;
-        }
+    // Check render parameters by comparing the buffers.
+    NSData *otherData = other.parameterBufferData;
+    NSData *parameterData = self.parameterBufferData;
+    if (otherData.length < parameterData.length)
+        return NSOrderedDescending;
+    else if (otherData.length > parameterData.length)
+        return NSOrderedAscending;
+    else {
+        int result = memcmp(parameterData.bytes, otherData.bytes, otherData.length);
+        if (result < 0)
+            return NSOrderedAscending;
+        else if (result > 0)
+            return NSOrderedDescending;
+        else
+            return NSOrderedSame;
     }
-    return NSOrderedSame;
 }
 
 #pragma mark - Private methods
+
+- (void)_updateParameters;
+{
+    NSUInteger bufferLength = self.program.renderParametersBufferSize;
+    uint8_t *data = calloc(1, bufferLength);
+    for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
+    {
+        NSInteger byteOffset = [self.program offsetForUniform:parameter.name inBlock:@"RenderParameters"];
+        if (byteOffset < 0)
+            continue;
+        
+        [parameter.uniformValue getBytes:data + byteOffset length:bufferLength - byteOffset];
+    }
+    [self willChangeValueForKey:@"parameterBufferData"];
+    _parameterBufferData = [[NSData alloc] initWithBytesNoCopy:data length:bufferLength freeWhenDone:YES];
+    needsParameterBufferUpdate = YES;
+    [self didChangeValueForKey:@"parameterBufferData"];
+}
 
 - (void)_updateParameterBuffer;
 {
@@ -263,23 +284,10 @@
 	
 	if (self.program.renderParametersUniformBlockIndex == GL_INVALID_INDEX)
 		return;
-	
-    GLsizei bufferLength = self.program.renderParametersBufferSize;
     
     glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingRenderParameters, renderParametersBuffer);
-    glBufferData(GL_UNIFORM_BUFFER, bufferLength, NULL, GL_STREAM_DRAW);
-	void *data = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
-	
-	for (GLLRenderParameter *parameter in self.itemMesh.renderParameters)
-	{
-        NSInteger byteOffset = [self.program offsetForUniform:parameter.name inBlock:@"RenderParameters"];
-        if (byteOffset < 0)
-            continue;
-		
-		[parameter.uniformValue getBytes:data + byteOffset length:bufferLength - byteOffset];
-	}
-    
-    glUnmapBuffer(GL_UNIFORM_BUFFER);
+    glBufferData(GL_UNIFORM_BUFFER, _parameterBufferData.length, NULL, GL_STREAM_DRAW);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, _parameterBufferData.length, _parameterBufferData.bytes);
 
 	needsParameterBufferUpdate = NO;
 }
@@ -303,7 +311,6 @@
 
 - (BOOL)_updateShaderError:(NSError *__autoreleasing*)error;
 {
-	needsParameterBufferUpdate = YES;
 	needsTextureUpdate = YES;
 	needsProgramUpdate = NO;
 	
@@ -318,7 +325,8 @@
     _program = [[GLLResourceManager sharedResourceManager] programForDescriptor:self.itemMesh.shader withAlpha:self.itemMesh.mesh.usesAlphaBlending error:error];
 	if (!self.program)
 		return NO;
-	
+    
+    [self _updateParameters];
 	return YES;
 }
 

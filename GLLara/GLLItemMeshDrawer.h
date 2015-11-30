@@ -28,6 +28,7 @@
 @property (nonatomic, retain, readonly) GLLMeshDrawer *meshDrawer;
 @property (nonatomic, retain, readonly) GLLItemMesh *itemMesh;
 @property (nonatomic, retain, readonly) GLLModelProgram *program;
+@property (nonatomic, retain, readonly) NSData *parameterBufferData;
 
 - (void)setupState:(GLLDrawState *)state;
 
