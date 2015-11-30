@@ -32,7 +32,7 @@
     const GLchar **sources = calloc(sizeof(GLchar *), sourcesLength);
     GLsizei *lengths = calloc(sizeof(GLsizei), sourcesLength);
     
-    sources[0] = "#version 150\n";
+    sources[0] = "#version 330\n";
     
     GLsizei defined = 1;
     for (NSString *key in defines) {
