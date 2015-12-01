@@ -73,7 +73,7 @@ void main()
 	vec3 cameraDirection = normalize(lightData.cameraPosition.xyz - positionWorld);
 	
 	vec4 color = lightData.ambientColor * diffuseColor;
-	for (int i = 0; i < 1/*3*/; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		// Diffuse term
 		float diffuseFactor = max(dot(-normal, lightData.lights[i].direction.xyz), 0);
