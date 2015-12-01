@@ -11,6 +11,9 @@
 		521326391602B19700787AA1 /* Square.fs in Resources */ = {isa = PBXBuildFile; fileRef = 521326381602B19700787AA1 /* Square.fs */; };
 		5213263B1602B1AA00787AA1 /* Square.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5213263A1602B1AA00787AA1 /* Square.vs */; };
 		5213263E1602BB8000787AA1 /* GLLSquareProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213263D1602BB8000787AA1 /* GLLSquareProgram.m */; };
+		5213F8831C0E411C007A9EBB /* GLLPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213F8811C0E411C007A9EBB /* GLLPreferencesWindowController.m */; };
+		5213F8871C0E452E007A9EBB /* GLLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213F8861C0E452E007A9EBB /* GLLAppDelegate.m */; };
+		5213F8881C0E478C007A9EBB /* GLLPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5213F88A1C0E478C007A9EBB /* GLLPreferencesWindow.xib */; };
 		5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */; };
 		5214470416DBBC42003E260F /* GLLLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470316DBBC42003E260F /* GLLLightViewController.m */; };
 		5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */; };
@@ -354,6 +357,13 @@
 		5213263A1602B1AA00787AA1 /* Square.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Square.vs; sourceTree = "<group>"; };
 		5213263C1602BB8000787AA1 /* GLLSquareProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSquareProgram.h; sourceTree = "<group>"; };
 		5213263D1602BB8000787AA1 /* GLLSquareProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSquareProgram.m; sourceTree = "<group>"; };
+		5213F8801C0E411C007A9EBB /* GLLPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLPreferencesWindowController.h; sourceTree = "<group>"; };
+		5213F8811C0E411C007A9EBB /* GLLPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLPreferencesWindowController.m; sourceTree = "<group>"; };
+		5213F8851C0E452E007A9EBB /* GLLAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAppDelegate.h; sourceTree = "<group>"; };
+		5213F8861C0E452E007A9EBB /* GLLAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAppDelegate.m; sourceTree = "<group>"; };
+		5213F8891C0E478C007A9EBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLPreferencesWindow.xib; sourceTree = "<group>"; };
+		5213F88C1C0E4790007A9EBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLPreferencesWindow.strings; sourceTree = "<group>"; };
+		5213F88E1C0E4791007A9EBB /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLPreferencesWindow.strings; sourceTree = "<group>"; };
 		521446ED16DAD8C3003E260F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLPoseExportViewController.strings; sourceTree = "<group>"; };
 		521446EE16DAD8C3003E260F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLItemExportView.strings; sourceTree = "<group>"; };
 		521446EF16DAD8C3003E260F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLRenderAccessoryView.strings; sourceTree = "<group>"; };
@@ -1500,6 +1510,11 @@
 				522783AF1C0B7FBF002E43FD /* GLLRenderParameterSelectionPlaceholder.m */,
 				522783B11C0B91EF002E43FD /* GLLItemMeshSelectionPlaceholder.h */,
 				522783B21C0B91EF002E43FD /* GLLItemMeshSelectionPlaceholder.m */,
+				5213F8801C0E411C007A9EBB /* GLLPreferencesWindowController.h */,
+				5213F8811C0E411C007A9EBB /* GLLPreferencesWindowController.m */,
+				5213F88A1C0E478C007A9EBB /* GLLPreferencesWindow.xib */,
+				5213F8851C0E452E007A9EBB /* GLLAppDelegate.h */,
+				5213F8861C0E452E007A9EBB /* GLLAppDelegate.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1730,6 +1745,7 @@
 				52423B271604EBFE009F5753 /* lara_dlc_jungle_shorts_grey.modelparams.plist in Resources */,
 				52423B281604EBFE009F5753 /* lara_dlc_legend.modelparams.plist in Resources */,
 				52423B291604EBFE009F5753 /* lara_dlc_wetsuit_blue.modelparams.plist in Resources */,
+				5213F8881C0E478C007A9EBB /* GLLPreferencesWindow.xib in Resources */,
 				52423B2A1604EBFE009F5753 /* lara_drysuit.modelparams.plist in Resources */,
 				52423B2B1604EBFE009F5753 /* lara_jungle_heavy.modelparams.plist in Resources */,
 				52423B2C1604EBFE009F5753 /* lara_jungle_pants.modelparams.plist in Resources */,
@@ -1918,10 +1934,12 @@
 				522783B01C0B7FC0002E43FD /* GLLRenderParameterSelectionPlaceholder.m in Sources */,
 				526756A416BF3B0700FB85CA /* GLLTextureAssignmentView.m in Sources */,
 				522783AA1C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.m in Sources */,
+				5213F8831C0E411C007A9EBB /* GLLPreferencesWindowController.m in Sources */,
 				526756A716BF45EF00FB85CA /* GLLTextureDescription.m in Sources */,
 				522783AD1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m in Sources */,
 				526756AA16BF543800FB85CA /* GLLImageView.m in Sources */,
 				5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */,
+				5213F8871C0E452E007A9EBB /* GLLAppDelegate.m in Sources */,
 				5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */,
 				5214470416DBBC42003E260F /* GLLLightViewController.m in Sources */,
 				5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.m in Sources */,
@@ -1961,6 +1979,16 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		5213F88A1C0E478C007A9EBB /* GLLPreferencesWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5213F8891C0E478C007A9EBB /* Base */,
+				5213F88C1C0E4790007A9EBB /* en */,
+				5213F88E1C0E4791007A9EBB /* de */,
+			);
+			name = GLLPreferencesWindow.xib;
+			sourceTree = "<group>";
+		};
 		522783411C0A6074002E43FD /* GLLNoSelectionView.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2347,7 +2375,7 @@
 		525ACD7D15F0F1A700534E7D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application: Torsten Kammer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2359,7 +2387,7 @@
 		525ACD7E15F0F1A700534E7D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Developer ID Application: Torsten Kammer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
