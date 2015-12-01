@@ -34,7 +34,8 @@ layout(std140) uniform LightData {
 uniform RenderParameters {
 	float bumpSpecularGloss;
 	float bumpSpecularAmount;
-	float bumpUVScale;
+	float bump1UVScale;
+    float bump2UVScale;
 	float reflectionAmount;
 } parameters;
 
@@ -60,8 +61,8 @@ void main()
 	
 	// Calculate normal
 	vec4 normalMap = texture(bumpTexture, outTexCoord);
-	vec4 detailNormalMap1 = texture(bump1Texture, outTexCoord * parameters.bumpUVScale);
-	vec4 detailNormalMap2 = texture(bump2Texture, outTexCoord * parameters.bumpUVScale);
+	vec4 detailNormalMap1 = texture(bump1Texture, outTexCoord * parameters.bump1UVScale);
+	vec4 detailNormalMap2 = texture(bump2Texture, outTexCoord * parameters.bump2UVScale);
 	vec4 maskColor = texture(maskTexture, outTexCoord);
 	
 	vec3 normalFromMap = (normalMap.rgb + detailNormalMap1.rgb * maskColor.r + detailNormalMap2.rgb * maskColor.g) * 2 - 1;

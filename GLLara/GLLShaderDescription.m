@@ -23,7 +23,16 @@
 	_geometryName = plist[@"geometry"];
 	_fragmentName = plist[@"fragment"];
 	
-	_parameterUniformNames = plist[@"parameters"];
+    NSMutableArray *flattened = [[NSMutableArray alloc] init];
+    for (id object in plist[@"parameters"]) {
+        if ([object isKindOfClass:[NSArray class]]) {
+            [flattened addObjectsFromArray:object];
+        } else {
+            [flattened addObject:object];
+        }
+    }
+    _parameterUniformNames = [flattened copy];
+    
 	_textureUniformNames = plist[@"textures"];
 	_additionalUniformNames = plist[@"additionalParameters"];
 	

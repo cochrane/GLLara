@@ -528,10 +528,26 @@ static NSCache *parameterCache;
 		NSMutableDictionary *renderParameterValues = [[NSMutableDictionary alloc] initWithCapacity:renderParameterNames.count];
 		for (NSUInteger i = 0; i < renderParameterNames.count; i++)
 		{
-			if (i + 3 >= components.numberOfRanges || [components rangeAtIndex:i+3].location == NSNotFound)
-				renderParameterValues[renderParameterNames[i]] = @0.0;
-			else
-				renderParameterValues[renderParameterNames[i]] = [englishNumberFormatter numberFromString:[meshName substringWithRange:[components rangeAtIndex:3 + i]]];
+            // Find the value
+            NSNumber *value = @0.0;
+            if (components.numberOfRanges < i + 3 && [components rangeAtIndex:i+3].location != NSNotFound) {
+                NSString *stringValue = [meshName substringWithRange:[components rangeAtIndex:3 + i]];
+                value = [englishNumberFormatter numberFromString:stringValue];
+            }
+            
+            // One entry can map to multiple parameters. Easiest if we just turn everything into an array.
+            id parameterName = renderParameterNames[i];
+            NSArray *allNames;
+            if ([parameterName isKindOfClass:[NSArray class]]) {
+                allNames = parameterName;
+            } else {
+                allNames = @[parameterName];
+            }
+            
+            // Assign
+            for (id name in allNames) {
+                renderParameterValues[name] = value;
+            }
 		}
 		
 		*renderParameters = [renderParameterValues copy];

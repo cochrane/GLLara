@@ -113,17 +113,6 @@
 			<key>min</key>
 			<real>0.01</real>
 		</dict>
-		<key>bumpUVScale</key>
-		<dict>
-			<key>title</key>
-			<string>Bump Detail UV Scale</string>
-			<key>description</key>
-			<string>How often the detail texture is repeated over the model. Higher values mean smaller structures.</string>
-			<key>max</key>
-			<integer>32</integer>
-			<key>min</key>
-			<real>0.01</real>
-		</dict>
 		<key>reflectionAmount</key>
 		<dict>
 			<key>title</key>
@@ -172,6 +161,14 @@
 		<real>0.5</real>
 		<key>bumpSpecularGloss</key>
 		<integer>10</integer>
+	</dict>
+	<key>renderParameterRemappings</key>
+	<dict>
+		<key>bumpUVScale</key>
+		<array>
+			<string>bump1UVScale</string>
+			<string>bump2UVScale</string>
+		</array>
 	</dict>
 	<key>shaders</key>
 	<dict>
@@ -360,7 +357,10 @@
 			<array>
 				<string>reflectionAmount</string>
 				<string>bumpSpecularAmount</string>
-				<string>bumpUVScale</string>
+				<array>
+					<string>bump1UVScale</string>
+					<string>bump2UVScale</string>
+				</array>
 			</array>
 			<key>fragment</key>
 			<string>MetallicBump3.fs</string>
