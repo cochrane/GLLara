@@ -8,6 +8,7 @@
 
 #import "GLLAppDelegate.h"
 
+#import "GLLPreferenceKeys.h"
 #import "GLLPreferencesWindowController.h"
 
 @implementation GLLAppDelegate
@@ -15,10 +16,10 @@
 - (void)awakeFromNib
 {
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-        @"UseAnisotropy": @(YES),
-        @"UseMultisampling": @(YES),
-        @"AnisotropyAmount": @(4),
-        @"MultiSamplingAmount": @(4)
+        GLLPrefUseAnisotropy: @(YES),
+        GLLPrefUseMSAA: @(YES),
+        GLLPrefAnisotropyAmount: @(4),
+        GLLPrefMSAAAmount: @(4)
     }];
 }
 

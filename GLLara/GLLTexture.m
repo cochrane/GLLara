@@ -10,12 +10,14 @@
 
 #import <Accelerate/Accelerate.h>
 #import <ApplicationServices/ApplicationServices.h>
+#import <AppKit/AppKit.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
 #import <OpenGL/OpenGL.h>
 #import <OpenGL/CGLRenderers.h>
 
 #import "GLLDDSFile.h"
+#import "GLLPreferenceKeys.h"
 
 NSString *GLLTextureChangeNotification = @"GLL Texture Change Notification";
 
@@ -136,6 +138,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 - (BOOL)_loadDataError:(NSError *__autoreleasing*)error;
 
 - (void)_setupGCDObserving;
+- (void)_updateAnisotropy;
 
 @end
 
@@ -169,12 +172,23 @@ static NSOperationQueue *imageInformationQueue = nil;
 	
 	BOOL success = [self _loadDataError:error];
 	if (!success) return nil;
+    
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefAnisotropyAmount] options:NSKeyValueObservingOptionNew context:0];
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefUseAnisotropy] options:NSKeyValueObservingOptionNew context:0];
 	
 	return self;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    [self _updateAnisotropy];
+}
+
 - (void)unload;
 {
+    [[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:GLLPrefAnisotropyAmount];
+    [[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:GLLPrefUseAnisotropy];
+    
 	glDeleteTextures(1, &_textureID);
 	_textureID = 0;
 	self.url = nil;
@@ -397,7 +411,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 4.0f);
+    [self _updateAnisotropy];
 }
 
 - (void)_loadDefaultTexture;
@@ -416,6 +430,17 @@ static NSOperationQueue *imageInformationQueue = nil;
 	
     glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, 2, 2);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 2, 2, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, defaultTexture);
+}
+
+- (void)_updateAnisotropy;
+{
+    glBindTexture(GL_TEXTURE_2D, _textureID);
+    BOOL useAnisotropy = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseAnisotropy];
+    NSInteger anisotropyAmount = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefAnisotropyAmount];
+    if (useAnisotropy)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyAmount);
+    else
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
 }
 
 @end
