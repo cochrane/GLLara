@@ -41,6 +41,7 @@ static NSMutableCharacterSet *interestingCharacters;
 	NSMutableCharacterSet *keysDown;
 	
 	id textureChangeObserver;
+    id settingsChangeObserver;
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
@@ -67,7 +68,6 @@ const double unitsPerSecond = 0.2;
 	if (!(self = [super initWithFrame:frame])) return nil;
 	
 	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"showsSkeleton" : @(YES) }];
-	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:@"values.showsSkeleton" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:0];
 	
 	NSOpenGLPixelFormatAttribute attribs[] = {
 		NSOpenGLPFADoubleBuffer,
@@ -107,25 +107,19 @@ const double unitsPerSecond = 0.2;
 			weakSelf.needsDisplay = YES;
 		});
 	}];
+    settingsChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            weakSelf.needsDisplay = YES;
+        });
+    }];
 	
 	return self;
 };
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	if ([keyPath isEqual:@"values.showsSkeleton"])
-	{
-		showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:@"showsSkeleton"];
-		self.needsDisplay = YES;
-	}
-	else
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-}
-
 - (void)dealloc
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:textureChangeObserver];
-	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:@"values.showsSkeleton"];
+    [[NSNotificationCenter defaultCenter] removeObserver:textureChangeObserver];
+    [[NSNotificationCenter defaultCenter] removeObserver:settingsChangeObserver];
 }
 
 - (void)unload
