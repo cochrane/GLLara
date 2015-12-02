@@ -62,7 +62,7 @@ void main()
 	vec4 color = lightData.ambientColor * diffuseColor * parameters.ambientColor;
 	for (int i = 0; i < 3; i++)
 	{
-        float diffuseFactor = max(dot(-normalWorld, lightData.lights[i].direction.xyz), 0);
+        float diffuseFactor = max(dot(-normal, lightData.lights[i].direction.xyz), 0);
         
         // Diffuse term
         color += lightData.lights[i].diffuseColor * diffuseFactor * parameters.diffuseColor;
