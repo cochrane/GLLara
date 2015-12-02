@@ -10,4 +10,6 @@
 
 @interface GLLPreferencesWindowController : NSWindowController
 
+@property (nonatomic, readonly, assign) NSUInteger maxAnisotropyLevel;
+
 @end

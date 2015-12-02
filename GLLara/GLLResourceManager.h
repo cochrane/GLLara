@@ -30,6 +30,8 @@
 
 + (id)sharedResourceManager;
 
+@property (nonatomic, readonly, assign) NSInteger maxAnisotropyLevel;
+
 @property (nonatomic, readonly) NSOpenGLContext *openGLContext;
 
 - (GLLModelDrawer *)drawerForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;

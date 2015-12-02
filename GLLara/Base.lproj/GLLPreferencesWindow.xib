@@ -31,12 +31,23 @@
                             <binding destination="YQP-MC-h0C" name="value" keyPath="values.UseAnisotropy" id="qWr-Y2-lDL"/>
                         </connections>
                     </button>
+                    <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jhz-GU-dPp">
+                        <rect key="frame" x="18" y="54" width="136" height="18"/>
+                        <buttonCell key="cell" type="check" title="Use Multisampling" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="JCu-Ps-dG0">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <binding destination="YQP-MC-h0C" name="value" keyPath="values.UseMultisampling" id="QUX-QJ-iYd"/>
+                        </connections>
+                    </button>
                     <slider horizontalHuggingPriority="200" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z8c-rS-tPH">
-                        <rect key="frame" x="96" y="77" width="244" height="27"/>
-                        <sliderCell key="cell" state="on" alignment="left" minValue="2" maxValue="32" doubleValue="32" tickMarkPosition="below" numberOfTickMarks="31" allowsTickMarkValuesOnly="YES" sliderType="linear" id="oIl-UZ-hxZ"/>
+                        <rect key="frame" x="96" y="82" width="244" height="27"/>
+                        <sliderCell key="cell" state="on" alignment="left" minValue="2" maxValue="16" doubleValue="16" tickMarkPosition="below" numberOfTickMarks="15" allowsTickMarkValuesOnly="YES" sliderType="linear" id="oIl-UZ-hxZ"/>
                         <connections>
                             <binding destination="YQP-MC-h0C" name="enabled" keyPath="values.UseAnisotropy" id="vPC-sA-cXv"/>
-                            <binding destination="YQP-MC-h0C" name="value" keyPath="values.AnisotropyAmount" id="gR1-vs-tF2"/>
+                            <binding destination="-2" name="maxValue" keyPath="maxAnisotropyLevel" id="bvP-hX-xcQ"/>
+                            <binding destination="YQP-MC-h0C" name="value" keyPath="values.AnisotropyAmount" previousBinding="bvP-hX-xcQ" id="09n-p4-cAZ"/>
                         </connections>
                     </slider>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6wy-fw-9vJ">
@@ -50,6 +61,14 @@
                             <binding destination="YQP-MC-h0C" name="enabled" keyPath="values.UseAnisotropy" id="T53-qc-bbO"/>
                         </connections>
                     </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2ih-HK-Mz2">
+                        <rect key="frame" x="36" y="31" width="56" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Amount:" id="Pky-oZ-69M">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                     <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uvw-FM-Qdv">
                         <rect key="frame" x="346" y="87" width="96" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="jbw-Oz-Nly">
@@ -60,27 +79,6 @@
                         <connections>
                             <binding destination="YQP-MC-h0C" name="enabled" keyPath="values.UseAnisotropy" id="Srg-jT-7vV"/>
                             <binding destination="YQP-MC-h0C" name="value" keyPath="values.AnisotropyAmount" id="Nvg-RH-gTA"/>
-                        </connections>
-                    </textField>
-                    <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jhz-GU-dPp">
-                        <rect key="frame" x="18" y="54" width="136" height="18"/>
-                        <buttonCell key="cell" type="check" title="Use Multisampling" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="JCu-Ps-dG0">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <binding destination="YQP-MC-h0C" name="value" keyPath="values.UseMultisampling" id="QUX-QJ-iYd"/>
-                        </connections>
-                    </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2ih-HK-Mz2">
-                        <rect key="frame" x="36" y="31" width="56" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Amount:" id="Pky-oZ-69M">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <binding destination="YQP-MC-h0C" name="enabled" keyPath="values.UseMultisampling" id="Zur-lD-cxO"/>
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i2a-t1-X9d">
@@ -96,7 +94,7 @@
                         </connections>
                     </textField>
                     <slider horizontalHuggingPriority="200" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hL3-LX-xr3">
-                        <rect key="frame" x="96" y="19" width="244" height="27"/>
+                        <rect key="frame" x="96" y="26" width="244" height="27"/>
                         <sliderCell key="cell" state="on" alignment="left" minValue="2" maxValue="8" doubleValue="8" tickMarkPosition="below" numberOfTickMarks="7" allowsTickMarkValuesOnly="YES" sliderType="linear" id="Okq-Eu-hrS"/>
                         <connections>
                             <binding destination="YQP-MC-h0C" name="enabled" keyPath="values.UseMultisampling" id="t1m-z5-abE"/>

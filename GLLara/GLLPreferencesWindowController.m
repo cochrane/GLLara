@@ -8,13 +8,17 @@
 
 #import "GLLPreferencesWindowController.h"
 
+#import "GLLResourceManager.h"
+
 @interface GLLPreferencesWindowController ()
+
+@property (nonatomic, readwrite, assign) NSUInteger maxAnisotropyLevel;
 
 @end
 
 @implementation GLLPreferencesWindowController
 
-- (id)init {
+- (instancetype)init {
     return [self initWithWindowNibName:@"GLLPreferencesWindow" owner:self];
 }
 
@@ -22,6 +26,8 @@
     [super windowDidLoad];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+    
+    self.maxAnisotropyLevel = [[GLLResourceManager sharedResourceManager] maxAnisotropyLevel];
 }
 
 @end

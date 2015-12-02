@@ -9,6 +9,7 @@
 #import "GLLResourceManager.h"
 
 #import <OpenGL/gl3.h>
+#import <OpenGL/gl3ext.h>
 
 #import "GLLModel.h"
 #import "GLLModelDrawer.h"
@@ -250,6 +251,18 @@ static GLLResourceManager *sharedManager;
 		NSAssert(_skeletonProgram, @"Could not load skeleton program because of %@", error);
 	}
 	return _skeletonProgram;
+}
+
+#pragma mark - OpenGL limits
+
+- (NSInteger)maxAnisotropyLevel
+{
+    NSOpenGLContext *previous = [NSOpenGLContext currentContext];
+    [self.openGLContext makeCurrentContext];
+    GLint maxAnisotropyLevel;
+    glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropyLevel);
+    [previous makeCurrentContext];
+    return maxAnisotropyLevel;
 }
 
 #pragma mark - Testing
