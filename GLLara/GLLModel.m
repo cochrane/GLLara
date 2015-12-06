@@ -154,7 +154,7 @@ static NSCache *cachedModels;
 		else if (possiblyMajorVersion == 0x0002)
 		{
 			isGenericItem3 = YES;
-			if (possiblyMinorVersion != 0x0000F)
+			if (possiblyMinorVersion != 0x0000F && possiblyMinorVersion != 0x000E)
 			{
 				if (error)
 					*error = [NSError errorWithDomain:@"GLLModel" code:10 userInfo:@{
