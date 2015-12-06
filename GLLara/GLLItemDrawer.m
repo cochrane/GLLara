@@ -96,6 +96,12 @@
 	needToUpdateTransforms = YES;
 	_needsRedraw = YES;
     
+    allCounts = calloc(sizeof(GLsizei), meshStates.count);
+    allBaseVertices = calloc(sizeof(GLint), meshStates.count);
+    allIndices = calloc(sizeof(GLsizeiptr), meshStates.count);
+    runLengths = calloc(sizeof(GLsizei), meshStates.count);
+    runStarts = calloc(sizeof(GLsizei), meshStates.count);
+    
     [self _findRuns];
 	
 	return self;
@@ -180,6 +186,12 @@
 	
 	glDeleteBuffers(1, &transformsBuffer);
 	transformsBuffer = 0;
+    
+    free(allCounts);
+    free(allBaseVertices);
+    free(allIndices);
+    free(runLengths);
+    free(runStarts);
 }
 
 - (void)_updateTransforms
@@ -222,20 +234,8 @@
         return [a compareTo:b];
     }];
 
-    
-    NSUInteger totalMeshes = meshStates.count;
-    if (!allCounts)
-        allCounts = calloc(sizeof(GLsizei), totalMeshes);
-    if (!allBaseVertices)
-        allBaseVertices = calloc(sizeof(GLint), totalMeshes);
-    if (!allIndices)
-        allIndices = calloc(sizeof(GLsizeiptr), totalMeshes);
-    if (!runLengths)
-        runLengths = calloc(sizeof(GLsizei), totalMeshes);
-    if (!runStarts)
-        runStarts = calloc(sizeof(GLsizei), totalMeshes);
     runStartStates = nil;
-    NSMutableArray *startDrawers = [NSMutableArray array];
+    NSMutableArray *startStates = [NSMutableArray array];
     
     NSUInteger nextRun = 0;
     GLsizei meshesAdded = 0;
@@ -243,19 +243,18 @@
     solidRunCounts = 0;
     
     // Find runs in meshes
-    GLLItemMeshState *last = nil;
-    for (GLLItemMeshState *state in meshStates) {
+    for (NSUInteger i = 0; i < meshStates.count; i++) {
+        GLLItemMeshState *state = meshStates[i];
         if (!state.itemMesh.isVisible) {
             continue;
         }
         
-        if (last == nil || [state compareTo:last] != NSOrderedSame) {
+        if (i == 0 || [state compareTo:meshStates[i-1]] != NSOrderedSame) {
             // Starts new run
             runStarts[nextRun] = meshesAdded;
             runLengths[nextRun] = 1;
-            [startDrawers addObject:state];
-            last = state;
-            if (state.itemMesh.mesh.usesAlphaBlending)
+            [startStates addObject:state];
+            if (state.itemMesh.isUsingBlending)
                 alphaRunCounts += 1;
             else
                 solidRunCounts += 1;
@@ -271,7 +270,7 @@
         meshesAdded += 1;
     }
     
-    runStartStates = startDrawers;
+    runStartStates = startStates;
     needsUpdateRuns = NO;
 }
 
