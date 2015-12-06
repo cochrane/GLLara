@@ -49,6 +49,7 @@ struct GLLLightBlock
 	if (!(self = [super init])) return nil;
 
 	_context = openGLContext;
+    [_context makeCurrentContext];
 	_pixelFormat = format;
 	_camera = camera;
 	_sceneDrawer = drawer;
