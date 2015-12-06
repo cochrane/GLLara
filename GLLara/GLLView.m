@@ -18,6 +18,7 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLResourceManager.h"
+#import "GLLPreferenceKeys.h"
 #import "GLLSceneDrawer.h"
 #import "GLLSelection.h"
 #import "GLLTexture.h"
@@ -42,10 +43,15 @@ static NSMutableCharacterSet *interestingCharacters;
 	
 	id textureChangeObserver;
     id settingsChangeObserver;
+    
+    BOOL didHaveMultisample;
+    NSInteger currentNumberOfSamples;
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
 - (GLLItemBone *)closestBoneAtScreenPoint:(NSPoint)point fromBones:(id)bones;
+
+- (NSOpenGLContext *)_createContext;
 
 @end
 
@@ -68,21 +74,11 @@ const double unitsPerSecond = 0.2;
 	if (!(self = [super initWithFrame:frame])) return nil;
 	
 	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"showsSkeleton" : @(YES) }];
+    
+    didHaveMultisample = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
+    currentNumberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
 	
-	NSOpenGLPixelFormatAttribute attribs[] = {
-		NSOpenGLPFADoubleBuffer,
-		NSOpenGLPFADepthSize, 24,
-		NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-		NSOpenGLPFAMultisample, 1,
-		NSOpenGLPFASampleBuffers, 1,
-		NSOpenGLPFASamples, 4,
-		NSOpenGLPFAAlphaSize, 8,
-		NSOpenGLPFAColorSize, 24,
-		0
-	};
-	
-	NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
-	NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:format shareContext:[[GLLResourceManager sharedResourceManager] openGLContext]];
+    NSOpenGLContext *context = [self _createContext];
 	
 	if (!context)
 	{
@@ -94,7 +90,7 @@ const double unitsPerSecond = 0.2;
 		return nil;
 	}
 	
-	self.pixelFormat = format;
+	self.pixelFormat = context.pixelFormat;
 	self.openGLContext = context;
 	self.wantsBestResolutionOpenGLSurface = YES;
 	
@@ -109,6 +105,35 @@ const double unitsPerSecond = 0.2;
 	}];
     settingsChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
         dispatch_async(dispatch_get_main_queue(), ^(){
+            BOOL stillUsingMSAA = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
+            NSInteger newNumberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
+            
+            if (stillUsingMSAA != didHaveMultisample || currentNumberOfSamples != newNumberOfSamples) {
+                didHaveMultisample = stillUsingMSAA;
+                currentNumberOfSamples = newNumberOfSamples;
+                
+                // Create a new context
+                NSOpenGLContext *context = [weakSelf _createContext];
+                
+                if (!context)
+                {
+                    NSError *error = [NSError errorWithDomain:weakSelf.className code:1 userInfo:@{
+                                                                                                   NSLocalizedDescriptionKey : NSLocalizedString(@"Could not create an OpenGL 3.2 Core Profile context.", @"Context creation failed"),
+                                                                                                   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"GLLara requires graphics cards that support OpenGL 3.2 or higher.", @"Context creation failed")
+                                                                                                   }];
+                    [self presentError:error];
+                    return;
+                }
+                [weakSelf.openGLContext clearDrawable];
+                
+                weakSelf.pixelFormat = context.pixelFormat;
+                weakSelf.openGLContext = context;
+                context.view = self;
+                
+                // Update drawer
+                [self setCamera:_camera sceneDrawer:_sceneDrawer];
+            }
+            
             weakSelf.needsDisplay = YES;
         });
     }];
@@ -480,6 +505,39 @@ const double unitsPerSecond = 0.2;
 	}
 	
 	return closestBone;
+}
+
+- (NSOpenGLContext *)_createContext;
+{
+    NSOpenGLPixelFormat *format;
+    if (didHaveMultisample) {
+        NSOpenGLPixelFormatAttribute attribs[] = {
+            NSOpenGLPFADoubleBuffer,
+            NSOpenGLPFADepthSize, 24,
+            NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
+            NSOpenGLPFAMultisample,
+            NSOpenGLPFASampleBuffers, 1,
+            NSOpenGLPFASamples, (NSOpenGLPixelFormatAttribute) currentNumberOfSamples,
+            NSOpenGLPFAAlphaSize, 8,
+            NSOpenGLPFAColorSize, 24,
+            0
+        };
+        
+        format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
+    } else {
+        NSOpenGLPixelFormatAttribute attribs[] = {
+            NSOpenGLPFADoubleBuffer,
+            NSOpenGLPFADepthSize, 24,
+            NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
+            NSOpenGLPFAAlphaSize, 8,
+            NSOpenGLPFAColorSize, 24,
+            0
+        };
+        
+        format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
+    }
+    NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:format shareContext:[[GLLResourceManager sharedResourceManager] openGLContext]];
+    return context;
 }
 
 @end
