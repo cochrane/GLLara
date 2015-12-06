@@ -61,3 +61,6 @@
 
 /* Class = "NSTextFieldCell"; title = "Shader:"; ObjectID = "461"; */
 "461.title" = "Shader:";
+
+/* Class = "NSButtonCell"; title = "Uses blending"; ObjectID = "513"; */
+"513.title" = "Uses blending";

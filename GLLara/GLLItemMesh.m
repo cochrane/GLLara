@@ -31,6 +31,8 @@
 @implementation GLLItemMesh
 
 @dynamic cullFaceMode;
+@dynamic isBlended;
+@dynamic isCustomBlending;
 @dynamic isVisible;
 @dynamic item;
 @dynamic renderParameters;
@@ -40,6 +42,12 @@
 @dynamic mesh;
 @dynamic meshIndex;
 @dynamic displayName;
+@dynamic isUsingBlending;
+
++ (NSSet *)keyPathsForValuesAffectingIsUsingBlending
+{
+    return [NSSet setWithObjects:@"isBlended", @"isCustomBlending", nil];
+}
 
 - (void)prepareGraphicsData;
 {		
@@ -168,17 +176,6 @@
 	return nil;
 }
 
-- (id)valueForUndefinedKey:(NSString *)key
-{
-	GLLRenderParameter *param = [self renderParameterWithName:key];
-	if (param) return param;
-	
-	GLLItemMeshTexture *texture = [self textureWithIdentifier:key];
-	if (texture) return texture;
-	
-	return NSNotApplicableMarker;
-}
-
 - (GLLShaderDescription *)shader
 {
 	return [self.mesh.model.parameters shaderNamed:self.shaderName];
@@ -192,6 +189,20 @@
 - (NSArray *)possibleShaderDescriptions
 {
 	return self.mesh.model.parameters.allShaders;
+}
+
+- (BOOL)isUsingBlending
+{
+    if (self.isCustomBlending)
+        return self.isBlended;
+    else
+        return self.mesh.usesAlphaBlending;
+}
+
+- (void)setIsUsingBlending:(BOOL)isUsingBlending
+{
+    self.isCustomBlending = YES;
+    self.isBlended = isUsingBlending;
 }
 
 #pragma mark - Private

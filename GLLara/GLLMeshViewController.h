@@ -24,6 +24,7 @@
 @property (nonatomic, assign) IBOutlet NSTableView *textureAssignmentsView;
 
 @property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *visible;
+@property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *usingBlending;
 @property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *selectedShader;
 @property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *cullFace;
 

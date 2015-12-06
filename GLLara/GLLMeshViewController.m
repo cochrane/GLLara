@@ -89,6 +89,7 @@
     _managedObjectContext = context;
     
     _visible = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"isVisible" selection:selection];
+    _usingBlending = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"isUsingBlending" selection:selection];
 	_selectedShader = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"shader" selection:selection];
     _cullFace = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"cullFaceMode" selection:selection];
     

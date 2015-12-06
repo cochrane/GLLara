@@ -23,6 +23,8 @@
 @interface GLLItemMesh : NSManagedObject
 
 // Core data
+@property (nonatomic) BOOL isCustomBlending;
+@property (nonatomic) BOOL isBlended;
 @property (nonatomic) BOOL isVisible;
 @property (nonatomic, retain) GLLItem *item;
 @property (nonatomic) int16_t cullFaceMode;
@@ -38,6 +40,8 @@
 @property (nonatomic, readonly) NSUInteger meshIndex;
 @property (nonatomic, retain, readonly) GLLModelMesh *mesh;
 @property (nonatomic) GLLShaderDescription *shader;
+
+@property (nonatomic) BOOL isUsingBlending;
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
 - (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;

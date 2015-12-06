@@ -13,8 +13,8 @@
 #import "GLLItemDrawer.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLMeshDrawData.h"
-#import "GLLModelMesh.h"
 #import "GLLItemMesh.h"
+#import "GLLModelMesh.h"
 #import "GLLModelProgram.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
@@ -56,6 +56,7 @@
 	
 	[_itemMesh addObserver:self forKeyPath:@"shaderName" options:NSKeyValueObservingOptionNew context:NULL];
     [_itemMesh addObserver:self forKeyPath:@"isVisible" options:NSKeyValueObservingOptionNew context:NULL];
+    [_itemMesh addObserver:self forKeyPath:@"isUsingBlending" options:NSKeyValueObservingOptionNew context:NULL];
 	if (![self _updateShaderError:error])
 		return nil;
 	
@@ -137,6 +138,11 @@
 		needsProgramUpdate = YES;
         [self.itemDrawer propertiesChanged];
 	}
+    else if ([keyPath isEqual:@"isUsingBlending"])
+    {
+        needsProgramUpdate = YES;
+        [self.itemDrawer propertiesChanged];
+    }
 	else
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
@@ -215,8 +221,8 @@
 }
 
 - (NSComparisonResult)compareTo:(GLLItemMeshState *)other {
-    BOOL selfAlpha = self.itemMesh.mesh.usesAlphaBlending;
-    BOOL otherAlpha = other.itemMesh.mesh.usesAlphaBlending;
+    BOOL selfAlpha = self.itemMesh.isUsingBlending;
+    BOOL otherAlpha = other.itemMesh.isUsingBlending;
     
     if (selfAlpha && !otherAlpha)
         return NSOrderedDescending;
@@ -330,7 +336,7 @@
 		return YES;
 	}
 	
-    _program = [[GLLResourceManager sharedResourceManager] programForDescriptor:self.itemMesh.shader withAlpha:self.itemMesh.mesh.usesAlphaBlending error:error];
+    _program = [[GLLResourceManager sharedResourceManager] programForDescriptor:self.itemMesh.shader withAlpha:self.itemMesh.isUsingBlending error:error];
 	if (!self.program)
 		return NO;
     
