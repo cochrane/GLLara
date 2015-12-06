@@ -171,25 +171,23 @@ static GLLResourceManager *sharedManager;
 {
 	if (!_squareVertexArray)
 	{
-		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
-		[self.openGLContext makeCurrentContext];
-		
-		glGenVertexArrays(1, &_squareVertexArray);
-		glBindVertexArray(_squareVertexArray);
-		GLuint squareVBO;
-		glGenBuffers(1, &squareVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, squareVBO);
-		float coords[] = {
-			-1.0f, -1.0f,
-			1.0f, -1.0f,
-			-1.0f, 1.0f,
-			1.0f, 1.0f
-		};
-		glBufferData(GL_ARRAY_BUFFER, sizeof(coords), coords, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat [2]), NULL);
-		
-		[previous makeCurrentContext];
+        [self _makeWithContext:^{
+            glGenVertexArrays(1, &_squareVertexArray);
+            glBindVertexArray(_squareVertexArray);
+            GLuint squareVBO;
+            glGenBuffers(1, &squareVBO);
+            glBindBuffer(GL_ARRAY_BUFFER, squareVBO);
+            float coords[] = {
+                -1.0f, -1.0f,
+                1.0f, -1.0f,
+                -1.0f, 1.0f,
+                1.0f, 1.0f
+            };
+            glBufferData(GL_ARRAY_BUFFER, sizeof(coords), coords, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat [2]), NULL);
+            return (id) nil;
+        }];
 	}
 	return _squareVertexArray;
 }
@@ -197,15 +195,10 @@ static GLLResourceManager *sharedManager;
 - (GLLProgram *)skeletonProgram
 {
 	if (!_skeletonProgram)
-	{
-		NSError *error = nil;
-		
-		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
-		[self.openGLContext makeCurrentContext];
-		_skeletonProgram = [[GLLSkeletonProgram alloc] initWithResourceManager:self error:&error];
-		[previous makeCurrentContext];
-		
-		NSAssert(_skeletonProgram, @"Could not load skeleton program because of %@", error);
+    {
+        _skeletonProgram = [self _makeWithContext:^{
+            return [[GLLSquareProgram alloc] initWithResourceManager:self error:NULL];
+        }];
 	}
 	return _skeletonProgram;
 }
@@ -214,12 +207,11 @@ static GLLResourceManager *sharedManager;
 
 - (NSInteger)maxAnisotropyLevel
 {
-    NSOpenGLContext *previous = [NSOpenGLContext currentContext];
-    [self.openGLContext makeCurrentContext];
-    GLint maxAnisotropyLevel;
-    glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropyLevel);
-    [previous makeCurrentContext];
-    return maxAnisotropyLevel;
+    return [[self _makeWithContext:^{
+        GLint maxAnisotropyLevel;
+        glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropyLevel);
+        return @(maxAnisotropyLevel);
+    }] integerValue];
 }
 
 #pragma mark - Testing
