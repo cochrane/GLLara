@@ -32,8 +32,7 @@
 	
 	NSArray *bones;
     
-    // Base arrays for runs
-    // Size is alpha drawers + solid drawers
+    // Base arrays for runs. Size is meshStates.count
     GLsizei *allCounts;
     GLsizeiptr *allIndices;
     GLint *allBaseVertices;
@@ -43,7 +42,7 @@
     GLsizei alphaRunCounts;
     GLsizei *runLengths;
     GLsizei *runStarts;
-    NSArray *runStartDrawers;
+    NSArray *runStartStates;
     
     BOOL needsUpdateRuns;
 }
@@ -84,8 +83,8 @@
 	}];
 	
 	// Observe settings of all meshes
-	meshStates = [modelDrawer.meshDatas map:^(GLLMeshDrawData *drawer) {
-		return [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
+	meshStates = [modelDrawer.meshDatas map:^(GLLMeshDrawData *meshData) {
+		return [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:meshData itemMesh:[item itemMeshForModelMesh:meshData.modelMesh] error:error];
 	}];
 	if (meshStates.count < modelDrawer.meshDatas.count)
 	{
@@ -109,11 +108,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:@"drawer.mesh.renderSettings"])
-	{
-		self.needsRedraw = YES;
-	}
-	else if ([keyPath isEqual:@"globalTransform"] || [keyPath isEqual:@"normalChannelAssignmentR"] || [keyPath isEqual:@"normalChannelAssignmentG"] || [keyPath isEqual:@"normalChannelAssignmentB"])
+	if ([keyPath isEqual:@"globalTransform"] || [keyPath isEqual:@"normalChannelAssignmentR"] || [keyPath isEqual:@"normalChannelAssignmentG"] || [keyPath isEqual:@"normalChannelAssignmentB"])
 	{
 		needToUpdateTransforms = YES;
 		self.needsRedraw = YES;
@@ -141,12 +136,12 @@
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
     
     for (GLsizei run = 0; run < solidRunCounts; run++) {
-        GLLItemMeshState *drawer = runStartDrawers[run];
-        [drawer setupState:state];
+        GLLItemMeshState *meshState = runStartStates[run];
+        [meshState setupState:state];
         
         GLsizei runStart = runStarts[run];
         GLsizei runLength = runLengths[run];
-        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, drawer.drawData.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
+        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, meshState.drawData.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
     }
 	
 	self.needsRedraw = NO;
@@ -159,12 +154,12 @@
     glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
     
     for (GLsizei run = solidRunCounts; run < (solidRunCounts + alphaRunCounts); run++) {
-        GLLItemMeshState *drawer = runStartDrawers[run];
-        [drawer setupState:state];
+        GLLItemMeshState *meshState = runStartStates[run];
+        [meshState setupState:state];
         
         GLsizei runStart = runStarts[run];
         GLsizei runLength = runLengths[run];
-        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, drawer.drawData.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
+        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, meshState.drawData.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
     }
 	
 	self.needsRedraw = NO;
@@ -239,7 +234,7 @@
         runLengths = calloc(sizeof(GLsizei), totalMeshes);
     if (!runStarts)
         runStarts = calloc(sizeof(GLsizei), totalMeshes);
-    runStartDrawers = nil;
+    runStartStates = nil;
     NSMutableArray *startDrawers = [NSMutableArray array];
     
     NSUInteger nextRun = 0;
@@ -247,7 +242,7 @@
     alphaRunCounts = 0;
     solidRunCounts = 0;
     
-    // Find runs in solid meshes
+    // Find runs in meshes
     GLLItemMeshState *last = nil;
     for (GLLItemMeshState *state in meshStates) {
         if (!state.itemMesh.isVisible) {
@@ -276,7 +271,7 @@
         meshesAdded += 1;
     }
     
-    runStartDrawers = startDrawers;
+    runStartStates = startDrawers;
     needsUpdateRuns = NO;
 }
 
