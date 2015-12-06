@@ -21,6 +21,7 @@
 #import "GLLItem+OBJExport.h"
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLModel.h"
+#import "GLLPreferenceKeys.h"
 #import "GLLPoseExporter.h"
 #import "GLLPoseExportViewController.h"
 #import "GLLRenderWindowController.h"
@@ -199,11 +200,9 @@
 	panel.allowedFileTypes = @[ @"obj" ];
 	panel.delegate = self;
 	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"objExportIncludeTransformations" : @(YES), @"objExportIncludeVertexColors" : @(NO) }];
-	
 	GLLItemExportViewController *controller = [[GLLItemExportViewController alloc] init];
-	controller.includeTransformations = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeTransformations"];
-	controller.includeVertexColors = [[NSUserDefaults standardUserDefaults] boolForKey:@"objExportIncludeVertexColors"];
+	controller.includeTransformations = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefObjExportIncludesTransforms];
+	controller.includeVertexColors = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefObjExportIncludesVertexColors];
 	controller.canExportAllData = ![item willLoseDataWhenConvertedToOBJ];
 	
 	panel.accessoryView = controller.view;
@@ -241,18 +240,14 @@
 	GLLPoseExportViewController *controller = [[GLLPoseExportViewController alloc] init];
 	panel.accessoryView = controller.view;
 	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{
-	 @"exportPose-includeUnused" : @(NO),
-	 @"exportPose-onlySelected" : @(YES)
-	 }];
-	controller.exportUnusedBones = [[NSUserDefaults standardUserDefaults] boolForKey:@"exportPose-includeUnused"];
-	controller.exportOnlySelectedBones = [[NSUserDefaults standardUserDefaults] boolForKey:@"exportPose-onlySelected"];
+	controller.exportUnusedBones = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefPoseExportIncludesUnused];
+	controller.exportOnlySelectedBones = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefPoseExportOnlySelected];
 	
 	[panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
 		if (result != NSModalResponseOK) return;
 		
-		[[NSUserDefaults standardUserDefaults] setBool:controller.exportUnusedBones forKey:@"exportPose-includeUnused"];
-		[[NSUserDefaults standardUserDefaults] setBool:controller.exportOnlySelectedBones forKey:@"exportPose-onlySelected"];
+		[[NSUserDefaults standardUserDefaults] setBool:controller.exportUnusedBones forKey:GLLPrefPoseExportIncludesUnused];
+		[[NSUserDefaults standardUserDefaults] setBool:controller.exportOnlySelectedBones forKey:GLLPrefPoseExportOnlySelected];
 		
 		GLLPoseExporter *exporter = nil;
 		if (controller.exportOnlySelectedBones)

@@ -12,3 +12,8 @@ extern NSString *GLLPrefUseAnisotropy;
 extern NSString *GLLPrefAnisotropyAmount;
 extern NSString *GLLPrefUseMSAA;
 extern NSString *GLLPrefMSAAAmount;
+extern NSString *GLLPrefObjExportIncludesTransforms;
+extern NSString *GLLPrefObjExportIncludesVertexColors;
+extern NSString *GLLPrefPoseExportIncludesUnused;
+extern NSString *GLLPrefPoseExportOnlySelected;
+extern NSString *GLLPrefShowSkeleton;

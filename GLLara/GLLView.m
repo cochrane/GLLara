@@ -72,8 +72,6 @@ const double unitsPerSecond = 0.2;
 {
 	// Not calling initWithFrame:pixelFormat:, because we set up our own context.
 	if (!(self = [super initWithFrame:frame])) return nil;
-	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:@{ @"showsSkeleton" : @(YES) }];
     
     didHaveMultisample = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
     currentNumberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];

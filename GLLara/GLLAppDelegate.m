@@ -19,7 +19,12 @@
         GLLPrefUseAnisotropy: @(YES),
         GLLPrefUseMSAA: @(YES),
         GLLPrefAnisotropyAmount: @(4),
-        GLLPrefMSAAAmount: @(4)
+        GLLPrefMSAAAmount: @(4),
+        GLLPrefObjExportIncludesTransforms: @(YES),
+        GLLPrefObjExportIncludesVertexColors: @(NO),
+        GLLPrefPoseExportIncludesUnused: @(NO),
+        GLLPrefPoseExportOnlySelected: @(YES),
+        GLLPrefShowSkeleton: @(YES)
     }];
 }
 
