@@ -37,6 +37,8 @@ struct GLLAlphaTestBlock
 
 - (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 - (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)())supplier;
+- (id)_makeWithContext:(id(^)())supplier;
 
 @end
 
@@ -103,21 +105,9 @@ static GLLResourceManager *sharedManager;
 
 - (GLLModelDrawData *)drawDataForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
-	NSAssert(model != nil, @"Empty model passed in. This should never happen.");
-	
-	id key = model.baseURL;
-	id result = [models objectForKey:key];
-	if (!result)
-	{
-		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
-		[self.openGLContext makeCurrentContext];
-		result = [[GLLModelDrawData alloc] initWithModel:model resourceManager:self error:error];
-		[previous makeCurrentContext];
-		
-		if (!result) return nil;
-		[models setObject:result forKey:key];
-	}
-	return result;
+    return [self _valueForKey:model.baseURL from:models ifNotFound:^{
+        return [[GLLModelDrawData alloc] initWithModel:model resourceManager:self error:error];
+    }];
 }
 
 - (GLLModelProgram *)programForDescriptor:(GLLShaderDescription *)description withAlpha:(BOOL)alpha error:(NSError *__autoreleasing*)error;
@@ -126,46 +116,27 @@ static GLLResourceManager *sharedManager;
     
     NSDictionary *key = @{ @"identifier": description.programIdentifier,
                            @"alpha": @(alpha) };
-	
-	id result = [programs objectForKey:key];
-	if (!result)
-	{
-		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
-		[self.openGLContext makeCurrentContext];
-        result = [[GLLModelProgram alloc] initWithDescriptor:description alpha:alpha resourceManager:self error:error];
-		[previous makeCurrentContext];
-		
-		if (!result) return nil;
-		[programs setObject:result forKey:key];
-	}
-	return result;
+    
+    return [self _valueForKey:key from:programs ifNotFound:^{
+        return [[GLLModelProgram alloc] initWithDescriptor:description alpha:alpha resourceManager:self error:error];
+    }];
 }
 
 - (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error;
 {
-	id result = [textures objectForKey:textureURL];
-	if (!result)
-	{
-		NSURL *effectiveURL = textureURL;
-		NSData *textureData = [NSData dataWithContentsOfURL:textureURL options:NSDataReadingUncached error:error];
-		if (!textureData)
-		{
-			// Second attempt: Maybe there is a default version of that in the bundle.
-			// If not, then keep error from first read.
-			effectiveURL = [[NSBundle mainBundle] URLForResource:textureURL.lastPathComponent withExtension:nil];
-			if (!effectiveURL)
-				return nil;
-		}
-		
-		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
-		[self.openGLContext makeCurrentContext];
-		result = [[GLLTexture alloc] initWithURL:effectiveURL error:error];
-		[previous makeCurrentContext];
-		
-		if (!result) return nil;
-		[textures setObject:result forKey:textureURL];
-	}
-	return result;
+    return [self _valueForKey:textureURL from:textures ifNotFound:^{
+        NSURL *effectiveURL = textureURL;
+        NSData *textureData = [NSData dataWithContentsOfURL:textureURL options:NSDataReadingUncached error:error];
+        if (!textureData)
+        {
+            // Second attempt: Maybe there is a default version of that in the bundle.
+            // If not, then keep error from first read.
+            effectiveURL = [[NSBundle mainBundle] URLForResource:textureURL.lastPathComponent withExtension:nil];
+            if (!effectiveURL)
+                return (GLLTexture *) nil;
+        }
+        return [[GLLTexture alloc] initWithURL:effectiveURL error:error];
+    }];
 }
 
 - (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
@@ -176,36 +147,22 @@ static GLLResourceManager *sharedManager;
     NSDictionary *key = @{ @"name" : shaderName,
                            @"defines": defines };
     
-	GLLShader *result = [shaders objectForKey:key];
-	if (!result)
-	{
-		NSString *shaderSource = [self _utf8StringForFilename:shaderName baseURL:baseURL error:error];
-		if (!shaderSource) return nil;
-		
-		// Actual loading
-		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
-		[self.openGLContext makeCurrentContext];
-        result = [[GLLShader alloc] initWithSource:shaderSource name:shaderName additionalDefines:defines type:type error:error];
-		[previous makeCurrentContext];
-		
-		if (!result) return nil;
-		[shaders setObject:result forKey:key];
-	}
-	return result;
+    return [self _valueForKey:key from:shaders ifNotFound:^{
+        NSString *shaderSource = [self _utf8StringForFilename:shaderName baseURL:baseURL error:error];
+        if (!shaderSource) return (GLLShader *) nil;
+        
+        // Actual loading
+        return [[GLLShader alloc] initWithSource:shaderSource name:shaderName additionalDefines:defines type:type error:error];
+    }];
 }
 
 - (GLLProgram *)squareProgram
 {
 	if (!_squareProgram)
 	{
-		NSError *error = nil;
-		
-		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
-		[self.openGLContext makeCurrentContext];
-		_squareProgram = [[GLLSquareProgram alloc] initWithResourceManager:self error:&error];
-		[previous makeCurrentContext];
-		
-		NSAssert(_squareProgram, @"Could not load square program because of %@", error);
+        _squareProgram = [self _makeWithContext:^{
+            return [[GLLSquareProgram alloc] initWithResourceManager:self error:NULL];
+        }];
 	}
 	return _squareProgram;
 }
@@ -281,6 +238,28 @@ static GLLResourceManager *sharedManager;
 }
 
 #pragma mark - Private methods
+
+- (id)_makeWithContext:(id(^)())supplier;
+{
+    NSOpenGLContext *previous = [NSOpenGLContext currentContext];
+    [self.openGLContext makeCurrentContext];
+    id result = supplier();
+    [previous makeCurrentContext];
+    return result;
+}
+
+- (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)())supplier;
+{
+    NSParameterAssert(key);
+    id result = dictionary[key];
+    if (!result)
+    {
+        result = [self _makeWithContext:supplier];
+        dictionary[key] = result;
+    }
+    return result;
+
+}
 
 - (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
