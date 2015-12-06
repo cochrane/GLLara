@@ -8,7 +8,7 @@
 
 #import "GLLModelDrawer.h"
 
-#import "GLLMeshDrawer.h"
+#import "GLLMeshDrawData.h"
 #import "GLLModel.h"
 #import "GLLModelMesh.h"
 #import "GLLVertexArray.h"
@@ -29,8 +29,8 @@
 	_model = model;
 	_resourceManager = resourceManager;
 	
-	NSMutableArray *mutableSolidMeshDrawers = [[NSMutableArray alloc] init];
-	NSMutableArray *mutableAlphaMeshDrawers = [[NSMutableArray alloc] init];
+	NSMutableArray *mutableSolidMeshDatas = [[NSMutableArray alloc] init];
+	NSMutableArray *mutableAlphaMeshDatas = [[NSMutableArray alloc] init];
     NSMutableDictionary *mutableVertexArrays = [[NSMutableDictionary alloc] init];
 	for (GLLModelMesh *mesh in model.meshes)
 	{
@@ -44,25 +44,25 @@
             mutableVertexArrays[mesh.vertexFormat] = array;
         }
         
-        GLLMeshDrawer *drawer = [[GLLMeshDrawer alloc] initWithMesh:mesh vertexArray:array resourceManager:resourceManager error:error];
-		if (!drawer)
+        GLLMeshDrawData *drawData = [[GLLMeshDrawData alloc] initWithMesh:mesh vertexArray:array resourceManager:resourceManager error:error];
+		if (!drawData)
 		{
-			for (GLLMeshDrawer *drawer in mutableSolidMeshDrawers)
+			for (GLLMeshDrawData *drawer in mutableSolidMeshDatas)
 				[drawer unload];
-			for (GLLMeshDrawer *drawer in mutableAlphaMeshDrawers)
+			for (GLLMeshDrawData *drawer in mutableAlphaMeshDatas)
 				[drawer unload];
 			[self unload];
 			return nil;
 		}
 		
 		if (mesh.usesAlphaBlending)
-			[mutableAlphaMeshDrawers addObject:drawer];
+			[mutableAlphaMeshDatas addObject:drawData];
 		else
-			[mutableSolidMeshDrawers addObject:drawer];
+			[mutableSolidMeshDatas addObject:drawData];
 	}
     
-	_solidMeshDrawers = [mutableSolidMeshDrawers copy];
-	_alphaMeshDrawers = [mutableAlphaMeshDrawers copy];
+	_solidMeshDatas = [mutableSolidMeshDatas copy];
+	_alphaMeshDatas = [mutableAlphaMeshDatas copy];
     _vertexArrays = [[mutableVertexArrays allValues] copy];
     
     for (GLLVertexArray *array in _vertexArrays) {
@@ -74,12 +74,12 @@
 
 - (void)unload;
 {
-	[self.solidMeshDrawers makeObjectsPerformSelector:@selector(unload)];
-    [self.alphaMeshDrawers makeObjectsPerformSelector:@selector(unload)];
+	[self.solidMeshDatas makeObjectsPerformSelector:@selector(unload)];
+    [self.alphaMeshDatas makeObjectsPerformSelector:@selector(unload)];
     [self.vertexArrays makeObjectsPerformSelector:@selector(unload)];
 	
-	_solidMeshDrawers = nil;
-	_alphaMeshDrawers = nil;
+	_solidMeshDatas = nil;
+	_alphaMeshDatas = nil;
     _vertexArrays = nil;
 }
 

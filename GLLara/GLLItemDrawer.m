@@ -14,11 +14,11 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
-#import "GLLMeshDrawer.h"
+#import "GLLMeshDrawData.h"
 #import "GLLModelDrawer.h"
 #import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"
-#import "GLLItemMeshDrawer.h"
+#import "GLLItemMeshState.h"
 #import "GLLUniformBlockBindings.h"
 #import "simd_matrix.h"
 
@@ -84,18 +84,18 @@
 	}];
 	
 	// Observe settings of all meshes
-	alphaDrawers = [modelDrawer.alphaMeshDrawers map:^(GLLMeshDrawer *drawer) {
-		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
+	alphaDrawers = [modelDrawer.alphaMeshDatas map:^(GLLMeshDrawData *drawer) {
+		return [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
 	}];
-	if (alphaDrawers.count < modelDrawer.alphaMeshDrawers.count)
+	if (alphaDrawers.count < modelDrawer.alphaMeshDatas.count)
 	{
 		[self unload];
 		return nil;
 	}
-	solidDrawers = [modelDrawer.solidMeshDrawers map:^(GLLMeshDrawer *drawer) {
-		return [[GLLItemMeshDrawer alloc] initWithItemDrawer:self meshDrawer:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
+	solidDrawers = [modelDrawer.solidMeshDatas map:^(GLLMeshDrawData *drawer) {
+		return [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
 	}];
-	if (solidDrawers.count < modelDrawer.solidMeshDrawers.count)
+	if (solidDrawers.count < modelDrawer.solidMeshDatas.count)
 	{
 		[self unload];
 		return nil;
@@ -149,12 +149,12 @@
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
     
     for (GLsizei run = 0; run < solidRunCounts; run++) {
-        GLLItemMeshDrawer *drawer = runStartDrawers[run];
+        GLLItemMeshState *drawer = runStartDrawers[run];
         [drawer setupState:state];
         
         GLsizei runStart = runStarts[run];
         GLsizei runLength = runLengths[run];
-        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, drawer.meshDrawer.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
+        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, drawer.drawData.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
     }
 	
 	self.needsRedraw = NO;
@@ -167,12 +167,12 @@
     glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
     
     for (GLsizei run = solidRunCounts; run < (solidRunCounts + alphaRunCounts); run++) {
-        GLLItemMeshDrawer *drawer = runStartDrawers[run];
+        GLLItemMeshState *drawer = runStartDrawers[run];
         [drawer setupState:state];
         
         GLsizei runStart = runStarts[run];
         GLsizei runLength = runLengths[run];
-        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, drawer.meshDrawer.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
+        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, drawer.drawData.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
     }
 	
 	self.needsRedraw = NO;
@@ -234,10 +234,10 @@
 }
 
 - (void)_findRuns {
-    solidDrawers = [solidDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshDrawer *a, GLLItemMeshDrawer *b) {
+    solidDrawers = [solidDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshState *a, GLLItemMeshState *b) {
         return [a compareTo:b];
     }];
-    alphaDrawers = [alphaDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshDrawer *a, GLLItemMeshDrawer *b) {
+    alphaDrawers = [alphaDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshState *a, GLLItemMeshState *b) {
         return [a compareTo:b];
     }];
 
@@ -262,8 +262,8 @@
     solidRunCounts = 0;
     
     // Find runs in solid meshes
-    GLLItemMeshDrawer *last = nil;
-    for (GLLItemMeshDrawer *drawer in solidDrawers) {
+    GLLItemMeshState *last = nil;
+    for (GLLItemMeshState *drawer in solidDrawers) {
         if (!drawer.itemMesh.isVisible) {
             continue;
         }
@@ -280,16 +280,16 @@
             // Continues last run
             runLengths[nextRun - 1] += 1;
         }
-        allBaseVertices[meshesAdded] = drawer.meshDrawer.baseVertex;
-        allIndices[meshesAdded] = drawer.meshDrawer.indicesStart;
-        allCounts[meshesAdded] = drawer.meshDrawer.elementsCount;
+        allBaseVertices[meshesAdded] = drawer.drawData.baseVertex;
+        allIndices[meshesAdded] = drawer.drawData.indicesStart;
+        allCounts[meshesAdded] = drawer.drawData.elementsCount;
         
         meshesAdded += 1;
     }
     
     // Find runs in alpha meshes
     last = nil;
-    for (GLLItemMeshDrawer *drawer in alphaDrawers) {
+    for (GLLItemMeshState *drawer in alphaDrawers) {
         if (!drawer.itemMesh.isVisible) {
             continue;
         }
@@ -306,9 +306,9 @@
             // Continues last run
             runLengths[nextRun - 1] += 1;
         }
-        allBaseVertices[meshesAdded] = drawer.meshDrawer.baseVertex;
-        allIndices[meshesAdded] = drawer.meshDrawer.indicesStart;
-        allCounts[meshesAdded] = drawer.meshDrawer.elementsCount;
+        allBaseVertices[meshesAdded] = drawer.drawData.baseVertex;
+        allIndices[meshesAdded] = drawer.drawData.indicesStart;
+        allCounts[meshesAdded] = drawer.drawData.elementsCount;
         
         meshesAdded += 1;
     }

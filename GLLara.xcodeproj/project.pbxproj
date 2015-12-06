@@ -239,7 +239,7 @@
 		529692D415F24EF100DF2FA3 /* GLLModelBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D315F24EF100DF2FA3 /* GLLModelBone.m */; };
 		529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D915F2625200DF2FA3 /* GLLItem.m */; };
 		529692DD15F2759400DF2FA3 /* GLLItemBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692DC15F2759400DF2FA3 /* GLLItemBone.m */; };
-		529692E315F2861E00DF2FA3 /* GLLMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692E215F2861E00DF2FA3 /* GLLMeshDrawer.m */; };
+		529692E315F2861E00DF2FA3 /* GLLMeshDrawData.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692E215F2861E00DF2FA3 /* GLLMeshDrawData.m */; };
 		529692E615F289EB00DF2FA3 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692E515F289EB00DF2FA3 /* OpenGL.framework */; };
 		529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692E815F28BFB00DF2FA3 /* GLLTexture.m */; };
 		529693F215F2A77F00DF2FA3 /* GLLModelParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 529693F115F2A77E00DF2FA3 /* GLLModelParams.m */; };
@@ -309,7 +309,7 @@
 		52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m */; };
 		52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */; };
-		52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m */; };
+		52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshState.m */; };
 		52D6A0A315F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */; };
 		52DD80F3163B464200534475 /* GLLRenderingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD80F2163B464200534475 /* GLLRenderingTest.m */; };
 		52ED9E1E168399AE0082EABB /* GLLSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E1D168399AE0082EABB /* GLLSelection.m */; };
@@ -705,8 +705,8 @@
 		529692DB15F2759400DF2FA3 /* GLLItemBone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemBone.h; sourceTree = "<group>"; };
 		529692DC15F2759400DF2FA3 /* GLLItemBone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemBone.m; sourceTree = "<group>"; };
 		529692DF15F27D5900DF2FA3 /* Source Code Overview.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Source Code Overview.md"; sourceTree = "<group>"; };
-		529692E115F2861E00DF2FA3 /* GLLMeshDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshDrawer.h; sourceTree = "<group>"; };
-		529692E215F2861E00DF2FA3 /* GLLMeshDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshDrawer.m; sourceTree = "<group>"; };
+		529692E115F2861E00DF2FA3 /* GLLMeshDrawData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshDrawData.h; sourceTree = "<group>"; };
+		529692E215F2861E00DF2FA3 /* GLLMeshDrawData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshDrawData.m; sourceTree = "<group>"; };
 		529692E415F286E600DF2FA3 /* GLLVertexFormat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLVertexFormat.h; sourceTree = "<group>"; };
 		529692E515F289EB00DF2FA3 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		529692E715F28BFB00DF2FA3 /* GLLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTexture.h; sourceTree = "<group>"; };
@@ -819,8 +819,8 @@
 		52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderAccessoryViewController.m; sourceTree = "<group>"; };
 		52D6A09415F8B0F7002A0BB4 /* GLLMeshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshViewController.h; sourceTree = "<group>"; };
 		52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshViewController.m; sourceTree = "<group>"; };
-		52D6A09B15F8BAB0002A0BB4 /* GLLItemMeshDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemMeshDrawer.h; sourceTree = "<group>"; };
-		52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemMeshDrawer.m; sourceTree = "<group>"; };
+		52D6A09B15F8BAB0002A0BB4 /* GLLItemMeshState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemMeshState.h; sourceTree = "<group>"; };
+		52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemMeshState.m; sourceTree = "<group>"; };
 		52D6A0A215F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBump3Specular.fs; sourceTree = "<group>"; };
 		52DD80F1163B464200534475 /* GLLRenderingTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderingTest.h; sourceTree = "<group>"; };
 		52DD80F2163B464200534475 /* GLLRenderingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderingTest.m; sourceTree = "<group>"; };
@@ -1385,8 +1385,8 @@
 		5296942015F4114600DF2FA3 /* Drawing parts */ = {
 			isa = PBXGroup;
 			children = (
-				529692E115F2861E00DF2FA3 /* GLLMeshDrawer.h */,
-				529692E215F2861E00DF2FA3 /* GLLMeshDrawer.m */,
+				529692E115F2861E00DF2FA3 /* GLLMeshDrawData.h */,
+				529692E215F2861E00DF2FA3 /* GLLMeshDrawData.m */,
 				5296942215F411CC00DF2FA3 /* GLLModelDrawer.h */,
 				5296942315F411CC00DF2FA3 /* GLLModelDrawer.m */,
 				5227832E1BFA6A4E002E43FD /* GLLVertexFormat.m */,
@@ -1425,8 +1425,8 @@
 			children = (
 				5296942615F4139300DF2FA3 /* GLLItemDrawer.h */,
 				5296942715F4139300DF2FA3 /* GLLItemDrawer.m */,
-				52D6A09B15F8BAB0002A0BB4 /* GLLItemMeshDrawer.h */,
-				52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m */,
+				52D6A09B15F8BAB0002A0BB4 /* GLLItemMeshState.h */,
+				52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshState.m */,
 				524BEAFD1611250C00EA061D /* GLLSkeletonDrawer.h */,
 				524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */,
 			);
@@ -1866,7 +1866,7 @@
 				529692D415F24EF100DF2FA3 /* GLLModelBone.m in Sources */,
 				529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */,
 				529692DD15F2759400DF2FA3 /* GLLItemBone.m in Sources */,
-				529692E315F2861E00DF2FA3 /* GLLMeshDrawer.m in Sources */,
+				529692E315F2861E00DF2FA3 /* GLLMeshDrawData.m in Sources */,
 				529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */,
 				529693F215F2A77F00DF2FA3 /* GLLModelParams.m in Sources */,
 				529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */,
@@ -1886,7 +1886,7 @@
 				5296947315F7FB3300DF2FA3 /* GLLItemMesh.m in Sources */,
 				5296947815F80F4800DF2FA3 /* GLLBoneViewController.m in Sources */,
 				52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */,
-				52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshDrawer.m in Sources */,
+				52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshState.m in Sources */,
 				52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */,
 				5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */,
 				5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */,

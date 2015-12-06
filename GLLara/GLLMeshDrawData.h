@@ -1,5 +1,5 @@
 //
-//  GLLMeshDrawer.h
+//  GLLMeshDrawData.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 01.09.12.
@@ -20,7 +20,7 @@
  * @abstract Draws a single mesh.
  * @discussion This class contains only the mesh data and the program for rendering. In the future, the program  might be moved to the ItemMeshDrawer, leaving this with only the geometry. There is one mesh drawer per mesh per loaded model. Several ItemMeshDrawer can share one.
  */
-@interface GLLMeshDrawer : NSObject
+@interface GLLMeshDrawData : NSObject
 
 - (id)initWithMesh:(GLLModelMesh *)mesh vertexArray:(GLLVertexArray *)vertexArray resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 
@@ -36,6 +36,6 @@
 /*!
  * Compares this with another mesh drawer to figure out an order in which they cause the fewest state changes. The only guarantee is that the order is stable, and that if no state has to be changed, the result will be equal.
  */
-- (NSComparisonResult)compareTo:(GLLMeshDrawer *)other;
+- (NSComparisonResult)compareTo:(GLLMeshDrawData *)other;
 
 @end

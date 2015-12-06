@@ -1,18 +1,18 @@
 //
-//  GLLItemMeshDrawer.m
+//  GLLItemMeshState.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 06.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLItemMeshDrawer.h"
+#import "GLLItemMeshState.h"
 
 #import <OpenGL/gl3.h>
 
 #import "GLLItemDrawer.h"
 #import "GLLItemMeshTexture.h"
-#import "GLLMeshDrawer.h"
+#import "GLLMeshDrawData.h"
 #import "GLLModelMesh.h"
 #import "GLLItemMesh.h"
 #import "GLLModelProgram.h"
@@ -24,7 +24,7 @@
 #import "GLLUniformBlockBindings.h"
 #import "NSArray+Map.h"
 
-@interface GLLItemMeshDrawer ()
+@interface GLLItemMeshState ()
 {
 	GLuint renderParametersBuffer;
 	BOOL needsParameterBufferUpdate;
@@ -42,16 +42,16 @@
 
 @end
 
-@implementation GLLItemMeshDrawer
+@implementation GLLItemMeshState
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshDrawer:(GLLMeshDrawer *)meshDrawer itemMesh:(GLLItemMesh *)itemMesh error:(NSError *__autoreleasing*)error;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshData:(GLLMeshDrawData *)meshData itemMesh:(GLLItemMesh *)itemMesh error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
-	NSAssert(itemDrawer != nil && meshDrawer != nil && itemMesh != nil, @"None of this can be nil");
+	NSAssert(itemDrawer != nil && meshData != nil && itemMesh != nil, @"None of this can be nil");
 	
 	_itemDrawer = itemDrawer;
-	_meshDrawer = meshDrawer;
+	_drawData = meshData;
 	_itemMesh = itemMesh;
 	
 	[_itemMesh addObserver:self forKeyPath:@"shaderName" options:NSKeyValueObservingOptionNew context:NULL];
@@ -200,9 +200,9 @@
 		state->activeProgram = self.program.programID;
 	}
     
-    if (state->activeVertexArray != self.meshDrawer.vertexArray) {
-        glBindVertexArray(self.meshDrawer.vertexArray);
-        state->activeVertexArray = self.meshDrawer.vertexArray;
+    if (state->activeVertexArray != self.drawData.vertexArray) {
+        glBindVertexArray(self.drawData.vertexArray);
+        state->activeVertexArray = self.drawData.vertexArray;
     }
 }
 
@@ -214,13 +214,13 @@
 	renderParameters = nil;
 }
 
-- (NSComparisonResult)compareTo:(GLLItemMeshDrawer *)other {
+- (NSComparisonResult)compareTo:(GLLItemMeshState *)other {
     if (self.itemMesh.cullFaceMode > other.itemMesh.cullFaceMode)
         return NSOrderedAscending;
     else if (self.itemMesh.cullFaceMode < other.itemMesh.cullFaceMode)
         return NSOrderedDescending;
     
-    NSComparisonResult result = [self.meshDrawer compareTo:other.meshDrawer];
+    NSComparisonResult result = [self.drawData compareTo:other.drawData];
     if (result != NSOrderedSame)
         return result;
     

@@ -1,12 +1,12 @@
 //
-//  GLLMeshDrawer.m
+//  GLLMeshDrawData.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 01.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLMeshDrawer.h"
+#import "GLLMeshDrawData.h"
 
 #import <OpenGL/gl3.h>
 
@@ -19,7 +19,7 @@
 #import "GLLResourceManager.h"
 #import "GLLTexture.h"
 
-@interface GLLMeshDrawer ()
+@interface GLLMeshDrawData ()
 {
     GLLVertexArray *vertexArray;
 	GLsizei elementsCount;
@@ -30,7 +30,7 @@
 
 @end
 
-@implementation GLLMeshDrawer
+@implementation GLLMeshDrawData
 
 - (id)initWithMesh:(GLLModelMesh *)mesh vertexArray:(GLLVertexArray *)array resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 {
@@ -97,7 +97,7 @@
     return vertexArray.vertexArrayIndex;
 }
 
-- (NSComparisonResult)compareTo:(GLLMeshDrawer *)other;
+- (NSComparisonResult)compareTo:(GLLMeshDrawData *)other;
 {
     if (vertexArray != other->vertexArray) {
         return vertexArray < other->vertexArray ? NSOrderedAscending : NSOrderedDescending;
