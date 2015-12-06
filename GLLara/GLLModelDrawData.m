@@ -1,12 +1,12 @@
 //
-//  GLLModelDrawer.m
+//  GLLModelDrawData.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 03.09.12.
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLModelDrawer.h"
+#import "GLLModelDrawData.h"
 
 #import "GLLMeshDrawData.h"
 #import "GLLModel.h"
@@ -14,13 +14,13 @@
 #import "GLLVertexArray.h"
 #import "GLLVertexFormat.h"
 
-@interface GLLModelDrawer ()
+@interface GLLModelDrawData ()
 
 @property (nonatomic, retain, readonly) NSArray *vertexArrays;
 
 @end
 
-@implementation GLLModelDrawer
+@implementation GLLModelDrawData
 
 - (id)initWithModel:(GLLModel *)model resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing *)error;
 {

@@ -1,5 +1,5 @@
 //
-//  GLLModelDrawer.h
+//  GLLModelDrawData.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 03.09.12.
@@ -17,7 +17,7 @@
  *
  * The GLLModelDrawer does not have a draw or render method, because it is per model, not per item. This means it has no rerence to transformations and so on. The GLLItemDrawer has all that and a render method.
  */
-@interface GLLModelDrawer : NSObject
+@interface GLLModelDrawData : NSObject
 
 - (id)initWithModel:(GLLModel *)model resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 

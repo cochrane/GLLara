@@ -12,7 +12,7 @@
 #import <OpenGL/gl3ext.h>
 
 #import "GLLModel.h"
-#import "GLLModelDrawer.h"
+#import "GLLModelDrawData.h"
 #import "GLLModelProgram.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLShader.h"
@@ -101,7 +101,7 @@ static GLLResourceManager *sharedManager;
 
 #pragma mark - Retrieving resources
 
-- (GLLModelDrawer *)drawerForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
+- (GLLModelDrawData *)drawDataForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
 	NSAssert(model != nil, @"Empty model passed in. This should never happen.");
 	
@@ -111,7 +111,7 @@ static GLLResourceManager *sharedManager;
 	{
 		NSOpenGLContext *previous = [NSOpenGLContext currentContext];
 		[self.openGLContext makeCurrentContext];
-		result = [[GLLModelDrawer alloc] initWithModel:model resourceManager:self error:error];
+		result = [[GLLModelDrawData alloc] initWithModel:model resourceManager:self error:error];
 		[previous makeCurrentContext];
 		
 		if (!result) return nil;

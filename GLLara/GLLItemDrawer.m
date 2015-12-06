@@ -16,7 +16,7 @@
 #import "GLLItemMesh.h"
 #import "GLLModelMesh.h"
 #import "GLLMeshDrawData.h"
-#import "GLLModelDrawer.h"
+#import "GLLModelDrawData.h"
 #import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"
 #import "GLLItemMeshState.h"
@@ -66,8 +66,8 @@
 	_item = item;
 	_sceneDrawer = sceneDrawer;
 	
-	GLLModelDrawer *modelDrawer = [sceneDrawer.resourceManager drawerForModel:item.model error:error];
-	if (!modelDrawer)
+	GLLModelDrawData *modelData = [sceneDrawer.resourceManager drawDataForModel:item.model error:error];
+	if (!modelData)
 		return nil;
 	
 	[_item addObserver:self forKeyPath:@"normalChannelAssignmentR" options:0 context:0];
@@ -83,10 +83,10 @@
 	}];
 	
 	// Observe settings of all meshes
-	meshStates = [modelDrawer.meshDatas map:^(GLLMeshDrawData *meshData) {
+	meshStates = [modelData.meshDatas map:^(GLLMeshDrawData *meshData) {
 		return [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:meshData itemMesh:[item itemMeshForModelMesh:meshData.modelMesh] error:error];
 	}];
-	if (meshStates.count < modelDrawer.meshDatas.count)
+	if (meshStates.count < modelData.meshDatas.count)
 	{
 		[self unload];
 		return nil;

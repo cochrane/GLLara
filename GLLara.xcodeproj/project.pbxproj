@@ -249,7 +249,7 @@
 		529693FE15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */; };
 		5296940115F3881B00DF2FA3 /* GLLModelProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296940015F3881B00DF2FA3 /* GLLModelProgram.m */; };
 		5296940415F3893200DF2FA3 /* GLLShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296940315F3893200DF2FA3 /* GLLShader.m */; };
-		5296942415F411CC00DF2FA3 /* GLLModelDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296942315F411CC00DF2FA3 /* GLLModelDrawer.m */; };
+		5296942415F411CC00DF2FA3 /* GLLModelDrawData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296942315F411CC00DF2FA3 /* GLLModelDrawData.m */; };
 		5296942815F4139300DF2FA3 /* GLLItemDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296942715F4139300DF2FA3 /* GLLItemDrawer.m */; };
 		5296942B15F4174F00DF2FA3 /* GLLSceneDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296942A15F4174F00DF2FA3 /* GLLSceneDrawer.m */; };
 		5296943515F421D900DF2FA3 /* simd_matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 5296942F15F421D900DF2FA3 /* simd_matrix.c */; };
@@ -731,8 +731,8 @@
 		5296941815F3ED3D00DF2FA3 /* DiffuseBump.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseBump.fs; sourceTree = "<group>"; };
 		5296941A15F4049B00DF2FA3 /* DiffuseLightmapBump.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBump.fs; sourceTree = "<group>"; };
 		5296941C15F4063500DF2FA3 /* DiffuseLightmapBump3.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmapBump3.fs; sourceTree = "<group>"; };
-		5296942215F411CC00DF2FA3 /* GLLModelDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelDrawer.h; sourceTree = "<group>"; };
-		5296942315F411CC00DF2FA3 /* GLLModelDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelDrawer.m; sourceTree = "<group>"; };
+		5296942215F411CC00DF2FA3 /* GLLModelDrawData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelDrawData.h; sourceTree = "<group>"; };
+		5296942315F411CC00DF2FA3 /* GLLModelDrawData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelDrawData.m; sourceTree = "<group>"; };
 		5296942615F4139300DF2FA3 /* GLLItemDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemDrawer.h; sourceTree = "<group>"; };
 		5296942715F4139300DF2FA3 /* GLLItemDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemDrawer.m; sourceTree = "<group>"; };
 		5296942915F4174F00DF2FA3 /* GLLSceneDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSceneDrawer.h; sourceTree = "<group>"; };
@@ -1388,8 +1388,8 @@
 			children = (
 				529692E115F2861E00DF2FA3 /* GLLMeshDrawData.h */,
 				529692E215F2861E00DF2FA3 /* GLLMeshDrawData.m */,
-				5296942215F411CC00DF2FA3 /* GLLModelDrawer.h */,
-				5296942315F411CC00DF2FA3 /* GLLModelDrawer.m */,
+				5296942215F411CC00DF2FA3 /* GLLModelDrawData.h */,
+				5296942315F411CC00DF2FA3 /* GLLModelDrawData.m */,
 				5227832E1BFA6A4E002E43FD /* GLLVertexFormat.m */,
 				522783301BFA712A002E43FD /* GLLVertexArray.h */,
 				522783311BFA712A002E43FD /* GLLVertexArray.m */,
@@ -1873,7 +1873,7 @@
 				529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */,
 				5296940115F3881B00DF2FA3 /* GLLModelProgram.m in Sources */,
 				5296940415F3893200DF2FA3 /* GLLShader.m in Sources */,
-				5296942415F411CC00DF2FA3 /* GLLModelDrawer.m in Sources */,
+				5296942415F411CC00DF2FA3 /* GLLModelDrawData.m in Sources */,
 				5296942815F4139300DF2FA3 /* GLLItemDrawer.m in Sources */,
 				5296942B15F4174F00DF2FA3 /* GLLSceneDrawer.m in Sources */,
 				5296943515F421D900DF2FA3 /* simd_matrix.c in Sources */,
