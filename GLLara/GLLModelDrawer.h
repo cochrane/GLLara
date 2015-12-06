@@ -23,8 +23,7 @@
 
 @property (nonatomic, retain, readonly) GLLModel *model;
 @property (nonatomic, weak, readonly) GLLResourceManager *resourceManager;
-@property (nonatomic, retain, readonly) NSArray *solidMeshDatas;
-@property (nonatomic, retain, readonly) NSArray *alphaMeshDatas;
+@property (nonatomic, retain, readonly) NSArray *meshDatas;
 
 - (void)unload;
 

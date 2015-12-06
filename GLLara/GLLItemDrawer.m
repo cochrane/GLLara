@@ -14,6 +14,7 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
+#import "GLLModelMesh.h"
 #import "GLLMeshDrawData.h"
 #import "GLLModelDrawer.h"
 #import "GLLResourceManager.h"
@@ -27,8 +28,7 @@
 	GLuint transformsBuffer;
 	BOOL needToUpdateTransforms;
 	
-	NSArray *alphaDrawers;
-	NSArray *solidDrawers;
+    NSArray *meshStates;
 	
 	NSArray *bones;
     
@@ -84,18 +84,10 @@
 	}];
 	
 	// Observe settings of all meshes
-	alphaDrawers = [modelDrawer.alphaMeshDatas map:^(GLLMeshDrawData *drawer) {
+	meshStates = [modelDrawer.meshDatas map:^(GLLMeshDrawData *drawer) {
 		return [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
 	}];
-	if (alphaDrawers.count < modelDrawer.alphaMeshDatas.count)
-	{
-		[self unload];
-		return nil;
-	}
-	solidDrawers = [modelDrawer.solidMeshDatas map:^(GLLMeshDrawData *drawer) {
-		return [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:drawer itemMesh:[item itemMeshForModelMesh:drawer.modelMesh] error:error];
-	}];
-	if (solidDrawers.count < modelDrawer.solidMeshDatas.count)
+	if (meshStates.count < modelDrawer.meshDatas.count)
 	{
 		[self unload];
 		return nil;
@@ -188,11 +180,8 @@
 		[bone removeObserver:self forKeyPath:@"globalTransform"];
 	bones = nil;
 	
-	[solidDrawers makeObjectsPerformSelector:@selector(unload)];
-	solidDrawers = nil;
-	
-	[alphaDrawers makeObjectsPerformSelector:@selector(unload)];
-	alphaDrawers = nil;
+	[meshStates makeObjectsPerformSelector:@selector(unload)];
+	meshStates = nil;
 	
 	glDeleteBuffers(1, &transformsBuffer);
 	transformsBuffer = 0;
@@ -234,15 +223,12 @@
 }
 
 - (void)_findRuns {
-    solidDrawers = [solidDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshState *a, GLLItemMeshState *b) {
-        return [a compareTo:b];
-    }];
-    alphaDrawers = [alphaDrawers sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshState *a, GLLItemMeshState *b) {
+    meshStates = [meshStates sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshState *a, GLLItemMeshState *b) {
         return [a compareTo:b];
     }];
 
     
-    NSUInteger totalMeshes = solidDrawers.count + alphaDrawers.count;
+    NSUInteger totalMeshes = meshStates.count;
     if (!allCounts)
         allCounts = calloc(sizeof(GLsizei), totalMeshes);
     if (!allBaseVertices)
@@ -263,52 +249,29 @@
     
     // Find runs in solid meshes
     GLLItemMeshState *last = nil;
-    for (GLLItemMeshState *drawer in solidDrawers) {
-        if (!drawer.itemMesh.isVisible) {
+    for (GLLItemMeshState *state in meshStates) {
+        if (!state.itemMesh.isVisible) {
             continue;
         }
         
-        if (last == nil || [drawer compareTo:last] != NSOrderedSame) {
+        if (last == nil || [state compareTo:last] != NSOrderedSame) {
             // Starts new run
             runStarts[nextRun] = meshesAdded;
             runLengths[nextRun] = 1;
-            [startDrawers addObject:drawer];
-            last = drawer;
-            solidRunCounts += 1;
+            [startDrawers addObject:state];
+            last = state;
+            if (state.itemMesh.mesh.usesAlphaBlending)
+                alphaRunCounts += 1;
+            else
+                solidRunCounts += 1;
             nextRun += 1;
         } else {
             // Continues last run
             runLengths[nextRun - 1] += 1;
         }
-        allBaseVertices[meshesAdded] = drawer.drawData.baseVertex;
-        allIndices[meshesAdded] = drawer.drawData.indicesStart;
-        allCounts[meshesAdded] = drawer.drawData.elementsCount;
-        
-        meshesAdded += 1;
-    }
-    
-    // Find runs in alpha meshes
-    last = nil;
-    for (GLLItemMeshState *drawer in alphaDrawers) {
-        if (!drawer.itemMesh.isVisible) {
-            continue;
-        }
-        
-        if (last == nil || [drawer compareTo:last] != NSOrderedSame) {
-            // Starts new run
-            runStarts[nextRun] = meshesAdded;
-            runLengths[nextRun] = 1;
-            [startDrawers addObject:drawer];
-            last = drawer;
-            alphaRunCounts += 1;
-            nextRun += 1;
-        } else {
-            // Continues last run
-            runLengths[nextRun - 1] += 1;
-        }
-        allBaseVertices[meshesAdded] = drawer.drawData.baseVertex;
-        allIndices[meshesAdded] = drawer.drawData.indicesStart;
-        allCounts[meshesAdded] = drawer.drawData.elementsCount;
+        allBaseVertices[meshesAdded] = state.drawData.baseVertex;
+        allIndices[meshesAdded] = state.drawData.indicesStart;
+        allCounts[meshesAdded] = state.drawData.elementsCount;
         
         meshesAdded += 1;
     }

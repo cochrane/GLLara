@@ -29,8 +29,7 @@
 	_model = model;
 	_resourceManager = resourceManager;
 	
-	NSMutableArray *mutableSolidMeshDatas = [[NSMutableArray alloc] init];
-	NSMutableArray *mutableAlphaMeshDatas = [[NSMutableArray alloc] init];
+	NSMutableArray *mutableMeshDatas = [[NSMutableArray alloc] init];
     NSMutableDictionary *mutableVertexArrays = [[NSMutableDictionary alloc] init];
 	for (GLLModelMesh *mesh in model.meshes)
 	{
@@ -47,22 +46,16 @@
         GLLMeshDrawData *drawData = [[GLLMeshDrawData alloc] initWithMesh:mesh vertexArray:array resourceManager:resourceManager error:error];
 		if (!drawData)
 		{
-			for (GLLMeshDrawData *drawer in mutableSolidMeshDatas)
-				[drawer unload];
-			for (GLLMeshDrawData *drawer in mutableAlphaMeshDatas)
+			for (GLLMeshDrawData *drawer in mutableMeshDatas)
 				[drawer unload];
 			[self unload];
 			return nil;
 		}
 		
-		if (mesh.usesAlphaBlending)
-			[mutableAlphaMeshDatas addObject:drawData];
-		else
-			[mutableSolidMeshDatas addObject:drawData];
+        [mutableMeshDatas addObject:drawData];
 	}
     
-	_solidMeshDatas = [mutableSolidMeshDatas copy];
-	_alphaMeshDatas = [mutableAlphaMeshDatas copy];
+	_meshDatas = [mutableMeshDatas copy];
     _vertexArrays = [[mutableVertexArrays allValues] copy];
     
     for (GLLVertexArray *array in _vertexArrays) {
@@ -74,12 +67,10 @@
 
 - (void)unload;
 {
-	[self.solidMeshDatas makeObjectsPerformSelector:@selector(unload)];
-    [self.alphaMeshDatas makeObjectsPerformSelector:@selector(unload)];
+	[self.meshDatas makeObjectsPerformSelector:@selector(unload)];
     [self.vertexArrays makeObjectsPerformSelector:@selector(unload)];
 	
-	_solidMeshDatas = nil;
-	_alphaMeshDatas = nil;
+	_meshDatas = nil;
     _vertexArrays = nil;
 }
 

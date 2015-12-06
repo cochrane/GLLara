@@ -215,6 +215,14 @@
 }
 
 - (NSComparisonResult)compareTo:(GLLItemMeshState *)other {
+    BOOL selfAlpha = self.itemMesh.mesh.usesAlphaBlending;
+    BOOL otherAlpha = other.itemMesh.mesh.usesAlphaBlending;
+    
+    if (selfAlpha && !otherAlpha)
+        return NSOrderedDescending;
+    else if (!selfAlpha && otherAlpha)
+        return NSOrderedAscending;
+    
     if (self.itemMesh.cullFaceMode > other.itemMesh.cullFaceMode)
         return NSOrderedAscending;
     else if (self.itemMesh.cullFaceMode < other.itemMesh.cullFaceMode)
