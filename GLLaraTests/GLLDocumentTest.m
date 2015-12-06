@@ -29,6 +29,7 @@ static NSURL *testDocumentURL;
 
 - (void)tearDown
 {
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 	[[NSFileManager defaultManager] removeItemAtURL:testDocumentURL error:NULL];
 	for (NSDocument *doc in [[NSDocumentController sharedDocumentController] documents])
 		[doc close];
@@ -169,7 +170,7 @@ static NSURL *testDocumentURL;
 			NSArray *items = [((GLLDocument *)document).managedObjectContext executeFetchRequest:request error:NULL];
 			XCTAssertEqual(items.count, 1UL, @"Should have one item");
 			XCTAssertEqualObjects([[items objectAtIndex:0] itemURL], testModelURL, @"Should have test model URL");
-			XCTAssertEqual([item.bones[0] rotationY], rotationNearLimit, @"Should have kept rotation near limit exactly.");
+			XCTAssertEqualWithAccuracy([item.bones[0] rotationY], rotationNearLimit, 0.0001, @"Should have kept rotation near limit exactly.");
 			XCTAssertEqual([item.bones[0] rotationZ], 1.0f, @"Should have kept rotation far from limit exactly.");
 
 			

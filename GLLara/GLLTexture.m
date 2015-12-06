@@ -186,8 +186,8 @@ static NSOperationQueue *imageInformationQueue = nil;
 
 - (void)unload;
 {
-    [[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:GLLPrefAnisotropyAmount];
-    [[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:GLLPrefUseAnisotropy];
+    [[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefAnisotropyAmount]];
+    [[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefUseAnisotropy]];
     
 	glDeleteTextures(1, &_textureID);
 	_textureID = 0;

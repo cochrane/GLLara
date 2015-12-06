@@ -48,7 +48,8 @@
 			[self.itemControllers addObjectsFromArray:addedItemControllers];
 			[self.itemControllers sortUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"item.displayName" ascending:YES] ]];
 			
-			[self.outlineView reloadItem:self reloadChildren:YES];
+            if (self.outlineView.window.isVisible)
+                [self.outlineView reloadItem:self reloadChildren:YES];
 		});
 	}];
 	
