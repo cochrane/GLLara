@@ -160,7 +160,7 @@
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
 {
-    return [self.textures anyObjectMatching:^BOOL(GLLRenderParameter *parameter){
+    return [self.renderParameters anyObjectMatching:^BOOL(GLLRenderParameter *parameter){
         return [parameter.name isEqual:parameterName];
     }];
 }
