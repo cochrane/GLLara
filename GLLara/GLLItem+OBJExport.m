@@ -18,11 +18,9 @@
 
 - (BOOL)willLoseDataWhenConvertedToOBJ
 {
-	for (GLLItemMesh *mesh in self.meshes)
-		if (mesh.willLoseDataWhenConvertedToOBJ)
-			return YES;
-	
-	return NO;
+    return [self.meshes firstObjectMatching:^(id mesh) {
+        return [mesh willLoseDataWhenConvertedToOBJ];
+    }] != nil;
 }
 
 - (BOOL)writeOBJToLocation:(NSURL *)location withTransform:(BOOL)transform withColor:(BOOL)color error:(NSError *__autoreleasing*)error;

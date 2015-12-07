@@ -8,24 +8,42 @@
 
 #import "NSArray+Map.h"
 
+static id firstObjectMatching(id<NSFastEnumeration> collection, BOOL(^predicate)(id))
+{
+    for (id object in collection)
+        if (predicate(object))
+            return object;
+    return nil;
+}
+
+static id mapMutable(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(id))
+{
+    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:count];
+    
+    for (id object in collection)
+    {
+        id newObject = function(object);
+        if (!newObject) continue;
+        [result addObject:newObject];
+    }
+    
+    return result;
+}
+
+static id map(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(id))
+{
+    return [mapMutable(collection, count, function) copy];
+}
+
 @implementation NSArray (Map)
 
 - (NSArray *)map:(id (^)(id))block;
 {
-	return [[self mapMutable:block] copy];
+	return map(self, self.count, block);
 }
 - (NSMutableArray *)mapMutable:(id (^)(id))block;
 {
-	NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
-	
-	for (id object in self)
-	{
-		id newObject = block(object);
-		if (!newObject) continue;
-		[result addObject:newObject];
-	}
-	
-	return result;
+    return mapMutable(self, self.count, block);
 }
 - (NSArray *)mapAndJoin:(NSArray *(^)(id))block;
 {
@@ -40,6 +58,10 @@
 	
 	return result;
 }
+- (id)firstObjectMatching:(BOOL(^)(id))predicate;
+{
+    return firstObjectMatching(self, predicate);
+}
 
 @end
 
@@ -47,16 +69,11 @@
 
 - (NSArray *)map:(id (^)(id))block;
 {
-	NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
-	
-	for (id object in self)
-	{
-		id newObject = block(object);
-		if (!newObject) continue;
-		[result addObject:newObject];
-	}
-	
-	return [result copy];
+    return map(self, self.count, block);
+}
+- (id)firstObjectMatching:(BOOL(^)(id))predicate;
+{
+    return firstObjectMatching(self, predicate);
 }
 
 @end
@@ -86,16 +103,11 @@
 
 - (NSArray *)map:(id (^)(id))block;
 {
-	NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
-	
-	for (id object in self)
-	{
-		id newObject = block(object);
-		if (!newObject) continue;
-		[result addObject:newObject];
-	}
-	
-	return [result copy];
+    return map(self, self.count, block);
+}
+- (id)anyObjectMatching:(BOOL(^)(id))predicate;
+{
+    return firstObjectMatching(self, predicate);
 }
 
 @end

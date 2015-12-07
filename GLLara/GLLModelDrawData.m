@@ -46,8 +46,7 @@
         GLLMeshDrawData *drawData = [[GLLMeshDrawData alloc] initWithMesh:mesh vertexArray:array resourceManager:resourceManager error:error];
 		if (!drawData)
 		{
-			for (GLLMeshDrawData *drawer in mutableMeshDatas)
-				[drawer unload];
+            [mutableMeshDatas makeObjectsPerformSelector:@selector(unload)];
 			[self unload];
 			return nil;
 		}
@@ -57,10 +56,7 @@
     
 	_meshDatas = [mutableMeshDatas copy];
     _vertexArrays = [[mutableVertexArrays allValues] copy];
-    
-    for (GLLVertexArray *array in _vertexArrays) {
-        [array upload];
-    }
+    [_vertexArrays makeObjectsPerformSelector:@selector(upload)];
 	
 	return self;
 }

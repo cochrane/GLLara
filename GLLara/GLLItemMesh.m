@@ -18,6 +18,7 @@
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
 #import "GLLShaderDescription.h"
+#import "NSArray+Map.h"
 
 @interface GLLItemMesh ()
 {
@@ -159,21 +160,15 @@
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
 {
-	for (GLLRenderParameter *parameter in self.renderParameters)
-	{
-		if ([parameter.name isEqual:parameterName])
-			return parameter;
-	}
-	return nil;
+    return [self.textures anyObjectMatching:^BOOL(GLLRenderParameter *parameter){
+        return [parameter.name isEqual:parameterName];
+    }];
 }
 - (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;
 {
-	for (GLLItemMeshTexture *texture in self.textures)
-	{
-		if ([texture.identifier isEqual:textureIdentifier])
-			return texture;
-	}
-	return nil;
+    return [self.textures anyObjectMatching:^BOOL(GLLItemMeshTexture *texture){
+        return [texture.identifier isEqual:textureIdentifier];
+    }];
 }
 
 - (GLLShaderDescription *)shader

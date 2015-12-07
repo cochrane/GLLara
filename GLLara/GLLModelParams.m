@@ -294,17 +294,12 @@ static NSCache *parameterCache;
 
 - (NSString *)renderableMeshGroupForMesh:(NSString *)mesh;
 {
-	for (NSString *meshGroup in [self meshGroupsForMesh:mesh])
-	{
-		GLLShaderDescription *shader = nil;
-		BOOL isAlpha;
-		[self getShader:&shader alpha:&isAlpha forMeshGroup:meshGroup];
-		
-		if (shader != nil)
-			return meshGroup;
-	}
-	
-	return nil;
+    return [[self meshGroupsForMesh:mesh] firstObjectMatching:^(id meshGroup){
+        GLLShaderDescription *shader = nil;
+        BOOL isAlpha;
+        [self getShader:&shader alpha:&isAlpha forMeshGroup:meshGroup];
+        return (BOOL) (shader != nil);
+    }];
 }
 
 - (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;

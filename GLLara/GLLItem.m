@@ -259,10 +259,9 @@
 
 - (GLLItemBone *)boneForName:(NSString *)name;
 {
-	for (GLLItemBone *bone in self.bones)
-		if ([bone.bone.name isEqual:name])
-			return bone;
-	return nil;
+    return [self.bones firstObjectMatching:^BOOL(GLLItemBone *bone) {
+        return [bone.bone.name isEqual:name];
+    }];
 }
 - (NSOrderedSet *)combinedBones;
 {

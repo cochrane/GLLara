@@ -95,8 +95,7 @@
 	
 	for (GLLCamera *camera in cameras)
 	{
-		GLLRenderWindowController *controller = [[GLLRenderWindowController alloc] initWithCamera:camera sceneDrawer:sceneDrawer];
-		[self addWindowController:controller];
+		[self addWindowController:[[GLLRenderWindowController alloc] initWithCamera:camera sceneDrawer:sceneDrawer]];
 	}
 }
 

@@ -13,12 +13,14 @@
 - (NSArray *)map:(id (^)(id))block;
 - (NSMutableArray *)mapMutable:(id (^)(id))block;
 - (NSArray *)mapAndJoin:(NSArray *(^)(id))block;
+- (id)firstObjectMatching:(BOOL(^)(id))predicate;
 
 @end
 
 @interface NSOrderedSet (Map)
 
 - (NSArray *)map:(id (^)(id))block;
+- (id)firstObjectMatching:(BOOL(^)(id))predicate;
 
 @end
 
@@ -32,6 +34,7 @@
 @interface NSSet (Map)
 
 - (NSArray *)map:(id (^)(id))block;
+- (id)anyObjectMatching:(BOOL(^)(id))predicate;
 
 @end
 

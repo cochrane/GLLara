@@ -369,10 +369,9 @@ static NSCache *cachedModels;
 
 - (GLLModelBone *)boneForName:(NSString *)name;
 {
-	for (GLLModelBone *bone in self.bones)
-		if ([bone.name isEqual:name])
-			return bone;
-	return nil;
+    return [self.bones firstObjectMatching:^BOOL(GLLModelBone *bone){
+        return [bone.name isEqual:name];
+    }];
 }
 
 #pragma mark - Private methods

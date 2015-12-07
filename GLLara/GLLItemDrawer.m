@@ -230,7 +230,7 @@
 }
 
 - (void)_findRuns {
-    meshStates = [meshStates sortedArrayUsingComparator:^NSComparisonResult(GLLItemMeshState *a, GLLItemMeshState *b) {
+    meshStates = [meshStates sortedArrayUsingComparator:^(GLLItemMeshState *a, GLLItemMeshState *b) {
         return [a compareTo:b];
     }];
 
