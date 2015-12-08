@@ -12,6 +12,7 @@
 #import <AppKit/NSWindow.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
+#import <OpenGL/CGLRenderers.h>
 
 #import "GLLCamera.h"
 #import "GLLDocument.h"
@@ -511,33 +512,31 @@ const double unitsPerSecond = 0.2;
 
 - (NSOpenGLContext *)_createContext;
 {
-    NSOpenGLPixelFormat *format;
+    NSOpenGLPixelFormatAttribute attribs[] = {
+            NSOpenGLPFADoubleBuffer,
+            NSOpenGLPFADepthSize, 24,
+            NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
+            NSOpenGLPFAAlphaSize, 8,
+            NSOpenGLPFAColorSize, 24,
+            0, 0, 0, 0, 0, // Multisample
+            0, 0, // Explicit renderer
+            0
+        };
+    NSUInteger usedAttribs = 9;
+    
     if (didHaveMultisample) {
-        NSOpenGLPixelFormatAttribute attribs[] = {
-            NSOpenGLPFADoubleBuffer,
-            NSOpenGLPFADepthSize, 24,
-            NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-            NSOpenGLPFAMultisample,
-            NSOpenGLPFASampleBuffers, 1,
-            NSOpenGLPFASamples, (NSOpenGLPixelFormatAttribute) currentNumberOfSamples,
-            NSOpenGLPFAAlphaSize, 8,
-            NSOpenGLPFAColorSize, 24,
-            0
-        };
-        
-        format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
-    } else {
-        NSOpenGLPixelFormatAttribute attribs[] = {
-            NSOpenGLPFADoubleBuffer,
-            NSOpenGLPFADepthSize, 24,
-            NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-            NSOpenGLPFAAlphaSize, 8,
-            NSOpenGLPFAColorSize, 24,
-            0
-        };
-        
-        format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
+        attribs[usedAttribs++] = NSOpenGLPFAMultisample;
+        attribs[usedAttribs++] = NSOpenGLPFASampleBuffers;
+        attribs[usedAttribs++] = 1;
+        attribs[usedAttribs++] = NSOpenGLPFASamples;
+        attribs[usedAttribs++] = (NSOpenGLPixelFormatAttribute) currentNumberOfSamples;
     }
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefForceSoftwareRendering]) {
+        attribs[usedAttribs++] = NSOpenGLPFARendererID;
+        attribs[usedAttribs++] = kCGLRendererGenericFloatID;
+    }
+        
+    NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
     NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:format shareContext:[[GLLResourceManager sharedResourceManager] openGLContext]];
     return context;
 }

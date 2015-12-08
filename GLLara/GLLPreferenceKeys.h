@@ -17,3 +17,4 @@ extern NSString *GLLPrefObjExportIncludesVertexColors;
 extern NSString *GLLPrefPoseExportIncludesUnused;
 extern NSString *GLLPrefPoseExportOnlySelected;
 extern NSString *GLLPrefShowSkeleton;
+extern NSString *GLLPrefForceSoftwareRendering;

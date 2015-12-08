@@ -17,3 +17,4 @@ NSString *GLLPrefObjExportIncludesVertexColors = @"objExportIncludeVertexColors"
 NSString *GLLPrefPoseExportIncludesUnused = @"exportPose-includeUnused";
 NSString *GLLPrefPoseExportOnlySelected = @"exportPose-onlySelected";
 NSString *GLLPrefShowSkeleton = @"showsSkeleton";
+NSString *GLLPrefForceSoftwareRendering = @"ForceSoftwareRendering";

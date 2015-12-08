@@ -10,10 +10,12 @@
 
 #import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
+#import <OpenGL/CGLRenderers.h>
 
 #import "GLLModel.h"
 #import "GLLModelDrawData.h"
 #import "GLLModelProgram.h"
+#import "GLLPreferenceKeys.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLShader.h"
 #import "GLLShaderDescription.h"
@@ -60,8 +62,12 @@ static GLLResourceManager *sharedManager;
 	
 	NSOpenGLPixelFormatAttribute attribs[] = {
 		NSOpenGLPFAOpenGLProfile, (NSOpenGLPixelFormatAttribute) NSOpenGLProfileVersion3_2Core,
-		0
+		0, 0, 0
 	};
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefForceSoftwareRendering]) {
+        attribs[2] = NSOpenGLPFARendererID;
+        attribs[3] = kCGLRendererGenericFloatID;
+    }
 	
 	NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
 	_openGLContext = [[NSOpenGLContext alloc] initWithFormat:format shareContext:nil];
