@@ -197,7 +197,7 @@ static GLLResourceManager *sharedManager;
 	if (!_skeletonProgram)
     {
         _skeletonProgram = [self _makeWithContext:^{
-            return [[GLLSquareProgram alloc] initWithResourceManager:self error:NULL];
+            return [[GLLSkeletonProgram alloc] initWithResourceManager:self error:NULL];
         }];
 	}
 	return _skeletonProgram;

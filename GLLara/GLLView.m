@@ -103,6 +103,7 @@ const double unitsPerSecond = 0.2;
 	}];
     settingsChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
         dispatch_async(dispatch_get_main_queue(), ^(){
+            __strong GLLView *self = weakSelf;
             BOOL stillUsingMSAA = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
             NSInteger newNumberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
             
@@ -111,31 +112,34 @@ const double unitsPerSecond = 0.2;
                 currentNumberOfSamples = newNumberOfSamples;
                 
                 // Create a new context
-                NSOpenGLContext *context = [weakSelf _createContext];
+                NSOpenGLContext *context = [self _createContext];
                 
                 if (!context)
                 {
-                    NSError *error = [NSError errorWithDomain:weakSelf.className code:1 userInfo:@{
+                    NSError *error = [NSError errorWithDomain:self.className code:1 userInfo:@{
                                                                                                    NSLocalizedDescriptionKey : NSLocalizedString(@"Could not create an OpenGL 3.2 Core Profile context.", @"Context creation failed"),
                                                                                                    NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"GLLara requires graphics cards that support OpenGL 3.2 or higher.", @"Context creation failed")
                                                                                                    }];
                     [self presentError:error];
                     return;
                 }
-                [weakSelf.openGLContext clearDrawable];
+                [self.openGLContext clearDrawable];
                 
-                weakSelf.pixelFormat = context.pixelFormat;
-                weakSelf.openGLContext = context;
+                self.pixelFormat = context.pixelFormat;
+                self.openGLContext = context;
                 context.view = self;
                 
                 // Update drawer
                 [self setCamera:_camera sceneDrawer:_sceneDrawer];
             }
             
-            weakSelf.needsDisplay = YES;
+            self->showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
+            self.needsDisplay = YES;
         });
     }];
 	
+    showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
+    
 	return self;
 };
 
