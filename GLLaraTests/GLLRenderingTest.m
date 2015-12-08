@@ -112,15 +112,50 @@
 			
 			[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
 			
-			[controller renderToFile:[targetURL URLByAppendingPathComponent:[NSString stringWithFormat:@"test%@.png", shaderName] isDirectory:NO] type:(__bridge NSString *)kUTTypePNG width:400 height:400];
+            NSString *filename = [NSString stringWithFormat:@"test%@.png", shaderName];
+            NSURL *fileURL = [targetURL URLByAppendingPathComponent:filename isDirectory:NO];
+			[controller renderToFile:fileURL type:(__bridge NSString *)kUTTypePNG width:400 height:400];
 			
 			[doc close];
 			[[GLLResourceManager sharedResourceManager] clearInternalCaches];
 			[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
 			
 			// Compare to expected (if exists)
+            NSURL *expectedURL = [[NSBundle bundleForClass:self.class] URLForResource:[NSString stringWithFormat:@"test%@", shaderName] withExtension:@"png"];
+            NSData *expectedPixels = [self imageDataFromURL:expectedURL];
+            NSData *actualPixels = [self imageDataFromURL:fileURL];
+            
+            XCTAssertEqual(expectedPixels.length, actualPixels.length);
+            XCTAssertTrue(memcmp(expectedPixels.bytes, actualPixels.bytes, expectedPixels.length) == 0);
 		}
 	}
+}
+
+- (NSData *)imageDataFromURL:(NSURL *)url
+{
+    NSData *data = [NSData dataWithContentsOfURL:url];
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef) data, NULL);
+    CFDictionaryRef dict = CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
+    CFIndex width, height;
+    CFNumberGetValue(CFDictionaryGetValue(dict, kCGImagePropertyPixelWidth), kCFNumberCFIndexType, &width);
+    CFNumberGetValue(CFDictionaryGetValue(dict, kCGImagePropertyPixelHeight), kCFNumberCFIndexType, &height);
+    CFRelease(dict);
+    
+    unsigned char *bufferData = calloc(width * height, 4);
+    CGImageRef cgImage = CGImageSourceCreateImageAtIndex(source, 0, NULL);
+    CFRelease(source);
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef cgContext = CGBitmapContextCreate(bufferData, width, height, 8, width * 4, colorSpace, kCGImageAlphaPremultipliedFirst);
+    NSAssert(cgContext != NULL, @"Could not create CG Context");
+    
+    CGColorSpaceRelease(colorSpace);
+    
+    CGContextDrawImage(cgContext, CGRectMake(0.0f, 0.0f, (CGFloat) width, (CGFloat) height), cgImage);
+    CGContextRelease(cgContext);
+    CGImageRelease(cgImage);
+    
+    return [[NSData alloc] initWithBytesNoCopy:bufferData length:width * height * 4 freeWhenDone:YES];
 }
 
 @end

@@ -219,6 +219,23 @@
 		526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.m */; };
 		526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31B1609C7C300940A74 /* GLLItem+OBJExport.m */; };
 		526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31E1609CCE900940A74 /* GLLItemExportViewController.m */; };
+		526E0F9C1C169E3500F198BF /* testDiffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F8B1C169E3500F198BF /* testDiffuse.png */; };
+		526E0F9D1C169E3500F198BF /* testDiffuseBump.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F8C1C169E3500F198BF /* testDiffuseBump.png */; };
+		526E0F9E1C169E3500F198BF /* testDiffuseBumpEmission.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F8D1C169E3500F198BF /* testDiffuseBumpEmission.png */; };
+		526E0F9F1C169E3500F198BF /* testDiffuseLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F8E1C169E3500F198BF /* testDiffuseLightmap.png */; };
+		526E0FA01C169E3500F198BF /* testDiffuseLightmapBump.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F8F1C169E3500F198BF /* testDiffuseLightmapBump.png */; };
+		526E0FA11C169E3500F198BF /* testDiffuseLightmapBump3.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F901C169E3500F198BF /* testDiffuseLightmapBump3.png */; };
+		526E0FA21C169E3500F198BF /* testDiffuseLightmapBump3Specular.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F911C169E3500F198BF /* testDiffuseLightmapBump3Specular.png */; };
+		526E0FA31C169E3500F198BF /* testDiffuseLightmapBumpSpecular.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F921C169E3500F198BF /* testDiffuseLightmapBumpSpecular.png */; };
+		526E0FA41C169E3500F198BF /* testDiffuseSpecular.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F931C169E3500F198BF /* testDiffuseSpecular.png */; };
+		526E0FA51C169E3500F198BF /* testMetallic.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F941C169E3500F198BF /* testMetallic.png */; };
+		526E0FA61C169E3500F198BF /* testMetallicBump3.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F951C169E3500F198BF /* testMetallicBump3.png */; };
+		526E0FA71C169E3500F198BF /* testShadeless.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F961C169E3500F198BF /* testShadeless.png */; };
+		526E0FA81C169E3500F198BF /* testStaticTRLBasic.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F971C169E3500F198BF /* testStaticTRLBasic.png */; };
+		526E0FA91C169E3500F198BF /* testStaticTRLNextGen.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F981C169E3500F198BF /* testStaticTRLNextGen.png */; };
+		526E0FAA1C169E3500F198BF /* testStaticTRLShadeless.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F991C169E3500F198BF /* testStaticTRLShadeless.png */; };
+		526E0FAB1C169E3500F198BF /* testStaticTRUDiffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F9A1C169E3500F198BF /* testStaticTRUDiffuse.png */; };
+		526E0FAC1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F9B1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png */; };
 		5273A3F31630BF55009095F3 /* GLLInvalidASCIIModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5273A3F21630BF55009095F3 /* GLLInvalidASCIIModelTest.m */; };
 		5275F6821607293000978779 /* GLLItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6811607293000978779 /* GLLItemController.m */; };
 		5275F6891607399800978779 /* GLLItemListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6881607399800978779 /* GLLItemListController.m */; };
@@ -668,6 +685,23 @@
 		526AB31D1609CCE900940A74 /* GLLItemExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemExportViewController.h; sourceTree = "<group>"; };
 		526AB31E1609CCE900940A74 /* GLLItemExportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemExportViewController.m; sourceTree = "<group>"; };
 		526E0F891C146B8000F198BF /* GLLSceneModel 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 4.xcdatamodel"; sourceTree = "<group>"; };
+		526E0F8B1C169E3500F198BF /* testDiffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuse.png; sourceTree = "<group>"; };
+		526E0F8C1C169E3500F198BF /* testDiffuseBump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseBump.png; sourceTree = "<group>"; };
+		526E0F8D1C169E3500F198BF /* testDiffuseBumpEmission.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseBumpEmission.png; sourceTree = "<group>"; };
+		526E0F8E1C169E3500F198BF /* testDiffuseLightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseLightmap.png; sourceTree = "<group>"; };
+		526E0F8F1C169E3500F198BF /* testDiffuseLightmapBump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseLightmapBump.png; sourceTree = "<group>"; };
+		526E0F901C169E3500F198BF /* testDiffuseLightmapBump3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseLightmapBump3.png; sourceTree = "<group>"; };
+		526E0F911C169E3500F198BF /* testDiffuseLightmapBump3Specular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseLightmapBump3Specular.png; sourceTree = "<group>"; };
+		526E0F921C169E3500F198BF /* testDiffuseLightmapBumpSpecular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseLightmapBumpSpecular.png; sourceTree = "<group>"; };
+		526E0F931C169E3500F198BF /* testDiffuseSpecular.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseSpecular.png; sourceTree = "<group>"; };
+		526E0F941C169E3500F198BF /* testMetallic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testMetallic.png; sourceTree = "<group>"; };
+		526E0F951C169E3500F198BF /* testMetallicBump3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testMetallicBump3.png; sourceTree = "<group>"; };
+		526E0F961C169E3500F198BF /* testShadeless.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testShadeless.png; sourceTree = "<group>"; };
+		526E0F971C169E3500F198BF /* testStaticTRLBasic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRLBasic.png; sourceTree = "<group>"; };
+		526E0F981C169E3500F198BF /* testStaticTRLNextGen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRLNextGen.png; sourceTree = "<group>"; };
+		526E0F991C169E3500F198BF /* testStaticTRLShadeless.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRLShadeless.png; sourceTree = "<group>"; };
+		526E0F9A1C169E3500F198BF /* testStaticTRUDiffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRUDiffuse.png; sourceTree = "<group>"; };
+		526E0F9B1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRUDiffuseLightmap.png; sourceTree = "<group>"; };
 		5273A3F11630BF55009095F3 /* GLLInvalidASCIIModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLInvalidASCIIModelTest.h; sourceTree = "<group>"; };
 		5273A3F21630BF55009095F3 /* GLLInvalidASCIIModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLInvalidASCIIModelTest.m; sourceTree = "<group>"; };
 		5275F6801607293000978779 /* GLLItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemController.h; sourceTree = "<group>"; };
@@ -940,6 +974,7 @@
 		5233BD0C16EA06DE00DD77BE /* Test objects */ = {
 			isa = PBXGroup;
 			children = (
+				526E0F8A1C169E2100F198BF /* Expected */,
 				5233BD1C16ECA9F800DD77BE /* testBumptexture.png */,
 				5233BD1D16ECA9F800DD77BE /* testBump1Texture.png */,
 				5233BD1E16ECA9F900DD77BE /* testBump2Texture.png */,
@@ -1133,6 +1168,30 @@
 				525ACD7415F0F1A700534E7D /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		526E0F8A1C169E2100F198BF /* Expected */ = {
+			isa = PBXGroup;
+			children = (
+				526E0F8B1C169E3500F198BF /* testDiffuse.png */,
+				526E0F8C1C169E3500F198BF /* testDiffuseBump.png */,
+				526E0F8D1C169E3500F198BF /* testDiffuseBumpEmission.png */,
+				526E0F8E1C169E3500F198BF /* testDiffuseLightmap.png */,
+				526E0F8F1C169E3500F198BF /* testDiffuseLightmapBump.png */,
+				526E0F901C169E3500F198BF /* testDiffuseLightmapBump3.png */,
+				526E0F911C169E3500F198BF /* testDiffuseLightmapBump3Specular.png */,
+				526E0F921C169E3500F198BF /* testDiffuseLightmapBumpSpecular.png */,
+				526E0F931C169E3500F198BF /* testDiffuseSpecular.png */,
+				526E0F941C169E3500F198BF /* testMetallic.png */,
+				526E0F951C169E3500F198BF /* testMetallicBump3.png */,
+				526E0F961C169E3500F198BF /* testShadeless.png */,
+				526E0F971C169E3500F198BF /* testStaticTRLBasic.png */,
+				526E0F981C169E3500F198BF /* testStaticTRLNextGen.png */,
+				526E0F991C169E3500F198BF /* testStaticTRLShadeless.png */,
+				526E0F9A1C169E3500F198BF /* testStaticTRUDiffuse.png */,
+				526E0F9B1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png */,
+			);
+			name = Expected;
 			sourceTree = "<group>";
 		};
 		529692CF15F1568700DF2FA3 /* From TR Poser */ = {
@@ -1808,19 +1867,36 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				526E0F9C1C169E3500F198BF /* testDiffuse.png in Resources */,
 				525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */,
+				526E0FA61C169E3500F198BF /* testMetallicBump3.png in Resources */,
 				5233BD0E16EA87A200DD77BE /* generic_item.mesh.ascii in Resources */,
+				526E0FAC1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png in Resources */,
 				5233BD0F16EA87B600DD77BE /* defaultColor.png in Resources */,
+				526E0FA81C169E3500F198BF /* testStaticTRLBasic.png in Resources */,
+				526E0FA01C169E3500F198BF /* testDiffuseLightmapBump.png in Resources */,
 				5233BD1616EAB36000DD77BE /* defaultReflection.jpg in Resources */,
 				5233BD1B16ECA72000DD77BE /* testDiffusetexture.png in Resources */,
+				526E0FA41C169E3500F198BF /* testDiffuseSpecular.png in Resources */,
+				526E0FA71C169E3500F198BF /* testShadeless.png in Resources */,
 				5233BD2416ECA9FA00DD77BE /* testBumptexture.png in Resources */,
+				526E0FA11C169E3500F198BF /* testDiffuseLightmapBump3.png in Resources */,
+				526E0FAB1C169E3500F198BF /* testStaticTRUDiffuse.png in Resources */,
 				5233BD2516ECA9FA00DD77BE /* testBump1Texture.png in Resources */,
+				526E0F9F1C169E3500F198BF /* testDiffuseLightmap.png in Resources */,
 				5233BD2616ECA9FA00DD77BE /* testBump2Texture.png in Resources */,
 				5233BD2716ECA9FA00DD77BE /* testEmissiontexture.png in Resources */,
 				5233BD2816ECA9FA00DD77BE /* testLightmaptexture.png in Resources */,
 				5233BD2916ECA9FA00DD77BE /* testMasktexture.png in Resources */,
+				526E0FAA1C169E3500F198BF /* testStaticTRLShadeless.png in Resources */,
+				526E0F9D1C169E3500F198BF /* testDiffuseBump.png in Resources */,
+				526E0FA51C169E3500F198BF /* testMetallic.png in Resources */,
+				526E0FA31C169E3500F198BF /* testDiffuseLightmapBumpSpecular.png in Resources */,
+				526E0FA91C169E3500F198BF /* testStaticTRLNextGen.png in Resources */,
 				5233BD2A16ECA9FA00DD77BE /* testReflectiontexture.png in Resources */,
+				526E0FA21C169E3500F198BF /* testDiffuseLightmapBump3Specular.png in Resources */,
 				5233BD2B16ECA9FA00DD77BE /* testSpeculartexture.png in Resources */,
+				526E0F9E1C169E3500F198BF /* testDiffuseBumpEmission.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
