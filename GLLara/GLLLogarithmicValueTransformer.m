@@ -12,22 +12,22 @@
 
 + (BOOL)allowsReverseTransformation
 {
-	return YES;
+    return YES;
 }
 
 + (Class)transformedValueClass
 {
-	return [NSNumber class];
+    return [NSNumber class];
 }
 
 - (id)reverseTransformedValue:(id)value
 {
-	return @(pow(10.0, [value doubleValue]));
+    return @(pow(10.0, [value doubleValue]));
 }
 
 - (id)transformedValue:(id)value
 {
-	return @(log10([value doubleValue]));
+    return @(log10([value doubleValue]));
 }
 
 @end

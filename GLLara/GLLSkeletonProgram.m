@@ -18,18 +18,18 @@
 - (id)initWithResourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 {
     if (!(self = [self initWithName:@"internal-skeleton" fragmentShaderName:@"Skeleton.fs" geometryShaderName:nil vertexShaderName:@"Skeleton.vs" baseURL:nil additionalDefines:@{} resourceManager:manager error:error])) return nil;
-		
-	GLuint transformUniformBlockIndex = glGetUniformBlockIndex(self.programID, "Transform");
-	NSAssert(transformUniformBlockIndex != GL_INVALID_INDEX, @"Transform uniform index for skeleton program cannot be invalid");
-	glUniformBlockBinding(self.programID, transformUniformBlockIndex, GLLUniformBlockBindingTransforms);
-	
-	return self;
+    
+    GLuint transformUniformBlockIndex = glGetUniformBlockIndex(self.programID, "Transform");
+    NSAssert(transformUniformBlockIndex != GL_INVALID_INDEX, @"Transform uniform index for skeleton program cannot be invalid");
+    glUniformBlockBinding(self.programID, transformUniformBlockIndex, GLLUniformBlockBindingTransforms);
+    
+    return self;
 }
 
 - (void)bindAttributeLocations
 {
-	glBindAttribLocation(self.programID, GLLVertexAttribPosition, "position");
-	glBindAttribLocation(self.programID, GLLVertexAttribColor, "color");
+    glBindAttribLocation(self.programID, GLLVertexAttribPosition, "position");
+    glBindAttribLocation(self.programID, GLLVertexAttribColor, "color");
 }
 
 @end

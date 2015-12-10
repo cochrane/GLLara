@@ -18,7 +18,7 @@
 
 + (NSSet *)keyPathsForValuesAffectingDescription
 {
-	return [NSSet setWithObject:@"name"];
+    return [NSSet setWithObject:@"name"];
 }
 
 @dynamic name;
@@ -26,18 +26,18 @@
 
 - (GLLItem *)item
 {
-	return self.mesh.item;
+    return self.mesh.item;
 }
 
 - (GLLRenderParameterDescription *)parameterDescription
 {
-	return [self.mesh.mesh.shader descriptionForParameter:self.name];
+    return [self.mesh.mesh.shader descriptionForParameter:self.name];
 }
 
 - (NSData *)uniformValue
 {
-	[self doesNotRecognizeSelector:_cmd];
-	return nil;
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
 }
 
 @end

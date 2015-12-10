@@ -13,15 +13,15 @@
 
 + (NSSet *)keyPathsForValuesAffectingUniformValue
 {
-	return [NSSet setWithObject:@"value"];
+    return [NSSet setWithObject:@"value"];
 }
 
 @dynamic value;
 
 - (NSData *)uniformValue;
 {
-	float value = self.value;
-	return [NSData dataWithBytes:&value length:sizeof(value)];
+    float value = self.value;
+    return [NSData dataWithBytes:&value length:sizeof(value)];
 }
 
 @end

@@ -28,7 +28,7 @@ static inline mat_float16 simd_mat_sub(mat_float16 a, mat_float16 b)
 
 static inline mat_float16 simd_mat_scale(mat_float16 a, float s)
 {
-	return (mat_float16) { simd_scale(a.x, s), simd_scale(a.y, s), simd_scale(a.z, s), simd_scale(a.w, s) };
+    return (mat_float16) { simd_scale(a.x, s), simd_scale(a.y, s), simd_scale(a.z, s), simd_scale(a.w, s) };
 }
 
 /*!
@@ -46,49 +46,49 @@ static inline mat_float16 simd_mat_identity()
  */
 static inline mat_float16 simd_mat_transpose3(const mat_float16 a)
 {
-	mat_float16 result;
+    mat_float16 result;
 #if defined(__SSE__)
-	// Basierend auf _MM_TRANSPOSE4_PS wie in Apples xmmintrin.h definiert,
-	// welches wiederum auf Intel C++ Compiler User Guide and Reference
-	// basiert
-	vec_float4 tp0 = _mm_unpacklo_ps(a.x, a.y);
-	vec_float4 tp1 = _mm_unpacklo_ps(a.z, _mm_setzero_ps());
-	vec_float4 tp2 = _mm_unpackhi_ps(a.x, a.y);
-	vec_float4 tp3 = _mm_unpackhi_ps(a.z, _mm_setzero_ps());
-	
-	result.x = _mm_movelh_ps(tp0, tp1);
-	result.y = _mm_movehl_ps(tp1, tp0);
-	result.z = _mm_movelh_ps(tp2, tp3);
-	result.w = _mm_movehl_ps(tp2, tp3);
+    // Basierend auf _MM_TRANSPOSE4_PS wie in Apples xmmintrin.h definiert,
+    // welches wiederum auf Intel C++ Compiler User Guide and Reference
+    // basiert
+    vec_float4 tp0 = _mm_unpacklo_ps(a.x, a.y);
+    vec_float4 tp1 = _mm_unpacklo_ps(a.z, _mm_setzero_ps());
+    vec_float4 tp2 = _mm_unpackhi_ps(a.x, a.y);
+    vec_float4 tp3 = _mm_unpackhi_ps(a.z, _mm_setzero_ps());
+    
+    result.x = _mm_movelh_ps(tp0, tp1);
+    result.y = _mm_movehl_ps(tp1, tp0);
+    result.z = _mm_movelh_ps(tp2, tp3);
+    result.w = _mm_movehl_ps(tp2, tp3);
 #elif defined(__VEC__)
-	// Basierend auf Apple-Beispielcode
+    // Basierend auf Apple-Beispielcode
     vec_float4 tp0 = vec_mergeh(a.x, a.z);
-	vec_float4 tp1 = vec_mergeh(a.y, simd_zero());
-	vec_float4 tp2 = vec_mergel(a.x, a.z);
-	vec_float4 tp3 = vec_mergel(a.y, simd_zero());
-	
-	result.x = vec_mergeh(tp0, tp1);
-	result.y = vec_mergel(tp0, tp1);
-	result.z = vec_mergeh(tp2, tp3);
-	result.w = vec_mergel(tp2, tp3);
+    vec_float4 tp1 = vec_mergeh(a.y, simd_zero());
+    vec_float4 tp2 = vec_mergel(a.x, a.z);
+    vec_float4 tp3 = vec_mergel(a.y, simd_zero());
+    
+    result.x = vec_mergeh(tp0, tp1);
+    result.y = vec_mergel(tp0, tp1);
+    result.z = vec_mergeh(tp2, tp3);
+    result.w = vec_mergel(tp2, tp3);
 #elif defined(__NEON__)
-	float32x4x2_t x0 = vzipq_f32(a.x, a.y);
-	float32x4x2_t x1 = vzipq_f32(a.z, simd_zero());
-	
-	result.x = vcombine_f32(vget_low_f32(x0.val[0]), vget_low_f32(x1.val[0]));
-	result.z = vcombine_f32(vget_low_f32(x0.val[1]), vget_low_f32(x1.val[1]));
-	result.y = vcombine_f32(vget_high_f32(x0.val[0]), vget_high_f32(x1.val[0]));
-	result.w = vcombine_f32(vget_high_f32(x0.val[1]), vget_high_f32(x1.val[1]));
+    float32x4x2_t x0 = vzipq_f32(a.x, a.y);
+    float32x4x2_t x1 = vzipq_f32(a.z, simd_zero());
+    
+    result.x = vcombine_f32(vget_low_f32(x0.val[0]), vget_low_f32(x1.val[0]));
+    result.z = vcombine_f32(vget_low_f32(x0.val[1]), vget_low_f32(x1.val[1]));
+    result.y = vcombine_f32(vget_high_f32(x0.val[0]), vget_high_f32(x1.val[0]));
+    result.w = vcombine_f32(vget_high_f32(x0.val[1]), vget_high_f32(x1.val[1]));
 #else
-	result = a;
-	const float* restrict aF = (const float *) &a;
-	float* restrict resultF = (float *) &result;
-	
-	for (unsigned i = 0; i < 3; i++)
-		for (unsigned j = 0; j < 3; j++)
-			resultF[i*4 + j] = aF[j*4 + i];
+    result = a;
+    const float* restrict aF = (const float *) &a;
+    float* restrict resultF = (float *) &result;
+    
+    for (unsigned i = 0; i < 3; i++)
+        for (unsigned j = 0; j < 3; j++)
+            resultF[i*4 + j] = aF[j*4 + i];
 #endif
-	return result;
+    return result;
 }
 
 /*!
@@ -97,7 +97,7 @@ static inline mat_float16 simd_mat_transpose3(const mat_float16 a)
 static inline vec_float4 simd_mat_vecrotate(const mat_float16 m, const vec_float4 v)
 {
 #if defined(__NEON__)
-	return vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(m.x, vgetq_lane_f32(v, 0)), m.y, vgetq_lane_f32(v, 1)), m.z, vgetq_lane_f32(v, 2));
+    return vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(m.x, vgetq_lane_f32(v, 0)), m.y, vgetq_lane_f32(v, 1)), m.z, vgetq_lane_f32(v, 2));
 #else
     return simd_splat(v, 0) * m.x + simd_splat(v, 1) * m.y + simd_splat(v, 2) * m.z;
 #endif
@@ -108,7 +108,7 @@ static inline vec_float4 simd_mat_vecrotate(const mat_float16 m, const vec_float
  */
 static inline vec_float4 simd_mat_vecunrotate(const mat_float16 m, const vec_float4 v)
 {
-	return simd_mat_vecrotate(simd_mat_transpose3(m), v);
+    return simd_mat_vecrotate(simd_mat_transpose3(m), v);
 }
 
 /*!
@@ -117,7 +117,7 @@ static inline vec_float4 simd_mat_vecunrotate(const mat_float16 m, const vec_flo
 static inline vec_float4 simd_mat_vecmul(const mat_float16 m, const vec_float4 v)
 {
 #if defined(__NEON__)
-	return vmlaq_n_f32(simd_mat_vecrotate(m, v), m.w, vgetq_lane_f32(v, 3));
+    return vmlaq_n_f32(simd_mat_vecrotate(m, v), m.w, vgetq_lane_f32(v, 3));
 #else
     return simd_mat_vecrotate(m, v) + simd_splat(v, 3) * m.w;
 #endif
@@ -143,49 +143,49 @@ static inline mat_float16 simd_mat_mul(const mat_float16 a, const mat_float16 b)
 static inline mat_float16 simd_mat_inverse(mat_float16 a)
 {
     // 1. Schritt: Matrix transponieren
-	//	Theoretisch nicht nötig für w, schadet aber auch nicht da es vollständig
-	//	überschrieben wird und nichts davon abhängt.
+    //	Theoretisch nicht nötig für w, schadet aber auch nicht da es vollständig
+    //	überschrieben wird und nichts davon abhängt.
     mat_float16 result = simd_mat_transpose3(a);
     
     // 2. Schritt: w berechnen
 #if defined(__NEON__)
-	result.w = vnegq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(result.x, vgetq_lane_f32(a.w, 0)), result.y, vgetq_lane_f32(a.w, 1)), result.z, vgetq_lane_f32(a.w, 2))) + simd_e_w;
+    result.w = vnegq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(result.x, vgetq_lane_f32(a.w, 0)), result.y, vgetq_lane_f32(a.w, 1)), result.z, vgetq_lane_f32(a.w, 2))) + simd_e_w;
 #else
-	result.w =  -(simd_splat(a.w, 0) * result.x + simd_splat(a.w, 1) * result.y + simd_splat(a.w, 2) * result.z) + simd_e_w;
+    result.w =  -(simd_splat(a.w, 0) * result.x + simd_splat(a.w, 1) * result.y + simd_splat(a.w, 2) * result.z) + simd_e_w;
 #endif
     return result;
 }
 
 static inline mat_float16 simd_mat_unit_directional(const vec_float4 unitDir, const vec_float4 position)
 {
-	mat_float16 result;
-	result.x = unitDir;
-	result.z = simd_normalize_e(simd_cross3(result.x, simd_e_y));
-	result.y = simd_normalize_e(simd_cross3(result.z, result.x));
-	result.w = position;
-	return result;
+    mat_float16 result;
+    result.x = unitDir;
+    result.z = simd_normalize_e(simd_cross3(result.x, simd_e_y));
+    result.y = simd_normalize_e(simd_cross3(result.z, result.x));
+    result.w = position;
+    return result;
 }
 
 
 static inline mat_float16 simd_mat_directional(const vec_float4 dir, const vec_float4 position)
 {
-	return simd_mat_unit_directional(simd_normalize_e(dir), position);
+    return simd_mat_unit_directional(simd_normalize_e(dir), position);
 }
 
 static inline mat_float16 simd_mat_positional(const vec_float4 position)
 {
-	return (mat_float16) {{1.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.0f}, position};
+    return (mat_float16) {{1.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.0f}, position};
 }
 
 static inline mat_float16 simd_mat_lookat(vec_float4 direction, vec_float4 camPosition)
 {
-	mat_float16 result;
-	result.x = simd_normalize_e(simd_cross3(direction, simd_e_y));
-	result.y = simd_normalize_e(simd_cross3(result.x, direction));
-	result.z = simd_normalize_e(-direction);
-	result.w = camPosition;
-	
-	return simd_mat_inverse(result);
+    mat_float16 result;
+    result.x = simd_normalize_e(simd_cross3(direction, simd_e_y));
+    result.y = simd_normalize_e(simd_cross3(result.x, direction));
+    result.z = simd_normalize_e(-direction);
+    result.w = camPosition;
+    
+    return simd_mat_inverse(result);
 }
 
 /*!
@@ -206,14 +206,14 @@ static inline mat_float16 simd_mat_rotate(float angleInRadian, vec_float4 axis)
      * D.h. für Spalte i haben wir
      * M[i] = u * splat(u, i) * ((1 1 1) - cos(alpha)*(1 1 1)) + ((1 0 0) >> i) * cos(alpha) + (sin(alpha)) * entweder (0 z -y), (-z 0 x) oder (y -x 0)
      * Einige Aspekte davon sind konstant über alle Spalten, cos*I laesst sich
-	 * durch eine Verschiebung zwischen den Spalten realisieren. Wirklich
-	 * interessant ist nur der Sinus-Teil, da hier geschuffelt werden muss und
-	 * gleichzeitig auch, abhaengig vom Code, negiert. Eine Auswahl zwischen
-	 * zwei Vektoren beim Shuffle ist am sinnvollsten, aber es findet hier eine
-	 * Begrenzung durch SSE statt: Die ersten beiden Werte des Ergebnisses
-	 * muessen aus dem ersten, die zweiten aus dem zweiten Argumentvektor
-	 * kommen. Daher ist nicht einer negiert und einer positiv, sondernd beide
-	 * durchmischt, was den Code zweifellos schwieriger zu lesen macht.
+     * durch eine Verschiebung zwischen den Spalten realisieren. Wirklich
+     * interessant ist nur der Sinus-Teil, da hier geschuffelt werden muss und
+     * gleichzeitig auch, abhaengig vom Code, negiert. Eine Auswahl zwischen
+     * zwei Vektoren beim Shuffle ist am sinnvollsten, aber es findet hier eine
+     * Begrenzung durch SSE statt: Die ersten beiden Werte des Ergebnisses
+     * muessen aus dem ersten, die zweiten aus dem zweiten Argumentvektor
+     * kommen. Daher ist nicht einer negiert und einer positiv, sondernd beide
+     * durchmischt, was den Code zweifellos schwieriger zu lesen macht.
      */
     vec_float4 sin = simd_splatf(sinf(angleInRadian));
     vec_float4 cos = simd_splatf(cosf(angleInRadian));
@@ -236,7 +236,7 @@ static inline mat_float16 simd_mat_rotate(float angleInRadian, vec_float4 axis)
 
 static inline mat_float16 simd_mat_extractrotation(mat_float16 a)
 {
-	return (mat_float16) { a.x, a.y, a.z, simd_e_w };
+    return (mat_float16) { a.x, a.y, a.z, simd_e_w };
 }
 
 /*!

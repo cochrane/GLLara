@@ -14,15 +14,15 @@
 
 - (id)initWithPlist:(NSDictionary *)plist name:(NSString *)name baseURL:(NSURL *)baseURL modelParameters:(GLLModelParams *)parameters;
 {
-	if (!(self = [super init])) return nil;
-	
-	_baseURL = [baseURL copy];
-	_name = [name copy];
-	
-	_vertexName = plist[@"vertex"];
-	_geometryName = plist[@"geometry"];
-	_fragmentName = plist[@"fragment"];
-	
+    if (!(self = [super init])) return nil;
+    
+    _baseURL = [baseURL copy];
+    _name = [name copy];
+    
+    _vertexName = plist[@"vertex"];
+    _geometryName = plist[@"geometry"];
+    _fragmentName = plist[@"fragment"];
+    
     NSMutableArray *flattened = [[NSMutableArray alloc] init];
     for (id object in plist[@"parameters"]) {
         if ([object isKindOfClass:[NSArray class]]) {
@@ -33,40 +33,40 @@
     }
     _parameterUniformNames = [flattened copy];
     
-	_textureUniformNames = plist[@"textures"];
-	_additionalUniformNames = plist[@"additionalParameters"];
-	
-	_alphaMeshGroups = [NSSet setWithArray:plist[@"alphaMeshGroups"]];
-	_solidMeshGroups = [NSSet setWithArray:plist[@"solidMeshGroups"]];
-
-	_programIdentifier = [NSString stringWithFormat:@"%@ (%@)", _name, _baseURL.absoluteString];
-	
-	_parameters = parameters;
-	
-	return self;
+    _textureUniformNames = plist[@"textures"];
+    _additionalUniformNames = plist[@"additionalParameters"];
+    
+    _alphaMeshGroups = [NSSet setWithArray:plist[@"alphaMeshGroups"]];
+    _solidMeshGroups = [NSSet setWithArray:plist[@"solidMeshGroups"]];
+    
+    _programIdentifier = [NSString stringWithFormat:@"%@ (%@)", _name, _baseURL.absoluteString];
+    
+    _parameters = parameters;
+    
+    return self;
 }
 
 - (NSArray *)allUniformNames
 {
-	if (!self.parameterUniformNames)
-		return self.additionalUniformNames;
-	else
-		return [self.parameterUniformNames arrayByAddingObjectsFromArray:self.additionalUniformNames];
+    if (!self.parameterUniformNames)
+        return self.additionalUniformNames;
+    else
+        return [self.parameterUniformNames arrayByAddingObjectsFromArray:self.additionalUniformNames];
 }
 
 - (NSString *)localizedName
 {
-	return [[NSBundle mainBundle] localizedStringForKey:self.name value:nil table:@"Shaders"];
+    return [[NSBundle mainBundle] localizedStringForKey:self.name value:nil table:@"Shaders"];
 }
 
 - (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
 {
-	return [self.parameters descriptionForParameter:parameterName];
+    return [self.parameters descriptionForParameter:parameterName];
 }
 
 - (GLLTextureDescription *)descriptionForTexture:(NSString *)textureUniformName;
 {
-	return [self.parameters descriptionForTexture:textureUniformName];
+    return [self.parameters descriptionForTexture:textureUniformName];
 }
 
 @end

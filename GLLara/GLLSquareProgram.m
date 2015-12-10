@@ -14,16 +14,16 @@
 
 - (id)initWithResourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 {
-	if (!(self = [self initWithName:@"internal-square" fragmentShaderName:@"Square.fs" geometryShaderName:nil vertexShaderName:@"Square.vs" baseURL:nil additionalDefines:@{} resourceManager:manager error:error])) return nil;
-	
-	glUniform1i(glGetUniformLocation(self.programID, "texImage"), 0);
-
-	return self;
+    if (!(self = [self initWithName:@"internal-square" fragmentShaderName:@"Square.fs" geometryShaderName:nil vertexShaderName:@"Square.vs" baseURL:nil additionalDefines:@{} resourceManager:manager error:error])) return nil;
+    
+    glUniform1i(glGetUniformLocation(self.programID, "texImage"), 0);
+    
+    return self;
 }
 
 - (void)bindAttributeLocations
 {
-	glBindAttribLocation(self.programID, 0, "position");
+    glBindAttribLocation(self.programID, 0, "position");
 }
 
 @end

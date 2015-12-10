@@ -26,8 +26,8 @@
 
 - (IBAction)help:(id)sender;
 {
-	NSString *locBookName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleHelpBookName"];
-	[[NSHelpManager sharedHelpManager] openHelpAnchor:@"models" inBook:locBookName];
+    NSString *locBookName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleHelpBookName"];
+    [[NSHelpManager sharedHelpManager] openHelpAnchor:@"models" inBook:locBookName];
 }
 
 @end

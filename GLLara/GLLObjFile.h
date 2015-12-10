@@ -24,78 +24,78 @@
 class GLLObjFile
 {
 public:
-	struct VertexData
-	{
-		float vert[3];
-		float norm[3];
-		unsigned char color[4];
-		float tex[2];
-	};
-	struct MaterialRange
-	{
-		unsigned start;
-		unsigned end;
-		std::string materialName;
-		MaterialRange(unsigned s, unsigned e, const std::string &m) : start(s), end(e), materialName(m) {}
-	};
+    struct VertexData
+    {
+        float vert[3];
+        float norm[3];
+        unsigned char color[4];
+        float tex[2];
+    };
+    struct MaterialRange
+    {
+        unsigned start;
+        unsigned end;
+        std::string materialName;
+        MaterialRange(unsigned s, unsigned e, const std::string &m) : start(s), end(e), materialName(m) {}
+    };
 private:
-	// Vertex data as saved in the OBJ-file.
-	std::vector<float> vertices;
-	std::vector<float> normals;
-	std::vector<float> texCoords;
-	std::vector<unsigned char> colors;
-	
-	// Indices as saved in the OBJ-file.
-	struct IndexSet
-	{
-		int vertex;
-		int normal;
-		int texCoord;
-		int color; // Color is an XNA-Lara extension
-		
-		bool operator<(const GLLObjFile::IndexSet &other) const;
-		bool operator>(const GLLObjFile::IndexSet &other) const
-			{ return other < *this; }
+    // Vertex data as saved in the OBJ-file.
+    std::vector<float> vertices;
+    std::vector<float> normals;
+    std::vector<float> texCoords;
+    std::vector<unsigned char> colors;
+    
+    // Indices as saved in the OBJ-file.
+    struct IndexSet
+    {
+        int vertex;
+        int normal;
+        int texCoord;
+        int color; // Color is an XNA-Lara extension
+        
+        bool operator<(const GLLObjFile::IndexSet &other) const;
+        bool operator>(const GLLObjFile::IndexSet &other) const
+        { return other < *this; }
         bool operator==(const GLLObjFile::IndexSet &other) const;
         size_t hash() const;
-	};
-	std::vector<IndexSet> originalIndices;
+    };
+    std::vector<IndexSet> originalIndices;
     
     struct IndexSetHash {
         size_t operator()(const IndexSet &set) const {
             return set.hash();
         }
     };
-	
-	// Mapping from a/b/c to single indices
+    
+    // Mapping from a/b/c to single indices
     std::unordered_map<IndexSet, unsigned, IndexSetHash> vertexDataIndexForSet;
-	
-	// Vertex buffer, used by OpenGL
-	std::vector<VertexData> vertexData;
-	
-	// Index buffers, used by OpenGL
-	std::vector<unsigned> indices;
-			
-	// Support for material handling.
-	std::vector<MaterialRange> materialRanges;
-	CFMutableArrayRef materialLibraryURLs;
-	
-	// Parsing
-	void parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw();
-	void parseFloatVector(const char *line, std::vector<float> &values, unsigned number) throw();
-	void parseFace(std::istream &string);
+    
+    // Vertex buffer, used by OpenGL
+    std::vector<VertexData> vertexData;
+    
+    // Index buffers, used by OpenGL
+    std::vector<unsigned> indices;
+    
+    // Support for material handling.
+    std::vector<MaterialRange> materialRanges;
+    CFMutableArrayRef materialLibraryURLs;
+    
+    // Parsing
+    void parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw();
+    void parseFloatVector(const char *line, std::vector<float> &values, unsigned number) throw();
+    void parseFace(std::istream &string);
 				
-	void fillIndices();
-	
-	// Find the single index needed for OpenGL for a given a/b/c set.
-	unsigned unifiedIndex(const IndexSet &indexSet);
-	
+    void fillIndices();
+    
+    // Find the single index needed for OpenGL for a given a/b/c set.
+    unsigned unifiedIndex(const IndexSet &indexSet);
+    
 public:
-	GLLObjFile(CFURLRef location);
-	~GLLObjFile();
-	
-	const std::vector<MaterialRange> &getMaterialRanges() const { return materialRanges; }
-	const std::vector<VertexData> &getVertexData() const { return vertexData; }
-	const std::vector<unsigned> &getIndices() const { return indices; }
-	CFArrayRef getMaterialLibaryURLs() const { return materialLibraryURLs; }
+    GLLObjFile(CFURLRef location);
+    ~GLLObjFile();
+    
+    const std::vector<MaterialRange> &getMaterialRanges() const { return materialRanges; }
+    const std::vector<VertexData> &getVertexData() const { return vertexData; }
+    const std::vector<unsigned> &getIndices() const { return indices; }
+    CFArrayRef getMaterialLibaryURLs() const { return materialLibraryURLs; }
 };

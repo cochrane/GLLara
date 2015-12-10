@@ -39,7 +39,7 @@ static id map(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(
 
 - (NSArray *)map:(id (^)(id))block;
 {
-	return map(self, self.count, block);
+    return map(self, self.count, block);
 }
 - (NSMutableArray *)mapMutable:(id (^)(id))block;
 {
@@ -47,16 +47,16 @@ static id map(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(
 }
 - (NSArray *)mapAndJoin:(NSArray *(^)(id))block;
 {
-	NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
-	
-	for (id object in self)
-	{
-		NSArray *newObjects = block(object);
-		if (!newObjects) continue;
-		[result addObjectsFromArray:newObjects];
-	}
-	
-	return result;
+    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
+    
+    for (id object in self)
+    {
+        NSArray *newObjects = block(object);
+        if (!newObjects) continue;
+        [result addObjectsFromArray:newObjects];
+    }
+    
+    return result;
 }
 - (id)firstObjectMatching:(BOOL(^)(id))predicate;
 {
@@ -82,19 +82,19 @@ static id map(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(
 
 - (NSDictionary *)mapValues:(id (^)(id))block;
 {
-	return [self mapValuesWithKey:^(id key, id value) { return block(value); }];
+    return [self mapValuesWithKey:^(id key, id value) { return block(value); }];
 }
 - (NSDictionary *)mapValuesWithKey:(id (^)(id key, id value))block;
 {
-	NSMutableDictionary *result = [[NSMutableDictionary alloc] initWithCapacity:self.count];
-	
-	for (id key in self)
-	{
-		id newObject = block(key, self[key]);
-		if (!newObject) continue;
-		result[key] = newObject;
-	}
-	return [result copy];
+    NSMutableDictionary *result = [[NSMutableDictionary alloc] initWithCapacity:self.count];
+    
+    for (id key in self)
+    {
+        id newObject = block(key, self[key]);
+        if (!newObject) continue;
+        result[key] = newObject;
+    }
+    return [result copy];
 }
 
 @end
@@ -116,18 +116,18 @@ static id map(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(
 
 - (NSArray *)map:(id (^)(NSUInteger))block;
 {
-	if (self.count == 0) return @[];
-	
-	NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
-	
-	for (NSUInteger index = self.firstIndex; index <= self.lastIndex; index = [self indexGreaterThanIndex:index])
-	{
-		id newObject = block(index);
-		if (!newObject) continue;
-		[result addObject:newObject];
-	}
-	
-	return [result copy];
+    if (self.count == 0) return @[];
+    
+    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
+    
+    for (NSUInteger index = self.firstIndex; index <= self.lastIndex; index = [self indexGreaterThanIndex:index])
+    {
+        id newObject = block(index);
+        if (!newObject) continue;
+        [result addObject:newObject];
+    }
+    
+    return [result copy];
 }
 
 @end

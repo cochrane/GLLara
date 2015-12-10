@@ -12,12 +12,12 @@
 
 - (id)initWithPlist:(NSDictionary *)plist;
 {
-	if (!(self = [super init])) return nil;
-	
-	_localizedTitle = [[NSBundle mainBundle] localizedStringForKey:plist[@"title"] value:nil table:@"Textures"];
-	_localizedDescription = [[NSBundle mainBundle] localizedStringForKey:plist[@"description"] value:nil table:@"Textures"];
-		
-	return self;
+    if (!(self = [super init])) return nil;
+    
+    _localizedTitle = [[NSBundle mainBundle] localizedStringForKey:plist[@"title"] value:nil table:@"Textures"];
+    _localizedDescription = [[NSBundle mainBundle] localizedStringForKey:plist[@"description"] value:nil table:@"Textures"];
+    
+    return self;
 }
 
 @end

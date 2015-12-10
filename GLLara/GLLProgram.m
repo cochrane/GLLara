@@ -1,6 +1,6 @@
 //
 //  GLLProgram.m
-//  
+//
 //
 //  Created by Torsten Kammer on 14.09.12.
 //
@@ -51,7 +51,7 @@
 			return nil;
 		}
 	}
-		
+	
 	return [self initWithName:name fragmentShader:fragment geometryShader:geometry vertexShader:vertex error:error];
 }
 
@@ -72,7 +72,7 @@
 		glAttachShader(_programID, geometry.shaderID);
 	
 	[self bindAttributeLocations];
-		
+	
 	glLinkProgram(_programID);
 	
 	GLint linkStatus;
@@ -87,14 +87,14 @@
 		
 		if (error)
 			*error = [NSError errorWithDomain:@"OpenGL" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"The shader \"%@\" could not be linked", @"GLLShader error message description"), _name],
-			NSLocalizedFailureReasonErrorKey : [NSString stringWithFormat:NSLocalizedString(@"Message from OpenGL driver: %s", log)],
-	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Please inform a developer of this problem.", @"No shader there wtf?")
-					  }];
+																		   NSLocalizedFailureReasonErrorKey : [NSString stringWithFormat:NSLocalizedString(@"Message from OpenGL driver: %s", log)],
+																		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Please inform a developer of this problem.", @"No shader there wtf?")
+																		   }];
 		NSLog(@"link error in shader %@: %s", _name, log);
 		[self unload];
 		return nil;
 	}
-		
+	
 	return self;
 }
 

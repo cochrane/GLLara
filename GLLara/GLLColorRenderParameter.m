@@ -14,16 +14,16 @@
 
 + (NSSet *)keyPathsForValuesAffectingUniformValue
 {
-	return [NSSet setWithObject:@"value"];
+    return [NSSet setWithObject:@"value"];
 }
 
 @dynamic value;
 
 - (NSData *)uniformValue;
 {
-	float values[4];
-	[self.value get128BitRGBAComponents:values];
-	return [NSData dataWithBytes:&values length:sizeof(values)];
+    float values[4];
+    [self.value get128BitRGBAComponents:values];
+    return [NSData dataWithBytes:&values length:sizeof(values)];
 }
 
 @end

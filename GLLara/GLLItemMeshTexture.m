@@ -21,33 +21,33 @@
 
 - (void)awakeFromFetch
 {
-	[super awakeFromFetch];
-	
-	// Get URL from bookmark
-	NSData *bookmarkData = self.textureBookmarkData;
-	if (bookmarkData)
-	{
-		NSURL *textureURL = [NSURL URLByResolvingBookmarkData:bookmarkData options:0 relativeToURL:nil bookmarkDataIsStale:NULL error:NULL];
-		[self setPrimitiveValue:textureURL forKey:@"textureURL"];
-	}
+    [super awakeFromFetch];
+    
+    // Get URL from bookmark
+    NSData *bookmarkData = self.textureBookmarkData;
+    if (bookmarkData)
+    {
+        NSURL *textureURL = [NSURL URLByResolvingBookmarkData:bookmarkData options:0 relativeToURL:nil bookmarkDataIsStale:NULL error:NULL];
+        [self setPrimitiveValue:textureURL forKey:@"textureURL"];
+    }
 }
 
 - (void)willSave
 {
-	// Put URL into bookmark
-	NSURL *textureURL = [self primitiveValueForKey:@"textureURL"];
-	if (textureURL)
-	{
-		NSData *bookmark = [textureURL bookmarkDataWithOptions:0 includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
-		[self setPrimitiveValue:bookmark forKey:@"textureBookmarkData"];
-	}
-	else
-		[self setPrimitiveValue:nil forKey:@"textureBookmarkData"];
+    // Put URL into bookmark
+    NSURL *textureURL = [self primitiveValueForKey:@"textureURL"];
+    if (textureURL)
+    {
+        NSData *bookmark = [textureURL bookmarkDataWithOptions:0 includingResourceValuesForKeys:nil relativeToURL:nil error:NULL];
+        [self setPrimitiveValue:bookmark forKey:@"textureBookmarkData"];
+    }
+    else
+        [self setPrimitiveValue:nil forKey:@"textureBookmarkData"];
 }
 
 - (GLLTextureDescription *)textureDescription
 {
-	return [self.mesh.mesh.shader descriptionForTexture:self.identifier];
+    return [self.mesh.mesh.shader descriptionForTexture:self.identifier];
 }
 
 @end

@@ -47,7 +47,7 @@
     }];
     
     multipleSelectionMarker = NSMultipleValuesMarker;
-
+    
     return self;
 }
 

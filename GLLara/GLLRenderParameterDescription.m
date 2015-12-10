@@ -15,17 +15,17 @@ NSString *GLLRenderParameterTypeColor = @"color";
 
 - (id)initWithPlist:(NSDictionary *)plist;
 {
-	if (!(self = [super init])) return nil;
-	
-	_min = [plist[@"min"] floatValue];
-	_max = [plist[@"max"] floatValue];
-	_localizedTitle = [[NSBundle mainBundle] localizedStringForKey:plist[@"title"] value:nil table:@"RenderParameters"];
-	_localizedDescription = [[NSBundle mainBundle] localizedStringForKey:plist[@"description"] value:nil table:@"RenderParameters"];
-	
-	_type = plist[@"type"];
-	if (!_type) _type = GLLRenderParameterTypeFloat;
-	
-	return self;
+    if (!(self = [super init])) return nil;
+    
+    _min = [plist[@"min"] floatValue];
+    _max = [plist[@"max"] floatValue];
+    _localizedTitle = [[NSBundle mainBundle] localizedStringForKey:plist[@"title"] value:nil table:@"RenderParameters"];
+    _localizedDescription = [[NSBundle mainBundle] localizedStringForKey:plist[@"description"] value:nil table:@"RenderParameters"];
+    
+    _type = plist[@"type"];
+    if (!_type) _type = GLLRenderParameterTypeFloat;
+    
+    return self;
 }
 
 - (NSUInteger)hash

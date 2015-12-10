@@ -18,130 +18,130 @@
 
 - (id)initWithModel:(GLLModel *)model;
 {
-	if (!(self = [super init])) return nil;
-	
-	_model = model;
-	
-	_parentIndex = UINT16_MAX;
-	_children = @[];
-	
-	_positionX = 0;
-	_positionY = 0;
-	_positionZ = 0;
-	
-	_positionMatrix = simd_mat_identity();
-	_inversePositionMatrix = simd_mat_identity();
-	
-	_name = NSLocalizedString(@"Root bone", @"Only bone in a boneless format");
-	
-	return self;
-
+    if (!(self = [super init])) return nil;
+    
+    _model = model;
+    
+    _parentIndex = UINT16_MAX;
+    _children = @[];
+    
+    _positionX = 0;
+    _positionY = 0;
+    _positionZ = 0;
+    
+    _positionMatrix = simd_mat_identity();
+    _inversePositionMatrix = simd_mat_identity();
+    
+    _name = NSLocalizedString(@"Root bone", @"Only bone in a boneless format");
+    
+    return self;
+    
 }
 
 - (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
-	if (!(self = [super init])) return nil;
-	
-	if (![stream isValid])
-	{
-		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
-				   NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error"),
-	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file breaks off in the middle of the bones section. Maybe it is damaged?", @"Premature end of file error")
-					  }];
-		return nil;
-	}
-	
-	_model = model;
-	
-	_name = [stream readPascalString];
-	_parentIndex = [stream readUint16];
-	_positionX = [stream readFloat32];
-	_positionY = [stream readFloat32];
-	_positionZ = [stream readFloat32];
-	
-	if (![stream isValid])
-	{
-		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
-				   NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error"),
-	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file breaks off in the middle of the bones section. Maybe it is damaged?", @"Premature end of file error")
-					  }];
-		return nil;
-	}
-	
-	_positionMatrix = simd_mat_positional(simd_make(_positionX, _positionY, _positionZ, 1.0f));
-	_inversePositionMatrix = simd_mat_positional(simd_make(-_positionX, -_positionY, -_positionZ, 1.0f));
-	
-	return self;
+    if (!(self = [super init])) return nil;
+    
+    if (![stream isValid])
+    {
+        if (error)
+            *error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
+                                                                                                                                 NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error"),
+                                                                                                                                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file breaks off in the middle of the bones section. Maybe it is damaged?", @"Premature end of file error")
+                                                                                                                                 }];
+        return nil;
+    }
+    
+    _model = model;
+    
+    _name = [stream readPascalString];
+    _parentIndex = [stream readUint16];
+    _positionX = [stream readFloat32];
+    _positionY = [stream readFloat32];
+    _positionZ = [stream readFloat32];
+    
+    if (![stream isValid])
+    {
+        if (error)
+            *error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
+                                                                                                                                 NSLocalizedDescriptionKey : NSLocalizedString(@"The file is missing some data.", @"Premature end of file error"),
+                                                                                                                                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file breaks off in the middle of the bones section. Maybe it is damaged?", @"Premature end of file error")
+                                                                                                                                 }];
+        return nil;
+    }
+    
+    _positionMatrix = simd_mat_positional(simd_make(_positionX, _positionY, _positionZ, 1.0f));
+    _inversePositionMatrix = simd_mat_positional(simd_make(-_positionX, -_positionY, -_positionZ, 1.0f));
+    
+    return self;
 }
 
 - (GLLModelBone *)parent
 {
-	if (self.parentIndex >= self.model.bones.count) return nil;
-	return self.model.bones[self.parentIndex];
+    if (self.parentIndex >= self.model.bones.count) return nil;
+    return self.model.bones[self.parentIndex];
 }
 
 #pragma mark - Finishing loading
 
 - (BOOL)findParentsAndChildrenError:(NSError *__autoreleasing*)error;
 {
-	if (self.parentIndex != UINT16_MAX && self.parentIndex >= self.model.bones.count)
-	{
-		if (error)
-			*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{
-				   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Parent of bone \"%@\" does not exist.", @"The parent index of this bone is invalid."), self.name],
-	   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"All bones have to have a parent that exists or no parent at all.", @"The parent index of this bone is invalid.")
-					  }];
-
-		return NO;
-	}
-	
-	GLLModelBone *parent = self.parent;
-	NSMutableSet *encounteredBones = [NSMutableSet setWithObject:self];
-	while (parent != nil)
-	{
-		if ([encounteredBones containsObject:parent])
-		{
-			if (error)
-				*error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_CircularReference userInfo:@{
-					   NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Bone \"%@\" has itself as an ancestor.", @"Found a circle in the bone relationships."), self.name],
-		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The bones would form an infinite loop.", @"Found a circle in a bone relationship")}];
-			
-			return NO;
-		}
-		[encounteredBones addObject:parent];
-		parent = parent.parent;
-	}
-	
-	_children = [self.model.bones filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"parent == %@", self]];
-	return YES;
+    if (self.parentIndex != UINT16_MAX && self.parentIndex >= self.model.bones.count)
+    {
+        if (error)
+            *error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_IndexOutOfRange userInfo:@{
+                                                                                                                              NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Parent of bone \"%@\" does not exist.", @"The parent index of this bone is invalid."), self.name],
+                                                                                                                              NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"All bones have to have a parent that exists or no parent at all.", @"The parent index of this bone is invalid.")
+                                                                                                                              }];
+        
+        return NO;
+    }
+    
+    GLLModelBone *parent = self.parent;
+    NSMutableSet *encounteredBones = [NSMutableSet setWithObject:self];
+    while (parent != nil)
+    {
+        if ([encounteredBones containsObject:parent])
+        {
+            if (error)
+                *error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_CircularReference userInfo:@{
+                                                                                                                                    NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Bone \"%@\" has itself as an ancestor.", @"Found a circle in the bone relationships."), self.name],
+                                                                                                                                    NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The bones would form an infinite loop.", @"Found a circle in a bone relationship")}];
+            
+            return NO;
+        }
+        [encounteredBones addObject:parent];
+        parent = parent.parent;
+    }
+    
+    _children = [self.model.bones filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"parent == %@", self]];
+    return YES;
 }
 
 #pragma mark - Export
 
 - (NSString *)writeASCII;
 {
-	NSMutableString *result = [NSMutableString string];
-	
-	[result appendFormat:@"%@\n", self.name];
-	[result appendFormat:@"%d\n", self.parentIndex != NSNotFound ? (int) self.parentIndex : -1];
-	[result appendFormat:@"%f %f %f\n", self.positionX, self.positionY, self.positionZ];
-	
-	return [result copy];
+    NSMutableString *result = [NSMutableString string];
+    
+    [result appendFormat:@"%@\n", self.name];
+    [result appendFormat:@"%d\n", self.parentIndex != NSNotFound ? (int) self.parentIndex : -1];
+    [result appendFormat:@"%f %f %f\n", self.positionX, self.positionY, self.positionZ];
+    
+    return [result copy];
 }
 
 - (NSData *)writeBinary;
 {
-	TROutDataStream *stream = [[TROutDataStream alloc] init];
-	
-	[stream appendPascalString:self.name];
-	[stream appendUint16:(uint16_t) self.parentIndex];
-	[stream appendFloat32:self.positionX];
-	[stream appendFloat32:self.positionY];
-	[stream appendFloat32:self.positionZ];
-	
-	return stream.data;
+    TROutDataStream *stream = [[TROutDataStream alloc] init];
+    
+    [stream appendPascalString:self.name];
+    [stream appendUint16:(uint16_t) self.parentIndex];
+    [stream appendFloat32:self.positionX];
+    [stream appendFloat32:self.positionY];
+    [stream appendFloat32:self.positionZ];
+    
+    return stream.data;
 }
 
 @end

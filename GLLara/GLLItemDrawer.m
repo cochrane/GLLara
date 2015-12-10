@@ -25,12 +25,12 @@
 
 @interface GLLItemDrawer ()
 {
-	GLuint transformsBuffer;
-	BOOL needToUpdateTransforms;
-	
+    GLuint transformsBuffer;
+    BOOL needToUpdateTransforms;
+    
     NSArray *meshStates;
-	
-	NSArray *bones;
+    
+    NSArray *bones;
     
     // Base arrays for runs. Size is meshStates.count
     GLsizei *allCounts;
@@ -61,40 +61,40 @@
 
 - (id)initWithItem:(GLLItem *)item sceneDrawer:(GLLSceneDrawer *)sceneDrawer error:(NSError *__autoreleasing*)error;
 {
-	if (!(self = [super init])) return nil;
-	
-	_item = item;
-	_sceneDrawer = sceneDrawer;
-	
-	GLLModelDrawData *modelData = [sceneDrawer.resourceManager drawDataForModel:item.model error:error];
-	if (!modelData)
-		return nil;
-	
-	[_item addObserver:self forKeyPath:@"normalChannelAssignmentR" options:0 context:0];
-	[_item addObserver:self forKeyPath:@"normalChannelAssignmentG" options:0 context:0];
-	[_item addObserver:self forKeyPath:@"normalChannelAssignmentB" options:0 context:0];
-	
-	// Observe all the bones
-	// Store bones so we can unregister.
-	// Getting the bones from the item to unregister may not work, because they may already be gone when the drawer gets unloaded.
-	bones = [item.bones map:^(id transform){
-		[transform addObserver:self forKeyPath:@"globalTransform" options:0 context:0];
-		return transform;
-	}];
-	
-	// Observe settings of all meshes
-	meshStates = [modelData.meshDatas map:^(GLLMeshDrawData *meshData) {
-		return [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:meshData itemMesh:[item itemMeshForModelMesh:meshData.modelMesh] error:error];
-	}];
-	if (meshStates.count < modelData.meshDatas.count)
-	{
-		[self unload];
-		return nil;
-	}
+    if (!(self = [super init])) return nil;
     
-	glGenBuffers(1, &transformsBuffer);
-	needToUpdateTransforms = YES;
-	_needsRedraw = YES;
+    _item = item;
+    _sceneDrawer = sceneDrawer;
+    
+    GLLModelDrawData *modelData = [sceneDrawer.resourceManager drawDataForModel:item.model error:error];
+    if (!modelData)
+        return nil;
+    
+    [_item addObserver:self forKeyPath:@"normalChannelAssignmentR" options:0 context:0];
+    [_item addObserver:self forKeyPath:@"normalChannelAssignmentG" options:0 context:0];
+    [_item addObserver:self forKeyPath:@"normalChannelAssignmentB" options:0 context:0];
+    
+    // Observe all the bones
+    // Store bones so we can unregister.
+    // Getting the bones from the item to unregister may not work, because they may already be gone when the drawer gets unloaded.
+    bones = [item.bones map:^(id transform){
+        [transform addObserver:self forKeyPath:@"globalTransform" options:0 context:0];
+        return transform;
+    }];
+    
+    // Observe settings of all meshes
+    meshStates = [modelData.meshDatas map:^(GLLMeshDrawData *meshData) {
+        return [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:meshData itemMesh:[item itemMeshForModelMesh:meshData.modelMesh] error:error];
+    }];
+    if (meshStates.count < modelData.meshDatas.count)
+    {
+        [self unload];
+        return nil;
+    }
+    
+    glGenBuffers(1, &transformsBuffer);
+    needToUpdateTransforms = YES;
+    _needsRedraw = YES;
     
     allCounts = calloc(sizeof(GLsizei), meshStates.count);
     allBaseVertices = calloc(sizeof(GLint), meshStates.count);
@@ -103,43 +103,43 @@
     runStarts = calloc(sizeof(GLsizei), meshStates.count);
     
     [self _findRuns];
-	
-	return self;
+    
+    return self;
 }
 
 - (void)dealloc
 {
-	NSAssert(transformsBuffer == 0, @"Have to call unload first!");
+    NSAssert(transformsBuffer == 0, @"Have to call unload first!");
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:@"globalTransform"] || [keyPath isEqual:@"normalChannelAssignmentR"] || [keyPath isEqual:@"normalChannelAssignmentG"] || [keyPath isEqual:@"normalChannelAssignmentB"])
-	{
-		needToUpdateTransforms = YES;
-		self.needsRedraw = YES;
-	}
-	else [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    if ([keyPath isEqual:@"globalTransform"] || [keyPath isEqual:@"normalChannelAssignmentR"] || [keyPath isEqual:@"normalChannelAssignmentG"] || [keyPath isEqual:@"normalChannelAssignmentB"])
+    {
+        needToUpdateTransforms = YES;
+        self.needsRedraw = YES;
+    }
+    else [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
 
 - (void)setNeedsRedraw:(BOOL)needsRedraw
 {
-	if (needsRedraw && !_needsRedraw)
-	{
-		[self willChangeValueForKey:@"needsRedraw"];
-		_needsRedraw = needsRedraw;
-		[self didChangeValueForKey:@"needsRedraw"];
-	}
-	else
-		_needsRedraw = needsRedraw;
+    if (needsRedraw && !_needsRedraw)
+    {
+        [self willChangeValueForKey:@"needsRedraw"];
+        _needsRedraw = needsRedraw;
+        [self didChangeValueForKey:@"needsRedraw"];
+    }
+    else
+        _needsRedraw = needsRedraw;
 }
 
 - (void)drawSolidWithState:(GLLDrawState *)state;
 {
-	if (needToUpdateTransforms) [self _updateTransforms];
+    if (needToUpdateTransforms) [self _updateTransforms];
     if (needsUpdateRuns) [self _findRuns];
-	
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
+    
+    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
     
     for (GLsizei run = 0; run < solidRunCounts; run++) {
         GLLItemMeshState *meshState = runStartStates[run];
@@ -149,14 +149,14 @@
         GLsizei runLength = runLengths[run];
         glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, meshState.drawData.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
     }
-	
-	self.needsRedraw = NO;
+    
+    self.needsRedraw = NO;
 }
 - (void)drawAlphaWithState:(GLLDrawState *)state;
 {
     if (needToUpdateTransforms) [self _updateTransforms];
     if (needsUpdateRuns) [self _findRuns];
-	
+    
     glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
     
     for (GLsizei run = solidRunCounts; run < (solidRunCounts + alphaRunCounts); run++) {
@@ -167,25 +167,25 @@
         GLsizei runLength = runLengths[run];
         glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, meshState.drawData.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
     }
-	
-	self.needsRedraw = NO;
+    
+    self.needsRedraw = NO;
 }
 
 - (void)unload;
 {
-	[_item removeObserver:self forKeyPath:@"normalChannelAssignmentR"];
-	[_item removeObserver:self forKeyPath:@"normalChannelAssignmentG"];
-	[_item removeObserver:self forKeyPath:@"normalChannelAssignmentB"];
-	
-	for (id bone in bones)
-		[bone removeObserver:self forKeyPath:@"globalTransform"];
-	bones = nil;
-	
-	[meshStates makeObjectsPerformSelector:@selector(unload)];
-	meshStates = nil;
-	
-	glDeleteBuffers(1, &transformsBuffer);
-	transformsBuffer = 0;
+    [_item removeObserver:self forKeyPath:@"normalChannelAssignmentR"];
+    [_item removeObserver:self forKeyPath:@"normalChannelAssignmentG"];
+    [_item removeObserver:self forKeyPath:@"normalChannelAssignmentB"];
+    
+    for (id bone in bones)
+        [bone removeObserver:self forKeyPath:@"globalTransform"];
+    bones = nil;
+    
+    [meshStates makeObjectsPerformSelector:@selector(unload)];
+    meshStates = nil;
+    
+    glDeleteBuffers(1, &transformsBuffer);
+    transformsBuffer = 0;
     
     free(allCounts);
     free(allBaseVertices);
@@ -196,13 +196,13 @@
 
 - (void)_updateTransforms
 {
-	// The first matrix stores the normal transform, so make the buffer one
-	// longer than needed for the bones themselves.
-	NSUInteger boneCount = self.item.bones.count;
-	NSUInteger matrixCount = boneCount + 1;
-	
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, matrixCount * sizeof(mat_float16), NULL, GL_STREAM_DRAW);
+    // The first matrix stores the normal transform, so make the buffer one
+    // longer than needed for the bones themselves.
+    NSUInteger boneCount = self.item.bones.count;
+    NSUInteger matrixCount = boneCount + 1;
+    
+    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
+    glBufferData(GL_UNIFORM_BUFFER, matrixCount * sizeof(mat_float16), NULL, GL_STREAM_DRAW);
     mat_float16 *matrices = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
     matrices[0].x = [self _permutationTableColumn:self.item.normalChannelAssignmentR];
     matrices[0].y = [self _permutationTableColumn:self.item.normalChannelAssignmentG];
@@ -211,29 +211,29 @@
     for (NSUInteger i = 0; i < boneCount; i++)
         [[[self.item.bones objectAtIndex:i] globalTransform] getValue:&matrices[i + 1]];
     glUnmapBuffer(GL_UNIFORM_BUFFER);
-	
-	needToUpdateTransforms = NO;
+    
+    needToUpdateTransforms = NO;
 }
 
 - (vec_float4)_permutationTableColumn:(int16_t)mapping;
 {
-	switch (mapping)
-	{
-		case GLLNormalPos: return simd_e_z; break;
-		case GLLNormalNeg: return -simd_e_z; break;
-		case GLLTangentUPos: return simd_e_y; break;
-		case GLLTangentUNeg: return -simd_e_y; break;
-		case GLLTangentVPos: return simd_e_x; break;
-		case GLLTangentVNeg: return -simd_e_x; break;
-		default: return simd_zero();
-	}
+    switch (mapping)
+    {
+        case GLLNormalPos: return simd_e_z; break;
+        case GLLNormalNeg: return -simd_e_z; break;
+        case GLLTangentUPos: return simd_e_y; break;
+        case GLLTangentUNeg: return -simd_e_y; break;
+        case GLLTangentVPos: return simd_e_x; break;
+        case GLLTangentVNeg: return -simd_e_x; break;
+        default: return simd_zero();
+    }
 }
 
 - (void)_findRuns {
     meshStates = [meshStates sortedArrayUsingComparator:^(GLLItemMeshState *a, GLLItemMeshState *b) {
         return [a compareTo:b];
     }];
-
+    
     runStartStates = nil;
     NSMutableArray *startStates = [NSMutableArray array];
     

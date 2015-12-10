@@ -16,20 +16,20 @@
 
 - (id)init
 {
-	return [self initWithNibName:@"GLLPoseExportViewController" bundle:nil];
+    return [self initWithNibName:@"GLLPoseExportViewController" bundle:nil];
 }
 
 - (void)setExportOnlySelectedBones:(BOOL)exportOnlySelectedBones
 {
-	if (exportOnlySelectedBones)
-		self.selectionMode = 0;
-	else
-		self.selectionMode = 1;
+    if (exportOnlySelectedBones)
+        self.selectionMode = 0;
+    else
+        self.selectionMode = 1;
 }
 
 - (BOOL)exportOnlySelectedBones
 {
-	return self.selectionMode == 0;
+    return self.selectionMode == 0;
 }
 
 @end

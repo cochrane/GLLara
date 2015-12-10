@@ -24,19 +24,19 @@
 
 - (id)initWithModel:(GLLModel *)model resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing *)error;
 {
-	if (!(self = [super init])) return nil;
-	
-	_model = model;
-	_resourceManager = resourceManager;
-	
-	NSMutableArray *mutableMeshDatas = [[NSMutableArray alloc] init];
+    if (!(self = [super init])) return nil;
+    
+    _model = model;
+    _resourceManager = resourceManager;
+    
+    NSMutableArray *mutableMeshDatas = [[NSMutableArray alloc] init];
     NSMutableDictionary *mutableVertexArrays = [[NSMutableDictionary alloc] init];
-	for (GLLModelMesh *mesh in model.meshes)
-	{
-		// Ignore objects that can't be rendered.
-		if (!mesh.shader)
-			continue;
-		
+    for (GLLModelMesh *mesh in model.meshes)
+    {
+        // Ignore objects that can't be rendered.
+        if (!mesh.shader)
+            continue;
+        
         GLLVertexArray *array = mutableVertexArrays[mesh.vertexFormat];
         if (!array) {
             array = [[GLLVertexArray alloc] initWithFormat:mesh.vertexFormat];
@@ -44,29 +44,29 @@
         }
         
         GLLMeshDrawData *drawData = [[GLLMeshDrawData alloc] initWithMesh:mesh vertexArray:array resourceManager:resourceManager error:error];
-		if (!drawData)
-		{
+        if (!drawData)
+        {
             [mutableMeshDatas makeObjectsPerformSelector:@selector(unload)];
-			[self unload];
-			return nil;
-		}
-		
+            [self unload];
+            return nil;
+        }
+        
         [mutableMeshDatas addObject:drawData];
-	}
+    }
     
-	_meshDatas = [mutableMeshDatas copy];
+    _meshDatas = [mutableMeshDatas copy];
     _vertexArrays = [[mutableVertexArrays allValues] copy];
     [_vertexArrays makeObjectsPerformSelector:@selector(upload)];
-	
-	return self;
+    
+    return self;
 }
 
 - (void)unload;
 {
-	[self.meshDatas makeObjectsPerformSelector:@selector(unload)];
+    [self.meshDatas makeObjectsPerformSelector:@selector(unload)];
     [self.vertexArrays makeObjectsPerformSelector:@selector(unload)];
-	
-	_meshDatas = nil;
+    
+    _meshDatas = nil;
     _vertexArrays = nil;
 }
 

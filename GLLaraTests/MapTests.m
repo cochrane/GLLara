@@ -14,14 +14,14 @@
 
 - (void)testEmptyIndexSet
 {
-	NSIndexSet *empty = [NSIndexSet indexSet];
-	
-	NSArray *result = [empty map:^(NSUInteger index){
-		return @(index);
-	}];
-	
-	XCTAssertNotNil(result, @"Should return empty (but non-nil) array");
-	XCTAssertEqual(result.count, 0UL, @"Should have no elements");
+    NSIndexSet *empty = [NSIndexSet indexSet];
+    
+    NSArray *result = [empty map:^(NSUInteger index){
+        return @(index);
+    }];
+    
+    XCTAssertNotNil(result, @"Should return empty (but non-nil) array");
+    XCTAssertEqual(result.count, 0UL, @"Should have no elements");
 }
 
 @end

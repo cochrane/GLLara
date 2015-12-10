@@ -25,16 +25,16 @@
 
 struct GLLAlphaTestBlock
 {
-	GLuint mode;
-	GLfloat reference;
+    GLuint mode;
+    GLfloat reference;
 };
 
 @interface GLLResourceManager ()
 {
-	NSMutableDictionary *shaders;
-	NSMutableDictionary *programs;
-	NSMutableDictionary *textures;
-	NSMutableDictionary *models;
+    NSMutableDictionary *shaders;
+    NSMutableDictionary *programs;
+    NSMutableDictionary *textures;
+    NSMutableDictionary *models;
 }
 
 - (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
@@ -50,61 +50,61 @@ static GLLResourceManager *sharedManager;
 
 + (id)sharedResourceManager
 {
-	if (!sharedManager)
-		sharedManager = [[GLLResourceManager alloc] init];
-	
-	return sharedManager;
+    if (!sharedManager)
+        sharedManager = [[GLLResourceManager alloc] init];
+    
+    return sharedManager;
 }
 
 - (id)init
 {
-	if (!(self = [super init])) return nil;
-	
-	NSOpenGLPixelFormatAttribute attribs[] = {
-		NSOpenGLPFAOpenGLProfile, (NSOpenGLPixelFormatAttribute) NSOpenGLProfileVersion3_2Core,
-		0, 0, 0
-	};
+    if (!(self = [super init])) return nil;
+    
+    NSOpenGLPixelFormatAttribute attribs[] = {
+        NSOpenGLPFAOpenGLProfile, (NSOpenGLPixelFormatAttribute) NSOpenGLProfileVersion3_2Core,
+        0, 0, 0
+    };
     if ([[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefForceSoftwareRendering]) {
         attribs[2] = NSOpenGLPFARendererID;
         attribs[3] = kCGLRendererGenericFloatID;
     }
-	
-	NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
-	_openGLContext = [[NSOpenGLContext alloc] initWithFormat:format shareContext:nil];
-	[_openGLContext makeCurrentContext];
-	NSAssert(_openGLContext, @"Should have an OpenGL context here");
-	
-	shaders = [[NSMutableDictionary alloc] init];
-	programs = [[NSMutableDictionary alloc] init];
-	textures = [[NSMutableDictionary alloc] init];
-	models = [[NSMutableDictionary alloc] init];
-	
-	// Alpha test buffers
-	glGenBuffers(1, &_alphaTestPassGreaterBuffer);
+    
+    NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
+    _openGLContext = [[NSOpenGLContext alloc] initWithFormat:format shareContext:nil];
+    [_openGLContext makeCurrentContext];
+    NSAssert(_openGLContext, @"Should have an OpenGL context here");
+    
+    shaders = [[NSMutableDictionary alloc] init];
+    programs = [[NSMutableDictionary alloc] init];
+    textures = [[NSMutableDictionary alloc] init];
+    models = [[NSMutableDictionary alloc] init];
+    
+    // Alpha test buffers
+    glGenBuffers(1, &_alphaTestPassGreaterBuffer);
     glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestPassGreaterBuffer);
     struct GLLAlphaTestBlock alphaBlock = { .mode = 1, .reference = .9 };
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
-	glGenBuffers(1, &_alphaTestPassLessBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestPassLessBuffer);
-	alphaBlock.mode = 2;
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
-	
-	return self;
+    glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
+    glGenBuffers(1, &_alphaTestPassLessBuffer);
+    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestPassLessBuffer);
+    alphaBlock.mode = 2;
+    glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
+    
+    return self;
 }
 
 - (void)dealloc;
 {
-	[self.openGLContext makeCurrentContext];
-	
-	[models.allValues makeObjectsPerformSelector:@selector(unload)];
-	[textures.allValues makeObjectsPerformSelector:@selector(unload)];
-	[programs.allValues makeObjectsPerformSelector:@selector(unload)];
-	[shaders.allValues makeObjectsPerformSelector:@selector(unload)];
-	
-	models = nil;
-	textures = nil;
-	programs = nil;
-	shaders = nil;
+    [self.openGLContext makeCurrentContext];
+    
+    [models.allValues makeObjectsPerformSelector:@selector(unload)];
+    [textures.allValues makeObjectsPerformSelector:@selector(unload)];
+    [programs.allValues makeObjectsPerformSelector:@selector(unload)];
+    [shaders.allValues makeObjectsPerformSelector:@selector(unload)];
+    
+    models = nil;
+    textures = nil;
+    programs = nil;
+    shaders = nil;
 }
 
 #pragma mark - Retrieving resources
@@ -164,19 +164,19 @@ static GLLResourceManager *sharedManager;
 
 - (GLLProgram *)squareProgram
 {
-	if (!_squareProgram)
-	{
+    if (!_squareProgram)
+    {
         _squareProgram = [self _makeWithContext:^{
             return [[GLLSquareProgram alloc] initWithResourceManager:self error:NULL];
         }];
-	}
-	return _squareProgram;
+    }
+    return _squareProgram;
 }
 
 - (GLuint)squareVertexArray
 {
-	if (!_squareVertexArray)
-	{
+    if (!_squareVertexArray)
+    {
         [self _makeWithContext:^{
             glGenVertexArrays(1, &_squareVertexArray);
             glBindVertexArray(_squareVertexArray);
@@ -194,19 +194,19 @@ static GLLResourceManager *sharedManager;
             glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat [2]), NULL);
             return (id) nil;
         }];
-	}
-	return _squareVertexArray;
+    }
+    return _squareVertexArray;
 }
 
 - (GLLProgram *)skeletonProgram
 {
-	if (!_skeletonProgram)
+    if (!_skeletonProgram)
     {
         _skeletonProgram = [self _makeWithContext:^{
             return [[GLLSkeletonProgram alloc] initWithResourceManager:self error:NULL];
         }];
-	}
-	return _skeletonProgram;
+    }
+    return _skeletonProgram;
 }
 
 #pragma mark - OpenGL limits
@@ -224,15 +224,15 @@ static GLLResourceManager *sharedManager;
 
 - (void)clearInternalCaches;
 {
-	[models.allValues makeObjectsPerformSelector:@selector(unload)];
-	[textures.allValues makeObjectsPerformSelector:@selector(unload)];
-	[programs.allValues makeObjectsPerformSelector:@selector(unload)];
-	[shaders.allValues makeObjectsPerformSelector:@selector(unload)];
-
-	[models removeAllObjects];
-	[textures removeAllObjects];
-	[programs removeAllObjects];
-	[shaders removeAllObjects];
+    [models.allValues makeObjectsPerformSelector:@selector(unload)];
+    [textures.allValues makeObjectsPerformSelector:@selector(unload)];
+    [programs.allValues makeObjectsPerformSelector:@selector(unload)];
+    [shaders.allValues makeObjectsPerformSelector:@selector(unload)];
+    
+    [models removeAllObjects];
+    [textures removeAllObjects];
+    [programs removeAllObjects];
+    [shaders removeAllObjects];
 }
 
 #pragma mark - Private methods
@@ -256,26 +256,26 @@ static GLLResourceManager *sharedManager;
         dictionary[key] = result;
     }
     return result;
-
+    
 }
 
 - (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
-	NSString *actualFilename = [[filename componentsSeparatedByString:@"\\"] lastObject];
-	
-	NSURL *localURL = [NSURL URLWithString:actualFilename relativeToURL:baseURL];
-	NSData *localData = [NSData dataWithContentsOfURL:localURL];
-	if (localData) return localData;
-	
-	NSURL *resourceURL = [NSURL URLWithString:actualFilename relativeToURL:[[NSBundle mainBundle] resourceURL]];
-	return [NSData dataWithContentsOfURL:resourceURL options:0 error:error];
+    NSString *actualFilename = [[filename componentsSeparatedByString:@"\\"] lastObject];
+    
+    NSURL *localURL = [NSURL URLWithString:actualFilename relativeToURL:baseURL];
+    NSData *localData = [NSData dataWithContentsOfURL:localURL];
+    if (localData) return localData;
+    
+    NSURL *resourceURL = [NSURL URLWithString:actualFilename relativeToURL:[[NSBundle mainBundle] resourceURL]];
+    return [NSData dataWithContentsOfURL:resourceURL options:0 error:error];
 }
 - (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 {
-	NSData *data = [self _dataForFilename:filename baseURL:baseURL error:error];
-	if (!data) return nil;
-	
-	return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSData *data = [self _dataForFilename:filename baseURL:baseURL error:error];
+    if (!data) return nil;
+    
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 @end

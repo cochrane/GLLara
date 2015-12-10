@@ -265,9 +265,9 @@ static inline uint16_t halfFloat(const float *value) {
                     intWeights[j] = (uint16_t) packSignedFloat(weights[j] / sum, 16);
                 }
             }
-// Skip because unnecessary
-//            originalVertex += 16;
-//            vertex += 8;
+            // Skip because unnecessary
+            //            originalVertex += 16;
+            //            vertex += 8;
         }
     }
     
@@ -353,7 +353,7 @@ static inline uint16_t halfFloat(const float *value) {
     
     glBindVertexArray(0);
     glDeleteBuffers(2, buffers);
-
+    
     vertexData = nil;
     elementData = nil;
 }

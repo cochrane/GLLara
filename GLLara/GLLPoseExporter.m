@@ -22,33 +22,33 @@
 
 - (id)initWithItem:(GLLItem *)item
 {
-	NSParameterAssert(item);
-	return [self initWithBones:item.combinedBones];
+    NSParameterAssert(item);
+    return [self initWithBones:item.combinedBones];
 }
 
 - (id)initWithBones:(id)bones
 {
-	NSParameterAssert(bones);
-	if (!(self = [super init])) return nil;
-	
-	self.bonesList = bones;
-	
-	return self;
+    NSParameterAssert(bones);
+    if (!(self = [super init])) return nil;
+    
+    self.bonesList = bones;
+    
+    return self;
 }
 
 - (NSString *)poseDescription
 {
-	NSMutableString *string = [[NSMutableString alloc] init];
-	
-	for (GLLItemBone *bone in self.bonesList)
-	{
-		if (self.skipUnused && [bone.bone.name hasPrefix:@"unused"])
-			continue;
-		
-		[string appendFormat:@"%@: %f %f %f %f %f %f\r\n", bone.bone.name, bone.rotationX * 180.0 / M_PI, bone.rotationY * 180.0 / M_PI, bone.rotationZ * 180.0 / M_PI, bone.positionX, bone.positionY, bone.positionZ];
-	}
-	
-	return [string copy];
+    NSMutableString *string = [[NSMutableString alloc] init];
+    
+    for (GLLItemBone *bone in self.bonesList)
+    {
+        if (self.skipUnused && [bone.bone.name hasPrefix:@"unused"])
+            continue;
+        
+        [string appendFormat:@"%@: %f %f %f %f %f %f\r\n", bone.bone.name, bone.rotationX * 180.0 / M_PI, bone.rotationY * 180.0 / M_PI, bone.rotationZ * 180.0 / M_PI, bone.positionX, bone.positionY, bone.positionZ];
+    }
+    
+    return [string copy];
 }
 
 @end

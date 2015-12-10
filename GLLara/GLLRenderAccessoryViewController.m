@@ -19,29 +19,29 @@
 - (id)init
 {
     self = [super initWithNibName:@"GLLRenderAccessoryView" bundle:nil];
-	
-	NSArray *typeNames = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
-	
-	self.fileTypes = [typeNames map:^(NSString *type){
-		NSString *description = (__bridge_transfer NSString *) UTTypeCopyDescription((__bridge CFStringRef) type);
-		if (!description) description = type;
-		return @{ @"type" : type,
-		@"typeDescription" : description };
-	}];
-	self.selectedFileType = self.fileTypes[0];
-	
+    
+    NSArray *typeNames = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
+    
+    self.fileTypes = [typeNames map:^(NSString *type){
+        NSString *description = (__bridge_transfer NSString *) UTTypeCopyDescription((__bridge CFStringRef) type);
+        if (!description) description = type;
+        return @{ @"type" : type,
+                  @"typeDescription" : description };
+    }];
+    self.selectedFileType = self.fileTypes[0];
+    
     return self;
 }
 
 - (void)setSelectedFileType:(NSDictionary *)selectedFileType
 {
-	_selectedFileType = selectedFileType;
-	self.savePanel.allowedFileTypes = @[ selectedFileType[@"type"] ];
+    _selectedFileType = selectedFileType;
+    self.savePanel.allowedFileTypes = @[ selectedFileType[@"type"] ];
 }
 
 - (NSString *)selectedTypeIdentifier
 {
-	return self.selectedFileType[@"type"];
+    return self.selectedFileType[@"type"];
 }
 
 @end

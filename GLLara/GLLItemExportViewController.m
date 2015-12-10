@@ -16,8 +16,8 @@
 
 - (id)init
 {
-	if (!(self = [super initWithNibName:@"GLLItemExportView" bundle:nil]))
-		return nil;
+    if (!(self = [super initWithNibName:@"GLLItemExportView" bundle:nil]))
+        return nil;
     
     return self;
 }

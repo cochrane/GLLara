@@ -22,7 +22,7 @@
 @interface GLLMeshDrawData ()
 {
     GLLVertexArray *vertexArray;
-	GLsizei elementsCount;
+    GLsizei elementsCount;
     GLenum elementType;
     GLint baseVertex;
     GLsizeiptr indicesStart;
@@ -34,9 +34,9 @@
 
 - (id)initWithMesh:(GLLModelMesh *)mesh vertexArray:(GLLVertexArray *)array resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 {
-	if (!(self = [super init])) return nil;
-	
-	_modelMesh = mesh;
+    if (!(self = [super init])) return nil;
+    
+    _modelMesh = mesh;
     elementsCount = (GLsizei) mesh.countOfElements;
     vertexArray = array;
     indicesStart = (GLvoid *) array.elementDataLength;
@@ -57,19 +57,19 @@
     }
     
     [array addVertices:mesh.vertexData elements:mesh.elementData];
-	
-	return self;
+    
+    return self;
 }
 
 - (void)unload
 {
-	vertexArray = nil;
-	elementsCount = 0;
+    vertexArray = nil;
+    elementsCount = 0;
 }
 
 - (void)dealloc
 {
-	NSAssert(vertexArray == 0 && elementsCount == 0, @"Did not call unload before calling dealloc!");
+    NSAssert(vertexArray == 0 && elementsCount == 0, @"Did not call unload before calling dealloc!");
 }
 
 - (GLenum)elementType

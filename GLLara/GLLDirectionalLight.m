@@ -15,7 +15,7 @@
 
 + (NSSet *)keyPathsForValuesAffectingUniformBlock
 {
-	return [NSSet setWithObjects:@"isEnabled", @"latitude", @"longitude", @"diffuseColor", @"specularColor", nil];
+    return [NSSet setWithObjects:@"isEnabled", @"latitude", @"longitude", @"diffuseColor", @"specularColor", nil];
 }
 
 @dynamic isEnabled;
@@ -27,31 +27,31 @@
 
 - (void)setLongitude:(float)longitude
 {
-	[self willChangeValueForKey:@"longitude"];
-	
-	float inRange = fmodf(longitude, 2*M_PI);
-	if (inRange < 0.0) inRange += 2*M_PI;
-	
-	[self setPrimitiveValue:@(inRange) forKey:@"longitude"];
-	[self didChangeValueForKey:@"longitude"];
+    [self willChangeValueForKey:@"longitude"];
+    
+    float inRange = fmodf(longitude, 2*M_PI);
+    if (inRange < 0.0) inRange += 2*M_PI;
+    
+    [self setPrimitiveValue:@(inRange) forKey:@"longitude"];
+    [self didChangeValueForKey:@"longitude"];
 }
 
 - (struct GLLLightUniformBlock)uniformBlock
 {
-	if (!self.isEnabled)
-	{
-		struct GLLLightUniformBlock block;
-		bzero(&block, sizeof(block));
-		return block;
-	}
-		
-	struct GLLLightUniformBlock block;
-	block.direction = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
-	
-	[self.diffuseColor get128BitRGBAComponents:block.diffuseColor];
-	[self.specularColor get128BitRGBAComponents:block.specularColor];
-	
-	return block;
+    if (!self.isEnabled)
+    {
+        struct GLLLightUniformBlock block;
+        bzero(&block, sizeof(block));
+        return block;
+    }
+    
+    struct GLLLightUniformBlock block;
+    block.direction = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
+    
+    [self.diffuseColor get128BitRGBAComponents:block.diffuseColor];
+    [self.specularColor get128BitRGBAComponents:block.specularColor];
+    
+    return block;
 }
 
 @end

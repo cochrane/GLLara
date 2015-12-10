@@ -12,28 +12,28 @@
 
 + (BOOL)allowsReverseTransformation
 {
-	return YES;
+    return YES;
 }
 
 + (Class)transformedValueClass
 {
-	return [NSNumber class];
+    return [NSNumber class];
 }
 
 - (id)reverseTransformedValue:(id)value
 {
-	if ([value doubleValue] < 0.0)
-		return @([value doubleValue] + M_PI*2);
-	else
-		return value;
+    if ([value doubleValue] < 0.0)
+        return @([value doubleValue] + M_PI*2);
+    else
+        return value;
 }
 
 - (id)transformedValue:(id)value
 {
-	if ([value doubleValue] > M_PI)
-		return @([value doubleValue] - M_PI*2);
-	else
-		return value;
+    if ([value doubleValue] > M_PI)
+        return @([value doubleValue] - M_PI*2);
+    else
+        return value;
 }
 
 @end
