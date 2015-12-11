@@ -126,7 +126,25 @@
             NSData *actualPixels = [self imageDataFromURL:fileURL];
             
             XCTAssertEqual(expectedPixels.length, actualPixels.length);
-            XCTAssertTrue(memcmp(expectedPixels.bytes, actualPixels.bytes, expectedPixels.length) == 0);
+            
+            double sumOfAbsoluteDifferences = 0;
+            double maxAbsoluteDifference = 0;
+            double sumOfSquaredDifferences = 0.0;
+            
+            const uint8_t *expectedBytes = expectedPixels.bytes;
+            const uint8_t *actualBytes = actualPixels.bytes;
+            for (NSUInteger i = 0; i < expectedPixels.length; i++) {
+                double diff = fabs(expectedBytes[i] - actualBytes[i]);
+                maxAbsoluteDifference = fmax(maxAbsoluteDifference, diff);
+                sumOfAbsoluteDifferences += diff;
+                sumOfSquaredDifferences += diff * diff;
+            }
+            
+            double averageDiff = sumOfAbsoluteDifferences / expectedPixels.length;
+            double averageSquaredDiff = sumOfSquaredDifferences / expectedPixels.length;
+            XCTAssertLessThan(averageDiff, 0.02, @"Average difference");
+            XCTAssertLessThan(maxAbsoluteDifference, 32.0, @"Maximum difference");
+            XCTAssertLessThan(averageSquaredDiff, 0.5, @"Sum of squared differences");
         }
     }
 }
