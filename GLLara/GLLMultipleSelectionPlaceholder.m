@@ -23,9 +23,6 @@
 
 @implementation GLLMultipleSelectionPlaceholder
 
-@synthesize multipleSelectionMarker;
-@synthesize value;
-
 - (instancetype)initWithSelection:(GLLSelection *)selection typeKey:(NSString *)selectionTypeKey;
 {
     NSParameterAssert(selection);
@@ -46,7 +43,7 @@
         [weakSelf update];
     }];
     
-    multipleSelectionMarker = NSMultipleValuesMarker;
+    _multipleSelectionMarker = NSMultipleValuesMarker;
     
     return self;
 }
@@ -80,13 +77,13 @@
 {
     [self willChangeValueForKey:@"value"];
     
-    value = nil;
+    _value = nil;
     for (id object in [self.selection valueForKeyPath:self.selectionTypeKey]) {
         id newValue = [self valueFrom:object];
-        if (!value) {
-            value = newValue;
-        } else if (![newValue isEqual:value]) {
-            value = self.multipleSelectionMarker;
+        if (!_value) {
+            _value = newValue;
+        } else if (![newValue isEqual:_value]) {
+            _value = self.multipleSelectionMarker;
             break;
         }
     }
@@ -98,9 +95,9 @@
 {
     [self willChangeValueForKey:@"value"];
     
-    value = aValue;
+    _value = aValue;
     for (id object in [self.selection valueForKeyPath:self.selectionTypeKey]) {
-        [self setValue:value onSourceObject:object];
+        [self setValue:_value onSourceObject:object];
     }
     
     [self didChangeValueForKey:@"value"];
