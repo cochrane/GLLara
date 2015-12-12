@@ -22,35 +22,33 @@
 @interface GLLMeshDrawData ()
 {
     GLLVertexArray *vertexArray;
-    GLsizei elementsCount;
-    GLenum elementType;
-    GLint baseVertex;
-    GLsizeiptr indicesStart;
 }
 
 @end
 
 @implementation GLLMeshDrawData
 
+@dynamic vertexArray;
+
 - (id)initWithMesh:(GLLModelMesh *)mesh vertexArray:(GLLVertexArray *)array resourceManager:(GLLResourceManager *)resourceManager error:(NSError *__autoreleasing*)error;
 {
     if (!(self = [super init])) return nil;
     
     _modelMesh = mesh;
-    elementsCount = (GLsizei) mesh.countOfElements;
+    _elementsCount = (GLsizei) mesh.countOfElements;
     vertexArray = array;
-    indicesStart = (GLvoid *) array.elementDataLength;
-    baseVertex = (GLint) array.countOfVertices;
+    _indicesStart = (GLvoid *) array.elementDataLength;
+    _baseVertex = (GLint) array.countOfVertices;
     
     switch (array.format.numElementBytes) {
         case 4:
-            elementType = GL_UNSIGNED_INT;
+            _elementType = GL_UNSIGNED_INT;
             break;
         case 2:
-            elementType = GL_UNSIGNED_SHORT;
+            _elementType = GL_UNSIGNED_SHORT;
             break;
         case 1:
-            elementType = GL_UNSIGNED_BYTE;
+            _elementType = GL_UNSIGNED_BYTE;
             break;
         default:
             [NSException raise:NSInvalidArgumentException format:@"Can't deal with vertex format with %li bytes per index", array.format.numElementBytes];
@@ -64,32 +62,12 @@
 - (void)unload
 {
     vertexArray = nil;
-    elementsCount = 0;
+    _elementsCount = 0;
 }
 
 - (void)dealloc
 {
-    NSAssert(vertexArray == 0 && elementsCount == 0, @"Did not call unload before calling dealloc!");
-}
-
-- (GLenum)elementType
-{
-    return elementType;
-}
-
-- (GLint)baseVertex
-{
-    return baseVertex;
-}
-
-- (GLsizeiptr)indicesStart
-{
-    return indicesStart;
-}
-
-- (GLsizei)elementsCount
-{
-    return elementsCount;
+    NSAssert(vertexArray == 0 && _elementsCount == 0, @"Did not call unload before calling dealloc!");
 }
 
 - (GLuint)vertexArray
