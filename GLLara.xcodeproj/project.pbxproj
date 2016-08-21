@@ -873,6 +873,7 @@
 		52ED9E3A16999E370082EABB /* NSArray+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Map.m"; sourceTree = "<group>"; };
 		52ED9E8216A225D90082EABB /* GLLLightsListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLightsListController.h; sourceTree = "<group>"; };
 		52ED9E8316A225D90082EABB /* GLLLightsListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLightsListController.m; sourceTree = "<group>"; };
+		52FC0EA21D6A0E8B00C04885 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1063,6 +1064,7 @@
 		525ACD4A15F0F1A700534E7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				52FC0EA21D6A0E8B00C04885 /* QuartzCore.framework */,
 				5224C8EF15FABC92002A6C76 /* Accelerate.framework */,
 				529692D015F2374F00DF2FA3 /* libz.dylib */,
 				525ACD4B15F0F1A700534E7D /* Cocoa.framework */,
@@ -1649,7 +1651,7 @@
 			attributes = {
 				CLASSPREFIX = GLL;
 				LastTestingUpgradeCheck = 0620;
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Torsten Kammer";
 			};
 			buildConfigurationList = 525ACD4115F0F1A700534E7D /* Build configuration list for PBXProject "GLLara" */;
@@ -2402,6 +2404,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -2461,6 +2464,7 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -2473,6 +2477,7 @@
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -2489,6 +2494,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "GLLaraTests/GLLaraTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -2504,6 +2510,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "GLLaraTests/GLLaraTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};

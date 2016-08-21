@@ -134,7 +134,7 @@
             const uint8_t *expectedBytes = expectedPixels.bytes;
             const uint8_t *actualBytes = actualPixels.bytes;
             for (NSUInteger i = 0; i < expectedPixels.length; i++) {
-                double diff = fabs(expectedBytes[i] - actualBytes[i]);
+                double diff = abs(expectedBytes[i] - actualBytes[i]);
                 maxAbsoluteDifference = fmax(maxAbsoluteDifference, diff);
                 sumOfAbsoluteDifferences += diff;
                 sumOfSquaredDifferences += diff * diff;

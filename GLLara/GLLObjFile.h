@@ -81,7 +81,7 @@ private:
     CFMutableArrayRef materialLibraryURLs;
     
     // Parsing
-    void parseFace(std::istream &string);
+    void parseFace(const char *&current, const char *end);
 				
     void fillIndices();
     

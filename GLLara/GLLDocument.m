@@ -253,7 +253,7 @@
             exporter = [[GLLPoseExporter alloc] initWithBones:[self.selection valueForKeyPath:@"selectedBones"]];
         else
         {
-            GLLItem *selectedItem = ([[self.selection valueForKey:@"selectedItems"] count] > 0) ? [self.selection valueForKey:@"selectedItems"][0] : [[self.selection valueForKey:@"selectedBones"][0] item];
+            GLLItem *selectedItem = ([[self.selection valueForKey:@"selectedItems"] count] > 0) ? [self.selection valueForKey:@"selectedItems"][0] : [(GLLItemBone *) [self.selection valueForKey:@"selectedBones"][0] item];
             exporter = [[GLLPoseExporter alloc] initWithItem:selectedItem];
         }
         
