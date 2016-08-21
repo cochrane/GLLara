@@ -17,6 +17,62 @@
 
 #include "GLLStringURLConversion.h"
 
+#include <QuartzCore/QuartzCore.h>
+
+bool followsString(std::istream &stream, const char *string) {
+    const char *p = string;
+    while (*p) {
+        if (stream.get() != *p)
+            return false;
+        p++;
+    }
+    return true;
+}
+
+void skipToEndOfLine(std::istream &stream) {
+    int character;
+    do {
+        character = stream.get();
+    } while (character >= 0 && character != '\n' && character != '\r');
+}
+
+void parseVector(std::istream &stream, std::vector<float> &values, unsigned number) throw() {
+    for (unsigned i = 0; i < number && stream.good(); i++) {
+        float c;
+        stream >> c;
+        values.push_back(c);
+    }
+    skipToEndOfLine(stream);
+}
+
+void parseVector(std::istream &stream, std::vector<unsigned char> &values, unsigned number) throw() {
+    for (unsigned i = 0; i < number && stream.good(); i++) {
+        int character = stream.get();
+        while (character == ' ' && character >= 0)
+            character = stream.get();
+        
+        unsigned char value = 0;
+        while (character >= '0' && character <= '9') {
+            value = value * 10 + (character - '0');
+            character = stream.get();
+        }
+        values.push_back(value);
+    }
+}
+
+std::string stringToEndOfLine(std::istream &stream) throw() {
+    int character = stream.get();
+    while (character == ' ')
+        character = stream.get();
+    
+    std::string string;
+    while (character != '\n' && character != '\r' && character > 0) {
+        string.push_back(character);
+        character = stream.get();
+    }
+    return string;
+}
+
 bool GLLObjFile::IndexSet::operator<(const GLLObjFile::IndexSet &other) const
 {
     if (vertex < other.vertex) return true;
@@ -43,22 +99,6 @@ size_t GLLObjFile::IndexSet::hash() const {
 bool GLLObjFile::IndexSet::operator==(const GLLObjFile::IndexSet &other) const
 {
     return vertex == other.vertex && normal == other.normal && texCoord == other.texCoord && color == other.color;
-}
-
-void GLLObjFile::parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw()
-{
-    float vals[4];
-    int scanned = sscanf(line, "%*s %f %f %f %f", &vals[0], &vals[1], &vals[2], &vals[3]);
-    for (int i = 0; i < std::min(scanned, (int) number); i++)
-        values.push_back((unsigned char) std::min(vals[i]*255.0f, 255.0f));
-}
-
-void GLLObjFile::parseFloatVector(const char *line, std::vector<float> &values, unsigned number) throw()
-{
-    float vals[4];
-    int scanned = sscanf(line, "%*s %f %f %f %f", &vals[0], &vals[1], &vals[2], &vals[3]);
-    for (int i = 0; i < std::min(scanned, (int) number); i++)
-        values.push_back(vals[i]);
 }
 
 void GLLObjFile::parseFace(std::istream &stream)
@@ -153,6 +193,8 @@ void GLLObjFile::fillIndices()
 
 GLLObjFile::GLLObjFile(CFURLRef location)
 {
+    CFTimeInterval startTime = CACurrentMediaTime();
+    
     std::string filename = GLLStringFromFileURL(location);
     
     std::ifstream stream(filename.c_str());
@@ -164,48 +206,77 @@ GLLObjFile::GLLObjFile(CFURLRef location)
     bool hasFirstMaterial = false;
     while(stream.good())
     {
-        std::string line;
-        std::getline(stream, line);
-        
-        std::istringstream linestream(line);
-        std::string token;
-        linestream >> token;
-        
-        if (token == "v")
-            parseFloatVector(line.c_str(), vertices, 3);
-        else if (token == "vn")
-            parseFloatVector(line.c_str(), normals, 3);
-        else if (token == "vt")
-            parseFloatVector(line.c_str(), texCoords, 2);
-        else if (token == "vc")
-            parseUCharVector(line.c_str(), colors, 4);
-        else if (token == "f")
-            parseFace(linestream);
-        else if (token == "mtllib")
-        {
-            try
-            {
-                CFURLRef mtllibLocation = GLLCreateURLFromString(line.substr(token.size() + 1), location);
-                CFArrayAppendValue(materialLibraryURLs, mtllibLocation);
-                CFRelease(mtllibLocation);
-            }
-            catch (std::exception &e)
-            {
-                std::cerr << "Ignoring mtllib: " << e.what() << std::endl;
-            }
+        int character = stream.get();
+        while (character == ' ' && character >= 0) {
+            character = stream.get();
         }
-        else if (token == "usemtl")
-        {				
-            if (hasFirstMaterial)
-            {
-                // End previous material run
-                materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), activeMaterial));
-            }
-            else
-                hasFirstMaterial = true;
-            
-            linestream >> activeMaterial;
-            activeMaterialStart = (unsigned) originalIndices.size();
+        if (character < 0)
+            break;
+        
+        switch (character) {
+            case 'f':
+                parseFace(stream);
+                break;
+            case 'v':
+                character = stream.get();
+                switch (character) {
+                    case 'n': // Normals
+                        parseVector(stream, normals, 3);
+                        break;
+                    case 't': // Tex coords
+                        parseVector(stream, texCoords, 2);
+                        break;
+                    case 'c': // Colors
+                        parseVector(stream, colors, 4);
+                        break;
+                    case ' ': // Vertex
+                        parseVector(stream, vertices, 3);
+                        break;
+                    default:
+                        skipToEndOfLine(stream);
+                        break;
+                }
+                break;
+            case 'm':
+                if (followsString(stream, "tllib")) {
+                    std::string mtllib = stringToEndOfLine(stream);
+                    
+                    try
+                    {
+                        CFURLRef mtllibLocation = GLLCreateURLFromString(mtllib, location);
+                        CFArrayAppendValue(materialLibraryURLs, mtllibLocation);
+                        CFRelease(mtllibLocation);
+                    }
+                    catch (std::exception &e)
+                    {
+                        std::cerr << "Ignoring mtllib: " << e.what() << std::endl;
+                    }
+                } else {
+                    skipToEndOfLine(stream);
+                }
+                break;
+            case 'u':
+                if (followsString(stream, "semtl")) {
+                    if (hasFirstMaterial)
+                    {
+                        // End previous material run
+                        materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), activeMaterial));
+                    }
+                    else
+                        hasFirstMaterial = true;
+                    
+                    activeMaterial = stringToEndOfLine(stream);
+                    activeMaterialStart = (unsigned) originalIndices.size();
+                } else {
+                    skipToEndOfLine(stream);
+                }
+                break;
+            case '\r': // Empty line
+            case '\n': // Empty line
+            case '#': // Comment
+            default:
+                skipToEndOfLine(stream);
+                break;
         }
     }
     
@@ -213,6 +284,9 @@ GLLObjFile::GLLObjFile(CFURLRef location)
     materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), activeMaterial));
     
     fillIndices();
+    CFTimeInterval endTime = CACurrentMediaTime();
+    
+    std::cout << "parsed obj in " << (endTime - startTime) << std::endl;
 }
 
 GLLObjFile::~GLLObjFile()

@@ -81,8 +81,6 @@ private:
     CFMutableArrayRef materialLibraryURLs;
     
     // Parsing
-    void parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw();
-    void parseFloatVector(const char *line, std::vector<float> &values, unsigned number) throw();
     void parseFace(std::istream &string);
 				
     void fillIndices();
