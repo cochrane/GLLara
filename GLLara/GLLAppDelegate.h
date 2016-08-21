@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Torsten Kammer. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 @class GLLPreferencesWindowController;
 
-@interface GLLAppDelegate : NSObject
+@interface GLLAppDelegate : NSObject<NSApplicationDelegate>
 
 @property (nonatomic, retain) GLLPreferencesWindowController *preferencesWindowController;
 

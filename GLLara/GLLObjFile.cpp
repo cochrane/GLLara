@@ -15,7 +15,110 @@
 #include <sstream>
 #include <stdexcept>
 
+#include <sys/mman.h>
+#include <sys/stat.h>
+
 #include "GLLStringURLConversion.h"
+
+bool followsString(const char *&current, const char *end, const char *string) {
+    const char *p = string;
+    while (*p) {
+        if (current == end || *current != *p)
+            return false;
+        p++;
+        current++;
+    }
+    return true;
+}
+
+void skipToEndOfLine(const char *&current, const char *end) {
+    while (current != end && *current != '\n' && *current != '\r') {
+        current++;
+    }
+}
+
+int parseInt(const char *&current, const char *end) {
+    int value = 0;
+    int signum = 1;
+    while (current != end && *current == '-') {
+        signum *= -1;
+        current += 1;
+    }
+    while (current != end && *current >= '0' && *current <= '9') {
+        value = value * 10 + (*current - '0');
+        current += 1;
+    }
+    return signum * value;
+}
+
+enum float_parse_state_t {
+    INITIAL,
+    SIGN,
+    LEADING_ZERO,
+    LEADING_DECIMAL,
+    INTEGRAL_PART,
+    DECIMAL,
+    FRACTIONAL_PART,
+    EXPONENT_MARKER,
+    EXPONENT_SIGN,
+    EXPONENT,
+    INVALID
+};
+
+float parseFloat(const char *&current, const char *end) {
+    while (current != end && *current == ' ')
+        current += 1;
+    
+    // Sadly can't pass length or end pointer into strtod_l (only get it out), so we have to do this dance to avoid any buffer overflows
+    const char *tokenEnd = current;
+    while (tokenEnd != end && *tokenEnd != ' ' && *tokenEnd != '\n' && *tokenEnd != '\r')
+        tokenEnd += 1;
+    
+    size_t size = tokenEnd - current;
+    char value[size+1];
+    memcpy(value, current, size);
+    value[size] = 0;
+    current = tokenEnd;
+    
+    return strtof_l(value, nullptr, nullptr);
+}
+
+void parseVector(const char *&current, const char *end, std::vector<float> &values, unsigned number) throw() {
+    for (unsigned i = 0; i < number; i++) {
+        while (current != end && *current == ' ') {
+            current += 1;
+        }
+        values.push_back(parseFloat(current, end));
+    }
+    skipToEndOfLine(current, end);
+}
+
+void parseVector(const char *&current, const char *end, std::vector<unsigned char> &values, unsigned number) throw() {
+    for (unsigned i = 0; i < number; i++) {
+        while (current != end && *current == ' ') {
+            current += 1;
+        }
+        
+        unsigned char value = 0;
+        while (current != end && *current >= '0' && *current <= '9') {
+            value = value * 10 + (*current - '0');
+            current += 1;
+        }
+        values.push_back(value);
+    }
+}
+
+std::string stringToEndOfLine(const char *&current, const char *end) throw() {
+    while (current != end && *current == ' ') {
+        current += 1;
+    }
+    
+    const char *start = current;
+    while (current != end && *current != '\n' && *current != '\r') {
+        current += 1;
+    }
+    return std::string(start, current);
+}
 
 bool GLLObjFile::IndexSet::operator<(const GLLObjFile::IndexSet &other) const
 {
@@ -45,38 +148,46 @@ bool GLLObjFile::IndexSet::operator==(const GLLObjFile::IndexSet &other) const
     return vertex == other.vertex && normal == other.normal && texCoord == other.texCoord && color == other.color;
 }
 
-void GLLObjFile::parseUCharVector(const char *line, std::vector<unsigned char> &values, unsigned number) throw()
-{
-    float vals[4];
-    int scanned = sscanf(line, "%*s %f %f %f %f", &vals[0], &vals[1], &vals[2], &vals[3]);
-    for (int i = 0; i < std::min(scanned, (int) number); i++)
-        values.push_back((unsigned char) std::min(vals[i]*255.0f, 255.0f));
-}
-
-void GLLObjFile::parseFloatVector(const char *line, std::vector<float> &values, unsigned number) throw()
-{
-    float vals[4];
-    int scanned = sscanf(line, "%*s %f %f %f %f", &vals[0], &vals[1], &vals[2], &vals[3]);
-    for (int i = 0; i < std::min(scanned, (int) number); i++)
-        values.push_back(vals[i]);
-}
-
-void GLLObjFile::parseFace(std::istream &stream)
+void GLLObjFile::parseFace(const char *&current, const char *end)
 {
     std::vector<IndexSet> sets;
+    if (current != end && *current == 'f')
+        current += 1;
     
-    while (stream.good())
+    while (current != end)
     {
-        std::string indices;
-        stream >> indices;
+        while (current != end && *current == ' ') {
+            current += 1;
+        }
+        
+        if (current == end || *current == '\n' || *current == '\r')
+            break;
         
         IndexSet set;
         
-        int scanned = sscanf(indices.c_str(), "%d/%d/%d/%d", &set.vertex, &set.texCoord, &set.normal, &set.color);
+        // Scan vertex
+        set.vertex = parseInt(current, end);
+        if (current == end || *current != '/') {
+            throw std::invalid_argument("Expected \"/\" (Only OBJ files with vertices, normals and texture coordinates are supported).");
+        }
+        current += 1;
         
-        if (scanned == -1) break; // Reached end of this face.
+        // Scan tex coord
+        set.texCoord = parseInt(current, end);
+        if (current == end || *current != '/') {
+            throw std::invalid_argument("Expected \"/\" (Only OBJ files with vertices, normals and texture coordinates are supported).");
+        }
+        current += 1;
         
-        if (scanned < 3) throw std::invalid_argument("Only OBJ files with vertices, normals and texture coordinates are supported.");
+        // Scan normal
+        set.normal = parseInt(current, end);
+        
+        // Scan color (if present)
+        set.color = INT_MAX;
+        if (current != end && *current == '/') {
+            current += 1;
+            set.color = parseInt(current, end);
+        }
         
         if (set.vertex > 0) set.vertex -= 1;
         else set.vertex += vertices.size() / 3;
@@ -87,12 +198,11 @@ void GLLObjFile::parseFace(std::istream &stream)
         if (set.texCoord > 0) set.texCoord -= 1;
         else set.texCoord += texCoords.size() / 2;
         
-        if (scanned > 3) // Color is optional.
+        if (set.color != INT_MAX) // Color is optional.
         {
             if (set.color > 0) set.color -= 1;
             else set.color += colors.size() / 4;
         }
-        else set.color = INT_MAX;
         
         sets.push_back(set);
     }
@@ -155,59 +265,103 @@ GLLObjFile::GLLObjFile(CFURLRef location)
 {
     std::string filename = GLLStringFromFileURL(location);
     
-    std::ifstream stream(filename.c_str());
-    if (!stream) throw std::runtime_error("Could not open OBJ file.");
+    int fdes = ::open(filename.c_str(), O_RDONLY);
+    if (fdes < 0) {
+        throw std::runtime_error("Could not open file");
+    }
+    
+    struct stat statistics;
+    if (fstat(fdes, &statistics) < 0) {
+        close(fdes);
+        throw std::runtime_error("Could not get file size");
+    }
+    
+    const char *buffer = (const char *) mmap(nullptr, statistics.st_size, PROT_READ, MAP_PRIVATE, fdes, 0);
+    close(fdes);
+    const char *current = buffer;
+    const char *end = &buffer[statistics.st_size];
     
     materialLibraryURLs = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
     std::string activeMaterial("");
     unsigned activeMaterialStart = 0;
     bool hasFirstMaterial = false;
-    while(stream.good())
+    while(current != end)
     {
-        std::string line;
-        std::getline(stream, line);
-        
-        std::istringstream linestream(line);
-        std::string token;
-        linestream >> token;
-        
-        if (token == "v")
-            parseFloatVector(line.c_str(), vertices, 3);
-        else if (token == "vn")
-            parseFloatVector(line.c_str(), normals, 3);
-        else if (token == "vt")
-            parseFloatVector(line.c_str(), texCoords, 2);
-        else if (token == "vc")
-            parseUCharVector(line.c_str(), colors, 4);
-        else if (token == "f")
-            parseFace(linestream);
-        else if (token == "mtllib")
-        {
-            try
-            {
-                CFURLRef mtllibLocation = GLLCreateURLFromString(line.substr(token.size() + 1), location);
-                CFArrayAppendValue(materialLibraryURLs, mtllibLocation);
-                CFRelease(mtllibLocation);
-            }
-            catch (std::exception &e)
-            {
-                std::cerr << "Ignoring mtllib: " << e.what() << std::endl;
-            }
+        while (current != end && (*current == ' ' || *current == '\n' || *current == '\r')) {
+            current++;
         }
-        else if (token == "usemtl")
-        {				
-            if (hasFirstMaterial)
-            {
-                // End previous material run
-                materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), activeMaterial));
-            }
-            else
-                hasFirstMaterial = true;
-            
-            linestream >> activeMaterial;
-            activeMaterialStart = (unsigned) originalIndices.size();
+        if (current == end)
+            break;
+        
+        switch (*current) {
+            case 'f':
+                parseFace(current, end);
+                break;
+            case 'v':
+                current += 1;
+                switch (*current) {
+                    case 'n': // Normals
+                        current += 1;
+                        parseVector(current, end, normals, 3);
+                        break;
+                    case 't': // Tex coords
+                        current += 1;
+                        parseVector(current, end, texCoords, 2);
+                        break;
+                    case 'c': // Colors
+                        current += 1;
+                        parseVector(current, end, colors, 4);
+                        break;
+                    case ' ': // Vertex
+                        parseVector(current, end, vertices, 3);
+                        break;
+                    default:
+                        skipToEndOfLine(current, end);
+                        break;
+                }
+                break;
+            case 'm':
+                if (followsString(current, end, "mtllib")) {
+                    std::string mtllib = stringToEndOfLine(current, end);
+                    
+                    try
+                    {
+                        CFURLRef mtllibLocation = GLLCreateURLFromString(mtllib, location);
+                        CFArrayAppendValue(materialLibraryURLs, mtllibLocation);
+                        CFRelease(mtllibLocation);
+                    }
+                    catch (std::exception &e)
+                    {
+                        std::cerr << "Ignoring mtllib: " << e.what() << std::endl;
+                    }
+                } else {
+                    skipToEndOfLine(current, end);
+                }
+                break;
+            case 'u':
+                if (followsString(current, end, "usemtl")) {
+                    if (hasFirstMaterial)
+                    {
+                        // End previous material run
+                        materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), activeMaterial));
+                    }
+                    else
+                        hasFirstMaterial = true;
+                    
+                    current += 1;
+                    activeMaterial = stringToEndOfLine(current, end);
+                    activeMaterialStart = (unsigned) originalIndices.size();
+                } else {
+                    skipToEndOfLine(current, end);
+                }
+                break;
+            case '#': // Comment
+            default:
+                skipToEndOfLine(current, end);
+                break;
         }
     }
+    munmap((void *) buffer, statistics.st_size);
     
     // Wrap up final material group
     materialRanges.push_back(MaterialRange(activeMaterialStart, (unsigned) originalIndices.size(), activeMaterial));
