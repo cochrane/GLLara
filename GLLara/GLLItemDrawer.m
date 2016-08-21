@@ -245,7 +245,7 @@
     // Find runs in meshes
     for (NSUInteger i = 0; i < meshStates.count; i++) {
         GLLItemMeshState *state = meshStates[i];
-        if (!state.itemMesh.isVisible) {
+        if (!state.itemMesh.isVisible || !state.program) {
             continue;
         }
         

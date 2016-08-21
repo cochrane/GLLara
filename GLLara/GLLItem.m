@@ -198,7 +198,8 @@
     }
     
     // -- Trigger a rebuild of the matrices
-    [[bones objectAtIndex:0] setPositionX:0];
+    if (bones.count > 0)
+    [bones[0] setPositionX:0];
     
     for (NSString *cameraTargetName in model.cameraTargetNames)
     {

@@ -33,10 +33,6 @@
     NSMutableDictionary *mutableVertexArrays = [[NSMutableDictionary alloc] init];
     for (GLLModelMesh *mesh in model.meshes)
     {
-        // Ignore objects that can't be rendered.
-        if (!mesh.shader)
-            continue;
-        
         GLLVertexArray *array = mutableVertexArrays[mesh.vertexFormat];
         if (!array) {
             array = [[GLLVertexArray alloc] initWithFormat:mesh.vertexFormat];
