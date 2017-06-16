@@ -183,7 +183,7 @@ struct GLLLightBlock
 									 32,
 									 4 * size.width,
 									 colorSpace,
-									 kCGImageAlphaLast,
+									 (CGBitmapInfo) kCGImageAlphaLast,
 									 dataProvider,
 									 NULL,
 									 YES,

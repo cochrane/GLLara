@@ -37,7 +37,7 @@
     _modelMesh = mesh;
     _elementsCount = (GLsizei) mesh.countOfElements;
     vertexArray = array;
-    _indicesStart = (GLvoid *) array.elementDataLength;
+    _indicesStart = (GLsizeiptr) array.elementDataLength;
     _baseVertex = (GLint) array.countOfVertices;
     
     switch (array.format.numElementBytes) {
