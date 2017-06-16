@@ -156,14 +156,14 @@ void main()
 #ifdef SPECULAR
         // TODO: This has grown historically, there's really no reason for these two different names here. But changing it now might impact save files.
 #ifdef MATERIAL_PARAMETERS
-        float exponent = parameters.bumpSpecularGloss;
-#else
         float exponent = parameters.specularExponent;
+#else
+        float exponent = parameters.bumpSpecularGloss;
 #endif
         
         // Specular term
         vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normalWorld);
-        float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), parameters.bumpSpecularGloss);
+        float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), exponent);
 #ifndef MATERIAL_PARAMETERS
         // TODO: Would make sense to get rid of this amount factor and just offer users a specular color
         specularFactor *= parameters.bumpSpecularAmount;
