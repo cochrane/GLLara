@@ -237,10 +237,10 @@ static inline uint16_t halfFloat(const float *value) {
                 uint32_t *normalized = vertex;
                 float invLength = 1.0f / sqrtf(tangents[0]*tangents[0] + tangents[1]*tangents[1] + tangents[2]*tangents[2]);
                 *normalized = 0;
-                *normalized += packSignedFloat(tangents[0] * invLength, 10);
-                *normalized += packSignedFloat(tangents[1] * invLength, 10) << 10;
-                *normalized += packSignedFloat(tangents[2] * invLength, 10) << 20;
-                *normalized += packSignedFloat(copysign(tangents[3], 1.0f), 2) << 30;
+                *normalized |= packSignedFloat(tangents[0] * invLength, 10);
+                *normalized |= packSignedFloat(tangents[1] * invLength, 10) << 10;
+                *normalized |= packSignedFloat(tangents[2] * invLength, 10) << 20;
+                *normalized |= packSignedFloat(copysign(tangents[3], 1.0f), 2) << 30;
                 vertex += 4;
                 originalVertex += 16;
             }
