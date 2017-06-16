@@ -73,6 +73,11 @@
 	<dict>
 		<key>TexturelessOBJ</key>
 		<dict>
+			<key>defines</key>
+			<dict>
+				<key>CALCULATE_NORMAL_WORLD</key>
+				<string>1</string>
+			</dict>
 			<key>additionalParameters</key>
 			<array>
 				<string>specularExponent</string>
@@ -81,14 +86,19 @@
 				<string>ambientColor</string>
 			</array>
 			<key>vertex</key>
-			<string>StaticBasic.vs</string>
+			<string>Combined.vs</string>
 			<key>fragment</key>
 			<string>TexturelessOBJ.fs</string>
 		</dict>
 		<key>DiffuseSpecularNormalOBJ</key>
 		<dict>
+			<key>defines</key>
+			<dict>
+				<key>CALCULATE_TANGENT_TO_WORLD</key>
+				<string>1</string>
+			</dict>
 			<key>vertex</key>
-			<string>StaticBump.vs</string>
+			<string>Combined.vs</string>
 			<key>fragment</key>
 			<string>DiffuseSpecularNormalOBJ.fs</string>
 			<key>textures</key>
@@ -107,10 +117,15 @@
 		</dict>
 		<key>DiffuseNormalOBJ</key>
 		<dict>
+			<key>defines</key>
+			<dict>
+				<key>CALCULATE_TANGENT_TO_WORLD</key>
+				<string>1</string>
+			</dict>
 			<key>fragment</key>
 			<string>DiffuseNormalOBJ.fs</string>
 			<key>vertex</key>
-			<string>StaticBump.vs</string>
+			<string>Combined.vs</string>
 			<key>textures</key>
 			<array>
 				<string>diffuseTexture</string>
@@ -126,10 +141,15 @@
 		</dict>
 		<key>DiffuseSpecularOBJ</key>
 		<dict>
+			<key>defines</key>
+			<dict>
+				<key>CALCULATE_NORMAL_WORLD</key>
+				<string>1</string>
+			</dict>
 			<key>fragment</key>
 			<string>DiffuseSpecularOBJ.fs</string>
 			<key>vertex</key>
-			<string>StaticBasic.vs</string>
+			<string>Combined.vs</string>
 			<key>textures</key>
 			<array>
 				<string>diffuseTexture</string>
@@ -145,10 +165,15 @@
 		</dict>
 		<key>DiffuseOBJ</key>
 		<dict>
+			<key>defines</key>
+			<dict>
+				<key>CALCULATE_NORMAL_WORLD</key>
+				<string>1</string>
+			</dict>
 			<key>fragment</key>
 			<string>DiffuseOBJ.fs</string>
 			<key>vertex</key>
-			<string>StaticBasic.vs</string>
+			<string>Combined.vs</string>
 			<key>textures</key>
 			<array>
 				<string>diffuseTexture</string>

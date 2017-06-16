@@ -35,6 +35,7 @@
     
     _textureUniformNames = plist[@"textures"];
     _additionalUniformNames = plist[@"additionalParameters"];
+    _defines = plist[@"defines"];
     
     _alphaMeshGroups = [NSSet setWithArray:plist[@"alphaMeshGroups"]];
     _solidMeshGroups = [NSSet setWithArray:plist[@"solidMeshGroups"]];

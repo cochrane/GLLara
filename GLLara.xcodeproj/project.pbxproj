@@ -221,6 +221,7 @@
 		526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.m */; };
 		526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31B1609C7C300940A74 /* GLLItem+OBJExport.m */; };
 		526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31E1609CCE900940A74 /* GLLItemExportViewController.m */; };
+		526DD0E21EF3CD400033A327 /* Combined.vs in Resources */ = {isa = PBXBuildFile; fileRef = 526DD0E11EF3CD400033A327 /* Combined.vs */; };
 		526E0F9C1C169E3500F198BF /* testDiffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F8B1C169E3500F198BF /* testDiffuse.png */; };
 		526E0F9D1C169E3500F198BF /* testDiffuseBump.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F8C1C169E3500F198BF /* testDiffuseBump.png */; };
 		526E0F9E1C169E3500F198BF /* testDiffuseBumpEmission.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F8D1C169E3500F198BF /* testDiffuseBumpEmission.png */; };
@@ -274,8 +275,6 @@
 		5296943515F421D900DF2FA3 /* simd_matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 5296942F15F421D900DF2FA3 /* simd_matrix.c */; };
 		5296943615F421D900DF2FA3 /* simd_project.c in Sources */ = {isa = PBXBuildFile; fileRef = 5296943115F421D900DF2FA3 /* simd_project.c */; };
 		5296943A15F4CC3400DF2FA3 /* GLLMeshSplitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296943915F4CC3200DF2FA3 /* GLLMeshSplitter.m */; };
-		5296944015F5383F00DF2FA3 /* Basic.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5296940615F3919A00DF2FA3 /* Basic.vs */; };
-		5296944115F5384100DF2FA3 /* Bump.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5296940D15F3935E00DF2FA3 /* Bump.vs */; };
 		5296944215F5384300DF2FA3 /* Diffuse.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5296941615F3EC9B00DF2FA3 /* Diffuse.fs */; };
 		5296944315F5384500DF2FA3 /* DiffuseLightmap.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5296941415F3E7A000DF2FA3 /* DiffuseLightmap.fs */; };
 		5296944415F5384800DF2FA3 /* DiffuseBump.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5296941815F3ED3D00DF2FA3 /* DiffuseBump.fs */; };
@@ -302,12 +301,9 @@
 		52BB207415F8334E00937450 /* tiger1.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB207315F8334E00937450 /* tiger1.modelparams.plist */; };
 		52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */; };
 		52BB21A215FACF2E00937450 /* croft_manor_hall.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */; };
-		52BB21A715FAD30000937450 /* StaticBump.vs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A615FAD30000937450 /* StaticBump.vs */; };
 		52BB21A915FB45B200937450 /* croft_manor_hall_lq.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21A815FB45B200937450 /* croft_manor_hall_lq.modelparams.plist */; };
-		52BB21AB15FB4C3200937450 /* StaticBasic.vs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21AA15FB4C3200937450 /* StaticBasic.vs */; };
 		52BB21AD15FB4CED00937450 /* ShadelessVertexColor.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21AC15FB4CED00937450 /* ShadelessVertexColor.fs */; };
 		52BB21B315FB7A6200937450 /* foliage_tree4.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B215FB7A6200937450 /* foliage_tree4.modelparams.plist */; };
-		52BB21B615FB7AE700937450 /* StaticBasic2TexCoords.vs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B515FB7AE700937450 /* StaticBasic2TexCoords.vs */; };
 		52BB21B815FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B715FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs */; };
 		52BB21BA15FB7D0600937450 /* ship.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B915FB7D0500937450 /* ship.modelparams.plist */; };
 		52BB21BC15FB7E4A00937450 /* yacht.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */; };
@@ -688,6 +684,7 @@
 		526AB31B1609C7C300940A74 /* GLLItem+OBJExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItem+OBJExport.m"; sourceTree = "<group>"; };
 		526AB31D1609CCE900940A74 /* GLLItemExportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemExportViewController.h; sourceTree = "<group>"; };
 		526AB31E1609CCE900940A74 /* GLLItemExportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemExportViewController.m; sourceTree = "<group>"; };
+		526DD0E11EF3CD400033A327 /* Combined.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Combined.vs; sourceTree = "<group>"; };
 		526E0F891C146B8000F198BF /* GLLSceneModel 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 4.xcdatamodel"; sourceTree = "<group>"; };
 		526E0F8B1C169E3500F198BF /* testDiffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuse.png; sourceTree = "<group>"; };
 		526E0F8C1C169E3500F198BF /* testDiffuseBump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testDiffuseBump.png; sourceTree = "<group>"; };
@@ -762,8 +759,6 @@
 		5296940015F3881B00DF2FA3 /* GLLModelProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModelProgram.m; sourceTree = "<group>"; };
 		5296940215F3893100DF2FA3 /* GLLShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLShader.h; sourceTree = "<group>"; };
 		5296940315F3893200DF2FA3 /* GLLShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLShader.m; sourceTree = "<group>"; };
-		5296940615F3919A00DF2FA3 /* Basic.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Basic.vs; sourceTree = "<group>"; };
-		5296940D15F3935E00DF2FA3 /* Bump.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Bump.vs; sourceTree = "<group>"; };
 		5296941415F3E7A000DF2FA3 /* DiffuseLightmap.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmap.fs; sourceTree = "<group>"; };
 		5296941615F3EC9B00DF2FA3 /* Diffuse.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = Diffuse.fs; sourceTree = "<group>"; };
 		5296941815F3ED3D00DF2FA3 /* DiffuseBump.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseBump.fs; sourceTree = "<group>"; };
@@ -818,12 +813,9 @@
 		52BB217C15F972AB00937450 /* GLLSceneModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GLLSceneModel.xcdatamodel; sourceTree = "<group>"; };
 		52BB21A115FACF2E00937450 /* croft_manor_hall.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = croft_manor_hall.modelparams.plist; sourceTree = "<group>"; };
 		52BB21A415FACFD100937450 /* Model Parameters (deutsch).md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Model Parameters (deutsch).md"; sourceTree = "<group>"; };
-		52BB21A615FAD30000937450 /* StaticBump.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = StaticBump.vs; sourceTree = "<group>"; };
 		52BB21A815FB45B200937450 /* croft_manor_hall_lq.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = croft_manor_hall_lq.modelparams.plist; sourceTree = "<group>"; };
-		52BB21AA15FB4C3200937450 /* StaticBasic.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = StaticBasic.vs; sourceTree = "<group>"; };
 		52BB21AC15FB4CED00937450 /* ShadelessVertexColor.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = ShadelessVertexColor.fs; sourceTree = "<group>"; };
 		52BB21B215FB7A6200937450 /* foliage_tree4.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = foliage_tree4.modelparams.plist; sourceTree = "<group>"; };
-		52BB21B515FB7AE700937450 /* StaticBasic2TexCoords.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = StaticBasic2TexCoords.vs; sourceTree = "<group>"; };
 		52BB21B715FB7B6E00937450 /* DiffuseLightmap2TexCoords.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseLightmap2TexCoords.fs; sourceTree = "<group>"; };
 		52BB21B915FB7D0500937450 /* ship.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ship.modelparams.plist; sourceTree = "<group>"; };
 		52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = yacht.modelparams.plist; sourceTree = "<group>"; };
@@ -1358,11 +1350,6 @@
 			isa = PBXGroup;
 			children = (
 				521326371602B17800787AA1 /* Internal use only */,
-				5296940615F3919A00DF2FA3 /* Basic.vs */,
-				5296940D15F3935E00DF2FA3 /* Bump.vs */,
-				52BB21A615FAD30000937450 /* StaticBump.vs */,
-				52BB21AA15FB4C3200937450 /* StaticBasic.vs */,
-				52BB21B515FB7AE700937450 /* StaticBasic2TexCoords.vs */,
 				5296941615F3EC9B00DF2FA3 /* Diffuse.fs */,
 				5296941415F3E7A000DF2FA3 /* DiffuseLightmap.fs */,
 				5296941815F3ED3D00DF2FA3 /* DiffuseBump.fs */,
@@ -1381,6 +1368,7 @@
 				522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */,
 				52629397163DDB6500AC1088 /* DiffuseBumpEmission.fs */,
 				52421C1416BDB78100D41EAA /* DiffuseSpecular.fs */,
+				526DD0E11EF3CD400033A327 /* Combined.vs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1709,13 +1697,8 @@
 				529693F815F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist in Resources */,
 				529693FA15F36DDB00DF2FA3 /* lara.modelparams.plist in Resources */,
 				529693FE15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist in Resources */,
-				52BB21AB15FB4C3200937450 /* StaticBasic.vs in Resources */,
-				52BB21B615FB7AE700937450 /* StaticBasic2TexCoords.vs in Resources */,
 				52BB21AD15FB4CED00937450 /* ShadelessVertexColor.fs in Resources */,
 				5291DB9115FBE51600ECDBCA /* Metallic.fs in Resources */,
-				52BB21A715FAD30000937450 /* StaticBump.vs in Resources */,
-				5296944015F5383F00DF2FA3 /* Basic.vs in Resources */,
-				5296944115F5384100DF2FA3 /* Bump.vs in Resources */,
 				52BB206A15F82B4200937450 /* Shadeless.fs in Resources */,
 				52D6A0A315F914C3002A0BB4 /* DiffuseLightmapBump3Specular.fs in Resources */,
 				5224C8DA15F96661002A6C76 /* DiffuseLightmapBumpSpecular.fs in Resources */,
@@ -1799,6 +1782,7 @@
 				523DE12A1604E0C700BB9F61 /* tiger2.modelparams.plist in Resources */,
 				523DE12D1604E10D00BB9F61 /* thailand_mirror_statue_left.modelparams.plist in Resources */,
 				523DE12E1604E10D00BB9F61 /* thailand_mirror_statue_right.modelparams.plist in Resources */,
+				526DD0E21EF3CD400033A327 /* Combined.vs in Resources */,
 				52423AF41604EB35009F5753 /* panther_thrall.modelparams.plist in Resources */,
 				52423AF51604EB35009F5753 /* panther.modelparams.plist in Resources */,
 				52423AF61604EB35009F5753 /* poacher.modelparams.plist in Resources */,

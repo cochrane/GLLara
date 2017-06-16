@@ -23,6 +23,11 @@
     NSDictionary *additionalDefines = @{};
     if (alpha)
         additionalDefines = @{ @"USE_ALPHA_TEST" : @"1" };
+    if (descriptor.defines) {
+        NSMutableDictionary *allDefines = [NSMutableDictionary dictionaryWithDictionary:additionalDefines];
+        [allDefines addEntriesFromDictionary:descriptor.defines];
+        additionalDefines = allDefines;
+    }
     
     if (!(self = [super initWithName:descriptor.name fragmentShaderName:descriptor.fragmentName geometryShaderName:descriptor.geometryName vertexShaderName:descriptor.vertexName baseURL:descriptor.baseURL additionalDefines:additionalDefines resourceManager:manager error:error])) return nil;
     

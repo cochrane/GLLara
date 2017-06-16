@@ -42,6 +42,11 @@
 @property (nonatomic, copy, readonly) NSArray *textureUniformNames;
 
 /*
+ * Defines that get passed to the shader compiler.
+ */
+@property (nonatomic, copy, readonly) NSDictionary *defines;
+
+/*
  * Uniforms that are not specified by models.
  */
 @property (nonatomic, copy, readonly) NSArray *additionalUniformNames;
