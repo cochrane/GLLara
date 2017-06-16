@@ -176,6 +176,18 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
+				<key>SPECULAR</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
 				<key>CALCULATE_NORMAL_WORLD</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
@@ -202,7 +214,7 @@
 				<string>MeshGroup32</string>
 			</array>
 			<key>fragment</key>
-			<string>DiffuseSpecular.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
@@ -220,7 +232,7 @@
 			<key>vertex</key>
 			<string>Combined.vs</string>
 			<key>fragment</key>
-			<string>Shadeless.fs</string>
+			<string>Combined.fs</string>
 			<key>solidMeshGroups</key>
 			<array>
 				<string>MeshGroup13</string>
@@ -230,8 +242,14 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
 				<key>SECOND_TEX_COORD</key>
-				<string></string>
+				<string>1</string>
 				<key>CALCULATE_NORMAL_WORLD</key>
 				<string>1</string>
 			</dict>
@@ -241,7 +259,7 @@
 				<string>lightmapTexture</string>
 			</array>
 			<key>fragment</key>
-			<string>DiffuseLightmap2TexCoords.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 			<key>alphaMeshGroups</key>
@@ -257,8 +275,14 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
 				<key>SECOND_TEX_COORD</key>
-				<string></string>
+				<string>1</string>
 				<key>CALCULATE_NORMAL_WORLD</key>
 				<string>1</string>
 			</dict>
@@ -267,7 +291,7 @@
 				<string>diffuseTexture</string>
 			</array>
 			<key>fragment</key>
-			<string>Diffuse.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 			<key>solidMeshGroups</key>
@@ -283,6 +307,8 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
 				<key>CALCULATE_NORMAL_WORLD</key>
 				<string>1</string>
 			</dict>
@@ -293,7 +319,7 @@
 			<key>vertex</key>
 			<string>Combined.vs</string>
 			<key>fragment</key>
-			<string>ShadelessVertexColor.fs</string>
+			<string>Combined.fs</string>
 			<key>alphaMeshGroups</key>
 			<array>
 				<string>MeshGroup15</string>
@@ -307,13 +333,11 @@
 		<dict>
 			<key>defines</key>
 			<dict>
-				<key>CALCULATE_NORMAL_WORLD</key>
-				<string>1</string>
 				<key>USE_SKINNING</key>
 				<string>1</string>
 			</dict>
 			<key>fragment</key>
-			<string>Shadeless.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 			<key>textures</key>
@@ -333,6 +357,14 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
+				<key>LIGHTMAP</key>
+				<string>1</string>
 				<key>CALCULATE_NORMAL_WORLD</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
@@ -352,7 +384,7 @@
 				<string>lightmapTexture</string>
 			</array>
 			<key>fragment</key>
-			<string>DiffuseLightmap.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
@@ -360,6 +392,12 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
 				<key>CALCULATE_NORMAL_WORLD</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
@@ -378,7 +416,7 @@
 				<string>diffuseTexture</string>
 			</array>
 			<key>fragment</key>
-			<string>Diffuse.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
@@ -386,6 +424,22 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>REFLECTION</key>
+				<string>1</string>
+				<key>SPECULAR</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>NORMAL_DETAIL_MAP</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
 				<key>CALCULATE_TANGENT_TO_WORLD</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
@@ -430,6 +484,16 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>REFLECTION</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
 				<key>CALCULATE_TANGENT_TO_WORLD</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
@@ -462,6 +526,18 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
+				<key>SPECULAR</key>
+				<string>1</string>
 				<key>CALCULATE_TANGENT_TO_WORLD</key>
 				<string>1</string>
 			</dict>
@@ -483,7 +559,7 @@
 				<string>bumpSpecularAmount</string>
 			</array>
 			<key>fragment</key>
-			<string>DiffuseBump.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
@@ -491,6 +567,18 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
+				<key>SPECULAR</key>
+				<string>1</string>
 				<key>CALCULATE_TANGENT_TO_WORLD</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
@@ -519,7 +607,7 @@
 				<string>bumpSpecularAmount</string>
 			</array>
 			<key>fragment</key>
-			<string>DiffuseBump.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
@@ -527,6 +615,20 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
+				<key>LIGHTMAP</key>
+				<string>1</string>
+				<key>SPECULAR</key>
+				<string>1</string>
 				<key>CALCULATE_TANGENT_TO_WORLD</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
@@ -556,7 +658,7 @@
 				<string>bumpSpecularAmount</string>
 			</array>
 			<key>fragment</key>
-			<string>DiffuseLightmapBump.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
@@ -564,6 +666,24 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
+				<key>NORMAL_DETAIL_MAP</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
+				<key>LIGHTMAP</key>
+				<string>1</string>
+				<key>SEPARATE_SPECULAR_TEXTURE</key>
+				<string>1</string>
+				<key>SPECULAR</key>
+				<string>1</string>
 				<key>CALCULATE_TANGENT_TO_WORLD</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
@@ -598,7 +718,7 @@
 				<string>bump2UVScale</string>
 			</array>
 			<key>fragment</key>
-			<string>DiffuseLightmapBump3Specular.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
@@ -606,6 +726,22 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
+				<key>LIGHTMAP</key>
+				<string>1</string>
+				<key>SEPARATE_SPECULAR_TEXTURE</key>
+				<string>1</string>
+				<key>SPECULAR</key>
+				<string>1</string>
 				<key>CALCULATE_TANGENT_TO_WORLD</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
@@ -635,7 +771,7 @@
 				<string>bumpSpecularAmount</string>
 			</array>
 			<key>fragment</key>
-			<string>DiffuseLightmapBumpSpecular.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
@@ -643,6 +779,20 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>SPECULAR</key>
+				<string>1</string>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
+				<key>NORMAL_DETAIL_MAP</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
 				<key>CALCULATE_TANGENT_TO_WORLD</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
@@ -676,7 +826,7 @@
 				<string>bump2UVScale</string>
 			</array>
 			<key>fragment</key>
-			<string>DiffuseLightmapBump3.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
@@ -684,7 +834,21 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>EMISSION</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
 				<key>CALCULATE_TANGENT_TO_WORLD</key>
+				<string>1</string>
+				<key>SPECULAR</key>
 				<string>1</string>
 				<key>USE_SKINNING</key>
 				<string>1</string>
@@ -712,7 +876,7 @@
 				<string>bumpSpecularAmount</string>
 			</array>
 			<key>fragment</key>
-			<string>DiffuseBumpEmission.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
