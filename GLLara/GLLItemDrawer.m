@@ -22,6 +22,7 @@
 #import "GLLItemMeshState.h"
 #import "GLLUniformBlockBindings.h"
 #import "simd_matrix.h"
+#import "GLLTiming.h"
 
 @interface GLLItemDrawer ()
 {
@@ -196,6 +197,7 @@
 
 - (void)_updateTransforms
 {
+    GLLBeginTiming("Draw/Update/Transforms");
     // The first matrix stores the normal transform, so make the buffer one
     // longer than needed for the bones themselves.
     NSUInteger boneCount = self.item.bones.count;
@@ -211,6 +213,7 @@
     for (NSUInteger i = 0; i < boneCount; i++)
         [[[self.item.bones objectAtIndex:i] globalTransform] getValue:&matrices[i + 1]];
     glUnmapBuffer(GL_UNIFORM_BUFFER);
+    GLLEndTiming("Draw/Update/Transforms");
     
     needToUpdateTransforms = NO;
 }
@@ -230,6 +233,7 @@
 }
 
 - (void)_findRuns {
+    GLLBeginTiming("Draw/Update/Runs");
     meshStates = [meshStates sortedArrayUsingComparator:^(GLLItemMeshState *a, GLLItemMeshState *b) {
         return [a compareTo:b];
     }];
@@ -272,6 +276,7 @@
     
     runStartStates = startStates;
     needsUpdateRuns = NO;
+    GLLEndTiming("Draw/Update/Runs");
 }
 
 - (void)propertiesChanged {

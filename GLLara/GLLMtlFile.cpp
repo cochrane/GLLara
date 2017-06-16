@@ -13,9 +13,12 @@
 #include <sstream>
 
 #include "GLLStringURLConversion.h"
+#include "GLLTiming.h"
 
 GLLMtlFile::GLLMtlFile(CFURLRef location)
 {
+    GLLTimer loadingTimer("MTL");
+    
     std::string filename = GLLStringFromFileURL(location);
     
     std::ifstream stream(filename.c_str());

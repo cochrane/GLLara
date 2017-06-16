@@ -10,13 +10,17 @@
 
 #import <AppKit/NSColor.h>
 
+#import "GLLModel.h"
 #import "GLLModelParams.h"
+#import "GLLTiming.h"
 
 @implementation GLLModelMeshObj
 
 - (id)initWithObjFile:(GLLObjFile *)file mtlFiles:(const std::vector<GLLMtlFile *> &)mtlFiles range:(const GLLObjFile::MaterialRange &)range inModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
     if (!(self = [super initAsPartOfModel:model])) return nil;
+    
+    GLLBeginTiming("OBJ mesh postprocess");
     
     // Procedure: Go through the indices in the range. For each index, load the vertex data from the file and put it in the vertex buffer here. Adjust the index, too.
     
@@ -31,9 +35,10 @@
         return nil;
     }
     
-    std::map<unsigned, uint32_t> globalToLocalVertices;
-    NSMutableData *vertices = [[NSMutableData alloc] init];
-    NSMutableData *elements = [[NSMutableData alloc] initWithCapacity:sizeof(uint32_t) * (range.end - range.start)];
+    GLLBeginTiming("OBJ mesh vertex copy");
+    std::unordered_map<unsigned, uint32_t> globalToLocalVertices;
+    NSMutableData *vertices = [[NSMutableData alloc] initWithCapacity:(sizeof(GLLObjFile::VertexData) + sizeof(float[4])) * (range.end - range.start)];
+    uint32_t *elementData = (uint32_t *) malloc(sizeof(uint32_t)*(range.end - range.start));
     
     for (unsigned i = range.start; i < range.end; i++)
     {
@@ -45,6 +50,7 @@
             // Add adjusted element
             index = (uint32_t) globalToLocalVertices.size();
             globalToLocalVertices[globalIndex] = index;
+            elementData[i - range.start] = index;
             
             // Add vertex
             const GLLObjFile::VertexData &vertex = file->getVertexData().at(globalIndex);
@@ -63,18 +69,19 @@
             // No bone weights or indices here; OBJs use special shaders that don't use them.
         }
         else
-            index = localIndexIter->second;
-        
-        // Add to element buffer
-        [elements appendBytes:&index length:sizeof(index)];
+            elementData[i - range.start] = localIndexIter->second;
     }
     
     // Necessary postprocessing
+    GLLEndTiming("OBJ mesh vertex copy");
+    GLLBeginTiming("OBJ mesh tangents");
     [self calculateTangents:vertices];
+    GLLEndTiming("OBJ mesh tangents");
     
+    GLLBeginTiming("OBJ mesh params");
     // Set up other attributes
     self.vertexData = vertices;
-    self.elementData = elements;
+    self.elementData = [NSData dataWithBytesNoCopy:elementData length:sizeof(uint32_t) * (range.end - range.start) freeWhenDone:YES];
     self.countOfVertices = globalToLocalVertices.size();
     self.countOfElements = range.end - range.start;
     
@@ -102,7 +109,6 @@
                                                                               NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Material %s was not found", @"error description: no material for name"), range.materialName.c_str()],
                                                                               NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The material files do not appear to match the model.", @"error description: no material for name") }];
         return nil;
-        
     }
     
     if (material->specularTexture == NULL && material->normalTexture == NULL)
@@ -141,6 +147,9 @@
     
     // Always use blending, since I can't prove that it doesn't otherwise.
     self.usesAlphaBlending = YES;
+    
+    GLLEndTiming("OBJ mesh params");
+    GLLEndTiming("OBJ mesh postprocess");
     
     return self;
 }

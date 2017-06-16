@@ -198,6 +198,8 @@
 		5251BCE2162E248700973E0A /* GLLBasicBinaryModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE1162E248700973E0A /* GLLBasicBinaryModelTest.m */; };
 		5251BCE5162EA7F200973E0A /* GLLBasicASCIIModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE4162EA7F200973E0A /* GLLBasicASCIIModelTest.m */; };
 		5251BCE8162EB84F00973E0A /* GLLInvalidBinaryModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE7162EB84F00973E0A /* GLLInvalidBinaryModelTest.m */; };
+		52528D711D6ABFF1002E0074 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52FC0EA21D6A0E8B00C04885 /* QuartzCore.framework */; };
+		52528D751D6AC2AA002E0074 /* GLLTiming.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52528D731D6AC2AA002E0074 /* GLLTiming.cpp */; };
 		5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5254601B16DAB41C00919729 /* NSCharacterSet+SetOperations.m */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
@@ -643,6 +645,8 @@
 		5251BCE4162EA7F200973E0A /* GLLBasicASCIIModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBasicASCIIModelTest.m; sourceTree = "<group>"; };
 		5251BCE6162EB84F00973E0A /* GLLInvalidBinaryModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLInvalidBinaryModelTest.h; sourceTree = "<group>"; };
 		5251BCE7162EB84F00973E0A /* GLLInvalidBinaryModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLInvalidBinaryModelTest.m; sourceTree = "<group>"; };
+		52528D731D6AC2AA002E0074 /* GLLTiming.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLLTiming.cpp; sourceTree = "<group>"; };
+		52528D741D6AC2AA002E0074 /* GLLTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTiming.h; sourceTree = "<group>"; };
 		5254601A16DAB41C00919729 /* NSCharacterSet+SetOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+SetOperations.h"; sourceTree = "<group>"; };
 		5254601B16DAB41C00919729 /* NSCharacterSet+SetOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+SetOperations.m"; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -889,6 +893,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52528D711D6ABFF1002E0074 /* QuartzCore.framework in Frameworks */,
 				5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */,
 				529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */,
 				525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
@@ -1038,6 +1043,15 @@
 			name = "Source List";
 			sourceTree = "<group>";
 		};
+		52528D721D6AC289002E0074 /* Instrumentation */ = {
+			isa = PBXGroup;
+			children = (
+				52528D731D6AC2AA002E0074 /* GLLTiming.cpp */,
+				52528D741D6AC2AA002E0074 /* GLLTiming.h */,
+			);
+			name = Instrumentation;
+			sourceTree = "<group>";
+		};
 		525ACD3C15F0F1A700534E7D = {
 			isa = PBXGroup;
 			children = (
@@ -1088,6 +1102,7 @@
 		525ACD5115F0F1A700534E7D /* GLLara */ = {
 			isa = PBXGroup;
 			children = (
+				52528D721D6AC289002E0074 /* Instrumentation */,
 				5296946115F7B22E00DF2FA3 /* Document and UI */,
 				5296942C15F421D800DF2FA3 /* shared_simd */,
 				5296942515F4138100DF2FA3 /* Drawing posed items */,
@@ -1972,6 +1987,7 @@
 				5291DB9415FBF7BE00ECDBCA /* GLLAmbientLight.m in Sources */,
 				52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */,
 				52BB21CD15FC7B8D00937450 /* GLLRenderParameterDescription.m in Sources */,
+				52528D751D6AC2AA002E0074 /* GLLTiming.cpp in Sources */,
 				52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */,
 				52BB21DB15FCF02200937450 /* GLLCamera.m in Sources */,
 				52C9F60E15FF1753003272E1 /* GLLItemViewController.m in Sources */,

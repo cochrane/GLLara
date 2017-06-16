@@ -26,6 +26,7 @@
 #import "simd_matrix.h"
 #import "simd_project.h"
 #import "GLLSkeletonDrawer.h"
+#import "GLLTiming.h"
 
 NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNotification";
 
@@ -130,9 +131,12 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 
 - (void)drawShowingSelection:(BOOL)showSelection;
 {
+    GLLBeginTiming("Draw/Solid");
 	// 1st pass: Draw items that do not need blending. They use shaders without alpha test
 	for (GLLItemDrawer *drawer in itemDrawers)
-		[drawer drawSolidWithState:&state];
+        [drawer drawSolidWithState:&state];
+    GLLEndTiming("Draw/Solid");
+    GLLBeginTiming("Draw/AlphaOp");
 	
 	// 2nd pass: Draw blended items, but only those pixels that are "almost opaque"
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestPassGreaterBuffer);
@@ -141,20 +145,25 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
 		[drawer drawAlphaWithState:&state];
-	
+    
+    GLLEndTiming("Draw/AlphaOp");
+    GLLBeginTiming("Draw/AlphaTrans");
 	// 3rd pass: Draw blended items, now only those things that are "mostly transparent".
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestPassLessBuffer);
 	
 	glDepthMask(GL_FALSE);
 	for (GLLItemDrawer *drawer in itemDrawers)
-		[drawer drawAlphaWithState:&state];
+        [drawer drawAlphaWithState:&state];
+    GLLEndTiming("Draw/AlphaTrans");
 	
 	if (showSelection)
-	{
+    {
+        GLLBeginTiming("Draw/Skel");
 		glDisable(GL_DEPTH_TEST);
 		glPointSize(10);
 		[skeletonDrawer drawWithState:&state];
-		glEnable(GL_DEPTH_TEST);
+        glEnable(GL_DEPTH_TEST);
+        GLLEndTiming("Draw/Skel");
 	}
 	
 	// Special note: Ensure that depthMask is true before doing the next glClear. Otherwise results may be quite funny indeed.

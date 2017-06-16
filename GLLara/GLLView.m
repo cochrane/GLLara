@@ -27,6 +27,7 @@
 #import "NSCharacterSet+SetOperations.h"
 #import "simd_matrix.h"
 #import "simd_project.h"
+#import "GLLTiming.h"
 
 static NSCharacterSet *wasdCharacters;
 static NSCharacterSet *xyzCharacters;
@@ -300,8 +301,13 @@ const double unitsPerSecond = 0.2;
 
 - (void)drawRect:(NSRect)dirtyRect
 {
+    GLLBeginTiming("Draw");
     [self.viewDrawer drawShowingSelection:showSelection];
+    GLLBeginTiming("Draw/Flush");
     [self.openGLContext flushBuffer];
+    GLLEndTiming("Draw/Flush");
+    GLLEndTiming("Draw");
+    GLLReportTiming();
 }
 
 - (BOOL)acceptsFirstResponder

@@ -14,11 +14,13 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include <thread>
 
 #include <sys/mman.h>
 #include <sys/stat.h>
 
 #include "GLLStringURLConversion.h"
+#include "GLLTiming.h"
 
 bool followsString(const char *&current, const char *end, const char *string) {
     const char *p = string;
@@ -65,30 +67,29 @@ enum float_parse_state_t {
     INVALID
 };
 
-float parseFloat(const char *&current, const char *end) {
-    while (current != end && *current == ' ')
-        current += 1;
-    
-    // Sadly can't pass length or end pointer into strtod_l (only get it out), so we have to do this dance to avoid any buffer overflows
-    const char *tokenEnd = current;
-    while (tokenEnd != end && *tokenEnd != ' ' && *tokenEnd != '\n' && *tokenEnd != '\r')
-        tokenEnd += 1;
-    
-    size_t size = tokenEnd - current;
-    char value[size+1];
-    memcpy(value, current, size);
-    value[size] = 0;
-    current = tokenEnd;
-    
-    return strtof_l(value, nullptr, nullptr);
-}
-
 void parseVector(const char *&current, const char *end, std::vector<float> &values, unsigned number) throw() {
     for (unsigned i = 0; i < number; i++) {
+        // Skip whitespace
         while (current != end && *current == ' ') {
             current += 1;
         }
-        values.push_back(parseFloat(current, end));
+        const char *rangeEnd = current;
+        while (rangeEnd != end && *rangeEnd != ' ' && *rangeEnd != '\n' && *rangeEnd != '\r') {
+            rangeEnd += 1;
+        }
+        
+        char characters[256];
+        size_t size = rangeEnd - current;
+        float value;
+        if (size >= sizeof(characters)) {
+            value = std::numeric_limits<float>::quiet_NaN();
+        } else {
+            memcpy(characters, current, size);
+            characters[size] = 0;
+            value = strtof_l(characters, nullptr, nullptr);
+        }
+        values.push_back(value);
+        current = rangeEnd;
     }
     skipToEndOfLine(current, end);
 }
@@ -135,13 +136,12 @@ bool GLLObjFile::IndexSet::operator<(const GLLObjFile::IndexSet &other) const
 }
 
 size_t GLLObjFile::IndexSet::hash() const {
-    size_t hash = vertex;
+    size_t hash = color;
     hash = 31 * hash + normal;
     hash = 31 * hash + texCoord;
-    hash = 31 * hash + color;
+    hash = 31 * hash + vertex;
     return hash;
 }
-
 
 bool GLLObjFile::IndexSet::operator==(const GLLObjFile::IndexSet &other) const
 {
@@ -257,12 +257,14 @@ void GLLObjFile::fillIndices()
     vertexData.clear();
     vertexDataIndexForSet.clear();
     
-    for (unsigned i = 0; i < originalIndices.size(); i ++)
-        indices.push_back(unifiedIndex(originalIndices[i]));
+    for (const auto &index : originalIndices)
+        indices.push_back(unifiedIndex(index));
 }
 
 GLLObjFile::GLLObjFile(CFURLRef location)
 {
+    GLLTimer loadingTimer("OBJ");
+    
     std::string filename = GLLStringFromFileURL(location);
     
     int fdes = ::open(filename.c_str(), O_RDONLY);
@@ -280,6 +282,7 @@ GLLObjFile::GLLObjFile(CFURLRef location)
     close(fdes);
     const char *current = buffer;
     const char *end = &buffer[statistics.st_size];
+    posix_madvise((void *) buffer, statistics.st_size, POSIX_MADV_SEQUENTIAL);
     
     materialLibraryURLs = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
     std::string activeMaterial("");

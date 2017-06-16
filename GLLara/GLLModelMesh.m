@@ -12,6 +12,7 @@
 #import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "GLLModelParams.h"
+#import "GLLTiming.h"
 #import "GLLVertexFormat.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
@@ -51,6 +52,8 @@ void vec_addTo(float *a, float *b)
 - (id)initFromStream:(TRInDataStream *)stream partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
     if (!(self = [super init])) return nil;
+    
+    GLLBeginTiming("Binary mesh");
     
     _model = model;
     
@@ -112,6 +115,8 @@ void vec_addTo(float *a, float *b)
     }
     
     [self finishLoading];
+    
+    GLLEndTiming("Binary mesh");
     
     return self;
 }

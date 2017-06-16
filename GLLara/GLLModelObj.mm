@@ -13,6 +13,7 @@
 #import "GLLModelParams.h"
 #import "GLLMtlFile.h"
 #import "GLLObjFile.h"
+#import "GLLTiming.h"
 
 @interface GLLModelObj ()
 {
@@ -55,6 +56,7 @@
     // 2. Set up meshes. We use one mesh per material group.
     NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:file->getMaterialRanges().size()];
     NSUInteger meshNumber = 1;
+    GLLBeginTiming("OBJ file postprocess");
     for (auto &range : file->getMaterialRanges())
     {
         GLLModelMeshObj *mesh = [[GLLModelMeshObj alloc] initWithObjFile:file mtlFiles:materialFiles range:range inModel:self error:error];
@@ -64,6 +66,7 @@
         [meshes addObject:mesh];
     }
     self.meshes = [meshes copy];
+    GLLEndTiming("OBJ file postprocess");
     
     NSError *paramError = nil;
     self.parameters = [GLLModelParams parametersForName:@"objFileParameters" error:&paramError];

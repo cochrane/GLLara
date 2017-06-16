@@ -18,6 +18,7 @@
 
 #import "GLLDDSFile.h"
 #import "GLLPreferenceKeys.h"
+#import "GLLTiming.h"
 
 NSString *GLLTextureChangeNotification = @"GLL Texture Change Notification";
 
@@ -278,6 +279,7 @@ static NSOperationQueue *imageInformationQueue = nil;
             return;
         }
         
+        GLLBeginTiming("texture");
         NSData *data = [NSData dataWithContentsOfURL:newURL options:0 error:&internalError];
         
         // Ensure that memcmp does not error out.
@@ -293,6 +295,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         
         if (internalError != nil) NSLog(@"Error loading texture %@: %@", self.url, internalError);
         
+        GLLEndTiming("texture");
         [[NSNotificationCenter defaultCenter] postNotificationName:GLLTextureChangeNotification object:self];
     }];
     
