@@ -57,6 +57,8 @@
     [_itemMesh addObserver:self forKeyPath:@"shaderName" options:NSKeyValueObservingOptionNew context:NULL];
     [_itemMesh addObserver:self forKeyPath:@"isVisible" options:NSKeyValueObservingOptionNew context:NULL];
     [_itemMesh addObserver:self forKeyPath:@"isUsingBlending" options:NSKeyValueObservingOptionNew context:NULL];
+    [_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+    [_itemMesh addObserver:self forKeyPath:@"renderParameters" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
     if (![self _updateShaderError:error])
         return nil;
     
@@ -65,8 +67,8 @@
     glGenBuffers(1, &renderParametersBuffer);
     [self _updateParameters];
     
-    [_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
-    [_itemMesh addObserver:self forKeyPath:@"renderParameters" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+    [self _updateRenderParametersObjects];
+    [self _updateTextureObjects];
     
     if (![self _updateTexturesError:error])
     {
@@ -98,15 +100,7 @@
 {
     if ([keyPath isEqual:@"renderParameters"])
     {
-        for (GLLRenderParameter *param in renderParameters)
-            [param removeObserver:self forKeyPath:@"uniformValue"];
-        
-        renderParameters = [_itemMesh.renderParameters copy];
-        for (GLLRenderParameter *param in renderParameters)
-            [param addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
-        
-        [self _updateParameters];
-        [self.itemDrawer propertiesChanged];
+        [self _updateRenderParametersObjects];
     }
     else if ([keyPath isEqual:@"uniformValue"])
     {
@@ -119,13 +113,7 @@
     }
     else if ([keyPath isEqual:@"textures"])
     {
-        for (GLLItemMeshTexture *texture in textureAssignments)
-            [texture removeObserver:self forKeyPath:@"textureURL"];
-        
-        textureAssignments = [_itemMesh.textures copy];
-        for (GLLItemMeshTexture *texture in textureAssignments)
-            [texture addObserver:self forKeyPath:@"textureURL" options:NSKeyValueObservingOptionNew context:NULL];
-        [self.itemDrawer propertiesChanged];
+        [self _updateTextureObjects];
     }
     else if ([keyPath isEqual:@"textureURL"])
     {
@@ -272,6 +260,28 @@
 }
 
 #pragma mark - Private methods
+
+- (void)_updateRenderParametersObjects {
+    for (GLLRenderParameter *param in renderParameters)
+        [param removeObserver:self forKeyPath:@"uniformValue"];
+    
+    renderParameters = [_itemMesh.renderParameters copy];
+    for (GLLRenderParameter *param in renderParameters)
+        [param addObserver:self forKeyPath:@"uniformValue" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    [self _updateParameters];
+    [self.itemDrawer propertiesChanged];
+}
+
+- (void)_updateTextureObjects {
+    for (GLLItemMeshTexture *texture in textureAssignments)
+        [texture removeObserver:self forKeyPath:@"textureURL"];
+    
+    textureAssignments = [_itemMesh.textures copy];
+    for (GLLItemMeshTexture *texture in textureAssignments)
+        [texture addObserver:self forKeyPath:@"textureURL" options:NSKeyValueObservingOptionNew context:NULL];
+    [self.itemDrawer propertiesChanged];
+}
 
 - (void)_updateParameters;
 {
