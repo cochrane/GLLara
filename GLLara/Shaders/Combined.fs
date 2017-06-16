@@ -133,7 +133,7 @@ void main()
     
     vec4 color = vec4(0);
 #ifdef AMBIENT_COLOR
-    color += lightData.ambientcolor;
+    color += lightData.ambientColor;
 #ifdef MATERIAL_PARAMETERS
     color *= parameters.ambientColor;
 #endif
