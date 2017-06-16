@@ -45,6 +45,9 @@ uniform sampler2D emissionTexture;
 #ifdef SEPARATE_SPECULAR_TEXTURE
 uniform sampler2D specularTexture;
 #endif
+#ifdef REFLECTION
+uniform sampler2D reflectionTexture;
+#endif
 
 struct Light {
     vec4 diffuseColor;
@@ -190,7 +193,7 @@ void main()
     
 #ifdef REFLECTION
     // Apply reflection
-    vec3 reflectionDir = normalize(reflect(cameraDirection, normal));
+    vec3 reflectionDir = normalize(reflect(cameraDirection, normalWorld));
     
     // Reflection dir now points at a sphere. We ignore the z component to get a circle. But we still have to scale it to get to the square XNAlara demands.
     float tanAlpha = reflectionDir.x/reflectionDir.y;

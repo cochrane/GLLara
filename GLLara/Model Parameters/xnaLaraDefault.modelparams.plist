@@ -534,6 +534,8 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
 				<key>CAMERA_DIRECTION</key>
 				<string>1</string>
 				<key>REFLECTION</key>
@@ -568,7 +570,7 @@
 				<string>reflectionAmount</string>
 			</array>
 			<key>fragment</key>
-			<string>Metallic.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
