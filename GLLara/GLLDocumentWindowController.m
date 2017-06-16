@@ -79,6 +79,7 @@
     selectionController = [[NSArrayController alloc] init];
     [selectionController bind:@"contentArray" toObject:self withKeyPath:@"selection.selectedObjects" options:nil];
     [self addObserver:self forKeyPath:@"selection.selectedObjects" options:NSKeyValueObservingOptionNew context:NULL];
+    [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"hideUnusedBones" options:NSKeyValueObservingOptionNew context:nil];
     
     self.shouldCloseDocument = YES;
     
@@ -89,6 +90,7 @@
 {
     [itemViewController unbind:@"selectedItems"];
     [self removeObserver:self forKeyPath:@"selection.selectedObjects"];
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"hideUnusedBones"];
 }
 
 - (void)windowDidLoad
@@ -133,6 +135,8 @@
         [self.sourceView selectRowIndexes:selectionIndexes byExtendingSelection:NO];
         
         updatingSourceViewSelection = NO;
+    } else if ([keyPath isEqual:@"hideUnusedBones"]) {
+        [self.sourceView reloadData];
     }
 }
 

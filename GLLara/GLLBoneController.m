@@ -53,7 +53,33 @@
 
 - (NSArray *)childBoneControllers
 {
-	return [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"bone.parent == %@", self.bone]];
+    BOOL hideUnusedBones = [[NSUserDefaults standardUserDefaults] boolForKey:@"hideUnusedBones"];
+    if (hideUnusedBones) {
+        return [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^(GLLBoneController *controller, id dict) {
+            GLLItemBone *bone = controller.bone;
+            if ([bone.bone.name hasPrefix:@"unused"])
+                return NO;
+            
+            if (bone.parent == self.bone)
+                return YES;
+            else if (bone.parent == nil)
+                return NO;
+            
+            return [self isAncestorOfUnnamedBone:bone.parent];
+        }]];
+    } else {
+        return [self.listController.boneControllers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"bone.parent == %@", self.bone]];
+    }
+}
+
+- (BOOL)isAncestorOfUnnamedBone:(GLLItemBone *)bone {
+    if (bone == self.bone)
+        return YES;
+    else if (![bone.bone.name hasPrefix:@"unused"])
+        return false;
+    else if (bone.parent)
+        return [self isAncestorOfUnnamedBone:bone.parent];
+    return NO;
 }
 
 #pragma mark - Outline View Data Source

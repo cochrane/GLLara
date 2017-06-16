@@ -389,6 +389,8 @@
 /* Class = "NSMenuItem"; title = "Show skeleton"; ObjectID = "549"; */
 "549.title" = "Show skeleton";
 
+"tHv-jo-hcw.title" = "Hide bones starting with “unused”";
+
 /* Class = "NSMenuItem"; title = "Export selected pose…"; ObjectID = "555"; */
 "555.title" = "Export selected pose…";
 
