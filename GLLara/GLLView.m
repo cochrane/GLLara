@@ -417,7 +417,7 @@ const double unitsPerSecond = 0.2;
         {
             float deltaX = 0, deltaY = 0, deltaZ = 0;
             if ([keysDown characterIsMember:'a'] && ![keysDown characterIsMember:'d']) deltaX = -diff * unitsPerSecond;
-            else if (![keysDown characterIsMember:'a'] & [keysDown characterIsMember:'d']) deltaX = diff * unitsPerSecond;
+            else if (![keysDown characterIsMember:'a'] && [keysDown characterIsMember:'d']) deltaX = diff * unitsPerSecond;
             if ([keysDown characterIsMember:'w'] && ![keysDown characterIsMember:'s']) deltaZ = -diff * unitsPerSecond;
             else if (![keysDown characterIsMember:'w'] && [keysDown characterIsMember:'s']) deltaZ = diff * unitsPerSecond;
             [self.camera moveLocalX:deltaX y:deltaY z:deltaZ];
@@ -455,7 +455,7 @@ const double unitsPerSecond = 0.2;
             // Move object in x/z plane with arrow keys
             CGFloat deltaX = 0, deltaZ = 0;
             if ([keysDown characterIsMember:NSLeftArrowFunctionKey] && ![keysDown characterIsMember:NSRightArrowFunctionKey]) deltaX = -diff * unitsPerSecond;
-            else if (![keysDown characterIsMember:NSLeftArrowFunctionKey] & [keysDown characterIsMember:NSRightArrowFunctionKey]) deltaX = diff * unitsPerSecond;
+            else if (![keysDown characterIsMember:NSLeftArrowFunctionKey] && [keysDown characterIsMember:NSRightArrowFunctionKey]) deltaX = diff * unitsPerSecond;
             if ([keysDown characterIsMember:NSUpArrowFunctionKey] && ![keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = -diff * unitsPerSecond;
             else if (![keysDown characterIsMember:NSUpArrowFunctionKey] && [keysDown characterIsMember:NSDownArrowFunctionKey]) deltaZ = diff * unitsPerSecond;
             
