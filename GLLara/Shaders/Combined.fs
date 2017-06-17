@@ -83,6 +83,9 @@ uniform RenderParameters {
 #ifdef REFLECTION
     float reflectionAmount;
 #endif
+#ifdef SPECULAR_TEXTURE_SCALE
+    float specularTextureScale;
+#endif
 } parameters;
 #endif
 
@@ -124,7 +127,11 @@ void main()
 #endif
 #ifdef SEPARATE_SPECULAR_TEXTURE
     // Separate specular color
+#ifdef SPECULAR_TEXTURE_SCALE
+    vec4 specularColor = texture(specularTexture, outTexCoord * parameters.specularTextureScale);
+#else
     vec4 specularColor = texture(specularTexture, outTexCoord);
+#endif
 #endif
     
     // Base diffuse color

@@ -91,6 +91,17 @@
 	</dict>
 	<key>renderParameterDescriptions</key>
 	<dict>
+		<key>specularTextureScale</key>
+		<dict>
+			<key>title</key>
+			<string>Specular Texture Scale</string>
+			<key>min</key>
+			<real>0.01</real>
+			<key>max</key>
+			<string>32</string>
+			<key>description</key>
+			<string>How often the specular texture is repeated over the model. I have no idea why anyone would need this, but XPS supports it, so here we are.</string>
+		</dict>
 		<key>bump2UVScale</key>
 		<dict>
 			<key>title</key>
@@ -172,6 +183,59 @@
 	</dict>
 	<key>shaders</key>
 	<dict>
+		<key>DiffuseBumpSeparateSpecularScale</key>
+		<dict>
+			<key>defines</key>
+			<dict>
+				<key>SPECULAR_TEXTURE_SCALE</key>
+				<string>1</string>
+				<key>CALCULATE_TANGENT_TO_WORLD</key>
+				<string>1</string>
+				<key>SEPARATE_SPECULAR_TEXTURE</key>
+				<string>1</string>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
+				<key>SPECULAR</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
+				<key>USE_SKINNING</key>
+				<string>1</string>
+			</dict>
+			<key>additionalParameters</key>
+			<array>
+				<string>bumpSpecularGloss</string>
+			</array>
+			<key>parameters</key>
+			<array>
+				<string>bumpSpecularAmount</string>
+				<string>specularTextureScale</string>
+			</array>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>bumpTexture</string>
+				<string>specularTexture</string>
+			</array>
+			<key>alphaMeshGroups</key>
+			<array>
+				<string>MeshGroup43</string>
+			</array>
+			<key>solidMeshGroups</key>
+			<array>
+				<string>MeshGroup42</string>
+			</array>
+			<key>fragment</key>
+			<string>Combined.fs</string>
+			<key>vertex</key>
+			<string>Combined.vs</string>
+		</dict>
 		<key>DiffuseBumpSpecularEmission</key>
 		<dict>
 			<key>defines</key>
