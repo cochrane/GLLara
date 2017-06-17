@@ -525,7 +525,7 @@ static NSCache *parameterCache;
         {
             // Find the value
             NSNumber *value = @0.0;
-            if (components.numberOfRanges < i + 3 && [components rangeAtIndex:i+3].location != NSNotFound) {
+            if (components.numberOfRanges >= i + 3 && [components rangeAtIndex:i+3].location != NSNotFound) {
                 NSString *stringValue = [meshName substringWithRange:[components rangeAtIndex:3 + i]];
                 value = [englishNumberFormatter numberFromString:stringValue];
             }
