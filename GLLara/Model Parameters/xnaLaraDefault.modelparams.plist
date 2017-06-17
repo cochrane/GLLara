@@ -172,6 +172,59 @@
 	</dict>
 	<key>shaders</key>
 	<dict>
+		<key>DiffuseBumpSpecularEmission</key>
+		<dict>
+			<key>defines</key>
+			<dict>
+				<key>SEPARATE_SPECULAR_TEXTURE</key>
+				<string>1</string>
+				<key>CAMERA_DIRECTION</key>
+				<string>1</string>
+				<key>EMISSION</key>
+				<string>1</string>
+				<key>RENDER_PARAMETERS</key>
+				<string>1</string>
+				<key>DIFFUSE</key>
+				<string>1</string>
+				<key>AMBIENT_COLOR</key>
+				<string>1</string>
+				<key>VERTEX_COLOR</key>
+				<string>1</string>
+				<key>CALCULATE_TANGENT_TO_WORLD</key>
+				<string>1</string>
+				<key>SPECULAR</key>
+				<string>1</string>
+				<key>USE_SKINNING</key>
+				<string>1</string>
+			</dict>
+			<key>additionalParameters</key>
+			<array>
+				<string>bumpSpecularGloss</string>
+			</array>
+			<key>solidMeshGroups</key>
+			<array>
+				<string>MeshGroup38</string>
+			</array>
+			<key>alphaMeshGroups</key>
+			<array>
+				<string>MeshGroup39</string>
+			</array>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+				<string>bumpTexture</string>
+				<string>specularTexture</string>
+				<string>emissionTexture</string>
+			</array>
+			<key>parameters</key>
+			<array>
+				<string>bumpSpecularAmount</string>
+			</array>
+			<key>fragment</key>
+			<string>Combined.fs</string>
+			<key>vertex</key>
+			<string>Combined.vs</string>
+		</dict>
 		<key>DiffuseBumpSeparateSpecular</key>
 		<dict>
 			<key>defines</key>
