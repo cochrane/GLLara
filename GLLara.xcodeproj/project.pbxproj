@@ -21,6 +21,7 @@
 		5214470D16DC2312003E260F /* GLLItem+MeshExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470C16DC2312003E260F /* GLLItem+MeshExport.m */; };
 		5214471116DE22E1003E260F /* GLLara.help in Resources */ = {isa = PBXBuildFile; fileRef = 5214471016DE22E0003E260F /* GLLara.help */; };
 		52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52152CEE16B66951001AE54C /* GLLDDSFile.m */; };
+		52232EAC1EFC459E007FE9AD /* GLLDropTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52232EAB1EFC459E007FE9AD /* GLLDropTargetView.m */; };
 		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
 		5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */; };
 		5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
@@ -398,6 +399,8 @@
 		5214471016DE22E0003E260F /* GLLara.help */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GLLara.help; sourceTree = "<group>"; };
 		52152CED16B66951001AE54C /* GLLDDSFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDDSFile.h; sourceTree = "<group>"; };
 		52152CEE16B66951001AE54C /* GLLDDSFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDDSFile.m; sourceTree = "<group>"; };
+		52232EAA1EFC459E007FE9AD /* GLLDropTargetView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLDropTargetView.h; sourceTree = "<group>"; };
+		52232EAB1EFC459E007FE9AD /* GLLDropTargetView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLDropTargetView.m; sourceTree = "<group>"; };
 		5224C8E415FA4F18002A6C76 /* GLLDirectionalLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDirectionalLight.h; sourceTree = "<group>"; };
 		5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDirectionalLight.m; sourceTree = "<group>"; };
 		5224C8EC15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAngleRangeValueTransformer.h; sourceTree = "<group>"; };
@@ -1546,6 +1549,8 @@
 				5213F8861C0E452E007A9EBB /* GLLAppDelegate.m */,
 				5213F88F1C0F9EC6007A9EBB /* GLLPreferenceKeys.m */,
 				5213F8911C0F9EE2007A9EBB /* GLLPreferenceKeys.h */,
+				52232EAA1EFC459E007FE9AD /* GLLDropTargetView.h */,
+				52232EAB1EFC459E007FE9AD /* GLLDropTargetView.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1946,6 +1951,7 @@
 				5213F8901C0F9EC6007A9EBB /* GLLPreferenceKeys.m in Sources */,
 				526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */,
 				526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */,
+				52232EAC1EFC459E007FE9AD /* GLLDropTargetView.m in Sources */,
 				526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */,
 				524BEAFF1611250C00EA061D /* GLLSkeletonDrawer.m in Sources */,
 				524BEB0316120FCF00EA061D /* GLLSkeletonProgram.m in Sources */,
