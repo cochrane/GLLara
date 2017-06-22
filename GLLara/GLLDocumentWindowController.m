@@ -111,6 +111,8 @@
     [itemViewController bind:@"selectedItems" toObject:self.selection withKeyPath:@"selectedItems" options:nil];
     
     [self _setRightHandController:noSelectionViewController];
+    
+    [self.sourceView registerForDraggedTypes:@[ (__bridge NSString*) kUTTypeFileURL ]];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -178,6 +180,50 @@
 {
     if (item == nil) return 3;
     else return [item outlineView:outlineView numberOfChildrenOfItem:item];
+}
+
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(nonnull id<NSDraggingInfo>)info proposedItem:(nullable id)item proposedChildIndex:(NSInteger)index {
+    if (!(item == itemListController))
+        return NSDragOperationNone;
+    
+    NSPasteboard *pasteboard = info.draggingPasteboard;
+    for (NSPasteboardItem *item in pasteboard.pasteboardItems) {
+        // Wait, does Apple really not have a method to get multiple URLs from
+        // the pasteboard? I'm not complaining, just surprised.
+        NSString *urlAsString = [item stringForType:(__bridge NSString*) kUTTypeFileURL];
+        NSURL *url = [NSURL URLWithString:urlAsString];
+        NSString *filename = [url filePathURL].lastPathComponent.lowercaseString;
+        
+        // Note: Not using dedicated methods because they can't deal with the
+        // double extension that XNALara uses.
+        if (![filename hasSuffix:@".mesh"] && ![filename hasSuffix:@".mesh.ascii"] && ![filename hasSuffix:@".xps"]) {
+            return NSDragOperationNone;
+        }
+    }
+    
+    return NSDragOperationCopy;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(nonnull id<NSDraggingInfo>)info item:(nullable id)item childIndex:(NSInteger)index {
+    
+    GLLDocument *document = (GLLDocument *) self.document;
+    
+    NSPasteboard *pasteboard = info.draggingPasteboard;
+    for (NSPasteboardItem *item in pasteboard.pasteboardItems) {
+        // Wait, does Apple really not have a method to get multiple URLs from
+        // the pasteboard? I'm not complaining, just surprised.
+        NSString *urlAsString = [item stringForType:(__bridge NSString*) kUTTypeFileURL];
+        NSURL *url = [NSURL URLWithString:urlAsString];
+        
+        NSError *error = nil;
+        [document addModelAtURL:url error:&error];
+        if (error) {
+            [self presentError:error];
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 #pragma mark - Outline view delegate
