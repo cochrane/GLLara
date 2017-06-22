@@ -196,7 +196,7 @@
         
         // Note: Not using dedicated methods because they can't deal with the
         // double extension that XNALara uses.
-        if (![filename hasSuffix:@".mesh"] && ![filename hasSuffix:@".mesh.ascii"] && ![filename hasSuffix:@".xps"]) {
+        if (![filename hasSuffix:@".mesh"] && ![filename hasSuffix:@".mesh.ascii"] && ![filename hasSuffix:@".xps"] && ![filename hasSuffix:@".obj"]) {
             return NSDragOperationNone;
         }
     }
