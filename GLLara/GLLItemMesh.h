@@ -31,7 +31,7 @@
 @property (nonatomic, retain) NSSet *renderParameters;
 @property (nonatomic, copy) NSString *shaderName;
 @property (nonatomic, copy) NSString *displayName;
-@property (nonatomic, retain) NSSet *textures;
+@property (nonatomic, retain) NSSet<GLLItemMeshTexture *> *textures;
 
 // Called by the Item; fills the various values correctly
 - (void)prepareGraphicsData;
