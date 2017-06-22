@@ -35,11 +35,18 @@
         file = new GLLObjFile((__bridge CFURLRef) url);
         
         NSArray *materialLibraryURLs = (__bridge NSArray *) file->getMaterialLibaryURLs();
-        if (materialLibraryURLs.count == 0)
-            materialLibraryURLs = @[ [url.URLByDeletingPathExtension URLByAppendingPathExtension:@"mtl"] ];
         
         for (NSURL *url in materialLibraryURLs)
             materialFiles.push_back(new GLLMtlFile((__bridge CFURLRef) url));
+        
+        if (materialLibraryURLs.count == 0) {
+            try {
+                NSURL *guessedURL = [url.URLByDeletingPathExtension URLByAppendingPathExtension:@"mtl"];
+                materialFiles.push_back(new GLLMtlFile((__bridge CFURLRef) guessedURL));
+            } catch (std::exception &e) {
+                // That file doesn't exist. Too bad.
+            }
+        }
         
     } catch (std::exception &e) {
         if (error)
