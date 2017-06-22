@@ -18,6 +18,7 @@
 #import "GLLItemBone.h"
 #import "GLLItemExportViewController.h"
 #import "GLLItemMesh.h"
+#import "GLLItemMeshTexture.h"
 #import "GLLItem+OBJExport.h"
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLModel.h"
@@ -25,8 +26,10 @@
 #import "GLLPoseExporter.h"
 #import "GLLPoseExportViewController.h"
 #import "GLLRenderWindowController.h"
+#import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"
 #import "GLLSelection.h"
+#import "GLLTexture.h"
 
 @interface GLLDocument () <NSOpenSavePanelDelegate>
 {
@@ -140,6 +143,52 @@
     return newItem;
 }
 
+- (GLLItem *)addImagePlane:(NSURL *)url error:(NSError *__autoreleasing*)error {
+    // First load the texture explicitly, to capture errors and size
+    GLLTexture *texture = [[GLLResourceManager sharedResourceManager] textureForURL:url error:error];
+    if (!texture) {
+        return nil;
+    }
+    
+    GLLItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
+    
+    // Load default model
+    NSURL *xyAlignedPlaneURL = [[NSBundle mainBundle] URLForResource:@"XYAlignedSquare" withExtension:@"obj" subdirectory:nil];
+    GLLModel *model = [GLLModel cachedModelFromFile:xyAlignedPlaneURL parent:nil error:error];
+    if (!model) {
+        // Should never happen
+        return nil;
+    }
+    
+    // Set up shader and texture
+    // Note: Texture set up via URL; it will do the lookup to create the instance on its own.
+    newItem.model = model;
+    GLLItemMesh *mesh = [newItem itemMeshForModelMesh:model.meshes[0]];
+    mesh.shaderName = @"DiffuseUnlitOBJ";
+    GLLItemMeshTexture *onlyTexture = mesh.textures.anyObject;
+    onlyTexture.textureURL = url;
+    newItem.displayName = url.lastPathComponent;
+    
+    // Define scaling
+    if (texture.width > texture.height) {
+        double factor = (double) texture.height / (double) texture.width;
+        newItem.scaleY = factor;
+    } else {
+        double factor = (double) texture.width / (double) texture.height;
+        newItem.scaleX = factor;
+    }
+    
+    self.undoManager.actionName = NSLocalizedString(@"Add image plane", @"load image plane undo action name");
+    
+    // Set selection next time the main loop comes around to ensure everything's set up properly by then.
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        NSMutableArray *selectedItems = [self.selection mutableArrayValueForKeyPath:@"selectedItems"];
+        [selectedItems replaceObjectsInRange:NSMakeRange(0, selectedItems.count) withObjectsFromArray:@[ newItem ]];
+    });
+    
+    return newItem;
+}
+
 #pragma mark - Actions
 
 - (IBAction)openNewRenderView:(id)sender
@@ -174,6 +223,27 @@
         
         NSError *error = nil;
         [self addModelAtURL:panel.URL error:&error];
+        if (error)
+            [self presentError:error modalForWindow:self.windowForSheet delegate:nil didPresentSelector:NULL contextInfo:NULL];
+    }];
+}
+
+- (IBAction)loadImagePlane:(id)sender {
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    
+    // Find the valid input types
+    NSMutableArray<NSString *> *validTypes = [NSMutableArray array];
+    NSArray *imageIOTypes = (__bridge_transfer NSArray *) CGImageSourceCopyTypeIdentifiers();
+    [validTypes addObjectsFromArray:imageIOTypes];
+    [validTypes addObject:@"dds"];
+    
+    // TODO Proper array here - don't forget DDS
+    panel.allowedFileTypes = validTypes;
+    [panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
+        if (result != NSModalResponseOK) return;
+        
+        NSError *error = nil;
+        [self addImagePlane:panel.URL error:&error];
         if (error)
             [self presentError:error modalForWindow:self.windowForSheet delegate:nil didPresentSelector:NULL contextInfo:NULL];
     }];
