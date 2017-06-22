@@ -71,6 +71,29 @@
 	</dict>
 	<key>shaders</key>
 	<dict>
+		<key>DiffuseUnlitOBJ</key>
+		<dict>
+			<key>defines</key>
+			<dict>
+				<key>CALCULATE_NORMAL_WORLD</key>
+				<string>1</string>
+			</dict>
+			<key>fragment</key>
+			<string>DiffuseUnlitOBJ.fs</string>
+			<key>vertex</key>
+			<string>Combined.vs</string>
+			<key>textures</key>
+			<array>
+				<string>diffuseTexture</string>
+			</array>
+			<key>additionalParameters</key>
+			<array>
+				<string>specularExponent</string>
+				<string>specularColor</string>
+				<string>diffuseColor</string>
+				<string>ambientColor</string>
+			</array>
+		</dict>
 		<key>TexturelessOBJ</key>
 		<dict>
 			<key>defines</key>

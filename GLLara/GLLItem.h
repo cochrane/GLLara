@@ -61,7 +61,6 @@ enum GLLItemChannelAssignment
 // Derived
 @property (nonatomic, retain) NSURL *itemURL;
 
-@property (nonatomic, copy, readonly) NSString *itemName;
 @property (nonatomic, copy, readonly) NSString *itemDirectory;
 
 @property (nonatomic, retain) GLLModel *model;

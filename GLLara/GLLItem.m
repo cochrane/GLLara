@@ -48,7 +48,6 @@
 
 @dynamic model;
 @dynamic itemURL;
-@dynamic itemName;
 @dynamic itemDirectory;
 
 @synthesize modelTransform;

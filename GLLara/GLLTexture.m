@@ -141,6 +141,9 @@ static NSOperationQueue *imageInformationQueue = nil;
 - (void)_setupGCDObserving;
 - (void)_updateAnisotropy;
 
+@property (nonatomic, assign, readwrite) NSUInteger width;
+@property (nonatomic, assign, readwrite) NSUInteger height;
+
 @end
 
 @implementation GLLTexture
@@ -336,6 +339,9 @@ static NSOperationQueue *imageInformationQueue = nil;
     while (_dds_upload_texture_data(file, mipmap))
         mipmap += 1;
     
+    self.height = file.height;
+    self.width = file.width;
+    
     int numberOfLevels = numMipmapLevels(file.width, file.height);
     if (mipmap < (NSUInteger) numberOfLevels) {
         // Generate missing mipmap levels
@@ -357,6 +363,9 @@ static NSOperationQueue *imageInformationQueue = nil;
     CFNumberGetValue(CFDictionaryGetValue(dict, kCGImagePropertyPixelWidth), kCFNumberCFIndexType, &width);
     CFNumberGetValue(CFDictionaryGetValue(dict, kCGImagePropertyPixelHeight), kCFNumberCFIndexType, &height);
     CFRelease(dict);
+    
+    self.height = height;
+    self.width = width;
     
     unsigned char *bufferData = calloc(width * height, 4);
     CGImageRef cgImage = CGImageSourceCreateImageAtIndex(source, 0, NULL);
@@ -433,6 +442,9 @@ static NSOperationQueue *imageInformationQueue = nil;
     
     glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, 2, 2);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 2, 2, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, defaultTexture);
+    
+    self.width = 2;
+    self.height = 2;
 }
 
 - (void)_updateAnisotropy;

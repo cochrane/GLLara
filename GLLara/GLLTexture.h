@@ -22,6 +22,9 @@ extern NSString *GLLTextureChangeNotification;
 
 - (void)unload;
 
+@property (nonatomic, assign, readonly) NSUInteger width;
+@property (nonatomic, assign, readonly) NSUInteger height;
+
 @property (nonatomic) NSURL *url;
 @property (nonatomic, assign, readonly) GLuint textureID;
 
