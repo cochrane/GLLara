@@ -18,6 +18,7 @@
 #import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
+#import "GLLItemDragDestination.h"
 #import "GLLResourceManager.h"
 #import "GLLPreferenceKeys.h"
 #import "GLLSceneDrawer.h"
@@ -48,6 +49,8 @@ static NSMutableCharacterSet *interestingCharacters;
     
     BOOL didHaveMultisample;
     NSInteger currentNumberOfSamples;
+    
+    GLLItemDragDestination *dragDestination;
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
@@ -141,6 +144,9 @@ const double unitsPerSecond = 0.2;
     }];
     
     showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
+    
+    [self registerForDraggedTypes:@[ (__bridge NSString*) kUTTypeFileURL ]];
+    dragDestination = [[GLLItemDragDestination alloc] init];
     
     return self;
 };
@@ -352,6 +358,26 @@ const double unitsPerSecond = 0.2;
     // Next (in either case): Start mouse movement
     if (self.camera.cameraLocked) return;
     [self _processEventsStartingWith:theEvent];
+}
+
+#pragma mark - Drag and drop
+
+- (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
+    NSWindowController *windowController = self.window.windowController;
+    dragDestination.document = windowController.document;
+    
+    return [dragDestination itemDraggingEntered:sender];
+}
+
+- (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
+    NSWindowController *windowController = self.window.windowController;
+    dragDestination.document = windowController.document;
+    
+    NSError *error = nil;
+    BOOL success = [dragDestination performItemDragOperation:sender error:&error];
+    if (!success && error)
+        [self presentError:error];
+    return success;
 }
 
 #pragma mark - Private methods
