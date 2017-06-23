@@ -20,6 +20,11 @@
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext selection:(GLLSelection *)selection;
 
+/* Utility methods for various drag sources that want to add files as new items */
+- (NSDragOperation)itemDraggingEntered:(id<NSDraggingInfo>)sender;
+- (BOOL)performItemDragOperation:(id<NSDraggingInfo>)sender;
+- (BOOL)isImagePath:(NSURL *)url;
+
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, retain) IBOutlet NSOutlineView *sourceView;

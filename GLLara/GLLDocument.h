@@ -24,6 +24,7 @@
 
 - (GLLItem *)addModelAtURL:(NSURL *)url error:(NSError *__autoreleasing*)error;
 - (GLLItem *)addModel:(GLLModel *)model;
+- (GLLItem *)addImagePlane:(NSURL *)url error:(NSError *__autoreleasing*)error;
 
 - (IBAction)openNewRenderView:(id)sender;
 - (IBAction)loadMesh:(id)sender;
