@@ -282,6 +282,7 @@
 		5296947315F7FB3300DF2FA3 /* GLLItemMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947215F7FB3200DF2FA3 /* GLLItemMesh.m */; };
 		5296947815F80F4800DF2FA3 /* GLLBoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */; };
 		52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */; };
+		52B5630A1EFD8681008C6CAD /* GLLItemDragDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B563091EFD8681008C6CAD /* GLLItemDragDestination.m */; };
 		52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */; };
 		52B9E07D16020A8300641518 /* DiffuseOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E07C16020A8300641518 /* DiffuseOBJ.fs */; };
 		52B9E07F16021ECD00641518 /* DiffuseNormalOBJ.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */; };
@@ -783,6 +784,8 @@
 		5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneViewController.m; sourceTree = "<group>"; };
 		52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLCameraTarget.h; sourceTree = "<group>"; };
 		52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLCameraTarget.m; sourceTree = "<group>"; };
+		52B563081EFD8681008C6CAD /* GLLItemDragDestination.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLItemDragDestination.h; sourceTree = "<group>"; };
+		52B563091EFD8681008C6CAD /* GLLItemDragDestination.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLItemDragDestination.m; sourceTree = "<group>"; };
 		52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = objFileParameters.modelparams.plist; path = ../Shaders/objFileParameters.modelparams.plist; sourceTree = "<group>"; };
 		52B9E07C16020A8300641518 /* DiffuseOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseOBJ.fs; sourceTree = "<group>"; };
 		52B9E07E16021ECD00641518 /* DiffuseNormalOBJ.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = DiffuseNormalOBJ.fs; sourceTree = "<group>"; };
@@ -1338,6 +1341,7 @@
 				522C4BF9160932BF0043FCBA /* DiffuseSpecularNormalOBJ.fs */,
 				526DD0E11EF3CD400033A327 /* Combined.vs */,
 				526DD0E31EF4010B0033A327 /* Combined.fs */,
+				52232EAF1EFC68A0007FE9AD /* DiffuseUnlitOBJ.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1556,6 +1560,8 @@
 				5213F8911C0F9EE2007A9EBB /* GLLPreferenceKeys.h */,
 				52232EAA1EFC459E007FE9AD /* GLLDropTargetView.h */,
 				52232EAB1EFC459E007FE9AD /* GLLDropTargetView.m */,
+				52B563081EFD8681008C6CAD /* GLLItemDragDestination.h */,
+				52B563091EFD8681008C6CAD /* GLLItemDragDestination.m */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1971,6 +1977,7 @@
 				52ED9E3B16999E370082EABB /* NSArray+Map.m in Sources */,
 				52ED9E8416A225D90082EABB /* GLLLightsListController.m in Sources */,
 				528934DE16A2281900F05312 /* GLLSettingsListController.m in Sources */,
+				52B5630A1EFD8681008C6CAD /* GLLItemDragDestination.m in Sources */,
 				528934E816A29B8300F05312 /* GLLLightController.m in Sources */,
 				528934EB16A332BD00F05312 /* GLLMeshListController.m in Sources */,
 				528934EE16A3593500F05312 /* GLLBoneListController.m in Sources */,

@@ -8,8 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class GLLDocument;
-
 @interface GLLDropTargetView : NSView
 
 @end

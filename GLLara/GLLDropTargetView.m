@@ -10,21 +10,37 @@
 
 #import "GLLDocument.h"
 #import "GLLDocumentWindowController.h"
+#import "GLLItemDragDestination.h"
+
+@interface GLLDropTargetView()
+
+@property (nonatomic, retain) GLLItemDragDestination *dragDestination;
+    
+@end
 
 @implementation GLLDropTargetView
 
 - (void)awakeFromNib {
     [self registerForDraggedTypes:@[ (__bridge NSString*) kUTTypeFileURL ]];
+    self.dragDestination = [[GLLItemDragDestination alloc] init];
 }
 
 - (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
     GLLDocumentWindowController *windowController = self.window.windowController;
-    return [windowController itemDraggingEntered:sender];
+    self.dragDestination.document = windowController.document;
+    
+    return [self.dragDestination itemDraggingEntered:sender];
 }
 
 - (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
     GLLDocumentWindowController *windowController = self.window.windowController;
-    return [windowController performItemDragOperation:sender];
+    self.dragDestination.document = windowController.document;
+    
+    NSError *error = nil;
+    BOOL success = [self.dragDestination performItemDragOperation:sender error:&error];
+    if (!success && error)
+        [self presentError:error];
+    return success;
 }
 
 @end
