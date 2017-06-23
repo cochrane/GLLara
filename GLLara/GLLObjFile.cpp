@@ -167,36 +167,48 @@ void GLLObjFile::parseFace(const char *&current, const char *end)
         
         // Scan vertex
         set.vertex = parseInt(current, end);
-        if (current == end || *current != '/') {
-            throw std::invalid_argument("Expected \"/\" (Only OBJ files with vertices, normals and texture coordinates are supported).");
-        }
-        current += 1;
-        
-        // Scan tex coord
-        set.texCoord = parseInt(current, end);
-        if (current == end || *current != '/') {
-            throw std::invalid_argument("Expected \"/\" (Only OBJ files with vertices, normals and texture coordinates are supported).");
-        }
-        current += 1;
-        
-        // Scan normal
-        set.normal = parseInt(current, end);
-        
-        // Scan color (if present)
-        set.color = INT_MAX;
-        if (current != end && *current == '/') {
+        if (current == end) {
+            throw std::invalid_argument("String too short.");
+        } else if (*current == '/') {
+            // Standard case: Have tex coord, normal
             current += 1;
-            set.color = parseInt(current, end);
+            
+            // Scan tex coord
+            set.texCoord = parseInt(current, end);
+            if (current == end || *current != '/') {
+                throw std::invalid_argument("Expected \"/\" (Only OBJ files with vertices, normals and texture coordinates are supported).");
+            }
+            current += 1;
+            
+            // Scan normal
+            set.normal = parseInt(current, end);
+            
+            // Scan color (if present)
+            set.color = INT_MAX;
+            if (current != end && *current == '/') {
+                current += 1;
+                set.color = parseInt(current, end);
+            }
+        } else {
+            current += 1;
+            // Only vertices
+            set.texCoord = INT_MAX;
+            set.normal = INT_MAX;
+            set.color = INT_MAX;
         }
         
         if (set.vertex > 0) set.vertex -= 1;
         else set.vertex += vertices.size() / 3;
         
-        if (set.normal > 0) set.normal -= 1;
-        else set.normal += normals.size() / 3;
+        if (set.normal != INT_MAX) {
+            if (set.normal > 0) set.normal -= 1;
+            else set.normal += normals.size() / 3;
+        }
         
-        if (set.texCoord > 0) set.texCoord -= 1;
-        else set.texCoord += texCoords.size() / 2;
+        if (set.texCoord != INT_MAX) {
+            if (set.texCoord > 0) set.texCoord -= 1;
+            else set.texCoord += texCoords.size() / 2;
+        }
         
         if (set.color != INT_MAX) // Color is optional.
         {
@@ -228,14 +240,22 @@ unsigned GLLObjFile::unifiedIndex(const IndexSet &indexSet)
         
         if (indexSet.vertex >= (int) vertices.size())
             throw std::range_error("Vertex index out of range.");
-        if (indexSet.normal >= (int) normals.size())
+        if (indexSet.normal >= (int) normals.size() && indexSet.normal != INT_MAX)
             throw std::range_error("Surface normal index out of range.");
-        if (indexSet.texCoord >= (int) texCoords.size())
+        if (indexSet.texCoord >= (int) texCoords.size() && indexSet.texCoord != INT_MAX)
             throw std::range_error("Texture coordinate index out of range.");
         
         memcpy(data.vert, &(vertices[indexSet.vertex*3]), sizeof(float [3]));
-        memcpy(data.norm, &(normals[indexSet.normal*3]), sizeof(float [3]));
-        memcpy(data.tex, &(texCoords[indexSet.texCoord*2]), sizeof(float [2]));
+        if (indexSet.normal != INT_MAX)
+            memcpy(data.norm, &(normals[indexSet.normal*3]), sizeof(float [3]));
+        else
+            data.norm[0] = data.norm[1] = data.norm[2];
+            
+        if (indexSet.texCoord != INT_MAX)
+            memcpy(data.tex, &(texCoords[indexSet.texCoord*2]), sizeof(float [2]));
+        else
+            data.tex[0] = data.tex[1] = 0.0f;
+        
         if (indexSet.color < (int) colors.size())
             memcpy(data.color, &(colors[indexSet.color*4]), 4);
         else
