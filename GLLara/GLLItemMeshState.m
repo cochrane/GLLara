@@ -93,6 +93,7 @@
     [_itemMesh removeObserver:self forKeyPath:@"textures"];
     
     [_itemMesh removeObserver:self forKeyPath:@"isVisible"];
+	[_itemMesh removeObserver:self forKeyPath:@"isUsingBlending"];
     [_itemMesh removeObserver:self forKeyPath:@"shaderName"];
 }
 
@@ -204,8 +205,6 @@
 {
     glDeleteBuffers(1, &renderParametersBuffer);
     renderParametersBuffer = 0;
-    
-    renderParameters = nil;
 }
 
 - (NSComparisonResult)compareTo:(GLLItemMeshState *)other {
