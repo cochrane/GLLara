@@ -113,7 +113,7 @@ static NSString *ddsError = @"DDS File Loading";
     }
     
     // Find the file's format
-    if (header.pixelFormat.flags == 4) // Use the FourCC
+    if (header.pixelFormat.flags & 4) // Use the FourCC
     {
         if (header.pixelFormat.fourCC == NSSwapBigIntToHost('DXT1'))
             _dataFormat = GLL_DDS_DXT1;
@@ -241,6 +241,7 @@ static NSString *ddsError = @"DDS File Loading";
             *error = [NSError errorWithDomain:ddsError code:1 userInfo:@{
                                                                          NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"The file's graphics format is not supported.", @"DDS: Unknown graphics format"), header.pixelFormat.rgbBitCount],
                                                                          NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Only DXT1,3,5 and uncompressed (A)RGB formats are supported.", @"DDS: Unknown graphics format")}];
+		return nil;
     }
     
     _width = header.width;
