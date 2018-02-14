@@ -47,7 +47,7 @@ void GLLReportTiming() {
 
     for (const auto &entry : timingTags) {
         if (entry.second.times.size() == 1) {
-            std::cout << entry.first << " total " << entry.second.times[0] << "\n";
+			std::cout << std::fixed << entry.first << " total " << entry.second.times[0] << "\n";
         } else {
         CFTimeInterval total = 0.0;
         CFTimeInterval max = -std::numeric_limits<CFTimeInterval>::infinity();
@@ -58,7 +58,7 @@ void GLLReportTiming() {
             min = std::fmin(min, interval);
         }
         
-        std::cout << entry.first << " total " << total << " max " << max << " min " << min << " avg " << (total / entry.second.times.size()) << "\n";
+			std::cout << std::fixed << entry.first << " total " << total << " max " << max << " min " << min << " avg " << (total / entry.second.times.size()) << "\n";
         }
     }
     std::cout << std::endl;
