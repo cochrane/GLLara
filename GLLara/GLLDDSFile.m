@@ -137,19 +137,23 @@ static NSString *ddsError = @"DDS File Loading";
         {
             if (header.pixelFormat.rgbBitCount == 32)
             {
-                // To be supported, it has to be ARGB32 now.
-                if (!((header.pixelFormat.aBitMask == 0xff000000) &&
-                      (header.pixelFormat.rBitMask == 0x00ff0000) &&
-                      (header.pixelFormat.gBitMask == 0x0000ff00) &&
-                      (header.pixelFormat.bBitMask == 0x000000ff)))
-                {
+                if ((header.pixelFormat.aBitMask == 0xff000000) &&
+                     (header.pixelFormat.rBitMask == 0x00ff0000) &&
+                     (header.pixelFormat.gBitMask == 0x0000ff00) &&
+                     (header.pixelFormat.bBitMask == 0x000000ff)) {
+                    _dataFormat = GLL_DDS_ARGB_8;
+                } else if ((header.pixelFormat.aBitMask == 0xff000000) &&
+                           (header.pixelFormat.rBitMask == 0x000000ff) &&
+                           (header.pixelFormat.gBitMask == 0x0000ff00) &&
+                           (header.pixelFormat.bBitMask == 0x00ff0000)) {
+                    _dataFormat = GLL_DDS_ABGR_8;
+                } else {
                     if (error)
                         *error = [NSError errorWithDomain:ddsError code:1 userInfo:@{
                                                                                      NSLocalizedDescriptionKey : NSLocalizedString(@"Graphics format is not supported.", @"DDS: Unknown 32-bit alpha format"),
-                                                                                     NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file uses a data layout that is not supported. Only ARGB is supported for 32 bit uncompressed textures.", @"DDS: Unknown 32-bit format")}];
+                                                                                     NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file uses a data layout that is not supported. Only ARGB or ABGR is supported for 32 bit uncompressed textures.", @"DDS: Unknown 32-bit format")}];
                     return nil;
                 }
-                _dataFormat = GLL_DDS_ARGB_8;
             }
             else if (header.pixelFormat.rgbBitCount == 16)
             {
@@ -287,6 +291,7 @@ static NSString *ddsError = @"DDS File Loading";
                 size = (width * height) * 3;
                 break;
             case GLL_DDS_ARGB_8:
+            case GLL_DDS_ABGR_8:
             case GLL_DDS_BGRX_8:
                 size = (width * height) * 4;
                 break;

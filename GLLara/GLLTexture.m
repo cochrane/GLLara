@@ -62,6 +62,11 @@ void _dds_get_texture_format(GLLDDSFile *file, GLenum *internalFormat, GLenum *f
             *format = GL_BGRA;
             *type = GL_UNSIGNED_INT_8_8_8_8_REV;
             break;
+        case GLL_DDS_ABGR_8:
+            *internalFormat = GL_RGBA8;
+            *format = GL_RGBA;
+            *type = GL_UNSIGNED_INT_8_8_8_8_REV;
+            break;
         case GLL_DDS_ARGB_4:
             *internalFormat = GL_RGBA8;
             *format = GL_BGRA;
