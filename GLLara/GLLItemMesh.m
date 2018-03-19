@@ -212,7 +212,13 @@
         GLLItemMeshTexture *texture = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMeshTexture" inManagedObjectContext:self.managedObjectContext];
         texture.mesh = self;
         texture.identifier = self.mesh.shader.textureUniformNames[i];
-        texture.textureURL = self.mesh.textures[i];
+        if (i >= self.mesh.textures.count) {
+            // Grrr, idiot forgot to set texture that the shader is clearly
+            // using. Need to use some default.
+            texture.textureURL = [self.mesh.model.parameters defaultValueForTexture:texture.identifier];
+        } else {
+            texture.textureURL = self.mesh.textures[i];
+        }
     }
     
     // Find shader value
