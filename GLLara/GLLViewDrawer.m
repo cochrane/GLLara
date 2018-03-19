@@ -14,6 +14,7 @@
 #import "GLLAmbientLight.h"
 #import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
+#import "GLLNotifications.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLSceneDrawer.h"
 #import "GLLView.h"
@@ -317,6 +318,8 @@ struct GLLLightBlock
 	glDeleteRenderbuffers(1, &depthRenderbuffer);
 	glCullFace(GL_BACK);
 	glEnable(GL_MULTISAMPLE);
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
 	
 	needsUpdateMatrices = YES;
 	self.view.needsDisplay = YES;

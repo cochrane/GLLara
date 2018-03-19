@@ -12,8 +12,6 @@
 @class GLLResourceManager;
 @class GLLView;
 
-extern NSString *GLLSceneDrawerNeedsUpdateNotification;
-
 /*!
  * @abstract Draw all elements in a scene, regardless of camera and so on.
  * @discussion The Scene Drawer encapsulates all the drawing that is constant

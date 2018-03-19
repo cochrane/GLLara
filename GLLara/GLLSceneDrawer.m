@@ -19,6 +19,7 @@
 #import "GLLItem.h"
 #import "GLLItemDrawer.h"
 #import "GLLModelProgram.h"
+#import "GLLNotifications.h"
 #import "GLLRenderParameter.h"
 #import "GLLResourceManager.h"
 #import "GLLUniformBlockBindings.h"
@@ -28,12 +29,11 @@
 #import "GLLSkeletonDrawer.h"
 #import "GLLTiming.h"
 
-NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNotification";
-
 @interface GLLSceneDrawer ()
 {
 	NSMutableArray *itemDrawers;
 	id managedObjectContextObserver;
+    id drawStateNotificationObserver;
 	GLLSkeletonDrawer *skeletonDrawer;
 	GLLDrawState state;
 }
@@ -89,6 +89,11 @@ NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNot
 		
 		[self _notifyRedraw];
 	}];
+    
+    drawStateNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:GLLDrawStateChangedNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+        bzero(&state, sizeof(state));
+        [self _notifyRedraw];
+    }];
 	
 	// Load existing items
 	NSFetchRequest *allItemsRequest = [[NSFetchRequest alloc] init];

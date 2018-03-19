@@ -17,6 +17,7 @@
 #import <OpenGL/CGLRenderers.h>
 
 #import "GLLDDSFile.h"
+#import "GLLNotifications.h"
 #import "GLLPreferenceKeys.h"
 #import "GLLTiming.h"
 
@@ -242,6 +243,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         glBindTexture(GL_TEXTURE_2D, _textureID);
         [self _loadDefaultTexture];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
     });
     
     completionHandler(nil);
@@ -256,6 +258,7 @@ static NSOperationQueue *imageInformationQueue = nil;
             // Load default
             glBindTexture(GL_TEXTURE_2D, _textureID);
             [self _loadDefaultTexture];
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
         }
     });
 }
@@ -300,6 +303,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         
         GLLEndTiming("texture");
         [[NSNotificationCenter defaultCenter] postNotificationName:GLLTextureChangeNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
     }];
     
     if (coordinationError)
@@ -456,6 +460,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyAmount);
     else
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
 }
 
 @end

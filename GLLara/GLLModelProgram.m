@@ -10,6 +10,7 @@
 
 #import <OpenGL/gl3.h>
 
+#import "GLLNotifications.h"
 #import "GLLShader.h"
 #import "GLLShaderDescription.h"
 #import "GLLVertexFormat.h"
@@ -61,6 +62,7 @@
     }
     
     glUseProgram(0);
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
     
     return self;
 }
