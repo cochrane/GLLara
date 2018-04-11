@@ -197,8 +197,10 @@
     }
     
     // -- Trigger a rebuild of the matrices
-    if (bones.count > 0)
-    [bones[0] setPositionX:0];
+    for (GLLItemBone *bone in bones) {
+        if (!bone.parent)
+            [bone setPositionX:0];
+    }
     
     for (NSString *cameraTargetName in model.cameraTargetNames)
     {
