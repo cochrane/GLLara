@@ -43,5 +43,10 @@ CFURLRef GLLCreateURLFromString(const std::string &string, CFURLRef relativeTo)
         path = string.substr(lastBackslash+1);
     }
     path.erase(path.find_last_not_of(" \n\r\t")+1);
-    return CFURLCreateWithBytes(kCFAllocatorDefault, (UInt8 *)path.c_str(), path.size(), kCFStringEncodingUTF8, relativeTo);
+    
+    CFStringRef cfString = CFStringCreateWithBytes(kCFAllocatorDefault, (UInt8*) path.c_str(), path.size(), kCFStringEncodingUTF8, false);
+    
+    CFURLRef result = CFURLCreateWithFileSystemPathRelativeToBase(kCFAllocatorDefault, cfString, kCFURLWindowsPathStyle, false, relativeTo);
+    CFRelease(cfString);
+    return result;
 }
