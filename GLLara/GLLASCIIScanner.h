@@ -25,6 +25,9 @@
 
 - (NSString *)readPascalString;
 
+// Tries to scan a newline; returns whether that succeeded. If not, newlines are skipped.
+- (BOOL)hasNewline;
+
 @property (nonatomic, readonly) BOOL isValid;
 
 @end

@@ -176,15 +176,36 @@ void vec_addTo(float *a, float *b)
         if (self.hasBoneWeights)
         {
             // Bone indices
-            for (NSUInteger j = 0; j < 4; j++)
-            {
+            NSUInteger boneIndexCount = 0;
+            for (; boneIndexCount < 4; boneIndexCount++) {
                 uint16_t value = [scanner readUint16];
                 [rawVertexData appendBytes:&value length:sizeof(value)];
+                
+                // Some .mesh.ascii files have fewer bones and weights
+                if ([scanner hasNewline]) {
+                    boneIndexCount += 1;
+                    break;
+                }
             }
+            for (; boneIndexCount < 4; boneIndexCount++) {
+                uint16_t value = 0;
+                [rawVertexData appendBytes:&value length:sizeof(value)];
+            }
+            
             // Bone weights
-            for (NSUInteger j = 0; j < 4; j++)
-            {
+            NSUInteger boneWeightCount = 0;
+            for (; boneWeightCount < 4; boneWeightCount++) {
                 float value = [scanner readFloat32];
+                [rawVertexData appendBytes:&value length:sizeof(value)];
+                
+                // Some .mesh.ascii files have fewer bones and weights
+                if ([scanner hasNewline]) {
+                    boneWeightCount += 1;
+                    break;
+                }
+            }
+            for (; boneWeightCount < 4; boneWeightCount++) {
+                float value = 0.0;
                 [rawVertexData appendBytes:&value length:sizeof(value)];
             }
         }

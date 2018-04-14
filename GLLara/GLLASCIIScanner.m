@@ -107,6 +107,24 @@
     return result;
 }
 
+- (BOOL)hasNewline;
+{
+    // Skip only whitespace, not newline, because the scanner won't recognize the newline otherwise
+    scanner.charactersToBeSkipped = [NSCharacterSet whitespaceCharacterSet];
+    if ([scanner scanString:@"#" intoString:NULL])  {
+        // Has a comment, which ends a line.
+        scanner.charactersToBeSkipped = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+        [scanner scanUpToCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:NULL];
+        return YES;
+    } else if ([scanner scanCharactersFromSet:[NSCharacterSet newlineCharacterSet] intoString:NULL]) {
+        // Has newline, which obviously ends a line.
+        scanner.charactersToBeSkipped = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+        return YES;
+    }
+    scanner.charactersToBeSkipped = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    return NO;
+}
+
 - (void)_skipComments;
 {
     while ([scanner scanString:@"#" intoString:NULL])
