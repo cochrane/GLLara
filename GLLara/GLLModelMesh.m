@@ -243,7 +243,7 @@ void vec_addTo(float *a, float *b)
 
 - (GLLVertexFormat *)vertexFormat {
     if (!_vertexFormat) {
-        _vertexFormat = [[GLLVertexFormat alloc] initWithBoneWeights:self.hasBoneWeights tangents:self.hasTangents countOfUVLayers:self.countOfUVLayers countOfVertices:self.countOfVertices];
+        _vertexFormat = [[GLLVertexFormat alloc] initWithBoneWeights:self.hasBoneWeights tangents:self.hasTangents colorsAsFloats:self.colorsAreFloats countOfUVLayers:self.countOfUVLayers countOfVertices:self.countOfVertices];
     }
     return _vertexFormat;
 }
@@ -268,6 +268,12 @@ void vec_addTo(float *a, float *b)
 {
     // For subclasses to override
     return YES;
+}
+
+- (BOOL)colorsAreFloats
+{
+    // For subclasses to override
+    return NO;
 }
 
 #pragma mark - Splitting

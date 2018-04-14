@@ -8,9 +8,15 @@
 
 #import "GLLVertexFormat.h"
 
+@interface GLLVertexFormat()
+
+@property (nonatomic, assign, readonly) NSUInteger colorSize;
+
+@end
+
 @implementation GLLVertexFormat
 
-- (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;
+- (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents colorsAsFloats:(BOOL)floatColor countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;
 {
     if (!(self = [super init])) {
         return nil;
@@ -18,6 +24,7 @@
     
     _hasTangents = tangents;
     _hasBoneWeights = boneWeights;
+    _colorIsFloat = floatColor;
     _countOfUVLayers = countOfUVLayers;
     if (countOfVertices < UINT8_MAX)
         _numElementBytes = 1;
@@ -45,6 +52,10 @@
     return format.countOfUVLayers == _countOfUVLayers && format.hasBoneWeights == _hasBoneWeights && format.hasTangents == _hasTangents && format.numElementBytes == _numElementBytes;
 }
 
+- (NSUInteger)colorSize {
+    return self.colorIsFloat ? sizeof(float [4]) : sizeof(uint8_t [4]);
+}
+
 - (NSUInteger)offsetForPosition
 {
     return 0;
@@ -61,28 +72,28 @@
 {
     NSAssert(layer < self.countOfUVLayers, @"Asking for layer %lu but we only have %lu", layer, self.countOfUVLayers);
     
-    return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*layer;
+    return sizeof(float [6]) + self.colorSize + sizeof(float [2])*layer;
 }
 - (NSUInteger)offsetForTangentLayer:(NSUInteger)layer
 {
     NSAssert(layer < self.countOfUVLayers, @"Asking for layer %lu but we only have %lu", layer, self.countOfUVLayers);
     
-    return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + sizeof(float [4])*layer;
+    return sizeof(float [6]) + self.colorSize + sizeof(float [2])*self.countOfUVLayers + sizeof(float [4])*layer;
 }
 - (NSUInteger)offsetForBoneIndices
 {
     NSAssert(self.hasBoneWeights, @"Asking for offset for bone indices in mesh that doesn't have any.");
     
-    return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0);
+    return sizeof(float [6]) + self.colorSize + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0);
 }
 - (NSUInteger)offsetForBoneWeights
 {
     NSAssert(self.hasBoneWeights, @"Asking for offset for bone indices in mesh that doesn't have any.");
-    return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0) + sizeof(uint16_t [4]);
+    return sizeof(float [6]) + self.colorSize + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0) + sizeof(uint16_t [4]);
 }
 - (NSUInteger)stride
 {
-    return sizeof(float [6]) + sizeof(uint8_t [4]) + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0) + (self.hasBoneWeights ? (sizeof(uint16_t [4]) + sizeof(float [4])) : 0);
+    return sizeof(float [6]) + self.colorSize + sizeof(float [2])*self.countOfUVLayers + (self.hasTangents ? sizeof(float[4])*self.countOfUVLayers : 0) + (self.hasBoneWeights ? (sizeof(uint16_t [4]) + sizeof(float [4])) : 0);
 }
 
 - (id)copy

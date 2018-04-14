@@ -217,9 +217,15 @@ static inline uint16_t halfFloat(const float *value) {
         originalVertex += 12;
         
         // Color
-        memcpy(vertex, originalVertex, 4);
-        vertex += 4;
-        originalVertex += 4;
+        if (self.format.colorIsFloat) {
+            memcpy(vertex, originalVertex, 16);
+            vertex += 16;
+            originalVertex += 16;
+        } else {
+            memcpy(vertex, originalVertex, 4);
+            vertex += 4;
+            originalVertex += 4;
+        }
         
         // Tex coords + tangents
         for (NSUInteger j = 0; j < countOfUVLayers; j++) {
@@ -323,7 +329,11 @@ static inline uint16_t halfFloat(const float *value) {
     glVertexAttribPointer(GLLVertexAttribNormal, 4, GL_INT_2_10_10_10_REV, GL_TRUE, actualStride, (GLvoid *) self.offsetForNormal);
     
     glEnableVertexAttribArray(GLLVertexAttribColor);
-    glVertexAttribPointer(GLLVertexAttribColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, actualStride, (GLvoid *) self.offsetForColor);
+    if (self.format.colorIsFloat) {
+        glVertexAttribPointer(GLLVertexAttribColor, 4, GL_FLOAT, GL_FALSE, actualStride, (GLvoid *) self.offsetForColor);
+    } else {
+        glVertexAttribPointer(GLLVertexAttribColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, actualStride, (GLvoid *) self.offsetForColor);
+    }
     
     for (GLuint i = 0; i < self.format.countOfUVLayers; i++)
     {

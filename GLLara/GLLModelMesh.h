@@ -66,6 +66,7 @@ typedef enum GLLCullFaceMode
 @property (nonatomic, assign) NSUInteger countOfUVLayers;
 @property (nonatomic, assign, readonly) BOOL hasBoneWeights;
 @property (nonatomic, readonly) BOOL hasTangents;
+@property (nonatomic, readonly) BOOL colorsAreFloats;
 @property (nonatomic, copy, readonly) NSURL *baseURL;
 
 /*

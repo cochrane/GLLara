@@ -94,21 +94,6 @@ void parseVector(const char *&current, const char *end, std::vector<float> &valu
     skipToEndOfLine(current, end);
 }
 
-void parseVector(const char *&current, const char *end, std::vector<unsigned char> &values, unsigned number) throw() {
-    for (unsigned i = 0; i < number; i++) {
-        while (current != end && *current == ' ') {
-            current += 1;
-        }
-        
-        unsigned char value = 0;
-        while (current != end && *current >= '0' && *current <= '9') {
-            value = value * 10 + (*current - '0');
-            current += 1;
-        }
-        values.push_back(value);
-    }
-}
-
 std::string stringToEndOfLine(const char *&current, const char *end) throw() {
     while (current != end && *current == ' ') {
         current += 1;
@@ -257,9 +242,9 @@ unsigned GLLObjFile::unifiedIndex(const IndexSet &indexSet)
             data.tex[0] = data.tex[1] = 0.0f;
         
         if (indexSet.color < (int) colors.size())
-            memcpy(data.color, &(colors[indexSet.color*4]), 4);
+            memcpy(data.color, &(colors[indexSet.color*4]), sizeof(float [4]));
         else
-            data.color[0] = data.color[1] = data.color[2] = data.color[3] = 255;
+            data.color[0] = data.color[1] = data.color[2] = data.color[3] = 1.0;
         
         unsigned dataSoFar = (unsigned) vertexData.size();
         vertexData.push_back(data);

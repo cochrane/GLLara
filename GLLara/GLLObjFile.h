@@ -28,7 +28,7 @@ public:
     {
         float vert[3];
         float norm[3];
-        unsigned char color[4];
+        float color[4];
         float tex[2];
     };
     struct MaterialRange
@@ -43,7 +43,7 @@ private:
     std::vector<float> vertices;
     std::vector<float> normals;
     std::vector<float> texCoords;
-    std::vector<unsigned char> colors;
+    std::vector<float> colors;
     
     // Indices as saved in the OBJ-file.
     struct IndexSet

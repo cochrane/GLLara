@@ -151,4 +151,10 @@
     return NO; // OBJ files don't use them. They do use one bone matrix, for the model position, but that's it.
 }
 
+- (BOOL)colorsAreFloats
+{
+    // OBJ files that have colors store them as floats, and since they make use of features (e.g. values outside [0;1]) it's better to keep them that way.
+    return YES;
+}
+
 @end
