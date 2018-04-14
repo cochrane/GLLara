@@ -643,7 +643,7 @@
 				</array>
 			</array>
 			<key>fragment</key>
-			<string>MetallicBump3.fs</string>
+			<string>Combined.fs</string>
 			<key>vertex</key>
 			<string>Combined.vs</string>
 		</dict>
