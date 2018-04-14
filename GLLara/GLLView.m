@@ -112,9 +112,9 @@ const double unitsPerSecond = 0.2;
             BOOL stillUsingMSAA = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
             NSInteger newNumberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
             
-            if (stillUsingMSAA != didHaveMultisample || currentNumberOfSamples != newNumberOfSamples) {
-                didHaveMultisample = stillUsingMSAA;
-                currentNumberOfSamples = newNumberOfSamples;
+            if (stillUsingMSAA != self->didHaveMultisample || self->currentNumberOfSamples != newNumberOfSamples) {
+                self->didHaveMultisample = stillUsingMSAA;
+                self->currentNumberOfSamples = newNumberOfSamples;
                 
                 // Create a new context
                 NSOpenGLContext *context = [self _createContext];
@@ -135,7 +135,7 @@ const double unitsPerSecond = 0.2;
                 context.view = self;
                 
                 // Update drawer
-                [self setCamera:_camera sceneDrawer:_sceneDrawer];
+                [self setCamera:self->_camera sceneDrawer:self->_sceneDrawer];
             }
             
             self->showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];

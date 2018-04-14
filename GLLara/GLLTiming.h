@@ -18,7 +18,7 @@ extern "C" {
 void GLLBeginTiming(const char *tag);
 void GLLEndTiming(const char *tag);
     
-void GLLReportTiming();
+void GLLReportTiming(void);
 
 #ifdef __cplusplus
 }

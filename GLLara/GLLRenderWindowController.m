@@ -136,7 +136,7 @@
         NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
         NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
         
-        [self renderToFile:savePanel.URL type:savePanelAccessoryViewController.selectedTypeIdentifier width:width height:height];
+        [self renderToFile:savePanel.URL type:self->savePanelAccessoryViewController.selectedTypeIdentifier width:width height:height];
     }];
 }
 

@@ -65,10 +65,10 @@
 		GLLSceneDrawer *self = weakSelf;
 		
 		// Ensure proper OpenGL context
-		[_resourceManager.openGLContext makeCurrentContext];
+		[self->_resourceManager.openGLContext makeCurrentContext];
 		
 		NSMutableArray *toRemove = [[NSMutableArray alloc] init];
-		for (GLLItemDrawer *drawer in itemDrawers)
+		for (GLLItemDrawer *drawer in self->itemDrawers)
 		{
 			if (![notification.userInfo[NSDeletedObjectsKey] containsObject:drawer.item])
 				continue;
@@ -76,7 +76,7 @@
 			[toRemove addObject:drawer];
 			[self _unregisterDrawer:drawer];
 		}
-		[itemDrawers removeObjectsInArray:toRemove];
+		[self->itemDrawers removeObjectsInArray:toRemove];
 				
 		// New objects includes absolutely anything. Restrict this to items.
 		for (NSManagedObject *newItem in notification.userInfo[NSInsertedObjectsKey])
@@ -91,7 +91,7 @@
 	}];
     
     drawStateNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:GLLDrawStateChangedNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-        bzero(&state, sizeof(state));
+        bzero(&self->state, sizeof(self->state));
         [self _notifyRedraw];
     }];
 	

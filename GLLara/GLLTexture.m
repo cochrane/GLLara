@@ -246,7 +246,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 - (void)accommodatePresentedItemDeletionWithCompletionHandler:(void (^)(NSError *errorOrNil))completionHandler
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        glBindTexture(GL_TEXTURE_2D, _textureID);
+        glBindTexture(GL_TEXTURE_2D, self->_textureID);
         [self _loadDefaultTexture];
         [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
     });
@@ -261,7 +261,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         if (!success)
         {
             // Load default
-            glBindTexture(GL_TEXTURE_2D, _textureID);
+            glBindTexture(GL_TEXTURE_2D, self->_textureID);
             [self _loadDefaultTexture];
             [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
         }
@@ -297,7 +297,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         if (data.length < 4) return;
         
         // Load texture
-        glBindTexture(GL_TEXTURE_2D, _textureID);
+        glBindTexture(GL_TEXTURE_2D, self->_textureID);
         
         if (memcmp(data.bytes, "DDS ", 4) == 0)
             [self _loadDDSTextureWithData:data error:&internalError];

@@ -39,8 +39,8 @@ struct GLLAlphaTestBlock
 
 - (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
 - (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
-- (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)())supplier;
-- (id)_makeWithContext:(id(^)())supplier;
+- (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)(void))supplier;
+- (id)_makeWithContext:(id(^)(void))supplier;
 
 @end
 
@@ -178,8 +178,8 @@ static GLLResourceManager *sharedManager;
     if (!_squareVertexArray)
     {
         [self _makeWithContext:^{
-            glGenVertexArrays(1, &_squareVertexArray);
-            glBindVertexArray(_squareVertexArray);
+            glGenVertexArrays(1, &self->_squareVertexArray);
+            glBindVertexArray(self->_squareVertexArray);
             GLuint squareVBO;
             glGenBuffers(1, &squareVBO);
             glBindBuffer(GL_ARRAY_BUFFER, squareVBO);
@@ -237,7 +237,7 @@ static GLLResourceManager *sharedManager;
 
 #pragma mark - Private methods
 
-- (id)_makeWithContext:(id(^)())supplier;
+- (id)_makeWithContext:(id(^)(void))supplier;
 {
     NSOpenGLContext *previous = [NSOpenGLContext currentContext];
     [self.openGLContext makeCurrentContext];
@@ -246,7 +246,7 @@ static GLLResourceManager *sharedManager;
     return result;
 }
 
-- (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)())supplier;
+- (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)(void))supplier;
 {
     NSParameterAssert(key);
     id result = dictionary[key];
