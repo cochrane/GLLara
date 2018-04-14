@@ -158,8 +158,9 @@
         case 0: return lightsListController;
         case 1: return itemListController;
         case 2: return settingsListController;
-        default: return nil;
     }
+    [NSException raise:NSInvalidArgumentException format:@"No child %li", index];
+    return @""; // Silence warning
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item

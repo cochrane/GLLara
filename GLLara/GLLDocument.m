@@ -462,7 +462,7 @@
         mtlExistsAlert.messageText = NSLocalizedString(@"An MTL file with this name already exists", @"export: has such mtl already");
         mtlExistsAlert.informativeText = NSLocalizedString(@"As part of the export, an .mtl file will be generated automatically. This will overwrite an existing file of the same name.", @"export: suffix = mtl");
         [mtlExistsAlert addButtonWithTitle:NSLocalizedString(@"Cancel", @"export: cancel")];
-        [mtlExistsAlert addButtonWithTitle:@"OK"];
+        [mtlExistsAlert addButtonWithTitle:NSLocalizedString(@"OK", @"export: ok")];
         
         NSInteger result = [mtlExistsAlert runModal];
         return result == NSAlertSecondButtonReturn;

@@ -23,7 +23,8 @@
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
-	return nil;
+    [NSException raise:NSInvalidArgumentException format:@"no child %ld", index];
+    return @""; // Silence warning
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
