@@ -195,6 +195,7 @@ static inline uint16_t halfFloat(const float *value) {
     NSUInteger numElements = vertices.length / originalStride;
     void *newBytes = malloc(numElements * actualStride);
     NSUInteger countOfUVLayers = self.format.countOfUVLayers;
+    NSUInteger colorSize = self.format.colorSize;
     BOOL hasTangents = self.format.hasTangents;
     
     for (NSUInteger i = 0; i < numElements; i++) {
@@ -217,15 +218,9 @@ static inline uint16_t halfFloat(const float *value) {
         originalVertex += 12;
         
         // Color
-        if (self.format.colorIsFloat) {
-            memcpy(vertex, originalVertex, 16);
-            vertex += 16;
-            originalVertex += 16;
-        } else {
-            memcpy(vertex, originalVertex, 4);
-            vertex += 4;
-            originalVertex += 4;
-        }
+        memcpy(vertex, originalVertex, colorSize);
+        vertex += colorSize;
+        originalVertex += colorSize;
         
         // Tex coords + tangents
         for (NSUInteger j = 0; j < countOfUVLayers; j++) {

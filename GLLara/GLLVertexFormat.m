@@ -8,12 +8,6 @@
 
 #import "GLLVertexFormat.h"
 
-@interface GLLVertexFormat()
-
-@property (nonatomic, assign, readonly) NSUInteger colorSize;
-
-@end
-
 @implementation GLLVertexFormat
 
 - (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents colorsAsFloats:(BOOL)floatColor countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;

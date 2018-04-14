@@ -49,6 +49,7 @@ enum GLLVertexAttrib
 @property (nonatomic, assign, readonly) NSUInteger offsetForPosition;
 @property (nonatomic, assign, readonly) NSUInteger offsetForNormal;
 @property (nonatomic, assign, readonly) NSUInteger offsetForColor;
+@property (nonatomic, assign, readonly) NSUInteger colorSize;
 - (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer;
 - (NSUInteger)offsetForTangentLayer:(NSUInteger)layer;
 @property (nonatomic, assign, readonly) NSUInteger offsetForBoneIndices;
