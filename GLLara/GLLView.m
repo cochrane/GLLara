@@ -55,6 +55,7 @@ static NSMutableCharacterSet *interestingCharacters;
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
 - (GLLItemBone *)closestBoneAtScreenPoint:(NSPoint)point fromBones:(id)bones;
+- (void)_updateFromUserSettings;
 
 - (NSOpenGLContext *)_createContext;
 
@@ -108,38 +109,7 @@ const double unitsPerSecond = 0.2;
     }];
     settingsChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
         dispatch_async(dispatch_get_main_queue(), ^(){
-            __strong GLLView *self = weakSelf;
-            BOOL stillUsingMSAA = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
-            NSInteger newNumberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
-            
-            if (stillUsingMSAA != self->didHaveMultisample || self->currentNumberOfSamples != newNumberOfSamples) {
-                self->didHaveMultisample = stillUsingMSAA;
-                self->currentNumberOfSamples = newNumberOfSamples;
-                
-                // Create a new context
-                NSOpenGLContext *context = [self _createContext];
-                
-                if (!context)
-                {
-                    NSError *error = [NSError errorWithDomain:self.className code:1 userInfo:@{
-                                                                                               NSLocalizedDescriptionKey : NSLocalizedString(@"Could not create an OpenGL 3.2 Core Profile context.", @"Context creation failed"),
-                                                                                               NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"GLLara requires graphics cards that support OpenGL 3.2 or higher.", @"Context creation failed")
-                                                                                               }];
-                    [self presentError:error];
-                    return;
-                }
-                [self.openGLContext clearDrawable];
-                
-                self.pixelFormat = context.pixelFormat;
-                self.openGLContext = context;
-                context.view = self;
-                
-                // Update drawer
-                [self setCamera:self->_camera sceneDrawer:self->_sceneDrawer];
-            }
-            
-            self->showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
-            self.needsDisplay = YES;
+            [weakSelf _updateFromUserSettings];
         });
     }];
     
@@ -381,6 +351,40 @@ const double unitsPerSecond = 0.2;
 }
 
 #pragma mark - Private methods
+
+- (void)_updateFromUserSettings {
+    BOOL stillUsingMSAA = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
+    NSInteger newNumberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
+    
+    if (stillUsingMSAA != didHaveMultisample || currentNumberOfSamples != newNumberOfSamples) {
+        didHaveMultisample = stillUsingMSAA;
+        currentNumberOfSamples = newNumberOfSamples;
+        
+        // Create a new context
+        NSOpenGLContext *context = [self _createContext];
+        
+        if (!context)
+        {
+            NSError *error = [NSError errorWithDomain:self.className code:1 userInfo:@{
+                                                                                       NSLocalizedDescriptionKey : NSLocalizedString(@"Could not create an OpenGL 3.2 Core Profile context.", @"Context creation failed"),
+                                                                                       NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"GLLara requires graphics cards that support OpenGL 3.2 or higher.", @"Context creation failed")
+                                                                                       }];
+            [self presentError:error];
+            return;
+        }
+        [self.openGLContext clearDrawable];
+        
+        self.pixelFormat = context.pixelFormat;
+        self.openGLContext = context;
+        context.view = self;
+        
+        // Update drawer
+        [self setCamera:_camera sceneDrawer:_sceneDrawer];
+    }
+    
+    showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
+    self.needsDisplay = YES;
+}
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
 {
