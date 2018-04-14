@@ -143,13 +143,10 @@ void main()
     
     vec4 color = vec4(0);
 #ifdef AMBIENT_COLOR
-    color += lightData.ambientColor;
+    color += lightData.ambientColor * diffuseColor;
 #ifdef MATERIAL_PARAMETERS
     color *= parameters.ambientColor;
 #endif
-#endif
-#ifndef DIFFUSE
-    color *= diffuseColor;
 #endif
     for (int i = 0; i < NUMBER_OF_LIGHTS; i++)
     {
@@ -157,9 +154,9 @@ void main()
         // Diffuse term
         float diffuseFactor = max(dot(-normalWorld, lightData.lights[i].direction.xyz), 0);
 #ifdef MATERIAL_PARAMETERS
-        color += diffuseTexColor * lightData.lights[i].diffuseColor * diffuseFactor * parameters.diffuseColor;
+        color += diffuseColor * lightData.lights[i].diffuseColor * diffuseFactor * parameters.diffuseColor;
 #else
-        color += diffuseTexColor * lightData.lights[i].diffuseColor * diffuseFactor;
+        color += diffuseColor * lightData.lights[i].diffuseColor * diffuseFactor;
 #endif
 #endif
         
