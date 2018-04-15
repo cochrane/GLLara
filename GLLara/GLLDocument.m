@@ -85,7 +85,7 @@
 {
     _selection = [[GLLSelection alloc] initWithManagedObjectContext:self.managedObjectContext];
     
-    sceneDrawer = [[GLLSceneDrawer alloc] initWithManagedObjectContext:self.managedObjectContext];
+    sceneDrawer = [[GLLSceneDrawer alloc] initWithDocument:self];
     [sceneDrawer bind:@"selectedBones" toObject:self.selection withKeyPath:@"selectedBones" options:nil];
     
     documentWindowController = [[GLLDocumentWindowController alloc] initWithManagedObjectContext:self.managedObjectContext selection:self.selection];
@@ -418,6 +418,18 @@
         return [[self.selection valueForKeyPath:@"selectedItems"] count] == 1;
     else
         return [super validateUserInterfaceItem:item];
+}
+
+#pragma mark - Error reporting
+
+- (void)notifyTexturesNotLoaded:(NSDictionary<NSURL*,NSError*>*)textures {
+    NSAlert *alert = [[NSAlert alloc] init];
+    alert.alertStyle = NSAlertStyleWarning;
+    alert.messageText = NSLocalizedString(@"Some textures could not be loaded.", @"textures not loaded message");
+    alert.informativeText = NSLocalizedString(@"They were replaced with default textures, so the model may look a bit weird.", @"textures not loaded information");
+    [alert beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSModalResponse r) {
+        // Don't actually care.
+    }];
 }
 
 #pragma mark - Accessors

@@ -60,7 +60,7 @@
 
 @synthesize needsRedraw=_needsRedraw;
 
-- (id)initWithItem:(GLLItem *)item sceneDrawer:(GLLSceneDrawer *)sceneDrawer error:(NSError *__autoreleasing*)error;
+- (id)initWithItem:(GLLItem *)item sceneDrawer:(GLLSceneDrawer *)sceneDrawer replacedTextures:(NSDictionary<NSURL*,NSError*> *__autoreleasing*)textures error:(NSError *__autoreleasing*)error;
 {
     if (!(self = [super init])) return nil;
     
@@ -84,14 +84,21 @@
     }];
     
     // Observe settings of all meshes
-    meshStates = [modelData.meshDatas map:^(GLLMeshDrawData *meshData) {
-        return [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:meshData itemMesh:[item itemMeshForModelMesh:meshData.modelMesh] error:error];
-    }];
-    if (meshStates.count < modelData.meshDatas.count)
-    {
-        [self unload];
-        return nil;
+    NSMutableDictionary<NSURL*,NSError*> *replacedTextures = [[NSMutableDictionary alloc] init];
+    NSMutableArray *mutableMeshStates = [[NSMutableArray alloc] initWithCapacity:modelData.meshDatas.count];
+    for (GLLMeshDrawData *meshData in modelData.meshDatas) {
+        NSDictionary *replacedForMesh = @{};
+        GLLItemMeshState *meshState = [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:meshData itemMesh:[item itemMeshForModelMesh:meshData.modelMesh] replacedTextures:&replacedForMesh error:error];
+        [replacedTextures addEntriesFromDictionary:replacedForMesh];
+        if (!meshState) {
+            [self unload];
+            return nil;
+        }
+        [mutableMeshStates addObject:meshState];
     }
+    meshStates = [mutableMeshStates copy];
+    if (textures)
+        *textures = [replacedTextures copy];
     
     glGenBuffers(1, &transformsBuffer);
     needToUpdateTransforms = YES;

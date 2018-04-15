@@ -15,6 +15,7 @@
 #import "GLLAmbientLight.h"
 #import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
+#import "GLLDocument.h"
 #import "GLLDrawState.h"
 #import "GLLItem.h"
 #import "GLLItemDrawer.h"
@@ -46,11 +47,11 @@
 
 @implementation GLLSceneDrawer
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
+- (id)initWithDocument:(GLLDocument *)document;
 {
 	if (!(self = [super init])) return nil;
 
-	_managedObjectContext = context;
+	_document = document;
 	_resourceManager = [GLLResourceManager sharedResourceManager];
 	[_resourceManager.openGLContext makeCurrentContext];
 	
@@ -61,7 +62,7 @@
 	// Set up loading of future items and destroying items. Also update view.
 	// Store self as weak in the block, so it does not retain this.
 	__block __weak id weakSelf = self;
-	managedObjectContextObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:_managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+	managedObjectContextObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:self.managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
 		GLLSceneDrawer *self = weakSelf;
 		
 		// Ensure proper OpenGL context
@@ -176,6 +177,10 @@
 	glDisable(GL_BLEND);
 }
 
+- (NSManagedObjectContext *)managedObjectContext {
+    return self.document.managedObjectContext;
+}
+
 #pragma mark - Selection
 
 - (void)setSelectedBones:(NSArray *)selectedBones;
@@ -193,7 +198,8 @@
 - (void)_addDrawerForItem:(GLLItem *)item;
 {
 	NSError *error = nil;
-	GLLItemDrawer *drawer = [[GLLItemDrawer alloc] initWithItem:item sceneDrawer:self error:&error];
+    NSDictionary<NSURL*,NSError*> *replacedTextures = @{};
+    GLLItemDrawer *drawer = [[GLLItemDrawer alloc] initWithItem:item sceneDrawer:self replacedTextures:&replacedTextures error:&error];
 	
 	if (!drawer)
 	{
@@ -205,7 +211,9 @@
 		}
 		
 		return;
-	}
+    } else if (replacedTextures && replacedTextures.count > 0) {
+        [self.document notifyTexturesNotLoaded:replacedTextures];
+    }
 	
 	[itemDrawers addObject:drawer];
 	[drawer addObserver:self forKeyPath:@"needsRedraw" options:0 context:0];

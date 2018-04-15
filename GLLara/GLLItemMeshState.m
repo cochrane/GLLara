@@ -14,7 +14,9 @@
 #import "GLLItemMeshTexture.h"
 #import "GLLMeshDrawData.h"
 #import "GLLItemMesh.h"
+#import "GLLModel.h"
 #import "GLLModelMesh.h"
+#import "GLLModelParams.h"
 #import "GLLModelProgram.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterDescription.h"
@@ -37,14 +39,14 @@
 
 - (void)_updateParameters;
 - (void)_updateParameterBuffer;
-- (BOOL)_updateTexturesError:(NSError *__autoreleasing*)error;
+- (void)_updateTexturesErrors:(NSDictionary<NSURL*,NSError*> *__autoreleasing*)errors;
 - (BOOL)_updateShaderError:(NSError *__autoreleasing*)error;
 
 @end
 
 @implementation GLLItemMeshState
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshData:(GLLMeshDrawData *)meshData itemMesh:(GLLItemMesh *)itemMesh error:(NSError *__autoreleasing*)error;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshData:(GLLMeshDrawData *)meshData itemMesh:(GLLItemMesh *)itemMesh replacedTextures:(NSDictionary<NSURL*,NSError*>* __autoreleasing*)textures error:(NSError *__autoreleasing*)error;
 {
     if (!(self = [super init])) return nil;
     
@@ -70,11 +72,7 @@
     [self _updateRenderParametersObjects];
     [self _updateTextureObjects];
     
-    if (![self _updateTexturesError:error])
-    {
-        [self unload];
-        return nil;
-    }
+    [self _updateTexturesErrors:textures];
     
     return self;
 }
@@ -147,7 +145,7 @@
     if (needsParameterBufferUpdate)
         [self _updateParameterBuffer];
     if (needsTextureUpdate)
-        [self _updateTexturesError:NULL];
+        [self _updateTexturesErrors:NULL];
     
     if (state->cullFaceMode != self.itemMesh.cullFaceMode)
     {
@@ -315,21 +313,30 @@
     needsParameterBufferUpdate = NO;
 }
 
-- (BOOL)_updateTexturesError:(NSError *__autoreleasing*)error;
+- (void)_updateTexturesErrors:(NSDictionary<NSURL*,NSError*> *__autoreleasing*)errors;
 {
     needsTextureUpdate = NO;
     
     if (!_program)
-        return YES;
+        return;
     
-    textures = [self.itemMesh.shader.textureUniformNames map:^(NSString *identifier){
+    NSMutableArray *mutableTextures = [[NSMutableArray alloc] init];
+    NSMutableDictionary *mutableErrors = [[NSMutableDictionary alloc] init];
+    for (NSString *identifier in self.itemMesh.shader.textureUniformNames) {
         GLLItemMeshTexture *textureAssignment = [self.itemMesh textureWithIdentifier:identifier];
-        return [[GLLResourceManager sharedResourceManager] textureForURL:textureAssignment.textureURL error:error];
-    }];
-    if (textures.count < self.itemMesh.shader.textureUniformNames.count)
-        return NO;
-    else
-        return YES;
+        NSError *loadError = nil;
+        GLLTexture *texture = [[GLLResourceManager sharedResourceManager] textureForURL:textureAssignment.textureURL error:&loadError];
+        if (!texture) {
+            NSLog(@"Did not find %@, have to use default texture", textureAssignment.textureURL);
+            NSURL *url = [self.itemMesh.mesh.model.parameters defaultValueForTexture:identifier];
+            [mutableErrors setObject:loadError forKey:textureAssignment.textureURL];
+            texture = [[GLLResourceManager sharedResourceManager] textureForURL:url error:NULL];
+        }
+        [mutableTextures addObject:texture];
+    }
+    if (errors)
+        *errors = [mutableErrors copy];
+    textures = [mutableTextures copy];
 }
 
 - (BOOL)_updateShaderError:(NSError *__autoreleasing*)error;

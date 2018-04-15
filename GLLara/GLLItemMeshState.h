@@ -22,7 +22,7 @@
  */
 @interface GLLItemMeshState : NSObject
 
-- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshData:(GLLMeshDrawData *)meshData itemMesh:(GLLItemMesh *)itemMesh error:(NSError *__autoreleasing*)error;
+- (id)initWithItemDrawer:(GLLItemDrawer *)itemDrawer meshData:(GLLMeshDrawData *)meshData itemMesh:(GLLItemMesh *)itemMesh replacedTextures:(NSDictionary<NSURL*,NSError*>* __autoreleasing*)textures error:(NSError *__autoreleasing*)error;
 
 @property (nonatomic, weak, readonly) GLLItemDrawer *itemDrawer;
 @property (nonatomic, retain, readonly) GLLMeshDrawData *drawData;

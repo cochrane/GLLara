@@ -11,6 +11,7 @@
 
 @class GLLResourceManager;
 @class GLLView;
+@class GLLDocument;
 
 /*!
  * @abstract Draw all elements in a scene, regardless of camera and so on.
@@ -20,9 +21,10 @@
  */
 @interface GLLSceneDrawer : NSObject
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
+- (id)initWithDocument:(GLLDocument *)document;
 
-@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, weak, readonly) GLLDocument *document;
+@property (nonatomic, weak, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) GLLResourceManager *resourceManager;
 
 - (void)drawWithNewStateShowingSelection:(BOOL)showSelection;

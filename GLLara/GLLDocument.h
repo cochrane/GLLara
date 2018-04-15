@@ -38,4 +38,6 @@
 @property (nonatomic, readonly) GLLSelection *selection;
 @property (nonatomic, readonly) NSArray *allBones;
 
+- (void)notifyTexturesNotLoaded:(NSDictionary<NSURL*,NSError*>*)textures;
+
 @end
