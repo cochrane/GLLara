@@ -298,30 +298,32 @@ const double unitsPerSecond = 0.2;
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    // Try to find the bone that corresponds to this event.
-    GLLItemBone *bone = [self closestBoneAtScreenPoint:[self convertPoint:theEvent.locationInWindow fromView:nil] fromBones:self.document.allBones];
-    
-    if (bone)
-    {
-        NSMutableArray *selectedBones = [self.document.selection mutableArrayValueForKey:@"selectedBones"];
-        // Set it as selected
-        if (theEvent.modifierFlags & (NSCommandKeyMask | NSShiftKeyMask))
+    if (showSelection) {
+        // Try to find the bone that corresponds to this event.
+        GLLItemBone *bone = [self closestBoneAtScreenPoint:[self convertPoint:theEvent.locationInWindow fromView:nil] fromBones:self.document.allBones];
+        
+        if (bone)
         {
-            // Add to the selection
-            NSUInteger index = [selectedBones indexOfObject:bone];
-            if (index == NSNotFound)
-                [selectedBones addObject:bone];
+            NSMutableArray *selectedBones = [self.document.selection mutableArrayValueForKey:@"selectedBones"];
+            // Set it as selected
+            if (theEvent.modifierFlags & (NSCommandKeyMask | NSShiftKeyMask))
+            {
+                // Add to the selection
+                NSUInteger index = [selectedBones indexOfObject:bone];
+                if (index == NSNotFound)
+                    [selectedBones addObject:bone];
+                else
+                    [selectedBones removeObjectAtIndex:index];
+            }
             else
-                [selectedBones removeObjectAtIndex:index];
-        }
-        else
-        {
-            // Remove all other selection
-            NSMutableArray *selectedObjects = [self.document.selection mutableArrayValueForKey:@"selectedObjects"];
-            [selectedObjects removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedObjects.count)]];
-            
-            // Set self as only selection
-            [selectedBones addObject:bone];
+            {
+                // Remove all other selection
+                NSMutableArray *selectedObjects = [self.document.selection mutableArrayValueForKey:@"selectedObjects"];
+                [selectedObjects removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, selectedObjects.count)]];
+                
+                // Set self as only selection
+                [selectedBones addObject:bone];
+            }
         }
     }
     
