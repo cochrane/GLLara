@@ -263,8 +263,8 @@ static NSOperationQueue *imageInformationQueue = nil;
             // Load default
             glBindTexture(GL_TEXTURE_2D, self->_textureID);
             [self _loadDefaultTexture];
-            [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
     });
 }
 
