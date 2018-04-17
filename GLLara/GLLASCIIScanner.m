@@ -59,8 +59,13 @@
     float result;
     if (![scanner scanFloat:&result])
     {
-        self.isValid = NO;
-        return 0.0f;
+        if ([scanner scanString:@"NaN" intoString:NULL]) {
+            // Haha, very funny. Idiots.
+            return nanf("");
+        } else {
+            self.isValid = NO;
+            return 0.0f;
+        }
     }
     
     return result;
