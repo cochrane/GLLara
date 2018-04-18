@@ -183,6 +183,8 @@
         itemMesh.cullFaceMode = modelMesh.cullFaceMode;
         itemMesh.item = self;
         [itemMesh prepareGraphicsData];
+        if ([itemMesh.displayName hasPrefix:@"-"])
+            itemMesh.isVisible = NO;
     }
     
     NSMutableOrderedSet *bones = [self mutableOrderedSetValueForKey:@"bones"];

@@ -73,6 +73,9 @@ enum GLLItemChannelAssignment
 
 @property (nonatomic, readonly) GLLItem *rootItem;
 
+// Whether some meshes together form optional parts.
+@property (nonatomic, readonly) BOOL hasOptionalParts;
+
 // Poses
 - (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error;
 
