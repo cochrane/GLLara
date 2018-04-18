@@ -92,6 +92,7 @@ struct GLLSkeletonDrawer_Vertex {
     if (!self.items || [self.items count] == 0) return;
     
     glBindVertexArray(vertexArray);
+    state->activeVertexArray = vertexArray;
     
     if (elementBufferNeedsUpdate)
         [self _updateElementBuffer];
