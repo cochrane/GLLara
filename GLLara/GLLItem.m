@@ -282,6 +282,14 @@
         return self;
 }
 
+- (BOOL)hasOptionalParts {
+    for (GLLItemMesh *mesh in self.meshes) {
+        if ([mesh.displayName hasPrefix:@"-"] || [mesh.displayName hasPrefix:@"+"])
+            return YES;
+    }
+    return NO;
+}
+
 #pragma mark - Poses I/O
 
 - (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error
