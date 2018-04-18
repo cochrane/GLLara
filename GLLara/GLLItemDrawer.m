@@ -254,21 +254,24 @@
     solidRunCounts = 0;
     
     // Find runs in meshes
+    GLLItemMeshState *lastVisisbleState = nil;
     for (NSUInteger i = 0; i < meshStates.count; i++) {
         GLLItemMeshState *state = meshStates[i];
         if (!state.itemMesh.isVisible || !state.program) {
             continue;
         }
         
-        if (i == 0 || [state compareTo:meshStates[i-1]] != NSOrderedSame) {
+        if (!lastVisisbleState || [state compareTo:lastVisisbleState] != NSOrderedSame) {
             // Starts new run
             runStarts[nextRun] = meshesAdded;
             runLengths[nextRun] = 1;
             [startStates addObject:state];
             if (state.itemMesh.isUsingBlending)
                 alphaRunCounts += 1;
-            else
+            else {
+                assert(alphaRunCounts == 0 && "Should be ensured by sort order");
                 solidRunCounts += 1;
+            }
             nextRun += 1;
         } else {
             // Continues last run
@@ -278,6 +281,7 @@
         allIndices[meshesAdded] = state.drawData.indicesStart;
         allCounts[meshesAdded] = state.drawData.elementsCount;
         
+        lastVisisbleState = state;
         meshesAdded += 1;
     }
     
