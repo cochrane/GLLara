@@ -1,22 +1,22 @@
 //
-//  GLLOptionalItemViewController.m
+//  GLLOptionalPartViewController.m
 //  GLLara
 //
 //  Created by Torsten Kammer on 18.04.18.
 //  Copyright © 2018 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLOptionalItemViewController.h"
+#import "GLLOptionalPartViewController.h"
 
-@interface GLLOptionalItemViewController ()
+@interface GLLOptionalPartViewController ()
 
 @end
 
-@implementation GLLOptionalItemViewController
+@implementation GLLOptionalPartViewController
 
 - (id)init
 {
-    self = [super initWithNibName:@"GLLOptionalItemView" bundle:nil];
+    self = [super initWithNibName:@"GLLOptionalPartView" bundle:nil];
     if (self) {
         // Initialization code here.
     }

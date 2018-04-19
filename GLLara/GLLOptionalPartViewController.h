@@ -1,5 +1,5 @@
 //
-//  GLLOptionalItemViewController.h
+//  GLLOptionalPartViewController.h
 //  GLLara
 //
 //  Created by Torsten Kammer on 18.04.18.
@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface GLLOptionalItemViewController : NSViewController <NSTableViewDataSource, NSTableViewDelegate>
+@interface GLLOptionalPartViewController : NSViewController <NSTableViewDataSource, NSTableViewDelegate>
 
 @end
