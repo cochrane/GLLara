@@ -29,6 +29,7 @@
 #import "GLLMeshViewController.h"
 #import "GLLModel.h"
 #import "GLLNoSelectionViewController.h"
+#import "GLLOptionalPartViewController.h"
 #import "GLLSelection.h"
 #import "GLLSettingsListController.h"
 
@@ -41,6 +42,7 @@
     GLLItemViewController *itemViewController;
     GLLMeshViewController *meshViewController;
     GLLLightViewController *lightViewController;
+    GLLOptionalPartViewController *optionalPartViewController;
     
     GLLLightsListController *lightsListController;
     GLLItemListController *itemListController;
@@ -78,6 +80,7 @@
     itemViewController = [[GLLItemViewController alloc] init];
     meshViewController = [[GLLMeshViewController alloc] initWithSelection:_selection managedObjectContext:_managedObjectContext];
     lightViewController = [[GLLLightViewController alloc] init];
+    optionalPartViewController = [[GLLOptionalPartViewController alloc] init];
     
     selectionController = [[NSArrayController alloc] init];
     [selectionController bind:@"contentArray" toObject:self withKeyPath:@"selection.selectedObjects" options:nil];
@@ -266,7 +269,7 @@
     {
         id oneOfSelection = newSelectedObjects.lastObject;
         if ([oneOfSelection isKindOfClass:[GLLItemOptionalPartMarker class]]) {
-            [self _setRightHandController:nil];
+            [self _setRightHandController:optionalPartViewController];
         } else {
             NSManagedObject *selectedManagedObjcet = oneOfSelection;
             if ([selectedManagedObjcet.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLAmbientLight" inManagedObjectContext:self.managedObjectContext]])

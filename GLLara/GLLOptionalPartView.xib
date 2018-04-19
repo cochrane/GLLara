@@ -6,7 +6,11 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-2" userLabel="File's Owner" customClass="GLLOptionalPartViewController">
+            <connections>
+                <outlet property="view" destination="c22-O7-iKe" id="wLp-bb-Nk1"/>
+            </connections>
+        </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe">
@@ -15,9 +19,9 @@
             <subviews>
                 <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKK-Ow-rYN">
                     <rect key="frame" x="0.0" y="1" width="480" height="271"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" ambiguous="YES" id="OLz-44-R9n">
-                        <rect key="frame" x="1" y="23" width="478" height="247"/>
+                        <rect key="frame" x="1" y="0.0" width="478" height="270"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="Fgw-l0-uYh" id="mop-KS-hAx">
@@ -33,13 +37,16 @@
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
-                                        <buttonCell key="dataCell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="w4b-Vh-L9I">
+                                        <buttonCell key="dataCell" type="check" bezelStyle="regularSquare" imagePosition="only" inset="2" id="w4b-Vh-L9I">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        <connections>
+                                            <binding destination="Qqr-nl-Ehz" name="value" keyPath="arrangedObjects.visible" id="pAx-WM-Dg7"/>
+                                        </connections>
                                     </tableColumn>
-                                    <tableColumn identifier="" width="427" minWidth="40" maxWidth="1000" id="3lK-GE-1Gz">
+                                    <tableColumn identifier="" width="427.5" minWidth="40" maxWidth="1000" id="3lK-GE-1Gz">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Name">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -51,17 +58,23 @@
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        <connections>
+                                            <binding destination="Qqr-nl-Ehz" name="value" keyPath="arrangedObjects.name" id="uuK-MS-Vwo"/>
+                                        </connections>
                                     </tableColumn>
                                 </tableColumns>
+                                <connections>
+                                    <binding destination="Qqr-nl-Ehz" name="content" keyPath="arrangedObjects" id="x5J-uq-UNh"/>
+                                </connections>
                             </tableView>
                         </subviews>
                     </clipView>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="BuV-h0-Lq8">
-                        <rect key="frame" x="1" y="254" width="478" height="16"/>
+                        <rect key="frame" x="1" y="7" width="0.0" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="lps-BQ-Qm1">
-                        <rect key="frame" x="224" y="17" width="15" height="102"/>
+                        <rect key="frame" x="-15" y="23" width="16" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <tableHeaderView key="headerView" id="Fgw-l0-uYh">
@@ -71,5 +84,15 @@
                 </scrollView>
             </subviews>
         </customView>
+        <arrayController objectClassName="GLLOptionalPart" id="Qqr-nl-Ehz">
+            <declaredKeys>
+                <string>name</string>
+                <string>visible</string>
+            </declaredKeys>
+            <connections>
+                <binding destination="-2" name="contentArray" keyPath="self.parts" id="INl-Lh-wE8"/>
+            </connections>
+        </arrayController>
+        <userDefaultsController representsSharedInstance="YES" id="rrQ-EI-nzA"/>
     </objects>
 </document>

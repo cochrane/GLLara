@@ -8,6 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface GLLOptionalPartViewController : NSViewController <NSTableViewDataSource, NSTableViewDelegate>
+@class GLLOptionalPart;
+
+@interface GLLOptionalPartViewController : NSViewController
+
+@property (nonatomic, retain) IBOutlet NSTableView *tableView;
+
+@property (nonatomic, copy) NSArray<GLLOptionalPart *> *parts;
 
 @end
