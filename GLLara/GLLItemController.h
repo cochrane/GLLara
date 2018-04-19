@@ -10,6 +10,7 @@
 
 @class GLLMeshListController;
 @class GLLBoneListController;
+@class GLLOptionalPartController;
 
 @class GLLItem;
 
@@ -29,6 +30,7 @@
 
 @property (nonatomic) GLLMeshListController *meshListController;
 @property (nonatomic) GLLBoneListController *boneListController;
+@property (nonatomic) GLLOptionalPartController *optionalPartsController; // can be null
 @property (nonatomic) NSMutableArray *childrenControllers;
 
 @end
