@@ -58,17 +58,22 @@
 }
 
 - (id)isVisible {
-    BOOL foundVisible = NO;
-    BOOL foundInvisible = NO;
+    BOOL foundActive = NO;
+    BOOL foundInactive = NO;
     for (GLLItemMesh *mesh in self.item.meshes) {
-        if ([self meshIsRelevant:mesh]) {
-            foundVisible = foundVisible || mesh.isVisible;
-            foundInvisible = foundInvisible || !mesh.isVisible;
-            if (foundVisible && foundInvisible)
-                return NSMultipleValuesMarker;
+        if ([mesh.displayName hasPrefix:[NSString stringWithFormat:@"-%@", self.name]]) {
+            // Supposed to be invisible for this item
+            foundActive = foundActive || !mesh.isVisible;
+            foundInactive = foundInactive || mesh.isVisible;
+        } else if ([mesh.displayName hasPrefix:[NSString stringWithFormat:@"+%@", self.name]]) {
+            // Supposed to be visible for this item
+            foundActive = foundActive || mesh.isVisible;
+            foundInactive = foundInactive || !mesh.isVisible;
         }
+        if (foundActive && foundInactive)
+            return NSMultipleValuesMarker;
     }
-    if (foundVisible)
+    if (foundActive)
         return @(YES);
     return @(NO);
 }
@@ -80,7 +85,11 @@
     
     [self willChangeValueForKey:@"visible"];
     for (GLLItemMesh *mesh in self.item.meshes) {
-        if ([self meshIsRelevant:mesh]) {
+        if ([mesh.displayName hasPrefix:[NSString stringWithFormat:@"-%@", self.name]]) {
+            // Invisible for this item
+            mesh.isVisible = ![visible boolValue];
+        } else if ([mesh.displayName hasPrefix:[NSString stringWithFormat:@"+%@", self.name]]) {
+            // Visible for this item
             mesh.isVisible = [visible boolValue];
         }
     }
