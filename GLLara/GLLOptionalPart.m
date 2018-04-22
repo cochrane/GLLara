@@ -54,6 +54,8 @@
 
 - (void)dealloc {
     for (GLLItemMesh *mesh in _item.meshes) {
+        if ([mesh.displayName hasPrefix:[NSString stringWithFormat:@"-%@", self.name]]
+            || [mesh.displayName hasPrefix:[NSString stringWithFormat:@"+%@", self.name]])
         [mesh removeObserver:self forKeyPath:@"isVisible"];
     }
 }
