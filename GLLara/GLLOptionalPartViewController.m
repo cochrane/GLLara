@@ -64,6 +64,7 @@
                 }
                 if (!parent) {
                     parent = [[GLLOptionalPart alloc] initWithItem:representedItem name:names[0] parent:nil];
+                    [topLevelParts addObject:parent];
                 }
                 
                 // Find rest of path

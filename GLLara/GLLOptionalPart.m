@@ -145,31 +145,25 @@
 }
 
 - (BOOL)meshBelongsToThisPart:(GLLItemMesh *)mesh {
-    // Go in reverse through our hierarchy and mesh names, matching each
-    // element. If anything doesn't match or they don't have the same length,
-    // return false.
     NSArray<NSString *> *nameParts = mesh.mesh.optionalPartNames;
     if (nameParts.count == 0)
         return NO;
     
-    NSInteger i = nameParts.count - 1;
-    GLLOptionalPart *currentPart = self;
-    while (i >= 0) {
-        if (!currentPart) {
-            // Array of target mesh is too long
-            return NO;
-        }
-        
-        if (![currentPart.name isEqualToString:nameParts[i]]) {
-            return NO;
-        }
-        i -= 1;
-        
-        currentPart = currentPart.parent;
+    NSMutableArray<NSString *> *ownNameParts = [NSMutableArray array];
+    GLLOptionalPart *part = self;
+    while (part) {
+        [ownNameParts insertObject:part.name atIndex:0];
+        part = part.parent;
     }
     
-    // Array of target mesh might be shorter, but that's okay.
-    
+    for (NSUInteger i = 0; i < ownNameParts.count; i++) {
+        if (i >= nameParts.count) {
+            return NO; // Part of some prefix of this item
+        }
+        if (![ownNameParts[i] isEqualToString:nameParts[i]]) {
+            return NO;
+        }
+    }
     return YES;
 }
 
