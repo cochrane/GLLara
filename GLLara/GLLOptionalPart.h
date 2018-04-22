@@ -18,10 +18,17 @@
 // This class is only used by the view layer to allow simple bindings.
 @interface GLLOptionalPart : NSObject
 
-- (id)initWithItem:(GLLItem *)item name:(NSString *)name;
+- (instancetype _Nonnull)initWithItem:(GLLItem * _Nonnull)item name:(NSString * _Nonnull)name parent:(GLLOptionalPart * _Nullable)parent;
 
-@property (nonatomic, readonly) GLLItem *item;
-@property (nonatomic, readonly) NSString *name;
-@property (nonatomic) id visible;
+@property (nonatomic, readonly) GLLItem * _Nonnull item;
+@property (nonatomic, readonly) NSString * _Nonnull name;
+@property (nonatomic) id _Nonnull visible;
+
+@property (nonatomic, weak) GLLOptionalPart * _Nullable parent;
+
+@property (nonatomic, copy, readonly) NSArray<GLLOptionalPart *> * _Nonnull children;
+- (GLLOptionalPart *_Nullable)childWithName:(NSString * _Nonnull)name;
+@property (nonatomic, readonly) BOOL hasNoChildren;
+@property (nonatomic, readonly) NSUInteger numberOfChildren;
 
 @end

@@ -63,7 +63,7 @@ static NSCache *parameterCache;
     GLLModel *model;
 }
 
-- (void)_parseModelName:(NSString *)meshName displayName:(NSString *__autoreleasing*)displayName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones;
+- (void)_parseMeshName:(NSString *)meshName displayName:(NSString *__autoreleasing*)displayName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones initiallyVisible:(BOOL * _Nullable )visible optionalPartNames:(NSArray *__autoreleasing _Nullable*)optionalPartNames;
 
 @end
 
@@ -205,7 +205,7 @@ static NSCache *parameterCache;
     if (!ownMeshGroups && model)
     {
         NSString *groupName = nil;
-        [self _parseModelName:meshName displayName:NULL meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
+        [self _parseMeshName:meshName displayName:NULL meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL initiallyVisible:NULL optionalPartNames:NULL];
         if (!groupName) return nil;
         return @[ groupName ];
     }
@@ -235,7 +235,7 @@ static NSCache *parameterCache;
     {
         NSArray *targets = [model.meshes map:^(GLLModelMesh *mesh){
             NSString *cameraTargetName = nil;
-            [self _parseModelName:mesh.name displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:NULL];
+            [self _parseMeshName:mesh.name displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:NULL initiallyVisible:NULL optionalPartNames:NULL];
             return cameraTargetName;
         }];
         
@@ -259,7 +259,7 @@ static NSCache *parameterCache;
         return [model.meshes mapAndJoin:^NSArray*(GLLModelMesh *mesh){
             NSString *cameraTargetName = nil;
             NSArray *cameraTargetBones;
-            [self _parseModelName:mesh.name displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:&cameraTargetBones];
+            [self _parseMeshName:mesh.name displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:&cameraTargetBones initiallyVisible:NULL optionalPartNames:NULL];
             if ([cameraTargetName isEqual:cameraTarget])
                 return cameraTargetBones;
             else
@@ -283,7 +283,7 @@ static NSCache *parameterCache;
     if (!ownCameraTargets && model)
     {
         NSString *displayName = nil;
-        [self _parseModelName:meshName displayName:&displayName meshGroup:NULL renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL];
+        [self _parseMeshName:meshName displayName:&displayName meshGroup:NULL renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL initiallyVisible:NULL optionalPartNames:NULL];
         if (displayName) return displayName;
     }
     
@@ -337,7 +337,7 @@ static NSCache *parameterCache;
     {
         NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:[self.base renderParametersForMesh:mesh]];
         NSDictionary *forThisMesh = nil;
-        [self _parseModelName:mesh displayName:NULL meshGroup:NULL renderParameters:&forThisMesh cameraTargetName:NULL cameraTargetBones:NULL];
+        [self _parseMeshName:mesh displayName:NULL meshGroup:NULL renderParameters:&forThisMesh cameraTargetName:NULL cameraTargetBones:NULL initiallyVisible:NULL optionalPartNames:NULL];
         [result addEntriesFromDictionary:forThisMesh];
         return result;
     }
@@ -449,6 +449,19 @@ static NSCache *parameterCache;
     return result;
 }
 
+#pragma mark - Optional items
+- (BOOL)initiallyVisibleForMesh:(NSString *)mesh {
+    BOOL visible = YES;
+    [self _parseMeshName:mesh displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL initiallyVisible:&visible optionalPartNames:NULL];
+    return visible;
+}
+
+- (NSArray<NSString *> *)optionalPartNamesForMesh:(NSString *)mesh {
+    NSArray<NSString*> *names = @[];
+    [self _parseMeshName:mesh displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL initiallyVisible:NULL optionalPartNames:&names];
+    return names;
+}
+
 #pragma mark - Equality
 - (BOOL)isEqual:(id)object
 {
@@ -468,7 +481,7 @@ static NSCache *parameterCache;
 
 #pragma mark - Private methods
 
-- (void)_parseModelName:(NSString *)meshName displayName:(NSString *__autoreleasing*)displayName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones;
+- (void)_parseMeshName:(NSString *)meshName displayName:(NSString *__autoreleasing*)displayName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray *__autoreleasing*)cameraTargetBones initiallyVisible:(BOOL * _Nullable )visible optionalPartNames:(NSArray *__autoreleasing _Nullable*)optionalPartNames;
 {
     // Always use english locale, no matter what the user has set, for proper decimal separators.
     NSNumberFormatter *englishNumberFormatter = [[NSNumberFormatter alloc] init];
@@ -496,6 +509,12 @@ static NSCache *parameterCache;
         {
             *cameraTargetBones = nil;
         }
+        if (visible) {
+            *visible = YES;
+        }
+        if (optionalPartNames) {
+            *optionalPartNames = @[];
+        }
         return;
     }
     
@@ -506,8 +525,41 @@ static NSCache *parameterCache;
         *meshGroup = group;
     
     // 2nd match: mesh name
-    if (displayName)
-        *displayName = [meshName substringWithRange:[components rangeAtIndex:2]];
+    if (visible || optionalPartNames || displayName) {
+        NSString *namePart = [meshName substringWithRange:[components rangeAtIndex:2]];
+        // Parse parts of that for optional item
+        if ([namePart hasPrefix:@"+"] || [namePart hasPrefix:@"-"]) {
+            if (visible)
+                *visible = [namePart hasPrefix:@"+"];
+            NSString *remainder = [namePart substringFromIndex:1];
+            NSRange firstDot = [remainder rangeOfString:@"."];
+            NSString *meshName = @"";
+            if (firstDot.location != NSNotFound) {
+                // Display name is everything after the dot. This can be an empty
+                // string. It can also be a useless string.
+                meshName = [remainder substringFromIndex:firstDot.location + 1];
+                remainder = [remainder substringToIndex:firstDot.location];
+            }
+            // Remainder can be empty string here. We accept that.
+            NSArray<NSString *>*components = [remainder componentsSeparatedByString:@"|"];
+            if (optionalPartNames)
+                *optionalPartNames = components;
+            if (displayName) {
+                if (meshName.length > 0)
+                    *displayName = meshName;
+                else
+                    *displayName = components.lastObject;
+            }
+        }
+        else {
+            if (visible)
+                *visible = YES;
+            if (optionalPartNames)
+                *optionalPartNames = @[];
+            if (displayName)
+                *displayName = namePart;
+        }
+    }
     
     // 3rd, 4th, 5th match: render parameters
     if (renderParameters)

@@ -10,6 +10,7 @@
 
 #import "GLLItem.h"
 #import "GLLItemMesh.h"
+#import "GLLModelMesh.h"
 #import "GLLOptionalPart.h"
 
 @implementation GLLOptionalPartViewController
@@ -40,25 +41,63 @@
 }
 
 - (void)setRepresentedObject:(id)representedObject {
-    NSMutableArray<GLLOptionalPart *> *optionalParts = [NSMutableArray array];
-    NSMutableSet<NSString *> *names = [NSMutableSet set];
+    NSMutableArray<GLLOptionalPart *> *topLevelParts = [NSMutableArray array];
     if (representedObject) {
         GLLItem *representedItem = [representedObject valueForKey:@"item"];
-        NSRegularExpression *expression = [NSRegularExpression regularExpressionWithPattern:@"[-+]([^\\.]+)" options:NSRegularExpressionCaseInsensitive error:NULL];
         for (GLLItemMesh *mesh in representedItem.meshes) {
-            NSString *name = mesh.displayName;
-            NSTextCheckingResult *match = [expression firstMatchInString:name options:NSMatchingAnchored range:NSMakeRange(0, name.length)];
+            NSArray<NSString*> *names = mesh.mesh.optionalPartNames;
+            if (names.count == 0)
+                continue;
             
-            if (match) {
-                NSString *partName = [name substringWithRange:[match rangeAtIndex:1]];
-                if (![names containsObject:partName]) {
-                    [optionalParts addObject:[[GLLOptionalPart alloc] initWithItem:representedItem name:partName]];
-                    [names addObject:partName];
+            BOOL existsAlready = NO;
+            
+            // Find parent
+            GLLOptionalPart *parent = nil;
+            if (names.count > 1) {
+                // Find root
+                NSString *parentName = names[0];
+                for (GLLOptionalPart *part in topLevelParts) {
+                    if ([part.name isEqualToString:parentName]) {
+                        parent = part;
+                        break;
+                    }
                 }
+                if (!parent) {
+                    parent = [[GLLOptionalPart alloc] initWithItem:representedItem name:names[0] parent:nil];
+                }
+                
+                // Find rest of path
+                for (NSUInteger i = 1; i < names.count - 1; i++) {
+                    GLLOptionalPart *newParent = [parent childWithName:names[i]];
+                    if (!newParent) {
+                        newParent = [[GLLOptionalPart alloc] initWithItem:representedItem name:names[i] parent:parent];
+                    }
+                    parent = newParent;
+                }
+                // Check whether we already have this element
+                if ([parent childWithName:names[names.count - 1]]) {
+                    existsAlready = YES;
+                }
+            } else {
+                for (GLLOptionalPart *part in topLevelParts) {
+                    if ([part.name isEqualToString:names[0]]) {
+                        existsAlready = YES;
+                        break;
+                    }
+                }
+            }
+            if (existsAlready)
+                continue;
+            
+            
+            // Create and insert part
+            GLLOptionalPart *part = [[GLLOptionalPart alloc] initWithItem:representedItem name:names[names.count - 1] parent:parent];
+            if (parent == nil) {
+                [topLevelParts addObject:part];
             }
         }
     }
-    self.parts = optionalParts;
+    self.parts = topLevelParts;
     
     [super setRepresentedObject:representedObject];
 }

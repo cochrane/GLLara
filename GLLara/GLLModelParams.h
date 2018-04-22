@@ -47,6 +47,12 @@
  * Mesh name
  */
 - (NSString *)displayNameForMesh:(NSString *)mesh;
+// Whether this mesh is visible on load. Relevant for optional items
+- (BOOL)initiallyVisibleForMesh:(NSString *)mesh;
+// The names of optional item groups the mesh belongs to, hierarchically.
+// If none, empty array. If there is no grouping, the result is a string with
+// just one element.
+- (NSArray<NSString *> *)optionalPartNamesForMesh:(NSString *)mesh;
 
 /*
  * Rendering
