@@ -25,3 +25,6 @@
 
 /* Class = "NSButtonCell"; title = "Reset all values"; ObjectID = "95"; */
 "95.title" = "Reset all values";
+
+/* Class = "NSButtonCell"; title = "Reset all values"; ObjectID = "95"; */
+"yzy-Sf-RqZ.title" = "Reset all values recursively";

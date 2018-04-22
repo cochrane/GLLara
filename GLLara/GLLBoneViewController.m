@@ -8,6 +8,8 @@
 
 #import "GLLBoneViewController.h"
 
+#import "GLLItemBone.h"
+
 @interface GLLBoneViewController ()
 
 @end
@@ -24,12 +26,12 @@
 
 - (IBAction)resetAllValues:(id)sender;
 {
-    [self.representedObject setValue:@0 forKey:@"rotationX"];
-    [self.representedObject setValue:@0 forKey:@"rotationY"];
-    [self.representedObject setValue:@0 forKey:@"rotationZ"];
-    [self.representedObject setValue:@0 forKey:@"positionX"];
-    [self.representedObject setValue:@0 forKey:@"positionY"];
-    [self.representedObject setValue:@0 forKey:@"positionZ"];
+    [(GLLItemBone *) [self.representedObject valueForKey:@"self"] resetAllValues];
+}
+
+- (IBAction)resetAllValuesAndChildren:(id)sender;
+{
+    [(GLLItemBone *) [self.representedObject valueForKey:@"self"] resetAllValuesRecursively];
 }
 
 - (IBAction)help:(id)sender;

@@ -105,6 +105,22 @@
     || self.rotationZ != 0.0;
 }
 
+- (void)resetAllValues {
+    self.rotationX = 0.0;
+    self.rotationY = 0.0;
+    self.rotationZ = 0.0;
+    self.positionX = 0.0;
+    self.positionY = 0.0;
+    self.positionZ = 0.0;
+}
+
+- (void)resetAllValuesRecursively {
+    [self resetAllValues];
+    for (GLLItemBone *child in self.children) {
+        [child resetAllValuesRecursively];
+    }
+}
+
 #pragma mark - Tree structure
 
 - (NSUInteger)boneIndex

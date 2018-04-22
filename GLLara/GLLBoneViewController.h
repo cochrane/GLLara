@@ -17,6 +17,7 @@
 @interface GLLBoneViewController : NSViewController
 
 - (IBAction)resetAllValues:(id)sender;
+- (IBAction)resetAllValuesAndChildren:(id)sender;
 - (IBAction)help:(id)sender;
 
 @end

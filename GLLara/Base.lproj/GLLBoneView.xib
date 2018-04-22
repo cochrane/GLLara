@@ -316,7 +316,19 @@
                         <action selector="help:" target="-2" id="108"/>
                     </connections>
                 </button>
+                <button verticalHuggingPriority="750" misplaced="YES" id="HqQ-eH-Rjn">
+                    <rect key="frame" x="207" y="30" width="238" height="32"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <buttonCell key="cell" type="push" title="Reset all values and children" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yzy-Sf-RqZ">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="resetAllValuesAndChildren:" target="-2" id="If8-M2-qKK"/>
+                    </connections>
+                </button>
             </subviews>
+            <point key="canvasLocation" x="139.5" y="168.5"/>
         </customView>
     </objects>
 </document>

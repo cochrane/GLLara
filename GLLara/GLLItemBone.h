@@ -58,6 +58,11 @@
 // Updates the bone data. Should only be called from the item or a parent bone (or itself)
 - (void)updateGlobalTransform;
 
+// Undoes all changes made by the user and sets all position and rotation values back to 0.
+- (void)resetAllValues;
+// As above, but also for all descendants.
+- (void)resetAllValuesRecursively;
+
 @end
 
 @interface GLLItemBone (CoreDataGeneratedAccessors)

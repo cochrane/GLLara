@@ -23,5 +23,8 @@
 /* Class = "NSTextFieldCell"; title = "X"; ObjectID = "53"; */
 "53.title" = "X";
 
-/* Class = "NSButtonCell"; title = "Reset all values"; ObjectID = "95"; */
+/* Class = "NSButtonCell"; title = "Reset all values"; ObjectID = "94"; */
 "95.title" = "Alle Werte zurücksetzen";
+
+/* Class = "NSButtonCell"; title = "Reset all values"; ObjectID = "HqQ-eH-Rjn"; */
+"yzy-Sf-RqZ.title" = "Alle Werte rekursiv zurücksetzen";
