@@ -183,8 +183,7 @@
         itemMesh.cullFaceMode = modelMesh.cullFaceMode;
         itemMesh.item = self;
         [itemMesh prepareGraphicsData];
-        if ([itemMesh.displayName hasPrefix:@"-"])
-            itemMesh.isVisible = NO;
+        itemMesh.isVisible = modelMesh.initiallyVisible;
     }
     
     NSMutableOrderedSet *bones = [self mutableOrderedSetValueForKey:@"bones"];
@@ -286,7 +285,7 @@
 
 - (BOOL)hasOptionalParts {
     for (GLLItemMesh *mesh in self.meshes) {
-        if ([mesh.displayName hasPrefix:@"-"] || [mesh.displayName hasPrefix:@"+"])
+        if (mesh.mesh.optionalPartNames.count > 0)
             return YES;
     }
     return NO;

@@ -11,8 +11,15 @@
 #import "GLLItem.h"
 #import "GLLBoneListController.h"
 #import "GLLMeshListController.h"
+#import "GLLOptionalPartController.h"
 #import "GLLSubItemController.h"
 #import "NSArray+Map.h"
+
+@interface GLLItemController ()
+// How many controllers for specific topics (as opposed to child items) there
+// are. Two normally, three if the item has optional parts.
+@property (nonatomic, readonly) NSUInteger fixedControllerCount;
+@end
 
 @implementation GLLItemController
 
@@ -26,6 +33,10 @@
 	self.parentController = parentController;
 	self.meshListController = [[GLLMeshListController alloc] initWithItem:item parent:self];
 	self.boneListController = [[GLLBoneListController alloc] initWithItem:item outlineView:outlineView parent:self];
+    
+    if (self.item.hasOptionalParts) {
+        self.optionalPartsController = [[GLLOptionalPartController alloc] initWithItem:item parent:self];
+    }
 	
 	[[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:self.item.managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
 		
@@ -44,7 +55,7 @@
 		[self.outlineView reloadItem:self reloadChildren:YES];
 	}];
 	
-	// Get initial items
+	// Get initial child items
 	NSFetchRequest *itemRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];
 	itemRequest.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"displayName" ascending:YES] ];
 	itemRequest.predicate = [NSPredicate predicateWithFormat:@"parent == %@", self.item];
@@ -66,7 +77,14 @@
 	NSMutableArray *result = [NSMutableArray arrayWithObject:self];
 	[result addObjectsFromArray:self.meshListController.allSelectableControllers];
 	[result addObjectsFromArray:self.boneListController.allSelectableControllers];
+    if (self.optionalPartsController) {
+        [result addObject:self.optionalPartsController];
+    }
 	return result;
+}
+
+- (NSUInteger)fixedControllerCount {
+    return self.optionalPartsController ? 3 : 2;
 }
 
 #pragma mark - Outline View Data Source
@@ -77,7 +95,13 @@
 	{
 		case 0: return self.meshListController;
 		case 1: return self.boneListController;
-		default: return self.childrenControllers[index - 2];
+        case 2:
+            if (self.optionalPartsController) {
+                return self.optionalPartsController;
+            } else {
+                return self.childrenControllers[index - self.fixedControllerCount];
+            }
+		default: return self.childrenControllers[index - self.fixedControllerCount];
 	}
 }
 
@@ -98,7 +122,7 @@
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
-	return 2 + self.childrenControllers.count;
+	return self.fixedControllerCount + self.childrenControllers.count;
 }
 
 #pragma mark - Outline View Delegate

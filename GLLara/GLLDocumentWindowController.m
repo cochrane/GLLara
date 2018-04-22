@@ -22,12 +22,14 @@
 #import "GLLItemExportViewController.h"
 #import "GLLItemListController.h"
 #import "GLLItemMesh.h"
+#import "GLLItemOptionalPartMarker.h"
 #import "GLLItemViewController.h"
 #import "GLLLightsListController.h"
 #import "GLLLightViewController.h"
 #import "GLLMeshViewController.h"
 #import "GLLModel.h"
 #import "GLLNoSelectionViewController.h"
+#import "GLLOptionalPartViewController.h"
 #import "GLLSelection.h"
 #import "GLLSettingsListController.h"
 
@@ -40,6 +42,7 @@
     GLLItemViewController *itemViewController;
     GLLMeshViewController *meshViewController;
     GLLLightViewController *lightViewController;
+    GLLOptionalPartViewController *optionalPartViewController;
     
     GLLLightsListController *lightsListController;
     GLLItemListController *itemListController;
@@ -77,6 +80,7 @@
     itemViewController = [[GLLItemViewController alloc] init];
     meshViewController = [[GLLMeshViewController alloc] initWithSelection:_selection managedObjectContext:_managedObjectContext];
     lightViewController = [[GLLLightViewController alloc] init];
+    optionalPartViewController = [[GLLOptionalPartViewController alloc] init];
     
     selectionController = [[NSArrayController alloc] init];
     [selectionController bind:@"contentArray" toObject:self withKeyPath:@"selection.selectedObjects" options:nil];
@@ -263,19 +267,24 @@
         [self _setRightHandController:nil];
     else
     {
-        NSManagedObject *oneOfSelection = newSelectedObjects.lastObject;
-        if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLAmbientLight" inManagedObjectContext:self.managedObjectContext]])
-            [self _setRightHandController:ambientLightViewController];
-        else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLDirectionalLight" inManagedObjectContext:self.managedObjectContext]])
-            [self _setRightHandController:lightViewController];
-        else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext]])
-            [self _setRightHandController:itemViewController];
-        else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext]])
-            [self _setRightHandController:meshViewController];
-        else if ([oneOfSelection.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItemBone" inManagedObjectContext:self.managedObjectContext]])
-            [self _setRightHandController:boneViewController];
-        else
-            [self _setRightHandController:nil];
+        id oneOfSelection = newSelectedObjects.lastObject;
+        if ([oneOfSelection isKindOfClass:[GLLItemOptionalPartMarker class]]) {
+            [self _setRightHandController:optionalPartViewController];
+        } else {
+            NSManagedObject *selectedManagedObjcet = oneOfSelection;
+            if ([selectedManagedObjcet.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLAmbientLight" inManagedObjectContext:self.managedObjectContext]])
+                [self _setRightHandController:ambientLightViewController];
+            else if ([selectedManagedObjcet.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLDirectionalLight" inManagedObjectContext:self.managedObjectContext]])
+                [self _setRightHandController:lightViewController];
+            else if ([selectedManagedObjcet.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext]])
+                [self _setRightHandController:itemViewController];
+            else if ([selectedManagedObjcet.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext]])
+                [self _setRightHandController:meshViewController];
+            else if ([selectedManagedObjcet.entity isKindOfEntity:[NSEntityDescription entityForName:@"GLLItemBone" inManagedObjectContext:self.managedObjectContext]])
+                [self _setRightHandController:boneViewController];
+            else
+                [self _setRightHandController:nil];
+        }
     }
     
     selectionUpdateFromSourceView = NO;
