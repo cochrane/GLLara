@@ -219,6 +219,10 @@ struct GLLLightBlock
 	GLuint depthRenderbuffer;
 	glGenRenderbuffers(1, &depthRenderbuffer);
 	glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+    
+    // Get old viewport. Oh god, a glGet, how slow and annoying
+    GLint oldViewport[4];
+    glGetIntegerv(GL_VIEWPORT, oldViewport);
 	
 	// Prepare textures
 	GLuint numTextures = ceil(size.width / maxSize) * ceil(size.height / maxSize);
@@ -313,7 +317,7 @@ struct GLLLightBlock
 	}
 	
 	dispatch_semaphore_wait(downloadReady, DISPATCH_TIME_FOREVER);
-	glViewport(0, 0, self.camera.actualWindowWidth, self.camera.actualWindowHeight);
+	glViewport(oldViewport[0], oldViewport[1], oldViewport[2], oldViewport[3]);
 	glDeleteFramebuffers(1, &framebuffer);
 	glDeleteRenderbuffers(1, &depthRenderbuffer);
 	glCullFace(GL_BACK);
