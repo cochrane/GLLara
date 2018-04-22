@@ -91,10 +91,19 @@
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
-	if (self.bone.item != self.listController.item)
-		return [NSString stringWithFormat:NSLocalizedString(@"%@ (%@)", @"Bone from other model"), self.bone.bone.name, self.bone.item.displayName];
+    NSString *string;
+    if (self.bone.item != self.listController.item) {
+		string = [NSString stringWithFormat:NSLocalizedString(@"%@ (%@)", @"Bone from other model"), self.bone.bone.name, self.bone.item.displayName];
+    }
 	else
-		return self.bone.bone.name;
+		string = self.bone.bone.name;
+    
+    // Make bold if bone has non-default values.
+    if (self.bone.hasNonDefaultTransform) {
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName : [NSFont boldSystemFontOfSize:[NSFont systemFontSize]]}];
+        return attributedString;
+    }
+    return string;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item

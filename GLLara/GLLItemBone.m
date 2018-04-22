@@ -94,6 +94,17 @@
     [self _updateRelativeTransform];
 }
 
+- (BOOL)hasNonDefaultTransform {
+    // Require matching 0 exactly, because set/reset to zero are done explicitly
+    // to 0 constants, not the result of any maths.
+    return self.positionX != 0.0
+    || self.positionY != 0.0
+    || self.positionZ != 0.0
+    || self.rotationX != 0.0
+    || self.rotationY != 0.0
+    || self.rotationZ != 0.0;
+}
+
 #pragma mark - Tree structure
 
 - (NSUInteger)boneIndex
