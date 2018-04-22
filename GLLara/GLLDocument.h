@@ -33,6 +33,7 @@
 - (IBAction)exportSelectedModel:(id)sender;
 - (IBAction)exportSelectedPose:(id)sender;
 - (IBAction)exportItem:(id)sender;
+- (IBAction)revealModelInFinder:(id)sender;
 
 @property (nonatomic, readonly) GLLSourceListController *sourceListController;
 @property (nonatomic, readonly) GLLSelection *selection;

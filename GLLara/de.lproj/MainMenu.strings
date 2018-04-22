@@ -398,3 +398,6 @@
 
 /* Class = "NSMenuItem"; title = "Export selected Model…"; ObjectID = "557"; */
 "557.title" = "Ausgewähltes Modell exportieren…";
+
+/* Class = "NSMenuItem"; title = "Show Model in Finder…"; ObjectID = "557"; */
+"cMx-3o-YTN.title" = "Modell in Finder zeigen…";

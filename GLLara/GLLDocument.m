@@ -402,6 +402,14 @@
     }];
 }
 
+- (IBAction)revealModelInFinder:(id)sender {
+    NSAssert([[self.selection valueForKeyPath:@"selectedItems"] count] == 1, @"Can only export if exactly one item is selected");
+    
+    GLLItem *item = [[self.selection valueForKeyPath:@"selectedItems"] objectAtIndex:0];
+    GLLModel *model = item.model;
+    [[NSWorkspace sharedWorkspace] activateFileViewerSelectingURLs:@[ model.baseURL ]];
+}
+
 - (BOOL)validateUserInterfaceItem:(id < NSValidatedUserInterfaceItem >)item
 {
     // Always valid
@@ -415,6 +423,8 @@
     else if (item.action == @selector(exportSelectedPose:))
         return [[self.selection valueForKeyPath:@"selectedItems"] count] <= 1 && [[self.selection valueForKeyPath:@"selectedBones"] count] != 0;
     else if (item.action == @selector(exportItem:))
+        return [[self.selection valueForKeyPath:@"selectedItems"] count] == 1;
+    else if (item.action == @selector(revealModelInFinder:))
         return [[self.selection valueForKeyPath:@"selectedItems"] count] == 1;
     else
         return [super validateUserInterfaceItem:item];
