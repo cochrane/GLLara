@@ -1,4 +1,4 @@
-﻿/* same item display name suffix format */
+/* same item display name suffix format */
 " (%lu)" = " (%lu)";
 
 /* Bone from other model */
@@ -213,7 +213,7 @@
 "The file references bones that do not exist." = "Die Datei referenziert Bones die sie nicht enthält.";
 
 /* DDS: Unknown 32-bit format */
-"The file uses a data layout that is not supported. Only ARGB is supported for 32 bit uncompressed textures." = "Die Datei verwendet ein Datenlayout das nicht unterstützt wird. Nur ARGB wird für nicht komprimierte 32 Bit-Texturen unterstützt.";
+"The file uses a data layout that is not supported. Only ARGB or ABGR is supported for 32 bit uncompressed textures." = "Die Datei verwendet ein Datenlayout das nicht unterstützt wird. Nur ARGB und ABGR werden für nicht komprimierte 32 Bit-Texturen unterstützt.";
 
 /* DDS: Unknown 16-bit alpha format */
 "The file uses a data layout that is not supported. Only ARGB4 and ARGB1555 are supported for 16 bit uncompressed textures with alpha channel." = "Die Datei verwendet ein Datenlayout das nicht unterstützt wird. Nur ARGB4 und ARGB1555 werden für nicht komprimierte 16 Bit-Texturen mit Alphakanal unterstützt";
@@ -263,4 +263,7 @@
 
 /* Loading error: No parameters for this model. */
 "This file is neither a generic item nor a known named file." = "Die Datei ist weder ein Generic Item noch eine bekannte benannte Datei.";
+
+/* source view optional parts */
+"Optional parts" = "Optionale Teile";
 
