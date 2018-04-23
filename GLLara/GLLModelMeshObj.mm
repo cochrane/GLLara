@@ -157,4 +157,10 @@
     return YES;
 }
 
+- (BOOL)initiallyVisible
+{
+    // OBJ has no concept of initially invisible things.
+    return YES;
+}
+
 @end
