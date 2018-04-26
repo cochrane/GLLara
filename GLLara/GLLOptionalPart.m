@@ -20,6 +20,8 @@
     BOOL initiallyAllInvisible;
 }
 
+- (void)recalculateInitialVisibility;
+
 // Called during init by child on parent
 - (void)addChild:(GLLOptionalPart *_Nonnull)child;
 
@@ -41,9 +43,17 @@
     _parent = parent;
     _children = [NSMutableArray array];
     
+    [self recalculateInitialVisibility];
+    if (parent)
+        [parent addChild:self];
+    
+    return self;
+}
+
+- (void)recalculateInitialVisibility; {
     BOOL haveVisibles = NO;
     BOOL haveInvisibles = NO;
-    for (GLLItemMesh *mesh in item.meshes) {
+    for (GLLItemMesh *mesh in self.item.meshes) {
         if (![self meshBelongsToThisPart:mesh]) {
             continue;
         }
@@ -51,13 +61,20 @@
         haveVisibles = haveVisibles || mesh.mesh.initiallyVisible;
         [mesh addObserver:self forKeyPath:@"isVisible" options:0 context:NULL];
     }
+    for (GLLOptionalPart *child in self.children) {
+        if (child.visible == NSMultipleValuesMarker) {
+            haveInvisibles = YES;
+            haveVisibles = YES;
+            break;
+        } else if ([child.visible boolValue]) {
+            haveVisibles = YES;
+        } else if (![child.visible boolValue]) {
+            haveInvisibles = YES;
+        }
+    }
     if (haveInvisibles && !haveVisibles) {
         initiallyAllInvisible = YES;
     }
-    if (parent)
-        [parent addChild:self];
-    
-    return self;
 }
 
 - (void)dealloc {
@@ -65,10 +82,15 @@
         if ([self meshBelongsToThisPart:mesh])
             [mesh removeObserver:self forKeyPath:@"isVisible"];
     }
+    for (GLLOptionalPart *child in _children) {
+        [child removeObserver:self forKeyPath:@"visible"];
+    }
 }
 
 - (void)addChild:(GLLOptionalPart *_Nonnull)child {
     [(NSMutableArray *) _children addObject:child];
+    [self recalculateInitialVisibility];
+    [child addObserver:self forKeyPath:@"visible" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (GLLOptionalPart *)childWithName:(NSString *)name {
@@ -88,7 +110,7 @@
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if ([keyPath isEqual:@"isVisible"]) {
+    if ([keyPath isEqual:@"isVisible"] || [keyPath isEqual:@"visible"]) {
         [self willChangeValueForKey:@"visible"];
         [self didChangeValueForKey:@"visible"];
     } else {
@@ -96,7 +118,7 @@
     }
 }
 
-- (id)isVisible {
+- (id)visible {
     BOOL foundActive = NO;
     BOOL foundInactive = NO;
     for (GLLItemMesh *mesh in self.item.meshes) {
@@ -113,6 +135,17 @@
             foundActive = foundActive || !mesh.isVisible;
             foundInactive = foundInactive || mesh.isVisible;
         }
+        
+        if (foundActive && foundInactive)
+            return NSMultipleValuesMarker;
+    }
+    for (GLLOptionalPart *child in self.children) {
+        if (child.visible == NSMultipleValuesMarker)
+            return NSMultipleValuesMarker;
+        else if ([child.visible boolValue])
+            foundActive = YES;
+        else if (![child.visible boolValue])
+            foundInactive = YES;
         
         if (foundActive && foundInactive)
             return NSMultipleValuesMarker;
@@ -141,6 +174,9 @@
             mesh.isVisible = ![visible boolValue];
         }
     }
+    for (GLLOptionalPart *child in self.children) {
+        child.visible = visible;
+    }
     [self didChangeValueForKey:@"visible"];
 }
 
@@ -154,6 +190,11 @@
     while (part) {
         [ownNameParts insertObject:part.name atIndex:0];
         part = part.parent;
+    }
+    
+    if (ownNameParts.count != nameParts.count) {
+        // Not part of self, but of either parent or child.
+        return NO;
     }
     
     for (NSUInteger i = 0; i < ownNameParts.count; i++) {
