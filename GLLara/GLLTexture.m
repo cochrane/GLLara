@@ -139,7 +139,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 @interface GLLTexture ()
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
-- (void)_loadCGCompatibleTexture:(NSData *)data;
+- (void)_loadCGCompatibleTexture:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (void)_loadDefaultTexture;
 
 - (BOOL)_loadDataError:(NSError *__autoreleasing*)error;
@@ -302,7 +302,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         if (memcmp(data.bytes, "DDS ", 4) == 0)
             [self _loadDDSTextureWithData:data error:&internalError];
         else
-            [self _loadCGCompatibleTexture:data];
+            [self _loadCGCompatibleTexture:data error:&internalError];
         
         if (internalError != nil) NSLog(@"Error loading texture %@: %@", self.url, internalError);
         
@@ -364,10 +364,46 @@ static NSOperationQueue *imageInformationQueue = nil;
     
     return YES;
 }
-- (void)_loadCGCompatibleTexture:(NSData *)data;
+- (void)_loadCGCompatibleTexture:(NSData *)data error:(NSError *__autoreleasing*)error;
 {
     CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef) data, NULL);
+    CGImageSourceStatus status = CGImageSourceGetStatus(source);
+    NSString *errorStringFormat = nil;
+    switch (status) {
+        case kCGImageStatusUnexpectedEOF:
+        case kCGImageStatusReadingHeader:
+        case kCGImageStatusIncomplete:
+            errorStringFormat = NSLocalizedString(@"Texture file %@ could not be loaded due to unexpected file.", @"texture status unexpectedEOF");
+            break;
+        case kCGImageStatusInvalidData:
+            errorStringFormat = NSLocalizedString(@"Texture file %@ could not be loaded because the data is invalid.", @"texture status invalidData");
+            break;
+        case kCGImageStatusUnknownType:
+            errorStringFormat = NSLocalizedString(@"Texture file %@ could not be loaded because the type is not supported.", @"texture status unknownType");
+            break;
+        case kCGImageStatusComplete:
+            // All good
+            break;
+    }
+    if (errorStringFormat) {
+        if (error)
+            *error = [NSError errorWithDomain:@"Textures" code:13 userInfo:@{
+                                                                            NSLocalizedDescriptionKey : [NSString stringWithFormat:errorStringFormat, self.url.lastPathComponent]
+                                                                            }];
+        [self _loadDefaultTexture];
+        return;
+    }
+    
     CFDictionaryRef dict = CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
+    if (!dict) {
+        if (error)
+            *error = [NSError errorWithDomain:@"Textures" code:13 userInfo:@{
+                                                                             NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Texture file %@ could not be loaded because the properties could not be loaded.", @"texture status probably a PDF"), self.url.lastPathComponent]
+                                                                             }];
+        [self _loadDefaultTexture];
+        return;
+    }
+    
     CFIndex width, height;
     CFNumberGetValue(CFDictionaryGetValue(dict, kCGImagePropertyPixelWidth), kCFNumberCFIndexType, &width);
     CFNumberGetValue(CFDictionaryGetValue(dict, kCGImagePropertyPixelHeight), kCFNumberCFIndexType, &height);
