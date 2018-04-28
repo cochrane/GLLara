@@ -140,6 +140,8 @@ static NSOperationQueue *imageInformationQueue = nil;
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (void)_loadCGCompatibleTexture:(NSData *)data error:(NSError *__autoreleasing*)error;
+- (void)_loadPDFTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
+- (void)_loadAndFreePremultipliedRGBAData:(void *)data;
 - (void)_loadDefaultTexture;
 
 - (BOOL)_loadDataError:(NSError *__autoreleasing*)error;
@@ -391,6 +393,13 @@ static NSOperationQueue *imageInformationQueue = nil;
                                                                             NSLocalizedDescriptionKey : [NSString stringWithFormat:errorStringFormat, self.url.lastPathComponent]
                                                                             }];
         [self _loadDefaultTexture];
+        CFRelease(source);
+        return;
+    }
+    
+    if (CFStringCompare(CGImageSourceGetType(source), kUTTypePDF, 0) == kCFCompareEqualTo) {
+        [self _loadPDFTextureWithData:data error:error];
+        CFRelease(source);
         return;
     }
     
@@ -401,6 +410,7 @@ static NSOperationQueue *imageInformationQueue = nil;
                                                                              NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Texture file %@ could not be loaded because the properties could not be loaded.", @"texture status probably a PDF"), self.url.lastPathComponent]
                                                                              }];
         [self _loadDefaultTexture];
+        CFRelease(source);
         return;
     }
     
@@ -426,17 +436,74 @@ static NSOperationQueue *imageInformationQueue = nil;
     CGContextRelease(cgContext);
     CGImageRelease(cgImage);
     
+    [self _loadAndFreePremultipliedRGBAData:bufferData];
+}
+
+// Just for fun
+- (void)_loadPDFTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error {
+    CGDataProviderRef dataProvider = CGDataProviderCreateWithCFData((__bridge CFDataRef) data);
+    CGPDFDocumentRef document = CGPDFDocumentCreateWithProvider(dataProvider);
+    
+    if (!document) {
+        if (*error)
+            *error = [NSError errorWithDomain:@"Texture" code:14 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"PDF Texture file %@ could not be loaded.", @"texture status pdf not loaded"), self.url.lastPathComponent] }];
+        [self _loadDefaultTexture];
+        return;
+    }
+    
+    size_t numberOfPages = CGPDFDocumentGetNumberOfPages(document);
+    if (numberOfPages == 0) {
+        if (*error)
+            *error = [NSError errorWithDomain:@"Texture" code:14 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"PDF Texture file %@ has no pages.", @"texture status pdf no pages"), self.url.lastPathComponent] }];
+        [self _loadDefaultTexture];
+        CGPDFDocumentRelease(document);
+        return;
+    }
+    
+    CGPDFPageRef page = CGPDFDocumentGetPage(document, 1);
+    if (!page) {
+        if (*error)
+            *error = [NSError errorWithDomain:@"Texture" code:14 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Could not load first page of PDF file %@.", @"texture status pdf no pages"), self.url.lastPathComponent] }];
+        [self _loadDefaultTexture];
+        CGPDFDocumentRelease(document);
+        return;
+    }
+    
+    CGRect boxRect = CGPDFPageGetBoxRect(page, kCGPDFCropBox);
+    NSLog(@"x = %f, y = %f", boxRect.size.width, boxRect.size.height);
+    
+    // TODO Should go via actual resolution, as far as it is specified in the
+    // PDF; and maybe limit max size, too.
+    self.height = (NSUInteger) (boxRect.size.width);
+    self.width = (NSUInteger) (boxRect.size.height);
+    
+    unsigned char *bufferData = calloc(self.width * self.height, 4);
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef cgContext = CGBitmapContextCreate(bufferData, self.width, self.height, 8, self.width * 4, colorSpace, kCGImageAlphaPremultipliedFirst);
+    NSAssert(cgContext != NULL, @"Could not create CG Context");
+    
+    CGColorSpaceRelease(colorSpace);
+    
+    CGContextDrawPDFPage(cgContext, page);
+    CGContextRelease(cgContext);
+    CGPDFDocumentRelease(document);
+    
+    [self _loadAndFreePremultipliedRGBAData:bufferData];
+}
+
+- (void)_loadAndFreePremultipliedRGBAData:(void *)bufferData; {
     // Unpremultiply the texture data. I wish I could get it unpremultiplied from the start, but CGImage doesn't allow that. Just using premultiplied sounds swell, but it messes up my blending in OpenGL.
-    unsigned char *unpremultipliedBufferData = calloc(width * height, 4);
-    vImage_Buffer input = { .height = height, .width = width, .rowBytes = 4*width, .data = bufferData };
-    vImage_Buffer output = { .height = height, .width = width, .rowBytes = 4*width, .data = unpremultipliedBufferData };
+    unsigned char *unpremultipliedBufferData = calloc(self.width * self.height, 4);
+    vImage_Buffer input = { .height = self.height, .width = self.width, .rowBytes = 4*self.width, .data = bufferData };
+    vImage_Buffer output = { .height = self.height, .width = self.width, .rowBytes = 4*self.width, .data = unpremultipliedBufferData };
     vImageUnpremultiplyData_ARGB8888(&input, &output, 0);
     free(bufferData);
     
-    int numberOfLevels = numMipmapLevels(width, height);
+    int numberOfLevels = numMipmapLevels(self.width, self.height);
     
-    glTexStorage2D(GL_TEXTURE_2D, (GLsizei) numberOfLevels, GL_RGBA8, (GLsizei) width, (GLsizei) height);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, (GLsizei) width, (GLsizei) height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
+    glTexStorage2D(GL_TEXTURE_2D, (GLsizei) numberOfLevels, GL_RGBA8, (GLsizei) self.width, (GLsizei) self.height);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, (GLsizei) self.width, (GLsizei) self.height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
     
     // Load mipmaps
     vImage_Buffer lastBuffer = output;
@@ -444,8 +511,8 @@ static NSOperationQueue *imageInformationQueue = nil;
     size_t tempBufferSize = 0;
     for (int i = 1; i < numberOfLevels; i++) {
         vImage_Buffer smallerBuffer;
-        smallerBuffer.width = MAX(width >> i, 1);
-        smallerBuffer.height = MAX(height >> i, 1);
+        smallerBuffer.width = MAX(self.width >> i, 1UL);
+        smallerBuffer.height = MAX(self.height >> i, 1UL);
         smallerBuffer.rowBytes = smallerBuffer.width * 4;
         smallerBuffer.data = calloc(smallerBuffer.height * smallerBuffer.width, 4);
         
