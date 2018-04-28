@@ -469,13 +469,28 @@ static NSOperationQueue *imageInformationQueue = nil;
         return;
     }
     
+    // Find user unit, if any
+    CGPDFReal userUnit = 1.0;
+    CGPDFDictionaryRef pageDictionary = CGPDFPageGetDictionary(page);
+    if (pageDictionary) {
+        if (!CGPDFDictionaryGetNumber(pageDictionary, "UserUnit", &userUnit))
+            userUnit = 1.0;
+    }
+    // Unit is userUnit / 72 inch. We want 300 DPI.
+    CGFloat scale = (userUnit / 72.0) * 300.0;
+    
+    // Limit size
+    const CGFloat maxSize = 2048.0;
     CGRect boxRect = CGPDFPageGetBoxRect(page, kCGPDFCropBox);
-    NSLog(@"x = %f, y = %f", boxRect.size.width, boxRect.size.height);
+    if (boxRect.size.width * scale > maxSize)
+        scale = maxSize / boxRect.size.width;
+    if (boxRect.size.height * scale > maxSize)
+        scale = maxSize / boxRect.size.height;
     
     // TODO Should go via actual resolution, as far as it is specified in the
     // PDF; and maybe limit max size, too.
-    self.height = (NSUInteger) (boxRect.size.width);
-    self.width = (NSUInteger) (boxRect.size.height);
+    self.height = (NSUInteger) (boxRect.size.width * scale);
+    self.width = (NSUInteger) (boxRect.size.height * scale);
     
     unsigned char *bufferData = calloc(self.width * self.height, 4);
     
@@ -484,6 +499,8 @@ static NSOperationQueue *imageInformationQueue = nil;
     NSAssert(cgContext != NULL, @"Could not create CG Context");
     
     CGColorSpaceRelease(colorSpace);
+    
+    CGContextScaleCTM(cgContext, scale, scale);
     
     CGContextDrawPDFPage(cgContext, page);
     CGContextRelease(cgContext);
