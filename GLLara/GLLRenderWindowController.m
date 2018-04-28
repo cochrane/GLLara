@@ -117,9 +117,11 @@
 
 - (IBAction)renderToFile:(id)sender
 {
+    NSRect rect = NSMakeRect(0, 0, self.camera.actualWindowWidth, self.camera.actualWindowHeight);
+    NSRect pixelRect = [self.window convertRectToBacking:rect];
     NSMutableDictionary *saveData = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                    @"width" : @(self.camera.actualWindowWidth),
-                                                                                    @"height" : @(self.camera.actualWindowHeight),
+                                                                                    @"width" : @(pixelRect.size.width),
+                                                                                    @"height" : @(pixelRect.size.height),
                                                                                     @"maxSamples" : @8,
                                                                                     }];
     
