@@ -8,8 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface GLLPreferencesWindowController : NSWindowController
+@interface GLLPreferencesWindowController : NSWindowController <NSPageControllerDelegate>
 
-@property (nonatomic, readonly, assign) NSUInteger maxAnisotropyLevel;
+@property (nonatomic, retain) IBOutlet NSPageController *pageController;
+@property (nonatomic, retain) IBOutlet NSToolbar *toolbar;
+
+- (IBAction)navigateToPage:(id)sender;
 
 @end

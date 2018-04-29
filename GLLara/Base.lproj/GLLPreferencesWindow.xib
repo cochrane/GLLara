@@ -1,12 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C81f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="GLLPreferencesWindowController">
             <connections>
+                <outlet property="pageController" destination="K2b-SZ-9Uc" id="JCu-6s-6hs"/>
+                <outlet property="toolbar" destination="uDc-QX-Pto" id="1aC-tC-whG"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -15,119 +18,38 @@
         <window title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="F0z-JX-Cv5" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="462" height="151"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <rect key="contentRect" x="196" y="240" width="474" height="328"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="462" height="151"/>
+                <rect key="frame" x="0.0" y="0.0" width="474" height="328"/>
                 <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <button translatesAutoresizingMaskIntoConstraints="NO" id="GBr-2C-GaV">
-                        <rect key="frame" x="18" y="115" width="116" height="18"/>
-                        <buttonCell key="cell" type="check" title="Use Anisotropy" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ec6-EL-upS">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <binding destination="YQP-MC-h0C" name="value" keyPath="values.UseAnisotropy" id="qWr-Y2-lDL"/>
-                        </connections>
-                    </button>
-                    <button misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jhz-GU-dPp">
-                        <rect key="frame" x="18" y="54" width="136" height="18"/>
-                        <buttonCell key="cell" type="check" title="Use Multisampling" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="JCu-Ps-dG0">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <binding destination="YQP-MC-h0C" name="value" keyPath="values.UseMultisampling" id="QUX-QJ-iYd"/>
-                        </connections>
-                    </button>
-                    <slider horizontalHuggingPriority="200" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z8c-rS-tPH">
-                        <rect key="frame" x="96" y="82" width="244" height="27"/>
-                        <sliderCell key="cell" state="on" alignment="left" minValue="2" maxValue="16" doubleValue="16" tickMarkPosition="below" numberOfTickMarks="15" allowsTickMarkValuesOnly="YES" sliderType="linear" id="oIl-UZ-hxZ"/>
-                        <connections>
-                            <binding destination="YQP-MC-h0C" name="enabled" keyPath="values.UseAnisotropy" id="vPC-sA-cXv"/>
-                            <binding destination="-2" name="maxValue" keyPath="maxAnisotropyLevel" id="bvP-hX-xcQ"/>
-                            <binding destination="YQP-MC-h0C" name="value" keyPath="values.AnisotropyAmount" previousBinding="bvP-hX-xcQ" id="09n-p4-cAZ"/>
-                        </connections>
-                    </slider>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6wy-fw-9vJ">
-                        <rect key="frame" x="36" y="90" width="56" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Amount:" id="NfR-eJ-zYc">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <binding destination="YQP-MC-h0C" name="enabled" keyPath="values.UseAnisotropy" id="T53-qc-bbO"/>
-                        </connections>
-                    </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2ih-HK-Mz2">
-                        <rect key="frame" x="36" y="31" width="56" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Amount:" id="Pky-oZ-69M">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uvw-FM-Qdv">
-                        <rect key="frame" x="346" y="87" width="96" height="22"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="jbw-Oz-Nly">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <binding destination="YQP-MC-h0C" name="enabled" keyPath="values.UseAnisotropy" id="Srg-jT-7vV"/>
-                            <binding destination="YQP-MC-h0C" name="value" keyPath="values.AnisotropyAmount" id="Nvg-RH-gTA"/>
-                        </connections>
-                    </textField>
-                    <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i2a-t1-X9d">
-                        <rect key="frame" x="346" y="29" width="96" height="22"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="eC0-cm-6Po">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <binding destination="YQP-MC-h0C" name="enabled" keyPath="values.UseMultisampling" id="D8u-jK-KoI"/>
-                            <binding destination="YQP-MC-h0C" name="value" keyPath="values.MultiSamplingAmount" id="8Fz-NH-MxK"/>
-                        </connections>
-                    </textField>
-                    <slider horizontalHuggingPriority="200" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hL3-LX-xr3">
-                        <rect key="frame" x="96" y="26" width="244" height="27"/>
-                        <sliderCell key="cell" state="on" alignment="left" minValue="2" maxValue="8" doubleValue="8" tickMarkPosition="below" numberOfTickMarks="7" allowsTickMarkValuesOnly="YES" sliderType="linear" id="Okq-Eu-hrS"/>
-                        <connections>
-                            <binding destination="YQP-MC-h0C" name="enabled" keyPath="values.UseMultisampling" id="t1m-z5-abE"/>
-                            <binding destination="YQP-MC-h0C" name="value" keyPath="values.MultiSamplingAmount" id="S6G-sA-HTA"/>
-                        </connections>
-                    </slider>
-                </subviews>
-                <constraints>
-                    <constraint firstItem="i2a-t1-X9d" firstAttribute="leading" secondItem="hL3-LX-xr3" secondAttribute="trailing" constant="8" id="2TN-8n-VX9"/>
-                    <constraint firstItem="jhz-GU-dPp" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" id="2sA-63-siH"/>
-                    <constraint firstItem="hL3-LX-xr3" firstAttribute="top" secondItem="jhz-GU-dPp" secondAttribute="bottom" constant="10" id="307-30-igj"/>
-                    <constraint firstItem="Z8c-rS-tPH" firstAttribute="leading" secondItem="6wy-fw-9vJ" secondAttribute="trailing" constant="8" id="52v-p3-72x"/>
-                    <constraint firstItem="i2a-t1-X9d" firstAttribute="baseline" secondItem="2ih-HK-Mz2" secondAttribute="baseline" id="66T-xY-vw0"/>
-                    <constraint firstItem="hL3-LX-xr3" firstAttribute="centerY" secondItem="i2a-t1-X9d" secondAttribute="centerY" constant="2.5" id="7cg-5W-zCf"/>
-                    <constraint firstItem="GBr-2C-GaV" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="20" id="82z-ll-dgl"/>
-                    <constraint firstItem="jhz-GU-dPp" firstAttribute="leading" secondItem="2ih-HK-Mz2" secondAttribute="leading" constant="-18" id="DHC-Ci-FbD"/>
-                    <constraint firstItem="Uvw-FM-Qdv" firstAttribute="leading" secondItem="Z8c-rS-tPH" secondAttribute="trailing" constant="8" id="Dnl-or-Nsl"/>
-                    <constraint firstItem="Z8c-rS-tPH" firstAttribute="top" secondItem="GBr-2C-GaV" secondAttribute="bottom" constant="10" id="E0B-5Y-uej"/>
-                    <constraint firstItem="jhz-GU-dPp" firstAttribute="top" secondItem="Z8c-rS-tPH" secondAttribute="bottom" constant="8" id="GSU-G1-rbL"/>
-                    <constraint firstItem="hL3-LX-xr3" firstAttribute="leading" secondItem="2ih-HK-Mz2" secondAttribute="trailing" constant="8" id="HDz-Du-DGI"/>
-                    <constraint firstAttribute="trailing" secondItem="i2a-t1-X9d" secondAttribute="trailing" constant="20" id="Kyo-Di-BAU"/>
-                    <constraint firstItem="GBr-2C-GaV" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" constant="20" id="dnQ-92-cGm"/>
-                    <constraint firstItem="GBr-2C-GaV" firstAttribute="leading" secondItem="6wy-fw-9vJ" secondAttribute="leading" constant="-18" id="iiX-1u-E5X"/>
-                    <constraint firstAttribute="trailing" secondItem="Uvw-FM-Qdv" secondAttribute="trailing" constant="20" id="mEP-G3-lI0"/>
-                    <constraint firstItem="Uvw-FM-Qdv" firstAttribute="baseline" secondItem="6wy-fw-9vJ" secondAttribute="baseline" constant="1" id="pEL-Ca-Hjq"/>
-                    <constraint firstItem="Z8c-rS-tPH" firstAttribute="centerY" secondItem="Uvw-FM-Qdv" secondAttribute="centerY" constant="-0.5" id="viK-Wv-CC0"/>
-                </constraints>
             </view>
+            <toolbar key="toolbar" implicitIdentifier="7128B661-7BFF-4B44-98EC-FB94EA1DB10B" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="uDc-QX-Pto">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="F22A53AB-6C2A-4420-A706-CD359AF54D87" explicitItemIdentifier="GraphicsPreferences" label="Graphics" paletteLabel="Graphics" tag="-1" image="NSColorPanel" selectable="YES" id="tie-qh-DBf">
+                        <connections>
+                            <action selector="navigateToPage:" target="-2" id="uMr-xV-Kva"/>
+                        </connections>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="tie-qh-DBf"/>
+                </defaultToolbarItems>
+            </toolbar>
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="264" y="246.5"/>
+            <point key="canvasLocation" x="-61" y="310"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="YQP-MC-h0C"/>
+        <pagecontroller transitionStyle="horizontalStrip" id="K2b-SZ-9Uc">
+            <connections>
+                <outlet property="delegate" destination="-2" id="ODs-ZJ-T8r"/>
+                <outlet property="view" destination="se5-gp-TjO" id="MAE-3c-Ese"/>
+            </connections>
+        </pagecontroller>
     </objects>
+    <resources>
+        <image name="NSColorPanel" width="32" height="32"/>
+    </resources>
 </document>

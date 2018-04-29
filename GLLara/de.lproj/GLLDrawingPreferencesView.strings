@@ -1,0 +1,12 @@
+
+/* Class = "NSButtonCell"; title = "Use Multisampling"; ObjectID = "5cs-Sn-xsp"; */
+"5cs-Sn-xsp.title" = "Multisampling";
+
+/* Class = "NSButtonCell"; title = "Use Anisotropy"; ObjectID = "Ext-sQ-x96"; */
+"Ext-sQ-x96.title" = "Anisotropisch filtern";
+
+/* Class = "NSTextFieldCell"; title = "Amount:"; ObjectID = "aoe-nj-BmE"; */
+"aoe-nj-BmE.title" = "Stärke:";
+
+/* Class = "NSTextFieldCell"; title = "Amount:"; ObjectID = "t1q-Rd-fdV"; */
+"t1q-Rd-fdV.title" = "Stärke:";

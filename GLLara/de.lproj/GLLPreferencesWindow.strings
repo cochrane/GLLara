@@ -2,14 +2,5 @@
 /* Class = "NSWindow"; title = "Settings"; ObjectID = "F0z-JX-Cv5"; */
 "F0z-JX-Cv5.title" = "Einstellungen";
 
-/* Class = "NSButtonCell"; title = "Use Multisampling"; ObjectID = "JCu-Ps-dG0"; */
-"JCu-Ps-dG0.title" = "Multisampling";
-
-/* Class = "NSTextFieldCell"; title = "Amount:"; ObjectID = "NfR-eJ-zYc"; */
-"NfR-eJ-zYc.title" = "Stärke:";
-
-/* Class = "NSTextFieldCell"; title = "Amount:"; ObjectID = "Pky-oZ-69M"; */
-"Pky-oZ-69M.title" = "Stärke:";
-
-/* Class = "NSButtonCell"; title = "Use Anisotropy"; ObjectID = "ec6-EL-upS"; */
-"ec6-EL-upS.title" = "Anisotropisch filtern";
+/* Toolbar item graphics */
+"tie-qh-DBf.label" = "Grafik";
