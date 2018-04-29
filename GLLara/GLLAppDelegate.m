@@ -10,6 +10,13 @@
 
 #import "GLLPreferenceKeys.h"
 #import "GLLPreferencesWindowController.h"
+#import "GLLara-Swift.h"
+
+@interface GLLAppDelegate() {
+    GLLHIDManager *manager;
+}
+
+@end
 
 @implementation GLLAppDelegate
 
@@ -26,6 +33,8 @@
         GLLPrefPoseExportOnlySelected: @(YES),
         GLLPrefShowSkeleton: @(YES)
     }];
+    
+    manager = [[GLLHIDManager alloc] init];
 }
 
 - (IBAction)openPreferences:(id)sender;

@@ -53,6 +53,11 @@
 		52301E322087E6FC00B3E331 /* GLLOptionalPartView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52301E312087E6FC00B3E331 /* GLLOptionalPartView.xib */; };
 		52301E352087E71400B3E331 /* GLLOptionalPartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E342087E71400B3E331 /* GLLOptionalPartViewController.m */; };
 		52301E382089372200B3E331 /* GLLOptionalPart.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E372089372200B3E331 /* GLLOptionalPart.m */; };
+		52301E3C2094A10200B3E331 /* GLLHIDAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52301E3B2094A10200B3E331 /* GLLHIDAction.swift */; };
+		52301E3E2094A13200B3E331 /* GLLHIDMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52301E3D2094A13200B3E331 /* GLLHIDMode.swift */; };
+		52301E402094A1E400B3E331 /* GLLHIDInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52301E3F2094A1E400B3E331 /* GLLHIDInput.swift */; };
+		52301E422094A74600B3E331 /* GLLHIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52301E412094A74600B3E331 /* GLLHIDManager.swift */; };
+		52301E442094C3B400B3E331 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52301E432094C3B400B3E331 /* IOKit.framework */; };
 		52329F4C16C1D71E00338A0A /* GLLItemExportView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F4A16C1D71E00338A0A /* GLLItemExportView.strings */; };
 		52329F4F16C1D72600338A0A /* GLLPoseExportViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F4D16C1D72600338A0A /* GLLPoseExportViewController.strings */; };
 		52329F5216C1D76200338A0A /* Textures.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F5416C1D76200338A0A /* Textures.strings */; };
@@ -479,6 +484,12 @@
 		52301E342087E71400B3E331 /* GLLOptionalPartViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLOptionalPartViewController.m; sourceTree = "<group>"; };
 		52301E362089372200B3E331 /* GLLOptionalPart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLOptionalPart.h; sourceTree = "<group>"; };
 		52301E372089372200B3E331 /* GLLOptionalPart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLOptionalPart.m; sourceTree = "<group>"; };
+		52301E3A2094A10100B3E331 /* GLLara-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GLLara-Bridging-Header.h"; sourceTree = "<group>"; };
+		52301E3B2094A10200B3E331 /* GLLHIDAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLHIDAction.swift; sourceTree = "<group>"; };
+		52301E3D2094A13200B3E331 /* GLLHIDMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLHIDMode.swift; sourceTree = "<group>"; };
+		52301E3F2094A1E400B3E331 /* GLLHIDInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLHIDInput.swift; sourceTree = "<group>"; };
+		52301E412094A74600B3E331 /* GLLHIDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLHIDManager.swift; sourceTree = "<group>"; };
+		52301E432094C3B400B3E331 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		52329F4B16C1D71E00338A0A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLItemExportView.strings; sourceTree = "<group>"; };
 		52329F4E16C1D72600338A0A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLPoseExportViewController.strings; sourceTree = "<group>"; };
 		52329F5316C1D76200338A0A /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Textures.strings; sourceTree = "<group>"; };
@@ -886,6 +897,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52301E442094C3B400B3E331 /* IOKit.framework in Frameworks */,
 				52528D711D6ABFF1002E0074 /* QuartzCore.framework in Frameworks */,
 				5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */,
 				529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */,
@@ -938,6 +950,17 @@
 				52B9E0B01602815800641518 /* RenderParameters.strings */,
 			);
 			name = Strings;
+			sourceTree = "<group>";
+		};
+		52301E392094A0D900B3E331 /* HID */ = {
+			isa = PBXGroup;
+			children = (
+				52301E3B2094A10200B3E331 /* GLLHIDAction.swift */,
+				52301E3D2094A13200B3E331 /* GLLHIDMode.swift */,
+				52301E3F2094A1E400B3E331 /* GLLHIDInput.swift */,
+				52301E412094A74600B3E331 /* GLLHIDManager.swift */,
+			);
+			name = HID;
 			sourceTree = "<group>";
 		};
 		52329F4816C1D63300338A0A /* Drawing infrastructure */ = {
@@ -1077,6 +1100,7 @@
 		525ACD4A15F0F1A700534E7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				52301E432094C3B400B3E331 /* IOKit.framework */,
 				52FC0EA21D6A0E8B00C04885 /* QuartzCore.framework */,
 				5224C8EF15FABC92002A6C76 /* Accelerate.framework */,
 				529692D015F2374F00DF2FA3 /* libz.dylib */,
@@ -1101,6 +1125,7 @@
 		525ACD5115F0F1A700534E7D /* GLLara */ = {
 			isa = PBXGroup;
 			children = (
+				52301E392094A0D900B3E331 /* HID */,
 				52528D721D6AC289002E0074 /* Instrumentation */,
 				5296946115F7B22E00DF2FA3 /* Document and UI */,
 				5296942C15F421D800DF2FA3 /* shared_simd */,
@@ -1138,6 +1163,7 @@
 				52ED9E3A16999E370082EABB /* NSArray+Map.m */,
 				5254601A16DAB41C00919729 /* NSCharacterSet+SetOperations.h */,
 				5254601B16DAB41C00919729 /* NSCharacterSet+SetOperations.m */,
+				52301E3A2094A10100B3E331 /* GLLara-Bridging-Header.h */,
 				52232EAD1EFC57D4007FE9AD /* XYAlignedSquare.obj */,
 			);
 			name = "Supporting Files";
@@ -1664,6 +1690,7 @@
 				TargetAttributes = {
 					525ACD4615F0F1A700534E7D = {
 						DevelopmentTeam = MXAKMKWG34;
+						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1950,6 +1977,7 @@
 				529692E315F2861E00DF2FA3 /* GLLMeshDrawData.m in Sources */,
 				529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */,
 				529693F215F2A77F00DF2FA3 /* GLLModelParams.m in Sources */,
+				52301E3C2094A10200B3E331 /* GLLHIDAction.swift in Sources */,
 				529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */,
 				5296940115F3881B00DF2FA3 /* GLLModelProgram.m in Sources */,
 				5296940415F3893200DF2FA3 /* GLLShader.m in Sources */,
@@ -2015,8 +2043,10 @@
 				52301E382089372200B3E331 /* GLLOptionalPart.m in Sources */,
 				528934EB16A332BD00F05312 /* GLLMeshListController.m in Sources */,
 				528934EE16A3593500F05312 /* GLLBoneListController.m in Sources */,
+				52301E422094A74600B3E331 /* GLLHIDManager.swift in Sources */,
 				52474B1B16A73B6C007A0223 /* GLLMtlFile.cpp in Sources */,
 				52474B1E16A73CB2007A0223 /* GLLStringURLConversion.cpp in Sources */,
+				52301E3E2094A13200B3E331 /* GLLHIDMode.swift in Sources */,
 				52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */,
 				52653D8116BAB729001D802F /* GLLPoseExporter.m in Sources */,
 				5227832F1BFA6A4E002E43FD /* GLLVertexFormat.m in Sources */,
@@ -2027,6 +2057,7 @@
 				522783B01C0B7FC0002E43FD /* GLLRenderParameterSelectionPlaceholder.m in Sources */,
 				526756A416BF3B0700FB85CA /* GLLTextureAssignmentView.m in Sources */,
 				522783AA1C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.m in Sources */,
+				52301E402094A1E400B3E331 /* GLLHIDInput.swift in Sources */,
 				5213F8831C0E411C007A9EBB /* GLLPreferencesWindowController.m in Sources */,
 				526756A716BF45EF00FB85CA /* GLLTextureDescription.m in Sources */,
 				522783AD1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m in Sources */,
@@ -2511,14 +2542,19 @@
 		525ACD7D15F0F1A700534E7D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = MXAKMKWG34;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "GLLara/GLLara-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2526,14 +2562,18 @@
 		525ACD7E15F0F1A700534E7D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = MXAKMKWG34;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "GLLara/GLLara-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -2541,6 +2581,7 @@
 		525ACD8015F0F1A700534E7D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GLLara.app/Contents/MacOS/GLLara";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2557,6 +2598,7 @@
 		525ACD8115F0F1A700534E7D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/GLLara.app/Contents/MacOS/GLLara";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
