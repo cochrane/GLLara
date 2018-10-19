@@ -24,6 +24,17 @@
 #import "simd_matrix.h"
 #import "GLLTiming.h"
 
+@interface GLLItemDrawerRun: NSObject
+
+@property (nonatomic) GLsizei length;
+@property (nonatomic) GLsizei start;
+@property (nonatomic) GLLItemMeshState *state;
+
+@end
+
+@implementation GLLItemDrawerRun
+@end
+
 @interface GLLItemDrawer ()
 {
     GLuint transformsBuffer;
@@ -38,12 +49,9 @@
     GLsizeiptr *allIndices;
     GLint *allBaseVertices;
     
-    // Arrays for each run. Each element is an index into the base arrays.
-    GLsizei solidRunCounts;
-    GLsizei alphaRunCounts;
-    GLsizei *runLengths;
-    GLsizei *runStarts;
-    NSArray *runStartStates;
+    // The combined runs. Each element describes a range within the base arrays.
+    NSArray<GLLItemDrawerRun *> *solidRuns;
+    NSArray<GLLItemDrawerRun *> *alphaRuns;
     
     BOOL needsUpdateRuns;
 }
@@ -107,8 +115,6 @@
     allCounts = calloc(sizeof(GLsizei), meshStates.count);
     allBaseVertices = calloc(sizeof(GLint), meshStates.count);
     allIndices = calloc(sizeof(GLsizeiptr), meshStates.count);
-    runLengths = calloc(sizeof(GLsizei), meshStates.count);
-    runStarts = calloc(sizeof(GLsizei), meshStates.count);
     
     [self _findRuns];
     
@@ -149,13 +155,11 @@
     
     glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
     
-    for (GLsizei run = 0; run < solidRunCounts; run++) {
-        GLLItemMeshState *meshState = runStartStates[run];
-        [meshState setupState:state];
+    for (GLLItemDrawerRun *run in solidRuns) {
+        [run.state setupState:state];
         
-        GLsizei runStart = runStarts[run];
-        GLsizei runLength = runLengths[run];
-        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, meshState.drawData.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
+        GLsizei runStart = run.start;
+        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, run.state.drawData.elementType, (GLvoid *) (allIndices + runStart), run.length, allBaseVertices + runStart);
     }
     
     self.needsRedraw = NO;
@@ -167,13 +171,11 @@
     
     glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
     
-    for (GLsizei run = solidRunCounts; run < (solidRunCounts + alphaRunCounts); run++) {
-        GLLItemMeshState *meshState = runStartStates[run];
-        [meshState setupState:state];
+    for (GLLItemDrawerRun *run in alphaRuns) {
+        [run.state setupState:state];
         
-        GLsizei runStart = runStarts[run];
-        GLsizei runLength = runLengths[run];
-        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, meshState.drawData.elementType, (GLvoid *) (allIndices + runStart), runLength, allBaseVertices + runStart);
+        GLsizei runStart = run.start;
+        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, run.state.drawData.elementType, (GLvoid *) (allIndices + runStart), run.length, allBaseVertices + runStart);
     }
     
     self.needsRedraw = NO;
@@ -198,8 +200,6 @@
     free(allCounts);
     free(allBaseVertices);
     free(allIndices);
-    free(runLengths);
-    free(runStarts);
 }
 
 - (void)_updateTransforms
@@ -245,37 +245,35 @@
         return [a compareTo:b];
     }];
     
-    runStartStates = nil;
-    NSMutableArray *startStates = [NSMutableArray array];
-    
-    NSUInteger nextRun = 0;
     GLsizei meshesAdded = 0;
-    alphaRunCounts = 0;
-    solidRunCounts = 0;
+    NSMutableArray *newAlphaRuns = [NSMutableArray array];
+    NSMutableArray *newSolidRuns = [NSMutableArray array];
+    GLLItemDrawerRun *lastAddedRun = nil;
     
     // Find runs in meshes
     GLLItemMeshState *lastVisisbleState = nil;
-    for (NSUInteger i = 0; i < meshStates.count; i++) {
-        GLLItemMeshState *state = meshStates[i];
+    for (GLLItemMeshState *state in meshStates) {
         if (!state.itemMesh.isVisible || !state.program) {
             continue;
         }
         
         if (!lastVisisbleState || [state compareTo:lastVisisbleState] != NSOrderedSame) {
             // Starts new run
-            runStarts[nextRun] = meshesAdded;
-            runLengths[nextRun] = 1;
-            [startStates addObject:state];
+            GLLItemDrawerRun *run = [[GLLItemDrawerRun alloc] init];
+            run.length = 1;
+            run.start = meshesAdded;
+            run.state = state;
+            
             if (state.itemMesh.isUsingBlending)
-                alphaRunCounts += 1;
+                [newAlphaRuns addObject:run];
             else {
-                assert(alphaRunCounts == 0 && "Should be ensured by sort order");
-                solidRunCounts += 1;
+                assert(newAlphaRuns.count == 0 && "Should be ensured by sort order");
+                [newSolidRuns addObject:run];
             }
-            nextRun += 1;
+            lastAddedRun = run;
         } else {
             // Continues last run
-            runLengths[nextRun - 1] += 1;
+            lastAddedRun.length += 1;
         }
         allBaseVertices[meshesAdded] = state.drawData.baseVertex;
         allIndices[meshesAdded] = state.drawData.indicesStart;
@@ -285,7 +283,8 @@
         meshesAdded += 1;
     }
     
-    runStartStates = startStates;
+    alphaRuns = newAlphaRuns;
+    solidRuns = newSolidRuns;
     needsUpdateRuns = NO;
     GLLEndTiming("Draw/Update/Runs");
 }
