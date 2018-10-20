@@ -116,9 +116,7 @@
 
 - (void)resetAllValuesRecursively {
     [self resetAllValues];
-    for (GLLItemBone *child in self.children) {
-        [child resetAllValuesRecursively];
-    }
+    [self.children makeObjectsPerformSelector:_cmd];
 }
 
 #pragma mark - Tree structure
