@@ -65,33 +65,27 @@
 - (void)setPositionX:(float)position
 {
     [self _standardSetValue:@(position) forKey:@"positionX"];
-    [self _updateRelativeTransform];
 }
 - (void)setPositionY:(float)position
 {
     [self _standardSetValue:@(position) forKey:@"positionY"];
-    [self _updateRelativeTransform];
 }
 - (void)setPositionZ:(float)position
 {
     [self _standardSetValue:@(position) forKey:@"positionZ"];
-    [self _updateRelativeTransform];
 }
 
 - (void)setRotationX:(float)angle
 {
     [self _standardSetAngle:angle forKey:@"rotationX"];
-    [self _updateRelativeTransform];
 }
 - (void)setRotationY:(float)angle
 {
     [self _standardSetAngle:angle forKey:@"rotationY"];
-    [self _updateRelativeTransform];
 }
 - (void)setRotationZ:(float)angle
 {
     [self _standardSetAngle:angle forKey:@"rotationZ"];
-    [self _updateRelativeTransform];
 }
 
 - (BOOL)hasNonDefaultTransform {
@@ -181,6 +175,7 @@
     [self willChangeValueForKey:key];
     [self setPrimitiveValue:value forKey:key];
     [self didChangeValueForKey:key];
+    [self _updateRelativeTransform];
 }
 
 - (void)_standardSetAngle:(float)value forKey:(NSString *)key;

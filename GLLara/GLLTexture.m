@@ -91,28 +91,21 @@ void _dds_get_texture_format(GLLDDSFile *file, GLenum *internalFormat, GLenum *f
 
 Boolean _dds_upload_texture_data(GLLDDSFile *file, CFIndex mipmapLevel)
 {
-    CFIndex size;
-    CFIndex width;
-    CFIndex height;
-    NSData *data;
-    
-    width = file.width >> mipmapLevel;
-    height = file.height >> mipmapLevel;
+    CFIndex width = file.width >> mipmapLevel;
+    CFIndex height = file.height >> mipmapLevel;
     if (!width || !height) return 0;
     
-    data = [file dataForMipmapLevel:mipmapLevel];
+    NSData *data = [file dataForMipmapLevel:mipmapLevel];
     if (!data) return 0;
     const void *byteData = data.bytes;
-    size = data.length;
-    if (size == 0)
-    {
+    CFIndex size = data.length;
+    if (size == 0) {
         return 0;
     }
     
-    if (file.isCompressed)
+    if (file.isCompressed) {
         glCompressedTexImage2D(GL_TEXTURE_2D, (GLsizei) mipmapLevel, _dds_get_compressed_texture_format(file), (GLsizei) width, (GLsizei) height, 0, (GLsizei) size, byteData);
-    else
-    {
+    } else {
         GLenum internalFormat;
         GLenum format;
         GLenum type;
@@ -139,8 +132,8 @@ static NSOperationQueue *imageInformationQueue = nil;
 @interface GLLTexture ()
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
-- (void)_loadCGCompatibleTexture:(NSData *)data error:(NSError *__autoreleasing*)error;
-- (void)_loadPDFTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
+- (BOOL)_loadCGCompatibleTexture:(NSData *)data error:(NSError *__autoreleasing*)error;
+- (BOOL)_loadPDFTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (void)_loadAndFreePremultipliedRGBAData:(void *)data;
 - (void)_loadDefaultTexture;
 
@@ -366,7 +359,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     
     return YES;
 }
-- (void)_loadCGCompatibleTexture:(NSData *)data error:(NSError *__autoreleasing*)error;
+- (BOOL)_loadCGCompatibleTexture:(NSData *)data error:(NSError *__autoreleasing*)error;
 {
     CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef) data, NULL);
     CGImageSourceStatus status = CGImageSourceGetStatus(source);
@@ -394,13 +387,13 @@ static NSOperationQueue *imageInformationQueue = nil;
                                                                             }];
         [self _loadDefaultTexture];
         CFRelease(source);
-        return;
+        return NO;
     }
     
     if (CFStringCompare(CGImageSourceGetType(source), kUTTypePDF, 0) == kCFCompareEqualTo) {
-        [self _loadPDFTextureWithData:data error:error];
+        BOOL result = [self _loadPDFTextureWithData:data error:error];
         CFRelease(source);
-        return;
+        return result;
     }
     
     CFDictionaryRef dict = CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
@@ -411,7 +404,7 @@ static NSOperationQueue *imageInformationQueue = nil;
                                                                              }];
         [self _loadDefaultTexture];
         CFRelease(source);
-        return;
+        return NO;
     }
     
     CFIndex width, height;
@@ -437,10 +430,11 @@ static NSOperationQueue *imageInformationQueue = nil;
     CGImageRelease(cgImage);
     
     [self _loadAndFreePremultipliedRGBAData:bufferData];
+    return YES;
 }
 
 // Just for fun
-- (void)_loadPDFTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error {
+- (BOOL)_loadPDFTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error {
     CGDataProviderRef dataProvider = CGDataProviderCreateWithCFData((__bridge CFDataRef) data);
     CGPDFDocumentRef document = CGPDFDocumentCreateWithProvider(dataProvider);
     
@@ -448,7 +442,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         if (*error)
             *error = [NSError errorWithDomain:@"Texture" code:14 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"PDF Texture file %@ could not be loaded.", @"texture status pdf not loaded"), self.url.lastPathComponent] }];
         [self _loadDefaultTexture];
-        return;
+        return NO;
     }
     
     size_t numberOfPages = CGPDFDocumentGetNumberOfPages(document);
@@ -457,7 +451,7 @@ static NSOperationQueue *imageInformationQueue = nil;
             *error = [NSError errorWithDomain:@"Texture" code:14 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"PDF Texture file %@ has no pages.", @"texture status pdf no pages"), self.url.lastPathComponent] }];
         [self _loadDefaultTexture];
         CGPDFDocumentRelease(document);
-        return;
+        return NO;
     }
     
     CGPDFPageRef page = CGPDFDocumentGetPage(document, 1);
@@ -466,7 +460,7 @@ static NSOperationQueue *imageInformationQueue = nil;
             *error = [NSError errorWithDomain:@"Texture" code:14 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Could not load first page of PDF file %@.", @"texture status pdf no pages"), self.url.lastPathComponent] }];
         [self _loadDefaultTexture];
         CGPDFDocumentRelease(document);
-        return;
+        return NO;
     }
     
     // Find user unit, if any
@@ -507,6 +501,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     CGPDFDocumentRelease(document);
     
     [self _loadAndFreePremultipliedRGBAData:bufferData];
+    return YES;
 }
 
 - (void)_loadAndFreePremultipliedRGBAData:(void *)bufferData; {
