@@ -81,6 +81,32 @@
     return self;
 }
 
+- (id)initWithContentsOfURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError * _Nullable __autoreleasing *)outError {
+    if (UTTypeConformsTo((__bridge CFStringRef) typeName, CFSTR("net.sourceforge.xnalara.mesh"))) {
+        /*
+         * Special feature: When double-clicking a model file (or similar),
+         * GLLara should launch (if not yet) and create a new empty document
+         * with that model loaded in it. This code processes such requests and
+         * instead of loading the file, initializes this document as an empty
+         * one and loads the given file.
+         */
+        self = [self initWithType:typeName error:outError];
+        if (!self) {
+            return nil;
+        }
+        
+        [self.managedObjectContext.undoManager disableUndoRegistration];
+        if (![self addModelAtURL:url error:outError]) {
+            return nil;
+        }
+        [self.managedObjectContext.undoManager enableUndoRegistration];
+        return self;
+    }
+    else {
+        return [super initWithContentsOfURL:url ofType:typeName error:outError];
+    }
+}
+
 - (void)makeWindowControllers
 {
     _selection = [[GLLSelection alloc] initWithManagedObjectContext:self.managedObjectContext];
@@ -108,14 +134,6 @@
     if (storeOptions)
         [allOptions addEntriesFromDictionary:storeOptions];
     return [super configurePersistentStoreCoordinatorForURL:url ofType:fileType modelConfiguration:configuration storeOptions:allOptions error:error];
-}
-
-- (BOOL)writeToURL:(NSURL *)absoluteURL ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation originalContentsURL:(NSURL *)absoluteOriginalContentsURL error:(NSError **)error
-{
-    BOOL result = [super writeToURL:absoluteURL ofType:typeName forSaveOperation:saveOperation originalContentsURL:absoluteOriginalContentsURL error:error];
-    if (!result)
-        NSLog(@"couldn't save. Error: %@", error ? *error : nil);
-    return result;
 }
 
 #pragma mark - Adding models
