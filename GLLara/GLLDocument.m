@@ -99,6 +99,7 @@
         if (![self addModelAtURL:url error:outError]) {
             return nil;
         }
+        [self.managedObjectContext processPendingChanges];
         [self.managedObjectContext.undoManager enableUndoRegistration];
         return self;
     }
