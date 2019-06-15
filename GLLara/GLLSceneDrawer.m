@@ -121,7 +121,9 @@
 {
 	if ([keyPath isEqual:@"needsRedraw"])
 	{
-		[self _notifyRedraw];
+        if ([change[NSKeyValueChangeNewKey] boolValue]) {
+            [self _notifyRedraw];
+        }
 	}
 	else
 	{
@@ -216,7 +218,7 @@
     }
 	
 	[itemDrawers addObject:drawer];
-	[drawer addObserver:self forKeyPath:@"needsRedraw" options:0 context:0];
+	[drawer addObserver:self forKeyPath:@"needsRedraw" options:NSKeyValueObservingOptionNew context:0];
 }
 - (void)_unregisterDrawer:(GLLItemDrawer *)drawer
 {
