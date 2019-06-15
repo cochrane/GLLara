@@ -58,7 +58,6 @@ struct GLLLightBlock
 	[[NSNotificationCenter defaultCenter] addObserverForName:GLLSceneDrawerNeedsUpdateNotification object:_sceneDrawer queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note){
 		[[weakSelf view] setNeedsDisplay:YES];
 	}];
-	[_sceneDrawer addObserver:self forKeyPath:@"needsRedraw" options:0 context:0];
 	
 	lights = [[NSMutableArray alloc] initWithCapacity:4];
 	
@@ -113,7 +112,6 @@ struct GLLLightBlock
 		[lights[i + 1] removeObserver:self forKeyPath:@"uniformBlock"];
 	
 	[self.camera removeObserver:self forKeyPath:@"viewProjectionMatrix"];
-	[self.sceneDrawer removeObserver:self forKeyPath:@"needsRedraw"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
