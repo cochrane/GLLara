@@ -273,6 +273,7 @@ const double unitsPerSecond = 0.2;
     // Pixels are used for glViewport exclusively.
     NSRect actualPixels = [self convertRectToBacking:[self bounds]];
     glViewport(0, 0, actualPixels.size.width, actualPixels.size.height);
+    [super reshape];
 }
 
 - (void)drawRect:(NSRect)dirtyRect
@@ -283,7 +284,7 @@ const double unitsPerSecond = 0.2;
     [self.openGLContext flushBuffer];
     GLLEndTiming("Draw/Flush");
     GLLEndTiming("Draw");
-    GLLReportTiming();
+    //GLLReportTiming();
 }
 
 - (BOOL)acceptsFirstResponder
@@ -385,7 +386,6 @@ const double unitsPerSecond = 0.2;
     }
     
     showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
-    self.needsDisplay = YES;
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
