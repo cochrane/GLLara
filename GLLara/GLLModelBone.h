@@ -24,7 +24,7 @@
 - (id)initWithModel:(GLLModel *)model;
 
 // Stream must be either a GLLASCIIScanner or a TRInDataStream.
-- (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
+- (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model atIndex:(NSUInteger)index error:(NSError *__autoreleasing*)error;
 
 // Export
 - (NSString *)writeASCII;

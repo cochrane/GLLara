@@ -38,7 +38,7 @@
     
 }
 
-- (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
+- (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model atIndex:(NSUInteger)index error:(NSError *__autoreleasing*)error;
 {
     if (!(self = [super init])) return nil;
     
@@ -59,6 +59,20 @@
     _positionX = [stream readFloat32];
     _positionY = [stream readFloat32];
     _positionZ = [stream readFloat32];
+    
+    if (_parentIndex == index) {
+        if ([_name hasPrefix:@"unused"]) {
+            // Apparently that's a thing that people do. Create unused bones with themselves set as parent. Why, though? What's wrong with them?
+            NSLog(@"Bone %lu (named \"%@\") has itself as parent. Unused, so set as root bone. Why do people do that?", index, _name);
+            _parentIndex = UINT16_MAX;
+        } else {
+            if (error)
+                *error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_CircularReference userInfo:@{
+                                                                                                                                    NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Bone \"%@\" has itself as an ancestor.", @"Found a circle in the bone relationships."), self.name],
+                                                                                                                                    NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The bones would form an infinite loop.", @"Found a circle in a bone relationship")}];
+            return nil;
+        }
+    }
     
     if (![stream isValid])
     {

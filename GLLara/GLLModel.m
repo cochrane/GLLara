@@ -206,7 +206,7 @@ static NSCache *cachedModels;
     NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
     for (NSUInteger i = 0; i < numBones; i++)
     {
-        GLLModelBone *bone = [[GLLModelBone alloc] initFromSequentialData:stream partOfModel:self error:error];
+        GLLModelBone *bone = [[GLLModelBone alloc] initFromSequentialData:stream partOfModel:self atIndex:i error:error];
         if (!bone) return nil;
         [bones addObject:bone];
     }
@@ -299,7 +299,7 @@ static NSCache *cachedModels;
     NSMutableArray *bones = [[NSMutableArray alloc] initWithCapacity:numBones];
     for (NSUInteger i = 0; i < numBones; i++)
     {
-        GLLModelBone *bone = [[GLLModelBone alloc] initFromSequentialData:scanner partOfModel:self error:error];
+        GLLModelBone *bone = [[GLLModelBone alloc] initFromSequentialData:scanner partOfModel:self atIndex:i  error:error];
         if (!bone) return nil;
         
         // Check whether parent has this bone and defer to it instead
