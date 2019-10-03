@@ -21,6 +21,7 @@ static void *contextMarker = (void *) 0xdeadbeef;
 
 @property (nonatomic, assign, readwrite) vec_float4 position;
 - (void)_updatePosition;
+- (void)_registerObserver;
 
 @end
 
@@ -40,23 +41,17 @@ static void *contextMarker = (void *) 0xdeadbeef;
 - (void)awakeFromFetch
 {
     [super awakeFromFetch];
-    if (!didRegister)
-        [self addObserver:self forKeyPath:@"bones" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contextMarker];
-    didRegister = YES;
+    [self _registerObserver];
 }
 - (void)awakeFromInsert
 {
     [super awakeFromInsert];
-    if (!didRegister)
-        [self addObserver:self forKeyPath:@"bones" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contextMarker];
-    didRegister = YES;
+    [self _registerObserver];
 }
 - (void)awakeFromSnapshotEvents:(NSSnapshotEventType)flags
 {
     [super awakeFromSnapshotEvents:flags];
-    if (!didRegister)
-        [self addObserver:self forKeyPath:@"bones" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contextMarker];
-    didRegister = YES;
+    [self _registerObserver];
 }
 - (void)willTurnIntoFault
 {
@@ -102,6 +97,12 @@ static void *contextMarker = (void *) 0xdeadbeef;
     [self willChangeValueForKey:@"position"];
     self.position = newPosition / simd_splatf(self.bones.count);
     [self didChangeValueForKey:@"position"];
+}
+
+- (void)_registerObserver {
+    if (!didRegister)
+        [self addObserver:self forKeyPath:@"bones" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:contextMarker];
+    didRegister = YES;
 }
 
 @end

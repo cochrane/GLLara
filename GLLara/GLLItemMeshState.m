@@ -206,6 +206,14 @@
 }
 
 - (NSComparisonResult)compareTo:(GLLItemMeshState *)other {
+    // Main comparison method for sorting objects (states) to minimize state
+    // switching.
+    // For most attributes (except Alpha) the order is completely arbitrary.
+    // What matters is in what order they're checked: At the front should be
+    // state changes that are expensive, at the rear ones that are cheap because
+    // they will happen an awful lot. The current order is probably not yet
+    // optimal.
+    
     BOOL selfAlpha = self.itemMesh.isUsingBlending;
     BOOL otherAlpha = other.itemMesh.isUsingBlending;
     
