@@ -112,6 +112,7 @@
         shiftAmount += 1;
     } while (lengthByte & 0x80);
     if (!self.isValid) return nil;
+    if (length == 0) return @"";
     
     uint8_t buffer[length];
     [self readUint8Array:buffer count:length];

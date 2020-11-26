@@ -437,6 +437,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 - (BOOL)_loadPDFTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error {
     CGDataProviderRef dataProvider = CGDataProviderCreateWithCFData((__bridge CFDataRef) data);
     CGPDFDocumentRef document = CGPDFDocumentCreateWithProvider(dataProvider);
+    CGDataProviderRelease(dataProvider);
     
     if (!document) {
         if (*error)
