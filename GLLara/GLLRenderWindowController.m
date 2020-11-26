@@ -110,7 +110,7 @@
 
 - (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName
 {
-    return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view %lu", @"render window title format"), displayName, self.camera.index + 1];
+    return [NSString stringWithFormat:NSLocalizedString(@"%@ - Render view %lld", @"render window title format"), displayName, self.camera.index + 1];
 }
 
 #pragma mark - Actions

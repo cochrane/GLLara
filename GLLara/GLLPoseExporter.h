@@ -17,8 +17,8 @@
  */
 @interface GLLPoseExporter : NSObject
 
-- (id)initWithBones:(id)bones __attribute__((nonnull(1)));
-- (id)initWithItem:(GLLItem *)item __attribute__((nonnull(1)));
+- (instancetype)initWithBones:(id)bones __attribute__((nonnull(1)));
+- (instancetype)initWithItem:(GLLItem *)item __attribute__((nonnull(1)));
 
 @property (nonatomic) BOOL skipUnused;
 

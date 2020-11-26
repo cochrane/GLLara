@@ -20,13 +20,13 @@
 
 @implementation GLLPoseExporter
 
-- (id)initWithItem:(GLLItem *)item
+- (instancetype)initWithItem:(GLLItem *)item
 {
     NSParameterAssert(item);
     return [self initWithBones:item.combinedBones];
 }
 
-- (id)initWithBones:(id)bones
+- (instancetype)initWithBones:(id)bones
 {
     NSParameterAssert(bones);
     if (!(self = [super init])) return nil;

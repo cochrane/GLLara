@@ -16,7 +16,7 @@
 
 @implementation GLLModelBone
 
-- (id)initWithModel:(GLLModel *)model;
+- (instancetype)initWithModel:(GLLModel *)model;
 {
     if (!(self = [super init])) return nil;
     
@@ -38,7 +38,7 @@
     
 }
 
-- (id)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model atIndex:(NSUInteger)index error:(NSError *__autoreleasing*)error;
+- (instancetype)initFromSequentialData:(id)stream partOfModel:(GLLModel *)model atIndex:(NSUInteger)index error:(NSError *__autoreleasing*)error;
 {
     if (!(self = [super init])) return nil;
     
