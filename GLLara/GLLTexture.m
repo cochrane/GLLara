@@ -132,9 +132,11 @@ static NSOperationQueue *imageInformationQueue = nil;
 @interface GLLTexture ()
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
+- (BOOL)_loadTGATextureWithData:(NSData *)data;
 - (BOOL)_loadCGCompatibleTexture:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (BOOL)_loadPDFTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
-- (void)_loadAndFreePremultipliedRGBAData:(void *)data;
+- (void)_loadAndFreePremultipliedARGBData:(void *)data;
+- (void)_loadAndFreeUnpremultipliedData:(void *)unpremultipliedBufferData rgba:(BOOL)rgbaOrArgb;
 - (void)_loadDefaultTexture;
 
 - (BOOL)_loadDataError:(NSError *__autoreleasing*)error;
@@ -395,6 +397,14 @@ static NSOperationQueue *imageInformationQueue = nil;
         CFRelease(source);
         return result;
     }
+    if (CFStringCompare(CGImageSourceGetType(source), CFSTR("com.truevision.tga-image"), 0) == kCFCompareEqualTo) {
+        // Try loading TGA directly, to avoid the premultiply-unpremultiply dance that causes problems some times
+        // Our TGA loader is primitive and handles only uncompressed RGBA; for everything else we use core graphics
+        if ([self _loadTGATextureWithData: data]) {
+            CFRelease(source);
+            return YES;
+        }
+    }
     
     CFDictionaryRef dict = CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
     if (!dict) {
@@ -429,7 +439,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     CGContextRelease(cgContext);
     CGImageRelease(cgImage);
     
-    [self _loadAndFreePremultipliedRGBAData:bufferData];
+    [self _loadAndFreePremultipliedARGBData:bufferData];
     return YES;
 }
 
@@ -501,11 +511,53 @@ static NSOperationQueue *imageInformationQueue = nil;
     CGContextRelease(cgContext);
     CGPDFDocumentRelease(document);
     
-    [self _loadAndFreePremultipliedRGBAData:bufferData];
+    [self _loadAndFreePremultipliedARGBData:bufferData];
     return YES;
 }
 
-- (void)_loadAndFreePremultipliedRGBAData:(void *)bufferData; {
+// Explicitly not premultiplied
+- (BOOL)_loadTGATextureWithData:(NSData *)data; {
+    if (data.length < 18) {
+        return NO; // Let CGImage deal with this
+    }
+    
+    const uint8_t *bytes = data.bytes;
+    uint8_t pictureIdLength = bytes[0];
+    uint8_t paletteType = bytes[1];
+    uint8_t pictureType = bytes[2];
+    uint16_t paletteStart = bytes[3] | (((uint16_t) bytes[4]) << 8);
+    uint16_t paletteLength = bytes[5] | (((uint16_t) bytes[6]) << 8);
+    uint8_t bitsPerPaletteEntry = bytes[7];
+    uint16_t originX = bytes[8] | (((uint16_t) bytes[9]) << 8);
+    uint16_t originY = bytes[10] | (((uint16_t) bytes[11]) << 8);
+    uint16_t width = bytes[12] | (((uint16_t) bytes[13]) << 8);
+    uint16_t height = bytes[14] | (((uint16_t) bytes[15]) << 8);
+    uint8_t bitsPerPixel = bytes[16];
+    uint8_t pictureAttribute = bytes[17];
+    
+    NSUInteger expectedLength = 18 + 4*width*height + pictureIdLength;
+
+    if (paletteType != 0 || pictureType != 2 || paletteStart != 0 || paletteLength != 0 || bitsPerPaletteEntry != 0 || originX != 0 || originY != 0 || bitsPerPixel != 32 || (pictureAttribute & 0xF) != 8 || data.length < expectedLength) {
+        return NO; // Let CGImage deal with this
+    }
+    
+    self.height = height;
+    self.width = width;
+    
+    // Need to flip the result to get what we actually want to have
+    char *tgaData = malloc(4*width*height);
+    
+    vImage_Buffer input = { .height = self.height, .width = self.width, .rowBytes = 4*self.width, .data = (void*) (bytes + 18 + pictureIdLength) };
+    vImage_Buffer output = { .height = self.height, .width = self.width, .rowBytes = 4*self.width, .data = tgaData };
+    
+    vImageVerticalReflect_ARGB8888(&input, &output, 0);
+    
+    [self _loadAndFreeUnpremultipliedData:tgaData rgba:true];
+    
+    return YES;
+}
+
+- (void)_loadAndFreePremultipliedARGBData:(void *)bufferData; {
     // Unpremultiply the texture data. I wish I could get it unpremultiplied from the start, but CGImage doesn't allow that. Just using premultiplied sounds swell, but it messes up my blending in OpenGL.
     unsigned char *unpremultipliedBufferData = calloc(self.width * self.height, 4);
     vImage_Buffer input = { .height = self.height, .width = self.width, .rowBytes = 4*self.width, .data = bufferData };
@@ -513,13 +565,17 @@ static NSOperationQueue *imageInformationQueue = nil;
     vImageUnpremultiplyData_ARGB8888(&input, &output, 0);
     free(bufferData);
     
+    [self _loadAndFreeUnpremultipliedData:unpremultipliedBufferData rgba:false];
+}
+
+- (void)_loadAndFreeUnpremultipliedData:(void *)unpremultipliedBufferData rgba:(BOOL)rgbaOrArgb; {
     int numberOfLevels = numMipmapLevels(self.width, self.height);
     
     glTexStorage2D(GL_TEXTURE_2D, (GLsizei) numberOfLevels, GL_RGBA8, (GLsizei) self.width, (GLsizei) self.height);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, (GLsizei) self.width, (GLsizei) self.height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, (GLsizei) self.width, (GLsizei) self.height, GL_BGRA, rgbaOrArgb ? GL_UNSIGNED_BYTE : GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
     
     // Load mipmaps
-    vImage_Buffer lastBuffer = output;
+    vImage_Buffer lastBuffer = { .height = self.height, .width = self.width, .rowBytes = 4*self.width, .data = unpremultipliedBufferData };
     uint8_t *tempBuffer = NULL;
     size_t tempBufferSize = 0;
     for (int i = 1; i < numberOfLevels; i++) {
@@ -537,7 +593,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         }
         
         vImageScale_ARGB8888(&lastBuffer, &smallerBuffer, tempBuffer, kvImageEdgeExtend);
-        glTexSubImage2D(GL_TEXTURE_2D, i, 0, 0, (GLsizei) smallerBuffer.width, (GLsizei) smallerBuffer.height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8, smallerBuffer.data);
+        glTexSubImage2D(GL_TEXTURE_2D, i, 0, 0, (GLsizei) smallerBuffer.width, (GLsizei) smallerBuffer.height, GL_BGRA, rgbaOrArgb ? GL_UNSIGNED_BYTE : GL_UNSIGNED_INT_8_8_8_8, smallerBuffer.data);
         free(lastBuffer.data);
         lastBuffer = smallerBuffer;
     }
