@@ -9,6 +9,14 @@
 #import "GLLItemDragDestination.h"
 
 #import "GLLDocument.h"
+#import "GLLItem.h"
+#import "GLLSelection.h"
+
+@interface GLLItemDragDestination()
+
+- (GLLItem *)itemForPose;
+
+@end
 
 @implementation GLLItemDragDestination
 
@@ -34,6 +42,11 @@
             validFile = YES;
         }
         
+        // Check whether this is a pose file and the document has a model that it can be applied to
+        if ([filename hasSuffix:@"pose"] && self.itemForPose) {
+            validFile = YES;
+        }
+        
         // Check whether this is an image path
         if ([self isImagePath:url.filePathURL]) {
             validFile = YES;
@@ -43,6 +56,29 @@
     }
     
     return NSDragOperationCopy;
+}
+
+- (GLLItem *)itemForPose {
+    GLLDocument *document = (GLLDocument *) self.document;
+    if (!document) {
+        return nil;
+    }
+    
+    if (document.selection.countOfSelectedItems == 1) {
+        return [document.selection objectInSelectedItemsAtIndex: 0];
+    }
+    
+    // Okay, more complicated: Check if there is only item in the file
+    NSFetchRequest *itemRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];;
+    itemRequest.predicate = [NSPredicate predicateWithFormat:@"parent == nil"];
+    
+    NSArray *allRootItems = [document.managedObjectContext executeFetchRequest:itemRequest error:NULL];
+    if (allRootItems.count == 1) {
+        return allRootItems.firstObject;
+    }
+    
+    // Unclear, not allowed
+    return nil;
 }
 
 - (BOOL)isImagePath:(NSURL *)url {
@@ -77,8 +113,11 @@
         NSURL *url = [NSURL URLWithString:urlAsString].filePathURL;
         
         NSError *ourError = 0;
+        GLLItem *item = self.itemForPose;
         if ([self isImagePath:url]) {
             [document addImagePlane:url error:&ourError];
+        } else if ([url.lastPathComponent.lowercaseString hasSuffix:@"pose"] && item) {
+            [item loadPoseFrom:url error:&ourError];
         } else {
             [document addModelAtURL:url error:&ourError];
         }

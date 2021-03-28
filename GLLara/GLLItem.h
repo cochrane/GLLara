@@ -77,6 +77,7 @@ enum GLLItemChannelAssignment
 @property (nonatomic, readonly) BOOL hasOptionalParts;
 
 // Poses
+- (BOOL)loadPoseFrom:(NSURL *)poseUrl error:(NSError *__autoreleasing*)error;
 - (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error;
 
 // Bones

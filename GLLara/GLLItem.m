@@ -293,6 +293,16 @@
 
 #pragma mark - Poses I/O
 
+- (BOOL)loadPoseFrom:(NSURL *)poseUrl error:(NSError *__autoreleasing*)error; {
+    NSString *poseDescription = [NSString stringWithContentsOfURL:poseUrl usedEncoding:NULL error:error];
+    
+    if (!poseDescription) {
+        return NO;
+    }
+    
+    return [self loadPose:poseDescription error:error];
+}
+
 - (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error
 {
     NSArray *lines = [poseDescription componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
