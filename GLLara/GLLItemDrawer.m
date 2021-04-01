@@ -66,8 +66,6 @@
 
 @implementation GLLItemDrawer
 
-@synthesize needsRedraw=_needsRedraw;
-
 - (id)initWithItem:(GLLItem *)item sceneDrawer:(GLLSceneDrawer *)sceneDrawer replacedTextures:(NSDictionary<NSURL*,NSError*> *__autoreleasing*)textures error:(NSError *__autoreleasing*)error;
 {
     if (!(self = [super init])) return nil;
@@ -110,7 +108,6 @@
     
     glGenBuffers(1, &transformsBuffer);
     needToUpdateTransforms = YES;
-    _needsRedraw = YES;
     
     allCounts = calloc(sizeof(GLsizei), meshStates.count);
     allBaseVertices = calloc(sizeof(GLint), meshStates.count);
@@ -131,21 +128,9 @@
     if ([keyPath isEqual:@"globalTransform"] || [keyPath isEqual:@"normalChannelAssignmentR"] || [keyPath isEqual:@"normalChannelAssignmentG"] || [keyPath isEqual:@"normalChannelAssignmentB"])
     {
         needToUpdateTransforms = YES;
-        self.needsRedraw = YES;
+        [self.sceneDrawer notifyRedraw];
     }
     else [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-}
-
-- (void)setNeedsRedraw:(BOOL)needsRedraw
-{
-    if (needsRedraw && !_needsRedraw)
-    {
-        [self willChangeValueForKey:@"needsRedraw"];
-        _needsRedraw = needsRedraw;
-        [self didChangeValueForKey:@"needsRedraw"];
-    }
-    else
-        _needsRedraw = needsRedraw;
 }
 
 - (void)drawSolidWithState:(GLLDrawState *)state;
@@ -161,8 +146,6 @@
         GLsizei runStart = run.start;
         glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, run.state.drawData.elementType, (GLvoid *) (allIndices + runStart), run.length, allBaseVertices + runStart);
     }
-    
-    self.needsRedraw = NO;
 }
 - (void)drawAlphaWithState:(GLLDrawState *)state;
 {
@@ -177,8 +160,6 @@
         GLsizei runStart = run.start;
         glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, run.state.drawData.elementType, (GLvoid *) (allIndices + runStart), run.length, allBaseVertices + runStart);
     }
-    
-    self.needsRedraw = NO;
 }
 
 - (void)unload;
@@ -290,7 +271,7 @@
 }
 
 - (void)propertiesChanged {
-    self.needsRedraw = YES;
+    [self.sceneDrawer notifyRedraw];
     needsUpdateRuns = YES;
 }
 

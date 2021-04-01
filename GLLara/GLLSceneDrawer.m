@@ -40,8 +40,6 @@
 }
 
 - (void)_addDrawerForItem:(GLLItem *)item;
-- (void)_unregisterDrawer:(GLLItemDrawer *)drawer;
-- (void)_notifyRedraw;
 
 @end
 
@@ -75,7 +73,7 @@
 				continue;
 			
 			[toRemove addObject:drawer];
-			[self _unregisterDrawer:drawer];
+			[drawer unload];
 		}
 		[self->itemDrawers removeObjectsInArray:toRemove];
 				
@@ -88,12 +86,12 @@
 				[self _addDrawerForItem:(GLLItem *) newItem];
 		}
 		
-		[self _notifyRedraw];
+		[self notifyRedraw];
 	}];
     
     drawStateNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:GLLDrawStateChangedNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
         bzero(&self->state, sizeof(self->state));
-        [self _notifyRedraw];
+        [self notifyRedraw];
     }];
 	
 	// Load existing items
@@ -114,21 +112,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:managedObjectContextObserver];
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
-		[self _unregisterDrawer:drawer];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	if ([keyPath isEqual:@"needsRedraw"])
-	{
-        if ([change[NSKeyValueChangeNewKey] boolValue]) {
-            [self _notifyRedraw];
-        }
-	}
-	else
-	{
-		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-	}
+        [drawer unload];
 }
 
 - (void)drawWithNewStateShowingSelection:(BOOL)showSelection;
@@ -188,7 +172,7 @@
 - (void)setSelectedBones:(NSArray<GLLItemBone *> *)selectedBones;
 {
 	skeletonDrawer.selectedBones = selectedBones;
-	[self _notifyRedraw];
+	[self notifyRedraw];
 }
 - (NSArray<GLLItemBone *> *)selectedBones
 {
@@ -218,14 +202,9 @@
     }
 	
 	[itemDrawers addObject:drawer];
-	[drawer addObserver:self forKeyPath:@"needsRedraw" options:NSKeyValueObservingOptionNew context:0];
 }
-- (void)_unregisterDrawer:(GLLItemDrawer *)drawer
-{
-	[drawer removeObserver:self forKeyPath:@"needsRedraw"];
-	[drawer unload];
-}
-- (void)_notifyRedraw;
+
+- (void)notifyRedraw;
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:GLLSceneDrawerNeedsUpdateNotification object:self];
 }

@@ -34,4 +34,7 @@
 - (void)setSelectedBones:(NSArray<GLLItemBone *> *)selectedBones;
 - (NSArray<GLLItemBone *> *)selectedBones;
 
+// Called by item drawers
+- (void)notifyRedraw;
+
 @end

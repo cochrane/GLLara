@@ -27,9 +27,6 @@
 @property (nonatomic, retain, readonly) GLLItem *item;
 @property (nonatomic, weak, readonly) GLLSceneDrawer *sceneDrawer;
 
-// Triggers KVO updates only when it is set from NO to YES.
-@property (nonatomic, assign) BOOL needsRedraw;
-
 - (void)propertiesChanged;
 
 - (void)drawSolidWithState:(GLLDrawState *)state;
