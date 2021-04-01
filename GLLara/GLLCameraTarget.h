@@ -16,7 +16,7 @@
 @interface GLLCameraTarget : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSSet *bones;
+@property (nonatomic, retain) NSSet<GLLItemBone *> *bones;
 @property (nonatomic, retain) NSSet *cameras;
 
 // Derived

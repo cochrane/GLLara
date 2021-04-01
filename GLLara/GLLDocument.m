@@ -474,7 +474,7 @@
     return nil;
 }
 
-- (NSArray *)allBones
+- (NSArray<GLLItemBone *> *)allBones
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"GLLItemBone"];
     return [self.managedObjectContext executeFetchRequest:request error:NULL];

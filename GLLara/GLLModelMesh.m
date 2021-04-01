@@ -61,7 +61,7 @@ void vec_addTo(float *a, float *b)
     _countOfUVLayers = [stream readUint32];
     
     NSUInteger numTextures = [stream readUint32];
-    NSMutableArray *textures = [[NSMutableArray alloc] initWithCapacity:numTextures];
+    NSMutableArray<NSURL *> *textures = [[NSMutableArray alloc] initWithCapacity:numTextures];
     for (NSUInteger i = 0; i < numTextures; i++)
     {
         NSString *textureName = [stream readPascalString];

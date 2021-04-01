@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class GLLBoneController;
 @class GLLItem;
 
 /*!
@@ -21,7 +22,7 @@
 - (id)initWithItem:(GLLItem *)item outlineView:(NSOutlineView *)outlineView parent:(id)parentController;
 
 @property (nonatomic) GLLItem *item;
-@property (nonatomic, readonly) NSMutableArray *boneControllers;
+@property (nonatomic, readonly) NSMutableArray<GLLBoneController *> *boneControllers;
 @property (nonatomic, readonly) NSArray *allSelectableControllers;
 @property (nonatomic, weak) id parentController;
 @property (nonatomic) NSOutlineView *outlineView;

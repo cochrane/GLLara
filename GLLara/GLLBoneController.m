@@ -18,7 +18,7 @@
 	id parentController;
 }
 
-@property (nonatomic, readonly) NSArray *childBoneControllers;
+@property (nonatomic, readonly) NSArray<GLLBoneController *> *childBoneControllers;
 
 @end
 

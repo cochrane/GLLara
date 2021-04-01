@@ -10,6 +10,7 @@
 #import <Foundation/Foundation.h>
 
 @class GLLItem;
+@class GLLItemBone;
 @class GLLModel;
 @class GLLView;
 @class GLLSourceListController;
@@ -37,7 +38,7 @@
 
 @property (nonatomic, readonly) GLLSourceListController *sourceListController;
 @property (nonatomic, readonly) GLLSelection *selection;
-@property (nonatomic, readonly) NSArray *allBones;
+@property (nonatomic, readonly) NSArray<GLLItemBone *> *allBones;
 
 - (void)notifyTexturesNotLoaded:(NSDictionary<NSURL*,NSError*>*)textures;
 

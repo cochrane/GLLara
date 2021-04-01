@@ -11,6 +11,7 @@
 #import "GLLMultipleSelectionPlaceholder.h"
 
 @class GLLSelection;
+@class GLLShaderDescription;
 
 /*
  * @abstract View controller for a mesh.
@@ -30,7 +31,7 @@
 
 @property (nonatomic, readonly) GLLSelection *selection;
 
-@property (nonatomic) NSArray *possibleShaders;
+@property (nonatomic) NSArray<GLLShaderDescription *> *possibleShaders;
 
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 

@@ -50,8 +50,8 @@ enum GLLItemChannelAssignment
 @property (nonatomic) float positionY;
 @property (nonatomic) float positionZ;
 @property (nonatomic) BOOL isVisible;
-@property (nonatomic, retain) NSOrderedSet *bones;
-@property (nonatomic, retain) NSOrderedSet *meshes;
+@property (nonatomic, retain) NSOrderedSet<GLLItemBone *> *bones;
+@property (nonatomic, retain) NSOrderedSet<GLLItemMesh *> *meshes;
 @property (nonatomic, retain) NSString *displayName;
 @property (nonatomic) int16_t normalChannelAssignmentR;
 @property (nonatomic) int16_t normalChannelAssignmentG;

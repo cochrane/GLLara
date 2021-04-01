@@ -230,7 +230,7 @@
 
 - (GLLItem *)item
 {
-    NSOrderedSet *items = [self valueForKey:@"items"];
+    NSOrderedSet<GLLItem *> *items = [self valueForKey:@"items"];
     if (items.count == 0) return nil;
     return [items objectAtIndex:0];
 }

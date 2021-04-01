@@ -49,7 +49,7 @@ extern NSString *GLLModelLoadingErrorDomain;
 @property (nonatomic, copy) NSArray<GLLModelBone *> *bones;
 @property (nonatomic, copy) NSArray<GLLModelMesh *> *meshes;
 
-@property (nonatomic, copy, readonly) NSArray *rootBones;
+@property (nonatomic, copy, readonly) NSArray<GLLModelBone *> *rootBones;
 
 @property (nonatomic, copy, readonly) NSArray<NSString *> *cameraTargetNames;
 - (NSArray<NSString *> *)boneNamesForCameraTarget:(NSString *)target;

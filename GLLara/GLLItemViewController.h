@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class GLLItem;
+
 /*!
  * @abstract View controller for an item.
  * @discussions Main functions include loading poses, child models and (in the
@@ -15,7 +17,7 @@
  */
 @interface GLLItemViewController : NSViewController
 
-@property (nonatomic) NSArray *selectedItems;
+@property (nonatomic) NSArray<GLLItem *> *selectedItems;
 
 - (IBAction)loadPose:(id)sender;
 - (IBAction)loadChildModel:(id)sender;

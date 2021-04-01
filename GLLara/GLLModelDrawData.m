@@ -16,7 +16,7 @@
 
 @interface GLLModelDrawData ()
 
-@property (nonatomic, retain, readonly) NSArray *vertexArrays;
+@property (nonatomic, retain, readonly) NSArray<GLLVertexArray *> *vertexArrays;
 
 @end
 
@@ -29,8 +29,8 @@
     _model = model;
     _resourceManager = resourceManager;
     
-    NSMutableArray *mutableMeshDatas = [[NSMutableArray alloc] init];
-    NSMutableDictionary *mutableVertexArrays = [[NSMutableDictionary alloc] init];
+    NSMutableArray<GLLMeshDrawData *> *mutableMeshDatas = [[NSMutableArray alloc] init];
+    NSMutableDictionary<GLLVertexFormat *, GLLVertexArray *> *mutableVertexArrays = [[NSMutableDictionary alloc] init];
     for (GLLModelMesh *mesh in model.meshes)
     {
         GLLVertexArray *array = mutableVertexArrays[mesh.vertexFormat];

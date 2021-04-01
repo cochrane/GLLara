@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLLMeshDrawData;
 @class GLLModel;
 @class GLLResourceManager;
 
@@ -23,7 +24,7 @@
 
 @property (nonatomic, retain, readonly) GLLModel *model;
 @property (nonatomic, weak, readonly) GLLResourceManager *resourceManager;
-@property (nonatomic, retain, readonly) NSArray *meshDatas;
+@property (nonatomic, retain, readonly) NSArray<GLLMeshDrawData *> *meshDatas;
 
 - (void)unload;
 

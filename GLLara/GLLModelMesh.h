@@ -38,7 +38,7 @@ typedef enum GLLCullFaceMode
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *displayName;
-@property (nonatomic, retain) NSArray *textures;
+@property (nonatomic, retain) NSArray<NSURL *> *textures;
 @property (nonatomic, assign, readonly) BOOL initiallyVisible;
 @property (nonatomic, copy, readonly) NSArray<NSString *>* optionalPartNames;
 

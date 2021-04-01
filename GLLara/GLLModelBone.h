@@ -49,7 +49,7 @@
  * cache their results in any way.
  */
 @property (nonatomic, weak, readonly) GLLModelBone *parent;
-@property (nonatomic, retain, readonly) NSArray *children;
+@property (nonatomic, retain, readonly) NSArray<GLLModelBone *> *children;
 
 /*
  * Called as part of the model loading process;

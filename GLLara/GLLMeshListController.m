@@ -14,7 +14,7 @@
 
 @interface GLLMeshListController ()
 
-@property (nonatomic) NSArray *meshControllers;
+@property (nonatomic) NSArray<GLLMeshController *> *meshControllers;
 
 @end
 
