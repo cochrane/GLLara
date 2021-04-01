@@ -71,7 +71,7 @@ void vec_addTo(float *a, float *b)
         {
             return nil;
         }
-        [textures addObject:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:model.baseURL]];
+        [textures addObject:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL]];
         
         
         [stream readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
@@ -138,7 +138,7 @@ void vec_addTo(float *a, float *b)
         [scanner readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
         NSString *finalPathComponent = [[textureName componentsSeparatedByString:@"\\"] lastObject];
         if (!finalPathComponent) return nil;
-        [textures addObject:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:model.baseURL]];
+        [textures addObject:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL]];
     }
     _textures = [textures copy];
     

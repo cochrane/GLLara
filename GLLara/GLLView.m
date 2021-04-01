@@ -195,10 +195,10 @@ const double unitsPerSecond = 0.2;
             if ([keysDown characterIsMember:'z']) bone.rotationZ += angle;
         }
     }
-    else if (theEvent.modifierFlags & NSAlternateKeyMask)
+    else if (theEvent.modifierFlags & NSEventModifierFlagOption)
     {
         // Move the object in the x/z plane
-        CGFloat factor = (theEvent.modifierFlags & NSShiftKeyMask) ? 0.01f : 0.001f;
+        CGFloat factor = (theEvent.modifierFlags & NSEventModifierFlagShift) ? 0.01f : 0.001f;
         vec_float4 delta = simd_make(theEvent.deltaX * factor, 0.0f, theEvent.deltaY * factor, 0.0f);
         delta = simd_mat_vecunrotate(self.camera.viewMatrix, delta);
         
@@ -210,7 +210,7 @@ const double unitsPerSecond = 0.2;
         
         self.needsDisplay = YES;
     }
-    else if (theEvent.modifierFlags & NSShiftKeyMask && ![wasdCharacters hasIntersectionWithSet:keysDown])
+    else if (theEvent.modifierFlags & NSEventModifierFlagShift && ![wasdCharacters hasIntersectionWithSet:keysDown])
     {
         // This is a move event
         if (self.camera.cameraLocked) return;
@@ -219,7 +219,7 @@ const double unitsPerSecond = 0.2;
         
         [self.camera moveLocalX:deltaX y:deltaY z:0.0f];
     }
-    else if (theEvent.modifierFlags & NSControlKeyMask)
+    else if (theEvent.modifierFlags & NSEventModifierFlagControl)
     {
         [self rightMouseDragged:theEvent];
     }
@@ -307,7 +307,7 @@ const double unitsPerSecond = 0.2;
         {
             NSMutableArray *selectedBones = [self.document.selection mutableArrayValueForKey:@"selectedBones"];
             // Set it as selected
-            if (theEvent.modifierFlags & (NSCommandKeyMask | NSShiftKeyMask))
+            if (theEvent.modifierFlags & (NSEventModifierFlagCommand | NSEventModifierFlagShift))
             {
                 // Add to the selection
                 NSUInteger index = [selectedBones indexOfObject:bone];
@@ -404,38 +404,38 @@ const double unitsPerSecond = 0.2;
         
         switch (theEvent.type)
         {
-            case NSAppKitDefined:
-                if (theEvent.subtype == NSApplicationDeactivatedEventType)
+            case NSEventTypeAppKitDefined:
+                if (theEvent.subtype == NSEventSubtypeApplicationDeactivated)
                 {
                     [NSEvent stopPeriodicEvents];
                     self.needsDisplay = YES;
                     return;
                 }
                 break;
-            case NSKeyDown:
+            case NSEventTypeKeyDown:
             {
                 [keysDown addCharactersInString:[theEvent.charactersIgnoringModifiers lowercaseString]];
-                shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
-                altIsDown = (theEvent.modifierFlags & NSAlternateKeyMask) != 0;
+                shiftIsDown = (theEvent.modifierFlags & NSEventModifierFlagShift) != 0;
+                altIsDown = (theEvent.modifierFlags & NSEventModifierFlagOption) != 0;
             }
                 break;
-            case NSKeyUp:
+            case NSEventTypeKeyUp:
             {
                 [keysDown removeCharactersInString:[theEvent.charactersIgnoringModifiers lowercaseString]];
-                shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
-                altIsDown = (theEvent.modifierFlags & NSAlternateKeyMask) != 0;
+                shiftIsDown = (theEvent.modifierFlags & NSEventModifierFlagShift) != 0;
+                altIsDown = (theEvent.modifierFlags & NSEventModifierFlagOption) != 0;
             }
                 break;
-            case NSFlagsChanged:
-                shiftIsDown = (theEvent.modifierFlags & NSShiftKeyMask) != 0;
+            case NSEventTypeFlagsChanged:
+                shiftIsDown = (theEvent.modifierFlags & NSEventModifierFlagShift) != 0;
                 break;
-            case NSScrollWheel:
+            case NSEventTypeScrollWheel:
                 [self scrollWheel:theEvent];
                 break;
-            case NSLeftMouseDragged:
+            case NSEventTypeLeftMouseDragged:
                 [self mouseDragged:theEvent];
                 break;
-            case NSRightMouseDragged:
+            case NSEventTypeRightMouseDragged:
                 [self rightMouseDragged:theEvent];
                 break;
             default:
@@ -471,7 +471,7 @@ const double unitsPerSecond = 0.2;
                 if ([keysDown characterIsMember:'z']) bone.positionZ += delta;
             }
         }
-        else if (theEvent.modifierFlags & NSAlternateKeyMask)
+        else if (theEvent.modifierFlags & NSEventModifierFlagOption)
         {
             // Move the object up or down with arrow keys
             CGFloat deltaY = 0;
@@ -504,7 +504,7 @@ const double unitsPerSecond = 0.2;
         // - Prepare for next move through the loop
         self.needsDisplay = YES;
         
-        theEvent = [self.window nextEventMatchingMask:NSKeyDownMask | NSKeyUpMask | NSRightMouseDraggedMask | NSLeftMouseDraggedMask | NSRightMouseDraggedMask |NSFlagsChangedMask | NSScrollWheelMask | NSPeriodicMask | NSAppKitDefined untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
+        theEvent = [self.window nextEventMatchingMask:NSEventMaskKeyDown | NSEventMaskKeyUp | NSEventMaskRightMouseDragged | NSEventMaskLeftMouseDragged | NSEventMaskRightMouseDragged |NSEventMaskFlagsChanged | NSEventMaskScrollWheel | NSEventMaskPeriodic | NSEventTypeAppKitDefined untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
     }
     [NSEvent stopPeriodicEvents];
     
