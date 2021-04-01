@@ -233,14 +233,7 @@ static NSCache *parameterCache;
 
 - (GLLMeshParams *)paramsForMesh:(NSString *)meshName {
     GLLMeshParams *params = [[GLLMeshParams alloc] init];
-    
-    // Defaults, rarely overriden
-    params.visible = YES;
-    params.optionalPartNames = @[];
-    params.cameraTargetBones = @[];
-    params.cameraTargetName = nil;
     params.displayName = meshName;
-    params.splitters = @[];
     
     if (!ownMeshGroups) {
         // This is a generic_item file
@@ -256,8 +249,7 @@ static NSCache *parameterCache;
         {
             // 1st match: mesh group
             // Need this later for render parameters, so this part is always extracted.
-            NSString *group = [@"MeshGroup" stringByAppendingString:[meshName substringWithRange:[components rangeAtIndex:1]]];
-            NSString *meshGroup = group;
+            NSString *meshGroup = [@"MeshGroup" stringByAppendingString:[meshName substringWithRange:[components rangeAtIndex:1]]];
             params.meshGroups = @[ meshGroup ];
             
             // 2nd match: mesh name
@@ -292,7 +284,7 @@ static NSCache *parameterCache;
             // 3rd, 4th, 5th match: render parameters
             GLLShaderDescription *shader;
             BOOL alpha;
-            [self _getShader:&shader alpha:&alpha forMeshGroup:group];
+            [self _getShader:&shader alpha:&alpha forMeshGroup:meshGroup];
             params.shader = shader;
             params.transparent = alpha;
             
