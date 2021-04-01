@@ -12,7 +12,7 @@
 
 - (NSString *)genericItemNameError:(NSError *__autoreleasing*)error;
 
-@property (nonatomic, readonly) NSArray *textureURLsInShaderOrder;
+@property (nonatomic, readonly) NSArray<NSString *> *textureURLsInShaderOrder;
 
 - (NSString *)writeASCIIError:(NSError *__autoreleasing*)error;
 - (NSData *)writeBinaryError:(NSError *__autoreleasing*)error;

@@ -21,7 +21,7 @@
     NSMutableString *genericItemName = [NSMutableString string];
     
     // 1 - get mesh group
-    NSSet *possibleGroups = self.mesh.usesAlphaBlending ? self.shader.alphaMeshGroups : self.shader.solidMeshGroups;
+    NSSet<NSString *> *possibleGroups = self.mesh.usesAlphaBlending ? self.shader.alphaMeshGroups : self.shader.solidMeshGroups;
     NSRegularExpression *meshGroupNameRegexp = [NSRegularExpression regularExpressionWithPattern:@"^MeshGroup([0-9]+)$" options:0 error:NULL];
     for (NSString *groupName in possibleGroups)
     {
@@ -59,7 +59,7 @@
     return genericItemName;
 }
 
-- (NSArray *)textureURLsInShaderOrder
+- (NSArray<NSURL *> *)textureURLsInShaderOrder
 {
     return [self.shader.textureUniformNames map:^(NSString *textureName){
         return [self textureWithIdentifier:textureName].textureURL;

@@ -72,7 +72,7 @@
     NSFetchRequest *itemRequest = [NSFetchRequest fetchRequestWithEntityName:@"GLLItem"];;
     itemRequest.predicate = [NSPredicate predicateWithFormat:@"parent == nil"];
     
-    NSArray *allRootItems = [document.managedObjectContext executeFetchRequest:itemRequest error:NULL];
+    NSArray<GLLItem *> *allRootItems = [document.managedObjectContext executeFetchRequest:itemRequest error:NULL];
     if (allRootItems.count == 1) {
         return allRootItems.firstObject;
     }

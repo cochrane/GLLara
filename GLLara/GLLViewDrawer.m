@@ -30,7 +30,7 @@ struct GLLLightBlock
 
 @interface GLLViewDrawer ()
 {
-	NSArray *lights; // Always one ambient and three directional ones. Don't watch for mutations.
+	NSArray<NSManagedObject *> *lights; // Always one ambient and three directional ones. Don't watch for mutations.
 	
 	GLuint transformBuffer;
 	GLuint lightBuffer;
@@ -337,13 +337,13 @@ struct GLLLightBlock
 	lightData.cameraLocation = self.camera.cameraWorldPosition;
 	
 	// Ambient
-	GLLAmbientLight *ambient = lights[0];
+	GLLAmbientLight *ambient = (GLLAmbientLight *) lights[0];
 	[ambient.color get128BitRGBAComponents:lightData.ambientColor];
 	
 	// Diffuse + Specular
 	for (NSUInteger i = 0; i < 3; i++)
 	{
-		GLLDirectionalLight *light = lights[i+1];
+		GLLDirectionalLight *light = (GLLDirectionalLight *) lights[i+1];
 		lightData.lights[i] = light.uniformBlock;
 	}
 	

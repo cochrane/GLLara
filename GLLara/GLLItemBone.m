@@ -135,10 +135,10 @@
     return parent;
 }
 
-- (NSArray *)children
+- (NSArray<GLLItemBone *> *)children
 {
     if (!children) {
-        NSOrderedSet *combinedBones = self.item.combinedBones;
+        NSOrderedSet<GLLItemBone *> *combinedBones = self.item.combinedBones;
         NSIndexSet *childIndices = [combinedBones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
             return bone.parent == self;
         }];

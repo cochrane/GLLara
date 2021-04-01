@@ -82,7 +82,7 @@ typedef enum GLLCullFaceMode
  */
 @property (nonatomic, retain) GLLShaderDescription *shader;
 @property (nonatomic, assign) BOOL usesAlphaBlending;
-@property (nonatomic, copy) NSDictionary *renderParameterValues;
+@property (nonatomic, copy) NSDictionary<NSString *, id> *renderParameterValues;
 
 // -- For subclasses
 // Calculates the tangents based on the texture coordinates, and fills them in the correct fields of the data, using the offsets and strides of the file

@@ -40,9 +40,9 @@
     GLuint transformsBuffer;
     BOOL needToUpdateTransforms;
     
-    NSArray *meshStates;
+    NSArray<GLLItemMeshState *> *meshStates;
     
-    NSArray *bones;
+    NSArray<GLLItemBone *> *bones;
     
     // Base arrays for runs. Size is meshStates.count
     GLsizei *allCounts;
@@ -93,7 +93,7 @@
     
     // Observe settings of all meshes
     NSMutableDictionary<NSURL*,NSError*> *replacedTextures = [[NSMutableDictionary alloc] init];
-    NSMutableArray *mutableMeshStates = [[NSMutableArray alloc] initWithCapacity:modelData.meshDatas.count];
+    NSMutableArray<GLLItemMeshState *> *mutableMeshStates = [[NSMutableArray alloc] initWithCapacity:modelData.meshDatas.count];
     for (GLLMeshDrawData *meshData in modelData.meshDatas) {
         NSDictionary *replacedForMesh = @{};
         GLLItemMeshState *meshState = [[GLLItemMeshState alloc] initWithItemDrawer:self meshData:meshData itemMesh:[item itemMeshForModelMesh:meshData.modelMesh] replacedTextures:&replacedForMesh error:error];
@@ -246,8 +246,8 @@
     }];
     
     GLsizei meshesAdded = 0;
-    NSMutableArray *newAlphaRuns = [NSMutableArray array];
-    NSMutableArray *newSolidRuns = [NSMutableArray array];
+    NSMutableArray<GLLItemDrawerRun *> *newAlphaRuns = [NSMutableArray array];
+    NSMutableArray<GLLItemDrawerRun *> *newSolidRuns = [NSMutableArray array];
     GLLItemDrawerRun *lastAddedRun = nil;
     
     // Find runs in meshes

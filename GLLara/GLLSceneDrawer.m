@@ -185,12 +185,12 @@
 
 #pragma mark - Selection
 
-- (void)setSelectedBones:(NSArray *)selectedBones;
+- (void)setSelectedBones:(NSArray<GLLItemBone *> *)selectedBones;
 {
 	skeletonDrawer.selectedBones = selectedBones;
 	[self _notifyRedraw];
 }
-- (NSArray *)selectedBones
+- (NSArray<GLLItemBone *> *)selectedBones
 {
 	return skeletonDrawer.selectedBones;
 }

@@ -47,7 +47,7 @@
     return self;
 }
 
-- (NSArray *)allUniformNames
+- (NSArray<NSString *> *)allUniformNames
 {
     if (!self.parameterUniformNames)
         return self.additionalUniformNames;

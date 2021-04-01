@@ -19,6 +19,7 @@ enum GLLModelLoadingErrorCodes
 extern NSString *GLLModelLoadingErrorDomain;
 
 @class GLLModelBone;
+@class GLLModelMesh;
 @class GLLModelParams;
 
 /*!
@@ -45,13 +46,13 @@ extern NSString *GLLModelLoadingErrorDomain;
 
 @property (nonatomic, assign, readonly) BOOL hasBones;
 
-@property (nonatomic, copy) NSArray *bones;
-@property (nonatomic, copy) NSArray *meshes;
+@property (nonatomic, copy) NSArray<GLLModelBone *> *bones;
+@property (nonatomic, copy) NSArray<GLLModelMesh *> *meshes;
 
 @property (nonatomic, copy, readonly) NSArray *rootBones;
 
-@property (nonatomic, copy, readonly) NSArray *cameraTargetNames;
-- (NSArray *)boneNamesForCameraTarget:(NSString *)target;
+@property (nonatomic, copy, readonly) NSArray<NSString *> *cameraTargetNames;
+- (NSArray<NSString *> *)boneNamesForCameraTarget:(NSString *)target;
 
 - (GLLModelBone *)boneForName:(NSString *)name;
 

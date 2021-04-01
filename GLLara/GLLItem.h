@@ -65,7 +65,7 @@ enum GLLItemChannelAssignment
 
 @property (nonatomic, retain) GLLModel *model;
 
-@property (nonatomic, retain, readonly) NSArray *rootBones;
+@property (nonatomic, retain, readonly) NSArray<GLLItemBone *> *rootBones;
 
 - (GLLItemMesh *)itemMeshForModelMesh:(GLLModelMesh *)mesh;
 
@@ -82,7 +82,7 @@ enum GLLItemChannelAssignment
 
 // Bones
 - (GLLItemBone *)boneForName:(NSString *)name;
-- (NSOrderedSet *)combinedBones;
+- (NSOrderedSet<GLLItemBone *> *)combinedBones;
 
 @end
 

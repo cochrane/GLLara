@@ -8,33 +8,33 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSArray (Map)
+@interface NSArray<__covariant ObjectType> (Map)
 
-- (NSArray *)map:(id (^)(id))block;
-- (NSMutableArray *)mapMutable:(id (^)(id))block;
+- (NSArray *)map:(id (^)(ObjectType))block;
+- (NSMutableArray *)mapMutable:(id (^)(ObjectType))block;
 - (NSArray *)mapAndJoin:(NSArray *(^)(id))block;
-- (id)firstObjectMatching:(BOOL(^)(id))predicate;
+- (ObjectType)firstObjectMatching:(BOOL(^)(ObjectType))predicate;
 
 @end
 
-@interface NSOrderedSet (Map)
+@interface NSOrderedSet<__covariant ObjectType> (Map)
 
-- (NSArray *)map:(id (^)(id))block;
-- (id)firstObjectMatching:(BOOL(^)(id))predicate;
-
-@end
-
-@interface NSDictionary (Map)
-
-- (NSDictionary *)mapValues:(id (^)(id))block;
-- (NSDictionary *)mapValuesWithKey:(id (^)(id key, id value))block;
+- (NSArray *)map:(id (^)(ObjectType))block;
+- (ObjectType)firstObjectMatching:(BOOL(^)(ObjectType))predicate;
 
 @end
 
-@interface NSSet (Map)
+@interface NSDictionary<__covariant KeyType, __covariant ValueType> (Map)
 
-- (NSArray *)map:(id (^)(id))block;
-- (id)anyObjectMatching:(BOOL(^)(id))predicate;
+- (NSDictionary *)mapValues:(id (^)(KeyType))block;
+- (NSDictionary *)mapValuesWithKey:(id (^)(KeyType key, ValueType value))block;
+
+@end
+
+@interface NSSet<__covariant ObjectType> (Map)
+
+- (NSArray *)map:(id (^)(ObjectType))block;
+- (ObjectType)anyObjectMatching:(BOOL(^)(ObjectType))predicate;
 
 @end
 

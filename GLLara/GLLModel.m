@@ -353,16 +353,16 @@ static NSCache *cachedModels;
     return self.bones.count > 0;
 }
 
-- (NSArray *)rootBones
+- (NSArray<GLLModelBone *> *)rootBones
 {
     return [self.bones filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"hasParent == NO"]];
 }
 
-- (NSArray *)cameraTargetNames
+- (NSArray<NSString *> *)cameraTargetNames
 {
     return self.parameters.cameraTargets;
 }
-- (NSArray *)boneNamesForCameraTarget:(NSString *)target;
+- (NSArray<NSString *> *)boneNamesForCameraTarget:(NSString *)target;
 {
     return [self.parameters boneNamesForCameraTarget:target];
 }

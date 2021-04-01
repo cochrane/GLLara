@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLLMeshSplitter;
 @class GLLModel;
 @class GLLRenderParameterDescription;
 @class GLLShaderDescription;
@@ -35,13 +36,13 @@
 /*
  * Organization into groups
  */
-- (NSArray *)meshGroupsForMesh:(NSString *)meshName;
+- (NSArray<NSString *> *)meshGroupsForMesh:(NSString *)meshName;
 
 /*
  * Camera targets
  */
-@property (nonatomic, copy, readonly) NSArray *cameraTargets;
-- (NSArray *)boneNamesForCameraTarget:(NSString *)cameraTarget;
+@property (nonatomic, copy, readonly) NSArray<NSString *> *cameraTargets;
+- (NSArray<NSString *> *)boneNamesForCameraTarget:(NSString *)cameraTarget;
 
 /*
  * Mesh name
@@ -61,13 +62,13 @@
 - (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
 
 - (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
-- (NSDictionary *)renderParametersForMesh:(NSString *)mesh;
+- (NSDictionary<NSString *, id> *)renderParametersForMesh:(NSString *)mesh;
 
 - (id)defaultValueForRenderParameter:(NSString *)renderParameter;
 - (NSURL *)defaultValueForTexture:(NSString *)textureIdentifier;
 
 - (GLLShaderDescription *)shaderNamed:(NSString *)name;
-@property (nonatomic, readonly) NSArray *allShaders;
+@property (nonatomic, readonly) NSArray<GLLShaderDescription *> *allShaders;
 
 /*
  * Render parameter and texture descriptions
@@ -78,7 +79,7 @@
 /*
  * Splitting up objects
  */
-@property (nonatomic, copy, readonly) NSArray *meshesToSplit;
-- (NSArray *)meshSplittersForMesh:(NSString *)mesh;
+@property (nonatomic, copy, readonly) NSArray<NSString *> *meshesToSplit;
+- (NSArray<GLLMeshSplitter *> *)meshSplittersForMesh:(NSString *)mesh;
 
 @end

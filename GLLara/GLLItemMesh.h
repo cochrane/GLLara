@@ -28,7 +28,7 @@
 @property (nonatomic) BOOL isVisible;
 @property (nonatomic, retain) GLLItem *item;
 @property (nonatomic) int16_t cullFaceMode;
-@property (nonatomic, retain) NSSet *renderParameters;
+@property (nonatomic, retain) NSSet<GLLRenderParameter *> *renderParameters;
 @property (nonatomic, copy) NSString *shaderName;
 @property (nonatomic, copy) NSString *displayName;
 @property (nonatomic, retain) NSSet<GLLItemMeshTexture *> *textures;
@@ -46,7 +46,7 @@
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
 - (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;
 
-@property (nonatomic, readonly) NSArray *possibleShaderDescriptions;
+@property (nonatomic, readonly) NSArray<GLLShaderDescription *> *possibleShaderDescriptions;
 
 @end
 

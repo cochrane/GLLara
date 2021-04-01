@@ -181,7 +181,7 @@
     self.shaderName = shader.name;
 }
 
-- (NSArray *)possibleShaderDescriptions
+- (NSArray<GLLShaderDescription *> *)possibleShaderDescriptions
 {
     return self.mesh.model.parameters.allShaders;
 }

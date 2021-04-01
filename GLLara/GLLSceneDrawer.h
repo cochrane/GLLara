@@ -10,6 +10,7 @@
 #import <Foundation/Foundation.h>
 
 @class GLLResourceManager;
+@class GLLItemBone;
 @class GLLView;
 @class GLLDocument;
 
@@ -30,7 +31,7 @@
 - (void)drawWithNewStateShowingSelection:(BOOL)showSelection;
 - (void)drawShowingSelection:(BOOL)showSelection;
 
-- (void)setSelectedBones:(NSArray *)selectedBones;
-- (NSArray *)selectedBones;
+- (void)setSelectedBones:(NSArray<GLLItemBone *> *)selectedBones;
+- (NSArray<GLLItemBone *> *)selectedBones;
 
 @end

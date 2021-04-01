@@ -49,7 +49,7 @@
     return self;
 }
 
-- (NSArray *)selectedBones;
+- (NSArray<GLLItemBone *> *)selectedBones;
 {
     if ([self.selectedObjects.lastObject isKindOfClass:[GLLItemBone class]])
         return self.selectedObjects;
@@ -61,7 +61,7 @@
         return @[];
 }
 
-- (NSArray *)selectedItems
+- (NSArray<GLLItem *> *)selectedItems
 {
     if ([self.selectedObjects.lastObject isKindOfClass:[GLLItem class]])
         return self.selectedObjects;
@@ -80,7 +80,7 @@
     }]];
 }
 
-- (NSArray *)selectedMeshes
+- (NSArray<GLLItemMesh *> *)selectedMeshes
 {
     if ([self.selectedObjects.lastObject isKindOfClass:[GLLItemMesh class]])
         return self.selectedObjects;

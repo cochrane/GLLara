@@ -43,7 +43,7 @@
 @property (nonatomic, retain, readonly) GLLModelBone *bone;
 
 @property (nonatomic, weak, readonly) GLLItemBone *parent;
-@property (nonatomic, retain, readonly) NSArray *children;
+@property (nonatomic, retain, readonly) NSArray<GLLItemBone *> *children;
 
 @property (nonatomic, readonly) NSUInteger parentIndexInCombined;
 

@@ -247,7 +247,7 @@
 
 #pragma mark - Derived
 
-- (NSArray *)rootBones
+- (NSArray<GLLItemBone *> *)rootBones
 {
     NSIndexSet *indices = [self.bones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop) {
         return !bone.parent;
@@ -266,9 +266,9 @@
         return [bone.bone.name isEqual:name];
     }];
 }
-- (NSOrderedSet *)combinedBones;
+- (NSOrderedSet<GLLItemBone *> *)combinedBones;
 {
-    NSMutableOrderedSet *combinedBones = [NSMutableOrderedSet orderedSetWithOrderedSet:[self valueForKeyPath:@"bones"]];
+    NSMutableOrderedSet<GLLItemBone *> *combinedBones = [NSMutableOrderedSet orderedSetWithOrderedSet:[self valueForKeyPath:@"bones"]];
     for (GLLItem *child in [self valueForKeyPath:@"childItems"])
         [combinedBones unionOrderedSet:child.combinedBones];
     

@@ -14,8 +14,8 @@
 
 @interface GLLBoneListController ()
 
-@property (nonatomic) NSArray *rootBoneControllers;
-@property (nonatomic, readwrite) NSMutableArray *boneControllers;
+@property (nonatomic) NSArray<GLLBoneController *> *rootBoneControllers;
+@property (nonatomic, readwrite) NSMutableArray<GLLBoneController *> *boneControllers;
 
 @end
 
@@ -59,13 +59,13 @@
 		
 		// Run only after delay, to ensure that everything has been set correctly by the time this code gets active.
 		dispatch_async(dispatch_get_main_queue(), ^{
-			NSOrderedSet *newBones = self.item.combinedBones;
+			NSOrderedSet<GLLItemBone *> *newBones = self.item.combinedBones;
 			
 			// Find existing bones
-			NSOrderedSet *existingBones = [NSOrderedSet orderedSetWithArray:[self.boneControllers valueForKeyPath:@"bone"]];
+			NSOrderedSet<GLLItemBone *> *existingBones = [NSOrderedSet orderedSetWithArray:[self.boneControllers valueForKeyPath:@"bone"]];
 			
 			// Remove bone controllers not in the old list
-			NSMutableOrderedSet *deleted = [NSMutableOrderedSet orderedSetWithOrderedSet:existingBones];
+			NSMutableOrderedSet<GLLItemBone *> *deleted = [NSMutableOrderedSet orderedSetWithOrderedSet:existingBones];
 			[deleted minusOrderedSet:newBones];
 			
 			NSIndexSet *indicesOfDeletedBoneControllers = [self.boneControllers indexesOfObjectsPassingTest:^(GLLBoneController *boneController, NSUInteger idx, BOOL *stop){
@@ -74,7 +74,7 @@
 			[self.boneControllers removeObjectsAtIndexes:indicesOfDeletedBoneControllers];
 			
 			// Add bone controllers in the new list
-			NSMutableOrderedSet *added = [NSMutableOrderedSet orderedSetWithOrderedSet:newBones];
+			NSMutableOrderedSet<GLLItemBone *> *added = [NSMutableOrderedSet orderedSetWithOrderedSet:newBones];
 			[added minusOrderedSet:existingBones];
 			[self.boneControllers addObjectsFromArray:[added map:^(GLLItemBone *bone){
 				return [[GLLBoneController alloc] initWithBone:bone listController:self];
