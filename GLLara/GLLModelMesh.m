@@ -610,14 +610,13 @@ void vec_addTo(float *a, float *b)
 
 - (void)finishLoading;
 {
-    GLLShaderDescription *shader = nil;
-    [_model.parameters getShader:&shader alpha:&_usesAlphaBlending forMesh:_name];
-    _shader = shader;
-    _renderParameterValues = [_model.parameters renderParametersForMesh:_name];
+    GLLMeshParams *meshParams = [_model.parameters paramsForMesh:_name];
     
-    _displayName = [_model.parameters displayNameForMesh:_name];
-    _initiallyVisible = [_model.parameters initiallyVisibleForMesh:_name];
-    _optionalPartNames = [_model.parameters optionalPartNamesForMesh:_name];
+    _shader = meshParams.shader;
+    _usesAlphaBlending = meshParams.transparent;
+    _displayName = meshParams.displayName;
+    _initiallyVisible = meshParams.visible;
+    _optionalPartNames = meshParams.optionalPartNames;
     
     if (!_shader)
         NSLog(@"No shader for object %@", self.name);

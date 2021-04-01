@@ -10,6 +10,7 @@
 
 #import "GLLDocument.h"
 #import "GLLItem.h"
+#import "GLLItemBone.h"
 #import "GLLResourceManager.h"
 
 #import <Cocoa/Cocoa.h>

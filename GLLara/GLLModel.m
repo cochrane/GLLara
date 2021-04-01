@@ -378,9 +378,10 @@ static NSCache *cachedModels;
 
 - (void)_addMesh:(GLLModelMesh *)mesh toArray:(NSMutableArray *)array;
 {
-    if ([self.parameters.meshesToSplit containsObject:mesh.name])
+    GLLMeshParams *params = [self.parameters paramsForMesh:mesh.name];
+    if (params.splitters.count > 0)
     {
-        [array addObjectsFromArray:[[self.parameters meshSplittersForMesh:mesh.name] map:^(GLLMeshSplitter *splitter) {
+        [array addObjectsFromArray:[params.splitters map:^(GLLMeshSplitter *splitter) {
             return [mesh partialMeshFromSplitter:splitter];
         }]];
     }

@@ -44,6 +44,39 @@ static NSRegularExpression *meshNameRegexp;
 // Storage for parameters
 static NSCache *parameterCache;
 
+@interface GLLMeshParams()
+
+@property (nonatomic, readwrite) NSArray<NSString *> *meshGroups;
+@property (nonatomic, readwrite) NSString *displayName;
+@property (nonatomic, readwrite) BOOL visible;
+@property (nonatomic, readwrite) NSArray<NSString *> *optionalPartNames;
+@property (nonatomic, readwrite) GLLShaderDescription *shader;
+@property (nonatomic, readwrite) BOOL transparent;
+@property (nonatomic, readwrite) NSDictionary<NSString *, id> *renderParameters;
+@property (nonatomic, readwrite) NSArray<GLLMeshSplitter *> *splitters;
+
+// Only internal book-keeping
+@property (nonatomic) NSString *cameraTargetName;
+@property (nonatomic) NSArray<NSString *> *cameraTargetBones;
+
+@end
+
+@implementation GLLMeshParams
+
+- (instancetype)init {
+    self = [super init];
+    
+    self.visible = YES;
+    self.optionalPartNames = @[];
+    self.cameraTargetBones = @[];
+    self.cameraTargetName = nil;
+    self.splitters = @[];
+    
+    return self;
+}
+
+@end
+
 @interface GLLModelParams ()
 {
     NSDictionary<NSString *, NSArray<NSString *> *> *ownMeshGroups;
@@ -63,7 +96,7 @@ static NSCache *parameterCache;
     GLLModel *model;
 }
 
-- (void)_parseMeshName:(NSString *)meshName displayName:(NSString *__autoreleasing*)displayName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary<NSString *, id> * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray<NSString *> *__autoreleasing*)cameraTargetBones initiallyVisible:(BOOL * _Nullable )visible optionalPartNames:(NSArray<NSString *> *__autoreleasing _Nullable*)optionalPartNames;
+- (void)_getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
 
 @end
 
@@ -126,7 +159,7 @@ static NSCache *parameterCache;
     return result;
 }
 
-@dynamic cameraTargets, meshesToSplit;
+@dynamic cameraTargets;
 
 - (id)initWithPlist:(NSDictionary *)propertyList error:(NSError *__autoreleasing *)error;
 {
@@ -198,33 +231,198 @@ static NSCache *parameterCache;
     return self;
 }
 
-#pragma mark - Mesh Groups
+- (GLLMeshParams *)paramsForMesh:(NSString *)meshName {
+    GLLMeshParams *params = [[GLLMeshParams alloc] init];
+    
+    // Defaults, rarely overriden
+    params.visible = YES;
+    params.optionalPartNames = @[];
+    params.cameraTargetBones = @[];
+    params.cameraTargetName = nil;
+    params.displayName = meshName;
+    params.splitters = @[];
+    
+    if (!ownMeshGroups) {
+        // This is a generic_item file
+        
+        // Always use english locale, no matter what the user has set, for proper decimal separators.
+        NSNumberFormatter *englishNumberFormatter = [[NSNumberFormatter alloc] init];
+        englishNumberFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+        englishNumberFormatter.formatterBehavior = NSNumberFormatterDecimalStyle;
+        
+        NSTextCheckingResult *components = [meshNameRegexp firstMatchInString:meshName options:NSMatchingAnchored range:NSMakeRange(0, meshName.length)];
+        
+        if (components)
+        {
+            // 1st match: mesh group
+            // Need this later for render parameters, so this part is always extracted.
+            NSString *group = [@"MeshGroup" stringByAppendingString:[meshName substringWithRange:[components rangeAtIndex:1]]];
+            NSString *meshGroup = group;
+            params.meshGroups = @[ meshGroup ];
+            
+            // 2nd match: mesh name
+            NSString *namePart = [meshName substringWithRange:[components rangeAtIndex:2]];
+            // Parse parts of that for optional item
+            if ([namePart hasPrefix:@"+"] || [namePart hasPrefix:@"-"]) {
+                params.visible = [namePart hasPrefix:@"+"];
+                NSString *remainder = [namePart substringFromIndex:1];
+                NSRange firstDot = [remainder rangeOfString:@"."];
+                NSString *meshName = @"";
+                if (firstDot.location != NSNotFound) {
+                    // Display name is everything after the dot. This can be an empty
+                    // string. It can also be a useless string.
+                    meshName = [remainder substringFromIndex:firstDot.location + 1];
+                    remainder = [remainder substringToIndex:firstDot.location];
+                }
+                // Remainder can be empty string here. We accept that.
+                NSArray<NSString *> *components = [remainder componentsSeparatedByString:@"|"];
+                params.optionalPartNames = components;
+                
+                if (meshName.length > 0)
+                    params.displayName = meshName;
+                else
+                    params.displayName = components.lastObject;
+            }
+            else {
+                params.visible = YES;
+                params.optionalPartNames = @[];
+                params.displayName = namePart;
+            }
+            
+            // 3rd, 4th, 5th match: render parameters
+            GLLShaderDescription *shader;
+            BOOL alpha;
+            [self _getShader:&shader alpha:&alpha forMeshGroup:group];
+            params.shader = shader;
+            params.transparent = alpha;
+            
+            NSArray<NSString *> *renderParameterNames = shader.parameterUniformNames;
+            
+            if (components.numberOfRanges < renderParameterNames.count + 3)
+                NSLog(@"Mesh %@ does not have enough render parameters for shader %@ (has %lu, needs %lu). Rest will be set to 0.", meshName, shader.name, renderParameterNames.count, components.numberOfRanges - 3);
+            
+            NSMutableDictionary<NSString *, id> *renderParameterValues = [[NSMutableDictionary alloc] initWithCapacity:renderParameterNames.count];
+            for (NSUInteger i = 0; i < renderParameterNames.count; i++)
+            {
+                // Find the value
+                NSNumber *value = @0.0;
+                if (components.numberOfRanges >= i + 3 && [components rangeAtIndex:i+3].location != NSNotFound) {
+                    NSString *stringValue = [meshName substringWithRange:[components rangeAtIndex:3 + i]];
+                    value = [englishNumberFormatter numberFromString:stringValue];
+                }
+                
+                // One entry can map to multiple parameters. Easiest if we just turn everything into an array.
+                id parameterName = renderParameterNames[i];
+                NSArray *allNames;
+                if ([parameterName isKindOfClass:[NSArray class]]) {
+                    allNames = parameterName;
+                } else {
+                    allNames = @[parameterName];
+                }
+                
+                // Assign
+                for (id name in allNames) {
+                    renderParameterValues[name] = value;
+                }
+            }
+            
+            params.renderParameters = [renderParameterValues copy];
+            
+            // 6th match: Camera name
+            if (components.numberOfRanges <= 6 || [components rangeAtIndex:6].location == NSNotFound)
+                params.cameraTargetName = nil;
+            else
+                params.cameraTargetName = [meshName substringWithRange:[components rangeAtIndex:6]];
+            
+            // Final matches: Camera bones
+           if (components.numberOfRanges <= 7 || [components rangeAtIndex:7].location == NSNotFound)
+            {
+                params.cameraTargetBones = nil;
+            }
+            else
+            {
+                NSMutableArray<NSString *> *bones = [[NSMutableArray alloc] initWithCapacity:components.numberOfRanges - 7];
+                for (NSUInteger i = 7; i < components.numberOfRanges; i++)
+                    [bones addObject:[meshName substringWithRange:[components rangeAtIndex:i]]];
+                params.cameraTargetBones = [bones copy];
+            }
+        } else {
+            // Didn't match, so try and find anything from the default things
+            GLLMeshParams *baseParams = [[GLLMeshParams alloc] init];
+            if (self.base)
+                baseParams = [self.base paramsForMesh:meshName];
+            
+            params.meshGroups = baseParams.meshGroups;
+            for (NSString *meshGroup in params.meshGroups) {
+                GLLShaderDescription *shader;
+                BOOL alpha;
+                [self _getShader:&shader alpha:&alpha forMeshGroup:meshGroup];
+                if (!shader) continue;
+                
+                params.shader = shader;
+                params.transparent = alpha;
+                break;
+            }
+            params.renderParameters = baseParams.renderParameters;
+        }
+    } else {
+        // This comes from the database
+        GLLMeshParams *baseParams = [[GLLMeshParams alloc] init];
+        if (self.base)
+            baseParams = [self.base paramsForMesh:meshName];
+        
+        // - Mesh groups
+        NSMutableArray<NSString *> *meshGroups = [[NSMutableArray alloc] init];
+        
+        for (NSString *meshGroupName in ownMeshGroups)
+        {
+            if ([ownMeshGroups[meshGroupName] containsObject:meshName])
+                [meshGroups addObject:meshGroupName];
+        }
+        
+        [meshGroups addObjectsFromArray:baseParams.meshGroups];
+        
+        if (meshGroups.count == 0 && defaultMeshGroup)
+            [meshGroups addObject:defaultMeshGroup];
 
-- (NSArray<NSString *> *)meshGroupsForMesh:(NSString *)meshName;
-{
-    if (!ownMeshGroups && model)
-    {
-        NSString *groupName = nil;
-        [self _parseMeshName:meshName displayName:NULL meshGroup:&groupName renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL initiallyVisible:NULL optionalPartNames:NULL];
-        if (!groupName) return nil;
-        return @[ groupName ];
+        params.meshGroups = [meshGroups copy];
+        
+        // - Render parameters
+        // The parameters follow a hierarchy:
+        // 1. anything from parent
+        // 2. own default values
+        // 3. own specific values
+        // If the same parameter is set twice, then the one the highest in the hierarchy wins. E.g. if a value is set by the parent, then here in a default value and finally here specifically, then the specific value here is the one used.
+        
+        NSMutableDictionary<NSString *, id> *renderParameters = [NSMutableDictionary dictionary];
+        [renderParameters addEntriesFromDictionary:baseParams.renderParameters];
+        if (ownDefaultParameters)
+            [renderParameters addEntriesFromDictionary:ownDefaultParameters];
+        
+        [renderParameters addEntriesFromDictionary:ownRenderParameters[meshName]];
+        params.renderParameters = [renderParameters copy];
+        
+        // - Mesh splitters
+        NSArray<GLLMeshSplitter *> *splitters = ownMeshSplitters[meshName];
+        if (!splitters) splitters = @[];
+        
+        splitters = [splitters arrayByAddingObjectsFromArray:baseParams.splitters];
+        params.splitters = splitters;
+        
+        // - Shader
+        for (NSString *meshGroup in params.meshGroups) {
+            GLLShaderDescription *shader;
+            BOOL alpha;
+            [self _getShader:&shader alpha:&alpha forMeshGroup:meshGroup];
+            if (!shader) continue;
+            
+            params.shader = shader;
+            params.transparent = alpha;
+            break;
+        }
     }
     
-    NSMutableArray<NSString *> *result = [[NSMutableArray alloc] init];
-    
-    for (NSString *meshGroupName in ownMeshGroups)
-    {
-        if ([ownMeshGroups[meshGroupName] containsObject:meshName])
-            [result addObject:meshGroupName];
-    }
-    
-    if (self.base)
-        [result addObjectsFromArray:[self.base meshGroupsForMesh:meshName]];
-    
-    if (result.count == 0 && defaultMeshGroup)
-        [result addObject:defaultMeshGroup];
-    
-    return [result copy];
+    return params;
 }
 
 #pragma mark - Camera targets
@@ -234,9 +432,7 @@ static NSCache *parameterCache;
     if (!ownCameraTargets && model)
     {
         NSArray<NSString *> *targets = [model.meshes map:^(GLLModelMesh *mesh){
-            NSString *cameraTargetName = nil;
-            [self _parseMeshName:mesh.name displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:NULL initiallyVisible:NULL optionalPartNames:NULL];
-            return cameraTargetName;
+            return [self paramsForMesh:mesh.name].cameraTargetName;
         }];
         
         // Remove duplicates by converting to NSSet and back
@@ -257,11 +453,9 @@ static NSCache *parameterCache;
     if (!ownCameraTargets && model)
     {
         return [model.meshes mapAndJoin:^NSArray*(GLLModelMesh *mesh){
-            NSString *cameraTargetName = nil;
-            NSArray<NSString *> *cameraTargetBones;
-            [self _parseMeshName:mesh.name displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:&cameraTargetName cameraTargetBones:&cameraTargetBones initiallyVisible:NULL optionalPartNames:NULL];
-            if ([cameraTargetName isEqual:cameraTarget])
-                return cameraTargetBones;
+            GLLMeshParams *params = [self paramsForMesh:mesh.name];
+            if ([params.cameraTargetName isEqual:cameraTarget])
+                return params.cameraTargetBones;
             else
                 return nil;
         }];
@@ -276,33 +470,9 @@ static NSCache *parameterCache;
     return result;
 }
 
-#pragma mark - Mesh name
-
-- (NSString *)displayNameForMesh:(NSString *)meshName;
-{
-    if (!ownCameraTargets && model)
-    {
-        NSString *displayName = nil;
-        [self _parseMeshName:meshName displayName:&displayName meshGroup:NULL renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL initiallyVisible:NULL optionalPartNames:NULL];
-        if (displayName) return displayName;
-    }
-    
-    return meshName;
-}
-
 #pragma mark - Rendering
 
-- (NSString *)renderableMeshGroupForMesh:(NSString *)mesh;
-{
-    return [[self meshGroupsForMesh:mesh] firstObjectMatching:^(id meshGroup){
-        GLLShaderDescription *shader = nil;
-        BOOL isAlpha;
-        [self getShader:&shader alpha:&isAlpha forMeshGroup:meshGroup];
-        return (BOOL) (shader != nil);
-    }];
-}
-
-- (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
+- (void)_getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
 {
     // Try to find shader in own ones.
     for (NSString *shaderName in ownShaders)
@@ -324,39 +494,7 @@ static NSCache *parameterCache;
     
     // No luck. Get those from the base.
     if (self.base)
-        [self.base getShader:shader alpha:shaderIsAlpha forMeshGroup:meshGroup];
-}
-
-- (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
-{
-    [self getShader:shader alpha:shaderIsAlpha forMeshGroup:[self renderableMeshGroupForMesh:mesh]];
-}
-- (NSDictionary<NSString *, id> *)renderParametersForMesh:(NSString *)mesh;
-{
-    if (!ownRenderParameters && model)
-    {
-        NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:[self.base renderParametersForMesh:mesh]];
-        NSDictionary *forThisMesh = nil;
-        [self _parseMeshName:mesh displayName:NULL meshGroup:NULL renderParameters:&forThisMesh cameraTargetName:NULL cameraTargetBones:NULL initiallyVisible:NULL optionalPartNames:NULL];
-        [result addEntriesFromDictionary:forThisMesh];
-        return result;
-    }
-    
-    // The parameters follow a hierarchy:
-    // 1. anything from parent
-    // 2. own default values
-    // 3. own specific values
-    // If the same parameter is set twice, then the one the highest in the hierarchy wins. E.g. if a value is set by the parent, then here in a default value and finally here specifically, then the specific value here is the one used.
-    
-    NSMutableDictionary *result = [NSMutableDictionary dictionary];
-    if (self.base)
-        [result addEntriesFromDictionary:[self.base renderParametersForMesh:mesh]];
-    if (ownDefaultParameters)
-        [result addEntriesFromDictionary:ownDefaultParameters];
-    
-    [result addEntriesFromDictionary:ownRenderParameters[mesh]];
-    
-    return [result copy];
+        [self.base _getShader:shader alpha:shaderIsAlpha forMeshGroup:meshGroup];
 }
 
 - (GLLShaderDescription *)shaderNamed:(NSString *)name;
@@ -409,8 +547,7 @@ static NSCache *parameterCache;
     GLLRenderParameterDescription *result = ownRenderParameterDescriptions[parameterName];
     if (!result)
     {
-        if (self.base) return [self.base descriptionForParameter:parameterName];
-        else return nil;
+        return [self.base descriptionForParameter:parameterName];
     }
     
     return result;
@@ -421,45 +558,10 @@ static NSCache *parameterCache;
     GLLTextureDescription *result = ownTextureDescriptions[textureUniformName];
     if (!result)
     {
-        if (self.base) return [self.base descriptionForTexture:textureUniformName];
-        else return nil;
+        return [self.base descriptionForTexture:textureUniformName];
     }
     
     return result;
-}
-
-#pragma mark - Splitting
-
-- (NSArray<NSString *> *)meshesToSplit
-{
-    if (self.base)
-        return [self.base.meshesToSplit arrayByAddingObjectsFromArray:ownMeshSplitters.allKeys];
-    else
-        if (ownMeshSplitters) return ownMeshSplitters.allKeys;
-        else return @[];
-}
-- (NSArray<GLLMeshSplitter *> *)meshSplittersForMesh:(NSString *)mesh;
-{
-    NSArray<GLLMeshSplitter *> *result = ownMeshSplitters[mesh];
-    if (!result) result = [NSArray array];
-    
-    if (self.base)
-        result = [result arrayByAddingObjectsFromArray:[self.base meshSplittersForMesh:mesh]];
-    
-    return result;
-}
-
-#pragma mark - Optional items
-- (BOOL)initiallyVisibleForMesh:(NSString *)mesh {
-    BOOL visible = YES;
-    [self _parseMeshName:mesh displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL initiallyVisible:&visible optionalPartNames:NULL];
-    return visible;
-}
-
-- (NSArray<NSString *> *)optionalPartNamesForMesh:(NSString *)mesh {
-    NSArray<NSString*> *names = @[];
-    [self _parseMeshName:mesh displayName:NULL meshGroup:NULL renderParameters:NULL cameraTargetName:NULL cameraTargetBones:NULL initiallyVisible:NULL optionalPartNames:&names];
-    return names;
 }
 
 #pragma mark - Equality
@@ -477,153 +579,6 @@ static NSCache *parameterCache;
 - (NSUInteger)hash
 {
     return ownDefaultTextures.hash | ownCameraTargets.hash | ownDefaultParameters.hash | ownMeshGroups.hash | ownMeshSplitters.hash | ownRenderParameterDescriptions.hash | ownRenderParameters.hash | ownShaders.hash | ownTextureDescriptions.hash | model.hash | self.base.hash;
-}
-
-#pragma mark - Private methods
-
-- (void)_parseMeshName:(NSString *)meshName displayName:(NSString *__autoreleasing*)displayName meshGroup:(NSString *__autoreleasing *)meshGroup renderParameters:(NSDictionary<NSString *, id> * __autoreleasing*)renderParameters cameraTargetName:(NSString *__autoreleasing*)cameraTargetName cameraTargetBones:(NSArray<NSString *> *__autoreleasing*)cameraTargetBones initiallyVisible:(BOOL * _Nullable )visible optionalPartNames:(NSArray<NSString *> *__autoreleasing _Nullable*)optionalPartNames;
-{
-    // Always use english locale, no matter what the user has set, for proper decimal separators.
-    NSNumberFormatter *englishNumberFormatter = [[NSNumberFormatter alloc] init];
-    englishNumberFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-    englishNumberFormatter.formatterBehavior = NSNumberFormatterDecimalStyle;
-    
-    NSTextCheckingResult *components = [meshNameRegexp firstMatchInString:meshName options:NSMatchingAnchored range:NSMakeRange(0, meshName.length)];
-    
-    if (!components)
-    {
-        // See if we can satisfy that request from above
-        if (meshGroup)
-        {
-            *meshGroup = [self.base renderableMeshGroupForMesh:meshName];
-        }
-        if (renderParameters)
-        {
-            *renderParameters = [self.base renderParametersForMesh:meshName];
-        }
-        if (cameraTargetName)
-        {
-            *cameraTargetName = nil;
-        }
-        if (cameraTargetBones)
-        {
-            *cameraTargetBones = nil;
-        }
-        if (visible) {
-            *visible = YES;
-        }
-        if (optionalPartNames) {
-            *optionalPartNames = @[];
-        }
-        return;
-    }
-    
-    // 1st match: mesh group
-    // Need this later for render parameters, so this part is always extracted.
-    NSString *group = [@"MeshGroup" stringByAppendingString:[meshName substringWithRange:[components rangeAtIndex:1]]];
-    if (meshGroup)
-        *meshGroup = group;
-    
-    // 2nd match: mesh name
-    if (visible || optionalPartNames || displayName) {
-        NSString *namePart = [meshName substringWithRange:[components rangeAtIndex:2]];
-        // Parse parts of that for optional item
-        if ([namePart hasPrefix:@"+"] || [namePart hasPrefix:@"-"]) {
-            if (visible)
-                *visible = [namePart hasPrefix:@"+"];
-            NSString *remainder = [namePart substringFromIndex:1];
-            NSRange firstDot = [remainder rangeOfString:@"."];
-            NSString *meshName = @"";
-            if (firstDot.location != NSNotFound) {
-                // Display name is everything after the dot. This can be an empty
-                // string. It can also be a useless string.
-                meshName = [remainder substringFromIndex:firstDot.location + 1];
-                remainder = [remainder substringToIndex:firstDot.location];
-            }
-            // Remainder can be empty string here. We accept that.
-            NSArray<NSString *> *components = [remainder componentsSeparatedByString:@"|"];
-            if (optionalPartNames)
-                *optionalPartNames = components;
-            if (displayName) {
-                if (meshName.length > 0)
-                    *displayName = meshName;
-                else
-                    *displayName = components.lastObject;
-            }
-        }
-        else {
-            if (visible)
-                *visible = YES;
-            if (optionalPartNames)
-                *optionalPartNames = @[];
-            if (displayName)
-                *displayName = namePart;
-        }
-    }
-    
-    // 3rd, 4th, 5th match: render parameters
-    if (renderParameters)
-    {
-        GLLShaderDescription *shader;
-        [self getShader:&shader alpha:NULL forMeshGroup:group];
-        
-        NSArray<NSString *> *renderParameterNames = shader.parameterUniformNames;
-        
-        if (components.numberOfRanges < renderParameterNames.count + 3)
-            NSLog(@"Mesh %@ does not have enough render parameters for shader %@ (has %lu, needs %lu). Rest will be set to 0.", meshName, shader.name, renderParameterNames.count, components.numberOfRanges - 3);
-        
-        NSMutableDictionary<NSString *, id> *renderParameterValues = [[NSMutableDictionary alloc] initWithCapacity:renderParameterNames.count];
-        for (NSUInteger i = 0; i < renderParameterNames.count; i++)
-        {
-            // Find the value
-            NSNumber *value = @0.0;
-            if (components.numberOfRanges >= i + 3 && [components rangeAtIndex:i+3].location != NSNotFound) {
-                NSString *stringValue = [meshName substringWithRange:[components rangeAtIndex:3 + i]];
-                value = [englishNumberFormatter numberFromString:stringValue];
-            }
-            
-            // One entry can map to multiple parameters. Easiest if we just turn everything into an array.
-            id parameterName = renderParameterNames[i];
-            NSArray *allNames;
-            if ([parameterName isKindOfClass:[NSArray class]]) {
-                allNames = parameterName;
-            } else {
-                allNames = @[parameterName];
-            }
-            
-            // Assign
-            for (id name in allNames) {
-                renderParameterValues[name] = value;
-            }
-        }
-        
-        *renderParameters = [renderParameterValues copy];
-    }
-    
-    // 6th match: Camera name
-    if (cameraTargetName)
-    {
-        if (components.numberOfRanges <= 6 || [components rangeAtIndex:6].location == NSNotFound)
-            *cameraTargetName = nil;
-        else
-            *cameraTargetName = [meshName substringWithRange:[components rangeAtIndex:6]];
-    }
-    
-    // Final matches: Camera bones
-    if (cameraTargetBones)
-    {
-        if (components.numberOfRanges <= 7 || [components rangeAtIndex:7].location == NSNotFound)
-        {
-            *cameraTargetBones = nil;
-        }
-        else
-        {
-            NSMutableArray<NSString *> *bones = [[NSMutableArray alloc] initWithCapacity:components.numberOfRanges - 7];
-            for (NSUInteger i = 7; i < components.numberOfRanges; i++)
-                [bones addObject:[meshName substringWithRange:[components rangeAtIndex:i]]];
-            *cameraTargetBones = [bones copy];
-        }
-    }
 }
 
 @end

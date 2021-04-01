@@ -14,6 +14,19 @@
 @class GLLShaderDescription;
 @class GLLTextureDescription;
 
+@interface GLLMeshParams: NSObject
+
+@property (nonatomic, readonly) NSArray<NSString *> *meshGroups;
+@property (nonatomic, readonly) NSString *displayName;
+@property (nonatomic, readonly) BOOL visible;
+@property (nonatomic, readonly) NSArray<NSString *> *optionalPartNames;
+@property (nonatomic, readonly) GLLShaderDescription *shader;
+@property (nonatomic, readonly) BOOL transparent;
+@property (nonatomic, readonly) NSDictionary<NSString *, id> *renderParameters;
+@property (nonatomic, readonly) NSArray<GLLMeshSplitter *> *splitters;
+
+@end
+
 /*!
  * @abstract Encapsulates all the data that is hardcoded into XNALara and stores it in a single place.
  * @discussion Holy fucking shit. XNALara consists basically only of hardcoded values for every damn object you can import. And it's not just hardcoded in one place; there's the item subclasses, but the renderer also contains an awful lot of specific information. That sucks.
@@ -33,10 +46,7 @@
 @property (nonatomic, copy, readonly) NSString *modelName;
 @property (nonatomic, copy, readonly) GLLModelParams *base;
 
-/*
- * Organization into groups
- */
-- (NSArray<NSString *> *)meshGroupsForMesh:(NSString *)meshName;
+- (GLLMeshParams *)paramsForMesh:(NSString *)meshName;
 
 /*
  * Camera targets
@@ -45,25 +55,8 @@
 - (NSArray<NSString *> *)boneNamesForCameraTarget:(NSString *)cameraTarget;
 
 /*
- * Mesh name
- */
-- (NSString *)displayNameForMesh:(NSString *)mesh;
-// Whether this mesh is visible on load. Relevant for optional items
-- (BOOL)initiallyVisibleForMesh:(NSString *)mesh;
-// The names of optional item groups the mesh belongs to, hierarchically.
-// If none, empty array. If there is no grouping, the result is a string with
-// just one element.
-- (NSArray<NSString *> *)optionalPartNamesForMesh:(NSString *)mesh;
-
-/*
  * Rendering
  */
-- (NSString *)renderableMeshGroupForMesh:(NSString *)mesh;
-- (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
-
-- (void)getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMesh:(NSString *)mesh;
-- (NSDictionary<NSString *, id> *)renderParametersForMesh:(NSString *)mesh;
-
 - (id)defaultValueForRenderParameter:(NSString *)renderParameter;
 - (NSURL *)defaultValueForTexture:(NSString *)textureIdentifier;
 
@@ -75,11 +68,5 @@
  */
 - (GLLRenderParameterDescription *)descriptionForParameter:(NSString *)parameterName;
 - (GLLTextureDescription *)descriptionForTexture:(NSString *)textureUniformName;
-
-/*
- * Splitting up objects
- */
-@property (nonatomic, copy, readonly) NSArray<NSString *> *meshesToSplit;
-- (NSArray<GLLMeshSplitter *> *)meshSplittersForMesh:(NSString *)mesh;
 
 @end
