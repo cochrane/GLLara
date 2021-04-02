@@ -500,6 +500,8 @@
 		<dict>
 			<key>defines</key>
 			<dict>
+				<key>SHADELESS</key>
+				<string>1</string>
 				<key>USE_SKINNING</key>
 				<string>1</string>
 			</dict>

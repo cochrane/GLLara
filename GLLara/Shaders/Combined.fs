@@ -142,6 +142,9 @@ void main()
 #endif
     
     vec4 color = vec4(0);
+#ifdef SHADELESS
+    color = diffuseColor;
+#endif
 #ifdef AMBIENT_COLOR
     color += lightData.ambientColor * diffuseColor;
 #ifdef MATERIAL_PARAMETERS
