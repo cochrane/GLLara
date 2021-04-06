@@ -46,7 +46,7 @@ enum GLLVertexAttribComponentType {
 
 @interface GLLVertexAttribAccessor : NSObject<NSCopying>
 
-- (instancetype)initWithAttrib:(enum GLLVertexAttrib)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type;
+- (instancetype)initWithAttrib:(enum GLLVertexAttrib)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData * __nullable)buffer offset:(NSUInteger)offset;
 
 @property (nonatomic, readonly, assign) enum GLLVertexAttrib attrib;
 @property (nonatomic, readonly, assign) NSUInteger layer;
@@ -55,6 +55,11 @@ enum GLLVertexAttribComponentType {
 
 @property (nonatomic, readonly, assign) NSUInteger numberOfElements;
 @property (nonatomic, readonly, assign) NSUInteger sizeInBytes;
+
+@property (nonatomic, readonly, retain) NSData * __nullable dataBuffer;
+@property (nonatomic, readonly, assign) NSUInteger dataOffset;
+
+- (BOOL)isEqualFormat:(GLLVertexAttribAccessor *)accessor;
 
 @end
 

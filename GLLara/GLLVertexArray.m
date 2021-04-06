@@ -20,7 +20,7 @@
     NSIndexSet *attributesToMap;
 }
 
-- (GLLVertexAttribAccessor *)optimizedVersionOf:(GLLVertexAttribAccessor *)accessor;
+- (GLLVertexAttribAccessor *)optimizedVersionOf:(GLLVertexAttribAccessor *)accessor offset:(NSUInteger)offset;
 @property (nonatomic, readonly, copy) GLLVertexFormat *optimizedFormat;
 
 @end
@@ -102,13 +102,15 @@ static inline uint16_t halfFloat(const float *value) {
     
     NSMutableIndexSet *changedAttributes = [[NSMutableIndexSet alloc] init];
     NSMutableArray *optimizedAttributes = [[NSMutableArray alloc] init];
+    NSUInteger offset = 0;
     for (NSUInteger i = 0; i < format.attributes.count; i++) {
         GLLVertexAttribAccessor *accessor = format.attributes[i];
-        GLLVertexAttribAccessor *optimized = [self optimizedVersionOf:accessor];
-        if (![accessor isEqual:optimized]) {
+        GLLVertexAttribAccessor *optimized = [self optimizedVersionOf:accessor offset:offset];
+        if (![accessor isEqualFormat:optimized]) {
             [changedAttributes addIndex:i];
         }
         [optimizedAttributes addObject:optimized];
+        offset += optimized.sizeInBytes;
     }
     
     _optimizedFormat = [[GLLVertexFormat alloc] initWithAttributes:optimizedAttributes countOfVertices:0];
@@ -117,25 +119,25 @@ static inline uint16_t halfFloat(const float *value) {
     return self;
 }
 
-- (GLLVertexAttribAccessor *)optimizedVersionOf:(GLLVertexAttribAccessor *)accessor {
+- (GLLVertexAttribAccessor *)optimizedVersionOf:(GLLVertexAttribAccessor *)accessor offset:(NSUInteger)offset {
     // Change Normal (if float[3]) to vec4 with 2_10_10_10_rev encoding
     // (this adds a W component which gets ignored by the shader)
     if (accessor.attrib == GLLVertexAttribNormal && accessor.size == GLLVertexAttribSizeVec3 && accessor.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev];
+        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev dataBuffer:nil offset:offset];
     }
     // Change tex coord (if float[2]) to half[2]
     if (accessor.attrib == GLLVertexAttribTexCoord0 && accessor.size == GLLVertexAttribSizeVec2 && accessor.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeHalfFloat];
+        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeHalfFloat dataBuffer:nil offset:offset];
     }
     // Change tangent (if float[4]) to vec4 with 2_10_10_10_rev encoding
     if (accessor.attrib == GLLVertexAttribTangent0 && accessor.size == GLLVertexAttribSizeVec4 && accessor.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev];
+        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev dataBuffer:nil offset:offset];
     }
     // Change bone weight (if float[4]) to half[4]
     if (accessor.attrib == GLLVertexAttribBoneWeights && accessor.size == GLLVertexAttribSizeVec4 && accessor.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort];
+        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort dataBuffer:nil offset:offset];
     }
-    return accessor;
+    return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:accessor.size componentType:accessor.type dataBuffer:nil offset:offset];
 }
 
 - (NSUInteger)countOfVertices
@@ -257,7 +259,6 @@ static inline uint16_t halfFloat(const float *value) {
     
     GLsizei actualStride = (GLsizei) self.optimizedFormat.stride;
     
-    NSUInteger offset = 0;
     for (GLLVertexAttribAccessor *accessor in self.optimizedFormat.attributes) {
         GLuint attribIndex = accessor.attrib;
         if (accessor.attrib == GLLVertexAttribTangent0 || accessor.attrib == GLLVertexAttribTexCoord0) {
@@ -267,7 +268,7 @@ static inline uint16_t halfFloat(const float *value) {
         glEnableVertexAttribArray(attribIndex);
         
         if (accessor.attrib == GLLVertexAttribBoneIndices) {
-            glVertexAttribIPointer(attribIndex, (GLint) accessor.numberOfElements, accessor.type, actualStride, (GLvoid *) offset);
+            glVertexAttribIPointer(attribIndex, (GLint) accessor.numberOfElements, accessor.type, actualStride, (GLvoid *) accessor.dataOffset);
         } else {
             GLenum normalized = GL_FALSE;
             if (accessor.type == GL_UNSIGNED_BYTE && accessor.attrib == GLLVertexAttribColor) {
@@ -277,9 +278,8 @@ static inline uint16_t halfFloat(const float *value) {
             } else if (accessor.type == GL_UNSIGNED_SHORT && accessor.attrib == GLLVertexAttribBoneWeights) {
                 normalized = GL_TRUE;
             }
-            glVertexAttribPointer(attribIndex, (GLint) accessor.numberOfElements, accessor.type, normalized, actualStride, (GLvoid *) offset);
+            glVertexAttribPointer(attribIndex, (GLint) accessor.numberOfElements, accessor.type, normalized, actualStride, (GLvoid *) accessor.dataOffset);
         }
-        offset += accessor.sizeInBytes;
     }
         
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);

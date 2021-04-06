@@ -40,25 +40,25 @@
 
 - (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents colorsAsFloats:(BOOL)floatColor countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;
 {
-    NSMutableArray *attributes = [NSMutableArray array];
-    [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat]];
-    [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat]];
+    NSMutableArray<GLLVertexAttribAccessor *> *attributes = [NSMutableArray array];
+    [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:0]];
+    [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
     if (floatColor) {
-        [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
+        [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
     } else {
-        [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedByte]];
+        [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedByte dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
     }
     for (NSUInteger i = 0; i < countOfUVLayers; i++) {
-        [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribTexCoord0 layer:i size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeFloat]];
+        [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribTexCoord0 layer:i size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
     }
     if (tangents) {
         for (NSUInteger i = 0; i < countOfUVLayers; i++) {
-            [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribTangent0 layer:i size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
+            [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribTangent0 layer:i size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
         }
     }
     if (boneWeights) {
-        [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribBoneIndices layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort]];
-        [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribBoneWeights layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
+        [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribBoneIndices layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
+        [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribBoneWeights layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
     }
     
     return [self initWithAttributes:attributes countOfVertices:countOfVertices];
@@ -103,15 +103,7 @@
 }
 
 - (NSUInteger)offsetForAttrib:(enum GLLVertexAttrib)attrib layer:(NSUInteger)layer; {
-    NSUInteger offset = 0;
-    for (GLLVertexAttribAccessor *accessor in self.attributes) {
-        if (accessor.attrib == attrib && accessor.layer == layer) {
-            return offset;
-        } else {
-            offset += accessor.sizeInBytes;
-        }
-    }
-    return NSNotFound;
+    return [self accessorForAttrib:attrib layer:layer].dataOffset;
 }
 
 - (NSUInteger)offsetForPosition

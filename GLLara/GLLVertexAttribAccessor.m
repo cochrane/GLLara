@@ -16,7 +16,8 @@
 
 @implementation GLLVertexAttribAccessor
 
-- (instancetype)initWithAttrib:(enum GLLVertexAttrib)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type; {
+- (instancetype)initWithAttrib:(enum GLLVertexAttrib)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData *)buffer offset:(NSUInteger)offset;
+{
     if (!(self = [super init])) {
         return nil;
     }
@@ -27,13 +28,20 @@
     _layer = layer;
     _size = size;
     _type = type;
+    _dataBuffer = buffer;
+    _dataOffset = offset;
     
     return self;
 }
 
 - (NSUInteger)hash
 {
-    return _attrib ^ _layer ^ _size ^ _type;
+    return _attrib ^ _layer ^ _size ^ _type ^ [_dataBuffer hash] ^ _dataOffset;
+}
+
+- (BOOL)isEqualFormat:(GLLVertexAttribAccessor *)format
+{
+    return format.attrib == self.attrib && format.layer == self.layer && format.size == self.size && format.type == self.type;
 }
 
 - (BOOL)isEqual:(id)object
