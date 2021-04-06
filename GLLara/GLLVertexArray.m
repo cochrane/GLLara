@@ -20,7 +20,7 @@
     NSIndexSet *attributesToMap;
 }
 
-- (GLLVertexAttribAccessor *)optimizedVersionOf:(GLLVertexAttribAccessor *)accessor offset:(NSUInteger)offset;
+- (GLLVertexAttrib *)optimizedVersionOf:(GLLVertexAttrib *)attribute offset:(NSUInteger)offset;
 @property (nonatomic, readonly, copy) GLLVertexFormat *optimizedFormat;
 
 @end
@@ -104,9 +104,9 @@ static inline uint16_t halfFloat(const float *value) {
     NSMutableArray *optimizedAttributes = [[NSMutableArray alloc] init];
     NSUInteger offset = 0;
     for (NSUInteger i = 0; i < format.attributes.count; i++) {
-        GLLVertexAttribAccessor *accessor = format.attributes[i];
-        GLLVertexAttribAccessor *optimized = [self optimizedVersionOf:accessor offset:offset];
-        if (![accessor isEqualFormat:optimized]) {
+        GLLVertexAttrib *attribute = format.attributes[i];
+        GLLVertexAttrib *optimized = [self optimizedVersionOf:attribute offset:offset];
+        if (![attribute isEqualFormat:optimized]) {
             [changedAttributes addIndex:i];
         }
         [optimizedAttributes addObject:optimized];
@@ -119,25 +119,25 @@ static inline uint16_t halfFloat(const float *value) {
     return self;
 }
 
-- (GLLVertexAttribAccessor *)optimizedVersionOf:(GLLVertexAttribAccessor *)accessor offset:(NSUInteger)offset {
+- (GLLVertexAttrib *)optimizedVersionOf:(GLLVertexAttrib *)attribute offset:(NSUInteger)offset {
     // Change Normal (if float[3]) to vec4 with 2_10_10_10_rev encoding
     // (this adds a W component which gets ignored by the shader)
-    if (accessor.attrib == GLLVertexAttribNormal && accessor.size == GLLVertexAttribSizeVec3 && accessor.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev dataBuffer:nil offset:offset];
+    if (attribute.semantic == GLLVertexAttribNormal && attribute.size == GLLVertexAttribSizeVec3 && attribute.type == GllVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev dataBuffer:nil offset:offset];
     }
     // Change tex coord (if float[2]) to half[2]
-    if (accessor.attrib == GLLVertexAttribTexCoord0 && accessor.size == GLLVertexAttribSizeVec2 && accessor.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeHalfFloat dataBuffer:nil offset:offset];
+    if (attribute.semantic == GLLVertexAttribTexCoord0 && attribute.size == GLLVertexAttribSizeVec2 && attribute.type == GllVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeHalfFloat dataBuffer:nil offset:offset];
     }
     // Change tangent (if float[4]) to vec4 with 2_10_10_10_rev encoding
-    if (accessor.attrib == GLLVertexAttribTangent0 && accessor.size == GLLVertexAttribSizeVec4 && accessor.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev dataBuffer:nil offset:offset];
+    if (attribute.semantic == GLLVertexAttribTangent0 && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GllVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev dataBuffer:nil offset:offset];
     }
     // Change bone weight (if float[4]) to half[4]
-    if (accessor.attrib == GLLVertexAttribBoneWeights && accessor.size == GLLVertexAttribSizeVec4 && accessor.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort dataBuffer:nil offset:offset];
+    if (attribute.semantic == GLLVertexAttribBoneWeights && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GllVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort dataBuffer:nil offset:offset];
     }
-    return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:accessor.size componentType:accessor.type dataBuffer:nil offset:offset];
+    return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:attribute.size componentType:attribute.type dataBuffer:nil offset:offset];
 }
 
 - (NSUInteger)countOfVertices
@@ -163,10 +163,10 @@ static inline uint16_t halfFloat(const float *value) {
         void *vertex = newBytes + actualStride * i;
         
         for (NSUInteger attributeIndex = 0; attributeIndex < self.format.attributes.count; attributeIndex++) {
-            GLLVertexAttribAccessor *accessor = self.format.attributes[attributeIndex];
+            GLLVertexAttrib *attribute = self.format.attributes[attributeIndex];
             if ([attributesToMap containsIndex:attributeIndex]) {
                 // Need to do some processing
-                if (accessor.attrib == GLLVertexAttribNormal && accessor.size == GLLVertexAttribSizeVec3 && accessor.type == GllVertexAttribComponentTypeFloat) {
+                if (attribute.semantic == GLLVertexAttribNormal && attribute.size == GLLVertexAttribSizeVec3 && attribute.type == GllVertexAttribComponentTypeFloat) {
                     // Normal. Compress from float[3] to int_2_10_10_10_rev format
                     uint32_t *value = vertex;
                     const float *normal = originalVertex;
@@ -174,13 +174,13 @@ static inline uint16_t halfFloat(const float *value) {
                     *value += packSignedFloat(normal[0], 10);
                     *value += packSignedFloat(normal[1], 10) << 10;
                     *value += packSignedFloat(normal[2], 10) << 20;
-                } else if (accessor.attrib == GLLVertexAttribTexCoord0 && accessor.size == GLLVertexAttribSizeVec2 && accessor.type == GllVertexAttribComponentTypeFloat) {
+                } else if (attribute.semantic == GLLVertexAttribTexCoord0 && attribute.size == GLLVertexAttribSizeVec2 && attribute.type == GllVertexAttribComponentTypeFloat) {
                     // Tex coord. Compress to half float
                     uint16_t *intTexCoords = vertex;
                     const float *floatTexCoords = originalVertex;
                     intTexCoords[0] = halfFloat(floatTexCoords + 0);
                     intTexCoords[1] = halfFloat(floatTexCoords + 1);
-                } else if (accessor.attrib == GLLVertexAttribTangent0 && accessor.size == GLLVertexAttribSizeVec4 && accessor.type == GllVertexAttribComponentTypeFloat) {
+                } else if (attribute.semantic == GLLVertexAttribTangent0 && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GllVertexAttribComponentTypeFloat) {
                     // Compress tangent from float[3] to int_2_10_10_10_rev
                     const float *tangents = originalVertex;
                     uint32_t *normalized = vertex;
@@ -190,7 +190,7 @@ static inline uint16_t halfFloat(const float *value) {
                     *normalized |= packSignedFloat(tangents[1] * invLength, 10) << 10;
                     *normalized |= packSignedFloat(tangents[2] * invLength, 10) << 20;
                     *normalized |= packSignedFloat(copysign(tangents[3], 1.0f), 2) << 30;
-                } else if (accessor.attrib == GLLVertexAttribBoneWeights && accessor.size == GLLVertexAttribSizeVec4 && accessor.type == GllVertexAttribComponentTypeFloat) {
+                } else if (attribute.semantic == GLLVertexAttribBoneWeights && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GllVertexAttribComponentTypeFloat) {
                     // Compress bone weight to half float
                     const float *weights = originalVertex;
                     uint16_t *intWeights = vertex;
@@ -207,9 +207,9 @@ static inline uint16_t halfFloat(const float *value) {
                     }
                 }
             } else {
-                memcpy(vertex, originalVertex, accessor.sizeInBytes);
+                memcpy(vertex, originalVertex, attribute.sizeInBytes);
             }
-            originalVertex += accessor.sizeInBytes;
+            originalVertex += attribute.sizeInBytes;
             vertex += self.optimizedFormat.attributes[attributeIndex].sizeInBytes;
         }
     }
@@ -259,26 +259,26 @@ static inline uint16_t halfFloat(const float *value) {
     
     GLsizei actualStride = (GLsizei) self.optimizedFormat.stride;
     
-    for (GLLVertexAttribAccessor *accessor in self.optimizedFormat.attributes) {
-        GLuint attribIndex = accessor.attrib;
-        if (accessor.attrib == GLLVertexAttribTangent0 || accessor.attrib == GLLVertexAttribTexCoord0) {
-            attribIndex += 2 * accessor.layer;
+    for (GLLVertexAttrib *attribute in self.optimizedFormat.attributes) {
+        GLuint attribIndex = attribute.semantic;
+        if (attribute.semantic == GLLVertexAttribTangent0 || attribute.semantic == GLLVertexAttribTexCoord0) {
+            attribIndex += 2 * attribute.layer;
         }
         
         glEnableVertexAttribArray(attribIndex);
         
-        if (accessor.attrib == GLLVertexAttribBoneIndices) {
-            glVertexAttribIPointer(attribIndex, (GLint) accessor.numberOfElements, accessor.type, actualStride, (GLvoid *) accessor.dataOffset);
+        if (attribute.semantic == GLLVertexAttribBoneIndices) {
+            glVertexAttribIPointer(attribIndex, (GLint) attribute.numberOfElements, attribute.type, actualStride, (GLvoid *) attribute.dataOffset);
         } else {
             GLenum normalized = GL_FALSE;
-            if (accessor.type == GL_UNSIGNED_BYTE && accessor.attrib == GLLVertexAttribColor) {
+            if (attribute.type == GL_UNSIGNED_BYTE && attribute.semantic == GLLVertexAttribColor) {
                 normalized = GL_TRUE;
-            } else if (accessor.type == GL_INT_2_10_10_10_REV) {
+            } else if (attribute.type == GL_INT_2_10_10_10_REV) {
                 normalized = GL_TRUE;
-            } else if (accessor.type == GL_UNSIGNED_SHORT && accessor.attrib == GLLVertexAttribBoneWeights) {
+            } else if (attribute.type == GL_UNSIGNED_SHORT && attribute.semantic == GLLVertexAttribBoneWeights) {
                 normalized = GL_TRUE;
             }
-            glVertexAttribPointer(attribIndex, (GLint) accessor.numberOfElements, accessor.type, normalized, actualStride, (GLvoid *) accessor.dataOffset);
+            glVertexAttribPointer(attribIndex, (GLint) attribute.numberOfElements, attribute.type, normalized, actualStride, (GLvoid *) attribute.dataOffset);
         }
     }
         

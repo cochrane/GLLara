@@ -6,17 +6,17 @@
 //  Copyright © 2021 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLVertexAttribAccessor.h"
+#import "GLLVertexAttrib.h"
 
-@interface GLLVertexAttribAccessor()
+@interface GLLVertexAttrib()
 
 @property (nonatomic, readonly, assign) NSUInteger baseSize;
 
 @end
 
-@implementation GLLVertexAttribAccessor
+@implementation GLLVertexAttrib
 
-- (instancetype)initWithAttrib:(enum GLLVertexAttrib)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData *)buffer offset:(NSUInteger)offset;
+- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData *)buffer offset:(NSUInteger)offset;
 {
     if (!(self = [super init])) {
         return nil;
@@ -24,7 +24,7 @@
         
     NSAssert(type != GllVertexAttribComponentTypeInt2_10_10_10_Rev || size == GLLVertexAttribSizeVec4, @"2_10_10_10_Rev only allowed with Vec4");
     
-    _attrib = attrib;
+    _semantic = attrib;
     _layer = layer;
     _size = size;
     _type = type;
@@ -36,12 +36,12 @@
 
 - (NSUInteger)hash
 {
-    return _attrib ^ _layer ^ _size ^ _type ^ [_dataBuffer hash] ^ _dataOffset;
+    return _semantic ^ _layer ^ _size ^ _type ^ [_dataBuffer hash] ^ _dataOffset;
 }
 
-- (BOOL)isEqualFormat:(GLLVertexAttribAccessor *)format
+- (BOOL)isEqualFormat:(GLLVertexAttrib *)format
 {
-    return format.attrib == self.attrib && format.layer == self.layer && format.size == self.size && format.type == self.type;
+    return format.semantic == self.semantic && format.layer == self.layer && format.size == self.size && format.type == self.type;
 }
 
 - (BOOL)isEqual:(id)object
@@ -49,8 +49,8 @@
     if (![object isKindOfClass:self.class])
         return NO;
     
-    GLLVertexAttribAccessor *format = (GLLVertexAttribAccessor *) object;
-    return format.attrib == self.attrib && format.layer == self.layer && format.size == self.size && format.type == self.type;
+    GLLVertexAttrib *format = (GLLVertexAttrib *) object;
+    return format.semantic == self.semantic && format.layer == self.layer && format.size == self.size && format.type == self.type;
 }
 
 - (id)copy

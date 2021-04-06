@@ -11,17 +11,17 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GLLVertexAttribAccessor.h"
+#import "GLLVertexAttrib.h"
 
 @interface GLLVertexFormat : NSObject<NSCopying>
 
 - (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents colorsAsFloats:(BOOL)floatColors countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;
 
-- (instancetype)initWithAttributes:(NSArray<GLLVertexAttribAccessor *>*)attributes countOfVertices:(NSUInteger)countOfVertices;
+- (instancetype)initWithAttributes:(NSArray<GLLVertexAttrib *>*)attributes countOfVertices:(NSUInteger)countOfVertices;
 
-@property (nonatomic, readonly, copy) NSArray<GLLVertexAttribAccessor *>* attributes;
+@property (nonatomic, readonly, copy) NSArray<GLLVertexAttrib *>* attributes;
 
-- (GLLVertexAttribAccessor *)accessorForAttrib:(enum GLLVertexAttrib)attrib layer:(NSUInteger)layer;
+- (GLLVertexAttrib *)attribForSemantic:(enum GLLVertexAttribSemantic)attrib layer:(NSUInteger)layer;
 
 @property (nonatomic, readonly, assign) BOOL hasBoneWeights;
 @property (nonatomic, readonly, assign) BOOL hasTangents;

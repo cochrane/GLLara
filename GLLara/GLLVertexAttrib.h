@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  * @abstract Defines the indices for the different vertex attribute arrays.
  */
-enum GLLVertexAttrib
+enum GLLVertexAttribSemantic
 {
     GLLVertexAttribPosition,
     GLLVertexAttribNormal,
@@ -44,11 +44,11 @@ enum GLLVertexAttribComponentType {
     GllVertexAttribComponentTypeInt2_10_10_10_Rev = 0x8D9F // Must be vec4
 };
 
-@interface GLLVertexAttribAccessor : NSObject<NSCopying>
+@interface GLLVertexAttrib : NSObject<NSCopying>
 
-- (instancetype)initWithAttrib:(enum GLLVertexAttrib)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData * __nullable)buffer offset:(NSUInteger)offset;
+- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)semantic layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData * __nullable)buffer offset:(NSUInteger)offset;
 
-@property (nonatomic, readonly, assign) enum GLLVertexAttrib attrib;
+@property (nonatomic, readonly, assign) enum GLLVertexAttribSemantic semantic;
 @property (nonatomic, readonly, assign) NSUInteger layer;
 @property (nonatomic, readonly, assign) enum GLLVertexAttribSize size;
 @property (nonatomic, readonly, assign) enum GLLVertexAttribComponentType type;
@@ -59,7 +59,7 @@ enum GLLVertexAttribComponentType {
 @property (nonatomic, readonly, retain) NSData * __nullable dataBuffer;
 @property (nonatomic, readonly, assign) NSUInteger dataOffset;
 
-- (BOOL)isEqualFormat:(GLLVertexAttribAccessor *)accessor;
+- (BOOL)isEqualFormat:(GLLVertexAttrib *)attribute;
 
 @end
 
