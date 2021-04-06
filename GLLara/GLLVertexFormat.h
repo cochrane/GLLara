@@ -72,7 +72,6 @@ enum GLLVertexAttribComponentType {
 
 @property (nonatomic, readonly, assign) BOOL hasBoneWeights;
 @property (nonatomic, readonly, assign) BOOL hasTangents;
-@property (nonatomic, readonly, assign) BOOL colorIsFloat;
 @property (nonatomic, readonly, assign) NSUInteger countOfUVLayers;
 // Number of bytes for storing an element. Only valid values are 1, 2 and 4
 @property (nonatomic, readonly, assign) NSUInteger numElementBytes;
@@ -90,7 +89,6 @@ enum GLLVertexAttribComponentType {
 @property (nonatomic, assign, readonly) NSUInteger offsetForPosition;
 @property (nonatomic, assign, readonly) NSUInteger offsetForNormal;
 @property (nonatomic, assign, readonly) NSUInteger offsetForColor;
-@property (nonatomic, assign, readonly) NSUInteger colorSize;
 - (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer;
 - (NSUInteger)offsetForTangentLayer:(NSUInteger)layer;
 @property (nonatomic, assign, readonly) NSUInteger offsetForBoneIndices;

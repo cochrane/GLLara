@@ -172,20 +172,12 @@
     }];
 }
 
-- (NSUInteger)colorSize {
-    return [self accessorForAttrib:GLLVertexAttribColor layer:0].sizeInBytes;
-}
-
 - (BOOL)hasBoneWeights {
     return [self accessorForAttrib:GLLVertexAttribBoneWeights layer:0] != nil;
 }
 
 - (BOOL)hasTangents {
     return [self accessorForAttrib:GLLVertexAttribTangent0 layer:0] != nil;
-}
-
-- (BOOL)colorIsFloat {
-    return [self accessorForAttrib:GLLVertexAttribColor layer:0].type == GllVertexAttribComponentTypeFloat;
 }
 
 - (NSUInteger)countOfUVLayers {
