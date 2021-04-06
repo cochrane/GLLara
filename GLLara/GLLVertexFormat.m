@@ -16,6 +16,8 @@
     if (!(self = [super init])) {
         return nil;
     }
+        
+    NSAssert(type != GllVertexAttribComponentTypeInt2_10_10_10_Rev || size == GLLVertexAttribSizeVec4, @"2_10_10_10_Rev only allowed with Vec4");
     
     _attrib = attrib;
     _layer = layer;
@@ -56,9 +58,12 @@
             return 1;
         case GllVertexAttribComponentTypeShort:
         case GllVertexAttribComponentTypeUnsignedShort:
+        case GllVertexAttribComponentTypeHalfFloat:
             return 2;
         case GllVertexAttribComponentTypeFloat:
             return 4;
+        case GllVertexAttribComponentTypeInt2_10_10_10_Rev:
+            return 1;
         default:
             return 0;
     }
@@ -85,6 +90,9 @@
 }
 
 - (NSUInteger)sizeInBytes {
+    if (self.type == GllVertexAttribComponentTypeInt2_10_10_10_Rev) {
+        return 4;
+    }
     return self.baseSize * self.numberOfElements;
 }
 
@@ -98,12 +106,28 @@
 
 @implementation GLLVertexFormat
 
-- (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents colorsAsFloats:(BOOL)floatColor countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;
+- (instancetype)initWithAttributes:(NSArray<GLLVertexAttribAccessor *>*)attributes countOfVertices:(NSUInteger)countOfVertices;
 {
     if (!(self = [super init])) {
         return nil;
     }
     
+    _attributes = [attributes copy];
+    
+    if (countOfVertices < UINT8_MAX)
+        _numElementBytes = 1;
+    else if (countOfVertices < UINT16_MAX)
+        _numElementBytes = 2;
+    else if (countOfVertices < UINT32_MAX)
+        _numElementBytes = 4;
+    else
+        [NSException raise:NSInvalidArgumentException format:@"%li vertices outside allowed range", countOfVertices];
+    
+    return self;
+}
+
+- (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents colorsAsFloats:(BOOL)floatColor countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;
+{
     NSMutableArray *attributes = [NSMutableArray array];
     [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat]];
     [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat]];
@@ -125,18 +149,7 @@
         [attributes addObject:[[GLLVertexAttribAccessor alloc] initWithAttrib:GLLVertexAttribBoneWeights layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
     }
     
-    _attributes = [attributes copy];
-    
-    if (countOfVertices < UINT8_MAX)
-        _numElementBytes = 1;
-    else if (countOfVertices < UINT16_MAX)
-        _numElementBytes = 2;
-    else if (countOfVertices < UINT32_MAX)
-        _numElementBytes = 4;
-    else
-        [NSException raise:NSInvalidArgumentException format:@"%li vertices outside allowed range", countOfVertices];
-    
-    return self;
+    return [self initWithAttributes:attributes countOfVertices:countOfVertices];
 }
 
 - (NSUInteger)hash

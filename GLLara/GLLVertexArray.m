@@ -9,6 +9,7 @@
 #import "GLLVertexArray.h"
 
 #import "GLLVertexFormat.h"
+#import "NSArray+Map.h"
 
 #import <OpenGL/gl3.h>
 
@@ -16,17 +17,11 @@
     NSMutableData *vertexData;
     NSMutableData *elementData;
     GLuint vertexArrayIndex;
+    NSIndexSet *attributesToMap;
 }
 
-@property (nonatomic, readonly, assign) NSUInteger actualStride;
-@property (nonatomic, readonly, assign) NSUInteger offsetForPosition;
-@property (nonatomic, readonly, assign) NSUInteger offsetForNormal;
-@property (nonatomic, readonly, assign) NSUInteger offsetForColor;
-@property (nonatomic, readonly, assign) NSUInteger offsetForBoneIndices;
-@property (nonatomic, readonly, assign) NSUInteger offsetForBoneWeights;
-
-- (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer;
-- (NSUInteger)offsetForTangentLayer:(NSUInteger)layer;
+- (GLLVertexAttribAccessor *)optimizedVersionOf:(GLLVertexAttribAccessor *)accessor;
+@property (nonatomic, readonly, copy) GLLVertexFormat *optimizedFormat;
 
 @end
 
@@ -95,8 +90,6 @@ static inline uint16_t halfFloat(const float *value) {
 
 @dynamic countOfVertices;
 @dynamic elementDataLength;
-@dynamic actualStride;
-@dynamic offsetForPosition, offsetForNormal, offsetForColor, offsetForBoneIndices, offsetForBoneWeights;
 
 - (id)initWithFormat:(GLLVertexFormat *)format;
 {
@@ -107,12 +100,47 @@ static inline uint16_t halfFloat(const float *value) {
     vertexData = [[NSMutableData alloc] init];
     elementData = [[NSMutableData alloc] init];
     
+    NSMutableIndexSet *changedAttributes = [[NSMutableIndexSet alloc] init];
+    NSMutableArray *optimizedAttributes = [[NSMutableArray alloc] init];
+    for (NSUInteger i = 0; i < format.attributes.count; i++) {
+        GLLVertexAttribAccessor *accessor = format.attributes[i];
+        GLLVertexAttribAccessor *optimized = [self optimizedVersionOf:accessor];
+        if (![accessor isEqual:optimized]) {
+            [changedAttributes addIndex:i];
+        }
+        [optimizedAttributes addObject:optimized];
+    }
+    
+    _optimizedFormat = [[GLLVertexFormat alloc] initWithAttributes:optimizedAttributes countOfVertices:0];
+    attributesToMap = [changedAttributes copy];
+    
     return self;
+}
+
+- (GLLVertexAttribAccessor *)optimizedVersionOf:(GLLVertexAttribAccessor *)accessor {
+    // Change Normal (if float[3]) to vec4 with 2_10_10_10_rev encoding
+    // (this adds a W component which gets ignored by the shader)
+    if (accessor.attrib == GLLVertexAttribNormal && accessor.size == GLLVertexAttribSizeVec3 && accessor.type == GllVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev];
+    }
+    // Change tex coord (if float[2]) to half[2]
+    if (accessor.attrib == GLLVertexAttribTexCoord0 && accessor.size == GLLVertexAttribSizeVec2 && accessor.type == GllVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeHalfFloat];
+    }
+    // Change tangent (if float[4]) to vec4 with 2_10_10_10_rev encoding
+    if (accessor.attrib == GLLVertexAttribTangent0 && accessor.size == GLLVertexAttribSizeVec4 && accessor.type == GllVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev];
+    }
+    // Change bone weight (if float[4]) to half[4]
+    if (accessor.attrib == GLLVertexAttribBoneWeights && accessor.size == GLLVertexAttribSizeVec4 && accessor.type == GllVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttribAccessor alloc] initWithAttrib:accessor.attrib layer:accessor.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort];
+    }
+    return accessor;
 }
 
 - (NSUInteger)countOfVertices
 {
-    return vertexData.length / self.actualStride;
+    return vertexData.length / self.optimizedFormat.stride;
 }
 
 - (NSUInteger)elementDataLength
@@ -120,159 +148,71 @@ static inline uint16_t halfFloat(const float *value) {
     return elementData.length;
 }
 
-- (NSUInteger)actualStride
-{
-    NSInteger offset = 0;
-    offset -= 8; // For normal
-    if (self.format.hasBoneWeights)
-        offset -= 8; // For bone weights;
-    offset -= 4 * self.format.countOfUVLayers; // For tex coords
-    if (self.format.hasTangents)
-        offset -= 12 * self.format.countOfUVLayers; // For tangents
-    return self.format.stride + offset;
-}
-
-- (NSUInteger)offsetForPosition
-{
-    return self.format.offsetForPosition;
-}
-
-- (NSUInteger)offsetForNormal
-{
-    return self.format.offsetForNormal;
-}
-
-- (NSUInteger)offsetForColor
-{
-    NSInteger offset = 0;
-    offset -= 8; // For normal
-    return self.format.offsetForColor + offset;
-}
-
-- (NSUInteger)offsetForBoneIndices
-{
-    NSInteger offset = 0;
-    offset -= 8; // For normal
-    offset -= 4 * self.format.countOfUVLayers; // For tex coords
-    if (self.format.hasTangents)
-        offset -= 12 * self.format.countOfUVLayers; // For tangents
-    return self.format.offsetForBoneIndices + offset;
-}
-
-- (NSUInteger)offsetForBoneWeights
-{
-    NSInteger offset = 0;
-    offset -= 8; // For normal
-    offset -= 4 * self.format.countOfUVLayers; // For tex coords
-    if (self.format.hasTangents)
-        offset -= 12 * self.format.countOfUVLayers; // For tangents
-    return self.format.offsetForBoneWeights + offset;
-}
-
-- (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer
-{
-    NSInteger offset = 0;
-    offset -= 8; // For normal
-    offset -= 4 * layer; // For tex coords
-    return [self.format offsetForTexCoordLayer:layer] + offset;
-}
-
-- (NSUInteger)offsetForTangentLayer:(NSUInteger)layer
-{
-    NSInteger offset = 0;
-    offset -= 8; // For normal
-    offset -= 4 * self.format.countOfUVLayers; // For tex coords
-    if (self.format.hasTangents)
-        offset -= 12 * layer; // For tangents
-    return [self.format offsetForTangentLayer:layer] + offset;
-}
-
 - (void)addVertices:(NSData *)vertices elements:(NSData *)elementsUInt32;
 {
     // Process vertex data
     NSUInteger originalStride = self.format.stride;
-    NSUInteger actualStride = self.actualStride;
+    NSUInteger actualStride = self.optimizedFormat.stride;
     NSUInteger numElements = vertices.length / originalStride;
     void *newBytes = malloc(numElements * actualStride);
-    NSUInteger countOfUVLayers = self.format.countOfUVLayers;
-    NSUInteger colorSize = self.format.colorSize;
-    BOOL hasTangents = self.format.hasTangents;
     
     for (NSUInteger i = 0; i < numElements; i++) {
         const void *originalVertex = vertices.bytes + originalStride * i;
         void *vertex = newBytes + actualStride * i;
         
-        // Position
-        memcpy(vertex, originalVertex, 12);
-        vertex += 12;
-        originalVertex += 12;
-        
-        // Normal. Compress from float[3] to int_2_10_10_10_rev format
-        uint32_t *value = vertex;
-        const float *normal = originalVertex;
-        *value = 0;
-        *value += packSignedFloat(normal[0], 10);
-        *value += packSignedFloat(normal[1], 10) << 10;
-        *value += packSignedFloat(normal[2], 10) << 20;
-        vertex += 4;
-        originalVertex += 12;
-        
-        // Color
-        memcpy(vertex, originalVertex, colorSize);
-        vertex += colorSize;
-        originalVertex += colorSize;
-        
-        // Tex coords + tangents
-        for (NSUInteger j = 0; j < countOfUVLayers; j++) {
-            uint16_t *intTexCoords = vertex;
-            const float *floatTexCoords = originalVertex;
-            intTexCoords[0] = halfFloat(floatTexCoords + 0);
-            intTexCoords[1] = halfFloat(floatTexCoords + 1);
-            vertex += 4;
-            originalVertex += 8;
-        }
-        
-        if (hasTangents) {
-            for (NSUInteger j = 0; j < countOfUVLayers; j++) {
-                const float *tangents = originalVertex;
-                uint32_t *normalized = vertex;
-                float invLength = 1.0f / sqrtf(tangents[0]*tangents[0] + tangents[1]*tangents[1] + tangents[2]*tangents[2]);
-                *normalized = 0;
-                *normalized |= packSignedFloat(tangents[0] * invLength, 10);
-                *normalized |= packSignedFloat(tangents[1] * invLength, 10) << 10;
-                *normalized |= packSignedFloat(tangents[2] * invLength, 10) << 20;
-                *normalized |= packSignedFloat(copysign(tangents[3], 1.0f), 2) << 30;
-                vertex += 4;
-                originalVertex += 16;
-            }
-        }
-        
-        // Bone weights (if applicable)
-        if (self.format.hasBoneWeights) {
-            memcpy(vertex, originalVertex, 8); // Bone indices
-            vertex += 8;
-            originalVertex += 8;
-            
-            const float *weights = originalVertex;
-            uint16_t *intWeights = vertex;
-            float sum = weights[0] + weights[1] + weights[2] + weights[3];
-            if (sum == 0.0f) {
-                intWeights[0] = UINT16_MAX;
-                intWeights[1] = 0;
-                intWeights[2] = 0;
-                intWeights[3] = 0;
-            } else {
-                for (int j = 0; j < 4; j++) {
-                    intWeights[j] = (uint16_t) packSignedFloat(weights[j] / sum, 16);
+        for (NSUInteger attributeIndex = 0; attributeIndex < self.format.attributes.count; attributeIndex++) {
+            GLLVertexAttribAccessor *accessor = self.format.attributes[attributeIndex];
+            if ([attributesToMap containsIndex:attributeIndex]) {
+                // Need to do some processing
+                if (accessor.attrib == GLLVertexAttribNormal && accessor.size == GLLVertexAttribSizeVec3 && accessor.type == GllVertexAttribComponentTypeFloat) {
+                    // Normal. Compress from float[3] to int_2_10_10_10_rev format
+                    uint32_t *value = vertex;
+                    const float *normal = originalVertex;
+                    *value = 0;
+                    *value += packSignedFloat(normal[0], 10);
+                    *value += packSignedFloat(normal[1], 10) << 10;
+                    *value += packSignedFloat(normal[2], 10) << 20;
+                } else if (accessor.attrib == GLLVertexAttribTexCoord0 && accessor.size == GLLVertexAttribSizeVec2 && accessor.type == GllVertexAttribComponentTypeFloat) {
+                    // Tex coord. Compress to half float
+                    uint16_t *intTexCoords = vertex;
+                    const float *floatTexCoords = originalVertex;
+                    intTexCoords[0] = halfFloat(floatTexCoords + 0);
+                    intTexCoords[1] = halfFloat(floatTexCoords + 1);
+                } else if (accessor.attrib == GLLVertexAttribTangent0 && accessor.size == GLLVertexAttribSizeVec4 && accessor.type == GllVertexAttribComponentTypeFloat) {
+                    // Compress tangent from float[3] to int_2_10_10_10_rev
+                    const float *tangents = originalVertex;
+                    uint32_t *normalized = vertex;
+                    float invLength = 1.0f / sqrtf(tangents[0]*tangents[0] + tangents[1]*tangents[1] + tangents[2]*tangents[2]);
+                    *normalized = 0;
+                    *normalized |= packSignedFloat(tangents[0] * invLength, 10);
+                    *normalized |= packSignedFloat(tangents[1] * invLength, 10) << 10;
+                    *normalized |= packSignedFloat(tangents[2] * invLength, 10) << 20;
+                    *normalized |= packSignedFloat(copysign(tangents[3], 1.0f), 2) << 30;
+                } else if (accessor.attrib == GLLVertexAttribBoneWeights && accessor.size == GLLVertexAttribSizeVec4 && accessor.type == GllVertexAttribComponentTypeFloat) {
+                    // Compress bone weight to half float
+                    const float *weights = originalVertex;
+                    uint16_t *intWeights = vertex;
+                    float sum = weights[0] + weights[1] + weights[2] + weights[3];
+                    if (sum == 0.0f) {
+                        intWeights[0] = UINT16_MAX;
+                        intWeights[1] = 0;
+                        intWeights[2] = 0;
+                        intWeights[3] = 0;
+                    } else {
+                        for (int j = 0; j < 4; j++) {
+                            intWeights[j] = (uint16_t) packSignedFloat(weights[j] / sum, 16);
+                        }
+                    }
                 }
+            } else {
+                memcpy(vertex, originalVertex, accessor.sizeInBytes);
             }
-            // Skip because unnecessary
-            //            originalVertex += 16;
-            //            vertex += 8;
+            originalVertex += accessor.sizeInBytes;
+            vertex += self.optimizedFormat.attributes[attributeIndex].sizeInBytes;
         }
     }
     
-    [vertexData appendBytes:newBytes length:numElements * self.actualStride];
+    [vertexData appendBytes:newBytes length:numElements * self.optimizedFormat.stride];
     free(newBytes);
     
     // Compress elements
@@ -315,44 +255,33 @@ static inline uint16_t halfFloat(const float *value) {
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
     glBufferData(GL_ARRAY_BUFFER, vertexData.length, vertexData.bytes, GL_STATIC_DRAW);
     
-    GLsizei actualStride = (GLsizei) self.actualStride;
+    GLsizei actualStride = (GLsizei) self.optimizedFormat.stride;
     
-    glEnableVertexAttribArray(GLLVertexAttribPosition);
-    glVertexAttribPointer(GLLVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, actualStride, (GLvoid *) self.offsetForPosition);
-    
-    glEnableVertexAttribArray(GLLVertexAttribNormal);
-    glVertexAttribPointer(GLLVertexAttribNormal, 4, GL_INT_2_10_10_10_REV, GL_TRUE, actualStride, (GLvoid *) self.offsetForNormal);
-    
-    glEnableVertexAttribArray(GLLVertexAttribColor);
-    if (self.format.colorIsFloat) {
-        glVertexAttribPointer(GLLVertexAttribColor, 4, GL_FLOAT, GL_FALSE, actualStride, (GLvoid *) self.offsetForColor);
-    } else {
-        glVertexAttribPointer(GLLVertexAttribColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, actualStride, (GLvoid *) self.offsetForColor);
-    }
-    
-    for (GLuint i = 0; i < self.format.countOfUVLayers; i++)
-    {
-        glEnableVertexAttribArray(GLLVertexAttribTexCoord0 + 2*i);
-        glVertexAttribPointer(GLLVertexAttribTexCoord0 + 2*i, 2, GL_HALF_FLOAT, GL_FALSE, actualStride, (GLvoid *) [self offsetForTexCoordLayer:i]);
-    }
-    if (self.format.hasTangents)
-    {
-        for (GLuint i = 0; i < self.format.countOfUVLayers; i++)
-        {
-            glEnableVertexAttribArray(GLLVertexAttribTangent0 + 2*i);
-            glVertexAttribPointer(GLLVertexAttribTangent0 + 2*i, 4, GL_INT_2_10_10_10_REV, GL_TRUE, actualStride, (GLvoid *) [self offsetForTangentLayer:i]);
+    NSUInteger offset = 0;
+    for (GLLVertexAttribAccessor *accessor in self.optimizedFormat.attributes) {
+        GLuint attribIndex = accessor.attrib;
+        if (accessor.attrib == GLLVertexAttribTangent0 || accessor.attrib == GLLVertexAttribTexCoord0) {
+            attribIndex += 2 * accessor.layer;
         }
-    }
-    
-    if (self.format.hasBoneWeights)
-    {
-        glEnableVertexAttribArray(GLLVertexAttribBoneIndices);
-        glVertexAttribIPointer(GLLVertexAttribBoneIndices, 4, GL_UNSIGNED_SHORT, actualStride, (GLvoid *) self.offsetForBoneIndices);
         
-        glEnableVertexAttribArray(GLLVertexAttribBoneWeights);
-        glVertexAttribPointer(GLLVertexAttribBoneWeights, 4, GL_UNSIGNED_SHORT, GL_TRUE, actualStride, (GLvoid *) self.offsetForBoneWeights);
+        glEnableVertexAttribArray(attribIndex);
+        
+        if (accessor.attrib == GLLVertexAttribBoneIndices) {
+            glVertexAttribIPointer(attribIndex, (GLint) accessor.numberOfElements, accessor.type, actualStride, (GLvoid *) offset);
+        } else {
+            GLenum normalized = GL_FALSE;
+            if (accessor.type == GL_UNSIGNED_BYTE && accessor.attrib == GLLVertexAttribColor) {
+                normalized = GL_TRUE;
+            } else if (accessor.type == GL_INT_2_10_10_10_REV) {
+                normalized = GL_TRUE;
+            } else if (accessor.type == GL_UNSIGNED_SHORT && accessor.attrib == GLLVertexAttribBoneWeights) {
+                normalized = GL_TRUE;
+            }
+            glVertexAttribPointer(attribIndex, (GLint) accessor.numberOfElements, accessor.type, normalized, actualStride, (GLvoid *) offset);
+        }
+        offset += accessor.sizeInBytes;
     }
-    
+        
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.length, elementData.bytes, GL_STATIC_DRAW);
     

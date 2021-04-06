@@ -40,7 +40,9 @@ enum GLLVertexAttribComponentType {
     GllVertexAttribComponentTypeUnsignedByte = 5121,
     GllVertexAttribComponentTypeShort = 5122,
     GllVertexAttribComponentTypeUnsignedShort = 5123,
-    GllVertexAttribComponentTypeFloat = 5126
+    GllVertexAttribComponentTypeFloat = 5126,
+    GllVertexAttribComponentTypeHalfFloat = 0x140B,
+    GllVertexAttribComponentTypeInt2_10_10_10_Rev = 0x8D9F // Must be vec4
 };
 
 @interface GLLVertexAttribAccessor : NSObject<NSCopying>
@@ -61,6 +63,8 @@ enum GLLVertexAttribComponentType {
 @interface GLLVertexFormat : NSObject<NSCopying>
 
 - (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents colorsAsFloats:(BOOL)floatColors countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;
+
+- (instancetype)initWithAttributes:(NSArray<GLLVertexAttribAccessor *>*)attributes countOfVertices:(NSUInteger)countOfVertices;
 
 @property (nonatomic, readonly, copy) NSArray<GLLVertexAttribAccessor *>* attributes;
 
