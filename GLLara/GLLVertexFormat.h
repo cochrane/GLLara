@@ -25,9 +25,46 @@ enum GLLVertexAttrib
 	GLLVertexAttribTangent0
 };
 
+enum GLLVertexAttribSize {
+    GLLVertexAttribSizeScalar,
+    GLLVertexAttribSizeVec2,
+    GLLVertexAttribSizeVec3,
+    GLLVertexAttribSizeVec4,
+    GLLVertexAttribSizeMat2,
+    GLLVertexAttribSizeMat3,
+    GLLVertexAttribSizeMat4
+};
+
+enum GLLVertexAttribComponentType {
+    GllVertexAttribComponentTypeByte = 5120,
+    GllVertexAttribComponentTypeUnsignedByte = 5121,
+    GllVertexAttribComponentTypeShort = 5122,
+    GllVertexAttribComponentTypeUnsignedShort = 5123,
+    GllVertexAttribComponentTypeFloat = 5126
+};
+
+@interface GLLVertexAttribAccessor : NSObject<NSCopying>
+
+- (instancetype)initWithAttrib:(enum GLLVertexAttrib)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type;
+
+@property (nonatomic, readonly, assign) enum GLLVertexAttrib attrib;
+@property (nonatomic, readonly, assign) NSUInteger layer;
+@property (nonatomic, readonly, assign) enum GLLVertexAttribSize size;
+@property (nonatomic, readonly, assign) enum GLLVertexAttribComponentType type;
+
+@property (nonatomic, readonly, assign) NSUInteger baseSize;
+@property (nonatomic, readonly, assign) NSUInteger numberOfElements;
+@property (nonatomic, readonly, assign) NSUInteger sizeInBytes;
+
+@end
+
 @interface GLLVertexFormat : NSObject<NSCopying>
 
 - (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents colorsAsFloats:(BOOL)floatColors countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;
+
+@property (nonatomic, readonly, copy) NSArray<GLLVertexAttribAccessor *>* attributes;
+
+- (GLLVertexAttribAccessor *)accessorForAttrib:(enum GLLVertexAttrib)attrib layer:(NSUInteger)layer;
 
 @property (nonatomic, readonly, assign) BOOL hasBoneWeights;
 @property (nonatomic, readonly, assign) BOOL hasTangents;
