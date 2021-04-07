@@ -326,6 +326,8 @@
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */; };
 		52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshState.m */; };
 		52D8DDA4261CEF570006F0E5 /* GLLVertexAttrib.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D8DDA3261CEF570006F0E5 /* GLLVertexAttrib.m */; };
+		52D8DDAB261D01BD0006F0E5 /* GLLVertexAttribAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D8DDAA261D01BD0006F0E5 /* GLLVertexAttribAccessor.m */; };
+		52D8DDB0261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D8DDAF261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.m */; };
 		52DD80F3163B464200534475 /* GLLRenderingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD80F2163B464200534475 /* GLLRenderingTest.m */; };
 		52ED9E1E168399AE0082EABB /* GLLSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E1D168399AE0082EABB /* GLLSelection.m */; };
 		52ED9E26169332540082EABB /* GLLMeshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E25169332540082EABB /* GLLMeshController.m */; };
@@ -864,6 +866,10 @@
 		52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemMeshState.m; sourceTree = "<group>"; };
 		52D8DDA2261CEF570006F0E5 /* GLLVertexAttrib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLVertexAttrib.h; sourceTree = "<group>"; };
 		52D8DDA3261CEF570006F0E5 /* GLLVertexAttrib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLVertexAttrib.m; sourceTree = "<group>"; };
+		52D8DDA9261D01BD0006F0E5 /* GLLVertexAttribAccessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLVertexAttribAccessor.h; sourceTree = "<group>"; };
+		52D8DDAA261D01BD0006F0E5 /* GLLVertexAttribAccessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLVertexAttribAccessor.m; sourceTree = "<group>"; };
+		52D8DDAE261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLVertexAttribAccessorSet.h; sourceTree = "<group>"; };
+		52D8DDAF261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLVertexAttribAccessorSet.m; sourceTree = "<group>"; };
 		52DD80F1163B464200534475 /* GLLRenderingTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderingTest.h; sourceTree = "<group>"; };
 		52DD80F2163B464200534475 /* GLLRenderingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderingTest.m; sourceTree = "<group>"; };
 		52DD80F6163B58E400534475 /* GLLExportASCIITest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLExportASCIITest.h; sourceTree = "<group>"; };
@@ -1465,6 +1471,8 @@
 				522783311BFA712A002E43FD /* GLLVertexArray.m */,
 				52D8DDA2261CEF570006F0E5 /* GLLVertexAttrib.h */,
 				52D8DDA3261CEF570006F0E5 /* GLLVertexAttrib.m */,
+				52D8DDAE261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.h */,
+				52D8DDAF261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.m */,
 			);
 			name = "Drawing parts";
 			sourceTree = "<group>";
@@ -1489,6 +1497,8 @@
 				524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */,
 				52152CED16B66951001AE54C /* GLLDDSFile.h */,
 				52152CEE16B66951001AE54C /* GLLDDSFile.m */,
+				52D8DDA9261D01BD0006F0E5 /* GLLVertexAttribAccessor.h */,
+				52D8DDAA261D01BD0006F0E5 /* GLLVertexAttribAccessor.m */,
 			);
 			name = "Render resources";
 			sourceTree = "<group>";
@@ -2014,6 +2024,7 @@
 				5213F8901C0F9EC6007A9EBB /* GLLPreferenceKeys.m in Sources */,
 				526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */,
 				526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */,
+				52D8DDB0261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.m in Sources */,
 				52232EAC1EFC459E007FE9AD /* GLLDropTargetView.m in Sources */,
 				526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */,
 				52301E352087E71400B3E331 /* GLLOptionalPartViewController.m in Sources */,
@@ -2029,6 +2040,7 @@
 				52ED9E8416A225D90082EABB /* GLLLightsListController.m in Sources */,
 				528934DE16A2281900F05312 /* GLLSettingsListController.m in Sources */,
 				52B5630A1EFD8681008C6CAD /* GLLItemDragDestination.m in Sources */,
+				52D8DDAB261D01BD0006F0E5 /* GLLVertexAttribAccessor.m in Sources */,
 				528934E816A29B8300F05312 /* GLLLightController.m in Sources */,
 				52301E382089372200B3E331 /* GLLOptionalPart.m in Sources */,
 				528934EB16A332BD00F05312 /* GLLMeshListController.m in Sources */,

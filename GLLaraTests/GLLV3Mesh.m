@@ -90,7 +90,7 @@
     XCTAssertEqual(mesh.vertexFormat.offsetForNormal, (NSUInteger) 12, @"Wrong offset");
     XCTAssertEqual(mesh.vertexFormat.offsetForColor, (NSUInteger) 24, @"Wrong offset");
     XCTAssertEqual([mesh.vertexFormat offsetForTexCoordLayer:0], (NSUInteger) 28, @"Wrong offset");
-    XCTAssertFalse(mesh.hasTangents, @"Mesh has no tangents");
+    XCTAssertFalse(mesh.hasTangentsInFile, @"Mesh has no tangents");
     
     const uint32_t *elements = mesh.elementData.bytes;
     XCTAssertTrue(memcmp(elements, (const uint32_t []) { 0, 1, 2 }, sizeof(uint32_t [3])) == 0, @"incorrect indices");

@@ -13,7 +13,7 @@
 
 @implementation GLLModelMeshV3
 
-- (BOOL)hasTangents
+- (BOOL)hasTangentsInFile
 {
     return NO;
 }

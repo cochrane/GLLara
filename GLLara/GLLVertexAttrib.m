@@ -16,7 +16,7 @@
 
 @implementation GLLVertexAttrib
 
-- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData *)buffer offset:(NSUInteger)offset;
+- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type;
 {
     if (!(self = [super init])) {
         return nil;
@@ -28,15 +28,13 @@
     _layer = layer;
     _size = size;
     _type = type;
-    _dataBuffer = buffer;
-    _dataOffset = offset;
     
     return self;
 }
 
 - (NSUInteger)hash
 {
-    return _semantic ^ _layer ^ _size ^ _type ^ [_dataBuffer hash] ^ _dataOffset;
+    return _semantic ^ _layer ^ _size ^ _type;
 }
 
 - (BOOL)isEqualFormat:(GLLVertexAttrib *)format
@@ -106,6 +104,21 @@
         return 4;
     }
     return self.baseSize * self.numberOfElements;
+}
+
+- (NSComparisonResult)compare:(GLLVertexAttrib *)other; {
+    if (self.semantic < other.semantic) {
+        return NSOrderedAscending;
+    } else if (self.semantic > other.semantic) {
+        return NSOrderedDescending;
+    }
+    
+    if (self.layer < other.layer) {
+        return NSOrderedAscending;
+    } else if (self.layer > other.layer) {
+        return NSOrderedDescending;
+    }
+    return NSOrderedSame;
 }
 
 @end

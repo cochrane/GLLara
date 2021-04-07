@@ -13,11 +13,14 @@
 #import "GLLModel.h"
 #import "GLLModelParams.h"
 #import "GLLTiming.h"
+#import "GLLVertexAttribAccessor.h"
+#import "GLLVertexAttribAccessorSet.h"
 #import "GLLVertexFormat.h"
+#import "NSArray+Map.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
-float vec_dot(float *a, float *b)
+float vec_dot(const float *a, const float *b)
 {
     return a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
 }
@@ -29,12 +32,23 @@ void vec_normalize(float *vec)
     vec[1] /= length;
     vec[2] /= length;
 }
-void vec_addTo(float *a, float *b)
+void vec_addTo(float *a, const float *b)
 {
     a[0] += b[0];
     a[1] += b[1];
     a[2] += b[2];
 }
+
+@interface GLLModelMesh()
+
+// The vertex format for the things that are in the file
+- (GLLVertexFormat *)fileVertexFormat;
+
+// Generates the vertex data accessors for exactly those things that are in the file.
+// Things that get calculated later, in particular tangents, get added later.
+- (GLLVertexAttribAccessorSet*)accessorsForFileData:(NSData *)baseData format:(GLLVertexFormat *)fileVertexFormat;
+
+@end
 
 @implementation GLLModelMesh
 
@@ -88,7 +102,8 @@ void vec_addTo(float *a, float *b)
     }
     
     _countOfVertices = [stream readUint32];
-    NSData *rawVertexData = [stream dataWithLength:_countOfVertices * self.vertexFormat.stride];
+    GLLVertexFormat *fileVertexFormat = self.fileVertexFormat;
+    NSData *rawVertexData = [stream dataWithLength:_countOfVertices * fileVertexFormat.stride];
     if (!rawVertexData)
     {
         if (error)
@@ -102,9 +117,6 @@ void vec_addTo(float *a, float *b)
     _countOfElements = 3 * [stream readUint32]; // File saves number of triangles
     _elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
     
-    if (![self validateVertexData:rawVertexData indexData:_elementData error:error])
-        return nil;
-    
     if (![stream isValid])
     {
         if (error)
@@ -113,6 +125,21 @@ void vec_addTo(float *a, float *b)
                                                                                                                                  NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file breaks off inside a mesh's vertex data", @"Premature end of file error") }];
         return nil;
     }
+    
+    // Prepare the vertex data
+    GLLVertexAttribAccessorSet* fileAccessors = [self accessorsForFileData:_vertexData format:fileVertexFormat];
+    
+    if (![self validateVertexData:fileAccessors indexData:_elementData error:error])
+        return nil;
+    
+    if (self.hasTangentsInFile) {
+        _vertexDataAccessors = fileAccessors;
+    } else {
+        GLLVertexAttribAccessorSet* tangents = [self calculateTangents:fileAccessors];
+        
+        _vertexDataAccessors = [fileAccessors setByCombiningWith:tangents];
+    }
+    _vertexFormat = [_vertexDataAccessors vertexFormatWithElementCount:_countOfElements];
     
     [self finishLoading];
     
@@ -143,7 +170,10 @@ void vec_addTo(float *a, float *b)
     _textures = [textures copy];
     
     _countOfVertices = [scanner readUint32];
-    NSMutableData *rawVertexData = [[NSMutableData alloc] initWithCapacity:_countOfVertices * self.vertexFormat.stride];
+    
+    // Create vertex format
+    GLLVertexFormat *fileVertexFormat = self.fileVertexFormat;
+    NSMutableData *rawVertexData = [[NSMutableData alloc] initWithCapacity:_countOfVertices * fileVertexFormat.stride];
     for (NSUInteger i = 0; i < self.countOfVertices; i++)
     {
         // Vertices + normals
@@ -193,21 +223,33 @@ void vec_addTo(float *a, float *b)
             }
             
             // Bone weights
-            NSUInteger boneWeightCount = 0;
-            for (; boneWeightCount < 4; boneWeightCount++) {
-                float value = [scanner readFloat32];
-                [rawVertexData appendBytes:&value length:sizeof(value)];
+            float boneWeights[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+            for (NSUInteger boneWeightCount = 0; boneWeightCount < 4; boneWeightCount++) {
+                boneWeights[boneWeightCount] = [scanner readFloat32];
                 
                 // Some .mesh.ascii files have fewer bones and weights
                 if ([scanner hasNewline]) {
-                    boneWeightCount += 1;
                     break;
                 }
             }
-            for (; boneWeightCount < 4; boneWeightCount++) {
-                float value = 0.0;
-                [rawVertexData appendBytes:&value length:sizeof(value)];
+            
+            float sum = 0;
+            for (int i = 0; i < 4; i++) {
+                sum += boneWeights[i];
             }
+            if (sum == 0.0) {
+                boneWeights[0] = 1.0f;
+                boneWeights[1] = 0.0f;
+                boneWeights[2] = 0.0f;
+                boneWeights[3] = 0.0f;
+            } else if (sum != 1.0) {
+                boneWeights[0] /= sum;
+                boneWeights[1] /= sum;
+                boneWeights[2] /= sum;
+                boneWeights[3] /= sum;
+            }
+            
+            [rawVertexData appendBytes:boneWeights length:sizeof(boneWeights)];
         }
     }
     
@@ -220,10 +262,16 @@ void vec_addTo(float *a, float *b)
     }
     _elementData = [elementData copy];
     
+    _vertexData = rawVertexData;
     
-    if (![self validateVertexData:rawVertexData indexData:_elementData error:error]) return nil;
-    [self calculateTangents:rawVertexData];
-    _vertexData = [[self normalizeBoneWeightsInVertices:rawVertexData] copy];
+    // Prepare the vertex data
+    GLLVertexAttribAccessorSet* fileAccessors = [self accessorsForFileData:_vertexData format:fileVertexFormat];
+    GLLVertexAttribAccessorSet* tangents = [self calculateTangents:fileAccessors];
+    
+    _vertexDataAccessors = [fileAccessors setByCombiningWith:tangents];
+    _vertexFormat = [_vertexDataAccessors vertexFormatWithElementCount:_countOfElements];
+    
+    if (![self validateVertexData:_vertexDataAccessors indexData:_elementData error:error]) return nil;
     
     if (![scanner isValid])
     {
@@ -241,11 +289,42 @@ void vec_addTo(float *a, float *b)
 
 #pragma mark - Describe mesh data
 
-- (GLLVertexFormat *)vertexFormat {
-    if (!_vertexFormat) {
-        _vertexFormat = [[GLLVertexFormat alloc] initWithBoneWeights:self.hasBoneWeights tangents:self.hasTangents colorsAsFloats:self.colorsAreFloats countOfUVLayers:self.countOfUVLayers countOfVertices:self.countOfVertices];
+- (GLLVertexFormat *)fileVertexFormat {
+    NSMutableArray<GLLVertexAttrib *> *attributes = [NSMutableArray array];
+    [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat]];
+    [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat]];
+    if (self.colorsAreFloats) {
+        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
+    } else {
+        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedByte]];
     }
-    return _vertexFormat;
+    for (NSUInteger i = 0; i < self.countOfUVLayers; i++) {
+        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTexCoord0 layer:i size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeFloat]];
+    }
+    if (self.hasTangentsInFile) {
+        for (NSUInteger i = 0; i < self.countOfUVLayers; i++) {
+            [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTangent0 layer:i size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
+        }
+    }
+    if (self.hasBoneWeights) {
+        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribBoneIndices layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort]];
+        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribBoneWeights layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
+    }
+
+    return [[GLLVertexFormat alloc] initWithAttributes:attributes countOfVertices:0];
+}
+
+- (GLLVertexAttribAccessorSet*)accessorsForFileData:(NSData *)baseData format:(GLLVertexFormat *)fileVertexFormat; {
+    NSUInteger stride = fileVertexFormat.stride;
+    
+    NSUInteger offset = 0;
+    NSMutableArray<GLLVertexAttribAccessor *>* accessors = [[NSMutableArray alloc] init];
+    for (GLLVertexAttrib *attribute in fileVertexFormat.attributes) {
+        [accessors addObject:[[GLLVertexAttribAccessor alloc] initWithAttribute:attribute dataBuffer:baseData offset:offset stride:stride]];
+        offset += attribute.sizeInBytes;
+    }
+    
+    return [[GLLVertexAttribAccessorSet alloc] initWithAccessors:accessors];
 }
 
 #pragma mark - Properties
@@ -264,7 +343,7 @@ void vec_addTo(float *a, float *b)
     return [self.model.meshes indexOfObject:self];
 }
 
-- (BOOL)hasTangents
+- (BOOL)hasTangentsInFile
 {
     // For subclasses to override
     return YES;
@@ -280,17 +359,11 @@ void vec_addTo(float *a, float *b)
 
 - (GLLModelMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
 {
-    NSMutableData *newVertices = [[NSMutableData alloc] init];
     NSMutableData *newElements = [[NSMutableData alloc] init];
-    NSUInteger newVerticesCount = 0;
-    NSMutableDictionary *oldToNewVertices = [[NSMutableDictionary alloc] init];
     
-    GLLVertexFormat *vertexFormat = self.vertexFormat;
-    const NSUInteger stride = vertexFormat.stride;
-    const NSUInteger positionOffset = vertexFormat.offsetForPosition;
+    GLLVertexAttribAccessor *positionData = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribPosition];
     const NSUInteger countOfFaces = self.countOfElements / 3;
     
-    const void *oldBytes = self.vertexData.bytes;
     const uint32_t *oldElements = self.elementData.bytes;
     
     for (NSUInteger i = 0; i < countOfFaces; i++)
@@ -298,9 +371,9 @@ void vec_addTo(float *a, float *b)
         const uint32_t *indices = &oldElements[i*3];
         
         const float *position[3] = {
-            &oldBytes[indices[0]*stride + positionOffset],
-            &oldBytes[indices[1]*stride + positionOffset],
-            &oldBytes[indices[2]*stride + positionOffset]
+            [positionData elementAt:indices[0]],
+            [positionData elementAt:indices[1]],
+            [positionData elementAt:indices[2]],
         };
         
         // Find out if one corner is completely in the box. If yes, then this triangle becomes part of the split mesh.
@@ -319,23 +392,17 @@ void vec_addTo(float *a, float *b)
         
         for (int corner = 0; corner < 3; corner++)
         {
-            // If this vertex is already in the new mesh, then just add the index. Otherwise, add the vertex itself to the vertices, too.
-            NSNumber *newIndex = oldToNewVertices[@(indices[corner])];
-            if (!newIndex)
-            {
-                [newVertices appendBytes:&oldBytes[indices[corner] * stride] length:stride];
-                
-                newIndex = @(newVerticesCount);
-                oldToNewVertices[@(indices[corner])] = newIndex;
-                newVerticesCount += 1;
-            }
-            uint32_t index = newIndex.unsignedIntValue;
+            // Add this index to the new elements
+            NSUInteger index = indices[corner];
             [newElements appendBytes:&index length:sizeof(index)];
         }
     }
     
     GLLModelMesh *result = [[GLLModelMesh alloc] init];
-    result->_vertexData = [newVertices copy];
+    result->_vertexData = _vertexData;
+    result->_vertexFormat = _vertexFormat;
+    result->_vertexDataAccessors = _vertexDataAccessors;
+    result->_countOfVertices = _countOfVertices;
     result->_elementData = [newElements copy];
     
     result->_countOfUVLayers = self.countOfUVLayers;
@@ -363,8 +430,12 @@ void vec_addTo(float *a, float *b)
     NSParameterAssert(name);
     NSParameterAssert(textures);
     
-    GLLVertexFormat *vertexFormat = self.vertexFormat;
-    
+    GLLVertexAttribAccessor *positionAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribPosition];
+    GLLVertexAttribAccessor *normalAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribPosition];
+    GLLVertexAttribAccessor *colorAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribColor layer:0];
+    GLLVertexAttribAccessor *boneIndexAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribBoneIndices];
+    GLLVertexAttribAccessor *boneWeightAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribBoneWeights];
+
     NSMutableString *result = [NSMutableString string];
     [result appendFormat:@"%@\n", name];
     [result appendFormat:@"%lu\n", self.countOfUVLayers];
@@ -373,26 +444,27 @@ void vec_addTo(float *a, float *b)
         [result appendFormat:@"%@\n0\n", texture.lastPathComponent];
     
     [result appendFormat:@"%lu\n", self.countOfVertices];
-    const void *vertexBytes = self.vertexData.bytes;
     for (NSUInteger i = 0; i < self.countOfVertices; i++)
     {
-        const float *position = (const float *) (vertexBytes + i*vertexFormat.stride + vertexFormat.offsetForPosition);
+        const float *position = [positionAccessor elementAt:i];
         [result appendFormat:@"%f %f %f ", position[0], position[1], position[2]];
-        const float *normal = (const float *) (vertexBytes + i*vertexFormat.stride + vertexFormat.offsetForNormal);
+        const float *normal = [normalAccessor elementAt:i];
         [result appendFormat:@"%f %f %f ", normal[0], normal[1], normal[2]];
-        const uint8_t *colors = (const uint8_t *) (vertexBytes + i*vertexFormat.stride + vertexFormat.offsetForColor);
+        const uint8_t *colors = [colorAccessor elementAt:i];
         [result appendFormat:@"%u %u %u %u ", colors[0], colors[1], colors[2], colors[3]];
         for (NSUInteger uvlayer = 0; uvlayer < self.countOfUVLayers; uvlayer++)
         {
-            const float *texCoords = (const float *) (vertexBytes + i*vertexFormat.stride + [vertexFormat offsetForTexCoordLayer:0]);
+            GLLVertexAttribAccessor *texCoordAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribTexCoord0 layer:uvlayer];
+
+            const float *texCoords = [texCoordAccessor elementAt:i];
             [result appendFormat:@"%f %f ", texCoords[0], texCoords[1]];
         }
         if (self.hasBoneWeights)
         {
-            const uint16_t *boneIndices = (const uint16_t *) (vertexBytes + i*vertexFormat.stride + vertexFormat.offsetForBoneIndices);
+            const uint16_t *boneIndices = [boneIndexAccessor elementAt:i];
             [result appendFormat:@"%u %u %u %u ", boneIndices[0], boneIndices[1], boneIndices[2], boneIndices[3]];
             
-            const float *boneWeights = (const float *) (vertexBytes + i*vertexFormat.stride + vertexFormat.offsetForBoneWeights);
+            const float *boneWeights = [boneWeightAccessor elementAt:i];
             [result appendFormat:@"%f %f %f %f ", boneWeights[0], boneWeights[1], boneWeights[2], boneWeights[3]];
         }
         [result appendString:@"\n"];
@@ -405,6 +477,7 @@ void vec_addTo(float *a, float *b)
     [result appendString:@"\n"];
     
     return [result copy];
+    return nil;
 }
 
 - (NSData *)writeBinaryWithName:(NSString *)name texture:(NSArray *)textures;
@@ -422,7 +495,34 @@ void vec_addTo(float *a, float *b)
         [stream appendUint32:0];
     }
     [stream appendUint32:(uint32_t) self.countOfVertices];
-    [stream appendData:self.vertexData];
+    if (self.hasTangentsInFile) {
+        [stream appendData:self.vertexData];
+    } else {
+        // Long way round: Combine all the elements, no matter where they're from
+        GLLVertexAttribAccessor *positionData = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribPosition];
+        GLLVertexAttribAccessor *normalData = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribNormal];
+        GLLVertexAttribAccessor *colorData = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribColor];
+        GLLVertexAttribAccessor *boneIndexData = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribBoneIndices];
+        GLLVertexAttribAccessor *boneWeightData = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribBoneWeights];
+
+        for (NSUInteger i = 0; i < self.countOfVertices; i++) {
+            [stream appendData:[positionData elementDataAt:i]];
+            [stream appendData:[normalData elementDataAt:i]];
+            [stream appendData:[colorData elementDataAt:i]];
+            for (NSUInteger layer = 0; layer < self.countOfUVLayers; layer++) {
+                GLLVertexAttribAccessor *texCoordData = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribTexCoord0 layer:layer];
+                [stream appendData:[texCoordData elementDataAt:i]];
+            }
+            for (NSUInteger layer = 0; layer < self.countOfUVLayers; layer++) {
+                GLLVertexAttribAccessor *tangentData = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribTangent0 layer:layer];
+                [stream appendData:[tangentData elementDataAt:i]];
+            }
+            if (boneIndexData && boneWeightData) {
+                [stream appendData:[boneIndexData elementDataAt:i]];
+                [stream appendData:[boneWeightData elementDataAt:i]];
+            }
+        }
+    }
     [stream appendUint32:(uint32_t) self.countOfElements / 3UL];
     [stream appendData:self.elementData];
     
@@ -431,23 +531,20 @@ void vec_addTo(float *a, float *b)
 
 #pragma mark - Postprocessing
 
-- (void)calculateTangents:(NSMutableData *)vertexData;
+- (GLLVertexAttribAccessorSet*)calculateTangents:(GLLVertexAttribAccessorSet *)fileVertexData;
 {
-    GLLVertexFormat *vertexFormat = self.vertexFormat;
+    GLLVertexAttribAccessor *positionData = [fileVertexData accessorForSemantic:GLLVertexAttribPosition];
+    GLLVertexAttribAccessor *normalData = [fileVertexData accessorForSemantic:GLLVertexAttribNormal];
+
+    NSMutableArray<GLLVertexAttribAccessor *> *result = [[NSMutableArray alloc] init];
     
-    const NSUInteger stride = vertexFormat.stride;
-    const NSUInteger positionOffset = vertexFormat.offsetForPosition;
-    const NSUInteger normalOffset = vertexFormat.offsetForNormal;
-    
-    void *bytes = vertexData.mutableBytes;
     const uint32_t *elements = self.elementData.bytes;
-    
-    if (self.countOfVertices == 0)
-        return;
-    
+        
     for (NSUInteger layer = 0; layer < self.countOfUVLayers; layer++)
     {
-        const NSUInteger texCoordOffset = [vertexFormat offsetForTexCoordLayer:layer];
+        GLLVertexAttribAccessor *texCoordData = [fileVertexData accessorForSemantic:GLLVertexAttribNormal layer:layer];
+        
+        float *tangents = calloc(sizeof(float[4]), self.countOfVertices);
         
         float tangentsU[3*self.countOfVertices];
         float tangentsV[3*self.countOfVertices];
@@ -457,17 +554,17 @@ void vec_addTo(float *a, float *b)
         // First pass: Sum up the tangents for each vector. We can assume that at the start of this method, the tangent for every vertex is (0, 0, 0, 0)^t.
         for (NSUInteger index = 0; index < self.countOfElements; index += 3)
         {
-            float *positions[3] = {
-                &bytes[elements[index + 0] * stride + positionOffset],
-                &bytes[elements[index + 1] * stride + positionOffset],
-                &bytes[elements[index + 2] * stride + positionOffset]
+            const float *positions[3] = {
+                [positionData elementAt:elements[index + 0]],
+                [positionData elementAt:elements[index + 1]],
+                [positionData elementAt:elements[index + 2]],
+            };
+            const float *texCoords[3] = {
+                [texCoordData elementAt:elements[index + 0]],
+                [texCoordData elementAt:elements[index + 1]],
+                [texCoordData elementAt:elements[index + 2]],
             };
             
-            float *texCoords[3] = {
-                &bytes[elements[index + 0] * stride + texCoordOffset],
-                &bytes[elements[index + 1] * stride + texCoordOffset],
-                &bytes[elements[index + 2] * stride + texCoordOffset]
-            };
             // Calculate tangents
             float q1[3] = { positions[1][0] - positions[0][0], positions[1][1] - positions[0][1], positions[1][2] - positions[0][2] };
             float q2[3] = { positions[1][0] - positions[0][0], positions[1][1] - positions[0][1], positions[1][2] - positions[0][2] };
@@ -500,7 +597,6 @@ void vec_addTo(float *a, float *b)
             }
         }
         
-        const NSUInteger tangentOffset = [vertexFormat offsetForTangentLayer:layer];
         for (NSUInteger vertex = 0; vertex < self.countOfVertices; vertex++)
         {
             float *tangentU = &tangentsU[vertex*3];
@@ -508,9 +604,9 @@ void vec_addTo(float *a, float *b)
             float *tangentV = &tangentsV[vertex*3];
             vec_normalize(tangentV);
             
-            float *normal = &bytes[vertex*stride + normalOffset];
+            const float *normal = [normalData elementAt:vertex];
             
-            float normalDotTangentU = vec_dot(&bytes[vertex*stride + normalOffset], &tangentsU[vertex*3]);
+            float normalDotTangentU = vec_dot(normal, &tangentsU[vertex*3]);
             float tangent[3] = {
                 tangentsU[vertex*3 + 0] - normal[0] * normalDotTangentU,
                 tangentsU[vertex*3 + 1] - normal[1] * normalDotTangentU,
@@ -521,26 +617,30 @@ void vec_addTo(float *a, float *b)
             tangentsV[vertex*3 + 1] * (normal[2] * tangentU[0] - normal[0] * tangentU[2]) +
             tangentsV[vertex*3 + 2] * (normal[0] * tangentU[1] - normal[1] * tangentU[0]);
             
-            float *target = &bytes[vertex*stride + tangentOffset];
+            float *target = &tangents[vertex*4];
             target[0] = tangent[0];
             target[1] = tangent[1];
             target[2] = tangent[2];
             target[3] = w > 0.0f ? 1.0f : -1.0f;
         }
+        
+        NSData *tangentsData = [NSData dataWithBytesNoCopy:tangents length:sizeof(float[4]) * self.countOfVertices freeWhenDone:YES];
+        GLLVertexAttrib* attribute = [[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTangent0 layer:layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat];
+        [result addObject:[[GLLVertexAttribAccessor alloc] initWithAttribute:attribute dataBuffer:tangentsData offset:0 stride:attribute.sizeInBytes]];
     }
+    return [[GLLVertexAttribAccessorSet alloc] initWithAccessors:result];
 }
 
-- (BOOL)validateVertexData:(NSData *)vertices indexData:(NSData *)indexData error:(NSError *__autoreleasing*)error;
+- (BOOL)validateVertexData:(GLLVertexAttribAccessorSet *)fileVertexData indexData:(NSData *)indexData error:(NSError *__autoreleasing*)error;
 {
-    GLLVertexFormat *vertexFormat = self.vertexFormat;
+    GLLVertexAttribAccessor *boneIndexData = [fileVertexData accessorForSemantic:GLLVertexAttribBoneIndices];
     
     // Check bone indices
-    if (self.hasBoneWeights)
+    if (boneIndexData)
     {
-        const void *vertexData = vertices.bytes;
         for (NSUInteger i = 0; i < self.countOfVertices; i++)
         {
-            const uint16_t *indices = vertexData + i*vertexFormat.stride + vertexFormat.offsetForBoneIndices;
+            const uint16_t *indices = [boneIndexData elementAt:i];
             
             for (NSUInteger j = 0; j < 4; j++)
             {
@@ -573,39 +673,6 @@ void vec_addTo(float *a, float *b)
     }
     
     return YES;
-}
-
-- (NSData *)normalizeBoneWeightsInVertices:(NSData *)vertexData;
-{
-    NSParameterAssert(vertexData);
-    
-    if (!self.hasBoneWeights)
-        return vertexData; // No processing necessary
-    
-    NSMutableData *mutableVertices = [vertexData mutableCopy];
-    void *bytes = mutableVertices.mutableBytes;
-    const NSUInteger boneWeightOffset = self.vertexFormat.offsetForBoneWeights;
-    const NSUInteger stride = self.vertexFormat.stride;
-    
-    for (NSUInteger i = 0; i < self.countOfVertices; i++)
-    {
-        float *weights = &bytes[boneWeightOffset + i*stride];
-        
-        // Normalize weights. If no weights, use first bone.
-        float weightSum = 0.0f;
-        for (int i = 0; i < 4; i++)
-            weightSum += weights[i];
-        
-        if (weightSum == 0.0f)
-            weights[0] = 1.0f;
-        else if (weightSum != 1.0f)
-        {
-            for (int i = 0; i < 4; i++)
-                weights[i] /= weightSum;
-        }
-    }
-    
-    return mutableVertices;
 }
 
 - (void)finishLoading;

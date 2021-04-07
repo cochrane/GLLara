@@ -10,12 +10,6 @@
 
 #import "NSArray+Map.h"
 
-@interface GLLVertexFormat()
-
-- (NSUInteger)offsetForAttrib:(enum GLLVertexAttribSemantic)attrib layer:(NSUInteger)layer;
-
-@end
-
 @implementation GLLVertexFormat
 
 - (instancetype)initWithAttributes:(NSArray<GLLVertexAttrib *>*)attributes countOfVertices:(NSUInteger)countOfVertices;
@@ -36,32 +30,6 @@
         [NSException raise:NSInvalidArgumentException format:@"%li vertices outside allowed range", countOfVertices];
     
     return self;
-}
-
-- (instancetype)initWithBoneWeights:(BOOL)boneWeights tangents:(BOOL)tangents colorsAsFloats:(BOOL)floatColor countOfUVLayers:(NSUInteger)countOfUVLayers countOfVertices:(NSUInteger)countOfVertices;
-{
-    NSMutableArray<GLLVertexAttrib *> *attributes = [NSMutableArray array];
-    [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:0]];
-    [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
-    if (floatColor) {
-        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
-    } else {
-        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedByte dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
-    }
-    for (NSUInteger i = 0; i < countOfUVLayers; i++) {
-        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTexCoord0 layer:i size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
-    }
-    if (tangents) {
-        for (NSUInteger i = 0; i < countOfUVLayers; i++) {
-            [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTangent0 layer:i size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
-        }
-    }
-    if (boneWeights) {
-        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribBoneIndices layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
-        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribBoneWeights layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat dataBuffer:nil offset:attributes.lastObject.sizeInBytes + attributes.lastObject.dataOffset]];
-    }
-    
-    return [self initWithAttributes:attributes countOfVertices:countOfVertices];
 }
 
 - (NSUInteger)hash
@@ -102,38 +70,6 @@
     return uvLayers;
 }
 
-- (NSUInteger)offsetForAttrib:(enum GLLVertexAttribSemantic)attrib layer:(NSUInteger)layer; {
-    return [self attribForSemantic:attrib layer:layer].dataOffset;
-}
-
-- (NSUInteger)offsetForPosition
-{
-    return [self offsetForAttrib:GLLVertexAttribPosition layer:0];
-}
-- (NSUInteger)offsetForNormal
-{
-    return [self offsetForAttrib:GLLVertexAttribNormal layer:0];
-}
-- (NSUInteger)offsetForColor
-{
-    return [self offsetForAttrib:GLLVertexAttribColor layer:0];
-}
-- (NSUInteger)offsetForTexCoordLayer:(NSUInteger)layer
-{
-    return [self offsetForAttrib:GLLVertexAttribTexCoord0 layer:layer];
-}
-- (NSUInteger)offsetForTangentLayer:(NSUInteger)layer
-{
-    return [self offsetForAttrib:GLLVertexAttribTangent0 layer:layer];
-}
-- (NSUInteger)offsetForBoneIndices
-{
-    return [self offsetForAttrib:GLLVertexAttribBoneIndices layer:0];
-}
-- (NSUInteger)offsetForBoneWeights
-{
-    return [self offsetForAttrib:GLLVertexAttribBoneWeights layer:0];
-}
 - (NSUInteger)stride
 {
     NSUInteger stride = 0;

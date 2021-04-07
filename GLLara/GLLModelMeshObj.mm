@@ -12,7 +12,12 @@
 
 #import "GLLModel.h"
 #import "GLLModelParams.h"
+#import "GLLVertexAttrib.h"
+#import "GLLVertexAttribAccessor.h"
+#import "GLLVertexAttribAccessorSet.h"
+#import "GLLVertexFormat.h"
 #import "GLLTiming.h"
+#import "NSArray+Map.h"
 
 @implementation GLLModelMeshObj
 
@@ -28,7 +33,7 @@
     
     GLLBeginTiming("OBJ mesh vertex copy");
     std::unordered_map<unsigned, uint32_t> globalToLocalVertices;
-    NSMutableData *vertices = [[NSMutableData alloc] initWithCapacity:(sizeof(GLLObjFile::VertexData) + sizeof(float[4])) * (range.end - range.start)];
+    NSMutableData *vertices = [[NSMutableData alloc] initWithCapacity:sizeof(GLLObjFile::VertexData) * (range.end - range.start)];
     uint32_t *elementData = (uint32_t *) malloc(sizeof(uint32_t)*(range.end - range.start));
     
     for (unsigned i = range.start; i < range.end; i++)
@@ -53,31 +58,35 @@
             [vertices appendBytes:vertex.tex length:sizeof(vertex.tex[0])];
             [vertices appendBytes:&texCoordY length:sizeof(vertex.tex[1])];
             
-            // Space for tangents
-            float zero[4] = { 0, 0, 0, 0 };
-            [vertices appendBytes:&zero length:sizeof(zero)];
-            
             // No bone weights or indices here; OBJs use special shaders that don't use them.
         }
         else
             elementData[i - range.start] = localIndexIter->second;
     }
     
+    // Set up vertex attributes
+    self.vertexData = vertices;
+    GLLVertexAttribAccessorSet *fileAccessors = [[GLLVertexAttribAccessorSet alloc] initWithAccessors:@[
+    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat dataBuffer:self.vertexData offset:offsetof(GLLObjFile::VertexData, vert) stride:sizeof(GLLObjFile::VertexData)],
+    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat dataBuffer:self.vertexData offset:offsetof(GLLObjFile::VertexData, norm) stride:sizeof(GLLObjFile::VertexData)],
+    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat dataBuffer:self.vertexData offset:offsetof(GLLObjFile::VertexData, color) stride:sizeof(GLLObjFile::VertexData)],
+    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribTexCoord0 layer:0 size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeFloat dataBuffer:self.vertexData offset:offsetof(GLLObjFile::VertexData, tex) stride:sizeof(GLLObjFile::VertexData)]]];
+    
     // Necessary postprocessing
     GLLEndTiming("OBJ mesh vertex copy");
     GLLBeginTiming("OBJ mesh tangents");
-    [self calculateTangents:vertices];
+    GLLVertexAttribAccessorSet *tangentAccessors = [self calculateTangents:fileAccessors];
     GLLEndTiming("OBJ mesh tangents");
+    self.vertexDataAccessors = [fileAccessors setByCombiningWith:tangentAccessors];
     
     GLLBeginTiming("OBJ mesh params");
     // Set up other attributes
-    self.vertexData = vertices;
     self.elementData = [NSData dataWithBytesNoCopy:elementData length:sizeof(uint32_t) * (range.end - range.start) freeWhenDone:YES];
     self.countOfVertices = globalToLocalVertices.size();
     self.countOfElements = range.end - range.start;
     
     // Previous actions may have disturbed vertex format (because it also depends on count of vertices) so uncache it.
-    self.vertexFormat = nil;
+    self.vertexFormat = [self.vertexDataAccessors vertexFormatWithElementCount:self.countOfElements];
     
     // Setup material
     // Three options: Diffuse, DiffuseSpecular, DiffuseNormal, DiffuseSpecularNormal

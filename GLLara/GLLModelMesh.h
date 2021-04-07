@@ -12,6 +12,8 @@
 @class GLLMeshSplitter;
 @class GLLModel;
 @class GLLShaderDescription;
+@class GLLVertexAttribAccessor;
+@class GLLVertexAttribAccessorSet;
 @class GLLVertexFormat;
 @class TRInDataStream;
 
@@ -49,6 +51,7 @@ typedef enum GLLCullFaceMode
  */
 @property (nonatomic, retain) NSData *vertexData;
 @property (nonatomic, assign) NSUInteger countOfVertices;
+@property (nonatomic, retain) GLLVertexAttribAccessorSet* vertexDataAccessors;
 
 @property (nonatomic, copy) GLLVertexFormat *vertexFormat;
 
@@ -67,7 +70,7 @@ typedef enum GLLCullFaceMode
  */
 @property (nonatomic, assign) NSUInteger countOfUVLayers;
 @property (nonatomic, assign, readonly) BOOL hasBoneWeights;
-@property (nonatomic, readonly) BOOL hasTangents;
+@property (nonatomic, readonly) BOOL hasTangentsInFile;
 @property (nonatomic, readonly) BOOL colorsAreFloats;
 @property (nonatomic, copy, readonly) NSURL *baseURL;
 
@@ -86,13 +89,10 @@ typedef enum GLLCullFaceMode
 
 // -- For subclasses
 // Calculates the tangents based on the texture coordinates, and fills them in the correct fields of the data, using the offsets and strides of the file
-- (void)calculateTangents:(NSMutableData *)vertexData;
+- (GLLVertexAttribAccessorSet *)calculateTangents:(GLLVertexAttribAccessorSet *)fileVertexData;
 
 // Checks whether all the data is valid and can be used. Should be done before calculateTangents:!
-- (BOOL)validateVertexData:(NSData *)vertexData indexData:(NSData *)indicesData error:(NSError *__autoreleasing*)error;
-
-// Ensures that all bone weights are correct
-- (NSData *)normalizeBoneWeightsInVertices:(NSData *)vertexData __attribute__((nonnull(1)));
+- (BOOL)validateVertexData:(GLLVertexAttribAccessorSet *)vertices indexData:(NSData *)indexData error:(NSError *__autoreleasing*)error;
 
 // Finalize loading. In particular, load render parameters.
 - (void)finishLoading;

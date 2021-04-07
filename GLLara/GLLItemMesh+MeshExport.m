@@ -74,14 +74,6 @@
 }
 - (NSData *)writeBinaryError:(NSError *__autoreleasing*)error;
 {
-    if (!self.mesh.hasTangents)
-    {
-        if (error)
-            *error = [NSError errorWithDomain:@"GLLMeshExporting" code:1 userInfo:@{
-                                                                                    NSLocalizedDescriptionKey : NSLocalizedString(@"Could not export model.", @"can't write meshes without tangents"),
-                                                                                    NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Meshes that originally had no tangents cannot be exported at this time.", @"can't write meshes without tangents")}];
-        return nil;
-    }
     NSString *name = [self genericItemNameError:error];
     if (!name) return nil;
     return [self.mesh writeBinaryWithName:name texture:self.textureURLsInShaderOrder];

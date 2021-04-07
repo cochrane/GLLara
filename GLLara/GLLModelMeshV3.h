@@ -17,6 +17,6 @@
  */
 @interface GLLModelMeshV3 : GLLModelMesh
 
-@property (nonatomic, readonly) BOOL hasTangents;
+@property (nonatomic, readonly) BOOL hasTangentsInFile;
 
 @end
