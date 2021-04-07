@@ -86,28 +86,10 @@
     XCTAssertEqual(mesh.vertexData.length, (NSUInteger) 108, @"Vertex data count wrong");
     XCTAssertEqual(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
     XCTAssertEqual(mesh.vertexFormat.stride, (NSUInteger) 36, @"Wrong stride");
-    XCTAssertEqual(mesh.vertexFormat.offsetForPosition, (NSUInteger) 0, @"Wrong offset");
-    XCTAssertEqual(mesh.vertexFormat.offsetForNormal, (NSUInteger) 12, @"Wrong offset");
-    XCTAssertEqual(mesh.vertexFormat.offsetForColor, (NSUInteger) 24, @"Wrong offset");
-    XCTAssertEqual([mesh.vertexFormat offsetForTexCoordLayer:0], (NSUInteger) 28, @"Wrong offset");
     XCTAssertFalse(mesh.hasTangentsInFile, @"Mesh has no tangents");
     
     const uint32_t *elements = mesh.elementData.bytes;
     XCTAssertTrue(memcmp(elements, (const uint32_t []) { 0, 1, 2 }, sizeof(uint32_t [3])) == 0, @"incorrect indices");
-    
-    const void *vertices = mesh.vertexData.bytes;
-    XCTAssertTrue(memcmp(vertices + mesh.vertexFormat.stride*0 + mesh.vertexFormat.offsetForPosition,
-                         (float [3]) { -0.5, 0.0, 0.0 },
-                         sizeof(float [3])) == 0,
-                  @"Vertex position 0");
-    XCTAssertTrue(memcmp(vertices + mesh.vertexFormat.stride*1 + mesh.vertexFormat.offsetForPosition,
-                         (float [3]) { 0.5, 0.0, 0.0 },
-                         sizeof(float [3])) == 0,
-                  @"Vertex position 1");
-    XCTAssertTrue(memcmp(vertices + mesh.vertexFormat.stride*2 + mesh.vertexFormat.offsetForPosition,
-                         (float [3]) { 0.0, 1.0, 0.0 },
-                         sizeof(float [3])) == 0,
-                  @"Vertex position 2");
 }
 
 - (void)testTypicalModel
@@ -226,29 +208,9 @@
     XCTAssertEqual(mesh.vertexData.length, (NSUInteger) 180, @"Vertex data count wrong");
     XCTAssertEqual(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
     XCTAssertEqual(mesh.vertexFormat.stride, (NSUInteger) 60, @"Wrong stride");
-    XCTAssertEqual(mesh.vertexFormat.offsetForPosition, (NSUInteger) 0, @"Wrong offset");
-    XCTAssertEqual(mesh.vertexFormat.offsetForNormal, (NSUInteger) 12, @"Wrong offset");
-    XCTAssertEqual(mesh.vertexFormat.offsetForColor, (NSUInteger) 24, @"Wrong offset");
-    XCTAssertEqual([mesh.vertexFormat offsetForTexCoordLayer:0], (NSUInteger) 28, @"Wrong offset");
-    XCTAssertEqual(mesh.vertexFormat.offsetForBoneIndices, (NSUInteger) 36, @"Wrong offset");
-    XCTAssertEqual(mesh.vertexFormat.offsetForBoneWeights, (NSUInteger) 44, @"Wrong offset");
     
     const uint32_t *elements = mesh.elementData.bytes;
     XCTAssertTrue(memcmp(elements, (const uint32_t []) { 0, 1, 2 }, sizeof(uint32_t [3])) == 0, @"incorrect indices");
-    
-    const void *vertices = mesh.vertexData.bytes;
-    XCTAssertTrue(memcmp(vertices + mesh.vertexFormat.stride*0 + mesh.vertexFormat.offsetForPosition,
-                         (float [3]) { -0.5, 0.0, 0.0 },
-                         sizeof(float [3])) == 0,
-                  @"Vertex position 0");
-    XCTAssertTrue(memcmp(vertices + mesh.vertexFormat.stride*1 + mesh.vertexFormat.offsetForPosition,
-                         (float [3]) { 0.5, 0.0, 0.0 },
-                         sizeof(float [3])) == 0,
-                  @"Vertex position 1");
-    XCTAssertTrue(memcmp(vertices + mesh.vertexFormat.stride*2 + mesh.vertexFormat.offsetForPosition,
-                         (float [3]) { 0.0, 1.0, 0.0 },
-                         sizeof(float [3])) == 0,
-                  @"Vertex position 2");
 }
 
 

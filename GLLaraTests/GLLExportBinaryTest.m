@@ -117,28 +117,9 @@
     STAssertEquals(mesh.vertexData.length, (NSUInteger) 228, @"Vertex data count wrong");
     STAssertEquals(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
     STAssertEquals(mesh.stride, (NSUInteger) 76, @"Wrong stride");
-    STAssertEquals(mesh.offsetForPosition, (NSUInteger) 0, @"Wrong offset");
-    STAssertEquals(mesh.offsetForNormal, (NSUInteger) 12, @"Wrong offset");
-    STAssertEquals(mesh.offsetForColor, (NSUInteger) 24, @"Wrong offset");
-    STAssertEquals([mesh offsetForTexCoordLayer:0], (NSUInteger) 28, @"Wrong offset");
-    STAssertEquals([mesh offsetForTangentLayer:0], (NSUInteger) 36, @"Wrong offset");
     
     const uint32_t *elements = mesh.elementData.bytes;
     STAssertTrue(memcmp(elements, (const uint32_t []) { 0, 1, 2 }, sizeof(uint32_t [3])) == 0, @"incorrect indices");
-    
-    const void *vertices = mesh.vertexData.bytes;
-    STAssertTrue(memcmp(vertices + mesh.stride*0 + mesh.offsetForPosition,
-                        (float [3]) { -0.5, 0.0, 0.0 },
-                        sizeof(float [3])) == 0,
-                 @"Vertex position 0");
-    STAssertTrue(memcmp(vertices + mesh.stride*1 + mesh.offsetForPosition,
-                        (float [3]) { 0.5, 0.0, 0.0 },
-                        sizeof(float [3])) == 0,
-                 @"Vertex position 1");
-    STAssertTrue(memcmp(vertices + mesh.stride*2 + mesh.offsetForPosition,
-                        (float [3]) { 0.0, 1.0, 0.0 },
-                        sizeof(float [3])) == 0,
-                 @"Vertex position 2");
 }
 
 - (void)testBinaryFromBinary
@@ -271,28 +252,9 @@
     STAssertEquals(mesh.vertexData.length, (NSUInteger) 228, @"Vertex data count wrong");
     STAssertEquals(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
     STAssertEquals(mesh.stride, (NSUInteger) 76, @"Wrong stride");
-    STAssertEquals(mesh.offsetForPosition, (NSUInteger) 0, @"Wrong offset");
-    STAssertEquals(mesh.offsetForNormal, (NSUInteger) 12, @"Wrong offset");
-    STAssertEquals(mesh.offsetForColor, (NSUInteger) 24, @"Wrong offset");
-    STAssertEquals([mesh offsetForTexCoordLayer:0], (NSUInteger) 28, @"Wrong offset");
-    STAssertEquals([mesh offsetForTangentLayer:0], (NSUInteger) 36, @"Wrong offset");
     
     const uint32_t *elements = mesh.elementData.bytes;
     STAssertTrue(memcmp(elements, (const uint32_t []) { 0, 1, 2 }, sizeof(uint32_t [3])) == 0, @"incorrect indices");
-    
-    const void *vertices = mesh.vertexData.bytes;
-    STAssertTrue(memcmp(vertices + mesh.stride*0 + mesh.offsetForPosition,
-                        (float [3]) { -0.5, 0.0, 0.0 },
-                        sizeof(float [3])) == 0,
-                 @"Vertex position 0");
-    STAssertTrue(memcmp(vertices + mesh.stride*1 + mesh.offsetForPosition,
-                        (float [3]) { 0.5, 0.0, 0.0 },
-                        sizeof(float [3])) == 0,
-                 @"Vertex position 1");
-    STAssertTrue(memcmp(vertices + mesh.stride*2 + mesh.offsetForPosition,
-                        (float [3]) { 0.0, 1.0, 0.0 },
-                        sizeof(float [3])) == 0,
-                 @"Vertex position 2");
 }
 
 @end
