@@ -47,9 +47,8 @@ typedef enum GLLCullFaceMode
 @property (nonatomic, assign, readonly) NSUInteger meshIndex;
 
 /*
- * Vertex buffer (format described below)
+ * Vertex buffer
  */
-@property (nonatomic, retain) NSData *vertexData;
 @property (nonatomic, assign) NSUInteger countOfVertices;
 @property (nonatomic, retain) GLLVertexAttribAccessorSet* vertexDataAccessors;
 

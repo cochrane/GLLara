@@ -83,7 +83,6 @@
     XCTAssertEqual(mesh.countOfUVLayers, (NSUInteger) 1, @"Not enough UV layers");
     XCTAssertEqual(mesh.countOfVertices, (NSUInteger) 3, @"Not enough vertices");
     
-    XCTAssertEqual(mesh.vertexData.length, (NSUInteger) 108, @"Vertex data count wrong");
     XCTAssertEqual(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
     XCTAssertEqual(mesh.vertexFormat.stride, (NSUInteger) 36, @"Wrong stride");
     XCTAssertFalse(mesh.hasTangentsInFile, @"Mesh has no tangents");
@@ -205,7 +204,6 @@
     XCTAssertEqual(mesh.countOfUVLayers, (NSUInteger) 1, @"Not enough UV layers");
     XCTAssertEqual(mesh.countOfVertices, (NSUInteger) 3, @"Not enough vertices");
     
-    XCTAssertEqual(mesh.vertexData.length, (NSUInteger) 180, @"Vertex data count wrong");
     XCTAssertEqual(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
     XCTAssertEqual(mesh.vertexFormat.stride, (NSUInteger) 60, @"Wrong stride");
     

@@ -73,7 +73,6 @@
     XCTAssertEqual(mesh.countOfUVLayers, (NSUInteger) 0, @"Mesh is not empty");
     XCTAssertEqual(mesh.countOfVertices, (NSUInteger) 0, @"Mesh is not empty");
     
-    XCTAssertEqual(mesh.vertexData.length, (NSUInteger) 0, @"Mesh is not empty");
     XCTAssertEqual(mesh.elementData.length, (NSUInteger) 0, @"Mesh is not empty");
 }
 
@@ -149,7 +148,6 @@
     XCTAssertEqual(mesh.countOfUVLayers, (NSUInteger) 1, @"Not enough UV layers");
     XCTAssertEqual(mesh.countOfVertices, (NSUInteger) 3, @"Not enough vertices");
     
-    XCTAssertEqual(mesh.vertexData.length, (NSUInteger) 228, @"Vertex data count wrong");
     XCTAssertEqual(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
     XCTAssertEqual(mesh.vertexFormat.stride, (NSUInteger) 76, @"Wrong stride");
     
@@ -196,7 +194,6 @@
     XCTAssertEqual(mesh.countOfUVLayers, (NSUInteger) 1, @"Not enough UV layers");
     XCTAssertEqual(mesh.countOfVertices, (NSUInteger) 3, @"Not enough vertices");
     
-    XCTAssertEqual(mesh.vertexData.length, (NSUInteger) 156, @"Vertex data count wrong");
     XCTAssertEqual(mesh.elementData.length, (NSUInteger) 12, @"Element data count wrong");
     XCTAssertEqual(mesh.vertexFormat.stride, (NSUInteger) 52, @"Wrong stride");
     

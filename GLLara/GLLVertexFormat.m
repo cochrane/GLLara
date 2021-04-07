@@ -8,8 +8,6 @@
 
 #import "GLLVertexFormat.h"
 
-#import "NSArray+Map.h"
-
 @implementation GLLVertexFormat
 
 - (instancetype)initWithAttributes:(NSArray<GLLVertexAttrib *>*)attributes countOfVertices:(NSUInteger)countOfVertices;
@@ -44,30 +42,6 @@
     
     GLLVertexFormat *format = (GLLVertexFormat *) object;
     return format.numElementBytes == self.numElementBytes && [format.attributes isEqual:self.attributes];
-}
-
-- (GLLVertexAttrib *)attribForSemantic:(enum GLLVertexAttribSemantic)semantic layer:(NSUInteger)layer; {
-    return [self.attributes firstObjectMatching:^BOOL(GLLVertexAttrib *attribute) {
-        return attribute.semantic == semantic && attribute.layer == layer;
-    }];
-}
-
-- (BOOL)hasBoneWeights {
-    return [self attribForSemantic:GLLVertexAttribBoneWeights layer:0] != nil;
-}
-
-- (BOOL)hasTangents {
-    return [self attribForSemantic:GLLVertexAttribTangent0 layer:0] != nil;
-}
-
-- (NSUInteger)countOfUVLayers {
-    NSUInteger uvLayers = 0;
-    for (GLLVertexAttrib *attribute in _attributes) {
-        if (attribute.semantic == GLLVertexAttribTexCoord0) {
-            uvLayers += 1;
-        }
-    }
-    return uvLayers;
 }
 
 - (NSUInteger)stride

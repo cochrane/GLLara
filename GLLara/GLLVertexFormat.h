@@ -19,12 +19,7 @@
 
 @property (nonatomic, readonly, copy) NSArray<GLLVertexAttrib *>* attributes;
 
-- (GLLVertexAttrib *)attribForSemantic:(enum GLLVertexAttribSemantic)attrib layer:(NSUInteger)layer;
-
-@property (nonatomic, readonly, assign) BOOL hasBoneWeights;
-@property (nonatomic, readonly, assign) BOOL hasTangents;
-@property (nonatomic, readonly, assign) NSUInteger countOfUVLayers;
-// Number of bytes for storing an element. Only valid values are 1, 2 and 4
+// Number of bytes for storing an index element. Only valid values are 1, 2 and 4
 @property (nonatomic, readonly, assign) NSUInteger numElementBytes;
 
 @property (nonatomic, assign, readonly) NSUInteger stride;

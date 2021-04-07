@@ -96,7 +96,6 @@
     // color - float[4]
     // tex-coord - float[2]
     // tangent - float[4]
-    XCTAssertEqual(mesh.vertexData.length, (NSUInteger) 64*3, @"Vertex data count wrong");
     XCTAssertEqual(mesh.elementData.length, (NSUInteger) 24, @"Element data count wrong");
     XCTAssertEqual(mesh.vertexFormat.stride, (NSUInteger) 64, @"Wrong stride");
     
@@ -138,7 +137,6 @@
     XCTAssertEqual(mesh.countOfUVLayers, (NSUInteger) 1, @"Not enough UV layers");
     XCTAssertEqual(mesh.countOfVertices, (NSUInteger) 3, @"Not enough vertices");
     
-    XCTAssertEqual(mesh.vertexData.length, (NSUInteger) 64*3, @"Vertex data count wrong");
     XCTAssertEqual(mesh.elementData.length, (NSUInteger) 24, @"Element data count wrong");
     XCTAssertEqual(mesh.vertexFormat.stride, (NSUInteger) 64, @"Wrong stride");
     

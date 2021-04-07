@@ -16,7 +16,6 @@
 #import "GLLVertexAttribAccessor.h"
 #import "GLLVertexAttribAccessorSet.h"
 #import "GLLVertexFormat.h"
-#import "NSArray+Map.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
@@ -103,8 +102,8 @@ void vec_addTo(float *a, const float *b)
     
     _countOfVertices = [stream readUint32];
     GLLVertexFormat *fileVertexFormat = self.fileVertexFormat;
-    NSData *rawVertexData = [stream dataWithLength:_countOfVertices * fileVertexFormat.stride];
-    if (!rawVertexData)
+    NSData *vertexData = [stream dataWithLength:_countOfVertices * fileVertexFormat.stride];
+    if (!vertexData)
     {
         if (error)
             *error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_PrematureEndOfFile userInfo:@{
@@ -112,7 +111,6 @@ void vec_addTo(float *a, const float *b)
                                                                                                                                  NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The vertex data for a mesh could not be loaded.", @"Premature end of file error") }];
         return nil;
     }
-    _vertexData = rawVertexData;
     
     _countOfElements = 3 * [stream readUint32]; // File saves number of triangles
     _elementData = [stream dataWithLength:_countOfElements * sizeof(uint32_t)];
@@ -127,7 +125,7 @@ void vec_addTo(float *a, const float *b)
     }
     
     // Prepare the vertex data
-    GLLVertexAttribAccessorSet* fileAccessors = [self accessorsForFileData:_vertexData format:fileVertexFormat];
+    GLLVertexAttribAccessorSet* fileAccessors = [self accessorsForFileData:vertexData format:fileVertexFormat];
     
     if (![self validateVertexData:fileAccessors indexData:_elementData error:error])
         return nil;
@@ -173,34 +171,34 @@ void vec_addTo(float *a, const float *b)
     
     // Create vertex format
     GLLVertexFormat *fileVertexFormat = self.fileVertexFormat;
-    NSMutableData *rawVertexData = [[NSMutableData alloc] initWithCapacity:_countOfVertices * fileVertexFormat.stride];
+    NSMutableData *vertexData = [[NSMutableData alloc] initWithCapacity:_countOfVertices * fileVertexFormat.stride];
     for (NSUInteger i = 0; i < self.countOfVertices; i++)
     {
         // Vertices + normals
         for (NSUInteger j = 0; j < 6; j++)
         {
             float value = [scanner readFloat32];
-            [rawVertexData appendBytes:&value length:sizeof(value)];
+            [vertexData appendBytes:&value length:sizeof(value)];
         }
         
         // Color
         for (NSUInteger j = 0; j < 4; j++)
         {
             uint8_t value = [scanner readUint8];
-            [rawVertexData appendBytes:&value length:sizeof(value)];
+            [vertexData appendBytes:&value length:sizeof(value)];
         }
         // Tex coords
         for (NSUInteger j = 0; j < 2*_countOfUVLayers; j++)
         {
             float value = [scanner readFloat32];
-            [rawVertexData appendBytes:&value length:sizeof(value)];
+            [vertexData appendBytes:&value length:sizeof(value)];
         }
         
         // Leave space for tangents
         for (NSUInteger j = 0; j < 4*_countOfUVLayers; j++)
         {
             float zero = 0.0f;
-            [rawVertexData appendBytes:&zero length:sizeof(zero)];
+            [vertexData appendBytes:&zero length:sizeof(zero)];
         }
         
         if (self.hasBoneWeights)
@@ -209,7 +207,7 @@ void vec_addTo(float *a, const float *b)
             NSUInteger boneIndexCount = 0;
             for (; boneIndexCount < 4; boneIndexCount++) {
                 uint16_t value = [scanner readUint16];
-                [rawVertexData appendBytes:&value length:sizeof(value)];
+                [vertexData appendBytes:&value length:sizeof(value)];
                 
                 // Some .mesh.ascii files have fewer bones and weights
                 if ([scanner hasNewline]) {
@@ -219,7 +217,7 @@ void vec_addTo(float *a, const float *b)
             }
             for (; boneIndexCount < 4; boneIndexCount++) {
                 uint16_t value = 0;
-                [rawVertexData appendBytes:&value length:sizeof(value)];
+                [vertexData appendBytes:&value length:sizeof(value)];
             }
             
             // Bone weights
@@ -249,7 +247,7 @@ void vec_addTo(float *a, const float *b)
                 boneWeights[3] /= sum;
             }
             
-            [rawVertexData appendBytes:boneWeights length:sizeof(boneWeights)];
+            [vertexData appendBytes:boneWeights length:sizeof(boneWeights)];
         }
     }
     
@@ -262,10 +260,8 @@ void vec_addTo(float *a, const float *b)
     }
     _elementData = [elementData copy];
     
-    _vertexData = rawVertexData;
-    
     // Prepare the vertex data
-    GLLVertexAttribAccessorSet* fileAccessors = [self accessorsForFileData:_vertexData format:fileVertexFormat];
+    GLLVertexAttribAccessorSet* fileAccessors = [self accessorsForFileData:vertexData format:fileVertexFormat];
     GLLVertexAttribAccessorSet* tangents = [self calculateTangents:fileAccessors];
     
     _vertexDataAccessors = [fileAccessors setByCombiningWith:tangents];
@@ -399,7 +395,6 @@ void vec_addTo(float *a, const float *b)
     }
     
     GLLModelMesh *result = [[GLLModelMesh alloc] init];
-    result->_vertexData = _vertexData;
     result->_vertexFormat = _vertexFormat;
     result->_vertexDataAccessors = _vertexDataAccessors;
     result->_countOfVertices = _countOfVertices;
@@ -496,7 +491,7 @@ void vec_addTo(float *a, const float *b)
     }
     [stream appendUint32:(uint32_t) self.countOfVertices];
     if (self.hasTangentsInFile) {
-        [stream appendData:self.vertexData];
+        [stream appendData:self.vertexDataAccessors.accessors.firstObject.dataBuffer];
     } else {
         // Long way round: Combine all the elements, no matter where they're from
         GLLVertexAttribAccessor *positionData = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribPosition];

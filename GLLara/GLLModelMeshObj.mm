@@ -65,12 +65,11 @@
     }
     
     // Set up vertex attributes
-    self.vertexData = vertices;
     GLLVertexAttribAccessorSet *fileAccessors = [[GLLVertexAttribAccessorSet alloc] initWithAccessors:@[
-    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat dataBuffer:self.vertexData offset:offsetof(GLLObjFile::VertexData, vert) stride:sizeof(GLLObjFile::VertexData)],
-    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat dataBuffer:self.vertexData offset:offsetof(GLLObjFile::VertexData, norm) stride:sizeof(GLLObjFile::VertexData)],
-    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat dataBuffer:self.vertexData offset:offsetof(GLLObjFile::VertexData, color) stride:sizeof(GLLObjFile::VertexData)],
-    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribTexCoord0 layer:0 size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeFloat dataBuffer:self.vertexData offset:offsetof(GLLObjFile::VertexData, tex) stride:sizeof(GLLObjFile::VertexData)]]];
+    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, vert) stride:sizeof(GLLObjFile::VertexData)],
+    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, norm) stride:sizeof(GLLObjFile::VertexData)],
+    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, color) stride:sizeof(GLLObjFile::VertexData)],
+    [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribTexCoord0 layer:0 size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, tex) stride:sizeof(GLLObjFile::VertexData)]]];
     
     // Necessary postprocessing
     GLLEndTiming("OBJ mesh vertex copy");
