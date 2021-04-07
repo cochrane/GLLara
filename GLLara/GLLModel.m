@@ -18,6 +18,8 @@
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
+#import "GLLara-Swift.h"
+
 NSString *GLLModelLoadingErrorDomain = @"GLL Model loading error domain";
 
 @interface GLLModel ()
@@ -63,6 +65,11 @@ static NSCache *cachedModels;
         else if ([file.path hasSuffix:@".obj"])
         {
             result = [[GLLModelObj alloc] initWithContentsOfURL:file error:error];
+            if (!result) return nil;
+        }
+        else if ([file.path hasSuffix:@".gltf"])
+        {
+            result = [[GLLModelGltf alloc] initWithUrl:file error:error];
             if (!result) return nil;
         }
         else
