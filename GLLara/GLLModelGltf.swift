@@ -312,15 +312,21 @@ class GLLModelGltf: GLLModel {
                     mesh.countOfUVLayers = UInt(uvLayers.count)
                     mesh.vertexDataAccessors = GLLVertexAttribAccessorSet(accessors: accessors)
                     
-                    let elements = try loadData.getUnboundAccessor(for: primitive.indices ?? "this mesh does not have indices we should probably add support for that ya know")
-                    mesh.elementData = elements.view.buffer.data.subdata(in: elements.view.range)
-                    if ![5120, 5121, 5122, 5123, 5124, 5125, 5126].contains(elements.accessor.componentType) {
-                        throw NSError()
+                    if let indicesKey = primitive.indices {
+                        let elements = try loadData.getUnboundAccessor(for: indicesKey)
+                        mesh.elementData = elements.view.buffer.data.subdata(in: elements.view.range)
+                        if ![5120, 5121, 5122, 5123, 5124, 5125, 5126].contains(elements.accessor.componentType) {
+                            throw NSError()
+                        }
+                        mesh.elementComponentType = GLLVertexAttribComponentType(rawValue:  elements.accessor.componentType)!
+                        mesh.countOfElements = UInt(elements.accessor.count)
+                    } else {
+                        mesh.elementData = nil
+                        mesh.elementComponentType = .GllVertexAttribComponentTypeUnsignedByte
+                        mesh.countOfElements = 0
                     }
-                    mesh.elementComponentType = GLLVertexAttribComponentType(rawValue:  elements.accessor.componentType)!
-                    mesh.countOfElements = UInt(elements.accessor.count)
                     
-                    mesh.vertexFormat = mesh.vertexDataAccessors.vertexFormat(withElementCount: UInt(elements.accessor.count))
+                    mesh.vertexFormat = mesh.vertexDataAccessors.vertexFormat(withVertexCount: UInt(mesh.countOfVertices), hasIndices: mesh.elementData != nil)
                                         
                     self.meshes.append(mesh)
                 }

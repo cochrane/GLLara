@@ -85,7 +85,7 @@
     self.countOfElements = range.end - range.start;
     
     // Previous actions may have disturbed vertex format (because it also depends on count of vertices) so uncache it.
-    self.vertexFormat = [self.vertexDataAccessors vertexFormatWithElementCount:self.countOfElements];
+    self.vertexFormat = [self.vertexDataAccessors vertexFormatWithVertexCount:self.countOfVertices hasIndices:YES];
     
     // Setup material
     // Three options: Diffuse, DiffuseSpecular, DiffuseNormal, DiffuseSpecularNormal

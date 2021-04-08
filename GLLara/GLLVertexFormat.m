@@ -10,7 +10,7 @@
 
 @implementation GLLVertexFormat
 
-- (instancetype)initWithAttributes:(NSArray<GLLVertexAttrib *>*)attributes countOfVertices:(NSUInteger)countOfVertices;
+- (instancetype)initWithAttributes:(NSArray<GLLVertexAttrib *>*)attributes countOfVertices:(NSUInteger)countOfVertices hasIndices:(BOOL)hasIndices;
 {
     if (!(self = [super init])) {
         return nil;
@@ -18,14 +18,18 @@
     
     _attributes = [attributes copy];
     
-    if (countOfVertices < UINT8_MAX)
-        _numElementBytes = 1;
-    else if (countOfVertices < UINT16_MAX)
-        _numElementBytes = 2;
-    else if (countOfVertices < UINT32_MAX)
-        _numElementBytes = 4;
-    else
-        [NSException raise:NSInvalidArgumentException format:@"%li vertices outside allowed range", countOfVertices];
+    if (hasIndices) {
+        if (countOfVertices < UINT8_MAX)
+            _numElementBytes = 1;
+        else if (countOfVertices < UINT16_MAX)
+            _numElementBytes = 2;
+        else if (countOfVertices < UINT32_MAX)
+            _numElementBytes = 4;
+        else
+            [NSException raise:NSInvalidArgumentException format:@"%li vertices outside allowed range", countOfVertices];
+    } else {
+        _numElementBytes = 0;
+    }
     
     return self;
 }

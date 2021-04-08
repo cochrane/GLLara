@@ -23,7 +23,13 @@
     _attribute = attribute;
     _dataBuffer = dataBuffer;
     _dataOffset = dataOffset;
-    _stride = stride;
+    
+    if (stride == 0) {
+        // As always in GL world, a stride of 0 means "calculate it yourself", not actually 0, which would make no sense.
+        _stride = attribute.sizeInBytes;
+    } else {
+        _stride = stride;
+    }
     
     return self;
 }

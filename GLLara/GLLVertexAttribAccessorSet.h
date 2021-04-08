@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (GLLVertexAttribAccessor *__nullable)accessorForSemantic:(enum GLLVertexAttribSemantic)semantic layer:(NSUInteger)layer;
 - (GLLVertexAttribAccessor *__nullable)accessorForSemantic:(enum GLLVertexAttribSemantic)semantic;
 
-- (GLLVertexFormat *)vertexFormatWithElementCount:(NSUInteger)count;
+- (GLLVertexFormat *)vertexFormatWithVertexCount:(NSUInteger)count hasIndices:(BOOL)hasIndices;
 
 @end
 

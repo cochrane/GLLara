@@ -39,10 +39,10 @@
     return [self accessorForSemantic:semantic layer:0];
 }
 
-- (GLLVertexFormat *)vertexFormatWithElementCount:(NSUInteger)count {
+- (GLLVertexFormat *)vertexFormatWithVertexCount:(NSUInteger)count hasIndices:(BOOL)hasIndices {
     return [[GLLVertexFormat alloc] initWithAttributes:[self.accessors map:^GLLVertexAttrib* (GLLVertexAttribAccessor *accessor) {
         return accessor.attribute;
-    }] countOfVertices:count];
+    }] countOfVertices:count hasIndices:hasIndices];
 }
 
 @end

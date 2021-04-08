@@ -140,7 +140,7 @@ void vec_addTo(float *a, const float *b)
         
         _vertexDataAccessors = [fileAccessors setByCombiningWith:tangents];
     }
-    _vertexFormat = [_vertexDataAccessors vertexFormatWithElementCount:_countOfElements];
+    _vertexFormat = [_vertexDataAccessors vertexFormatWithVertexCount:_countOfVertices hasIndices:YES];
     
     [self finishLoading];
     
@@ -269,7 +269,7 @@ void vec_addTo(float *a, const float *b)
     GLLVertexAttribAccessorSet* tangents = [self calculateTangents:fileAccessors];
     
     _vertexDataAccessors = [fileAccessors setByCombiningWith:tangents];
-    _vertexFormat = [_vertexDataAccessors vertexFormatWithElementCount:_countOfElements];
+    _vertexFormat = [_vertexDataAccessors vertexFormatWithVertexCount:_countOfVertices hasIndices:YES];
     
     if (![self validateVertexData:_vertexDataAccessors indexData:_elementData error:error]) return nil;
     
@@ -311,7 +311,7 @@ void vec_addTo(float *a, const float *b)
         [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribBoneWeights layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
     }
 
-    return [[GLLVertexFormat alloc] initWithAttributes:attributes countOfVertices:0];
+    return [[GLLVertexFormat alloc] initWithAttributes:attributes countOfVertices:0 hasIndices:YES];
 }
 
 - (GLLVertexAttribAccessorSet*)accessorsForFileData:(NSData *)baseData format:(GLLVertexFormat *)fileVertexFormat; {

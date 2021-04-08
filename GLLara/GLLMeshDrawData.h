@@ -28,7 +28,7 @@
 @property (nonatomic, assign, readonly) GLenum elementType;
 @property (nonatomic, assign, readonly) GLint baseVertex;
 @property (nonatomic, assign, readonly) GLsizeiptr indicesStart;
-@property (nonatomic, assign, readonly) GLsizei elementsCount;
+@property (nonatomic, assign, readonly) GLsizei elementsOrVerticesCount;
 @property (nonatomic, assign, readonly) GLuint vertexArray;
 
 - (void)unload;

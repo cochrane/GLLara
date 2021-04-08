@@ -62,6 +62,8 @@
 
 - (void)_findRuns;
 
+- (void)_drawRuns:(NSArray<GLLItemDrawerRun *>*)runs withState:(GLLDrawState *)state;
+
 @end
 
 @implementation GLLItemDrawer
@@ -135,30 +137,30 @@
 
 - (void)drawSolidWithState:(GLLDrawState *)state;
 {
-    if (needToUpdateTransforms) [self _updateTransforms];
-    if (needsUpdateRuns) [self _findRuns];
-    
-    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
-    
-    for (GLLItemDrawerRun *run in solidRuns) {
-        [run.state setupState:state];
-        
-        GLsizei runStart = run.start;
-        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, run.state.drawData.elementType, (GLvoid *) (allIndices + runStart), run.length, allBaseVertices + runStart);
-    }
+    [self _drawRuns:solidRuns withState:state];
 }
 - (void)drawAlphaWithState:(GLLDrawState *)state;
+{
+    [self _drawRuns:alphaRuns withState:state];
+}
+
+- (void)_drawRuns:(NSArray<GLLItemDrawerRun *>*)runs withState:(GLLDrawState *)state;
 {
     if (needToUpdateTransforms) [self _updateTransforms];
     if (needsUpdateRuns) [self _findRuns];
     
     glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
     
-    for (GLLItemDrawerRun *run in alphaRuns) {
+    for (GLLItemDrawerRun *run in runs) {
         [run.state setupState:state];
         
         GLsizei runStart = run.start;
-        glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, run.state.drawData.elementType, (GLvoid *) (allIndices + runStart), run.length, allBaseVertices + runStart);
+        GLenum elementType = run.state.drawData.elementType;
+        if (elementType != 0) {
+            glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, run.state.drawData.elementType, (GLvoid *) (allIndices + runStart), run.length, allBaseVertices + runStart);
+        } else {
+            glMultiDrawArrays(GL_TRIANGLES, allBaseVertices + runStart, allCounts + runStart, run.length);
+        }
     }
 }
 
@@ -258,7 +260,7 @@
         }
         allBaseVertices[meshesAdded] = state.drawData.baseVertex;
         allIndices[meshesAdded] = state.drawData.indicesStart;
-        allCounts[meshesAdded] = state.drawData.elementsCount;
+        allCounts[meshesAdded] = state.drawData.elementsOrVerticesCount;
         
         lastVisisbleState = state;
         meshesAdded += 1;
