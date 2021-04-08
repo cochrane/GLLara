@@ -236,7 +236,7 @@
 - (IBAction)loadMesh:(id)sender;
 {
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-    panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj", @"com.khronos.gltf" ];
+    panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj", @"com.khronos.gltf", @"com.khronos.glb" ];
     [panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
         if (result != NSModalResponseOK) return;
         

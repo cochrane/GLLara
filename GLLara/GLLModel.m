@@ -69,7 +69,12 @@ static NSCache *cachedModels;
         }
         else if ([file.path hasSuffix:@".gltf"])
         {
-            result = [[GLLModelGltf alloc] initWithUrl:file error:error];
+            result = [[GLLModelGltf alloc] initWithUrl:file isBinary:NO error:error];
+            if (!result) return nil;
+        }
+        else if ([file.path hasSuffix:@".glb"])
+        {
+            result = [[GLLModelGltf alloc] initWithUrl:file isBinary:YES error:error];
             if (!result) return nil;
         }
         else

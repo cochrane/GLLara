@@ -38,7 +38,7 @@
         // Check whether this is a model
         // Note: Not using dedicated methods because they can't deal with the
         // double extension that XNALara uses.
-        if ([filename hasSuffix:@".mesh"] || [filename hasSuffix:@".mesh.ascii"] || [filename hasSuffix:@".xps"] || [filename hasSuffix:@".obj"] || [filename hasSuffix:@".gltf"]) {
+        if ([filename hasSuffix:@".mesh"] || [filename hasSuffix:@".mesh.ascii"] || [filename hasSuffix:@".xps"] || [filename hasSuffix:@".obj"] || [filename hasSuffix:@".gltf"] || [filename hasSuffix:@".glb"]) {
             validFile = YES;
         }
         

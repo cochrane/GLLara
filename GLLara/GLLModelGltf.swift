@@ -111,6 +111,15 @@ struct LoadData {
     var bufferViews: [String: LoadedBufferView] = [:]
     var unboundAccessors: [String: LoadedUnboundAccessor] = [:]
     
+    init(file: GltfDocument, baseUrl: URL, binaryData: Data?) {
+        self.file = file
+        self.baseUrl = baseUrl
+        
+        if let binary = binaryData {
+            buffers["binary_glTF"] = LoadedBuffer(data: binary)
+        }
+    }
+    
     func loadData(uriString: String) throws -> Data {
         guard let uri = URL(string: uriString, relativeTo: baseUrl) else {
             throw NSError()
@@ -134,11 +143,11 @@ struct LoadData {
     }
     
     mutating func getBuffer(for key: String) throws -> LoadedBuffer {
-        guard let fileBuffers = file.buffers else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file doesn't contain any buffers"])
-        }
         if let loadedBuffer = buffers[key] {
             return loadedBuffer;
+        }
+        guard let fileBuffers = file.buffers else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file doesn't contain any buffers"])
         }
         
         guard let buffer = fileBuffers[key] else {
@@ -196,16 +205,54 @@ struct LoadData {
 
 class GLLModelGltf: GLLModel {
     
-    @objc convenience init(url: URL) throws {
+    @objc convenience init(url: URL, isBinary: Bool = false) throws {
         let data = try Data(contentsOf: url, options: .mappedIfSafe)
-        try self.init(data: data, baseUrl: url)
+        
+        if (isBinary) {
+            if data.count < 12 {
+                // No header
+                throw NSError()
+            }
+            var magic: UInt32 = 0
+            _ = withUnsafeMutableBytes(of: &magic, { data.copyBytes(to: $0, from: 0 ..< 4) })
+            if (magic != 0x46546C67) {
+                throw NSError()
+            }
+            var version: UInt32 = 0
+            _ = withUnsafeMutableBytes(of: &version, { data.copyBytes(to: $0, from: 4 ..< 8) })
+            if version == 1 {
+                var contentLength: UInt32 = 0
+                _ = withUnsafeMutableBytes(of: &contentLength, { data.copyBytes(to: $0, from: 12 ..< 16) })
+                var contentFormat: UInt32 = 0
+                _ = withUnsafeMutableBytes(of: &contentFormat, { data.copyBytes(to: $0, from: 16 ..< 20) })
+                if contentFormat != 0 {
+                    throw NSError()
+                }
+                if contentLength + 20 > data.count {
+                    throw NSError()
+                }
+                
+                let jsonEnd = Int(20 + contentLength)
+                let jsonData = data.subdata(in: 20 ..< jsonEnd)
+                let binaryData = data.subdata(in: jsonEnd ..< data.count)
+                
+                try self.init(jsonData: jsonData, baseUrl: url, binaryData: binaryData)
+                
+            } else if version == 2 {
+                throw NSError()
+            } else {
+                throw NSError()
+            }
+        } else {
+            try self.init(jsonData: data, baseUrl: url)
+        }
     }
     
-    @objc init(data: Data, baseUrl: URL) throws {
+    @objc init(jsonData: Data, baseUrl: URL, binaryData: Data? = nil) throws {
         let decoder = JSONDecoder()
-        let document = try decoder.decode(GltfDocument.self, from: data)
+        let document = try decoder.decode(GltfDocument.self, from: jsonData)
         
-        var loadData = LoadData(file: document, baseUrl: baseUrl)
+        var loadData = LoadData(file: document, baseUrl: baseUrl, binaryData: binaryData)
         
         super.init()
         
