@@ -59,6 +59,7 @@ void vec_addTo(float *a, const float *b)
     
     _model = model;
     _elementComponentType = GllVertexAttribComponentTypeUnsignedInt;
+    _initiallyVisible = YES;
     
     return self;
 }

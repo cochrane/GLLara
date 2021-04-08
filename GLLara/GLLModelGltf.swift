@@ -34,7 +34,7 @@ struct Buffer: Codable {
 }
 
 struct Material: Codable {
-    
+    var name: String?
 }
 
 struct Mesh: Codable {
@@ -209,6 +209,8 @@ class GLLModelGltf: GLLModel {
         
         super.init()
         
+        self.parameters = try GLLModelParams.parameters(forName: "gltfFile")
+        
         self.baseURL = baseUrl
         self.bones = []
         self.meshes = []
@@ -305,12 +307,13 @@ class GLLModelGltf: GLLModel {
                     mesh.name = keyAndMesh.key
                     mesh.displayName = mesh.name
                     mesh.textures = []
+                    mesh.shader = self.parameters.shaderNamed("DefaultMaterial")
                     mesh.countOfVertices = UInt(countOfVertices)
                     mesh.countOfUVLayers = UInt(uvLayers.count)
                     mesh.vertexDataAccessors = GLLVertexAttribAccessorSet(accessors: accessors)
                     
                     let elements = try loadData.getUnboundAccessor(for: primitive.indices ?? "this mesh does not have indices we should probably add support for that ya know")
-                    mesh.elementData = elements.view.buffer.data
+                    mesh.elementData = elements.view.buffer.data.subdata(in: elements.view.range)
                     if ![5120, 5121, 5122, 5123, 5124, 5125, 5126].contains(elements.accessor.componentType) {
                         throw NSError()
                     }
@@ -323,6 +326,9 @@ class GLLModelGltf: GLLModel {
                 }
             }
         }
+        
+        // Set up the one and only bone we have for now
+        self.bones = [GLLModelBone(model: self)]
     }
 
 }

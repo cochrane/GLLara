@@ -111,7 +111,7 @@ static NSCache *parameterCache;
     parameterCache = [[NSCache alloc] init];
 }
 
-+ (id)parametersForModel:(GLLModel *)model error:(NSError *__autoreleasing *)error;
++ (GLLModelParams *)parametersForModel:(GLLModel *)model error:(NSError *__autoreleasing *)error;
 {
     // Check whether it is an XPS file
     NSArray<NSString *> *typeIdentifiersForFile = (__bridge_transfer NSArray<NSString *> *)UTTypeCreateAllIdentifiersForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)model.baseURL.pathExtension, NULL);
@@ -129,7 +129,7 @@ static NSCache *parameterCache;
         return [self parametersForName:name error:error];
 }
 
-+ (id)parametersForName:(NSString *)name error:(NSError *__autoreleasing *)error;
++ (GLLModelParams *)parametersForName:(NSString *)name error:(NSError *__autoreleasing *)error;
 {
     id result = [parameterCache objectForKey:name];
     if (!result)
