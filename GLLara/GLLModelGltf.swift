@@ -24,11 +24,13 @@ struct Asset: Codable {
 }
 
 struct BufferView: Codable {
-    
+    var buffer: String
+    var byteOffset: Int
+    var byteLength: Int?
 }
 
 struct Buffer: Codable {
-    
+    var uri: String
 }
 
 struct Material: Codable {
@@ -41,8 +43,9 @@ struct Mesh: Codable {
 
 struct Primitive: Codable {
     var attributes: [String: String]
-    var indices: String
-    var material: String?
+    var indices: String?
+    var material: String
+    var mode: Int?
 }
 
 struct Node: Codable {
@@ -72,6 +75,125 @@ struct GltfDocument: Codable {
     var skins: [String: Skin]?
 }
 
+class LoadedBuffer {
+    let data: Data
+    
+    init(data: Data) {
+        self.data = data
+    }
+}
+
+class LoadedBufferView {
+    let buffer: LoadedBuffer
+    let range: Range<Int>
+    
+    init(buffer: LoadedBuffer, range: Range<Int>) {
+        self.buffer = buffer
+        self.range = range
+    }
+}
+
+class LoadedUnboundAccessor {
+    let view: LoadedBufferView
+    let accessor: Accessor
+    
+    init(view: LoadedBufferView, accessor: Accessor) {
+        self.view = view
+        self.accessor = accessor
+    }
+}
+
+struct LoadData {
+    let file: GltfDocument
+    let baseUrl: URL
+    
+    var buffers: [String: LoadedBuffer] = [:]
+    var bufferViews: [String: LoadedBufferView] = [:]
+    var unboundAccessors: [String: LoadedUnboundAccessor] = [:]
+    
+    func loadData(uriString: String) throws -> Data {
+        guard let uri = URL(string: uriString, relativeTo: baseUrl) else {
+            throw NSError()
+        }
+        
+        if uri.scheme == "data" && uri.absoluteString.contains(";base64,") {
+            let components = uri.absoluteString.components(separatedBy: ";base64,")
+            if components.count == 0 {
+                throw NSError()
+            }
+            guard let encodedString = components.last, let data = Data(base64Encoded: encodedString, options: .ignoreUnknownCharacters) else {
+                throw NSError()
+            }
+            return data
+        }
+        guard uri.isFileURL else {
+            throw NSError()
+        }
+        
+        return try Data(contentsOf: uri, options: .mappedIfSafe)
+    }
+    
+    mutating func getBuffer(for key: String) throws -> LoadedBuffer {
+        guard let fileBuffers = file.buffers else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file doesn't contain any buffers"])
+        }
+        if let loadedBuffer = buffers[key] {
+            return loadedBuffer;
+        }
+        
+        guard let buffer = fileBuffers[key] else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file doesn't contain a needed buffer"])
+        }
+        
+        let data = try loadData(uriString: buffer.uri)
+        let loadedBuffer = LoadedBuffer(data: data)
+        buffers[key] = loadedBuffer
+        return loadedBuffer
+    }
+    
+    mutating func getBufferView(for key: String) throws -> LoadedBufferView {
+        guard let fileViews = file.bufferViews else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file doesn't contain any buffer views"])
+        }
+        if let loadedView = bufferViews[key] {
+            return loadedView
+        }
+        
+        guard let view = fileViews[key] else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file doesn't contain a needed buffer view"])
+        }
+        
+        let buffer = try getBuffer(for: view.buffer)
+        let endIndex: Int
+        if let byteLength = view.byteLength {
+            endIndex = view.byteOffset + byteLength
+        } else {
+            endIndex = buffer.data.count
+        }
+        let loadedView = LoadedBufferView(buffer: buffer, range: view.byteOffset ..< endIndex)
+        bufferViews[key] = loadedView
+        return loadedView
+    }
+    
+    mutating func getUnboundAccessor(for key: String) throws -> LoadedUnboundAccessor {
+        guard let fileAccessors = file.accessors else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file doesn't contain any accessors"])
+        }
+        if let loadedAccessor = unboundAccessors[key] {
+            return loadedAccessor
+        }
+        
+        guard let accessor = fileAccessors[key] else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file doesn't contain a needed accessor"])
+        }
+        
+        let view = try getBufferView(for: accessor.bufferView)
+        let loadedAccessor = LoadedUnboundAccessor(view: view, accessor: accessor)
+        unboundAccessors[key] = loadedAccessor
+        return loadedAccessor
+    }
+}
+
 class GLLModelGltf: GLLModel {
     
     @objc convenience init(url: URL) throws {
@@ -83,11 +205,124 @@ class GLLModelGltf: GLLModel {
         let decoder = JSONDecoder()
         let document = try decoder.decode(GltfDocument.self, from: data)
         
+        var loadData = LoadData(file: document, baseUrl: baseUrl)
+        
         super.init()
         
         self.baseURL = baseUrl
         self.bones = []
         self.meshes = []
+        
+        // Load meshes
+        if let meshes = document.meshes {
+            var meshIndex = 0
+            var countOfVertices: Int? = nil
+            var uvLayers = IndexSet()
+            for keyAndMesh in meshes {
+                for primitive in keyAndMesh.value.primitives {
+                    
+                    var accessors: [GLLVertexAttribAccessor] = []
+                    for nameAndValue in primitive.attributes {
+                        let fileAccessor = try loadData.getUnboundAccessor(for: nameAndValue.value)
+                        
+                        let nameComponents = nameAndValue.key.split(separator: "_")
+                        let layer: Int
+                        let name: String
+                        if nameComponents.count == 2, let suffix = Int(nameComponents[1]) {
+                            layer = suffix
+                            name = String(nameComponents[0])
+                        } else {
+                            name = nameAndValue.key
+                            layer = 0
+                        }
+                        
+                        let semantic: GLLVertexAttribSemantic
+                        switch name {
+                        case "POSITION":
+                            semantic = .position
+                        case "NORMAL":
+                            semantic = .normal
+                        case "TEXCOORD":
+                            semantic = .texCoord0
+                        case "COLOR":
+                            semantic = .color
+                        case "JOINT":
+                            semantic = .boneIndices
+                        case "WEIGHT":
+                            semantic = .boneWeights
+                        default:
+                            throw NSError()
+                        }
+                        
+                        if semantic == .texCoord0 {
+                            uvLayers.insert(layer)
+                        }
+                        
+                        let size: GLLVertexAttribSize
+                        switch fileAccessor.accessor.type {
+                        case "SCALAR":
+                            size = .scalar
+                        case "VEC2":
+                            size = .vec2
+                        case "VEC3":
+                            size = .vec3
+                        case "VEC4":
+                            size = .vec4
+                        case "MAT2":
+                            size = .mat2
+                        case "MAT3":
+                            size = .mat3
+                        case "MAT4":
+                            size = .mat4
+                        default:
+                            throw NSError()
+                        }
+                        
+                        if ![5120, 5121, 5122, 5123, 5126].contains(fileAccessor.accessor.componentType) {
+                            throw NSError()
+                        }
+                        let componentType = GLLVertexAttribComponentType(rawValue:  fileAccessor.accessor.componentType)!
+                        
+                        if let existingCount = countOfVertices {
+                            if existingCount != fileAccessor.accessor.count {
+                                throw NSError()
+                            }
+                        } else {
+                            countOfVertices = fileAccessor.accessor.count
+                        }
+                        
+                        let vertexAttrib = GLLVertexAttrib(semantic: semantic, layer: UInt(layer), size: size, componentType: componentType)
+                        let vertexAccessor = GLLVertexAttribAccessor(attribute: vertexAttrib, dataBuffer: fileAccessor.view.buffer.data, offset: UInt(fileAccessor.accessor.byteOffset + fileAccessor.view.range.first!), stride: UInt(fileAccessor.accessor.byteStride))
+                        accessors.append(vertexAccessor)
+                    }
+                    guard let countOfVertices = countOfVertices else {
+                        throw NSError()
+                    }
+                    guard primitive.mode == 4 else {
+                        throw NSError()
+                    }
+                    
+                    let mesh = GLLModelMesh(asPartOf: self)!
+                    mesh.name = keyAndMesh.key
+                    mesh.displayName = mesh.name
+                    mesh.textures = []
+                    mesh.countOfVertices = UInt(countOfVertices)
+                    mesh.countOfUVLayers = UInt(uvLayers.count)
+                    mesh.vertexDataAccessors = GLLVertexAttribAccessorSet(accessors: accessors)
+                    
+                    let elements = try loadData.getUnboundAccessor(for: primitive.indices ?? "this mesh does not have indices we should probably add support for that ya know")
+                    // TODO just casually assuming that elements view does not have a stride and is always uint32_t which is probably not the case oh god we gotta fix this don't we?
+                    mesh.elementData = elements.view.buffer.data
+                    mesh.countOfElements = UInt(elements.accessor.count)
+                    
+                    mesh.vertexFormat = mesh.vertexDataAccessors.vertexFormat(withElementCount: UInt(elements.accessor.count))
+                    
+                    mesh.finishLoading()
+                    
+                    self.meshes.append(mesh)
+                }
+            }
+        }
     }
 
 }

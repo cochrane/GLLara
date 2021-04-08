@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  * @abstract Defines the indices for the different vertex attribute arrays.
  */
-enum GLLVertexAttribSemantic
+typedef NS_ENUM(NSInteger, GLLVertexAttribSemantic)
 {
     GLLVertexAttribPosition,
     GLLVertexAttribNormal,
@@ -21,10 +21,13 @@ enum GLLVertexAttribSemantic
     GLLVertexAttribBoneIndices,
     GLLVertexAttribBoneWeights,
     GLLVertexAttribTexCoord0,
-    GLLVertexAttribTangent0
+    GLLVertexAttribTangent0,
+    
+    // Unrelated, used for the vertex elements
+    GLLVertexAttribElement
 };
 
-enum GLLVertexAttribSize {
+typedef NS_ENUM(NSInteger, GLLVertexAttribSize) {
     GLLVertexAttribSizeScalar,
     GLLVertexAttribSizeVec2,
     GLLVertexAttribSizeVec3,
@@ -34,7 +37,7 @@ enum GLLVertexAttribSize {
     GLLVertexAttribSizeMat4
 };
 
-enum GLLVertexAttribComponentType {
+typedef NS_ENUM(NSInteger, GLLVertexAttribComponentType) {
     GllVertexAttribComponentTypeByte = 5120,
     GllVertexAttribComponentTypeUnsignedByte = 5121,
     GllVertexAttribComponentTypeShort = 5122,
@@ -46,12 +49,12 @@ enum GLLVertexAttribComponentType {
 
 @interface GLLVertexAttrib : NSObject<NSCopying>
 
-- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)semantic layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type;
+- (instancetype)initWithSemantic:(GLLVertexAttribSemantic)semantic layer:(NSUInteger) layer size:(GLLVertexAttribSize)size componentType:(GLLVertexAttribComponentType)type;
 
-@property (nonatomic, readonly, assign) enum GLLVertexAttribSemantic semantic;
+@property (nonatomic, readonly, assign) GLLVertexAttribSemantic semantic;
 @property (nonatomic, readonly, assign) NSUInteger layer;
-@property (nonatomic, readonly, assign) enum GLLVertexAttribSize size;
-@property (nonatomic, readonly, assign) enum GLLVertexAttribComponentType type;
+@property (nonatomic, readonly, assign) GLLVertexAttribSize size;
+@property (nonatomic, readonly, assign) GLLVertexAttribComponentType type;
 
 @property (nonatomic, readonly, assign) NSUInteger numberOfElements;
 @property (nonatomic, readonly, assign) NSUInteger sizeInBytes;

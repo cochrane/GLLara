@@ -261,7 +261,7 @@ static inline uint16_t halfFloat(const float *value) {
         
     for (GLLVertexAttribAccessor *attributeAccessor in optimizedFormat.accessors) {
         GLLVertexAttrib* attribute = attributeAccessor.attribute;
-        GLuint attribIndex = attribute.semantic;
+        GLuint attribIndex = (GLuint) attribute.semantic;
         if (attribute.semantic == GLLVertexAttribTangent0 || attribute.semantic == GLLVertexAttribTexCoord0) {
             attribIndex += 2 * attribute.layer;
         }
@@ -269,7 +269,7 @@ static inline uint16_t halfFloat(const float *value) {
         glEnableVertexAttribArray(attribIndex);
         
         if (attribute.semantic == GLLVertexAttribBoneIndices) {
-            glVertexAttribIPointer(attribIndex, (GLint) attribute.numberOfElements, attribute.type, (GLsizei) attributeAccessor.stride, (GLvoid *) attributeAccessor.dataOffset);
+            glVertexAttribIPointer(attribIndex, (GLint) attribute.numberOfElements, (GLenum) attribute.type, (GLsizei) attributeAccessor.stride, (GLvoid *) attributeAccessor.dataOffset);
         } else {
             GLenum normalized = GL_FALSE;
             if (attribute.type == GL_UNSIGNED_BYTE && attribute.semantic == GLLVertexAttribColor) {
@@ -279,7 +279,7 @@ static inline uint16_t halfFloat(const float *value) {
             } else if (attribute.type == GL_UNSIGNED_SHORT && attribute.semantic == GLLVertexAttribBoneWeights) {
                 normalized = GL_TRUE;
             }
-            glVertexAttribPointer(attribIndex, (GLint) attribute.numberOfElements, attribute.type, normalized, (GLsizei) attributeAccessor.stride, (GLvoid *) attributeAccessor.dataOffset);
+            glVertexAttribPointer(attribIndex, (GLint) attribute.numberOfElements, (GLenum) attribute.type, normalized, (GLsizei) attributeAccessor.stride, (GLvoid *) attributeAccessor.dataOffset);
         }
     }
         
