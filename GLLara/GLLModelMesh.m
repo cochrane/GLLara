@@ -58,6 +58,7 @@ void vec_addTo(float *a, const float *b)
     if (!(self = [super init])) return nil;
     
     _model = model;
+    _elementComponentType = GllVertexAttribComponentTypeUnsignedInt;
     
     return self;
 }
@@ -69,6 +70,7 @@ void vec_addTo(float *a, const float *b)
     GLLBeginTiming("Binary mesh");
     
     _model = model;
+    _elementComponentType = GllVertexAttribComponentTypeUnsignedInt;
     
     _name = [stream readPascalString];
     _countOfUVLayers = [stream readUint32];
@@ -151,6 +153,7 @@ void vec_addTo(float *a, const float *b)
     if (!(self = [super init])) return nil;
     
     _model = model;
+    _elementComponentType = GllVertexAttribComponentTypeUnsignedInt;
     
     _name = [scanner readPascalString];
     _countOfUVLayers = [scanner readUint32];

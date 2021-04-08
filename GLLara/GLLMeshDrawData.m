@@ -54,7 +54,7 @@
             [NSException raise:NSInvalidArgumentException format:@"Can't deal with vertex format with %li bytes per index", array.format.numElementBytes];
     }
     
-    [array addVertices:mesh.vertexDataAccessors count:mesh.countOfVertices elements:mesh.elementData];
+    [array addVertices:mesh.vertexDataAccessors count:mesh.countOfVertices elements:mesh.elementData elementsType:mesh.elementComponentType];
     
     return self;
 }

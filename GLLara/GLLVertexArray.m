@@ -154,7 +154,7 @@ static inline uint16_t halfFloat(const float *value) {
     return elementData.length;
 }
 
-- (void)addVertices:(GLLVertexAttribAccessorSet *)vertexAccessors count:(NSUInteger)numVertices elements:(NSData *)elementsUInt32;
+- (void)addVertices:(GLLVertexAttribAccessorSet *)vertexAccessors count:(NSUInteger)numVertices elements:(NSData *)elements elementsType:(GLLVertexAttribComponentType)elementsType;
 {
     // Process vertex data
     NSUInteger actualStride = optimizedFormat.accessors.firstObject.stride;
@@ -220,30 +220,54 @@ static inline uint16_t halfFloat(const float *value) {
     free(newBytes);
     
     // Compress elements
-    if (self.format.numElementBytes == 4) {
-        [elementData appendData:elementsUInt32];
-    } else if (self.format.numElementBytes == 2) {
-        NSUInteger numElements = elementsUInt32.length / 4;
-        const uint32_t *originalElements = elementsUInt32.bytes;
-        
-        uint16_t *elements = malloc(numElements * 2);
-        for (NSUInteger i = 0; i < numElements; i++) {
-            elements[i] = (uint16_t) originalElements[i];
+    if (elementsType == GllVertexAttribComponentTypeUnsignedInt || elementsType == GllVertexAttribComponentTypeInt) {
+        if (self.format.numElementBytes == 4) {
+            [elementData appendData:elements];
+        } else if (self.format.numElementBytes == 2) {
+            NSUInteger numElements = elements.length / 4;
+            const uint32_t *originalElements = elements.bytes;
+            
+            uint16_t *elements = malloc(numElements * 2);
+            for (NSUInteger i = 0; i < numElements; i++) {
+                elements[i] = (uint16_t) originalElements[i];
+            }
+            [elementData appendBytes:elements length:numElements * 2];
+            free(elements);
+        } else if (self.format.numElementBytes == 1) {
+            NSUInteger numElements = elements.length / 4;
+            const uint32_t *originalElements = elements.bytes;
+            
+            uint8_t *elements = malloc(numElements);
+            for (NSUInteger i = 0; i < numElements; i++) {
+                elements[i] = (uint8_t) originalElements[i];
+            }
+            [elementData appendBytes:elements length:numElements];
+            free(elements);
+        } else {
+            [NSException raise:@"Illegal state" format:@"Can't handle vertex buffer with %li bytes per element", self.format.numElementBytes];
         }
-        [elementData appendBytes:elements length:numElements * 2];
-        free(elements);
-    } else if (self.format.numElementBytes == 1) {
-        NSUInteger numElements = elementsUInt32.length / 4;
-        const uint32_t *originalElements = elementsUInt32.bytes;
-        
-        uint8_t *elements = malloc(numElements);
-        for (NSUInteger i = 0; i < numElements; i++) {
-            elements[i] = (uint8_t) originalElements[i];
+    } else if (elementsType == GllVertexAttribComponentTypeUnsignedShort || elementsType == GllVertexAttribComponentTypeShort) {
+        if (self.format.numElementBytes == 2) {
+            [elementData appendData:elements];
+        } else if (self.format.numElementBytes == 1) {
+            NSUInteger numElements = elements.length / 2;
+            const uint16_t *originalElements = elements.bytes;
+            
+            uint8_t *elements = malloc(numElements);
+            for (NSUInteger i = 0; i < numElements; i++) {
+                elements[i] = (uint8_t) originalElements[i];
+            }
+            [elementData appendBytes:elements length:numElements];
+            free(elements);
+        } else {
+            [NSException raise:@"Illegal state" format:@"Can't handle vertex buffer with %li bytes per element", self.format.numElementBytes];
         }
-        [elementData appendBytes:elements length:numElements];
-        free(elements);
-    } else {
-        [NSException raise:@"Illegal state" format:@"Can't handle vertex buffer with %li bytes per element", self.format.numElementBytes];
+    } else if (elementsType == GllVertexAttribComponentTypeByte || elementsType == GllVertexAttribComponentTypeUnsignedByte) {
+        if (self.format.numElementBytes == 1) {
+            [elementData appendData:elements];
+        } else {
+            [NSException raise:@"Illegal state" format:@"Can't handle vertex buffer with %li bytes per element", self.format.numElementBytes];
+        }
     }
 }
 

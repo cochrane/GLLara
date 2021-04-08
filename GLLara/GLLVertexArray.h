@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "GLLDrawState.h"
+#import "GLLVertexAttrib.h"
 
 @class GLLVertexAttribAccessorSet;
 @class GLLVertexFormat;
@@ -19,7 +20,7 @@
 
 @property (nonatomic, readonly, copy) GLLVertexFormat *format;
 
-- (void)addVertices:(GLLVertexAttribAccessorSet *)vertexAccessors count:(NSUInteger)countOfVertices elements:(NSData *)elementsUInt32;
+- (void)addVertices:(GLLVertexAttribAccessorSet *)vertexAccessors count:(NSUInteger)countOfVertices elements:(NSData *)elements elementsType:(GLLVertexAttribComponentType)elementsType;
 
 @property (nonatomic, readonly, assign) NSUInteger countOfVertices;
 @property (nonatomic, readonly, assign) NSUInteger elementDataLength;

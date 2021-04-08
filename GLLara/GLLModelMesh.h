@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GLLVertexAttrib.h"
+
 @class GLLASCIIScanner;
 @class GLLMeshSplitter;
 @class GLLModel;
@@ -58,6 +60,7 @@ typedef enum GLLCullFaceMode
  * Element buffer (format always uint32_ts arranged as triangles)
  */
 @property (nonatomic, retain) NSData *elementData;
+@property (nonatomic, assign) GLLVertexAttribComponentType elementComponentType;
 @property (nonatomic, assign) NSUInteger countOfElements;
 
 /*

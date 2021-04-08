@@ -71,6 +71,8 @@
         case GllVertexAttribComponentTypeHalfFloat:
             return 2;
         case GllVertexAttribComponentTypeFloat:
+        case GllVertexAttribComponentTypeInt:
+        case GllVertexAttribComponentTypeUnsignedInt:
             return 4;
         case GllVertexAttribComponentTypeInt2_10_10_10_Rev:
             return 1;

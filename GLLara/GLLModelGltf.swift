@@ -215,7 +215,6 @@ class GLLModelGltf: GLLModel {
         
         // Load meshes
         if let meshes = document.meshes {
-            var meshIndex = 0
             var countOfVertices: Int? = nil
             var uvLayers = IndexSet()
             for keyAndMesh in meshes {
@@ -311,14 +310,15 @@ class GLLModelGltf: GLLModel {
                     mesh.vertexDataAccessors = GLLVertexAttribAccessorSet(accessors: accessors)
                     
                     let elements = try loadData.getUnboundAccessor(for: primitive.indices ?? "this mesh does not have indices we should probably add support for that ya know")
-                    // TODO just casually assuming that elements view does not have a stride and is always uint32_t which is probably not the case oh god we gotta fix this don't we?
                     mesh.elementData = elements.view.buffer.data
+                    if ![5120, 5121, 5122, 5123, 5124, 5125, 5126].contains(elements.accessor.componentType) {
+                        throw NSError()
+                    }
+                    mesh.elementComponentType = GLLVertexAttribComponentType(rawValue:  elements.accessor.componentType)!
                     mesh.countOfElements = UInt(elements.accessor.count)
                     
                     mesh.vertexFormat = mesh.vertexDataAccessors.vertexFormat(withElementCount: UInt(elements.accessor.count))
-                    
-                    mesh.finishLoading()
-                    
+                                        
                     self.meshes.append(mesh)
                 }
             }

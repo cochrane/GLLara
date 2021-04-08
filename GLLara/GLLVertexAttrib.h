@@ -22,9 +22,6 @@ typedef NS_ENUM(NSInteger, GLLVertexAttribSemantic)
     GLLVertexAttribBoneWeights,
     GLLVertexAttribTexCoord0,
     GLLVertexAttribTangent0,
-    
-    // Unrelated, used for the vertex elements
-    GLLVertexAttribElement
 };
 
 typedef NS_ENUM(NSInteger, GLLVertexAttribSize) {
@@ -42,6 +39,8 @@ typedef NS_ENUM(NSInteger, GLLVertexAttribComponentType) {
     GllVertexAttribComponentTypeUnsignedByte = 5121,
     GllVertexAttribComponentTypeShort = 5122,
     GllVertexAttribComponentTypeUnsignedShort = 5123,
+    GllVertexAttribComponentTypeInt = 5124,
+    GllVertexAttribComponentTypeUnsignedInt = 5125,
     GllVertexAttribComponentTypeFloat = 5126,
     GllVertexAttribComponentTypeHalfFloat = 0x140B,
     GllVertexAttribComponentTypeInt2_10_10_10_Rev = 0x8D9F // Must be vec4
