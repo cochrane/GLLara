@@ -220,7 +220,7 @@ static inline uint16_t halfFloat(const float *value) {
     free(newBytes);
     
     // Compress elements
-    if (self.format.numElementBytes > 0) {
+    if (self.format.hasIndices) {
         if (elementsType == GllVertexAttribComponentTypeUnsignedInt || elementsType == GllVertexAttribComponentTypeInt) {
             if (self.format.numElementBytes == 4) {
                 [elementData appendData:elements];
@@ -279,7 +279,7 @@ static inline uint16_t halfFloat(const float *value) {
     glGenVertexArrays(1, &vertexArrayIndex);
     glBindVertexArray(vertexArrayIndex);
     
-    GLuint usedBuffers = self.format.numElementBytes > 0 ? 2 : 1;
+    GLuint usedBuffers = self.format.hasIndices ? 2 : 1;
     GLuint buffers[2];
     glGenBuffers(usedBuffers, buffers);
     
@@ -310,7 +310,7 @@ static inline uint16_t halfFloat(const float *value) {
         }
     }
     
-    if (self.format.numElementBytes > 0) {
+    if (self.format.hasIndices) {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.length, elementData.bytes, GL_STATIC_DRAW);
     }

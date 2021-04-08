@@ -35,31 +35,32 @@
     if (!(self = [super init])) return nil;
     
     _modelMesh = mesh;
-    _elementsOrVerticesCount = (GLsizei) mesh.countOfElements;
-    if (array.format.numElementBytes == 0) {
-        // Rendering without elements
-        _elementsOrVerticesCount = (GLsizei) mesh.countOfVertices;
-    }
     vertexArray = array;
     _indicesStart = (GLsizeiptr) array.elementDataLength;
     _baseVertex = (GLint) array.countOfVertices;
     
-    switch (array.format.numElementBytes) {
-        case 4:
-            _elementType = GL_UNSIGNED_INT;
-            break;
-        case 2:
-            _elementType = GL_UNSIGNED_SHORT;
-            break;
-        case 1:
-            _elementType = GL_UNSIGNED_BYTE;
-            break;
-        case 0:
-            // Rendering without elements
-            _elementType = 0;
-            break;
-        default:
-            [NSException raise:NSInvalidArgumentException format:@"Can't deal with vertex format with %li bytes per index", array.format.numElementBytes];
+    if (array.format.numElementBytes == 0) {
+        // Rendering without elements
+        _elementsOrVerticesCount = (GLsizei) mesh.countOfVertices;
+        _elementType = 0;
+    } else {
+        _elementsOrVerticesCount = (GLsizei) mesh.countOfElements;
+        switch (array.format.numElementBytes) {
+            case 4:
+                _elementType = GL_UNSIGNED_INT;
+                break;
+            case 2:
+                _elementType = GL_UNSIGNED_SHORT;
+                break;
+            case 1:
+                _elementType = GL_UNSIGNED_BYTE;
+                break;
+            case 0:
+                // Rendering without elements
+                break;
+            default:
+                [NSException raise:NSInvalidArgumentException format:@"Can't deal with vertex format with %li bytes per index", array.format.numElementBytes];
+        }
     }
     
     [array addVertices:mesh.vertexDataAccessors count:mesh.countOfVertices elements:mesh.elementData elementsType:mesh.elementComponentType];

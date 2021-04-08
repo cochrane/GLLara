@@ -57,6 +57,10 @@
     return stride;
 }
 
+- (BOOL)hasIndices {
+    return _numElementBytes > 0;
+}
+
 - (id)copy
 {
     return self;

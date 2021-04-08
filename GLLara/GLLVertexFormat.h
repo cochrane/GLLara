@@ -21,6 +21,7 @@
 
 // Number of bytes for storing an index element. Only valid values are 1, 2 and 4, or 0 if there is no element buffer
 @property (nonatomic, readonly, assign) NSUInteger numElementBytes;
+@property (nonatomic, readonly, assign) BOOL hasIndices;
 
 @property (nonatomic, assign, readonly) NSUInteger stride;
 
