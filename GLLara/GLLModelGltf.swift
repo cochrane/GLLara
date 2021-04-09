@@ -10,7 +10,7 @@ import Cocoa
 
 struct Accessor: Codable {
     var bufferView: Int
-    var byteOffset: Int
+    var byteOffset: Int?
     var componentType: Int
     var count: Int
     var type: String
@@ -125,10 +125,17 @@ struct LoadData {
         }
     }
     
-    func loadData(uriString: String) throws -> Data {
-        guard let uri = URL(string: uriString, relativeTo: baseUrl) else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The URI is invalid."])
+    func makeURI(from uriString: String) -> URL {
+        // Try normal path, for data: URLs
+        if let uri = URL(string: uriString, relativeTo: baseUrl) {
+            return uri;
         }
+        // If that's invalid, that might be because of spaces in the filename, which is illegal for general URLs but obviously legal in paths
+        return URL(fileURLWithPath: uriString, relativeTo: baseUrl)
+    }
+    
+    func loadData(uriString: String) throws -> Data {
+        let uri = makeURI(from: uriString)
         
         if uri.scheme == "data" && uri.absoluteString.contains(";base64,") {
             let components = uri.absoluteString.components(separatedBy: ";base64,")
@@ -375,13 +382,13 @@ class GLLModelGltf: GLLModel {
                         
                         let underlyingView = document.bufferViews![fileAccessor.accessor.bufferView]
                         let vertexAttrib = GLLVertexAttrib(semantic: semantic, layer: UInt(layer), size: size, componentType: componentType)
-                        let vertexAccessor = GLLVertexAttribAccessor(attribute: vertexAttrib, dataBuffer: fileAccessor.view.buffer.data, offset: UInt(fileAccessor.accessor.byteOffset + fileAccessor.view.range.first!), stride: UInt(underlyingView.byteStride ?? 0))
+                        let vertexAccessor = GLLVertexAttribAccessor(attribute: vertexAttrib, dataBuffer: fileAccessor.view.buffer.data, offset: UInt(fileAccessor.accessor.byteOffset ?? 0 + fileAccessor.view.range.first!), stride: UInt(underlyingView.byteStride ?? 0))
                         accessors.append(vertexAccessor)
                     }
                     guard let countOfVertices = countOfVertices else {
                         throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The vertex size value is wonky."])
                     }
-                    guard primitive.mode == 4 else {
+                    guard primitive.mode ?? 4 == 4 else {
                         throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "Only sets of triangles are supported."])
                     }
                     
