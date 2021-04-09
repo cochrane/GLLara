@@ -122,21 +122,22 @@ struct LoadData {
     
     func loadData(uriString: String) throws -> Data {
         guard let uri = URL(string: uriString, relativeTo: baseUrl) else {
-            throw NSError()
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The URI is invalid."])
         }
         
         if uri.scheme == "data" && uri.absoluteString.contains(";base64,") {
             let components = uri.absoluteString.components(separatedBy: ";base64,")
             if components.count == 0 {
-                throw NSError()
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The data URI is incomplete."])
             }
             guard let encodedString = components.last, let data = Data(base64Encoded: encodedString, options: .ignoreUnknownCharacters) else {
-                throw NSError()
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The data URI is invalid."])
             }
             return data
         }
         guard uri.isFileURL else {
-            throw NSError()
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "Loading data via the internet is disabled for security reasons."])
+
         }
         
         return try Data(contentsOf: uri, options: .mappedIfSafe)
@@ -206,7 +207,7 @@ struct LoadData {
 extension Data {
     func readUInt32(at: Data.Index) throws -> UInt32 {
         guard at + 4 <= self.count else {
-            throw NSError()
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
         }
         var result: UInt32 = 0
         _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 4) })
@@ -215,7 +216,7 @@ extension Data {
     
     func checkedSubdata(in range: Range<Data.Index>) throws -> Data {
         if range.max() ?? 0 > self.count {
-            throw NSError()
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
         }
         return subdata(in: range)
     }
@@ -229,21 +230,21 @@ class GLLModelGltf: GLLModel {
         if (isBinary) {
             if data.count < 12 {
                 // No header
-                throw NSError()
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is too short to contain a glTF binary header."])
             }
             let magic = try data.readUInt32(at: 0)
             if (magic != 0x46546C67) {
-                throw NSError()
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is not a binary glTF file."])
             }
             let version = try data.readUInt32(at: 4)
             if version == 1 {
                 let contentLength = try data.readUInt32(at: 12)
                 let contentFormat = try data.readUInt32(at: 16)
                 if contentFormat != 0 {
-                    throw NSError()
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The binary glTF container format version is not supported."])
                 }
                 if contentLength + 20 > data.count {
-                    throw NSError()
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file cannot be loaded because the file size is incorrect."])
                 }
                 
                 let jsonEnd = Int(20 + contentLength)
@@ -255,10 +256,10 @@ class GLLModelGltf: GLLModel {
                 let chunkLengthJson = try data.readUInt32(at: 12)
                 let chunkTypeJson = try data.readUInt32(at: 12)
                 if chunkTypeJson != 0x4E4F534A {
-                    throw NSError()
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The binary glTF container format version is not supported."])
                 }
                 if chunkLengthJson + 20 > data.count {
-                    throw NSError()
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file cannot be loaded because the file size is incorrect."])
                 }
                 let jsonEnd = Int(20 + chunkLengthJson)
                 let jsonData = try data.checkedSubdata(in: 20 ..< jsonEnd)
@@ -268,7 +269,7 @@ class GLLModelGltf: GLLModel {
                     let chunkLengthBinary = try data.readUInt32(at: jsonEnd)
                     let chunkTypeBinary = try data.readUInt32(at: jsonEnd + 4)
                     if chunkTypeBinary != 0x004E4942 {
-                        throw NSError()
+                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The binary glTF container format version is not supported."])
                     }
                     let binaryEnd = jsonEnd + 8 + Int(chunkLengthBinary)
                     binaryData = try data.checkedSubdata(in: jsonEnd + 8 ..< binaryEnd)
@@ -278,7 +279,7 @@ class GLLModelGltf: GLLModel {
                 
                 try self.init(jsonData: jsonData, baseUrl: url, binaryData: binaryData)
             } else {
-                throw NSError()
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The binary glTF container format version is not supported."])
             }
         } else {
             try self.init(jsonData: data, baseUrl: url)
@@ -336,7 +337,7 @@ class GLLModelGltf: GLLModel {
                         case "WEIGHT":
                             semantic = .boneWeights
                         default:
-                            throw NSError()
+                            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute semantic is not supported."])
                         }
                         
                         if semantic == .texCoord0 {
@@ -360,17 +361,18 @@ class GLLModelGltf: GLLModel {
                         case "MAT4":
                             size = .mat4
                         default:
-                            throw NSError()
+                            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute size value is not supported."])
                         }
                         
                         if ![5120, 5121, 5122, 5123, 5126].contains(fileAccessor.accessor.componentType) {
-                            throw NSError()
+                            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
+
                         }
                         let componentType = GLLVertexAttribComponentType(rawValue:  fileAccessor.accessor.componentType)!
                         
                         if let existingCount = countOfVertices {
                             if existingCount != fileAccessor.accessor.count {
-                                throw NSError()
+                                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The vertex size value is wonky."])
                             }
                         } else {
                             countOfVertices = fileAccessor.accessor.count
@@ -381,10 +383,10 @@ class GLLModelGltf: GLLModel {
                         accessors.append(vertexAccessor)
                     }
                     guard let countOfVertices = countOfVertices else {
-                        throw NSError()
+                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The vertex size value is wonky."])
                     }
                     guard primitive.mode == 4 else {
-                        throw NSError()
+                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "Only sets of triangles are supported."])
                     }
                     
                     let mesh = GLLModelMesh(asPartOf: self)!
@@ -400,7 +402,7 @@ class GLLModelGltf: GLLModel {
                         let elements = try loadData.getUnboundAccessor(for: indicesKey)
                         mesh.elementData = elements.view.buffer.data.subdata(in: elements.view.range)
                         if ![5120, 5121, 5122, 5123, 5124, 5125, 5126].contains(elements.accessor.componentType) {
-                            throw NSError()
+                            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The element data type is not supported."])
                         }
                         mesh.elementComponentType = GLLVertexAttribComponentType(rawValue:  elements.accessor.componentType)!
                         mesh.countOfElements = UInt(elements.accessor.count)
