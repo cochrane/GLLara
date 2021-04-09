@@ -203,6 +203,24 @@ struct LoadData {
     }
 }
 
+extension Data {
+    func readUInt32(at: Data.Index) throws -> UInt32 {
+        guard at + 4 <= self.count else {
+            throw NSError()
+        }
+        var result: UInt32 = 0
+        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 4) })
+        return result
+    }
+    
+    func checkedSubdata(in range: Range<Data.Index>) throws -> Data {
+        if range.max() ?? 0 > self.count {
+            throw NSError()
+        }
+        return subdata(in: range)
+    }
+}
+
 class GLLModelGltf: GLLModel {
     
     @objc convenience init(url: URL, isBinary: Bool = false) throws {
@@ -213,18 +231,14 @@ class GLLModelGltf: GLLModel {
                 // No header
                 throw NSError()
             }
-            var magic: UInt32 = 0
-            _ = withUnsafeMutableBytes(of: &magic, { data.copyBytes(to: $0, from: 0 ..< 4) })
+            let magic = try data.readUInt32(at: 0)
             if (magic != 0x46546C67) {
                 throw NSError()
             }
-            var version: UInt32 = 0
-            _ = withUnsafeMutableBytes(of: &version, { data.copyBytes(to: $0, from: 4 ..< 8) })
+            let version = try data.readUInt32(at: 4)
             if version == 1 {
-                var contentLength: UInt32 = 0
-                _ = withUnsafeMutableBytes(of: &contentLength, { data.copyBytes(to: $0, from: 12 ..< 16) })
-                var contentFormat: UInt32 = 0
-                _ = withUnsafeMutableBytes(of: &contentFormat, { data.copyBytes(to: $0, from: 16 ..< 20) })
+                let contentLength = try data.readUInt32(at: 12)
+                let contentFormat = try data.readUInt32(at: 16)
                 if contentFormat != 0 {
                     throw NSError()
                 }
@@ -233,13 +247,36 @@ class GLLModelGltf: GLLModel {
                 }
                 
                 let jsonEnd = Int(20 + contentLength)
-                let jsonData = data.subdata(in: 20 ..< jsonEnd)
-                let binaryData = data.subdata(in: jsonEnd ..< data.count)
+                let jsonData = try data.checkedSubdata(in: 20 ..< jsonEnd)
+                let binaryData = try data.checkedSubdata(in: jsonEnd ..< data.count)
                 
                 try self.init(jsonData: jsonData, baseUrl: url, binaryData: binaryData)
-                
             } else if version == 2 {
-                throw NSError()
+                let chunkLengthJson = try data.readUInt32(at: 12)
+                let chunkTypeJson = try data.readUInt32(at: 12)
+                if chunkTypeJson != 0x4E4F534A {
+                    throw NSError()
+                }
+                if chunkLengthJson + 20 > data.count {
+                    throw NSError()
+                }
+                let jsonEnd = Int(20 + chunkLengthJson)
+                let jsonData = try data.checkedSubdata(in: 20 ..< jsonEnd)
+                
+                let binaryData: Data?
+                if jsonEnd < data.count {
+                    let chunkLengthBinary = try data.readUInt32(at: jsonEnd)
+                    let chunkTypeBinary = try data.readUInt32(at: jsonEnd + 4)
+                    if chunkTypeBinary != 0x004E4942 {
+                        throw NSError()
+                    }
+                    let binaryEnd = jsonEnd + 8 + Int(chunkLengthBinary)
+                    binaryData = try data.checkedSubdata(in: jsonEnd + 8 ..< binaryEnd)
+                } else {
+                    binaryData = nil
+                }
+                
+                try self.init(jsonData: jsonData, baseUrl: url, binaryData: binaryData)
             } else {
                 throw NSError()
             }
