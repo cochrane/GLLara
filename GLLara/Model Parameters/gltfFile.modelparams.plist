@@ -9,7 +9,7 @@
 			<key>vertex</key>
 			<string>Combined.vs</string>
 			<key>fragment</key>
-			<string>TexturelessOBJ.fs</string>
+			<string>DefaultMaterialGLTF.fs</string>
 			<key>defines</key>
 			<dict>
 				<key>CALCULATE_NORMAL_WORLD</key>
