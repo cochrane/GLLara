@@ -8,6 +8,59 @@
 
 import Cocoa
 
+struct ColorRGBA {
+    var red: Double = 0.0
+    var green: Double = 0.0
+    var blue: Double = 0.0
+    var alpha: Double = 1.0
+    
+    static let white = ColorRGBA(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    static let black = ColorRGBA(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+}
+
+extension ColorRGBA: Codable {
+    init(from decoder: Decoder) throws {
+        var array = try decoder.unkeyedContainer()
+        red = try array.decode(Double.self)
+        green = try array.decode(Double.self)
+        blue = try array.decode(Double.self)
+        alpha = try array.decode(Double.self)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var array = encoder.unkeyedContainer()
+        try array.encode(red)
+        try array.encode(green)
+        try array.encode(blue)
+        try array.encode(alpha)
+    }
+}
+
+struct ColorRGB {
+    var red: Double = 0.0
+    var green: Double = 0.0
+    var blue: Double = 0.0
+    
+    static let white = ColorRGB(red: 1.0, green: 1.0, blue: 1.0)
+    static let black = ColorRGB(red: 1.0, green: 1.0, blue: 1.0)
+}
+
+extension ColorRGB: Codable {
+    init(from decoder: Decoder) throws {
+        var array = try decoder.unkeyedContainer()
+        red = try array.decode(Double.self)
+        green = try array.decode(Double.self)
+        blue = try array.decode(Double.self)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var array = encoder.unkeyedContainer()
+        try array.encode(red)
+        try array.encode(green)
+        try array.encode(blue)
+    }
+}
+
 struct Accessor: Codable {
     var bufferView: Int
     var byteOffset: Int?
@@ -46,7 +99,7 @@ struct Material: Codable {
     var normalTexture: TextureInfo?
     var occlusionTexture: OcclusionTextureInfo?
     var emissiveTexture: TextureInfo?
-    var emissiveFactor: [Double]?
+    var emissiveFactor: ColorRGB?
     var alphaMode: String?
     var alphaCutoff: Double?
     var doubleSided: Bool?
@@ -54,15 +107,7 @@ struct Material: Codable {
     var extensions: MaterialExtensions?
 }
 
-struct MaterialExtensions: Codable {
-    enum ExtensionKey: String, CodingKey {
-        case KHR_materials_unlit
-        case KHR_materials_clearcoat
-        case KHR_materials_pbrSpecularGlossiness
-        case KHR_materials_sheen
-        case KHR_materials_transmission
-    }
-    
+struct MaterialExtensions {
     var isUnlit: Bool
     
     // KHR_materials_clearcoat - we don't support this yet, just parsing it in case we want to in the future
@@ -83,15 +128,15 @@ struct MaterialExtensions: Codable {
     }
     
     struct PBRSpecularGlossiness: Codable {
-        var diffuseFactor: [Double]?
+        var diffuseFactor: ColorRGBA?
         var diffuseTexture: TextureInfo?
-        var specularFactor: [Double]?
+        var specularFactor: ColorRGB?
         var glossinessFactor: Double?
         var specularGlossinessTexture: TextureInfo?
     }
     
     struct Sheen: Codable {
-        var colorFactor: [Double]?
+        var colorFactor: ColorRGB?
         var colorTexture: TextureInfo?
         var roughnessFactor: [Double]?
         var roughnessTexture: TextureInfo?
@@ -118,7 +163,17 @@ struct MaterialExtensions: Codable {
     var pbrSpecularGlossiness: PBRSpecularGlossiness?
     var sheen: Sheen?
     var transmission: Transmission?
-    
+}
+
+extension MaterialExtensions: Codable {
+    enum ExtensionKey: String, CodingKey {
+        case KHR_materials_unlit
+        case KHR_materials_clearcoat
+        case KHR_materials_pbrSpecularGlossiness
+        case KHR_materials_sheen
+        case KHR_materials_transmission
+    }
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ExtensionKey.self)
         
@@ -153,7 +208,7 @@ struct Mesh: Codable {
 }
 
 struct PbrMetallicRoughness: Codable {
-    var baseColorFactor: [Double]?
+    var baseColorFactor: ColorRGBA?
     var baseColorTexture: TextureInfo?
     var metallicFactor: Double?
     var roughnessFactor: Double?
