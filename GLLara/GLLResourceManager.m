@@ -18,10 +18,11 @@
 #import "GLLPreferenceKeys.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLShader.h"
-#import "GLLShaderDescription.h"
 #import "GLLSkeletonProgram.h"
 #import "GLLSquareProgram.h"
 #import "GLLTexture.h"
+
+#import "GLLara-Swift.h"
 
 struct GLLAlphaTestBlock
 {
@@ -37,8 +38,8 @@ struct GLLAlphaTestBlock
     NSMutableDictionary *models;
 }
 
-- (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
-- (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (NSData *)_dataForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
+- (NSString *)_utf8StringForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
 - (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)(void))supplier;
 - (id)_makeWithContext:(id(^)(void))supplier;
 
@@ -145,7 +146,7 @@ static GLLResourceManager *sharedManager;
     }];
 }
 
-- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines type:(GLenum)type baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines type:(GLenum)type error:(NSError *__autoreleasing*)error;
 {
     NSParameterAssert(shaderName);
     NSParameterAssert(defines);
@@ -154,7 +155,7 @@ static GLLResourceManager *sharedManager;
                            @"defines": defines };
     
     return [self _valueForKey:key from:shaders ifNotFound:^{
-        NSString *shaderSource = [self _utf8StringForFilename:shaderName baseURL:baseURL error:error];
+        NSString *shaderSource = [self _utf8StringForFilename:shaderName error:error];
         if (!shaderSource) return (GLLShader *) nil;
         
         // Actual loading
@@ -259,20 +260,20 @@ static GLLResourceManager *sharedManager;
     
 }
 
-- (NSData *)_dataForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (NSData *)_dataForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
 {
     NSString *actualFilename = [[filename componentsSeparatedByString:@"\\"] lastObject];
     
-    NSURL *localURL = [NSURL URLWithString:actualFilename relativeToURL:baseURL];
+    NSURL *localURL = [NSURL URLWithString:actualFilename relativeToURL:nil];
     NSData *localData = [NSData dataWithContentsOfURL:localURL];
     if (localData) return localData;
     
     NSURL *resourceURL = [NSURL URLWithString:actualFilename relativeToURL:[[NSBundle mainBundle] resourceURL]];
     return [NSData dataWithContentsOfURL:resourceURL options:0 error:error];
 }
-- (NSString *)_utf8StringForFilename:(NSString *)filename baseURL:(NSURL *)baseURL error:(NSError *__autoreleasing*)error;
+- (NSString *)_utf8StringForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
 {
-    NSData *data = [self _dataForFilename:filename baseURL:baseURL error:error];
+    NSData *data = [self _dataForFilename:filename error:error];
     if (!data) return nil;
     
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];

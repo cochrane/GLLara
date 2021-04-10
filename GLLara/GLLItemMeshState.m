@@ -20,7 +20,6 @@
 #import "GLLModelProgram.h"
 #import "GLLRenderParameter.h"
 #import "GLLResourceManager.h"
-#import "GLLShaderDescription.h"
 #import "GLLTexture.h"
 #import "GLLUniformBlockBindings.h"
 #import "NSArray+Map.h"

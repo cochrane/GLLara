@@ -14,7 +14,7 @@
 
 - (id)initWithResourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 {
-    if (!(self = [self initWithName:@"internal-square" fragmentShaderName:@"Square.fs" geometryShaderName:nil vertexShaderName:@"Square.vs" baseURL:nil additionalDefines:@{} resourceManager:manager error:error])) return nil;
+    if (!(self = [self initWithName:@"internal-square" fragmentShaderName:@"Square.fs" geometryShaderName:nil vertexShaderName:@"Square.vs" additionalDefines:@{} resourceManager:manager error:error])) return nil;
     
     glUniform1i(glGetUniformLocation(self.programID, "texImage"), 0);
     

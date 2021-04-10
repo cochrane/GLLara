@@ -16,7 +16,6 @@
 #import "GLLModelMesh.h"
 #import "GLLModelParams.h"
 #import "GLLRenderParameter.h"
-#import "GLLShaderDescription.h"
 #import "NSArray+Map.h"
 
 #import "GLLara-Swift.h"

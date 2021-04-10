@@ -12,10 +12,11 @@
 
 #import "GLLNotifications.h"
 #import "GLLShader.h"
-#import "GLLShaderDescription.h"
 #import "GLLVertexFormat.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLResourceManager.h"
+
+#import "GLLara-Swift.h"
 
 @implementation GLLModelProgram
 
@@ -30,7 +31,7 @@
         additionalDefines = allDefines;
     }
     
-    if (!(self = [super initWithName:descriptor.name fragmentShaderName:descriptor.fragmentName geometryShaderName:descriptor.geometryName vertexShaderName:descriptor.vertexName baseURL:descriptor.baseURL additionalDefines:additionalDefines resourceManager:manager error:error])) return nil;
+    if (!(self = [super initWithName:descriptor.name fragmentShaderName:descriptor.fragmentName geometryShaderName:descriptor.geometryName vertexShaderName:descriptor.vertexName additionalDefines:additionalDefines resourceManager:manager error:error])) return nil;
     
     _lightsUniformBlockIndex = glGetUniformBlockIndex(self.programID, "LightData");
     if (_lightsUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(self.programID, _lightsUniformBlockIndex, GLLUniformBlockBindingLights);

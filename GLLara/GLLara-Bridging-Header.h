@@ -10,4 +10,3 @@
 #import "GLLVertexAttribAccessor.h"
 #import "GLLVertexAttribAccessorSet.h"
 #import "GLLVertexFormat.h"
-#import "GLLShaderDescription.h"

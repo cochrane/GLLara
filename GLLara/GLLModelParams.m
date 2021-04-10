@@ -11,7 +11,6 @@
 #import "NSArray+Map.h"
 #import "GLLModelMesh.h"
 #import "GLLModel.h"
-#import "GLLShaderDescription.h"
 
 #import "GLLara-Swift.h"
 
@@ -192,7 +191,7 @@ static NSCache *parameterCache;
     
     // Similar for loading shaders
     ownShaders = [propertyList[@"shaders"] mapValuesWithKey:^(NSString *shaderName, id description){
-        return [[GLLShaderDescription alloc] initWithPlist:description name:shaderName baseURL:nil modelParameters:self];
+        return [[GLLShaderDescription alloc] initWithPlist:description name:shaderName modelParameters:self];
     }];
     
     // And render parameters
