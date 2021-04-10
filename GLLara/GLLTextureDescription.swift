@@ -9,19 +9,14 @@
 import Foundation
 
 @objc class GLLTextureDescription: NSObject, Decodable {
-    @objc let localizedTitle: String
-    @objc let localizedDescription: String
+    var title: String
+    var descriptionKey: String
     
-    enum PlistCodingKeys: String, CodingKey {
-        case title, description
-    }
+    @objc lazy var localizedTitle: String = Bundle.main.localizedString(forKey: self.title, value: nil, table: "Textures")
     
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: PlistCodingKeys.self)
-        let titleKey = try container.decode(String.self, forKey: .title)
-        self.localizedTitle = Bundle.main.localizedString(forKey: titleKey, value: nil, table: "Textures")
-        let descriptionKey = try container.decode(String.self, forKey: .description)
-        self.localizedDescription = Bundle.main.localizedString(forKey: descriptionKey, value: nil, table: "Textures")
-
+    @objc lazy var localizedDescription: String = Bundle.main.localizedString(forKey: self.descriptionKey, value: nil, table: "Textures")
+    
+    enum CodingKeys: String, CodingKey {
+        case title, descriptionKey = "description"
     }
 }
