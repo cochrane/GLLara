@@ -16,9 +16,10 @@
 #import "GLLModelMesh.h"
 #import "GLLModelParams.h"
 #import "GLLRenderParameter.h"
-#import "GLLRenderParameterDescription.h"
 #import "GLLShaderDescription.h"
 #import "NSArray+Map.h"
+
+#import "GLLara-Swift.h"
 
 @interface GLLItemMesh ()
 {
@@ -62,9 +63,9 @@
         
         GLLRenderParameter *parameter;
         
-        if ([description.type isEqual:GLLRenderParameterTypeFloat])
+        if (description.type == GLLRenderParameterTypeFloat)
             parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLFloatRenderParameter" inManagedObjectContext:self.managedObjectContext];
-        else if ([description.type isEqual:GLLRenderParameterTypeColor])
+        else if (description.type == GLLRenderParameterTypeColor)
             parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLColorRenderParameter" inManagedObjectContext:self.managedObjectContext];
         else
             continue; // Skip this param
@@ -118,9 +119,9 @@
             
             GLLRenderParameter *parameter;
             
-            if ([description.type isEqual:GLLRenderParameterTypeFloat])
+            if (description.type == GLLRenderParameterTypeFloat)
                 parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLFloatRenderParameter" inManagedObjectContext:self.managedObjectContext];
-            else if ([description.type isEqual:GLLRenderParameterTypeColor])
+            else if (description.type == GLLRenderParameterTypeColor)
                 parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLColorRenderParameter" inManagedObjectContext:self.managedObjectContext];
             else
                 continue; // Skip this param

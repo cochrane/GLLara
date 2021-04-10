@@ -15,11 +15,12 @@
 #import "GLLItemMeshTexture.h"
 #import "GLLItemMeshTextureSelectionPlaceholder.h"
 #import "GLLRenderParameter.h"
-#import "GLLRenderParameterDescription.h"
 #import "GLLRenderParameterSelectionPlaceholder.h"
 #import "GLLSelection.h"
 #import "GLLTextureAssignmentView.h"
 #import "GLLMultipleSelectionPlaceholder.h"
+
+#import "GLLara-Swift.h"
 
 /************************************************************************
  A very high-level overview:
@@ -150,7 +151,7 @@
             return nil;
         
         
-        if ([descriptionForName.type isEqual:GLLRenderParameterTypeColor])
+        if (descriptionForName.type == GLLRenderParameterTypeColor)
         {
             GLLColorRenderParameterView *result = [tableView makeViewWithIdentifier:@"ColorRenderParameterView" owner:self];
             
@@ -167,7 +168,7 @@
             return result;
             
         }
-        else if ([descriptionForName.type isEqual:GLLRenderParameterTypeFloat])
+        else if (descriptionForName.type == GLLRenderParameterTypeFloat)
         {
             GLLFloatRenderParameterView *result = [tableView makeViewWithIdentifier:@"FloatRenderParameterView" owner:self];
             

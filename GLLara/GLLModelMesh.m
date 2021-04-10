@@ -680,6 +680,7 @@ void vec_addTo(float *a, const float *b)
     _displayName = meshParams.displayName;
     _initiallyVisible = meshParams.visible;
     _optionalPartNames = meshParams.optionalPartNames;
+    _renderParameterValues = meshParams.renderParameters;
     
     if (!_shader)
         NSLog(@"No shader for object %@", self.name);

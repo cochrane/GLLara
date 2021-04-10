@@ -12,7 +12,8 @@
 #import "GLLItemMesh.h"
 #import "GLLModelMesh.h"
 #import "GLLShaderDescription.h"
-#import "GLLRenderParameterDescription.h"
+
+#import "GLLara-Swift.h"
 
 @implementation GLLRenderParameter
 
