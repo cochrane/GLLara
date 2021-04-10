@@ -21,23 +21,14 @@ import Foundation
     
     @objc let type: GLLRenderParameterType
     
-    @objc init(withPlist dictionary: [String: Any]) {
-        self.min = dictionary["min"] as? Double ?? 0
-        self.max = dictionary["max"] as? Double ?? 0
-        self.localizedTitle = Bundle.main.localizedString(forKey: dictionary["title"] as! String, value: nil, table: "RenderParameters")
-        self.localizedDescription = Bundle.main.localizedString(forKey: dictionary["description"] as! String, value: nil, table: "RenderParameters")
-        
-        self.type = dictionary["type"] as? String == "color" ? .color : .float
-    }
-    
     enum PlistCodingKeys: String, CodingKey {
         case min, max, title, description, type
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: PlistCodingKeys.self)
-        self.min = try container.decode(Double.self, forKey: .min)
-        self.max = try container.decode(Double.self, forKey: .max)
+        self.min = try container.decodeIfPresent(Double.self, forKey: .min) ?? 0
+        self.max = try container.decodeIfPresent(Double.self, forKey: .max) ?? 0
         
         let titleKey = try container.decode(String.self, forKey: .title)
         self.localizedTitle = Bundle.main.localizedString(forKey: titleKey, value: nil, table: "RenderParameters")

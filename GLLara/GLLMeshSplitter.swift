@@ -20,7 +20,7 @@ import Foundation
         case maxX
         case maxY
         case maxZ
-        case splitPartName
+        case Name
     }
     
     required init(from decoder: Decoder) throws {
@@ -34,16 +34,6 @@ import Foundation
                try container.decodeIfPresent(Double.self, forKey: .maxY) ?? Double.infinity,
                try container.decodeIfPresent(Double.self, forKey: .maxZ) ?? Double.infinity]
         
-        splitPartName = try container.decode(String.self, forKey: .splitPartName)
-    }
-    
-    @objc init(withPlist dictionary: [String: Any]) {
-        splitPartName = dictionary["Name"] as! String
-        min = [dictionary["minX"] as? Double ?? -Double.infinity,
-               dictionary["minY"] as? Double ?? -Double.infinity,
-               dictionary["minZ"] as? Double ?? -Double.infinity]
-        max = [dictionary["maxX"] as? Double ?? Double.infinity,
-               dictionary["maxY"] as? Double ?? Double.infinity,
-               dictionary["maxZ"] as? Double ?? Double.infinity]
+        splitPartName = try container.decode(String.self, forKey: .Name)
     }
 }

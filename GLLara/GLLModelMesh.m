@@ -10,7 +10,6 @@
 
 #import "GLLASCIIScanner.h"
 #import "GLLModel.h"
-#import "GLLModelParams.h"
 #import "GLLTiming.h"
 #import "GLLVertexAttribAccessor.h"
 #import "GLLVertexAttribAccessorSet.h"

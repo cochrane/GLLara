@@ -31,6 +31,7 @@ import Foundation
      * Names of uniforms, in the order that they are specified by models.
      * For each mesh, textures are just specified one after the other, with no information what those textures do. Similarly, with the generic_item format, the settings for the uniforms are specified one after the other, with no information what they do. These arrays give the uniform name for the corresponding index.
      */
+    @objc let genericMeshUniformMappings: [[String]]
     @objc let parameterUniformNames: [String]
     @objc let textureUniformNames: [String]
     
@@ -69,34 +70,6 @@ import Foundation
         return parameters!.description(forTexture: textureUniformName)
     }
     
-    @objc init(withPlist dictionary: [String: Any], name: String, modelParameters: GLLModelParams) {
-        self.name = name
-        self.parameters = modelParameters
-        
-        self.vertexName = dictionary["vertex"] as? String
-        self.geometryName = dictionary["geometry"] as? String
-        self.fragmentName = dictionary["fragment"] as? String
-        
-        var flattened: [String] = []
-        if let parameters = dictionary["parameters"] as? [Any] {
-            for item in parameters {
-                if let subParameters = item as? [String] {
-                    flattened.append(contentsOf: subParameters)
-                } else {
-                    flattened.append(item as! String)
-                }
-            }
-        }
-        self.parameterUniformNames = flattened
-        
-        self.textureUniformNames = dictionary["textures"] as? [String] ?? []
-        self.additionalUniformNames = dictionary["additionalParameters"] as? [String] ?? []
-        self.defines = dictionary["defines"] as? [String:String] ?? [:]
-        
-        self.alphaMeshGroups = Set<String>(dictionary["alphaMeshGroups"] as? [String] ?? [])
-        self.solidMeshGroups = Set<String>(dictionary["solidMeshGroups"] as? [String] ?? [])
-    }
-    
     enum PlistCodingKeys: String, CodingKey {
         case vertex, geometry, fragment
         case parameters
@@ -118,17 +91,22 @@ import Foundation
         
         // I don't remember why we have this
         var flattened: [String] = []
+        var deep: [[String]] = []
         if container.contains(.parameters) {
             var parameters = try container.nestedUnkeyedContainer(forKey: .parameters)
             while !parameters.isAtEnd {
-                if let array = try parameters.decodeIfPresent([String].self) {
+                if let array = try? parameters.decodeIfPresent([String].self) {
                     flattened.append(contentsOf: array)
+                    deep.append(array)
                 } else {
-                    flattened.append(try parameters.decode(String.self))
+                    let value = try parameters.decode(String.self)
+                    flattened.append(value)
+                    deep.append([value])
                 }
             }
         }
         self.parameterUniformNames = flattened
+        self.genericMeshUniformMappings = deep
         
         self.textureUniformNames = try container.decodeIfPresent([String].self, forKey: .textures) ?? []
         self.additionalUniformNames = try container.decodeIfPresent([String].self, forKey: .additionalParameters) ?? []

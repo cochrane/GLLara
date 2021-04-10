@@ -13,7 +13,6 @@
 #import "GLLModelBone.h"
 #import "GLLModelMesh.h"
 #import "GLLModelMeshV3.h"
-#import "GLLModelParams.h"
 #import "GLLModelObj.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"

@@ -98,7 +98,7 @@
 			<key>min</key>
 			<real>0.01</real>
 			<key>max</key>
-			<string>32</string>
+			<integer>32</integer>
 			<key>description</key>
 			<string>How often the specular texture is repeated over the model. I have no idea why anyone would need this, but XPS supports it, so here we are.</string>
 		</dict>

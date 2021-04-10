@@ -14,7 +14,6 @@
 #import "GLLItemMeshTexture.h"
 #import "GLLModel.h"
 #import "GLLModelMesh.h"
-#import "GLLModelParams.h"
 #import "GLLRenderParameter.h"
 #import "NSArray+Map.h"
 
@@ -100,7 +99,7 @@
 - (void)setShaderName:(NSString *)shaderName
 {
     GLLModelParams *params = self.mesh.model.parameters;
-    GLLShaderDescription *shaderDescription = [params shaderNamed:shaderName];
+    GLLShaderDescription *shaderDescription = [params shaderWithName:shaderName];
     if (!shaderDescription)
     {
         [self willChangeValueForKey:@"shaderName"];
@@ -130,7 +129,7 @@
                 continue; // Skip this param
             
             parameter.name = renderParameterName;
-            [parameter setValue:[params defaultValueForRenderParameter:renderParameterName] forKey:@"value"];
+            [parameter setValue:[NSNumber numberWithDouble:[params defaultValueForRenderParameter:renderParameterName]] forKey:@"value"];
             parameter.mesh = self;
         }
     }
@@ -177,7 +176,7 @@
 
 - (GLLShaderDescription *)shader
 {
-    return [self.mesh.model.parameters shaderNamed:self.shaderName];
+    return [self.mesh.model.parameters shaderWithName:self.shaderName];
 }
 
 - (void)setShader:(GLLShaderDescription *)shader

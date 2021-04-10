@@ -605,7 +605,7 @@ class GLLModelGltf: GLLModel {
                     modelMesh.name = mesh.name ?? "mesh"
                     modelMesh.displayName = modelMesh.name
                     modelMesh.textures = []
-                    modelMesh.shader = self.parameters.shaderNamed("DefaultMaterial")
+                    modelMesh.shader = self.parameters.shader(name: "DefaultMaterial")
                     modelMesh.countOfVertices = UInt(countOfVertices)
                     modelMesh.countOfUVLayers = UInt(uvLayers.count)
                     modelMesh.vertexDataAccessors = GLLVertexAttribAccessorSet(accessors: accessors)

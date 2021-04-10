@@ -10,10 +10,11 @@
 
 #import "GLLModelBone.h"
 #import "GLLModelMeshObj.h"
-#import "GLLModelParams.h"
 #import "GLLMtlFile.h"
 #import "GLLObjFile.h"
 #import "GLLTiming.h"
+
+#import "GLLara-Swift.h"
 
 @interface GLLModelObj ()
 {

@@ -12,11 +12,6 @@ import Foundation
     @objc let localizedTitle: String
     @objc let localizedDescription: String
     
-    @objc init(withPlist dictionary: [String: Any]) {
-        self.localizedTitle = Bundle.main.localizedString(forKey: dictionary["title"] as? String ?? "", value: nil, table: "Textures")
-        self.localizedDescription = Bundle.main.localizedString(forKey: dictionary["description"] as? String ?? "", value: nil, table: "Textures")
-    }
-    
     enum PlistCodingKeys: String, CodingKey {
         case title, description
     }
