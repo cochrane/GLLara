@@ -9,7 +9,6 @@
 #import "GLLModelMesh.h"
 
 #import "GLLASCIIScanner.h"
-#import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "GLLModelParams.h"
 #import "GLLTiming.h"
@@ -18,6 +17,8 @@
 #import "GLLVertexFormat.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
+
+#import "GLLara-Swift.h"
 
 float vec_dot(const float *a, const float *b)
 {
@@ -357,7 +358,7 @@ void vec_addTo(float *a, const float *b)
 
 #pragma mark - Splitting
 
-- (GLLModelMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
+- (GLLModelMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
 {
     NSMutableData *newElements = [[NSMutableData alloc] init];
     
@@ -382,7 +383,7 @@ void vec_addTo(float *a, const float *b)
         {
             BOOL allCoordsInsideBox = YES;
             for (int coord = 0; coord < 3; coord++)
-                allCoordsInsideBox = allCoordsInsideBox && position[corner][coord] >= min[coord] && position[corner][coord] <= max[coord];
+                allCoordsInsideBox = allCoordsInsideBox && position[corner][coord] >= splitter.min[coord].floatValue && position[corner][coord] <= splitter.max[coord].floatValue;
             if (allCoordsInsideBox)
                 anyCornerInsideBox = YES;
         }
@@ -406,15 +407,11 @@ void vec_addTo(float *a, const float *b)
     
     result->_countOfUVLayers = self.countOfUVLayers;
     result->_model = self.model;
-    result->_name = [name copy];
+    result->_name = [splitter.splitPartName copy];
     result->_textures = [self.textures copy];
     [result finishLoading]; // Result may have different mesh group or shader. In fact, for the one and only object class where this entire feature is needed, this is guaranteed.
     
     return result;
-}
-- (GLLModelMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
-{
-    return [self partialMeshInBoxMin:splitter.min max:splitter.max name:splitter.splitPartName];
 }
 
 - (GLLCullFaceMode)cullFaceMode

@@ -79,7 +79,6 @@ typedef enum GLLCullFaceMode
 /*
  * XNALara insists that some meshes need to be split; apparently only for cosmetic reasons. I shall oblige, but in a way that is not specific to exactly one thing, thank you very much. Note that this mesh keeps the bone indices of the original.
  */
-- (GLLModelMesh *)partialMeshInBoxMin:(const float *)min max:(const float *)max name:(NSString *)name;
 - (GLLModelMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
 
 /*

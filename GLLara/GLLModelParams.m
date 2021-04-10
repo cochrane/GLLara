@@ -10,11 +10,12 @@
 
 #import "NSArray+Map.h"
 #import "GLLModelMesh.h"
-#import "GLLMeshSplitter.h"
 #import "GLLModel.h"
 #import "GLLRenderParameterDescription.h"
 #import "GLLShaderDescription.h"
 #import "GLLTextureDescription.h"
+
+#import "GLLara-Swift.h"
 
 /*
  * Parsing of mesh names for generic item
