@@ -14,12 +14,12 @@ import Foundation
 }
 
 @objc class GLLRenderParameterDescription: NSObject, Decodable {
-    @objc var min: Double
-    @objc var max: Double
-    @objc var localizedTitle: String
-    @objc var localizedDescription: String
+    @objc let min: Double
+    @objc let max: Double
+    @objc let localizedTitle: String
+    @objc let localizedDescription: String
     
-    @objc var type: GLLRenderParameterType
+    @objc let type: GLLRenderParameterType
     
     @objc init(withPlist dictionary: [String: Any]) {
         self.min = dictionary["min"] as? Double ?? 0

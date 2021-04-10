@@ -9,8 +9,8 @@
 import Foundation
 
 @objc class GLLTextureDescription: NSObject, Decodable {
-    @objc var localizedTitle: String
-    @objc var localizedDescription: String
+    @objc let localizedTitle: String
+    @objc let localizedDescription: String
     
     @objc init(withPlist dictionary: [String: Any]) {
         self.localizedTitle = Bundle.main.localizedString(forKey: dictionary["title"] as? String ?? "", value: nil, table: "Textures")

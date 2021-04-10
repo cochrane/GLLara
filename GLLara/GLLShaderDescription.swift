@@ -15,34 +15,34 @@ import Foundation
  * (model-specific uniforms) and textures it expects, and the render group
  * names to which this shader applies.
  */
-@objc class GLLShaderDescription: NSObject {
-    @objc var name: String
-    @objc var parameters: GLLModelParams
+@objc class GLLShaderDescription: NSObject, Decodable {
+    @objc var name: String?
+    @objc var parameters: GLLModelParams?
     
     /*
      * Names of the shaders to be used.
      */
 
-    @objc var vertexName: String?
-    @objc var geometryName: String?
-    @objc var fragmentName: String?
+    @objc let vertexName: String?
+    @objc let geometryName: String?
+    @objc let fragmentName: String?
     
     /*
      * Names of uniforms, in the order that they are specified by models.
      * For each mesh, textures are just specified one after the other, with no information what those textures do. Similarly, with the generic_item format, the settings for the uniforms are specified one after the other, with no information what they do. These arrays give the uniform name for the corresponding index.
      */
-    @objc var parameterUniformNames: [String]
-    @objc var textureUniformNames: [String]
+    @objc let parameterUniformNames: [String]
+    @objc let textureUniformNames: [String]
     
     /*
      * Defines that get passed to the shader compiler.
      */
-    @objc var defines: [String: String]
+    @objc let defines: [String: String]
     
     /*
      * Uniforms that are not specified by models.
      */
-    @objc var additionalUniformNames: [String]
+    @objc let additionalUniformNames: [String]
     
     @objc var allUniformNames: [String] {
         var result = Array<String>(parameterUniformNames)
@@ -50,21 +50,23 @@ import Foundation
         return result
     }
     
-    @objc var solidMeshGroups: Set<String>
-    @objc var alphaMeshGroups: Set<String>
+    @objc let solidMeshGroups: Set<String>
+    @objc let alphaMeshGroups: Set<String>
     
-    @objc var programIdentifier: String
+    @objc var programIdentifier: String {
+        return name!
+    }
     
     @objc var localizedName: String {
-        return Bundle.main.localizedString(forKey: self.name, value: nil, table: "Shaders")
+        return Bundle.main.localizedString(forKey: self.name!, value: nil, table: "Shaders")
     }
     
     @objc func description(forParameter parameterName: String) -> GLLRenderParameterDescription {
-        return parameters.description(forParameter: parameterName)
+        return parameters!.description(forParameter: parameterName)
     }
     
     @objc func description(forTexture textureUniformName: String) -> GLLTextureDescription {
-        return parameters.description(forTexture: textureUniformName)
+        return parameters!.description(forTexture: textureUniformName)
     }
     
     @objc init(withPlist dictionary: [String: Any], name: String, modelParameters: GLLModelParams) {
@@ -93,7 +95,46 @@ import Foundation
         
         self.alphaMeshGroups = Set<String>(dictionary["alphaMeshGroups"] as? [String] ?? [])
         self.solidMeshGroups = Set<String>(dictionary["solidMeshGroups"] as? [String] ?? [])
+    }
+    
+    enum PlistCodingKeys: String, CodingKey {
+        case vertex, geometry, fragment
+        case parameters
+        case textures
+        case additionalParameters
+        case defines
+        case alphaMeshGroups
+        case solidMeshGroups
+    }
+    
+    required init(from decoder: Decoder) throws {
+        self.name = nil
+        self.parameters = nil
         
-        self.programIdentifier = name
+        let container = try decoder.container(keyedBy: PlistCodingKeys.self)
+        self.vertexName = try container.decodeIfPresent(String.self, forKey: .vertex)
+        self.geometryName = try container.decodeIfPresent(String.self, forKey: .geometry)
+        self.fragmentName = try container.decodeIfPresent(String.self, forKey: .fragment)
+        
+        // I don't remember why we have this
+        var flattened: [String] = []
+        if container.contains(.parameters) {
+            var parameters = try container.nestedUnkeyedContainer(forKey: .parameters)
+            while !parameters.isAtEnd {
+                if let array = try parameters.decodeIfPresent([String].self) {
+                    flattened.append(contentsOf: array)
+                } else {
+                    flattened.append(try parameters.decode(String.self))
+                }
+            }
+        }
+        self.parameterUniformNames = flattened
+        
+        self.textureUniformNames = try container.decodeIfPresent([String].self, forKey: .textures) ?? []
+        self.additionalUniformNames = try container.decodeIfPresent([String].self, forKey: .additionalParameters) ?? []
+        self.defines = try container.decodeIfPresent([String:String].self, forKey: .defines) ?? [:]
+        
+        self.alphaMeshGroups = Set(try container.decodeIfPresent([String].self, forKey: .alphaMeshGroups) ?? [])
+        self.solidMeshGroups = Set(try container.decodeIfPresent([String].self, forKey: .solidMeshGroups) ?? [])
     }
 }
