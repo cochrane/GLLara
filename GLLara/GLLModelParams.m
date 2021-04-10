@@ -93,6 +93,8 @@ static NSCache *parameterCache;
     NSArray<GLLShaderDescription *> *allShaders;
     
     GLLModel *model;
+    
+    BOOL isGenericItem;
 }
 
 - (void)_getShader:(GLLShaderDescription *__autoreleasing *)shader alpha:(BOOL *)shaderIsAlpha forMeshGroup:(NSString *)meshGroup;
@@ -164,6 +166,8 @@ static NSCache *parameterCache;
 {
     if (!(self = [super init])) return nil;
     
+    isGenericItem = NO;
+    
     // If there is a parent, get it
     if (propertyList[@"base"])
     {
@@ -210,6 +214,8 @@ static NSCache *parameterCache;
 {
     if (!(self = [super init])) return nil;
     
+    isGenericItem = YES;
+    
     _base = [[self class] parametersForName:@"lara" error:error];
     if (!_base) return nil;
     model = aModel;
@@ -234,9 +240,7 @@ static NSCache *parameterCache;
     GLLMeshParams *params = [[GLLMeshParams alloc] init];
     params.displayName = meshName;
     
-    if (!ownMeshGroups) {
-        // This is a generic_item file
-        
+    if (isGenericItem) {
         // Always use english locale, no matter what the user has set, for proper decimal separators.
         NSNumberFormatter *englishNumberFormatter = [[NSNumberFormatter alloc] init];
         englishNumberFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
@@ -361,6 +365,9 @@ static NSCache *parameterCache;
         GLLMeshParams *baseParams = [[GLLMeshParams alloc] init];
         if (self.base)
             baseParams = [self.base paramsForMesh:meshName];
+        else {
+            NSLog(@"root");
+        }
         
         // - Mesh groups
         NSMutableArray<NSString *> *meshGroups = [[NSMutableArray alloc] init];

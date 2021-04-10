@@ -70,6 +70,10 @@
         else
             continue; // Skip this param
         
+        if (values[uniformName] == nil) {
+            NSLog(@"Have no value for %@", uniformName);
+        }
+        
         parameter.name = uniformName;
         [parameter setValue:values[uniformName] forKey:@"value"];
         
