@@ -33,13 +33,131 @@ struct Buffer: Codable {
     var uri: String?
 }
 
+struct Image: Codable {
+    var uri: String?
+    var mimeType: String?
+    var bufferView: Int?
+    var name: String?
+}
+
 struct Material: Codable {
     var name: String?
+    var pbrMetallicRoughness: PbrMetallicRoughness?
+    var normalTexture: TextureInfo?
+    var occlusionTexture: OcclusionTextureInfo?
+    var emissiveTexture: TextureInfo?
+    var emissiveFactor: [Double]?
+    var alphaMode: String?
+    var alphaCutoff: Double?
+    var doubleSided: Bool?
+    
+    var extensions: MaterialExtensions?
+}
+
+struct MaterialExtensions: Codable {
+    enum ExtensionKey: String, CodingKey {
+        case KHR_materials_unlit
+        case KHR_materials_clearcoat
+        case KHR_materials_pbrSpecularGlossiness
+        case KHR_materials_sheen
+        case KHR_materials_transmission
+    }
+    
+    var isUnlit: Bool
+    
+    // KHR_materials_clearcoat - we don't support this yet, just parsing it in case we want to in the future
+    struct Clearcoat: Codable {
+        var factor: Double?
+        var texture: TextureInfo?
+        var roughnessFactor: Double?
+        var roughnessTexture: TextureInfo?
+        var normalTexture: NormalTextureInfo?
+        
+        enum CodingKeys: String, CodingKey {
+            case factor = "clearcoatFactor"
+            case texture = "clearcoatTexture"
+            case roughnessFactor = "clearcoatRoughnessFactor"
+            case roughnessTexture = "clearcoatRoughnessTexture"
+            case normalTexture = "clearcoatNormalTexture"
+        }
+    }
+    
+    struct PBRSpecularGlossiness: Codable {
+        var diffuseFactor: [Double]?
+        var diffuseTexture: TextureInfo?
+        var specularFactor: [Double]?
+        var glossinessFactor: Double?
+        var specularGlossinessTexture: TextureInfo?
+    }
+    
+    struct Sheen: Codable {
+        var colorFactor: [Double]?
+        var colorTexture: TextureInfo?
+        var roughnessFactor: [Double]?
+        var roughnessTexture: TextureInfo?
+        
+        enum CodingKeys: String, CodingKey {
+            case colorFactor = "sheenColorFactor"
+            case colorTexture = "sheenColorTexture"
+            case roughnessFactor = "sheenRoughnessFactor"
+            case roughnessTexture = "sheenRoughnessTexture"
+        }
+    }
+    
+    struct Transmission: Codable {
+        var factor: Double?
+        var texture: TextureInfo?
+        
+        enum CodingKeys: String, CodingKey {
+            case factor = "transmissionFactor"
+            case texture = "transmissionTexture"
+        }
+    }
+    
+    var clearcoat: Clearcoat?
+    var pbrSpecularGlossiness: PBRSpecularGlossiness?
+    var sheen: Sheen?
+    var transmission: Transmission?
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ExtensionKey.self)
+        
+        // Unlit is just a flag, contains no other information
+        isUnlit = container.contains(.KHR_materials_unlit)
+        
+        clearcoat = try container.decodeIfPresent(Clearcoat.self, forKey: .KHR_materials_clearcoat)
+        pbrSpecularGlossiness = try container.decodeIfPresent(PBRSpecularGlossiness.self, forKey: .KHR_materials_pbrSpecularGlossiness)
+        sheen = try container.decodeIfPresent(Sheen.self, forKey: .KHR_materials_sheen)
+        transmission = try container.decodeIfPresent(Transmission.self, forKey: .KHR_materials_transmission)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: ExtensionKey.self)
+        
+        if isUnlit {
+            // Per specification, isUnlit provides an empty object
+            // Keying by ExtensionKey because it's free and lying around
+            _ = container.nestedContainer(keyedBy: ExtensionKey.self, forKey: .KHR_materials_unlit)
+        }
+        
+        try container.encodeIfPresent(clearcoat, forKey: .KHR_materials_clearcoat)
+        try container.encodeIfPresent(pbrSpecularGlossiness, forKey: .KHR_materials_pbrSpecularGlossiness)
+        try container.encodeIfPresent(sheen, forKey: .KHR_materials_sheen)
+        try container.encodeIfPresent(transmission, forKey: .KHR_materials_transmission)
+    }
 }
 
 struct Mesh: Codable {
     var name: String?
     var primitives: [Primitive]
+}
+
+struct PbrMetallicRoughness: Codable {
+    var baseColorFactor: [Double]?
+    var baseColorTexture: TextureInfo?
+    var metallicFactor: Double?
+    var roughnessFactor: Double?
+    var metallicRoughnessTexture: TextureInfo?
 }
 
 struct Primitive: Codable {
@@ -55,6 +173,14 @@ struct Node: Codable {
     var name: String?
 }
 
+struct Sampler: Codable {
+    var magFilter: Int?
+    var minFilter: Int?
+    var wrapS: Int?
+    var wrapT: Int?
+    var name: String?
+}
+
 struct Scene: Codable {
     
 }
@@ -63,17 +189,45 @@ struct Skin: Codable {
     
 }
 
+struct Texture: Codable {
+    var sampler: Int?
+    var source: Int?
+    var name: String?
+}
+
+struct TextureInfo: Codable {
+    var index: Int
+    var texCoord: Int?
+}
+
+struct OcclusionTextureInfo: Codable {
+    var index: Int
+    var texCoord: Int?
+    var strength: Double?
+}
+
+struct NormalTextureInfo: Codable {
+    var index: Int
+    var texCoord: Int?
+    var scale: Double?
+}
+
 struct GltfDocument: Codable {
     var accessors: [Accessor]?
     var asset: Asset
     var bufferViews: [BufferView]?
     var buffers: [Buffer]?
+    var extensionsUsed: [String]?
+    var extensionsRequired: [String]?
+    var images: [Image]?
     var materials: [Material]?
     var meshes: [Mesh]?
     var nodes: [Node]?
+    var samplers: [Sampler]?
     var scene: Int?
     var scenes: [Scene]?
     var skins: [Skin]?
+    var textures: [Texture]?
 }
 
 class LoadedBuffer {
