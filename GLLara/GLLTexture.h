@@ -20,6 +20,17 @@ extern NSString *GLLTextureChangeNotification;
 
 - (id)initWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error __attribute__((nonnull(1)));
 
+/*!
+ * @abstract Load from data (assuming this is part of some other file)
+ * @discussion Intended in particular for glTF (binary glTF and data URIs in it),
+ * where the file may start sort of randomly, and where updating the texture
+ * independent of the model is not possible anyway.
+ * @param data The data to load
+ * @param url The URL to use for error messages
+ * @param error Output error
+ */
+- (id)initWithData:(NSData *)data sourceURL:(NSURL *)url error:(NSError *__autoreleasing *)error __attribute__((nonnull(1)));
+
 - (void)unload;
 
 @property (nonatomic, assign, readonly) NSUInteger width;

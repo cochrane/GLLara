@@ -18,6 +18,7 @@
 @class GLLVertexAttribAccessorSet;
 @class GLLVertexFormat;
 @class TRInDataStream;
+@class NSColor;
 
 typedef enum GLLCullFaceMode
 {

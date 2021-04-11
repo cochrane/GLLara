@@ -497,6 +497,38 @@ class GLLModelGltf: GLLModel {
         }
     }
     
+    private func semanticAndLayer(for attributeKey: String) -> (GLLVertexAttribSemantic, Int)? {
+        let nameComponents = attributeKey.split(separator: "_")
+        let layer: Int
+        let name: String
+        if nameComponents.count == 2, let suffix = Int(nameComponents[1]) {
+            layer = suffix
+            name = String(nameComponents[0])
+        } else {
+            name = attributeKey
+            layer = 0
+        }
+        
+        let semantic: GLLVertexAttribSemantic
+        switch name {
+        case "POSITION":
+            semantic = .position
+        case "NORMAL":
+            semantic = .normal
+        case "TEXCOORD":
+            semantic = .texCoord0
+        case "COLOR":
+            semantic = .color
+        case "JOINT":
+            semantic = .boneIndices
+        case "WEIGHT":
+            semantic = .boneWeights
+        default:
+            return nil
+        }
+        return (semantic, layer)
+    }
+    
     @objc init(jsonData: Data, baseUrl: URL, binaryData: Data? = nil) throws {
         let decoder = JSONDecoder()
         let document = try decoder.decode(GltfDocument.self, from: jsonData)
@@ -519,36 +551,11 @@ class GLLModelGltf: GLLModel {
                 for primitive in mesh.primitives {
                     
                     var accessors: [GLLVertexAttribAccessor] = []
-                    for nameAndValue in primitive.attributes {
-                        let fileAccessor = try loadData.getUnboundAccessor(for: nameAndValue.value)
+                    for (attributeKey, attributeIndex) in primitive.attributes {
+                        let fileAccessor = try loadData.getUnboundAccessor(for: attributeIndex)
                         
-                        let nameComponents = nameAndValue.key.split(separator: "_")
-                        let layer: Int
-                        let name: String
-                        if nameComponents.count == 2, let suffix = Int(nameComponents[1]) {
-                            layer = suffix
-                            name = String(nameComponents[0])
-                        } else {
-                            name = nameAndValue.key
-                            layer = 0
-                        }
-                        
-                        let semantic: GLLVertexAttribSemantic
-                        switch name {
-                        case "POSITION":
-                            semantic = .position
-                        case "NORMAL":
-                            semantic = .normal
-                        case "TEXCOORD":
-                            semantic = .texCoord0
-                        case "COLOR":
-                            semantic = .color
-                        case "JOINT":
-                            semantic = .boneIndices
-                        case "WEIGHT":
-                            semantic = .boneWeights
-                        default:
-                            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute semantic is not supported."])
+                        guard let (semantic, layer) = semanticAndLayer(for: attributeKey) else {
+                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute semantic is not supported."])
                         }
                         
                         if semantic == .texCoord0 {
@@ -609,6 +616,39 @@ class GLLModelGltf: GLLModel {
                     modelMesh.countOfVertices = UInt(countOfVertices)
                     modelMesh.countOfUVLayers = UInt(uvLayers.count)
                     modelMesh.vertexDataAccessors = GLLVertexAttribAccessorSet(accessors: accessors)
+                    modelMesh.renderParameterValues = [:]
+                    
+                    if let materialIndex = primitive.material, let material = document.materials?[materialIndex] {
+                        let hasTexture = material.pbrMetallicRoughness?.baseColorTexture != nil
+                        if material.extensions?.isUnlit ?? false {
+                            // Use unlit shader; check which one
+                            let hasVertexColor = primitive.attributes.contains(where: { (attributeKey, _) in
+                                if let (semantic, layer) = semanticAndLayer(for: attributeKey) {
+                                    return layer == 0 && semantic == .color
+                                }
+                                return false
+                            })
+                            
+                            if hasTexture && hasVertexColor {
+                                modelMesh.shader = self.parameters.shader(name: "UnlitTextureVertexColor")
+                            } else if hasTexture {
+                                modelMesh.shader = self.parameters.shader(name: "UnlitTexture")
+                            } else if hasVertexColor {
+                                modelMesh.shader = self.parameters.shader(name: "UnlitVertexColor")
+                            } else {
+                                modelMesh.shader = self.parameters.shader(name: "Unlit")
+                            }
+                        }
+                        
+                        if hasTexture {
+                            // Load the texture
+                            // TODO
+                        }
+                        
+                        let baseColor = material.pbrMetallicRoughness?.baseColorFactor ?? ColorRGBA.white
+                        let baseColorObject: NSColor = NSColor(calibratedRed: CGFloat(baseColor.red), green: CGFloat(baseColor.green), blue: CGFloat(baseColor.blue), alpha: CGFloat(baseColor.alpha))
+                        modelMesh.renderParameterValues["baseColorFactor"] = baseColorObject
+                    }
                     
                     if let indicesKey = primitive.indices {
                         let elements = try loadData.getUnboundAccessor(for: indicesKey)

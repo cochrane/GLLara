@@ -140,6 +140,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 - (void)_loadDefaultTexture;
 
 - (BOOL)_loadDataError:(NSError *__autoreleasing*)error;
+- (BOOL)_loadWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 
 - (void)_setupGCDObserving;
 - (void)_updateAnisotropy;
@@ -174,6 +175,26 @@ static NSOperationQueue *imageInformationQueue = nil;
     self.url = url.absoluteURL;
     
     [self _setupGCDObserving];
+    
+    glGenTextures(1, &_textureID);
+    
+    BOOL success = [self _loadDataError:error];
+    if (!success) return nil;
+    
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefAnisotropyAmount] options:NSKeyValueObservingOptionNew context:0];
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefUseAnisotropy] options:NSKeyValueObservingOptionNew context:0];
+    
+    return self;
+}
+
+- (id)initWithData:(NSData *)data sourceURL:(NSURL*)url error:(NSError *__autoreleasing *)error __attribute__((nonnull(1)))
+{
+    NSParameterAssert(data);
+    NSAssert(CGLGetCurrentContext() != NULL, @"Context must exist");
+    
+    if (!(self = [super init])) return nil;
+        
+    self.url = url.absoluteURL;
     
     glGenTextures(1, &_textureID);
     
@@ -290,22 +311,12 @@ static NSOperationQueue *imageInformationQueue = nil;
         GLLBeginTiming("texture");
         NSData *data = [NSData dataWithContentsOfURL:newURL options:0 error:&internalError];
         
-        // Ensure that memcmp does not error out.
-        if (data.length < 4) return;
-        
-        // Load texture
-        glBindTexture(GL_TEXTURE_2D, self->_textureID);
-        
-        if (memcmp(data.bytes, "DDS ", 4) == 0)
-            [self _loadDDSTextureWithData:data error:&internalError];
-        else
-            [self _loadCGCompatibleTexture:data error:&internalError];
-        
-        if (internalError != nil) NSLog(@"Error loading texture %@: %@", self.url, internalError);
+        BOOL result = [self _loadWithData:data error:&internalError];
+        if (!result) {
+            NSLog(@"Error loading texture %@: %@", self.url, internalError);
+        }
         
         GLLEndTiming("texture");
-        [[NSNotificationCenter defaultCenter] postNotificationName:GLLTextureChangeNotification object:self];
-        [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
     }];
     
     if (coordinationError)
@@ -319,6 +330,26 @@ static NSOperationQueue *imageInformationQueue = nil;
         return NO;
     }
     else return YES;
+}
+
+- (BOOL)_loadWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
+{
+    // Ensure that memcmp does not error out.
+    if (data.length < 4) return NO;
+    
+    // Load texture
+    glBindTexture(GL_TEXTURE_2D, self->_textureID);
+    
+    BOOL result = YES;
+    if (memcmp(data.bytes, "DDS ", 4) == 0)
+        result = [self _loadDDSTextureWithData:data error:error];
+    else
+        result = [self _loadCGCompatibleTexture:data error:error];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLLTextureChangeNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
+    
+    return result;
 }
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;

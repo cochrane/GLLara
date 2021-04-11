@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5211F82C2623A2EA00A1EC23 /* UnlitGLTF.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5211F82B2623A2EA00A1EC23 /* UnlitGLTF.fs */; };
 		521326351602ACBE00787AA1 /* GLLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 521326341602ACBE00787AA1 /* GLLProgram.m */; };
 		521326391602B19700787AA1 /* Square.fs in Resources */ = {isa = PBXBuildFile; fileRef = 521326381602B19700787AA1 /* Square.fs */; };
 		5213263B1602B1AA00787AA1 /* Square.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5213263A1602B1AA00787AA1 /* Square.vs */; };
@@ -371,6 +372,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5211F82B2623A2EA00A1EC23 /* UnlitGLTF.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = UnlitGLTF.fs; sourceTree = "<group>"; };
 		5212027E16B5895E00338ADD /* GLLDrawState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLDrawState.h; sourceTree = "<group>"; };
 		521326331602ACBE00787AA1 /* GLLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = GLLProgram.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
 		521326341602ACBE00787AA1 /* GLLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GLLProgram.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
@@ -1385,6 +1387,7 @@
 				526DD0E31EF4010B0033A327 /* Combined.fs */,
 				52232EAF1EFC68A0007FE9AD /* DiffuseUnlitOBJ.fs */,
 				52D8DDD926210A200006F0E5 /* DefaultMaterialGLTF.fs */,
+				5211F82B2623A2EA00A1EC23 /* UnlitGLTF.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1817,6 +1820,7 @@
 				52423AF71604EB35009F5753 /* ponytail.modelparams.plist in Resources */,
 				52423AF81604EB35009F5753 /* recorder.modelparams.plist in Resources */,
 				52423AF91604EB35009F5753 /* scion1.modelparams.plist in Resources */,
+				5211F82C2623A2EA00A1EC23 /* UnlitGLTF.fs in Resources */,
 				52423AFA1604EB35009F5753 /* scion2.modelparams.plist in Resources */,
 				52423AFB1604EB35009F5753 /* scion3.modelparams.plist in Resources */,
 				52423AFC1604EB35009F5753 /* shark_blue.modelparams.plist in Resources */,

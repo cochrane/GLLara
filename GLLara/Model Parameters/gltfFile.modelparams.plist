@@ -2,8 +2,99 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>renderParameterDescriptions</key>
+	<dict>
+		<key>baseColorFactor</key>
+		<dict>
+			<key>type</key>
+			<string>color</string>
+			<key>title</key>
+			<string>Base Color Factor</string>
+			<key>description</key>
+			<string>Base color for the model</string>
+		</dict>
+	</dict>
+	<key>textureDescriptions</key>
+	<dict>
+		<key>baseColorTexture</key>
+		<dict>
+			<key>title</key>
+			<string>Base Color Texture</string>
+			<key>description</key>
+			<string>Base color for the model</string>
+		</dict>
+	</dict>
 	<key>shaders</key>
 	<dict>
+		<key>UnlitTextureVertexColor</key>
+		<dict>
+			<key>parameters</key>
+			<array>
+				<string>baseColorFactor</string>
+			</array>
+			<key>textures</key>
+			<array>
+				<string>baseColorTexture</string>
+			</array>
+			<key>defines</key>
+			<dict>
+				<key>HAS_VERTEX_COLOR</key>
+				<string>1</string>
+				<key>HAS_TEXTURE</key>
+				<string>1</string>
+			</dict>
+			<key>fragment</key>
+			<string>UnlitGLTF.fs</string>
+			<key>vertex</key>
+			<string>Combined.vs</string>
+		</dict>
+		<key>UnlitVertexColor</key>
+		<dict>
+			<key>parameters</key>
+			<array>
+				<string>baseColorFactor</string>
+			</array>
+			<key>defines</key>
+			<dict>
+				<key>HAS_VERTEX_COLOR</key>
+				<string>1</string>
+			</dict>
+			<key>fragment</key>
+			<string>UnlitGLTF.fs</string>
+			<key>vertex</key>
+			<string>Combined.vs</string>
+		</dict>
+		<key>UnlitTexture</key>
+		<dict>
+			<key>parameters</key>
+			<array>
+				<string>baseColorFactor</string>
+			</array>
+			<key>textures</key>
+			<array>
+				<string>baseColorTexture</string>
+			</array>
+			<key>defines</key>
+			<dict>
+				<key>HAS_TEXTURE</key>
+				<string>1</string>
+			</dict>
+			<key>fragment</key>
+			<string>UnlitGLTF.fs</string>
+			<key>vertex</key>
+			<string>Combined.vs</string>
+		</dict>
+		<key>Unlit</key>
+		<dict>
+			<key>parameters</key>
+			<array>
+				<string>baseColorFactor</string>
+			</array>
+			<key>fragment</key>
+			<string>UnlitGLTF.fs</string>
+			<key>vertex</key>
+			<string>Combined.vs</string>
+		</dict>
 		<key>DefaultMaterial</key>
 		<dict>
 			<key>vertex</key>
