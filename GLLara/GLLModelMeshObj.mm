@@ -107,7 +107,7 @@
         {
             if (material->diffuseTexture != NULL)
             {
-                self.textures = @[ (__bridge NSURL *) material->diffuseTexture ];
+                self.textures = @[ [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture] ];
                 self.shader = [objModelParams shaderWithName:@"DiffuseOBJ"];
             }
             else
@@ -118,17 +118,17 @@
         }
         else if (material->specularTexture != NULL && material->normalTexture == NULL)
         {
-            self.textures = @[ (__bridge NSURL *) material->diffuseTexture, (__bridge NSURL *) material->specularTexture ];
+            self.textures = @[ [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture], [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->specularTexture] ];
             self.shader = [objModelParams shaderWithName:@"DiffuseSpecularOBJ"];
         }
         else if (material->specularTexture == NULL && material->normalTexture != NULL)
         {
-            self.textures = @[ (__bridge NSURL *) material->diffuseTexture, (__bridge NSURL *) material->normalTexture ];
+            self.textures = @[ [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture], [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->normalTexture] ];
             self.shader = [objModelParams shaderWithName:@"DiffuseNormalOBJ"];
         }
         else if (material->specularTexture != NULL && material->normalTexture != NULL)
         {
-            self.textures = @[ (__bridge NSURL *) material->diffuseTexture, (__bridge NSURL *) material->specularTexture, (__bridge NSURL *) material->normalTexture ];
+            self.textures = @[ [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture], [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->specularTexture], [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->normalTexture] ];
             self.shader = [objModelParams shaderWithName:@"DiffuseSpecularNormalOBJ"];
         }
         self.renderParameterValues = @{ @"ambientColor" : [NSColor colorWithCalibratedRed:material->ambient[0] green:material->ambient[1] blue:material->ambient[2] alpha:material->ambient[3]],

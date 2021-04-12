@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5211F82C2623A2EA00A1EC23 /* UnlitGLTF.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5211F82B2623A2EA00A1EC23 /* UnlitGLTF.fs */; };
+		5211F83226246EE600A1EC23 /* GLLTextureAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */; };
 		521326351602ACBE00787AA1 /* GLLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 521326341602ACBE00787AA1 /* GLLProgram.m */; };
 		521326391602B19700787AA1 /* Square.fs in Resources */ = {isa = PBXBuildFile; fileRef = 521326381602B19700787AA1 /* Square.fs */; };
 		5213263B1602B1AA00787AA1 /* Square.vs in Resources */ = {isa = PBXBuildFile; fileRef = 5213263A1602B1AA00787AA1 /* Square.vs */; };
@@ -373,6 +374,7 @@
 
 /* Begin PBXFileReference section */
 		5211F82B2623A2EA00A1EC23 /* UnlitGLTF.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = UnlitGLTF.fs; sourceTree = "<group>"; };
+		5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLTextureAssignment.swift; sourceTree = "<group>"; };
 		5212027E16B5895E00338ADD /* GLLDrawState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLDrawState.h; sourceTree = "<group>"; };
 		521326331602ACBE00787AA1 /* GLLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = GLLProgram.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
 		521326341602ACBE00787AA1 /* GLLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GLLProgram.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
@@ -1422,6 +1424,7 @@
 				52D8DDEB2621D56F0006F0E5 /* GLLRenderParameterDescription.swift */,
 				52D8DDF12621E19A0006F0E5 /* GLLShaderDescription.swift */,
 				52D8DDFC2621F29D0006F0E5 /* GLLModelParams.swift */,
+				5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */,
 			);
 			name = "Model Resources";
 			sourceTree = "<group>";
@@ -2066,6 +2069,7 @@
 				523D368516BED84B004FAD4B /* GLLItemMeshTexture.m in Sources */,
 				522783B01C0B7FC0002E43FD /* GLLRenderParameterSelectionPlaceholder.m in Sources */,
 				526756A416BF3B0700FB85CA /* GLLTextureAssignmentView.m in Sources */,
+				5211F83226246EE600A1EC23 /* GLLTextureAssignment.swift in Sources */,
 				522783AA1C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.m in Sources */,
 				5213F8831C0E411C007A9EBB /* GLLPreferencesWindowController.m in Sources */,
 				522783AD1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m in Sources */,

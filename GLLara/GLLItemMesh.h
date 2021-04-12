@@ -54,12 +54,12 @@
 
 - (void)addRenderParametersObject:(GLLRenderParameter *)value;
 - (void)removeRenderParametersObject:(GLLRenderParameter *)value;
-- (void)addRenderParameters:(NSSet *)values;
-- (void)removeRenderParameters:(NSSet *)values;
+- (void)addRenderParameters:(NSSet<GLLRenderParameter *> *)values;
+- (void)removeRenderParameters:(NSSet<GLLRenderParameter *> *)values;
 
-- (void)addTexturesObject:(GLLRenderParameter *)value;
-- (void)removeTexturesObject:(GLLRenderParameter *)value;
-- (void)addTextures:(NSSet *)values;
-- (void)removeTextures:(NSSet *)values;
+- (void)addTexturesObject:(GLLItemMeshTexture *)value;
+- (void)removeTexturesObject:(GLLItemMeshTexture *)value;
+- (void)addTextures:(NSSet<GLLItemMeshTexture *> *)values;
+- (void)removeTextures:(NSSet<GLLItemMeshTexture *> *)values;
 
 @end

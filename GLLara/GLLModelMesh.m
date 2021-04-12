@@ -77,7 +77,7 @@ void vec_addTo(float *a, const float *b)
     _countOfUVLayers = [stream readUint32];
     
     NSUInteger numTextures = [stream readUint32];
-    NSMutableArray<NSURL *> *textures = [[NSMutableArray alloc] initWithCapacity:numTextures];
+    NSMutableArray<GLLTextureAssignment *> *textures = [[NSMutableArray alloc] initWithCapacity:numTextures];
     for (NSUInteger i = 0; i < numTextures; i++)
     {
         NSString *textureName = [stream readPascalString];
@@ -87,7 +87,7 @@ void vec_addTo(float *a, const float *b)
         {
             return nil;
         }
-        [textures addObject:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL]];
+        [textures addObject:[[GLLTextureAssignment alloc] initWithUrl:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL]]];
         
         
         [stream readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
@@ -160,14 +160,14 @@ void vec_addTo(float *a, const float *b)
     _countOfUVLayers = [scanner readUint32];
     
     NSUInteger numTextures = [scanner readUint32];
-    NSMutableArray *textures = [[NSMutableArray alloc] initWithCapacity:numTextures];
+    NSMutableArray<GLLTextureAssignment *> *textures = [[NSMutableArray alloc] initWithCapacity:numTextures];
     for (NSUInteger i = 0; i < numTextures; i++)
     {
         NSString *textureName = [scanner readPascalString];
         [scanner readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
         NSString *finalPathComponent = [[textureName componentsSeparatedByString:@"\\"] lastObject];
         if (!finalPathComponent) return nil;
-        [textures addObject:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL]];
+        [textures addObject:[[GLLTextureAssignment alloc] initWithUrl:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL]]];
     }
     _textures = [textures copy];
     
