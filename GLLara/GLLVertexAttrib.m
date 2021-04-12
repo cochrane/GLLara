@@ -22,7 +22,7 @@
         return nil;
     }
         
-    NSAssert(type != GllVertexAttribComponentTypeInt2_10_10_10_Rev || size == GLLVertexAttribSizeVec4, @"2_10_10_10_Rev only allowed with Vec4");
+    NSAssert(type != GLLVertexAttribComponentTypeInt2_10_10_10_Rev || size == GLLVertexAttribSizeVec4, @"2_10_10_10_Rev only allowed with Vec4");
     
     _semantic = attrib;
     _layer = layer;
@@ -63,18 +63,18 @@
 
 - (NSUInteger)baseSize {
     switch (self.type) {
-        case GllVertexAttribComponentTypeByte:
-        case GllVertexAttribComponentTypeUnsignedByte:
+        case GLLVertexAttribComponentTypeByte:
+        case GLLVertexAttribComponentTypeUnsignedByte:
             return 1;
-        case GllVertexAttribComponentTypeShort:
-        case GllVertexAttribComponentTypeUnsignedShort:
-        case GllVertexAttribComponentTypeHalfFloat:
+        case GLLVertexAttribComponentTypeShort:
+        case GLLVertexAttribComponentTypeUnsignedShort:
+        case GLLVertexAttribComponentTypeHalfFloat:
             return 2;
-        case GllVertexAttribComponentTypeFloat:
-        case GllVertexAttribComponentTypeInt:
-        case GllVertexAttribComponentTypeUnsignedInt:
+        case GLLVertexAttribComponentTypeFloat:
+        case GLLVertexAttribComponentTypeInt:
+        case GLLVertexAttribComponentTypeUnsignedInt:
             return 4;
-        case GllVertexAttribComponentTypeInt2_10_10_10_Rev:
+        case GLLVertexAttribComponentTypeInt2_10_10_10_Rev:
             return 1;
         default:
             return 0;
@@ -102,7 +102,7 @@
 }
 
 - (NSUInteger)sizeInBytes {
-    if (self.type == GllVertexAttribComponentTypeInt2_10_10_10_Rev) {
+    if (self.type == GLLVertexAttribComponentTypeInt2_10_10_10_Rev) {
         return 4;
     }
     return self.baseSize * self.numberOfElements;

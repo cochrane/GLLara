@@ -215,7 +215,7 @@ struct PbrMetallicRoughness: Codable {
     var metallicRoughnessTexture: TextureInfo?
 }
 
-struct Primitive: Codable {
+struct Primitive: Codable, Equatable {
     var attributes: [String: Int]
     var indices: Int?
     var material: Int?
@@ -593,6 +593,9 @@ class GLLModelGltf: GLLModel {
         
         let modelMesh = GLLModelMesh(asPartOf: self)!
         modelMesh.name = mesh.name ?? "mesh"
+        if mesh.primitives.count > 1, let primitiveIndex = mesh.primitives.firstIndex(of: primitive) {
+            modelMesh.name = modelMesh.name + " part \(primitiveIndex)"
+        }
         modelMesh.displayName = modelMesh.name
         modelMesh.textures = []
         modelMesh.shader = self.parameters.shader(name: "DefaultMaterial")
@@ -646,7 +649,7 @@ class GLLModelGltf: GLLModel {
             modelMesh.countOfElements = UInt(elements.accessor.count)
         } else {
             modelMesh.elementData = nil
-            modelMesh.elementComponentType = .GllVertexAttribComponentTypeUnsignedByte
+            modelMesh.elementComponentType = .unsignedByte
             modelMesh.countOfElements = 0
         }
         

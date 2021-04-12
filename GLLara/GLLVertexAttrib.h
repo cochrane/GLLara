@@ -35,15 +35,15 @@ typedef NS_ENUM(NSInteger, GLLVertexAttribSize) {
 };
 
 typedef NS_ENUM(NSInteger, GLLVertexAttribComponentType) {
-    GllVertexAttribComponentTypeByte = 5120,
-    GllVertexAttribComponentTypeUnsignedByte = 5121,
-    GllVertexAttribComponentTypeShort = 5122,
-    GllVertexAttribComponentTypeUnsignedShort = 5123,
-    GllVertexAttribComponentTypeInt = 5124,
-    GllVertexAttribComponentTypeUnsignedInt = 5125,
-    GllVertexAttribComponentTypeFloat = 5126,
-    GllVertexAttribComponentTypeHalfFloat = 0x140B,
-    GllVertexAttribComponentTypeInt2_10_10_10_Rev = 0x8D9F // Must be vec4
+    GLLVertexAttribComponentTypeByte = 5120,
+    GLLVertexAttribComponentTypeUnsignedByte = 5121,
+    GLLVertexAttribComponentTypeShort = 5122,
+    GLLVertexAttribComponentTypeUnsignedShort = 5123,
+    GLLVertexAttribComponentTypeInt = 5124,
+    GLLVertexAttribComponentTypeUnsignedInt = 5125,
+    GLLVertexAttribComponentTypeFloat = 5126,
+    GLLVertexAttribComponentTypeHalfFloat = 0x140B,
+    GLLVertexAttribComponentTypeInt2_10_10_10_Rev = 0x8D9F // Must be vec4
 };
 
 @interface GLLVertexAttrib : NSObject<NSCopying>

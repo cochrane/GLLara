@@ -126,20 +126,20 @@ static inline uint16_t halfFloat(const float *value) {
 - (GLLVertexAttrib *)optimizedVersionOf:(GLLVertexAttrib *)attribute {
     // Change Normal (if float[3]) to vec4 with 2_10_10_10_rev encoding
     // (this adds a W component which gets ignored by the shader)
-    if (attribute.semantic == GLLVertexAttribNormal && attribute.size == GLLVertexAttribSizeVec3 && attribute.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev];
+    if (attribute.semantic == GLLVertexAttribNormal && attribute.size == GLLVertexAttribSizeVec3 && attribute.type == GLLVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeInt2_10_10_10_Rev];
     }
     // Change tex coord (if float[2]) to half[2]
-    if (attribute.semantic == GLLVertexAttribTexCoord0 && attribute.size == GLLVertexAttribSizeVec2 && attribute.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeHalfFloat];
+    if (attribute.semantic == GLLVertexAttribTexCoord0 && attribute.size == GLLVertexAttribSizeVec2 && attribute.type == GLLVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec2 componentType:GLLVertexAttribComponentTypeHalfFloat];
     }
     // Change tangent (if float[4]) to vec4 with 2_10_10_10_rev encoding
-    if (attribute.semantic == GLLVertexAttribTangent0 && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeInt2_10_10_10_Rev];
+    if (attribute.semantic == GLLVertexAttribTangent0 && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GLLVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeInt2_10_10_10_Rev];
     }
     // Change bone weight (if float[4]) to ushort[4]
-    if (attribute.semantic == GLLVertexAttribBoneWeights && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GllVertexAttribComponentTypeFloat) {
-        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort];
+    if (attribute.semantic == GLLVertexAttribBoneWeights && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GLLVertexAttribComponentTypeFloat) {
+        return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeUnsignedShort];
     }
     return [[GLLVertexAttrib alloc] initWithSemantic:attribute.semantic layer:attribute.layer size:attribute.size componentType:attribute.type];
 }
@@ -171,7 +171,7 @@ static inline uint16_t halfFloat(const float *value) {
         
             GLLVertexAttrib *attribute = writeAccessor.attribute;
             // Need to do some processing
-            if (attribute.semantic == GLLVertexAttribNormal && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GllVertexAttribComponentTypeInt2_10_10_10_Rev) {
+            if (attribute.semantic == GLLVertexAttribNormal && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GLLVertexAttribComponentTypeInt2_10_10_10_Rev) {
                 // Normal. Compress from float[3] to int_2_10_10_10_rev format
                 uint32_t *value = vertex;
                 const float *normal = originalVertex;
@@ -179,13 +179,13 @@ static inline uint16_t halfFloat(const float *value) {
                 *value += packSignedFloat(normal[0], 10);
                 *value += packSignedFloat(normal[1], 10) << 10;
                 *value += packSignedFloat(normal[2], 10) << 20;
-            } else if (attribute.semantic == GLLVertexAttribTexCoord0 && attribute.size == GLLVertexAttribSizeVec2 && attribute.type == GllVertexAttribComponentTypeHalfFloat) {
+            } else if (attribute.semantic == GLLVertexAttribTexCoord0 && attribute.size == GLLVertexAttribSizeVec2 && attribute.type == GLLVertexAttribComponentTypeHalfFloat) {
                 // Tex coord. Compress to half float
                 uint16_t *intTexCoords = vertex;
                 const float *floatTexCoords = originalVertex;
                 intTexCoords[0] = halfFloat(floatTexCoords + 0);
                 intTexCoords[1] = halfFloat(floatTexCoords + 1);
-            } else if (attribute.semantic == GLLVertexAttribTangent0 && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GllVertexAttribComponentTypeInt2_10_10_10_Rev) {
+            } else if (attribute.semantic == GLLVertexAttribTangent0 && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GLLVertexAttribComponentTypeInt2_10_10_10_Rev) {
                 // Compress tangent from float[3] to int_2_10_10_10_rev
                 const float *tangents = originalVertex;
                 uint32_t *normalized = vertex;
@@ -195,7 +195,7 @@ static inline uint16_t halfFloat(const float *value) {
                 *normalized |= packSignedFloat(tangents[1] * invLength, 10) << 10;
                 *normalized |= packSignedFloat(tangents[2] * invLength, 10) << 20;
                 *normalized |= packSignedFloat(copysign(tangents[3], 1.0f), 2) << 30;
-            } else if (attribute.semantic == GLLVertexAttribBoneWeights && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GllVertexAttribComponentTypeUnsignedShort) {
+            } else if (attribute.semantic == GLLVertexAttribBoneWeights && attribute.size == GLLVertexAttribSizeVec4 && attribute.type == GLLVertexAttribComponentTypeUnsignedShort) {
                 // Compress bone weight to half float
                 const float *weights = originalVertex;
                 uint16_t *intWeights = vertex;
@@ -221,7 +221,7 @@ static inline uint16_t halfFloat(const float *value) {
     
     // Compress elements
     if (self.format.hasIndices) {
-        if (elementsType == GllVertexAttribComponentTypeUnsignedInt || elementsType == GllVertexAttribComponentTypeInt) {
+        if (elementsType == GLLVertexAttribComponentTypeUnsignedInt || elementsType == GLLVertexAttribComponentTypeInt) {
             if (self.format.numElementBytes == 4) {
                 [elementData appendData:elements];
             } else if (self.format.numElementBytes == 2) {
@@ -247,7 +247,7 @@ static inline uint16_t halfFloat(const float *value) {
             } else {
                 [NSException raise:@"Illegal state" format:@"Can't handle vertex buffer with %li bytes per element", self.format.numElementBytes];
             }
-        } else if (elementsType == GllVertexAttribComponentTypeUnsignedShort || elementsType == GllVertexAttribComponentTypeShort) {
+        } else if (elementsType == GLLVertexAttribComponentTypeUnsignedShort || elementsType == GLLVertexAttribComponentTypeShort) {
             if (self.format.numElementBytes == 2) {
                 [elementData appendData:elements];
             } else if (self.format.numElementBytes == 1) {
@@ -263,7 +263,7 @@ static inline uint16_t halfFloat(const float *value) {
             } else {
                 [NSException raise:@"Illegal state" format:@"Can't handle vertex buffer with %li bytes per element", self.format.numElementBytes];
             }
-        } else if (elementsType == GllVertexAttribComponentTypeByte || elementsType == GllVertexAttribComponentTypeUnsignedByte) {
+        } else if (elementsType == GLLVertexAttribComponentTypeByte || elementsType == GLLVertexAttribComponentTypeUnsignedByte) {
             if (self.format.numElementBytes == 1) {
                 [elementData appendData:elements];
             } else {

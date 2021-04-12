@@ -58,7 +58,7 @@ void vec_addTo(float *a, const float *b)
     if (!(self = [super init])) return nil;
     
     _model = model;
-    _elementComponentType = GllVertexAttribComponentTypeUnsignedInt;
+    _elementComponentType = GLLVertexAttribComponentTypeUnsignedInt;
     _initiallyVisible = YES;
     
     return self;
@@ -71,7 +71,7 @@ void vec_addTo(float *a, const float *b)
     GLLBeginTiming("Binary mesh");
     
     _model = model;
-    _elementComponentType = GllVertexAttribComponentTypeUnsignedInt;
+    _elementComponentType = GLLVertexAttribComponentTypeUnsignedInt;
     
     _name = [stream readPascalString];
     _countOfUVLayers = [stream readUint32];
@@ -154,7 +154,7 @@ void vec_addTo(float *a, const float *b)
     if (!(self = [super init])) return nil;
     
     _model = model;
-    _elementComponentType = GllVertexAttribComponentTypeUnsignedInt;
+    _elementComponentType = GLLVertexAttribComponentTypeUnsignedInt;
     
     _name = [scanner readPascalString];
     _countOfUVLayers = [scanner readUint32];
@@ -291,24 +291,24 @@ void vec_addTo(float *a, const float *b)
 
 - (GLLVertexFormat *)fileVertexFormat {
     NSMutableArray<GLLVertexAttrib *> *attributes = [NSMutableArray array];
-    [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat]];
-    [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GllVertexAttribComponentTypeFloat]];
+    [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GLLVertexAttribComponentTypeFloat]];
+    [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GLLVertexAttribComponentTypeFloat]];
     if (self.colorsAreFloats) {
-        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
+        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeFloat]];
     } else {
-        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedByte]];
+        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeUnsignedByte]];
     }
     for (NSUInteger i = 0; i < self.countOfUVLayers; i++) {
-        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTexCoord0 layer:i size:GLLVertexAttribSizeVec2 componentType:GllVertexAttribComponentTypeFloat]];
+        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTexCoord0 layer:i size:GLLVertexAttribSizeVec2 componentType:GLLVertexAttribComponentTypeFloat]];
     }
     if (self.hasTangentsInFile) {
         for (NSUInteger i = 0; i < self.countOfUVLayers; i++) {
-            [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTangent0 layer:i size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
+            [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTangent0 layer:i size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeFloat]];
         }
     }
     if (self.hasBoneWeights) {
-        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribBoneIndices layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeUnsignedShort]];
-        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribBoneWeights layer:0 size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat]];
+        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribBoneIndices layer:0 size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeUnsignedShort]];
+        [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribBoneWeights layer:0 size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeFloat]];
     }
 
     return [[GLLVertexFormat alloc] initWithAttributes:attributes countOfVertices:0 hasIndices:YES];
@@ -620,7 +620,7 @@ void vec_addTo(float *a, const float *b)
         }
         
         NSData *tangentsData = [NSData dataWithBytesNoCopy:tangents length:sizeof(float[4]) * self.countOfVertices freeWhenDone:YES];
-        GLLVertexAttrib* attribute = [[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTangent0 layer:layer size:GLLVertexAttribSizeVec4 componentType:GllVertexAttribComponentTypeFloat];
+        GLLVertexAttrib* attribute = [[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTangent0 layer:layer size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeFloat];
         [result addObject:[[GLLVertexAttribAccessor alloc] initWithAttribute:attribute dataBuffer:tangentsData offset:0 stride:attribute.sizeInBytes]];
     }
     return [[GLLVertexAttribAccessorSet alloc] initWithAccessors:result];
