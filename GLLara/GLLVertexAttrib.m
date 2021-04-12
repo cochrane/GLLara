@@ -61,8 +61,8 @@
     return self;
 }
 
-- (NSUInteger)baseSize {
-    switch (self.type) {
++ (NSUInteger)componentSizeFor:(GLLVertexAttribComponentType)componentType {
+    switch (componentType) {
         case GLLVertexAttribComponentTypeByte:
         case GLLVertexAttribComponentTypeUnsignedByte:
             return 1;
@@ -79,6 +79,10 @@
         default:
             return 0;
     }
+}
+
+- (NSUInteger)baseSize {
+    return [[self class] componentSizeFor:self.type];
 }
 
 - (NSUInteger)numberOfElements {

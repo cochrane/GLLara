@@ -65,6 +65,11 @@ typedef enum GLLCullFaceMode
 @property (nonatomic, assign) GLLVertexAttribComponentType elementComponentType;
 @property (nonatomic, assign) NSUInteger countOfElements;
 
+// Returns the element fo the index. If there is no element buffer (i.e. directly), returns its index
+- (NSUInteger)elementAt:(NSUInteger)index;
+// Returns the count of indices you can use with elementAt - that is either the number of elements, if there is an element buffer, or the number of vertices if drawing directly without one
+@property (nonatomic, assign, readonly) NSUInteger countOfUsedElements;
+
 /*
  * Bone indices. A mesh can use at most 59 bones, but a model can have much more than that. Each element of this array is an NSNumber index into the total number of bones the model has.
  */

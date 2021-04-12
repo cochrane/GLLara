@@ -365,6 +365,13 @@ void vec_addTo(float *a, const float *b)
     return NO;
 }
 
+- (NSUInteger)countOfUsedElements {
+    if (self.elementData == nil) {
+        return self.countOfVertices;
+    }
+    return self.countOfElements;
+}
+
 #pragma mark - Splitting
 
 - (GLLModelMesh *)partialMeshFromSplitter:(GLLMeshSplitter *)splitter;
@@ -372,18 +379,18 @@ void vec_addTo(float *a, const float *b)
     NSMutableData *newElements = [[NSMutableData alloc] init];
     
     GLLVertexAttribAccessor *positionData = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribPosition];
-    const NSUInteger countOfFaces = self.countOfElements / 3;
     
-    const uint32_t *oldElements = self.elementData.bytes;
-    
-    for (NSUInteger i = 0; i < countOfFaces; i++)
+    for (NSUInteger index = 0; index < self.countOfUsedElements; index += 3)
     {
-        const uint32_t *indices = &oldElements[i*3];
-        
+        NSUInteger elements[3] = {
+            [self elementAt:index + 0],
+            [self elementAt:index + 1],
+            [self elementAt:index + 2],
+        };
         const float *position[3] = {
-            [positionData elementAt:indices[0]],
-            [positionData elementAt:indices[1]],
-            [positionData elementAt:indices[2]],
+            [positionData elementAt:elements[0]],
+            [positionData elementAt:elements[1]],
+            [positionData elementAt:elements[2]],
         };
         
         // Find out if one corner is completely in the box. If yes, then this triangle becomes part of the split mesh.
@@ -403,7 +410,7 @@ void vec_addTo(float *a, const float *b)
         for (int corner = 0; corner < 3; corner++)
         {
             // Add this index to the new elements
-            NSUInteger index = indices[corner];
+            uint32_t index = (uint32_t) elements[corner];
             [newElements appendBytes:&index length:sizeof(index)];
         }
     }
@@ -413,6 +420,8 @@ void vec_addTo(float *a, const float *b)
     result->_vertexDataAccessors = _vertexDataAccessors;
     result->_countOfVertices = _countOfVertices;
     result->_elementData = [newElements copy];
+    result->_elementComponentType = GLLVertexAttribComponentTypeUnsignedInt;
+    result->_countOfElements = newElements.length / sizeof(uint32_t);
     
     result->_countOfUVLayers = self.countOfUVLayers;
     result->_model = self.model;
@@ -475,10 +484,9 @@ void vec_addTo(float *a, const float *b)
         [result appendString:@"\n"];
     }
     
-    [result appendFormat:@"%lu\n", self.countOfElements / 3];
-    const uint32_t *elements = self.elementData.bytes;
-    for (NSUInteger i = 0; i < self.countOfElements; i++)
-        [result appendFormat:@"%u ", elements[i]];
+    [result appendFormat:@"%lu\n", self.countOfUsedElements / 3];
+    for (NSUInteger i = 0; i < self.countOfUsedElements; i++)
+        [result appendFormat:@"%lu ", [self elementAt:i]];
     [result appendString:@"\n"];
     
     return [result copy];
@@ -528,8 +536,14 @@ void vec_addTo(float *a, const float *b)
             }
         }
     }
-    [stream appendUint32:(uint32_t) self.countOfElements / 3UL];
-    [stream appendData:self.elementData];
+    [stream appendUint32:(uint32_t) self.countOfUsedElements / 3UL];
+    if (self.elementData && (self.elementComponentType == GLLVertexAttribComponentTypeInt || self.elementComponentType == GLLVertexAttribComponentTypeUnsignedInt)) {
+        [stream appendData:self.elementData];
+    } else {
+        for (NSUInteger i = 0; i < self.countOfUsedElements; i++) {
+            [stream appendUint32:(uint32_t) [self elementAt:i]];
+        }
+    }
     
     return stream.data;
 }
@@ -542,8 +556,6 @@ void vec_addTo(float *a, const float *b)
     GLLVertexAttribAccessor *normalData = [fileVertexData accessorForSemantic:GLLVertexAttribNormal];
 
     NSMutableArray<GLLVertexAttribAccessor *> *result = [[NSMutableArray alloc] init];
-    
-    const uint32_t *elements = self.elementData.bytes;
         
     for (NSUInteger layer = 0; layer < self.countOfUVLayers; layer++)
     {
@@ -558,17 +570,22 @@ void vec_addTo(float *a, const float *b)
         bzero(tangentsV, sizeof(tangentsV));
         
         // First pass: Sum up the tangents for each vector. We can assume that at the start of this method, the tangent for every vertex is (0, 0, 0, 0)^t.
-        for (NSUInteger index = 0; index < self.countOfElements; index += 3)
+        for (NSUInteger index = 0; index < self.countOfUsedElements; index += 3)
         {
+            NSUInteger elements[3] = {
+                [self elementAt:index + 0],
+                [self elementAt:index + 1],
+                [self elementAt:index + 2],
+            };
             const float *positions[3] = {
-                [positionData elementAt:elements[index + 0]],
-                [positionData elementAt:elements[index + 1]],
-                [positionData elementAt:elements[index + 2]],
+                [positionData elementAt:elements[0]],
+                [positionData elementAt:elements[1]],
+                [positionData elementAt:elements[2]],
             };
             const float *texCoords[3] = {
-                [texCoordData elementAt:elements[index + 0]],
-                [texCoordData elementAt:elements[index + 1]],
-                [texCoordData elementAt:elements[index + 2]],
+                [texCoordData elementAt:elements[0]],
+                [texCoordData elementAt:elements[1]],
+                [texCoordData elementAt:elements[2]],
             };
             
             // Calculate tangents
@@ -694,6 +711,30 @@ void vec_addTo(float *a, const float *b)
     
     if (!_shader)
         NSLog(@"No shader for object %@", self.name);
+}
+
+- (NSUInteger)elementAt:(NSUInteger)index {
+    if (!_elementData) {
+        return index; // Use direct values
+    }
+    const void *bytes = _elementData.bytes;
+    switch (_elementComponentType) {
+        case GLLVertexAttribComponentTypeByte:
+            return (NSUInteger) ((const int8_t *) bytes)[index];
+        case GLLVertexAttribComponentTypeUnsignedByte:
+            return (NSUInteger) ((const uint8_t *) bytes)[index];
+        case GLLVertexAttribComponentTypeShort:
+            return (NSUInteger) ((const int16_t *) bytes)[index];
+        case GLLVertexAttribComponentTypeUnsignedShort:
+            return (NSUInteger) ((const uint16_t *) bytes)[index];
+        case GLLVertexAttribComponentTypeInt:
+            return (NSUInteger) ((const int32_t *) bytes)[index];
+        case GLLVertexAttribComponentTypeUnsignedInt:
+            return (NSUInteger) ((const uint32_t *) bytes)[index];
+        default:
+            NSAssert(false, @"Wrong element component type");
+            return 0; // to silence compiler warning
+    }
 }
 
 @end

@@ -48,6 +48,8 @@ typedef NS_ENUM(NSInteger, GLLVertexAttribComponentType) {
 
 @interface GLLVertexAttrib : NSObject<NSCopying>
 
++ (NSUInteger)componentSizeFor:(GLLVertexAttribComponentType)componentType;
+
 - (instancetype)initWithSemantic:(GLLVertexAttribSemantic)semantic layer:(NSUInteger) layer size:(GLLVertexAttribSize)size componentType:(GLLVertexAttribComponentType)type;
 
 @property (nonatomic, readonly, assign) GLLVertexAttribSemantic semantic;

@@ -63,19 +63,18 @@
         }
     }
     
-    for (NSUInteger i = 0; i < self.countOfElements; i += 3)
+    for (NSUInteger i = 0; i < self.countOfUsedElements; i += 3)
     {
-        const uint32_t *elements = self.elementData.bytes + i*sizeof(uint32_t);
-        uint32_t adjustedElements[3] = {
-            elements[0] + baseIndex + 1,
-            elements[2] + baseIndex + 1,
-            elements[1] + baseIndex + 1
+        NSUInteger adjustedElements[3] = {
+            [self elementAt:i + 0] + baseIndex + 1,
+            [self elementAt:i + 2] + baseIndex + 1,
+            [self elementAt:i + 1] + baseIndex + 1
         };
         
         if (includeColors)
-            [objString appendFormat:@"f %1$u/%1$u/%1$u/%1$u %2$u/%2$u/%2$u/%2$u %3$u/%3$u/%3$u/%3$u\n", adjustedElements[0], adjustedElements[1], adjustedElements[2]];
+            [objString appendFormat:@"f %1$lu/%1$lu/%1$lu/%1$lu %2$lu/%2$lu/%2$lu/%2$lu %3$lu/%3$lu/%3$lu/%3$lu\n", adjustedElements[0], adjustedElements[1], adjustedElements[2]];
         else
-            [objString appendFormat:@"f %1$u/%1$u/%1$u %2$u/%2$u/%2$u %3$u/%3$u/%3$u\n", adjustedElements[0], adjustedElements[1], adjustedElements[2]];
+            [objString appendFormat:@"f %1$lu/%1$lu/%1$lu %2$lu/%2$lu/%2$lu %3$lu/%3$lu/%3$lu\n", adjustedElements[0], adjustedElements[1], adjustedElements[2]];
     }
     
     return [objString copy];
