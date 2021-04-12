@@ -77,20 +77,22 @@ void vec_addTo(float *a, const float *b)
     _countOfUVLayers = [stream readUint32];
     
     NSUInteger numTextures = [stream readUint32];
-    NSMutableArray<GLLTextureAssignment *> *textures = [[NSMutableArray alloc] initWithCapacity:numTextures];
+    NSMutableDictionary<NSString *, GLLTextureAssignment *> *textures = [[NSMutableDictionary alloc] initWithCapacity:numTextures];
+    
+    GLLMeshParams *meshParams = [_model.parameters paramsForMesh:_name];
+    NSArray<NSString *> *textureIdentifiers = meshParams.shader.textureUniformNames;
     for (NSUInteger i = 0; i < numTextures; i++)
     {
         NSString *textureName = [stream readPascalString];
-        
-        NSString *finalPathComponent = [[textureName componentsSeparatedByString:@"\\"] lastObject];
-        if (!finalPathComponent)
-        {
-            return nil;
-        }
-        [textures addObject:[[GLLTextureAssignment alloc] initWithUrl:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL]]];
-        
-        
         [stream readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
+        NSString *finalPathComponent = [[textureName componentsSeparatedByString:@"\\"] lastObject];
+        if (!finalPathComponent) return nil;
+        
+        NSString *textureIdentifier = (textureIdentifiers && i < textureIdentifiers.count) ? textureIdentifiers[i] : nil;
+        if (textureIdentifier) {
+            NSURL *textureUrl = [NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL];
+            textures[textureIdentifier] = [[GLLTextureAssignment alloc] initWithUrl:textureUrl];
+        }
     }
     _textures = [textures copy];
     
@@ -160,14 +162,22 @@ void vec_addTo(float *a, const float *b)
     _countOfUVLayers = [scanner readUint32];
     
     NSUInteger numTextures = [scanner readUint32];
-    NSMutableArray<GLLTextureAssignment *> *textures = [[NSMutableArray alloc] initWithCapacity:numTextures];
+    NSMutableDictionary<NSString *, GLLTextureAssignment *> *textures = [[NSMutableDictionary alloc] initWithCapacity:numTextures];
+    
+    GLLMeshParams *meshParams = [_model.parameters paramsForMesh:_name];
+    NSArray<NSString *> *textureIdentifiers = meshParams.shader.textureUniformNames;
     for (NSUInteger i = 0; i < numTextures; i++)
     {
         NSString *textureName = [scanner readPascalString];
         [scanner readUint32]; // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
         NSString *finalPathComponent = [[textureName componentsSeparatedByString:@"\\"] lastObject];
         if (!finalPathComponent) return nil;
-        [textures addObject:[[GLLTextureAssignment alloc] initWithUrl:[NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL]]];
+        
+        NSString *textureIdentifier = (textureIdentifiers && i < textureIdentifiers.count) ? textureIdentifiers[i] : nil;
+        if (textureIdentifier) {
+            NSURL *textureUrl = [NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL];
+            textures[textureIdentifier] = [[GLLTextureAssignment alloc] initWithUrl:textureUrl];
+        }
     }
     _textures = [textures copy];
     

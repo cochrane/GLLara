@@ -329,16 +329,15 @@
     
     NSMutableArray *mutableTextures = [[NSMutableArray alloc] init];
     NSMutableDictionary *mutableErrors = [[NSMutableDictionary alloc] init];
-    for (NSUInteger i = 0; i < self.itemMesh.shader.textureUniformNames.count; i++) {
-        NSString *identifier = self.itemMesh.shader.textureUniformNames[i];
+    for (NSString *identifier in self.itemMesh.shader.textureUniformNames) {
         GLLItemMeshTexture *textureAssignment = [self.itemMesh textureWithIdentifier:identifier];
         NSError *loadError = nil;
         GLLTexture *texture = nil;
         if (textureAssignment.textureURL) {
             texture = [[GLLResourceManager sharedResourceManager] textureForURL:textureAssignment.textureURL error:&loadError];
-        } else if (self.itemMesh.mesh.textures[i].data != nil) {
+        } else if (self.itemMesh.mesh.textures[identifier].data != nil) {
             // Try to use what the model provided
-            texture = [[GLLTexture alloc] initWithData:self.itemMesh.mesh.textures[i].data sourceURL:self.itemMesh.mesh.model.baseURL error:&loadError];
+            texture = [[GLLTexture alloc] initWithData:self.itemMesh.mesh.textures[identifier].data sourceURL:self.itemMesh.mesh.model.baseURL error:&loadError];
         } else {
             loadError = [NSError errorWithDomain:@"Textures" code:100 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"No texture file provided for identifier %@", @"Texture data is missing"), identifier] }];
         }

@@ -17,7 +17,7 @@
 - (BOOL)willLoseDataWhenConvertedToOBJ
 {
     if (self.mesh.textures.count > 1) return YES;
-    if (self.mesh.textures.count == 1 && self.mesh.textures[0].url == nil) return YES;
+    if (self.mesh.textures.count == 1 && self.mesh.textures.allValues[0].url == nil) return YES;
     if (self.renderParameters.count > 0) return YES;
     
     return NO;
@@ -31,10 +31,10 @@
     
     // Use only first texture and only if it isn't baked into the model file
     // TODO It's probably possible to extract this texture, but does anyone care?
-    if (self.mesh.textures.count > 0 && self.mesh.textures[0].url != nil)
+    if (self.mesh.textures.count > 0 && self.mesh.textures.allValues[0].url != nil)
     {
         NSArray *baseComponents = baseURL.pathComponents;
-        NSArray *textureComponents = [self.mesh.textures[0].url pathComponents];
+        NSArray *textureComponents = [self.mesh.textures.allValues[0].url pathComponents];
         
         NSMutableArray *relativePathComponents = [NSMutableArray array];
         

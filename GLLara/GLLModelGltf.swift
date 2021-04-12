@@ -597,7 +597,7 @@ class GLLModelGltf: GLLModel {
             modelMesh.name = modelMesh.name + " part \(primitiveIndex)"
         }
         modelMesh.displayName = modelMesh.name
-        modelMesh.textures = []
+        modelMesh.textures = [:]
         modelMesh.shader = self.parameters.shader(name: "DefaultMaterial")
         modelMesh.countOfVertices = UInt(finalCountOfVertices)
         modelMesh.countOfUVLayers = UInt(uvLayers.count)

@@ -107,28 +107,28 @@
         {
             if (material->diffuseTexture != NULL)
             {
-                self.textures = @[ [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture] ];
+                self.textures = @{ @"diffuseTexture": [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture] };
                 self.shader = [objModelParams shaderWithName:@"DiffuseOBJ"];
             }
             else
             {
-                self.textures = @[];
+                self.textures = @{};
                 self.shader = [objModelParams shaderWithName:@"TexturelessOBJ"];
             }
         }
         else if (material->specularTexture != NULL && material->normalTexture == NULL)
         {
-            self.textures = @[ [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture], [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->specularTexture] ];
+            self.textures = @{ @"diffuseTexture": [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture], @"specularTexture": [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->specularTexture] };
             self.shader = [objModelParams shaderWithName:@"DiffuseSpecularOBJ"];
         }
         else if (material->specularTexture == NULL && material->normalTexture != NULL)
         {
-            self.textures = @[ [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture], [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->normalTexture] ];
+            self.textures = @{ @"diffuseTexture": [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture], @"bumpTexture": [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->normalTexture] };
             self.shader = [objModelParams shaderWithName:@"DiffuseNormalOBJ"];
         }
         else if (material->specularTexture != NULL && material->normalTexture != NULL)
         {
-            self.textures = @[ [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture], [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->specularTexture], [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->normalTexture] ];
+            self.textures = @{ @"diffuseTexture": [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture], @"specularTexture": [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->specularTexture], @"bumpTexture": [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->normalTexture] };
             self.shader = [objModelParams shaderWithName:@"DiffuseSpecularNormalOBJ"];
         }
         self.renderParameterValues = @{ @"ambientColor" : [NSColor colorWithCalibratedRed:material->ambient[0] green:material->ambient[1] blue:material->ambient[2] alpha:material->ambient[3]],
@@ -137,7 +137,7 @@
                                         @"specularExponent": @(material->shininess)
                                         };
     } else {
-        self.textures = @[];
+        self.textures = @{};
         self.shader = [objModelParams shaderWithName:@"TexturelessOBJ"];
         self.renderParameterValues = @{ @"ambientColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],
                                         @"diffuseColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],

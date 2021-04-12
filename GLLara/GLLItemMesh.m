@@ -210,17 +210,18 @@
     // Replace all textures
     NSMutableSet<GLLItemMeshTexture *> *textures = [self mutableSetValueForKey:@"textures"];
     [textures removeAllObjects];
-    for (NSUInteger i = 0; i < self.mesh.shader.textureUniformNames.count; i++)
+    for (NSString *identifier in self.mesh.shader.textureUniformNames)
     {
         GLLItemMeshTexture *texture = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMeshTexture" inManagedObjectContext:self.managedObjectContext];
         texture.mesh = self;
-        texture.identifier = self.mesh.shader.textureUniformNames[i];
-        if (i >= self.mesh.textures.count) {
+        texture.identifier = identifier;
+        GLLTextureAssignment *textureAssignment = self.mesh.textures[identifier];
+        if (!textureAssignment) {
             // Grrr, idiot forgot to set texture that the shader is clearly
             // using. Need to use some default.
             texture.textureURL = [self.mesh.model.parameters defaultValueForTexture:texture.identifier];
         } else {
-            texture.textureURL = self.mesh.textures[i].url;
+            texture.textureURL = textureAssignment.url;
         }
     }
     
