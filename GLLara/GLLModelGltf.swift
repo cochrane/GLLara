@@ -529,6 +529,132 @@ class GLLModelGltf: GLLModel {
         return (semantic, layer)
     }
     
+    private func load(primitive: Primitive, fromMesh mesh: Mesh, loadData: inout LoadData, document: GltfDocument) throws {
+        var countOfVertices: Int? = nil
+        var uvLayers = IndexSet()
+        
+        var accessors: [GLLVertexAttribAccessor] = []
+        for (attributeKey, attributeIndex) in primitive.attributes {
+            let fileAccessor = try loadData.getUnboundAccessor(for: attributeIndex)
+            
+            guard let (semantic, layer) = semanticAndLayer(for: attributeKey) else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute semantic is not supported."])
+            }
+            
+            if semantic == .texCoord0 {
+                uvLayers.insert(layer)
+            }
+            
+            let size: GLLVertexAttribSize
+            switch fileAccessor.accessor.type {
+            case "SCALAR":
+                size = .scalar
+            case "VEC2":
+                size = .vec2
+            case "VEC3":
+                size = .vec3
+            case "VEC4":
+                size = .vec4
+            case "MAT2":
+                size = .mat2
+            case "MAT3":
+                size = .mat3
+            case "MAT4":
+                size = .mat4
+            default:
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute size value is not supported."])
+            }
+            
+            if ![5120, 5121, 5122, 5123, 5126].contains(fileAccessor.accessor.componentType) {
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
+
+            }
+            let componentType = GLLVertexAttribComponentType(rawValue:  fileAccessor.accessor.componentType)!
+            
+            if let existingCount = countOfVertices {
+                if existingCount != fileAccessor.accessor.count {
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The vertex size value is wonky."])
+                }
+            } else {
+                countOfVertices = fileAccessor.accessor.count
+            }
+            
+            let underlyingView = document.bufferViews![fileAccessor.accessor.bufferView]
+            let vertexAttrib = GLLVertexAttrib(semantic: semantic, layer: UInt(layer), size: size, componentType: componentType)
+            let vertexAccessor = GLLVertexAttribAccessor(attribute: vertexAttrib, dataBuffer: fileAccessor.view.buffer.data, offset: UInt(fileAccessor.accessor.byteOffset ?? 0 + fileAccessor.view.range.first!), stride: UInt(underlyingView.byteStride ?? 0))
+            accessors.append(vertexAccessor)
+        }
+        guard let finalCountOfVertices = countOfVertices else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The vertex size value is wonky."])
+        }
+        guard primitive.mode ?? 4 == 4 else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "Only sets of triangles are supported."])
+        }
+        
+        let modelMesh = GLLModelMesh(asPartOf: self)!
+        modelMesh.name = mesh.name ?? "mesh"
+        modelMesh.displayName = modelMesh.name
+        modelMesh.textures = []
+        modelMesh.shader = self.parameters.shader(name: "DefaultMaterial")
+        modelMesh.countOfVertices = UInt(finalCountOfVertices)
+        modelMesh.countOfUVLayers = UInt(uvLayers.count)
+        modelMesh.vertexDataAccessors = GLLVertexAttribAccessorSet(accessors: accessors)
+        modelMesh.renderParameterValues = [:]
+        
+        if let materialIndex = primitive.material, let material = document.materials?[materialIndex] {
+            let hasTexture = material.pbrMetallicRoughness?.baseColorTexture != nil
+            
+            let isUnlitInFile = material.extensions?.isUnlit ?? false
+            let alwaysUseUnlit = true
+            if isUnlitInFile || alwaysUseUnlit {
+                // Use unlit shader; check which one
+                let hasVertexColor = primitive.attributes.contains(where: { (attributeKey, _) in
+                    if let (semantic, layer) = semanticAndLayer(for: attributeKey) {
+                        return layer == 0 && semantic == .color
+                    }
+                    return false
+                })
+                
+                if hasTexture && hasVertexColor {
+                    modelMesh.shader = self.parameters.shader(name: "UnlitTextureVertexColor")
+                } else if hasTexture {
+                    modelMesh.shader = self.parameters.shader(name: "UnlitTexture")
+                } else if hasVertexColor {
+                    modelMesh.shader = self.parameters.shader(name: "UnlitVertexColor")
+                } else {
+                    modelMesh.shader = self.parameters.shader(name: "Unlit")
+                }
+            }
+            
+            if hasTexture {
+                // Load the texture
+                // TODO
+            }
+            
+            let baseColor = material.pbrMetallicRoughness?.baseColorFactor ?? ColorRGBA.white
+            let baseColorObject: NSColor = NSColor(calibratedRed: CGFloat(baseColor.red), green: CGFloat(baseColor.green), blue: CGFloat(baseColor.blue), alpha: CGFloat(baseColor.alpha))
+            modelMesh.renderParameterValues["baseColorFactor"] = baseColorObject
+        }
+        
+        if let indicesKey = primitive.indices {
+            let elements = try loadData.getUnboundAccessor(for: indicesKey)
+            modelMesh.elementData = elements.view.buffer.data.subdata(in: elements.view.range)
+            if ![5120, 5121, 5122, 5123, 5124, 5125, 5126].contains(elements.accessor.componentType) {
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The element data type is not supported."])
+            }
+            modelMesh.elementComponentType = GLLVertexAttribComponentType(rawValue:  elements.accessor.componentType)!
+            modelMesh.countOfElements = UInt(elements.accessor.count)
+        } else {
+            modelMesh.elementData = nil
+            modelMesh.elementComponentType = .GllVertexAttribComponentTypeUnsignedByte
+            modelMesh.countOfElements = 0
+        }
+        
+        modelMesh.vertexFormat = modelMesh.vertexDataAccessors.vertexFormat(withVertexCount: UInt(modelMesh.countOfVertices), hasIndices: modelMesh.elementData != nil)
+                            
+        self.meshes.append(modelMesh)
+    }
+    
     @objc init(jsonData: Data, baseUrl: URL, binaryData: Data? = nil) throws {
         let decoder = JSONDecoder()
         let document = try decoder.decode(GltfDocument.self, from: jsonData)
@@ -545,128 +671,9 @@ class GLLModelGltf: GLLModel {
         
         // Load meshes
         if let meshes = document.meshes {
-            var countOfVertices: Int? = nil
-            var uvLayers = IndexSet()
             for mesh in meshes {
                 for primitive in mesh.primitives {
-                    
-                    var accessors: [GLLVertexAttribAccessor] = []
-                    for (attributeKey, attributeIndex) in primitive.attributes {
-                        let fileAccessor = try loadData.getUnboundAccessor(for: attributeIndex)
-                        
-                        guard let (semantic, layer) = semanticAndLayer(for: attributeKey) else {
-                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute semantic is not supported."])
-                        }
-                        
-                        if semantic == .texCoord0 {
-                            uvLayers.insert(layer)
-                        }
-                        
-                        let size: GLLVertexAttribSize
-                        switch fileAccessor.accessor.type {
-                        case "SCALAR":
-                            size = .scalar
-                        case "VEC2":
-                            size = .vec2
-                        case "VEC3":
-                            size = .vec3
-                        case "VEC4":
-                            size = .vec4
-                        case "MAT2":
-                            size = .mat2
-                        case "MAT3":
-                            size = .mat3
-                        case "MAT4":
-                            size = .mat4
-                        default:
-                            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute size value is not supported."])
-                        }
-                        
-                        if ![5120, 5121, 5122, 5123, 5126].contains(fileAccessor.accessor.componentType) {
-                            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
-
-                        }
-                        let componentType = GLLVertexAttribComponentType(rawValue:  fileAccessor.accessor.componentType)!
-                        
-                        if let existingCount = countOfVertices {
-                            if existingCount != fileAccessor.accessor.count {
-                                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The vertex size value is wonky."])
-                            }
-                        } else {
-                            countOfVertices = fileAccessor.accessor.count
-                        }
-                        
-                        let underlyingView = document.bufferViews![fileAccessor.accessor.bufferView]
-                        let vertexAttrib = GLLVertexAttrib(semantic: semantic, layer: UInt(layer), size: size, componentType: componentType)
-                        let vertexAccessor = GLLVertexAttribAccessor(attribute: vertexAttrib, dataBuffer: fileAccessor.view.buffer.data, offset: UInt(fileAccessor.accessor.byteOffset ?? 0 + fileAccessor.view.range.first!), stride: UInt(underlyingView.byteStride ?? 0))
-                        accessors.append(vertexAccessor)
-                    }
-                    guard let countOfVertices = countOfVertices else {
-                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The vertex size value is wonky."])
-                    }
-                    guard primitive.mode ?? 4 == 4 else {
-                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "Only sets of triangles are supported."])
-                    }
-                    
-                    let modelMesh = GLLModelMesh(asPartOf: self)!
-                    modelMesh.name = mesh.name ?? "mesh"
-                    modelMesh.displayName = modelMesh.name
-                    modelMesh.textures = []
-                    modelMesh.shader = self.parameters.shader(name: "DefaultMaterial")
-                    modelMesh.countOfVertices = UInt(countOfVertices)
-                    modelMesh.countOfUVLayers = UInt(uvLayers.count)
-                    modelMesh.vertexDataAccessors = GLLVertexAttribAccessorSet(accessors: accessors)
-                    modelMesh.renderParameterValues = [:]
-                    
-                    if let materialIndex = primitive.material, let material = document.materials?[materialIndex] {
-                        let hasTexture = material.pbrMetallicRoughness?.baseColorTexture != nil
-                        if material.extensions?.isUnlit ?? false {
-                            // Use unlit shader; check which one
-                            let hasVertexColor = primitive.attributes.contains(where: { (attributeKey, _) in
-                                if let (semantic, layer) = semanticAndLayer(for: attributeKey) {
-                                    return layer == 0 && semantic == .color
-                                }
-                                return false
-                            })
-                            
-                            if hasTexture && hasVertexColor {
-                                modelMesh.shader = self.parameters.shader(name: "UnlitTextureVertexColor")
-                            } else if hasTexture {
-                                modelMesh.shader = self.parameters.shader(name: "UnlitTexture")
-                            } else if hasVertexColor {
-                                modelMesh.shader = self.parameters.shader(name: "UnlitVertexColor")
-                            } else {
-                                modelMesh.shader = self.parameters.shader(name: "Unlit")
-                            }
-                        }
-                        
-                        if hasTexture {
-                            // Load the texture
-                            // TODO
-                        }
-                        
-                        let baseColor = material.pbrMetallicRoughness?.baseColorFactor ?? ColorRGBA.white
-                        let baseColorObject: NSColor = NSColor(calibratedRed: CGFloat(baseColor.red), green: CGFloat(baseColor.green), blue: CGFloat(baseColor.blue), alpha: CGFloat(baseColor.alpha))
-                        modelMesh.renderParameterValues["baseColorFactor"] = baseColorObject
-                    }
-                    
-                    if let indicesKey = primitive.indices {
-                        let elements = try loadData.getUnboundAccessor(for: indicesKey)
-                        modelMesh.elementData = elements.view.buffer.data.subdata(in: elements.view.range)
-                        if ![5120, 5121, 5122, 5123, 5124, 5125, 5126].contains(elements.accessor.componentType) {
-                            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The element data type is not supported."])
-                        }
-                        modelMesh.elementComponentType = GLLVertexAttribComponentType(rawValue:  elements.accessor.componentType)!
-                        modelMesh.countOfElements = UInt(elements.accessor.count)
-                    } else {
-                        modelMesh.elementData = nil
-                        modelMesh.elementComponentType = .GllVertexAttribComponentTypeUnsignedByte
-                        modelMesh.countOfElements = 0
-                    }
-                    
-                    modelMesh.vertexFormat = modelMesh.vertexDataAccessors.vertexFormat(withVertexCount: UInt(modelMesh.countOfVertices), hasIndices: modelMesh.elementData != nil)
-                                        
-                    self.meshes.append(modelMesh)
+                    try load(primitive: primitive, fromMesh: mesh, loadData: &loadData, document: document)
                 }
             }
         }
