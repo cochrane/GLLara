@@ -547,7 +547,8 @@ void vec_addTo(float *a, const float *b)
         
     for (NSUInteger layer = 0; layer < self.countOfUVLayers; layer++)
     {
-        GLLVertexAttribAccessor *texCoordData = [fileVertexData accessorForSemantic:GLLVertexAttribNormal layer:layer];
+        GLLVertexAttribAccessor *texCoordData = [fileVertexData accessorForSemantic:GLLVertexAttribTexCoord0 layer:layer];
+        NSAssert(texCoordData, @"Have no tex coord data for layer %lu even though we have %lu layers", layer, self.countOfUVLayers);
         
         float *tangents = calloc(sizeof(float[4]), self.countOfVertices);
         
