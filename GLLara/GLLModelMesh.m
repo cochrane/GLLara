@@ -615,8 +615,8 @@ void vec_addTo(float *a, const float *b)
             // Add them to the per-layer tangents
             for (int vertex = 0; vertex < 3; vertex++)
             {
-                vec_addTo(&tangentsU[elements[index + vertex]*3], tangentU);
-                vec_addTo(&tangentsV[elements[index + vertex]*3], tangentV);
+                vec_addTo(&tangentsU[elements[vertex]*3], tangentU);
+                vec_addTo(&tangentsV[elements[vertex]*3], tangentV);
             }
         }
         
