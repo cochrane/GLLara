@@ -113,7 +113,7 @@
     [self didChangeValueForKey:@"shaderName"];
     
     // Set up render parameters that do not exist yet
-    for (NSString *renderParameterName in shaderDescription.parameterUniformNames)
+    for (NSString *renderParameterName in shaderDescription.allUniformNames)
     {
         if (![self renderParameterWithName:renderParameterName])
         {

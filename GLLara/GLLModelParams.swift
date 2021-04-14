@@ -65,27 +65,6 @@ import Foundation
         return result
     }
     
-    private static let meshNameRegexpString = """
-^([0-9P]{1,2})_
-([^_\\n]+(?:_[^0-9\\n]+)*)
-(?:
-_([\\d\\.]+)
-(?:
-_([\\d\\.]+)
-(?:_([\\d\\.]+)
-(?:
-_([^_\\n]+)
-(?:
-_([^_\\n]+)
-)*
-)?
-)?
-)?
-)?_?$
-"""
-    
-    private static let meshNameRegexp = try! NSRegularExpression(pattern:meshNameRegexpString, options: [.allowCommentsAndWhitespace, .anchorsMatchLines])
-    
     struct PlistDataTransferObject: Decodable {
         var base: String?
         var meshGroupNames: [String: [String]]?
@@ -105,7 +84,7 @@ _([^_\\n]+)
     private let model: GLLModel?
     private let plistData: PlistDataTransferObject?
     
-    init(data: Data) throws {
+    private init(data: Data) throws {
         let decoder = PropertyListDecoder()
         plistData = try decoder.decode(PlistDataTransferObject.self, from: data)
         model = nil
@@ -134,6 +113,27 @@ _([^_\\n]+)
     }
     
     var base: GLLModelParams?
+    
+    private static let meshNameRegexpString = """
+^([0-9P]{1,2})_
+([^_\\n]+(?:_[^0-9\\n]+)*)
+(?:
+_([\\d\\.]+)
+(?:
+_([\\d\\.]+)
+(?:_([\\d\\.]+)
+(?:
+_([^_\\n]+)
+(?:
+_([^_\\n]+)
+)*
+)?
+)?
+)?
+)?_?$
+"""
+    
+    private static let meshNameRegexp = try! NSRegularExpression(pattern:meshNameRegexpString, options: [.allowCommentsAndWhitespace, .anchorsMatchLines])
     
     @objc func params(forMesh meshName: String) -> GLLMeshParams {
         let params = GLLMeshParams()
@@ -192,11 +192,11 @@ _([^_\\n]+)
                     renderParameters.merge(defaultParams, uniquingKeysWith: { (_, new) in new })
                 }
                 if let shader = shader {
-                    if components.numberOfRanges < shader.parameterUniformNames.count + 3 {
+                    if components.numberOfRanges < shader.genericMeshUniformMappings.count + 3 {
                         print("Weird")
                     }
                     
-                    for i in 0 ..< shader.parameterUniformNames.count {
+                    for i in 0 ..< shader.genericMeshUniformMappings.count {
                         var value = 0.0
                         if components.numberOfRanges >= i + 3 && components.range(at: i+3).location != NSNotFound {
                             let stringValue = meshName[Range(components.range(at: i+3), in: meshName)!]

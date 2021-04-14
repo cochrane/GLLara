@@ -32,7 +32,6 @@ import Foundation
      * For each mesh, textures are just specified one after the other, with no information what those textures do. Similarly, with the generic_item format, the settings for the uniforms are specified one after the other, with no information what they do. These arrays give the uniform name for the corresponding index.
      */
     @objc let genericMeshUniformMappings: [[String]]
-    @objc let parameterUniformNames: [String]
     @objc let textureUniformNames: [String]
     
     /*
@@ -41,15 +40,9 @@ import Foundation
     @objc let defines: [String: String]
     
     /*
-     * Uniforms that are not specified by models.
+     * Uniforms that are not specified by XNALara models.
      */
-    @objc let additionalUniformNames: [String]
-    
-    @objc var allUniformNames: [String] {
-        var result = Array<String>(parameterUniformNames)
-        result.append(contentsOf: additionalUniformNames)
-        return result
-    }
+    @objc let allUniformNames: [String]
     
     @objc let solidMeshGroups: Set<String>
     @objc let alphaMeshGroups: Set<String>
@@ -90,26 +83,28 @@ import Foundation
         self.fragmentName = try container.decodeIfPresent(String.self, forKey: .fragment)
         
         // I don't remember why we have this
-        var flattened: [String] = []
-        var deep: [[String]] = []
+        var uniformNames: [String] = []
+        var uniformsForGenericMeshParameters: [[String]] = []
         if container.contains(.parameters) {
             var parameters = try container.nestedUnkeyedContainer(forKey: .parameters)
             while !parameters.isAtEnd {
                 if let array = try? parameters.decodeIfPresent([String].self) {
-                    flattened.append(contentsOf: array)
-                    deep.append(array)
+                    uniformNames.append(contentsOf: array)
+                    uniformsForGenericMeshParameters.append(array)
                 } else {
                     let value = try parameters.decode(String.self)
-                    flattened.append(value)
-                    deep.append([value])
+                    uniformNames.append(value)
+                    uniformsForGenericMeshParameters.append([value])
                 }
             }
         }
-        self.parameterUniformNames = flattened
-        self.genericMeshUniformMappings = deep
+        self.genericMeshUniformMappings = uniformsForGenericMeshParameters
         
         self.textureUniformNames = try container.decodeIfPresent([String].self, forKey: .textures) ?? []
-        self.additionalUniformNames = try container.decodeIfPresent([String].self, forKey: .additionalParameters) ?? []
+        let freeUniformNames = try container.decodeIfPresent([String].self, forKey: .additionalParameters) ?? []
+        uniformNames.append(contentsOf:freeUniformNames)
+        self.allUniformNames = uniformNames
+        
         self.defines = try container.decodeIfPresent([String:String].self, forKey: .defines) ?? [:]
         
         self.alphaMeshGroups = Set(try container.decodeIfPresent([String].self, forKey: .alphaMeshGroups) ?? [])

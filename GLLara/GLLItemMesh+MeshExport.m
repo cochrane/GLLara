@@ -49,10 +49,10 @@
     [genericItemName appendString:[[self.displayName componentsSeparatedByCharactersInSet:illegalSet] componentsJoinedByString:@"-"]];
     
     // 3 - write required parameters
-    for (NSString *renderParameterName in self.shader.parameterUniformNames)
+    for (NSArray<NSString *>* renderParameterNames in self.shader.genericMeshUniformMappings)
     {
-        GLLFloatRenderParameter *param = (GLLFloatRenderParameter *) [self renderParameterWithName:renderParameterName];
-        NSAssert(param && [param isMemberOfClass:[GLLFloatRenderParameter class]], @"Objects with shader %@ have to have parameter %@ and it must be float", self.shaderName, renderParameterName);
+        GLLFloatRenderParameter *param = (GLLFloatRenderParameter *) [self renderParameterWithName:renderParameterNames[0]];
+        NSAssert(param && [param isMemberOfClass:[GLLFloatRenderParameter class]], @"Objects with shader %@ have to have parameter %@ and it must be float", self.shaderName, renderParameterNames[0]);
         
         [genericItemName appendFormat:@"_%f", param.value];
     }
