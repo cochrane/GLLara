@@ -18,6 +18,8 @@
 #import "TROutDataStream.h"
 #import "NSArray+Map.h"
 
+#import "GLLara-Swift.h"
+
 @interface GLLItem ()
 
 - (void)_standardSetValue:(id)value forKey:(NSString *)key;
@@ -177,13 +179,10 @@
     // They have appropriate default values, so they need no setting of parameters.
     NSMutableOrderedSet *meshes = [self mutableOrderedSetValueForKey:@"meshes"];
     [meshes removeAllObjects];
-    for (GLLModelMesh *modelMesh in model.meshes)
+    for (NSUInteger i = 0; i < model.meshes.count; i++)
     {
         GLLItemMesh *itemMesh = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMesh" inManagedObjectContext:self.managedObjectContext];
-        itemMesh.cullFaceMode = modelMesh.cullFaceMode;
-        itemMesh.item = self;
-        [itemMesh prepareGraphicsData];
-        itemMesh.isVisible = modelMesh.initiallyVisible;
+        [itemMesh prepareWithItem: self];
     }
     
     NSMutableOrderedSet *bones = [self mutableOrderedSetValueForKey:@"bones"];
@@ -203,14 +202,12 @@
             [bone setPositionX:0];
     }
     
-    for (NSString *cameraTargetName in model.cameraTargetNames)
+    for (GLLCameraTargetDescription *description in model.cameraTargetNames)
     {
-        NSArray *boneNames = [model boneNamesForCameraTarget:cameraTargetName];
-        
         NSManagedObject *cameraTarget = [NSEntityDescription insertNewObjectForEntityForName:@"GLLCameraTarget" inManagedObjectContext:self.managedObjectContext];
-        [cameraTarget setValue:cameraTargetName forKey:@"name"];
+        [cameraTarget setValue:description.name forKey:@"name"];
         for (GLLItemBone *bone in bones)
-            if ([boneNames containsObject:bone.bone.name])
+            if ([description.boneNames containsObject:bone.bone.name])
                 [[cameraTarget mutableSetValueForKey:@"bones"] addObject:bone];
     }
     

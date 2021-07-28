@@ -10,7 +10,7 @@
 #import <OpenGL/gltypes.h>
 
 @class GLLShader;
-@class GLLShaderDescription;
+@class GLLShaderData;
 @class GLLResourceManager;
 
 #import "GLLProgram.h"
@@ -21,7 +21,7 @@
  */
 @interface GLLModelProgram : GLLProgram
 
-- (id)initWithDescriptor:(GLLShaderDescription *)descriptor alpha:(BOOL)alpha resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
+- (id)initWithDescriptor:(GLLShaderData *)descriptor resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 
 // Uniforms set by model
 @property (nonatomic, assign, readonly) GLuint boneMatricesUniformBlockIndex;

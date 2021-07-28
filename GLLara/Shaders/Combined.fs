@@ -13,17 +13,20 @@
 #endif
 
 in vec4 outColor;
-in vec2 outTexCoord;
+$$in vec2 outTexCoord%ld;
 in vec3 positionWorld;
-#ifdef CALCULATE_NORMAL_WORLD
+#ifdef HAVE_NORMAL_WORLD
+#ifdef CALCULATE_TANGENT_TO_WORLD
+in mat3 tangentToWorld;
+#else
+in vec3 normalWorld;
+#endif
+/*#ifdef CALCULATE_NORMAL_WORLD
 in vec3 normalWorld;
 #endif
 #ifdef CALCULATE_TANGENT_TO_WORLD
 in mat3 tangentToWorld;
-#endif
-#ifdef SECOND_TEX_COORD
-in vec2 outTexCoord2;
-#endif
+#endif*/
 
 out vec4 screenColor;
 

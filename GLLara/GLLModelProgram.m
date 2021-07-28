@@ -18,20 +18,39 @@
 
 #import "GLLara-Swift.h"
 
+@interface GLLModelProgram()
+
+@property (nonatomic, copy) NSIndexSet *texCoords;
+
+@end
+
 @implementation GLLModelProgram
 
-- (id)initWithDescriptor:(GLLShaderDescription *)descriptor alpha:(BOOL)alpha resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
+- (id)initWithDescriptor:(GLLShaderData *)descriptor resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 {
-    NSDictionary *additionalDefines = @{};
-    if (alpha)
-        additionalDefines = @{ @"USE_ALPHA_TEST" : @"1" };
-    if (descriptor.defines) {
-        NSMutableDictionary *allDefines = [NSMutableDictionary dictionaryWithDictionary:additionalDefines];
-        [allDefines addEntriesFromDictionary:descriptor.defines];
-        additionalDefines = allDefines;
+    NSMutableIndexSet *texCoords = [[NSMutableIndexSet alloc] init];
+    [texCoords addIndex:0]; // Always present as a default
+    for (NSNumber *number in descriptor.texCoordAssignments)
+        [texCoords addIndex:number.integerValue];
+    self.texCoords = texCoords;
+    
+    NSMutableDictionary<NSString *, NSString *> *additionalDefines = [[NSMutableDictionary alloc] init];
+    if (descriptor.alphaBlending) {
+        additionalDefines[@"USE_ALPHA_TEST"] = @"1";
+    }
+    if (descriptor.parameterUniforms.count > 0) {
+        additionalDefines[@"RENDER_PARAMETERS"] = @"1";
+    }
+    [additionalDefines addEntriesFromDictionary:descriptor.defines];
+    
+    for (NSString *textureUniformName in descriptor.textureUniforms) {
+#error Find the define name
+#error Don't hardcode the base variable name here
+        NSString *defineName = "??";
+        additionalDefines[defineName] = [NSString stringWithFormat:descriptor.base.texCoordFragmentNameFormat, [descriptor texCoordSetForTexture:textureUniformName]];
     }
     
-    if (!(self = [super initWithName:descriptor.name fragmentShaderName:descriptor.fragmentName geometryShaderName:descriptor.geometryName vertexShaderName:descriptor.vertexName additionalDefines:additionalDefines resourceManager:manager error:error])) return nil;
+    if (!(self = [super initWithFragmentShaderName:descriptor.fragmentName geometryShaderName:descriptor.geometryName vertexShaderName:descriptor.vertexName additionalDefines:additionalDefines resourceManager:manager error:error])) return nil;
     
     _lightsUniformBlockIndex = glGetUniformBlockIndex(self.programID, "LightData");
     if (_lightsUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(self.programID, _lightsUniformBlockIndex, GLLUniformBlockBindingLights);
@@ -55,9 +74,9 @@
     
     // Set up textures. Uniforms for textures need to be set up once and then never change, because uniforms bind to texture units, not texture objects. I really, really wish I knew whom that is supposed to help, but whatever.
     glUseProgram(self.programID);
-    for (GLint i = 0; i < (GLint) descriptor.textureUniformNames.count; i++)
+    for (GLint i = 0; i < (GLint) descriptor.textureUniforms.count; i++)
     {
-        GLint location = glGetUniformLocation(self.programID, [descriptor.textureUniformNames[i] UTF8String]);
+        GLint location = glGetUniformLocation(self.programID, [descriptor.textureUniforms[i] UTF8String]);
         if (location == -1) continue;
         glUniform1i(location, i);
     }
@@ -70,14 +89,19 @@
 
 - (void)bindAttributeLocations;
 {
+    
+#error And re-check Combined.fs and Combined.vs
+#error And put the OBJ stuff in Combined.fs and Combined.vs
     glBindAttribLocation(self.programID, GLLVertexAttribPosition, "position");
     glBindAttribLocation(self.programID, GLLVertexAttribNormal, "normal");
     glBindAttribLocation(self.programID, GLLVertexAttribColor, "color");
-    glBindAttribLocation(self.programID, GLLVertexAttribTexCoord0, "texCoord");
-    glBindAttribLocation(self.programID, GLLVertexAttribTangent0, "tangent");
-    glBindAttribLocation(self.programID, GLLVertexAttribTexCoord0+2, "texCoord2");
     glBindAttribLocation(self.programID, GLLVertexAttribBoneIndices, "boneIndices");
-    glBindAttribLocation(self.programID, GLLVertexAttribBoneWeights, "boneWeights");	
+    glBindAttribLocation(self.programID, GLLVertexAttribBoneWeights, "boneWeights");
+    
+    for (NSInteger index = self.texCoords.firstIndex; index != NSNotFound; index = [self.texCoords indexGreaterThanIndex:index]) {
+        glBindAttribLocation(self.programID, (GLuint) (GLLVertexAttribTexCoord0 + 2*index), [NSString stringWithFormat:@"texCoord%ld", index].UTF8String);
+        glBindAttribLocation(self.programID, (GLuint) (GLLVertexAttribTangent0 + 2*index), [NSString stringWithFormat:@"tangent%ld", index].UTF8String);
+    }
 }
 
 @end

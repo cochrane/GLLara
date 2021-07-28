@@ -20,10 +20,7 @@ layout(std140) uniform Bones {
 in vec3 position;
 in vec3 normal;
 in vec4 color;
-in vec2 texCoord;
-#ifdef SECOND_TEX_COORD
-in vec2 texCoord2;
-#endif
+$$in vec2 texCoord%ld;
 in vec4 tangent;
 #ifdef SECOND_TEX_COORD
 in vec2 tangent2;
@@ -32,10 +29,7 @@ in ivec4 boneIndices;
 in vec4 boneWeights;
 
 out vec4 outColor;
-out vec2 outTexCoord;
-#ifdef SECOND_TEX_COORD
-out vec2 outTexCoord2;
-#endif
+##out vec2 outTexCoord%ld;
 out vec3 positionWorld;
 #ifdef CALCULATE_NORMAL_WORLD
 out vec3 normalWorld;
@@ -82,8 +76,5 @@ void main()
     
     // Pass through
     outColor = color;
-    outTexCoord = texCoord;
-#ifdef SECOND_TEX_COORD
-    outTexCoord2 = texCoord2;
-#endif
+$$  outTexCoord%ld = texCoord%ld;
 }

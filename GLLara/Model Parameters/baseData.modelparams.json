@@ -1,0 +1,94 @@
+{
+    "shaders": [
+        {
+            "name": "default",
+            "vertex": "Combined.vs",
+            "fragment": "Combined.fs",
+            "children": [
+                {
+                    "name": "skinning",
+                    "defines": { "USE_SKINNING" : "1" },
+                    "requiredVertexAttributes": [ "boneIndices", "boneWeights" ],
+                },
+                {
+                    "name": "ambient",
+                    "defines": { "AMBIENT_COLOR" : "1" },
+                    "children": [
+                        {
+                            "name": "ambientColor",
+                            "defines": { "AMBIENT_COLOR_VALUE" : "1" },
+                            "parameterUniforms": "ambientColor"
+                        }
+                    ]
+                },
+                {
+                    "name": "diffuseTexture",
+                    "defines": { "DIFFUSE_TEXTURE" : "1" },
+                    "textureUniforms": [ "diffuseTexture" ]
+                },
+                {
+                    "name": "vertexColor",
+                    "defines": { "VERTEX_COLOR" : "1" },
+                    "requiredVertexAttributes": [ "vertexColor" ]
+                },
+                {
+                    "name": "lighting",
+                    "defines": { "HAVE_NORMAL_WORLD": "1" },
+                    "requiredVertexAttributes": [ "normal" ],
+                    "children": [
+                        {
+                            "name": "normalMap",
+                            "textureUniforms": [ "bumpTexture" ],
+                            "defines": { "CALCULATE_TANGENT_TO_WORLD": "1" },
+                            "children": [
+                                {
+                                    "name": "normalDetailMap",
+                                    "defines": { "NORMAL_DETAIL_MAP" : "1" },
+                                    "textureUniforms": [ "bump1Texture", "bump2Texture", "maskTexture"],
+                                    "parameterUniforms": [ "bump1UVScale", "bump2UVScale" ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "diffuseLighting",
+                            "defines": { "DIFFUSE" : "1" }
+                        },
+                        {
+                            "name": "specularLighting",
+                            "defines": { "SPECULAR": "1", "CAMERA_DIRECTION": "1" },
+                            "children": [
+                                {
+                                    "name": "specularTexture",
+                                    "defines": { "SPECULAR_TEXTURE": "1" },
+                                    "textureUniforms": [ "specularTexture" ],
+                                    "children": [
+                                        {
+                                            "name": "specularTextureScale",
+                                            "defines": { "SPECULAR_TEXTURE_SCALE": "1" },
+                                            "parameterUniforms": [ "specularTextureScale" ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "reflection",
+                            "defines": { "REFLECTION" : "1", "CAMERA_DIRECTION": "1" },
+                            "textureUniforms": [ "reflectionTexture" ]
+                        }
+                    ]
+                },
+                {
+                    "name": "lightmap",
+                    "defines": { "LIGHTMAP" : "1" },
+                    "textureUniforms": [ "lightmapTexture" ]
+                },
+                {
+                    "name": "emission",
+                    "defines": { "EMISSION" : "1" },
+                    "textureUniforms": [ "emissionTexture" ]
+                },
+            ]
+        }
+    ]
+}

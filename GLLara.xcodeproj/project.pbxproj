@@ -334,6 +334,7 @@
 		52D8DDF72621E67F0006F0E5 /* GLLShaderDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D8DDF12621E19A0006F0E5 /* GLLShaderDescription.swift */; };
 		52D8DE022621F5910006F0E5 /* GLLModelParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D8DDFC2621F29D0006F0E5 /* GLLModelParams.swift */; };
 		52DD80F3163B464200534475 /* GLLRenderingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD80F2163B464200534475 /* GLLRenderingTest.m */; };
+		52EA274E263598CF00726DE2 /* baseData.modelparams.json in Resources */ = {isa = PBXBuildFile; fileRef = 52EA274D263598CF00726DE2 /* baseData.modelparams.json */; };
 		52ED9E1E168399AE0082EABB /* GLLSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E1D168399AE0082EABB /* GLLSelection.m */; };
 		52ED9E26169332540082EABB /* GLLMeshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E25169332540082EABB /* GLLMeshController.m */; };
 		52ED9E29169333050082EABB /* GLLBoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E28169333050082EABB /* GLLBoneController.m */; };
@@ -375,6 +376,7 @@
 /* Begin PBXFileReference section */
 		5211F82B2623A2EA00A1EC23 /* UnlitGLTF.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = UnlitGLTF.fs; sourceTree = "<group>"; };
 		5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLTextureAssignment.swift; sourceTree = "<group>"; };
+		5211F84A262B800300A1EC23 /* GLLSceneModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		5212027E16B5895E00338ADD /* GLLDrawState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLDrawState.h; sourceTree = "<group>"; };
 		521326331602ACBE00787AA1 /* GLLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = GLLProgram.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
 		521326341602ACBE00787AA1 /* GLLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = GLLProgram.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; wrapsLines = 1; };
@@ -882,6 +884,7 @@
 		52DD80F7163B58E400534475 /* GLLExportASCIITest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLExportASCIITest.m; sourceTree = "<group>"; };
 		52DD80F9163B58F100534475 /* GLLExportBinaryTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLExportBinaryTest.h; sourceTree = "<group>"; };
 		52DD80FA163B58F100534475 /* GLLExportBinaryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLExportBinaryTest.m; sourceTree = "<group>"; };
+		52EA274D263598CF00726DE2 /* baseData.modelparams.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = baseData.modelparams.json; sourceTree = "<group>"; };
 		52ED9E1C168399AE0082EABB /* GLLSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSelection.h; sourceTree = "<group>"; };
 		52ED9E1D168399AE0082EABB /* GLLSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSelection.m; sourceTree = "<group>"; };
 		52ED9E24169332540082EABB /* GLLMeshController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshController.h; sourceTree = "<group>"; };
@@ -1373,6 +1376,7 @@
 				523DE1111604E04200BB9F61 /* yeti_thrall_nochains.modelparams.plist */,
 				523DE10D1604E00700BB9F61 /* zip.modelparams.plist */,
 				52D8DDD5261F79E70006F0E5 /* gltfFile.modelparams.plist */,
+				52EA274D263598CF00726DE2 /* baseData.modelparams.json */,
 			);
 			path = "Model Parameters";
 			sourceTree = "<group>";
@@ -1892,6 +1896,7 @@
 				523AEEDA16C4883A0062C025 /* defaultBlack.png in Resources */,
 				523AEEDB16C4883A0062C025 /* defaultBump.png in Resources */,
 				523AEEDC16C4883A0062C025 /* defaultColor.png in Resources */,
+				52EA274E263598CF00726DE2 /* baseData.modelparams.json in Resources */,
 				523AEEDD16C4883A0062C025 /* defaultWhite.png in Resources */,
 				52301E472096518500B3E331 /* GLLDrawingPreferencesView.xib in Resources */,
 				523AEEDF16C488960062C025 /* defaultReflection.jpg in Resources */,
@@ -2697,6 +2702,7 @@
 		52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				5211F84A262B800300A1EC23 /* GLLSceneModel 5.xcdatamodel */,
 				52421C0F16BDA65B00D41EAA /* GLLSceneModel 3.xcdatamodel */,
 				526E0F891C146B8000F198BF /* GLLSceneModel 4.xcdatamodel */,
 				5260CE9C163B16450069459D /* GLLSceneModel 2.xcdatamodel */,

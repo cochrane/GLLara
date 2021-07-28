@@ -13,13 +13,23 @@ import Foundation
     @objc var displayName: String = ""
     @objc var visible: Bool = true
     @objc var optionalPartNames: [String] = []
-    @objc var shader: GLLShaderDescription? = nil
+    @objc var xnaLaraShaderData: XnaLaraShaderDescription? = nil
     @objc var transparent: Bool = false
     @objc var renderParameters: [String: Double] = [:]
     @objc var splitters: [GLLMeshSplitter] = []
     
     var cameraTargetName: String? = nil
     var cameraTargetBones: [String] = []
+}
+
+@objc class GLLCameraTargetDescription: NSObject, Decodable {
+    @objc let name: String
+    @objc let boneNames: [String]
+    
+    init(name: String, boneNames: [String]) {
+        self.name = name
+        self.boneNames = boneNames
+    }
 }
 
 /*!
@@ -66,20 +76,78 @@ import Foundation
     }
     
     struct PlistDataTransferObject: Decodable {
+        /**
+         * Name of a file that is essentially the superclass
+         */
         var base: String?
-        var meshGroupNames: [String: [String]]?
-        // Only float render parameters get values in the plist
-        var renderParameters: [String: [String: Double]]?
-        var defaultRenderParameters: [String: Double]?
-        var cameraTargets: [String: [String]]?
-        var defaultMeshGroup: String?
-        var meshSplitters: [String : [GLLMeshSplitter]]?
-        var shaders: [String: GLLShaderDescription]?
+        /**
+         * Generic: The shaders that can be used, and the modules that can
+         * apply. Presumably there will be only very few possible shaders, and
+         * the variation is mainly in the modules.
+         */
+        var shaders: [String: GLLShaderBase]?
+        /**
+         * Generic: End user readable descriptions (or rather the localization
+         * keys) for the various render parameters that shaders use. Render
+         * parameters are identified internally by name; all parameters that
+         * have the same name are assumed to do the same thing no matter who
+         * uses them.
+         */
         var renderParameterDescriptions: [String: GLLRenderParameterDescription]?
+        /**
+         * Generic: Default values for different render parameters used by the
+         * different shaders that you can build
+         */
+        var defaultRenderParameters: [String: Double]?
+        /**
+         * Generic: End user readable descriptions (or rather the localization
+         * keys) for the various textures that shaders used. Same logic as for
+         * render parameters
+         */
         var textureDescriptions: [String: GLLTextureDescription]?
+        /**
+         * Generic: The default textures for the various texture types used.
+         * In general these are designed to have no effect on rendering
+         * whatsoever.
+         */
         var defaultTextures: [String: String]?
-        
-        // TODO We seem to have forgotten about renderParameterRemappings somewhere along the line. Where does that go?
+        /**
+         * For XNALara files: The mesh groups that apply to a mesh with the
+         * given name for this model (may be more than one but only one of those
+         * will actually render)
+         */
+        var meshGroupNames: [String: [String]]?
+        /**
+         * For XNALara files: Values for render parameters for meshes. Only
+         * float render parameters get values in the plist because XNALara had
+         * no color parameters
+         */
+        var renderParameters: [String: [String: Double]]?
+        /**
+         * For XNALara files: Pre-defined camera targets, and the bones that
+         * belong to them.
+         */
+        var cameraTargets: [String: [String]]?
+        /**
+         * For XNALara files: The mesh group that all meshes belong to that
+         * aren't menitoned in meshGroupNames
+         */
+        var defaultMeshGroup: String?
+        /**
+         * For XNALara files: Which meshes to split, and how. Very rare.
+         */
+        var meshSplitters: [String : [GLLMeshSplitter]]?
+        /**
+         * For XNALara files: Maps from an old shader name (which GLLara used
+         * up to version 0.2.10) or from mesh group names to the base shader
+         * and shader modules that are used now. Also provides some of the
+         * hard-coded values to describe which texture gets used for what, and
+         * which parameter value in a generic_mesh file gets used for what.
+         *
+         * This one doesn't need to be a map, it just makes it easier for me to
+         * keep track
+         */
+        var xnaLaraShaderDescriptions: [String: XnaLaraShaderDescription]?
     }
     private let model: GLLModel?
     private let plistData: PlistDataTransferObject?
@@ -96,13 +164,6 @@ import Foundation
         }
         
         super.init()
-        
-        if let shaders = plistData?.shaders {
-            for (name, shader) in shaders {
-                shader.name = name
-                shader.parameters = self
-            }
-        }
     }
     
     // Generic item format
@@ -175,7 +236,7 @@ _([^_\\n]+)
                 
                 // 3rd, 4th, 5th match: render parameters
                 let (shader, alpha) = getShaderAndAlpha(forMeshGroup: meshGroup) ?? (nil, true)
-                params.shader = shader
+                params.xnaLaraShaderData = shader
                 params.transparent = alpha
                 
                 // - Render parameters
@@ -192,18 +253,18 @@ _([^_\\n]+)
                     renderParameters.merge(defaultParams, uniquingKeysWith: { (_, new) in new })
                 }
                 if let shader = shader {
-                    if components.numberOfRanges < shader.genericMeshUniformMappings.count + 3 {
+                    if components.numberOfRanges < shader.parameterUniformsInOrder.count + 3 {
                         print("Weird")
                     }
                     
-                    for i in 0 ..< shader.genericMeshUniformMappings.count {
+                    for i in 0 ..< shader.parameterUniformsInOrder.count {
                         var value = 0.0
                         if components.numberOfRanges >= i + 3 && components.range(at: i+3).location != NSNotFound {
                             let stringValue = meshName[Range(components.range(at: i+3), in: meshName)!]
                             value = Double(stringValue) ?? 0.0
                         }
                         
-                        for parameterName in shader.genericMeshUniformMappings[i] {
+                        for parameterName in shader.parameterUniformsInOrder[i] {
                             renderParameters[parameterName] = value
                         }
                     }
@@ -234,7 +295,7 @@ _([^_\\n]+)
                     
                     for meshGroup in params.meshGroups {
                         if let (shader, alpha) = getShaderAndAlpha(forMeshGroup: meshGroup) {
-                            params.shader = shader
+                            params.xnaLaraShaderData = shader
                             params.transparent = alpha
                             break
                         }
@@ -293,7 +354,7 @@ _([^_\\n]+)
             // - Shader
             for meshGroup in params.meshGroups {
                 if let (shader, alpha) = getShaderAndAlpha(forMeshGroup: meshGroup) {
-                    params.shader = shader
+                    params.xnaLaraShaderData = shader
                     params.transparent = alpha
                     break
                 }
@@ -303,9 +364,9 @@ _([^_\\n]+)
         return params
     }
     
-    private func getShaderAndAlpha(forMeshGroup meshGroup: String) -> (GLLShaderDescription, Bool)? {
+    private func getShaderAndAlpha(forMeshGroup meshGroup: String) -> (XnaLaraShaderDescription, Bool)? {
         // Try to find shader in own ones.
-        if let shaders = plistData?.shaders {
+        if let shaders = plistData?.xnaLaraShaderDescriptions {
             for (_, descriptor) in shaders {
                 if descriptor.solidMeshGroups.contains(meshGroup) {
                     return (descriptor, false)
@@ -323,47 +384,23 @@ _([^_\\n]+)
     /*
      * Camera targets
      */
-    @objc var cameraTargets: [String] {
+    @objc lazy var cameraTargets: [GLLCameraTargetDescription] = { () -> [GLLCameraTargetDescription] in
+        var targets: [String: [String]] = [:]
         if let model = self.model {
-            
-            var allTargets = Set<String>()
-            for mesh in model.meshes {
-                if let name = params(forMesh: mesh.name).cameraTargetName {
-                    allTargets.insert(name)
-                }
-            }
-            return Array<String>(allTargets)
-        } else {
-            var cameraTargets: [String] = []
-            if let plistTargets = plistData?.cameraTargets {
-                cameraTargets.append(contentsOf: plistTargets.keys)
-            }
-            if let base = self.base {
-                cameraTargets.append(contentsOf: base.cameraTargets)
-            }
-            return cameraTargets
-        }
-    }
-    @objc func boneNames(forCameraTarget target: String) -> [String] {
-        if let model = model {
-            var boneNames: [String] = []
             for mesh in model.meshes {
                 let meshParams = params(forMesh: mesh.name)
-                if let targetName = meshParams.cameraTargetName, targetName == target {
-                    boneNames.append(contentsOf: meshParams.cameraTargetBones)
+                if let targetName = meshParams.cameraTargetName {
+                    
+                    let meshTarget = [targetName: meshParams.cameraTargetBones]
+                    targets.merge(meshTarget, uniquingKeysWith: {(bonesA, bonesB) in bonesA + bonesB})
                 }
             }
-            return boneNames
         }
-        if let boneNames = plistData?.cameraTargets?[target] {
-            return boneNames
+        if let plistTargets = plistData?.cameraTargets {
+            targets.merge(plistTargets, uniquingKeysWith: {(bonesA, bonesB) in bonesA + bonesB})
         }
-        if let base = self.base {
-            return base.boneNames(forCameraTarget: target)
-        }
-        
-        return []
-    }
+        return targets.map { targetName, boneNames in GLLCameraTargetDescription(name: targetName, boneNames: boneNames) } + (base?.cameraTargets ?? [])
+    }()
     
     /*
      * Rendering
@@ -380,30 +417,6 @@ _([^_\\n]+)
         }
         return self.base!.defaultValue(forTexture: name)
     }
-    @objc func shader(name: String?) -> GLLShaderDescription? {
-        guard let name = name else {
-            return nil
-        }
-        
-        if let description = plistData?.shaders?[name] {
-            return description
-        }
-        if let base = self.base {
-            return base.shader(name: name)
-        }
-        return nil
-    }
-    
-    @objc lazy var allShaders: [GLLShaderDescription] = {
-        var shaders: [GLLShaderDescription] = []
-        if let ownShaders = plistData?.shaders {
-            shaders.append(contentsOf: ownShaders.values)
-        }
-        if let base = base {
-            shaders.append(contentsOf: base.allShaders)
-        }
-        return shaders
-    }()
     
     @objc func description(forParameter name: String) -> GLLRenderParameterDescription {
         if let description = plistData?.renderParameterDescriptions?[name] {
@@ -416,5 +429,52 @@ _([^_\\n]+)
             return description
         }
         return self.base!.description(forTexture: name)
+    }
+    
+    /**
+     Finds a shader for a model with the given base, modules, and present textures and vertex accessors and alpha blending value.
+     The textures and vertex accessors are used to find additional modules that get automatically added - e.g. for normal mapping. The explicitly passed modules are used either way.
+     */
+    @objc func shader(base: String, modules: [String] = [], presentTextures: [String] = [], vertexAccessors: GLLVertexAttribAccessorSet, alphaBlending: Bool = false) -> GLLShaderData? {
+        return shader(base: base, modules: modules, presentTextures: presentTextures, presentVertexAttributes: vertexAccessors.accessors.map { $0.attribute.semantic }, alphaBlending: alphaBlending)
+    }
+    
+    /**
+     Finds a shader for a model without using any implicit values: Only the modules that are there are actually used.
+     */
+    @objc func explicitShader(base: String, modules: [String] = [], texCoordAssignments: [String: Int], alphaBlending: Bool) -> GLLShaderData? {
+        return shader(base: base, modules: modules, presentTextures: [], presentVertexAttributes: [], texCoordAssignments: texCoordAssignments, alphaBlending: alphaBlending)
+    }
+    
+    func shader(base baseName: String, modules: [String] = [], presentTextures: [String] = [], presentVertexAttributes: [GLLVertexAttribSemantic] = [], texCoordAssignments: [String: Int] = [:], alphaBlending: Bool = false) -> GLLShaderData? {
+        if let baseShader = plistData?.shaders?[baseName] {
+            let namedModules = baseShader.allModules(forNames: modules)
+            let implicitModules = baseShader.descendantsMatching(textures: presentTextures, vertexAttributes: presentVertexAttributes)
+            return GLLShaderData(base: baseShader, activeModules: namedModules + implicitModules, texCoordAssignments: texCoordAssignments, alphaBlending: alphaBlending, parameters: self)
+        } else if let baseObject = base {
+            return baseObject.shader(base: baseName, modules: modules, presentTextures: presentTextures, presentVertexAttributes: presentVertexAttributes, texCoordAssignments: texCoordAssignments)
+        }
+        return nil
+    }
+    
+    @objc func shader(xnaData: XnaLaraShaderDescription, vertexAccessors: GLLVertexAttribAccessorSet, alphaBlending: Bool) -> GLLShaderData? {
+        return shader(base: xnaData.baseName, modules: xnaData.moduleNames, presentTextures: xnaData.textureUniformsInOrder, presentVertexAttributes: vertexAccessors.accessors.map { $0.attribute.semantic }, texCoordAssignments: xnaData.texCoordSets, alphaBlending: alphaBlending)
+    }
+    
+    @objc var xnaLaraShaderDescriptions: [XnaLaraShaderDescription] {
+        if let ownDescriptions = plistData?.xnaLaraShaderDescriptions {
+            return Array(ownDescriptions.values)
+        }
+        return base!.xnaLaraShaderDescriptions
+    }
+    
+    @objc func xnaLaraShaderDescription(name: String) -> XnaLaraShaderDescription? {
+        if let ownDescriptions = plistData?.xnaLaraShaderDescriptions, let description = ownDescriptions[name] {
+            return description
+        } else if let base = base {
+            return base.xnaLaraShaderDescription(name: name)
+        } else {
+            return nil
+        }
     }
 }

@@ -13,7 +13,7 @@
 @class GLLItemMeshTexture;
 @class GLLModelMesh;
 @class GLLRenderParameter;
-@class GLLShaderDescription;
+@class GLLShaderData;
 
 /*!
  * @abstract Stores per-mesh data in the document.
@@ -22,6 +22,13 @@
  */
 @interface GLLItemMesh : NSManagedObject
 
+/*!
+ * Called by the Item when first creating the thing; sets the initial values for
+ * everything. Functionally this is the constructor, but with CoreData being
+ * what it is, we have to do it this way.
+ */
+- (void)prepareWithItem:(GLLItem *)item;
+
 // Core data
 @property (nonatomic) BOOL isCustomBlending;
 @property (nonatomic) BOOL isBlended;
@@ -29,24 +36,27 @@
 @property (nonatomic, retain) GLLItem *item;
 @property (nonatomic) int16_t cullFaceMode;
 @property (nonatomic, retain) NSSet<GLLRenderParameter *> *renderParameters;
-@property (nonatomic, copy) NSString *shaderName;
+@property (nonatomic, copy) NSString *shaderBase;
 @property (nonatomic, copy) NSString *displayName;
 @property (nonatomic, retain) NSSet<GLLItemMeshTexture *> *textures;
-
-// Called by the Item; fills the various values correctly
-- (void)prepareGraphicsData;
 
 // Derived
 @property (nonatomic, readonly) NSUInteger meshIndex;
 @property (nonatomic, retain, readonly) GLLModelMesh *mesh;
-@property (nonatomic) GLLShaderDescription *shader;
+- (void)setIncluded:(BOOL)included forShaderModule:(NSString *)module;
+- (BOOL)isShaderModuleIncluded:(NSString *)module;
+@property (nonatomic, copy, readonly) NSSet<NSString *> *shaderModules;
+
+// Local
+@property (nonatomic, retain, readonly) GLLShaderData *shader;
+
+// Called only internally and from child objects, in case some setting changed that requires a shader recompile
+- (void)updateShader;
 
 @property (nonatomic) BOOL isUsingBlending;
 
 - (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
 - (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;
-
-@property (nonatomic, readonly) NSArray<GLLShaderDescription *> *possibleShaderDescriptions;
 
 @end
 

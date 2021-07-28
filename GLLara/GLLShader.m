@@ -12,7 +12,7 @@
 
 @implementation GLLShader
 
-- (id)initWithSource:(NSString *)sourceString name:(NSString *)name additionalDefines:(NSDictionary *)defines type:(GLenum)type error:(NSError *__autoreleasing*)error;
+- (id)initWithSource:(NSString *)sourceString name:(NSString *)name additionalDefines:(NSDictionary *)defines usedTexCoords:(NSIndexSet *)texCoords type:(GLenum)type error:(NSError *__autoreleasing*)error;
 {
     if (!(self = [super init])) return nil;
     
@@ -23,6 +23,21 @@
                                                                            NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Please inform a developer of this problem.", @"No shader there wtf?")
                                                                            }];
         return nil;
+    }
+    
+    // Find all lines that follow the format for tex coord lines. Those start with ## and have %ld to replace the items
+    NSRegularExpression *expression = [NSRegularExpression regularExpressionWithPattern:@"^\\$\\$(.*)$" options:NSRegularExpressionAnchorsMatchLines error:NULL];
+    NSMutableString *transformedSource = [[NSMutableString alloc] initWithString:sourceString];
+    NSTextCheckingResult *result = nil;
+    while ((result = [expression firstMatchInString:transformedSource options:0 range:NSMakeRange(0, transformedSource.length)]) != nil) {
+        // Found one. Instantiate it for each item
+        NSString *pattern = [transformedSource substringWithRange:[result rangeAtIndex:1]];
+        NSMutableString *replacement = [[NSMutableString alloc] init];
+        for (NSInteger index = texCoords.firstIndex; index != NSNotFound; index = [texCoords indexGreaterThanIndex:index]) {
+            // This would be a security vulnerability if we ever allowed shader source code from outside
+            [replacement appendFormat:pattern, index];
+        }
+        [transformedSource replaceCharactersInRange:result.range withString:replacement];
     }
     
     _name = [name copy];
@@ -41,7 +56,7 @@
         sources[defined++] = [define UTF8String];
     }
     
-    sources[sourcesLength - 1] = [sourceString UTF8String];
+    sources[sourcesLength - 1] = [transformedSource UTF8String];
     for (GLsizei i = 0; i < sourcesLength; i++)
         lengths[i] = (GLsizei) strlen(sources[i]);
     glShaderSource(_shaderID, sourcesLength, sources, lengths);

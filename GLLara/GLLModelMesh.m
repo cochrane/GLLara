@@ -40,6 +40,9 @@ void vec_addTo(float *a, const float *b)
 
 @interface GLLModelMesh()
 
+// Finalize loading. In particular, load render parameters.
+- (void)loadRenderParameters;
+
 // The vertex format for the things that are in the file
 - (GLLVertexFormat *)fileVertexFormat;
 
@@ -80,7 +83,7 @@ void vec_addTo(float *a, const float *b)
     NSMutableDictionary<NSString *, GLLTextureAssignment *> *textures = [[NSMutableDictionary alloc] initWithCapacity:numTextures];
     
     GLLMeshParams *meshParams = [_model.parameters paramsForMesh:_name];
-    NSArray<NSString *> *textureIdentifiers = meshParams.shader.textureUniformNames;
+    NSArray<NSString *> *textureIdentifiers = meshParams.xnaLaraShaderData.textureUniformsInOrder;
     for (NSUInteger i = 0; i < numTextures; i++)
     {
         NSString *textureName = [stream readPascalString];
@@ -91,7 +94,8 @@ void vec_addTo(float *a, const float *b)
         NSString *textureIdentifier = (textureIdentifiers && i < textureIdentifiers.count) ? textureIdentifiers[i] : nil;
         if (textureIdentifier) {
             NSURL *textureUrl = [NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL];
-            textures[textureIdentifier] = [[GLLTextureAssignment alloc] initWithUrl:textureUrl];
+            GLLTextureDescription *textureDescription = [_model.parameters descriptionForTexture:textureIdentifier];
+            textures[textureIdentifier] = [[GLLTextureAssignment alloc] initWithUrl:textureUrl texCoordSet: textureDescription.xnaLaraTexCoordSet];
         }
     }
     _textures = [textures copy];
@@ -144,7 +148,7 @@ void vec_addTo(float *a, const float *b)
     }
     _vertexFormat = [_vertexDataAccessors vertexFormatWithVertexCount:_countOfVertices hasIndices:YES];
     
-    [self finishLoading];
+    [self loadRenderParameters];
     
     GLLEndTiming("Binary mesh");
     
@@ -165,7 +169,7 @@ void vec_addTo(float *a, const float *b)
     NSMutableDictionary<NSString *, GLLTextureAssignment *> *textures = [[NSMutableDictionary alloc] initWithCapacity:numTextures];
     
     GLLMeshParams *meshParams = [_model.parameters paramsForMesh:_name];
-    NSArray<NSString *> *textureIdentifiers = meshParams.shader.textureUniformNames;
+    NSArray<NSString *> *textureIdentifiers = meshParams.xnaLaraShaderData.textureUniformsInOrder;
     for (NSUInteger i = 0; i < numTextures; i++)
     {
         NSString *textureName = [scanner readPascalString];
@@ -176,7 +180,8 @@ void vec_addTo(float *a, const float *b)
         NSString *textureIdentifier = (textureIdentifiers && i < textureIdentifiers.count) ? textureIdentifiers[i] : nil;
         if (textureIdentifier) {
             NSURL *textureUrl = [NSURL URLWithString:[finalPathComponent stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]] relativeToURL:model.baseURL];
-            textures[textureIdentifier] = [[GLLTextureAssignment alloc] initWithUrl:textureUrl];
+            GLLTextureDescription *textureDescription = [_model.parameters descriptionForTexture:textureIdentifier];
+            textures[textureIdentifier] = [[GLLTextureAssignment alloc] initWithUrl:textureUrl texCoordSet: textureDescription.xnaLaraTexCoordSet];
         }
     }
     _textures = [textures copy];
@@ -292,7 +297,7 @@ void vec_addTo(float *a, const float *b)
         return nil;
     }
     
-    [self finishLoading];
+    [self loadRenderParameters];
     
     return self;
 }
@@ -427,7 +432,7 @@ void vec_addTo(float *a, const float *b)
     result->_model = self.model;
     result->_name = [splitter.splitPartName copy];
     result->_textures = [self.textures copy];
-    [result finishLoading]; // Result may have different mesh group or shader. In fact, for the one and only object class where this entire feature is needed, this is guaranteed.
+    [result loadRenderParameters]; // Result may have different mesh group or shader. In fact, for the one and only object class where this entire feature is needed, this is guaranteed.
     
     return result;
 }
@@ -698,16 +703,16 @@ void vec_addTo(float *a, const float *b)
     return YES;
 }
 
-- (void)finishLoading;
+- (void)loadRenderParameters;
 {
     GLLMeshParams *meshParams = [_model.parameters paramsForMesh:_name];
-    
-    _shader = meshParams.shader;
+        
     _usesAlphaBlending = meshParams.transparent;
     _displayName = meshParams.displayName;
     _initiallyVisible = meshParams.visible;
     _optionalPartNames = meshParams.optionalPartNames;
     _renderParameterValues = meshParams.renderParameters;
+    _shader = [_model.parameters shaderWithXnaData: meshParams.xnaLaraShaderData vertexAccessors: self.vertexDataAccessors alphaBlending: meshParams.transparent];
     
     if (!_shader)
         NSLog(@"No shader for object %@", self.name);

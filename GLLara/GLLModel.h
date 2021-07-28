@@ -18,6 +18,7 @@ enum GLLModelLoadingErrorCodes
 };
 extern NSString *GLLModelLoadingErrorDomain;
 
+@class GLLCameraTargetDescription;
 @class GLLModelBone;
 @class GLLModelMesh;
 @class GLLModelParams;
@@ -50,8 +51,7 @@ extern NSString *GLLModelLoadingErrorDomain;
 
 @property (nonatomic, copy, readonly) NSArray<GLLModelBone *> *rootBones;
 
-@property (nonatomic, copy, readonly) NSArray<NSString *> *cameraTargetNames;
-- (NSArray<NSString *> *)boneNamesForCameraTarget:(NSString *)target;
+@property (nonatomic, copy, readonly) NSArray<GLLCameraTargetDescription *> *cameraTargetNames;
 
 - (GLLModelBone *)boneForName:(NSString *)name;
 

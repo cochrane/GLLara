@@ -21,12 +21,12 @@
 
 @implementation GLLProgram
 
-- (id)initWithName:(NSString *)name fragmentShaderName:(NSString *)fragmentName geometryShaderName:(NSString *)geometryName vertexShaderName:(NSString *)vertexName additionalDefines:(NSDictionary *)additionalDefines resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
+- (id)initWithFragmentShaderName:(NSString *)fragmentName geometryShaderName:(NSString *)geometryName vertexShaderName:(NSString *)vertexName additionalDefines:(NSDictionary *)additionalDefines usedTexCoords:(NSIndexSet *)texCoords resourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 {
 	GLLShader *vertex, *fragment, *geometry;
 	if (vertexName)
 	{
-		vertex = [manager shaderForName:vertexName additionalDefines:additionalDefines type:GL_VERTEX_SHADER error:error];
+		vertex = [manager shaderForName:vertexName additionalDefines:additionalDefines usedTexCoords:texCoords type:GL_VERTEX_SHADER error:error];
 		if (!vertex)
 		{
 			[self unload];
@@ -35,7 +35,7 @@
 	}
 	if (geometryName)
 	{
-		fragment = [manager shaderForName:geometryName additionalDefines:additionalDefines type:GL_GEOMETRY_SHADER error:error];
+		fragment = [manager shaderForName:geometryName additionalDefines:additionalDefines usedTexCoords:texCoords type:GL_GEOMETRY_SHADER error:error];
 		if (!fragment)
 		{
 			[self unload];
@@ -44,7 +44,7 @@
 	}
 	if (fragmentName)
 	{
-		fragment = [manager shaderForName:fragmentName additionalDefines:additionalDefines type:GL_FRAGMENT_SHADER error:error];
+		fragment = [manager shaderForName:fragmentName additionalDefines:additionalDefines usedTexCoords:texCoords type:GL_FRAGMENT_SHADER error:error];
 		if (!fragment)
 		{
 			[self unload];
@@ -52,16 +52,14 @@
 		}
 	}
 	
-	return [self initWithName:name fragmentShader:fragment geometryShader:geometry vertexShader:vertex error:error];
+	return [self initWithFragmentShader:fragment geometryShader:geometry vertexShader:vertex error:error];
 }
 
-- (id)initWithName:(NSString *)name fragmentShader:(GLLShader *)fragment geometryShader:(GLLShader *)geometry vertexShader:(GLLShader *)vertex error:(NSError *__autoreleasing*)error;
+- (id)initWithFragmentShader:(GLLShader *)fragment geometryShader:(GLLShader *)geometry vertexShader:(GLLShader *)vertex error:(NSError *__autoreleasing*)error;
 {
 	if (!(self = [super init])) return nil;
 	
 	uniformOffsets = [[NSMutableDictionary alloc] init];
-	
-	_name = name;
 	
 	_programID = glCreateProgram();
 	if (vertex)
@@ -86,11 +84,11 @@
 		log[length] = '\0';
 		
 		if (error)
-			*error = [NSError errorWithDomain:@"OpenGL" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"The shader \"%@\" could not be linked", @"GLLShader error message description"), _name],
+			*error = [NSError errorWithDomain:@"OpenGL" code:1 userInfo:@{ NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"The shader could not be linked", @"GLLShader error message description")],
 																		   NSLocalizedFailureReasonErrorKey : [NSString stringWithFormat:NSLocalizedString(@"Message from OpenGL driver: %s", "No shader there wtf?"), log],
 																		   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Please inform a developer of this problem.", @"No shader there wtf?")
 																		   }];
-		NSLog(@"link error in shader %@: %s", _name, log);
+		NSLog(@"link error in shader: %s", log);
 		[self unload];
 		return nil;
 	}

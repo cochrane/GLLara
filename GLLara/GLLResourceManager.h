@@ -17,7 +17,7 @@
 @class GLLModel;
 @class GLLModelDrawData;
 @class GLLShader;
-@class GLLShaderDescription;
+@class GLLShaderData;
 
 /*
  * Stores all resources for the program.
@@ -35,9 +35,9 @@
 @property (nonatomic, readonly) NSOpenGLContext *openGLContext;
 
 - (GLLModelDrawData *)drawDataForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
-- (GLLModelProgram *)programForDescriptor:(GLLShaderDescription *)description withAlpha:(BOOL)alpha error:(NSError *__autoreleasing*)error;
+- (GLLModelProgram *)programForDescriptor:(GLLShaderData *)description error:(NSError *__autoreleasing*)error;
 - (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error;
-- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines type:(GLenum)type error:(NSError *__autoreleasing*)error;
+- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines usedTexCoords:(NSIndexSet *)texCoords type:(GLenum)type error:(NSError *__autoreleasing*)error;
 
 // Shared programs and buffers that everyone needs sometime
 

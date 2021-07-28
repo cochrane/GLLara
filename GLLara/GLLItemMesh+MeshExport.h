@@ -8,11 +8,13 @@
 
 #import "GLLItemMesh.h"
 
+@class XnaLaraShaderDescription;
+
 @interface GLLItemMesh (MeshExport)
 
-- (NSString *)genericItemNameError:(NSError *__autoreleasing*)error;
-
-@property (nonatomic, readonly) NSArray<NSString *> *textureURLsInShaderOrder;
+- (XnaLaraShaderDescription *)shaderDescriptionError:(NSError *__autoreleasing*)error;
+- (NSString *)genericItemNameForShaderDescription:(XnaLaraShaderDescription *)xnaLaraShaderDescription;
+- (NSArray<NSURL *> *)textureUrlsForDescription:(XnaLaraShaderDescription *)xnaLaraShaderDescription;
 
 - (NSString *)writeASCIIError:(NSError *__autoreleasing*)error;
 - (NSData *)writeBinaryError:(NSError *__autoreleasing*)error;

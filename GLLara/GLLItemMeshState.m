@@ -55,7 +55,7 @@
     _drawData = meshData;
     _itemMesh = itemMesh;
     
-    [_itemMesh addObserver:self forKeyPath:@"shaderName" options:NSKeyValueObservingOptionNew context:NULL];
+    [_itemMesh addObserver:self forKeyPath:@"shader" options:NSKeyValueObservingOptionNew context:NULL];
     [_itemMesh addObserver:self forKeyPath:@"isVisible" options:NSKeyValueObservingOptionNew context:NULL];
     [_itemMesh addObserver:self forKeyPath:@"isUsingBlending" options:NSKeyValueObservingOptionNew context:NULL];
     [_itemMesh addObserver:self forKeyPath:@"textures" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
@@ -85,13 +85,15 @@
         [param removeObserver:self forKeyPath:@"uniformValue"];
     [_itemMesh removeObserver:self forKeyPath:@"renderParameters"];
     
-    for (GLLItemMeshTexture *texture in textureAssignments)
+    for (GLLItemMeshTexture *texture in textureAssignments) {
         [texture removeObserver:self forKeyPath:@"textureURL"];
+        [texture removeObserver:self forKeyPath:@"texCoordSet"];
+    }
     [_itemMesh removeObserver:self forKeyPath:@"textures"];
     
     [_itemMesh removeObserver:self forKeyPath:@"isVisible"];
 	[_itemMesh removeObserver:self forKeyPath:@"isUsingBlending"];
-    [_itemMesh removeObserver:self forKeyPath:@"shaderName"];
+    [_itemMesh removeObserver:self forKeyPath:@"shader"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -118,7 +120,7 @@
         needsTextureUpdate = YES;
         [self.itemDrawer propertiesChanged];
     }
-    else if ([keyPath isEqual:@"shaderName"])
+    else if ([keyPath isEqual:@"shader"])
     {
         needsTextureUpdate = YES;
         needsProgramUpdate = YES;
@@ -282,8 +284,10 @@
         [texture removeObserver:self forKeyPath:@"textureURL"];
     
     textureAssignments = [_itemMesh.textures copy];
-    for (GLLItemMeshTexture *texture in textureAssignments)
+    for (GLLItemMeshTexture *texture in textureAssignments) {
         [texture addObserver:self forKeyPath:@"textureURL" options:NSKeyValueObservingOptionNew context:NULL];
+        [texture addObserver:self forKeyPath:@"texCoordSet" options:NSKeyValueObservingOptionNew context:NULL];
+    }
     [self.itemDrawer propertiesChanged];
 }
 
@@ -329,7 +333,7 @@
     
     NSMutableArray *mutableTextures = [[NSMutableArray alloc] init];
     NSMutableDictionary *mutableErrors = [[NSMutableDictionary alloc] init];
-    for (NSString *identifier in self.itemMesh.shader.textureUniformNames) {
+    for (NSString *identifier in self.itemMesh.shader.textureUniforms) {
         GLLItemMeshTexture *textureAssignment = [self.itemMesh textureWithIdentifier:identifier];
         NSError *loadError = nil;
         GLLTexture *texture = nil;
@@ -360,7 +364,7 @@
     needsTextureUpdate = YES;
     needsProgramUpdate = NO;
     
-    if (self.itemMesh.shaderName == nil)
+    if (self.itemMesh.shaderBase == nil)
     {
         // Allow empty programs for objects
         // that don't have a shader.
@@ -368,7 +372,7 @@
         return YES;
     }
     
-    _program = [[GLLResourceManager sharedResourceManager] programForDescriptor:self.itemMesh.shader withAlpha:self.itemMesh.isUsingBlending error:error];
+    _program = [[GLLResourceManager sharedResourceManager] programForDescriptor:self.itemMesh.shader error:error];
     if (!self.program)
         return NO;
     

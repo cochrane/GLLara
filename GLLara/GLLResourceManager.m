@@ -33,7 +33,7 @@ struct GLLAlphaTestBlock
 @interface GLLResourceManager ()
 {
     NSMutableDictionary *shaders;
-    NSMutableDictionary *programs;
+    NSMutableDictionary<GLLShaderData*, GLLModelProgram *> *programs;
     NSMutableDictionary *textures;
     NSMutableDictionary *models;
 }
@@ -117,15 +117,12 @@ static GLLResourceManager *sharedManager;
     }];
 }
 
-- (GLLModelProgram *)programForDescriptor:(GLLShaderDescription *)description withAlpha:(BOOL)alpha error:(NSError *__autoreleasing*)error;
+- (GLLModelProgram *)programForDescriptor:(GLLShaderData *)description error:(NSError *__autoreleasing*)error;
 {
     NSParameterAssert(description);
     
-    NSDictionary *key = @{ @"identifier": description.programIdentifier,
-                           @"alpha": @(alpha) };
-    
-    return [self _valueForKey:key from:programs ifNotFound:^{
-        return [[GLLModelProgram alloc] initWithDescriptor:description alpha:alpha resourceManager:self error:error];
+    return [self _valueForKey:description from:programs ifNotFound:^{
+        return [[GLLModelProgram alloc] initWithDescriptor:description resourceManager:self error:error];
     }];
 }
 
@@ -146,20 +143,22 @@ static GLLResourceManager *sharedManager;
     }];
 }
 
-- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines type:(GLenum)type error:(NSError *__autoreleasing*)error;
+- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines usedTexCoords:(NSIndexSet *)texCoords type:(GLenum)type error:(NSError *__autoreleasing*)error;
 {
     NSParameterAssert(shaderName);
     NSParameterAssert(defines);
     
     NSDictionary *key = @{ @"name" : shaderName,
-                           @"defines": defines };
+                           @"defines": defines,
+                           @"texCoords": texCoords
+    };
     
     return [self _valueForKey:key from:shaders ifNotFound:^{
         NSString *shaderSource = [self _utf8StringForFilename:shaderName error:error];
         if (!shaderSource) return (GLLShader *) nil;
         
         // Actual loading
-        return [[GLLShader alloc] initWithSource:shaderSource name:shaderName additionalDefines:defines type:type error:error];
+        return [[GLLShader alloc] initWithSource:shaderSource name:shaderName additionalDefines:defines usedTexCoords:texCoords type:type error:error];
     }];
 }
 

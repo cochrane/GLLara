@@ -25,6 +25,9 @@
 // bound to.
 @property (nonatomic, retain) NSString * identifier;
 
+// The texture coordinates to use for this texture; -1 if not set because it's from an old file
+@property (nonatomic, assign) int16_t texCoordSet;
+
 // The mesh this texture belongs to.
 @property (nonatomic, retain) GLLItemMesh *mesh;
 

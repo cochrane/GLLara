@@ -13,7 +13,7 @@
 @class GLLASCIIScanner;
 @class GLLMeshSplitter;
 @class GLLModel;
-@class GLLShaderDescription;
+@class GLLShaderData;
 @class GLLTextureAssignment;
 @class GLLVertexAttribAccessor;
 @class GLLVertexAttribAccessorSet;
@@ -91,7 +91,7 @@ typedef enum GLLCullFaceMode
 /*
  * Drawing information, gained through the model parameters. This information is not stored in the mesh file.
  */
-@property (nonatomic, retain) GLLShaderDescription *shader;
+@property (nonatomic, retain) GLLShaderData *shader;
 @property (nonatomic, assign) BOOL usesAlphaBlending;
 @property (nonatomic, copy) NSDictionary<NSString *, id> *renderParameterValues;
 
@@ -101,9 +101,6 @@ typedef enum GLLCullFaceMode
 
 // Checks whether all the data is valid and can be used. Should be done before calculateTangents:!
 - (BOOL)validateVertexData:(GLLVertexAttribAccessorSet *)vertices indexData:(NSData *)indexData error:(NSError *__autoreleasing*)error;
-
-// Finalize loading. In particular, load render parameters.
-- (void)finishLoading;
 
 
 

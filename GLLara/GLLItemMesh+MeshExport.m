@@ -17,12 +17,32 @@
 
 @implementation GLLItemMesh (MeshExport)
 
-- (NSString *)genericItemNameError:(NSError *__autoreleasing*)error
+- (XnaLaraShaderDescription *)shaderDescriptionError:(NSError *__autoreleasing*)error {
+    XnaLaraShaderDescription *description = [[self.mesh.model.parameters xnaLaraShaderDescriptions] firstObjectMatching:^BOOL(XnaLaraShaderDescription *description) {
+        
+        if (![description.baseName isEqual:self.shaderBase]) {
+            return NO;
+        }
+        NSSet<NSString *>* modules = [[NSSet alloc] initWithArray:description.moduleNames];
+        if (![modules isEqual:self.shaderModules]) {
+            return NO;
+        }
+        return YES;
+    }];
+    if (!description && error) {
+        *error = [NSError errorWithDomain:@"GLLMeshExporting" code:1 userInfo:@{
+                                                                                NSLocalizedDescriptionKey : NSLocalizedString(@"Could not export model.", @"no mesh group found for model to export"),
+                                                                                NSLocalizedRecoverySuggestionErrorKey : [NSString stringWithFormat:NSLocalizedString(@"No XNALara Mesh Group number corresponds to the shader %@.", @"can't write meshes without tangents"), @""]}];
+    }
+    return description;
+}
+
+- (NSString *)genericItemNameForShaderDescription:(XnaLaraShaderDescription *)xnaLaraShaderDescription
 {
     NSMutableString *genericItemName = [NSMutableString string];
     
     // 1 - get mesh group
-    NSSet<NSString *> *possibleGroups = self.mesh.usesAlphaBlending ? self.shader.alphaMeshGroups : self.shader.solidMeshGroups;
+    NSArray<NSString *> *possibleGroups = self.mesh.usesAlphaBlending ? xnaLaraShaderDescription.alphaMeshGroups : xnaLaraShaderDescription.solidMeshGroups;
     NSRegularExpression *meshGroupNameRegexp = [NSRegularExpression regularExpressionWithPattern:@"^MeshGroup([0-9]+)$" options:0 error:NULL];
     for (NSString *groupName in possibleGroups)
     {
@@ -33,26 +53,18 @@
         [genericItemName appendString:@"_"];
         break;
     }
-    if (genericItemName.length == 0)
-    {
-        if (error)
-            *error = [NSError errorWithDomain:@"GLLMeshExporting" code:1 userInfo:@{
-                                                                                    NSLocalizedDescriptionKey : NSLocalizedString(@"Could not export model.", @"no mesh group found for model to export"),
-                                                                                    NSLocalizedRecoverySuggestionErrorKey : [NSString stringWithFormat:NSLocalizedString(@"No XNALara Mesh Group number corresponds to the shader %@.", @"can't write meshes without tangents"), self.shader.localizedName]}];
-        return nil;
-    }
     
-    NSAssert(genericItemName.length > 0, @"Did not find group for mesh %@ with shader name %@", self.displayName, self.shaderName);
+    NSAssert(genericItemName.length > 0, @"Did not find group for mesh %@", self.displayName);
     
     // 2 - add display name, removing all underscores and newlines
     NSCharacterSet *illegalSet = [NSCharacterSet characterSetWithCharactersInString:@"\n\r_"];
     [genericItemName appendString:[[self.displayName componentsSeparatedByCharactersInSet:illegalSet] componentsJoinedByString:@"-"]];
     
     // 3 - write required parameters
-    for (NSArray<NSString *>* renderParameterNames in self.shader.genericMeshUniformMappings)
+    for (NSArray<NSString *>* renderParameterNames in xnaLaraShaderDescription.parameterUniformsInOrder)
     {
         GLLFloatRenderParameter *param = (GLLFloatRenderParameter *) [self renderParameterWithName:renderParameterNames[0]];
-        NSAssert(param && [param isMemberOfClass:[GLLFloatRenderParameter class]], @"Objects with shader %@ have to have parameter %@ and it must be float", self.shaderName, renderParameterNames[0]);
+        NSAssert(param && [param isMemberOfClass:[GLLFloatRenderParameter class]], @"Object has to have parameter %@ and it must be float", renderParameterNames[0]);
         
         [genericItemName appendFormat:@"_%f", param.value];
     }
@@ -60,29 +72,29 @@
     return genericItemName;
 }
 
-- (NSArray<NSURL *> *)textureURLsInShaderOrder
+- (NSArray<NSURL *> *)textureUrlsForDescription:(XnaLaraShaderDescription *)xnaLaraShaderDescription
 {
-    return [self.shader.textureUniformNames map:^(NSString *textureName){
+    return [xnaLaraShaderDescription.textureUniformsInOrder map:^(NSString *textureName){
         return [self textureWithIdentifier:textureName].textureURL;
     }];
 }
 
 - (NSString *)writeASCIIError:(NSError *__autoreleasing*)error;
 {
-    NSString *name = [self genericItemNameError:error];
-    if (!name) return nil;
-    return [self.mesh writeASCIIWithName:name texture:self.textureURLsInShaderOrder];
+    XnaLaraShaderDescription *description = [self shaderDescriptionError:error];
+    if (!description) return nil;
+    return [self.mesh writeASCIIWithName:[self genericItemNameForShaderDescription:description] texture:[self textureUrlsForDescription:description]];
 }
 - (NSData *)writeBinaryError:(NSError *__autoreleasing*)error;
 {
-    NSString *name = [self genericItemNameError:error];
-    if (!name) return nil;
-    return [self.mesh writeBinaryWithName:name texture:self.textureURLsInShaderOrder];
+    XnaLaraShaderDescription *description = [self shaderDescriptionError:error];
+    if (!description) return nil;
+    return [self.mesh writeBinaryWithName:[self genericItemNameForShaderDescription:description] texture:[self textureUrlsForDescription:description]];
 }
 
 - (BOOL)shouldExport
 {
-    return (self.shaderName != nil) && (self.shader != nil) && self.isVisible;
+    return self.isVisible && ([self shaderDescriptionError:NULL] != nil);
 }
 
 @end

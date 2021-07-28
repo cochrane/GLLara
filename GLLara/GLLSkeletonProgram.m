@@ -17,7 +17,7 @@
 
 - (id)initWithResourceManager:(GLLResourceManager *)manager error:(NSError *__autoreleasing*)error;
 {
-    if (!(self = [self initWithName:@"internal-skeleton" fragmentShaderName:@"Skeleton.fs" geometryShaderName:nil vertexShaderName:@"Skeleton.vs" additionalDefines:@{} resourceManager:manager error:error])) return nil;
+    if (!(self = [self initWithFragmentShaderName:@"Skeleton.fs" geometryShaderName:nil vertexShaderName:@"Skeleton.vs" additionalDefines:@{} usedTexCoords:[NSIndexSet indexSet] resourceManager:manager error:error])) return nil;
     
     GLuint transformUniformBlockIndex = glGetUniformBlockIndex(self.programID, "Transform");
     NSAssert(transformUniformBlockIndex != GL_INVALID_INDEX, @"Transform uniform index for skeleton program cannot be invalid");

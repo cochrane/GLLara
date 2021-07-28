@@ -183,7 +183,6 @@
     // Note: Texture set up via URL; it will do the lookup to create the instance on its own.
     newItem.model = model;
     GLLItemMesh *mesh = [newItem itemMeshForModelMesh:model.meshes[0]];
-    mesh.shaderName = @"DiffuseUnlitOBJ";
     GLLItemMeshTexture *onlyTexture = mesh.textures.anyObject;
     onlyTexture.textureURL = url;
     newItem.displayName = url.lastPathComponent;

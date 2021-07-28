@@ -16,6 +16,10 @@ struct ColorRGBA {
     
     static let white = ColorRGBA(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     static let black = ColorRGBA(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    
+    var toNSColor: NSColor {
+        return NSColor(calibratedRed: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
+    }
 }
 
 extension ColorRGBA: Codable {
@@ -43,6 +47,10 @@ struct ColorRGB {
     
     static let white = ColorRGB(red: 1.0, green: 1.0, blue: 1.0)
     static let black = ColorRGB(red: 1.0, green: 1.0, blue: 1.0)
+    
+    var toNSColor: NSColor {
+        return NSColor(calibratedRed: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: 1.0)
+    }
 }
 
 extension ColorRGB: Codable {
@@ -598,45 +606,33 @@ class GLLModelGltf: GLLModel {
         }
         modelMesh.displayName = modelMesh.name
         modelMesh.textures = [:]
-        modelMesh.shader = self.parameters.shader(name: "DefaultMaterial")
+        modelMesh.shader = self.parameters.shader(base: "glTFDefault")
         modelMesh.countOfVertices = UInt(finalCountOfVertices)
         modelMesh.countOfUVLayers = UInt(uvLayers.count)
         modelMesh.vertexDataAccessors = GLLVertexAttribAccessorSet(accessors: accessors)
         modelMesh.renderParameterValues = [:]
         
         if let materialIndex = primitive.material, let material = document.materials?[materialIndex] {
-            let hasTexture = material.pbrMetallicRoughness?.baseColorTexture != nil
-            
-            let isUnlitInFile = material.extensions?.isUnlit ?? false
-            let alwaysUseUnlit = true
-            if isUnlitInFile || alwaysUseUnlit {
-                // Use unlit shader; check which one
-                let hasVertexColor = primitive.attributes.contains(where: { (attributeKey, _) in
-                    if let (semantic, layer) = semanticAndLayer(for: attributeKey) {
-                        return layer == 0 && semantic == .color
-                    }
-                    return false
-                })
-                
-                if hasTexture && hasVertexColor {
-                    modelMesh.shader = self.parameters.shader(name: "UnlitTextureVertexColor")
-                } else if hasTexture {
-                    modelMesh.shader = self.parameters.shader(name: "UnlitTexture")
-                } else if hasVertexColor {
-                    modelMesh.shader = self.parameters.shader(name: "UnlitVertexColor")
-                } else {
-                    modelMesh.shader = self.parameters.shader(name: "Unlit")
-                }
-            }
-            
-            if hasTexture {
+            var textures: [String] = []
+            if material.pbrMetallicRoughness?.baseColorTexture != nil {
+                textures.append("baseColorTexture")
                 // Load the texture
                 // TODO
             }
             
+            let isUnlitInFile = material.extensions?.isUnlit ?? false
+            let alwaysUseUnlit = true
+            if isUnlitInFile || alwaysUseUnlit {
+                let vertexAttributes = accessors.map {
+                    $0.attribute.semantic
+                }
+                
+                // Use unlit shader; let model system work out the rest
+                modelMesh.shader = self.parameters.shader(base: "glTFUnlit", modules: [], presentTextures: textures, presentVertexAttributes: vertexAttributes )
+            }
+            
             let baseColor = material.pbrMetallicRoughness?.baseColorFactor ?? ColorRGBA.white
-            let baseColorObject: NSColor = NSColor(calibratedRed: CGFloat(baseColor.red), green: CGFloat(baseColor.green), blue: CGFloat(baseColor.blue), alpha: CGFloat(baseColor.alpha))
-            modelMesh.renderParameterValues["baseColorFactor"] = baseColorObject
+            modelMesh.renderParameterValues["baseColorFactor"] = baseColor.toNSColor;
         }
         
         if let indicesKey = primitive.indices {

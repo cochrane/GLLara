@@ -18,6 +18,7 @@
 @dynamic textureURL;
 @dynamic textureBookmarkData;
 @dynamic identifier;
+@dynamic texCoordSet;
 @dynamic mesh;
 
 - (void)awakeFromFetch
@@ -44,6 +45,13 @@
     }
     else
         [self setPrimitiveValue:nil forKey:@"textureBookmarkData"];
+}
+
+- (void)setTexCoordSet:(int16_t)texCoordSet {
+    [self willChangeValueForKey:@"texCoordSet"];
+    [self setPrimitiveValue:@(texCoordSet) forKey:@"texCoordSet"];
+    [self.mesh updateShader];
+    [self didChangeValueForKey:@"texCoordSet"];
 }
 
 - (GLLTextureDescription *)textureDescription

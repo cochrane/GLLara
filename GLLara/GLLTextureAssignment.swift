@@ -18,14 +18,17 @@ import Foundation
 @objc class GLLTextureAssignment: NSObject {
     @objc let url: URL?
     @objc let data: Data?
+    @objc let texCoordSet: Int
     
-    @objc init(url: URL) {
+    @objc init(url: URL, texCoordSet: Int) {
         self.url = url
         self.data = nil
+        self.texCoordSet = texCoordSet
     }
     
-    @objc init(data: Data) {
+    @objc init(data: Data, texCoordSet: Int) {
         self.data = data
         self.url = nil
+        self.texCoordSet = texCoordSet
     }
 }
