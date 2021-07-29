@@ -106,8 +106,10 @@ static inline uint16_t halfFloat(const float *value) {
     NSUInteger stride = 0;
     for (GLLVertexAttrib *attribute in format.attributes) {
         GLLVertexAttrib *optimized = [self optimizedVersionOf:attribute];
-        [optimizedAttributes addObject:optimized];
-        stride += optimized.sizeInBytes;
+        if (optimized) {
+            [optimizedAttributes addObject:optimized];
+            stride += optimized.sizeInBytes;
+        }
     }
     
     NSUInteger offset = 0;
@@ -124,6 +126,10 @@ static inline uint16_t halfFloat(const float *value) {
 }
 
 - (GLLVertexAttrib *)optimizedVersionOf:(GLLVertexAttrib *)attribute {
+    if (attribute.semantic == GLLVertexAttribPadding) {
+        return nil;
+    }
+    
     // Change Normal (if float[3]) to vec4 with 2_10_10_10_rev encoding
     // (this adds a W component which gets ignored by the shader)
     if (attribute.semantic == GLLVertexAttribNormal && attribute.size == GLLVertexAttribSizeVec3 && attribute.type == GLLVertexAttribComponentTypeFloat) {

@@ -132,8 +132,7 @@ static NSCache *cachedModels;
     
     TRInDataStream *stream = [[TRInDataStream alloc] initWithData:data];
     
-    BOOL isGenericItem2 = NO;
-    BOOL isGenericItem3 = NO;
+    NSUInteger genericItemVersion = 0;
     
     NSUInteger header = [stream readUint32];
     if (header == 323232)
@@ -145,7 +144,7 @@ static NSCache *cachedModels;
          * it in any way.
          */
         NSLog(@"Warning: Using experimental, hackish, ugly Generic Item 2 support");
-        isGenericItem2 = YES;
+        genericItemVersion = 2;
         
         // First: Two uint16s. My guess: Major, then minor version.
         // Always 1 and 12.
@@ -164,7 +163,7 @@ static NSCache *cachedModels;
         }
         else if (possiblyMajorVersion == 0x0002)
         {
-            isGenericItem3 = YES;
+            genericItemVersion = 3;
             if (possiblyMinorVersion != 0x0000F && possiblyMinorVersion != 0x000E)
             {
                 if (error)
@@ -173,6 +172,10 @@ static NSCache *cachedModels;
                                                                                      NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"If there is a .mesh.ascii version, try opening that.", @"New-style binary generic item won't work.")}];
                 return nil;
             }
+        }
+        else if (possiblyMajorVersion == 0x0003)
+        {
+            genericItemVersion = 4;
         }
         else
         {
@@ -237,7 +240,12 @@ static NSCache *cachedModels;
     
     NSUInteger numMeshes = [stream readUint32];
     NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
-    Class meshClass = isGenericItem3 ? [GLLModelMeshV3 class] : [GLLModelMesh class];
+    Class meshClass = [GLLModelMesh class];
+    if (genericItemVersion >= 4) {
+        meshClass = [GLLModelMeshV4 class];
+    } else if (genericItemVersion >= 3) {
+        meshClass = [GLLModelMeshV3 class];
+    }
     for (NSUInteger i = 0; i < numMeshes; i++)
     {
         GLLModelMesh *mesh = [[meshClass alloc] initFromStream:stream partOfModel:self error:error];
@@ -256,7 +264,7 @@ static NSCache *cachedModels;
         return nil;
     }
     
-    if (isGenericItem2 && !stream.isAtEnd)
+    if ((genericItemVersion >= 2) && !stream.isAtEnd)
     {
         // A string; always $$XNAaraL$$
         NSString *footerAuthor = [stream readPascalString];

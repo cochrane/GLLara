@@ -335,6 +335,8 @@
 		52D8DE022621F5910006F0E5 /* GLLModelParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D8DDFC2621F29D0006F0E5 /* GLLModelParams.swift */; };
 		52DD80F3163B464200534475 /* GLLRenderingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52DD80F2163B464200534475 /* GLLRenderingTest.m */; };
 		52EA274E263598CF00726DE2 /* baseData.modelparams.json in Resources */ = {isa = PBXBuildFile; fileRef = 52EA274D263598CF00726DE2 /* baseData.modelparams.json */; };
+		52E864B926B144120005AA82 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		52E864BB26B147180005AA82 /* GLLModelMeshV4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E864BA26B147180005AA82 /* GLLModelMeshV4.swift */; };
 		52ED9E1E168399AE0082EABB /* GLLSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E1D168399AE0082EABB /* GLLSelection.m */; };
 		52ED9E26169332540082EABB /* GLLMeshController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E25169332540082EABB /* GLLMeshController.m */; };
 		52ED9E29169333050082EABB /* GLLBoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E28169333050082EABB /* GLLBoneController.m */; };
@@ -885,6 +887,7 @@
 		52DD80F9163B58F100534475 /* GLLExportBinaryTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLExportBinaryTest.h; sourceTree = "<group>"; };
 		52DD80FA163B58F100534475 /* GLLExportBinaryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLExportBinaryTest.m; sourceTree = "<group>"; };
 		52EA274D263598CF00726DE2 /* baseData.modelparams.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = baseData.modelparams.json; sourceTree = "<group>"; };
+		52E864BA26B147180005AA82 /* GLLModelMeshV4.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLModelMeshV4.swift; sourceTree = "<group>"; };
 		52ED9E1C168399AE0082EABB /* GLLSelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSelection.h; sourceTree = "<group>"; };
 		52ED9E1D168399AE0082EABB /* GLLSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSelection.m; sourceTree = "<group>"; };
 		52ED9E24169332540082EABB /* GLLMeshController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLMeshController.h; sourceTree = "<group>"; };
@@ -1401,6 +1404,7 @@
 		5296941E15F4111A00DF2FA3 /* Model Resources */ = {
 			isa = PBXGroup;
 			children = (
+				52E864BA26B147180005AA82 /* GLLModelMeshV4.swift */,
 				52D8DDDD2621CFF10006F0E5 /* GLLMeshSplitter.swift */,
 				525ACD8215F0F33700534E7D /* GLLModel.h */,
 				525ACD8315F0F33700534E7D /* GLLModel.m */,
@@ -1997,6 +2001,7 @@
 				529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */,
 				5296940115F3881B00DF2FA3 /* GLLModelProgram.m in Sources */,
 				5296940415F3893200DF2FA3 /* GLLShader.m in Sources */,
+				52E864BB26B147180005AA82 /* GLLModelMeshV4.swift in Sources */,
 				5296942415F411CC00DF2FA3 /* GLLModelDrawData.m in Sources */,
 				5296942815F4139300DF2FA3 /* GLLItemDrawer.m in Sources */,
 				5296942B15F4174F00DF2FA3 /* GLLSceneDrawer.m in Sources */,
@@ -2059,6 +2064,7 @@
 				528934E816A29B8300F05312 /* GLLLightController.m in Sources */,
 				52301E382089372200B3E331 /* GLLOptionalPart.m in Sources */,
 				52D8DDE62621D47E0006F0E5 /* GLLTextureDescription.swift in Sources */,
+				52E864B926B144120005AA82 /* (null) in Sources */,
 				52D8DE022621F5910006F0E5 /* GLLModelParams.swift in Sources */,
 				528934EB16A332BD00F05312 /* GLLMeshListController.m in Sources */,
 				528934EE16A3593500F05312 /* GLLBoneListController.m in Sources */,
@@ -2581,13 +2587,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = MXAKMKWG34;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 0.2.11;
+				MARKETING_VERSION = 0.2.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -2606,13 +2612,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = MXAKMKWG34;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 0.2.11;
+				MARKETING_VERSION = 0.2.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
