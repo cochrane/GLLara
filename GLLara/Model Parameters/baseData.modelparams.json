@@ -16,15 +16,20 @@
                     "children": [
                         {
                             "name": "ambientColor",
-                            "defines": { "AMBIENT_COLOR_VALUE" : "1" },
-                            "parameterUniforms": "ambientColor"
+                            "defines": { "AMBIENT_COLOR_VALUE" : "1", "RENDER_PARAMETERS": "1" },
+                            "parameterUniforms": [ "ambientColor" ]
                         }
                     ]
                 },
                 {
                     "name": "diffuseTexture",
                     "defines": { "DIFFUSE_TEXTURE" : "1" },
-                    "textureUniforms": [ "diffuseTexture" ]
+                    "textureUniforms": [ "diffuseTexture" ],
+                },
+                {
+                    "name": "diffuseColor",
+                    "defines": { "DIFFUSE_COLOR_VALUE" : "1", "RENDER_PARAMETERS": "1" },
+                    "parameterUniforms": [ "diffuseColor" ]
                 },
                 {
                     "name": "vertexColor",
@@ -43,7 +48,7 @@
                             "children": [
                                 {
                                     "name": "normalDetailMap",
-                                    "defines": { "NORMAL_DETAIL_MAP" : "1" },
+                                    "defines": { "NORMAL_DETAIL_MAP" : "1", "RENDER_PARAMETERS": "1" },
                                     "textureUniforms": [ "bump1Texture", "bump2Texture", "maskTexture"],
                                     "parameterUniforms": [ "bump1UVScale", "bump2UVScale" ]
                                 }
@@ -55,7 +60,7 @@
                         },
                         {
                             "name": "specularLighting",
-                            "defines": { "SPECULAR": "1", "CAMERA_DIRECTION": "1" },
+                            "defines": { "SPECULAR": "1", "CAMERA_DIRECTION": "1", "RENDER_PARAMETERS": "1" },
                             "children": [
                                 {
                                     "name": "specularTexture",
@@ -64,16 +69,22 @@
                                     "children": [
                                         {
                                             "name": "specularTextureScale",
-                                            "defines": { "SPECULAR_TEXTURE_SCALE": "1" },
-                                            "parameterUniforms": [ "specularTextureScale" ]
+                                            "defines": { "SPECULAR_TEXTURE_SCALE": "1", "RENDER_PARAMETERS": "1" },
+                                            "parameterUniforms": [ "specularTextureScale", "bumpSpecularGloss", "bumpSpecularAmount" ]
                                         }
                                     ]
+                                },
+                                {
+                                    "name": "specularColor",
+                                    "defines": { "SPECULAR_COLOR_VALUE" : "1", "RENDER_PARAMETERS": "1" },
+                                    "parameterUniforms": [ "specularColor", "specularExponent" ]
                                 }
+                                
                             ]
                         },
                         {
                             "name": "reflection",
-                            "defines": { "REFLECTION" : "1", "CAMERA_DIRECTION": "1" },
+                            "defines": { "REFLECTION" : "1", "CAMERA_DIRECTION": "1", "RENDER_PARAMETERS": "1" },
                             "textureUniforms": [ "reflectionTexture" ]
                         }
                     ]
@@ -90,5 +101,71 @@
                 },
             ]
         }
-    ]
+    ],
+    "renderParameterDescriptions": {
+        "ambientColor": {
+            "title": "Ambient Color",
+            "type": "color",
+            "description": "Color of the unlit parts"
+        },
+        "diffuseColor": {
+            "title": "Diffuse Color",
+            "type": "color",
+            "description": "Color of the lit parts"
+        },
+        "specularColor": {
+            "title": "Specular Color",
+            "type": "color",
+            "description": "Color of the highlights"
+        },
+        "specularExponent": {
+            "title": "Specular Exponent",
+            "type": "float",
+            "max": 1000.0,
+            "min": 0.0,
+            "description": "Sharpness of the highlights. Higher values produce smaller, more focused highlights"
+        },
+        "specularTextureScale": {
+            "title": "Specular Texture Scale",
+            "type": "float",
+            "max": 32.0,
+            "min": 0.01,
+            "description": "How often the specular texture is repeated over the model. I have no idea why anyone would need this, but XPS supports it, so here we are."
+        },
+        "bump1UVScale": {
+            "title": "Bump Detail UV Scale 1",
+            "type": "float",
+            "max": 32.0,
+            "min": 0.01,
+            "description": "How often the second detail texture is repeated over the model. Higher values mean smaller structures."
+        },
+        "bump2UVScale": {
+            "title": "Bump Detail UV Scale 2",
+            "type": "float",
+            "max": 32.0,
+            "min": 0.01,
+            "description": "How often the second detail texture is repeated over the model. Higher values mean smaller structures."
+        },
+        "reflectionAmount": {
+            "title": "Reflection",
+            "type": "float",
+            "max": 1,
+            "min": 0,
+            "description": "Blends the color with the environment map."
+        },
+        "bumpSpecularGloss": {
+            "title": "Bump Specular Gloss",
+            "type": "float",
+            "max": 100,
+            "min": 0,
+            "description": "Sharpness of the highlights. Higher values produce smaller, more focused highlights."
+        },
+        "bumpSpecularAmount": {
+            "title": "Bump Specular Amount",
+            "type": "float",
+            "max": 1,
+            "min": 0,
+            "description": "Intensity of the highlights."
+        },
+    },
 }

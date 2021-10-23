@@ -17,20 +17,17 @@ $$in vec2 outTexCoord%ld;
 in vec3 positionWorld;
 #ifdef HAVE_NORMAL_WORLD
 #ifdef CALCULATE_TANGENT_TO_WORLD
-in mat3 tangentToWorld;
+$$in mat3 tangentToWorld%ld;
 #else
 in vec3 normalWorld;
 #endif
-/*#ifdef CALCULATE_NORMAL_WORLD
-in vec3 normalWorld;
 #endif
-#ifdef CALCULATE_TANGENT_TO_WORLD
-in mat3 tangentToWorld;
-#endif*/
 
 out vec4 screenColor;
 
+#ifdef DIFFUSE_TEXTURE
 uniform sampler2D diffuseTexture;
+#endif
 #ifdef CALCULATE_TANGENT_TO_WORLD
 uniform sampler2D bumpTexture;
 #ifdef NORMAL_DETAIL_MAP
@@ -66,26 +63,33 @@ layout(std140) uniform LightData {
 
 #ifdef RENDER_PARAMETERS
 uniform RenderParameters {
-#ifdef MATERIAL_PARAMETERS
+#ifdef AMBIENT_COLOR
     vec4 ambientColor;
+#endif
+#ifdef DIFFUSE_COLOR_VALUE
     vec4 diffuseColor;
+#endif
+    
+#ifdef SPECULAR
+#ifdef SPECULAR_COLOR_VALUE
     vec4 specularColor;
     float specularExponent;
-#endif
-#ifdef SPECULAR
-#ifndef MATERIAL_PARAMETERS
+#else
     // For MATERIAL_PARAMETERS, the gloss is given as specularExponent instead.
     float bumpSpecularGloss;
     float bumpSpecularAmount;
 #endif
 #endif
+    
 #ifdef NORMAL_DETAIL_MAP
     float bump1UVScale;
     float bump2UVScale;
 #endif
+    
 #ifdef REFLECTION
     float reflectionAmount;
 #endif
+
 #ifdef SPECULAR_TEXTURE_SCALE
     float specularTextureScale;
 #endif
@@ -102,7 +106,11 @@ layout(std140) uniform AlphaTest {
 void main()
 {
     // Find diffuse texture and do alpha test.
-    vec4 diffuseTexColor = texture(diffuseTexture, outTexCoord);
+#ifdef DIFFUSE_TEXTURE
+    vec4 diffuseTexColor = texture(diffuseTexture, diffuseTextureCoord);
+#else
+    vec4 diffuseTexColor = vec4(1);
+#endif
     
 #ifdef USE_ALPHA_TEST
     if ((alphaTest.mode == 1U && diffuseTexColor.a <= alphaTest.reference) || (alphaTest.mode == 2U && diffuseTexColor.a >= alphaTest.reference))
@@ -111,17 +119,17 @@ void main()
     
 #ifdef CALCULATE_TANGENT_TO_WORLD
     // Calculate normal
-    vec4 normalMap = texture(bumpTexture, outTexCoord);
+    vec4 normalMap = texture(bumpTexture, bumpTextureCoord);
 #ifdef NORMAL_DETAIL_MAP
-    vec4 detailNormalMap1 = texture(bump1Texture, outTexCoord * parameters.bump1UVScale);
-    vec4 detailNormalMap2 = texture(bump2Texture, outTexCoord * parameters.bump2UVScale);
-    vec4 maskColor = texture(maskTexture, outTexCoord);
+    vec4 detailNormalMap1 = texture(bump1Texture, bump1TextureCoord * parameters.bump1UVScale);
+    vec4 detailNormalMap2 = texture(bump2Texture, bump2TextureCoord * parameters.bump2UVScale);
+    vec4 maskColor = texture(maskTexture, maskTextureCoord);
     
     vec3 normalFromMap = (normalMap.rgb + detailNormalMap1.rgb * maskColor.r + detailNormalMap2.rgb * maskColor.g) * 2 - 1;
 #else
     vec3 normalFromMap = normalMap.rgb * 2 - 1;
 #endif
-    vec3 normalWorld = normalize(tangentToWorld * normalFromMap);
+    vec3 normalWorld = normalize(tangentToWorld0 * normalFromMap);
 #endif
     
 #ifdef CAMERA_DIRECTION
@@ -131,9 +139,9 @@ void main()
 #ifdef SEPARATE_SPECULAR_TEXTURE
     // Separate specular color
 #ifdef SPECULAR_TEXTURE_SCALE
-    vec4 specularColor = texture(specularTexture, outTexCoord * parameters.specularTextureScale);
+    vec4 specularColor = texture(specularTexture, specularTextureCoord * parameters.specularTextureScale);
 #else
-    vec4 specularColor = texture(specularTexture, outTexCoord);
+    vec4 specularColor = texture(specularTexture, specularTextureCoord);
 #endif
 #endif
     
@@ -159,7 +167,7 @@ void main()
 #ifdef DIFFUSE
         // Diffuse term
         float diffuseFactor = max(dot(-normalWorld, lightData.lights[i].direction.xyz), 0);
-#ifdef MATERIAL_PARAMETERS
+#ifdef DIFFUSE_COLOR_VALUE
         color += diffuseColor * lightData.lights[i].diffuseColor * diffuseFactor * parameters.diffuseColor;
 #else
         color += diffuseColor * lightData.lights[i].diffuseColor * diffuseFactor;
@@ -177,7 +185,7 @@ void main()
         // Specular term
         vec3 reflectedLightDirection = reflect(lightData.lights[i].direction.xyz, normalWorld);
         float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), exponent);
-#ifndef MATERIAL_PARAMETERS
+#ifndef SPECULAR_COLOR_VALUE
         // TODO: Would make sense to get rid of this amount factor and just offer users a specular color
         specularFactor *= parameters.bumpSpecularAmount;
 #endif
@@ -194,11 +202,7 @@ void main()
     }
     
 #ifdef LIGHTMAP
-#ifdef SECOND_TEX_COORD
-    color *= texture(lightmapTexture, outTexCoord2);
-#else
-    color *= texture(lightmapTexture, outTexCoord);
-#endif
+    color *= texture(lightmapTexture, lightmapTextureCoord);
 #endif
     
 #ifdef REFLECTION
@@ -217,7 +221,7 @@ void main()
     
 #ifdef EMISSION
     // Emission texture
-    vec4 emission = texture(emissionTexture, outTexCoord);
+    vec4 emission = texture(emissionTexture, emissionTextureCoord);
     color += emission;
 #endif
     

@@ -6,7 +6,7 @@
 //  Copyright © 2021 Torsten Kammer. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 @objc class GLLMeshParams: NSObject {
     @objc var meshGroups: [String] = []
@@ -62,17 +62,22 @@ import Foundation
             return result
         }
         
-        guard let plistUrl = Bundle.main.url(forResource: name, withExtension: "modelparams.plist") else {
+        if let plistUrl = Bundle.main.url(forResource: name, withExtension: "modelparams.plist") {
+            let data = try Data(contentsOf: plistUrl)
+            let result = try GLLModelParams(data: data)
+            parametersCache[name] = result
+            return result
+        } else if let jsonUrl = Bundle.main.url(forResource: name, withExtension: "modelparams.json") {
+            let data = try Data(contentsOf: jsonUrl)
+            let result = try GLLModelParams(data: data)
+            parametersCache[name] = result
+            return result
+        } else {
             throw NSError(domain: "GLLModelParams", code: 1, userInfo: [
                 NSLocalizedDescriptionKey : String(format:NSLocalizedString("Did not find model parameters for model type %@", comment: "Bundle didn't find Modelparams file."), name),
                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("GLLara stores special information for files not named generic_item. This information is not available", comment: "Bundle didn't find Modelparams file.")
                           ])
         }
-        
-        let data = try Data(contentsOf: plistUrl)
-        let result = try GLLModelParams(data: data)
-        parametersCache[name] = result
-        return result
     }
     
     struct PlistDataTransferObject: Decodable {
@@ -85,7 +90,7 @@ import Foundation
          * apply. Presumably there will be only very few possible shaders, and
          * the variation is mainly in the modules.
          */
-        var shaders: [String: GLLShaderBase]?
+        var shaders: [GLLShaderBase]?
         /**
          * Generic: End user readable descriptions (or rather the localization
          * keys) for the various render parameters that shaders use. Render
@@ -95,8 +100,9 @@ import Foundation
          */
         var renderParameterDescriptions: [String: GLLRenderParameterDescription]?
         /**
-         * Generic: Default values for different render parameters used by the
-         * different shaders that you can build
+         * Default values to be used by the render parameters for the different
+         * shaders. Default values can be set per model, or failing that,
+         * in the base value.
          */
         var defaultRenderParameters: [String: Double]?
         /**
@@ -153,8 +159,15 @@ import Foundation
     private let plistData: PlistDataTransferObject?
     
     private init(data: Data) throws {
-        let decoder = PropertyListDecoder()
-        plistData = try decoder.decode(PlistDataTransferObject.self, from: data)
+        let plistDecoder = PropertyListDecoder()
+        
+        if let readData = try? plistDecoder.decode(PlistDataTransferObject.self, from: data) {
+            plistData = readData
+        } else {
+            let jsonDecoder = JSONDecoder()
+            plistData = try jsonDecoder.decode(PlistDataTransferObject.self, from: data)
+        }
+        
         model = nil
         
         if let baseName = plistData!.base {
@@ -241,9 +254,10 @@ _([^_\\n]+)
                 
                 // - Render parameters
                 // The parameters follow a hierarchy:
-                // 1. anything from parent
-                // 2. own default values
-                // 3. own specific values
+                // 1. From render parameter descriptor
+                // 2. Explicit defaults set in parent
+                // 3. Explicit defaults set by this model
+                // 4. Specific values set for this model
                 // If the same parameter is set twice, then the one the highest in the hierarchy wins. E.g. if a value is set by the parent, then here in a default value and finally here specifically, then the specific value here is the one used.
                 var renderParameters: [String: Double] = [:]
                 if let baseParams = base?.params(forMesh: meshName) {
@@ -417,6 +431,9 @@ _([^_\\n]+)
         }
         return self.base!.defaultValue(forTexture: name)
     }
+    @objc func defaultColor(forRenderParameter name: String) -> NSColor {
+        return NSColor.black
+    }
     
     @objc func description(forParameter name: String) -> GLLRenderParameterDescription {
         if let description = plistData?.renderParameterDescriptions?[name] {
@@ -447,12 +464,12 @@ _([^_\\n]+)
     }
     
     func shader(base baseName: String, modules: [String] = [], presentTextures: [String] = [], presentVertexAttributes: [GLLVertexAttribSemantic] = [], texCoordAssignments: [String: Int] = [:], alphaBlending: Bool = false) -> GLLShaderData? {
-        if let baseShader = plistData?.shaders?[baseName] {
+        if let baseShader = plistData?.shaders?.first(where: { $0.name == baseName }) {
             let namedModules = baseShader.allModules(forNames: modules)
             let implicitModules = baseShader.descendantsMatching(textures: presentTextures, vertexAttributes: presentVertexAttributes)
             return GLLShaderData(base: baseShader, activeModules: namedModules + implicitModules, texCoordAssignments: texCoordAssignments, alphaBlending: alphaBlending, parameters: self)
         } else if let baseObject = base {
-            return baseObject.shader(base: baseName, modules: modules, presentTextures: presentTextures, presentVertexAttributes: presentVertexAttributes, texCoordAssignments: texCoordAssignments)
+            return baseObject.shader(base: baseName, modules: modules, presentTextures: presentTextures, presentVertexAttributes: presentVertexAttributes, texCoordAssignments: texCoordAssignments, alphaBlending: alphaBlending)
         }
         return nil
     }

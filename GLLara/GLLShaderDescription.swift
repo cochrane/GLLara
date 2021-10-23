@@ -31,11 +31,42 @@ import Combine
     // Other modules that can be activated. If any of them are activated, then this must be activated as well.
     let children: [GLLShaderModule]?
     
+    private func vertexAttributeEnum(for name: String) -> GLLVertexAttribSemantic? {
+        switch (name) {
+        case "normal":
+            return .normal
+        case "vertexColor":
+            return .color
+        case "boneIndices":
+            return .boneIndices
+        case "boneWeights":
+            return .boneWeights
+        case "tangents":
+            return .tangent0
+        default:
+            return nil
+        }
+    }
+    
+    var requiredVertexAttribEnums: [GLLVertexAttribSemantic]? {
+        return requiredVertexAttributes?.map {
+            vertexAttributeEnum(for: $0)!
+        }
+    }
+    
     func matches(textures: [String], vertexAttributes: [GLLVertexAttribSemantic]) -> Bool {
         if let textureUniforms = textureUniforms,  !textureUniforms.allSatisfy({ textures.contains($0) }) {
             return false
         }
-        #error("Check vertex attribute")
+        if let myVertexAttributes = requiredVertexAttribEnums, !myVertexAttributes.allSatisfy({ vertexAttributes.contains($0) }) {
+            return false
+        }
+        
+        // Do not use items that are purely additional or only require render parameters
+        if textureUniforms == nil && requiredVertexAttributes == nil {
+            return false
+        }
+        
         return true
     }
     
@@ -71,15 +102,44 @@ import Combine
  * Base for any shader hierarchy, defining the files that are actually used.
  */
 @objc class GLLShaderBase: GLLShaderModule {
+    /// Name of the vertex shader to use
     let vertex: String?
+    /// Name of the geometry shader to use
     let geometry: String?
+    /// Name of the fragment shader to use
     let fragment: String?
-    @objc let texCoordFragmentNameFormat: String
+    /**
+     * Format strings that describes what the output tex coord attribute is
+     * named for a given tex coord set. E.g. if this is outTexCoord%ld then
+     * the output tex coordinate will be named outTexCoord0 for tex coord set 0.
+     *
+     * This is used together with texCoordDefineFormat; look there for details.
+     */
+    @objc let texCoordVarNameFormat: String
+    
+    /**
+     * Format string that defines what name to use for the tex coords for a
+     * given texture. Used together with texCoordFragmentNameFormat.
+     *
+     * The idea here is that if, say, "diffuse" is assigned tex set coord 0,
+     * "normal" is assigned tex coord set 0, and "lightmap" is assigned tex
+     * coord set 1, the shader loader can generate the defines:
+     *
+     *     #define diffuseTexCoord outTexCoord0
+     *     #define normalTexCoord outTexCoord0
+     *     #define lightmapTexCoord outTexCoord1
+     *
+     * The texCoordDefineFormat gives the left side of this assignment; the
+     * texCoordVarNameFormat gives the right side of this.
+     */
+    @objc let texCoordDefineFormat: String
     
     enum CodingKeys: CodingKey {
         case vertex
         case geometry
         case fragment
+        case texCoordVarNameFormat
+        case texCoordDefineFormat
     }
     
     required init(from decoder: Decoder) throws {
@@ -89,11 +149,14 @@ import Combine
         geometry = try container.decodeIfPresent(String.self, forKey: .geometry)
         fragment = try container.decodeIfPresent(String.self, forKey: .fragment)
         
+        texCoordVarNameFormat = try container.decodeIfPresent(String.self, forKey: .texCoordVarNameFormat) ?? "outTexCoord%ld"
+        texCoordDefineFormat = try container.decodeIfPresent(String.self, forKey: .texCoordDefineFormat) ?? "%@Coord"
+        
         try super.init(from: decoder)
     }
 }
 
-@objc class GLLShaderData: NSObject {
+@objc class GLLShaderData: NSObject, NSCopying {
     @objc let base: GLLShaderBase
     @objc let activeModules: [GLLShaderModule]
     @objc let texCoordAssignments: [String: Int]
@@ -102,7 +165,10 @@ import Combine
     
     init(base: GLLShaderBase, activeModules: [GLLShaderModule], texCoordAssignments: [String: Int] = [:], alphaBlending: Bool, parameters: GLLModelParams) {
         self.base = base
-        self.activeModules = activeModules
+        
+        let activeModuleSet = Set(activeModules)
+        
+        self.activeModules = activeModuleSet.sorted(by: { $0.name < $1.name })
         self.texCoordAssignments = texCoordAssignments
         self.alphaBlending = alphaBlending
         self.parameters = parameters
@@ -132,6 +198,10 @@ import Combine
         return defines
     }
     
+    /**
+     * The number of the texture coordinate set to use for the texture with the
+     * given identifier. This is usually 0.
+     */
     @objc func texCoordSet(forTexture textureUniformName: String) -> Int {
         return texCoordAssignments[textureUniformName] ?? 0
     }
@@ -176,6 +246,10 @@ import Combine
             return false
         }
         return base.name == other.base.name && sortedModuleNames == other.sortedModuleNames && texCoordAssignments == other.texCoordAssignments && alphaBlending == other.alphaBlending && parameters == other.parameters
+    }
+    
+    func copy(with zone: NSZone? = nil) -> Any {
+        return self
     }
 }
 

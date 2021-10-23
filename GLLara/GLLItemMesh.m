@@ -111,8 +111,8 @@
     
     GLLShaderData *modelShaderData = self.mesh.shader;
     self.shaderBase = modelShaderData.base.name;
-    for (NSString *moduleName in modelShaderData.activeModules) {
-        [self setIncluded:YES forShaderModule:moduleName];
+    for (GLLShaderModule *module in modelShaderData.activeModules) {
+        [self setIncluded:YES forShaderModule:module.name];
     }
     
     [self _setupObservingForShaderChanges];
@@ -230,15 +230,16 @@
             
             GLLRenderParameter *parameter;
             
-            if (description.type == GLLRenderParameterTypeFloat)
+            if (description.type == GLLRenderParameterTypeFloat) {
                 parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLFloatRenderParameter" inManagedObjectContext:self.managedObjectContext];
-            else if (description.type == GLLRenderParameterTypeColor)
+                [parameter setValue:[NSNumber numberWithDouble:[params defaultValueForRenderParameter:renderParameterName]] forKey:@"value"];
+            } else if (description.type == GLLRenderParameterTypeColor) {
                 parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLColorRenderParameter" inManagedObjectContext:self.managedObjectContext];
-            else
+                [parameter setValue:[params defaultColorForRenderParameter:renderParameterName] forKey:@"value"];
+            } else
                 continue; // Skip this param
             
             parameter.name = renderParameterName;
-            [parameter setValue:[NSNumber numberWithDouble:[params defaultValueForRenderParameter:renderParameterName]] forKey:@"value"];
             parameter.mesh = self;
         }
     }

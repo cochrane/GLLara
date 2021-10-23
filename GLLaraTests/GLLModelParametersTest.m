@@ -30,4 +30,13 @@
     XCTAssertEqualObjects([params paramsForMesh:@"eyes"].renderParameters[@"bumpSpecularAmount"], @(0.4), @"wrong specific parameter");
 }
 
+- (void)testLara
+{
+    NSError *error = nil;
+    GLLModelParams *params = [GLLModelParams parametersForName:@"lara" error:&error];
+    
+    XCTAssertNotNil(params, @"Should have loaded params.");
+    XCTAssertNil(error, @"Should not have thrown an error.");
+}
+
 @end

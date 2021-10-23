@@ -25,7 +25,7 @@
         return nil;
     }
     
-    // Find all lines that follow the format for tex coord lines. Those start with ## and have %ld to replace the items
+    // Find all lines that follow the format for tex coord lines. Those start with $$ and have %ld to replace the items
     NSRegularExpression *expression = [NSRegularExpression regularExpressionWithPattern:@"^\\$\\$(.*)$" options:NSRegularExpressionAnchorsMatchLines error:NULL];
     NSMutableString *transformedSource = [[NSMutableString alloc] initWithString:sourceString];
     NSTextCheckingResult *result = nil;

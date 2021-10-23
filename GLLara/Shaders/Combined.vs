@@ -21,21 +21,19 @@ in vec3 position;
 in vec3 normal;
 in vec4 color;
 $$in vec2 texCoord%ld;
-in vec4 tangent;
-#ifdef SECOND_TEX_COORD
-in vec2 tangent2;
-#endif
+$$in vec4 tangent%ld;
 in ivec4 boneIndices;
 in vec4 boneWeights;
 
 out vec4 outColor;
-##out vec2 outTexCoord%ld;
+$$out vec2 outTexCoord%ld;
 out vec3 positionWorld;
-#ifdef CALCULATE_NORMAL_WORLD
+#ifdef HAVE_NORMAL_WORLD
+#ifdef CALCULATE_TANGENT_TO_WORLD
+$$out mat3 tangentToWorld%ld;
+#else
 out vec3 normalWorld;
 #endif
-#ifdef CALCULATE_TANGENT_TO_WORLD
-out mat3 tangentToWorld;
 #endif
 
 mat4 boneTransform()
@@ -58,23 +56,23 @@ void main()
     
     // Relative to world
     positionWorld = vec3(bone * vec4(position, 1.0));
-    
-#ifdef CALCULATE_NORMAL_WORLD
-    // Normal
-    normalWorld = mat3(bone) * normal;
-#endif
-    
+
+#ifdef HAVE_NORMAL_WORLD
 #ifdef CALCULATE_TANGENT_TO_WORLD
     // Tangents
-    vec3 tangentU = normalize(tangent.xyz);
-    vec3 tangentV = normalize(cross(normal, tangentU) * sign(tangent.w));
+$$    vec3 tangentU%1$ld = normalize(tangent%1$ld.xyz);
+$$    vec3 tangentV%1$ld = normalize(cross(normal, tangentU%1$ld) * sign(tangent%1$ld.w));
     vec3 normal = normalize(normal);
     
     // TODO Should this be 'bone' instead of 'bones.transforms[0]'?
-    tangentToWorld = mat3(bones.transforms[0]) * mat3(tangentU, tangentV, normal) * mat3(bones.normalPermute);
+$$    tangentToWorld%1$ld = mat3(bones.transforms[0]) * mat3(tangentU%1$ld, tangentV%1$ld, normal) * mat3(bones.normalPermute);
+#else
+    // Normal
+    normalWorld = mat3(bone) * normal;
+#endif
 #endif
     
     // Pass through
     outColor = color;
-$$  outTexCoord%ld = texCoord%ld;
+$$  outTexCoord%1$ld = texCoord%1$ld;
 }

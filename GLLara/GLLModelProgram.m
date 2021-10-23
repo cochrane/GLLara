@@ -44,13 +44,11 @@
     [additionalDefines addEntriesFromDictionary:descriptor.defines];
     
     for (NSString *textureUniformName in descriptor.textureUniforms) {
-#error Find the define name
-#error Don't hardcode the base variable name here
-        NSString *defineName = "??";
-        additionalDefines[defineName] = [NSString stringWithFormat:descriptor.base.texCoordFragmentNameFormat, [descriptor texCoordSetForTexture:textureUniformName]];
+        NSString *defineName = [NSString stringWithFormat:descriptor.base.texCoordDefineFormat, textureUniformName];
+        additionalDefines[defineName] = [NSString stringWithFormat:descriptor.base.texCoordVarNameFormat, [descriptor texCoordSetForTexture:textureUniformName]];
     }
     
-    if (!(self = [super initWithFragmentShaderName:descriptor.fragmentName geometryShaderName:descriptor.geometryName vertexShaderName:descriptor.vertexName additionalDefines:additionalDefines resourceManager:manager error:error])) return nil;
+    if (!(self = [super initWithFragmentShaderName:descriptor.fragmentName geometryShaderName:descriptor.geometryName vertexShaderName:descriptor.vertexName additionalDefines:additionalDefines usedTexCoords:texCoords resourceManager:manager error:error])) return nil;
     
     _lightsUniformBlockIndex = glGetUniformBlockIndex(self.programID, "LightData");
     if (_lightsUniformBlockIndex != GL_INVALID_INDEX) glUniformBlockBinding(self.programID, _lightsUniformBlockIndex, GLLUniformBlockBindingLights);
@@ -90,8 +88,6 @@
 - (void)bindAttributeLocations;
 {
     
-#error And re-check Combined.fs and Combined.vs
-#error And put the OBJ stuff in Combined.fs and Combined.vs
     glBindAttribLocation(self.programID, GLLVertexAttribPosition, "position");
     glBindAttribLocation(self.programID, GLLVertexAttribNormal, "normal");
     glBindAttribLocation(self.programID, GLLVertexAttribColor, "color");
