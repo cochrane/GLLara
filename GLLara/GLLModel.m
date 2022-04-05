@@ -12,7 +12,6 @@
 #import "GLLASCIIScanner.h"
 #import "GLLModelBone.h"
 #import "GLLModelMesh.h"
-#import "GLLModelMeshV3.h"
 #import "GLLModelObj.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
