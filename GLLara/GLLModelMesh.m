@@ -320,7 +320,7 @@ void vec_addTo(float *a, const float *b)
         for (NSUInteger i = 0; i < self.countOfUVLayers; i++) {
             [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribTangent0 layer:i size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeFloat]];
         }
-    } else if (self.hasV4ExtraBytes) {
+    } else if (self.hasVariableBonesPerVertex) {
         [attributes addObject:[[GLLVertexAttrib alloc] initWithSemantic:GLLVertexAttribPadding layer:0 size:GLLVertexAttribSizeVec2 componentType:GLLVertexAttribComponentTypeUnsignedByte]];
     }
     if (self.hasBoneWeights) {
@@ -366,7 +366,7 @@ void vec_addTo(float *a, const float *b)
     return YES;
 }
 
-- (BOOL)hasV4ExtraBytes
+- (BOOL)hasVariableBonesPerVertex
 {
     // For subclasses to override
     return NO;
