@@ -197,7 +197,7 @@
     return result;
 }
 
-- (NSData *)dataWithLength:(NSUInteger)count
+- (NSData *)dataWithLength:(NSInteger)count
 {
     if (count == 0) return [NSData data];
     if (!self.isValid) return nil;

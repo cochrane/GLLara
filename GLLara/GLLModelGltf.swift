@@ -634,8 +634,8 @@ class GLLModelGltf: GLLModel {
             }
             
             let underlyingView = document.bufferViews![fileAccessor.accessor.bufferView]
-            let vertexAttrib = GLLVertexAttrib(semantic: semantic, layer: UInt(layer), size: size, componentType: componentType)
-            let vertexAccessor = GLLVertexAttribAccessor(attribute: vertexAttrib, dataBuffer: fileAccessor.view.buffer.data, offset: UInt(fileAccessor.accessor.byteOffset ?? 0 + fileAccessor.view.range.first!), stride: UInt(underlyingView.byteStride ?? 0))
+            let vertexAttrib = GLLVertexAttrib(semantic: semantic, layer: layer, size: size, componentType: componentType)
+            let vertexAccessor = GLLVertexAttribAccessor(attribute: vertexAttrib, dataBuffer: fileAccessor.view.buffer.data, offset: fileAccessor.accessor.byteOffset ?? 0 + fileAccessor.view.range.first!, stride: underlyingView.byteStride ?? 0)
             accessors.append(vertexAccessor)
         }
         guard let finalCountOfVertices = countOfVertices else {

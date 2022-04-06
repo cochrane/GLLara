@@ -10,12 +10,12 @@
 
 @implementation GLLVertexAttribAccessor
 
-- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)semantic layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData *__nullable)dataBuffer offset:(NSUInteger)dataOffset stride:(NSUInteger)stride;
+- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)semantic layer:(NSInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData *__nullable)dataBuffer offset:(NSInteger)dataOffset stride:(NSInteger)stride;
 {
     return [self initWithAttribute:[[GLLVertexAttrib alloc] initWithSemantic:semantic layer:layer size:size componentType:type] dataBuffer:dataBuffer offset:dataOffset stride:stride];
 }
 
-- (instancetype)initWithAttribute:(GLLVertexAttrib *)attribute dataBuffer:(NSData *__nullable)dataBuffer offset:(NSUInteger)dataOffset stride:(NSUInteger)stride;
+- (instancetype)initWithAttribute:(GLLVertexAttrib *)attribute dataBuffer:(NSData *__nullable)dataBuffer offset:(NSInteger)dataOffset stride:(NSInteger)stride;
 {
     if (!(self = [super init]))
         return nil;
@@ -34,17 +34,17 @@
     return self;
 }
 
-- (NSUInteger)offsetForElement:(NSUInteger)index {
+- (NSInteger)offsetForElement:(NSInteger)index {
     return _dataOffset + index * _stride;
 }
 
-- (const void *)elementAt:(NSUInteger)index {
+- (const void *)elementAt:(NSInteger)index {
     if (!_dataBuffer) return NULL;
     
     return _dataBuffer.bytes + [self offsetForElement:index];
 }
 
-- (NSData *)elementDataAt:(NSUInteger)index {
+- (NSData *)elementDataAt:(NSInteger)index {
     NSRange range = NSMakeRange([self offsetForElement:index], self.attribute.sizeInBytes);
     NSAssert(_dataBuffer != nil && NSMaxRange(range) <= _dataBuffer.length, @"Needs to be in range");
     return [_dataBuffer subdataWithRange:range];

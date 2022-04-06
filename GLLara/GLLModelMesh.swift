@@ -57,13 +57,13 @@ import Foundation
         
         countOfVertices = Int(stream.readUint32())
         let fileVertexFormat = self.fileVertexFormat
-        guard let vertexData = stream.data(withLength: UInt(countOfVertices) * fileVertexFormat.stride) else {
+        guard let vertexData = stream.data(withLength: countOfVertices * fileVertexFormat.stride) else {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                                                                                                                            NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The vertex data for a mesh could not be loaded.", comment: "Premature end of file error") ])
         }
         
         countOfElements = 3 * Int(stream.readUint32())
-        guard let elementData = stream.data(withLength: UInt(countOfElements) * 4) else {
+        guard let elementData = stream.data(withLength: countOfElements * 4) else {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),                                                                                                             NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file breaks off inside a mesh's vertex data.", comment: "Premature end of file error") ])
         }
         self.elementData = elementData
@@ -462,8 +462,8 @@ import Foundation
             let tangentData = tangents.withUnsafeBufferPointer {
                 Data(buffer: $0)
             }
-            let attribute = GLLVertexAttrib(semantic: .tangent0, layer: UInt(layer), size: .vec4, componentType: .float)
-            result.append(GLLVertexAttribAccessor(attribute: attribute, dataBuffer: tangentData, offset: 0, stride: attribute.sizeInBytes))
+            let attribute = GLLVertexAttrib(semantic: .tangent0, layer: layer, size: .vec4, componentType: .float)
+            result.append(GLLVertexAttribAccessor(attribute: attribute, dataBuffer: tangentData, offset: 0, stride: Int(attribute.sizeInBytes)))
         }
         return GLLVertexAttribAccessorSet(accessors: result)
     }
@@ -572,21 +572,21 @@ import Foundation
             let boneWeightData = vertexDataAccessors!.accessor(semantic: .boneWeights)
 
             for i in 0..<countOfVertices {
-                stream.appendData(positionData.elementData(at: UInt(i)))
-                stream.appendData(positionData.elementData(at: UInt(i)))
-                stream.appendData(normalData.elementData(at: UInt(i)))
-                stream.appendData(colorData.elementData(at: UInt(i)))
+                stream.appendData(positionData.elementData(at: i))
+                stream.appendData(positionData.elementData(at: i))
+                stream.appendData(normalData.elementData(at: i))
+                stream.appendData(colorData.elementData(at: i))
                 for layer in 0..<countOfUVLayers {
                     let texCoordData = vertexDataAccessors!.accessor(semantic: .texCoord0, layer:layer)!
-                    stream.appendData(texCoordData.elementData(at: UInt(i)))
+                    stream.appendData(texCoordData.elementData(at: i))
                 }
                 for layer in 0..<countOfUVLayers {
                     let tangentData = vertexDataAccessors!.accessor(semantic: .tangent0, layer:layer)!
-                    stream.appendData(tangentData.elementData(at: UInt(i)))
+                    stream.appendData(tangentData.elementData(at: i))
                 }
                 if let boneIndexData = boneIndexData, let boneWeightData = boneWeightData {
-                    stream.appendData(boneIndexData.elementData(at: UInt(i)))
-                    stream.appendData(boneWeightData.elementData(at: UInt(i)))
+                    stream.appendData(boneIndexData.elementData(at: i))
+                    stream.appendData(boneWeightData.elementData(at: i))
                 }
             }
         }
@@ -625,11 +625,11 @@ import Foundation
         attributes.append(GLLVertexAttrib(semantic: .normal, layer: 0, size: .vec3, componentType: .float))
         attributes.append(GLLVertexAttrib(semantic: .color, layer: 0, size: .vec4, componentType: colorsAreFloats ? .float : .unsignedByte))
         for i in 0..<countOfUVLayers {
-            attributes.append(GLLVertexAttrib(semantic: .texCoord0, layer: UInt(i), size: .vec2, componentType: .float))
+            attributes.append(GLLVertexAttrib(semantic: .texCoord0, layer: i, size: .vec2, componentType: .float))
         }
         if hasTangentsInFile {
             for i in 0..<countOfUVLayers {
-                attributes.append(GLLVertexAttrib(semantic: .tangent0, layer: UInt(i), size: .vec4, componentType: .float))
+                attributes.append(GLLVertexAttrib(semantic: .tangent0, layer: i, size: .vec4, componentType: .float))
             }
         } else if hasVariableBonesPerVertex {
             // TODO implement this properly
@@ -651,7 +651,7 @@ import Foundation
         var offset = 0
         var accessors: [GLLVertexAttribAccessor]  = []
         for attribute in fileVertexFormat.attributes {
-            accessors.append(GLLVertexAttribAccessor(attribute: attribute, dataBuffer: baseData, offset: UInt(offset), stride: stride))
+            accessors.append(GLLVertexAttribAccessor(attribute: attribute, dataBuffer: baseData, offset: offset, stride: stride))
             offset += Int(attribute.sizeInBytes)
         }
         

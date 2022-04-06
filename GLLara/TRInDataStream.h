@@ -33,7 +33,7 @@
 
 - (TRInDataStream *)decompressStreamCompressedLength:(NSUInteger)actualBytes uncompressedLength:(NSUInteger)originalBytes error:(NSError *__autoreleasing*)error;
 - (TRInDataStream *)substreamWithLength:(NSUInteger)bytes;
-- (NSData *)dataWithLength:(NSUInteger)bytes;
+- (NSData *)dataWithLength:(NSInteger)bytes;
 
 @property (nonatomic, assign) NSUInteger position;
 @property (nonatomic, copy, readonly) NSData *levelData;

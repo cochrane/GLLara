@@ -10,7 +10,7 @@
 
 @implementation GLLVertexFormat
 
-- (instancetype)initWithAttributes:(NSArray<GLLVertexAttrib *>*)attributes countOfVertices:(NSUInteger)countOfVertices hasIndices:(BOOL)hasIndices;
+- (instancetype)initWithAttributes:(NSArray<GLLVertexAttrib *>*)attributes countOfVertices:(NSInteger)countOfVertices hasIndices:(BOOL)hasIndices;
 {
     if (!(self = [super init])) {
         return nil;
@@ -48,9 +48,9 @@
     return format.numElementBytes == self.numElementBytes && [format.attributes isEqual:self.attributes];
 }
 
-- (NSUInteger)stride
+- (NSInteger)stride
 {
-    NSUInteger stride = 0;
+    NSInteger stride = 0;
     for (GLLVertexAttrib *attribute in self.attributes) {
         stride += attribute.sizeInBytes;
     }

@@ -10,13 +10,13 @@
 
 @interface GLLVertexAttrib()
 
-@property (nonatomic, readonly, assign) NSUInteger baseSize;
+@property (nonatomic, readonly, assign) NSInteger baseSize;
 
 @end
 
 @implementation GLLVertexAttrib
 
-- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)attrib layer:(NSUInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type;
+- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)attrib layer:(NSInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type;
 {
     if (!(self = [super init])) {
         return nil;
@@ -61,7 +61,7 @@
     return self;
 }
 
-+ (NSUInteger)componentSizeFor:(GLLVertexAttribComponentType)componentType {
++ (NSInteger)componentSizeFor:(GLLVertexAttribComponentType)componentType {
     switch (componentType) {
         case GLLVertexAttribComponentTypeByte:
         case GLLVertexAttribComponentTypeUnsignedByte:
@@ -81,11 +81,11 @@
     }
 }
 
-- (NSUInteger)baseSize {
+- (NSInteger)baseSize {
     return [[self class] componentSizeFor:self.type];
 }
 
-- (NSUInteger)numberOfElements {
+- (NSInteger)numberOfElements {
     switch (self.size) {
         case GLLVertexAttribSizeScalar:
             return 1;
@@ -105,7 +105,7 @@
     }
 }
 
-- (NSUInteger)sizeInBytes {
+- (NSInteger)sizeInBytes {
     if (self.type == GLLVertexAttribComponentTypeInt2_10_10_10_Rev) {
         return 4;
     }

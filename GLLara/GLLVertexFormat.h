@@ -15,15 +15,15 @@
 
 @interface GLLVertexFormat : NSObject<NSCopying>
 
-- (instancetype)initWithAttributes:(NSArray<GLLVertexAttrib *>*)attributes countOfVertices:(NSUInteger)countOfVertices hasIndices:(BOOL)hasIndices;
+- (instancetype)initWithAttributes:(NSArray<GLLVertexAttrib *>*)attributes countOfVertices:(NSInteger)countOfVertices hasIndices:(BOOL)hasIndices;
 
 @property (nonatomic, readonly, copy) NSArray<GLLVertexAttrib *>* attributes;
 
 // Number of bytes for storing an index element. Only valid values are 1, 2 and 4, or 0 if there is no element buffer
-@property (nonatomic, readonly, assign) NSUInteger numElementBytes;
+@property (nonatomic, readonly, assign) NSInteger numElementBytes;
 @property (nonatomic, readonly, assign) BOOL hasIndices;
 
-@property (nonatomic, assign, readonly) NSUInteger stride;
+@property (nonatomic, assign, readonly) NSInteger stride;
 
 @end
 

@@ -56,17 +56,17 @@ typedef NS_ENUM(NSInteger, GLLCullFaceMode)
 
 @interface GLLVertexAttrib : NSObject<NSCopying>
 
-+ (NSUInteger)componentSizeFor:(GLLVertexAttribComponentType)componentType;
++ (NSInteger)componentSizeFor:(GLLVertexAttribComponentType)componentType;
 
-- (instancetype)initWithSemantic:(GLLVertexAttribSemantic)semantic layer:(NSUInteger) layer size:(GLLVertexAttribSize)size componentType:(GLLVertexAttribComponentType)type;
+- (instancetype)initWithSemantic:(GLLVertexAttribSemantic)semantic layer:(NSInteger) layer size:(GLLVertexAttribSize)size componentType:(GLLVertexAttribComponentType)type;
 
 @property (nonatomic, readonly, assign) GLLVertexAttribSemantic semantic;
-@property (nonatomic, readonly, assign) NSUInteger layer;
+@property (nonatomic, readonly, assign) NSInteger layer;
 @property (nonatomic, readonly, assign) GLLVertexAttribSize size;
 @property (nonatomic, readonly, assign) GLLVertexAttribComponentType type;
 
-@property (nonatomic, readonly, assign) NSUInteger numberOfElements;
-@property (nonatomic, readonly, assign) NSUInteger sizeInBytes;
+@property (nonatomic, readonly, assign) NSInteger numberOfElements;
+@property (nonatomic, readonly, assign) NSInteger sizeInBytes;
 
 // Sort according to semantic and layer. Size and type are ignored
 - (NSComparisonResult)compare:(GLLVertexAttrib *)other;
