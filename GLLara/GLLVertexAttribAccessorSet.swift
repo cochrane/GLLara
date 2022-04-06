@@ -29,3 +29,10 @@ import Foundation
         return GLLVertexFormat(attributes: accessors.map { $0.attribute }, countOfVertices: UInt(vertexCount), hasIndices: hasIndices)
     }
 }
+
+extension GLLVertexAttribAccessor {
+    func typedElement<T>(at: Int, type: T.Type) -> UnsafePointer<T> {
+        // TODO do a runtime check here
+        return element(at: UInt(at)).bindMemory(to: T.self, capacity: Int(attribute.numberOfElements))
+    }
+}

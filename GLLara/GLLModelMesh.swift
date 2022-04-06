@@ -309,9 +309,9 @@ import Foundation
                 element(at: index + 2)
             ]
             let position = [
-                positionData.element(at: UInt(elements[0])).bindMemory(to: Float32.self, capacity: 3),
-                positionData.element(at: UInt(elements[1])).bindMemory(to: Float32.self, capacity: 3),
-                positionData.element(at: UInt(elements[2])).bindMemory(to: Float32.self, capacity: 3)
+                positionData.typedElement(at: elements[0], type: Float32.self),
+                positionData.typedElement(at: elements[1], type: Float32.self),
+                positionData.typedElement(at: elements[2], type: Float32.self)
             ]
             
             // Find out if one corner is completely in the box. If yes, then this triangle becomes part of the split mesh.
@@ -392,14 +392,14 @@ import Foundation
                     element(at: index + 2)
                 ]
                 let positions = [
-                    positionData.element(at: UInt(elements[0])).bindMemory(to: Float32.self, capacity: 3),
-                    positionData.element(at: UInt(elements[1])).bindMemory(to: Float32.self, capacity: 3),
-                    positionData.element(at: UInt(elements[2])).bindMemory(to: Float32.self, capacity: 3)
+                    positionData.typedElement(at: elements[0], type: Float32.self),
+                    positionData.typedElement(at: elements[1], type: Float32.self),
+                    positionData.typedElement(at: elements[2], type: Float32.self)
                 ]
                 let texCoords = [
-                    texCoordData.element(at: UInt(elements[0])).bindMemory(to: Float32.self, capacity: 2),
-                    texCoordData.element(at: UInt(elements[1])).bindMemory(to: Float32.self, capacity: 2),
-                    texCoordData.element(at: UInt(elements[2])).bindMemory(to: Float32.self, capacity: 2)
+                    texCoordData.typedElement(at: elements[0], type: Float32.self),
+                    texCoordData.typedElement(at: elements[1], type: Float32.self),
+                    texCoordData.typedElement(at: elements[2], type: Float32.self)
                 ]
                 
                 // Calculate tangents
@@ -440,7 +440,7 @@ import Foundation
             for vertex in 0..<countOfVertices {
                 GLLModelMesh.normalize(&tangentsU, from: vertex*3)
                 GLLModelMesh.normalize(&tangentsV, from: vertex*3)
-                let normal = normalData.element(at: UInt(vertex)).bindMemory(to: Float32.self, capacity: 3)
+                let normal = normalData.typedElement(at: vertex, type: Float32.self)
                 let normalDotTangentU = normal[0] * tangentsU[vertex*3 + 0] + normal[1] * tangentsU[vertex*3 + 1] + normal[2] * tangentsU[vertex*3 + 2]
                 var tangent = [
                     tangentsU[vertex*3 + 0] - normal[0] * normalDotTangentU,
@@ -473,7 +473,7 @@ import Foundation
         // Check bone indices
         if let boneIndexData = vertexData.accessor(semantic: .boneIndices) {
             for i in 0..<countOfVertices {
-                let indices = boneIndexData.element(at: UInt(i)).bindMemory(to: UInt16.self, capacity: 4)
+                let indices = boneIndexData.typedElement(at: i, type: UInt16.self)
                 for j in 0..<4 {
                     if indices[j] >= model!.bones.count {
                         throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file references bones that do not exist.", comment: "Bone index out of range error"),
@@ -518,23 +518,23 @@ import Foundation
         
         result.append("\(countOfVertices)")
         for i in 0..<countOfVertices {
-            let position = positionAccessor.element(at: UInt(i)).bindMemory(to: Float32.self, capacity: 3)
+            let position = positionAccessor.typedElement(at: i, type: Float32.self)
             result.append("\(position[0]) \(position[1]) \(position[2])\n")
-            let normal = normalAccessor.element(at: UInt(i)).bindMemory(to: Float32.self, capacity: 3)
+            let normal = normalAccessor.typedElement(at: i, type: Float32.self)
             result.append("\(normal[0]) \(normal[1]) \(normal[2])\n")
-            let colors = colorAccessor.element(at: UInt(i)).bindMemory(to: UInt8.self, capacity: 4)
+            let colors = colorAccessor.typedElement(at: i, type: UInt8.self)
             result.append("\(colors[0]) \(colors[1]) \(colors[2]) \(colors[3])\n")
             
             for uvLayer in 0..<countOfUVLayers {
                 let texCoordAccessor = vertexDataAccessors!.accessor(semantic: .texCoord0, layer: uvLayer)!
                 
-                let texCoords = texCoordAccessor.element(at: UInt(uvLayer)).bindMemory(to: Float32.self, capacity: 2)
+                let texCoords = texCoordAccessor.typedElement(at: uvLayer, type: Float32.self)
                 result.append("\(texCoords[0]) \(texCoords[1])\n")
             }
             if hasBoneWeights {
-                let boneIndices = boneIndexAccessor!.element(at: UInt(i)).bindMemory(to: UInt16.self, capacity: 4)
+                let boneIndices = boneIndexAccessor!.typedElement(at: i, type: UInt16.self)
                 result.append("\(boneIndices[0]) \(boneIndices[1]) \(boneIndices[2]) \(boneIndices[3])\n")
-                let boneWeights = boneWeightAccessor!.element(at: UInt(i)).bindMemory(to: Float32.self, capacity: 4)
+                let boneWeights = boneWeightAccessor!.typedElement(at: i, type: Float32.self)
                 result.append("\(boneWeights[0]) \(boneWeights[1]) \(boneWeights[2]) \(boneWeights[3])\n")
             }
             result.append("\n")
