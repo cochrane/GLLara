@@ -9,7 +9,6 @@
 #import "GLLItemMeshTexture.h"
 
 #import "GLLItemMesh.h"
-#import "GLLModelMesh.h"
 
 #import "GLLara-Swift.h"
 

@@ -11,13 +11,14 @@
 #import <OpenGL/gl3.h>
 
 #import "NSArray+Map.h"
-#import "GLLModelMesh.h"
 #import "GLLModelProgram.h"
 #import "GLLVertexFormat.h"
 #import "GLLVertexArray.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLResourceManager.h"
 #import "GLLTexture.h"
+
+#import "GLLara-Swift.h"
 
 @interface GLLMeshDrawData ()
 {

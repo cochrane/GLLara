@@ -10,9 +10,10 @@
 
 #import "GLLMeshDrawData.h"
 #import "GLLModel.h"
-#import "GLLModelMesh.h"
 #import "GLLVertexArray.h"
 #import "GLLVertexFormat.h"
+
+#import "GLLara-Swift.h"
 
 @interface GLLModelDrawData ()
 

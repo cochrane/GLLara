@@ -8,8 +8,9 @@
 
 #import "GLLModelObj.h"
 
+#import <AppKit/NSColor.h>
+
 #import "GLLModelBone.h"
-#import "GLLModelMeshObj.h"
 #import "GLLMtlFile.h"
 #import "GLLObjFile.h"
 #import "GLLTiming.h"
@@ -67,7 +68,89 @@
     GLLBeginTiming("OBJ file postprocess");
     for (auto &range : file->getMaterialRanges())
     {
-        GLLModelMeshObj *mesh = [[GLLModelMeshObj alloc] initWithObjFile:file mtlFiles:materialFiles range:range inModel:self error:error];
+        // Procedure: Go through the indices in the range. For each index, load the vertex data from the file and put it in the vertex buffer here. Adjust the index, too.
+        GLLBeginTiming("OBJ mesh vertex copy");
+        std::unordered_map<unsigned, uint32_t> globalToLocalVertices;
+        NSMutableData *vertices = [[NSMutableData alloc] initWithCapacity:sizeof(GLLObjFile::VertexData) * (range.end - range.start)];
+        uint32_t *elementData = (uint32_t *) malloc(sizeof(uint32_t)*(range.end - range.start));
+        
+        for (unsigned i = range.start; i < range.end; i++)
+        {
+            unsigned globalIndex = file->getIndices().at(i);
+            uint32_t index = 0;
+            auto localIndexIter = globalToLocalVertices.find(globalIndex);
+            if (localIndexIter == globalToLocalVertices.end())
+            {
+                // Add adjusted element
+                index = (uint32_t) globalToLocalVertices.size();
+                globalToLocalVertices[globalIndex] = index;
+                elementData[i - range.start] = index;
+                
+                // Add vertex
+                const GLLObjFile::VertexData &vertex = file->getVertexData().at(globalIndex);
+                
+                [vertices appendBytes:vertex.vert length:sizeof(vertex.vert)];
+                [vertices appendBytes:vertex.norm length:sizeof(vertex.norm)];
+                [vertices appendBytes:vertex.color length:sizeof(vertex.color)];
+                float texCoordY = 1.0f - vertex.tex[1]; // Turn tex coords around (because I don't want to swap the whole image)
+                [vertices appendBytes:vertex.tex length:sizeof(vertex.tex[0])];
+                [vertices appendBytes:&texCoordY length:sizeof(vertex.tex[1])];
+                
+                // No bone weights or indices here; OBJs use special shaders that don't use them.
+            }
+            else
+                elementData[i - range.start] = localIndexIter->second;
+        }
+        
+        // Set up vertex attributes
+        GLLVertexAttribAccessorSet *fileAccessors = [[GLLVertexAttribAccessorSet alloc] initWithAccessors:@[
+        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GLLVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, vert) stride:sizeof(GLLObjFile::VertexData)],
+        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GLLVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, norm) stride:sizeof(GLLObjFile::VertexData)],
+        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, color) stride:sizeof(GLLObjFile::VertexData)],
+        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribTexCoord0 layer:0 size:GLLVertexAttribSizeVec2 componentType:GLLVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, tex) stride:sizeof(GLLObjFile::VertexData)]]];
+        
+        NSData *elementDataWrapped = [NSData dataWithBytesNoCopy:elementData length:sizeof(uint32_t) * (range.end - range.start) freeWhenDone:YES];
+
+        // Setup material
+        // Three options: Diffuse, DiffuseSpecular, DiffuseNormal, DiffuseSpecularNormal
+        GLLModelParams *objModelParams = [GLLModelParams parametersForName:@"objFileParameters" error:error];
+        NSAssert(objModelParams, @"obj file parameters must always exist");
+        
+        const GLLMtlFile::Material *material = NULL;
+        for (auto iter = materialFiles.begin(); iter != materialFiles.end(); iter++)
+        {
+            if ((*iter)->hasMaterial(range.materialName))
+            {
+                material = (*iter)->getMaterial(range.materialName);
+                break;
+            }
+        }
+        NSMutableDictionary *textures = [[NSMutableDictionary alloc] init];
+        NSDictionary *renderParameterValues = @{};
+        if (material) {
+            if (material->diffuseTexture) {
+                textures[@"diffuseTexture"] = [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture texCoordSet: 0];
+            }
+            if (material->specularTexture) {
+                textures[@"specularTexture"] = [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->specularTexture texCoordSet: 0];
+            }
+            if (material->normalTexture) {
+                textures[@"bumpTexture"] = [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->normalTexture texCoordSet: 0];
+            }
+            renderParameterValues = @{ @"ambientColor" : [NSColor colorWithCalibratedRed:material->ambient[0] green:material->ambient[1] blue:material->ambient[2] alpha:material->ambient[3]],
+                                            @"diffuseColor" : [NSColor colorWithCalibratedRed:material->diffuse[0] green:material->diffuse[1] blue:material->diffuse[2] alpha:material->diffuse[3]],
+                                            @"specularColor" : [NSColor colorWithCalibratedRed:material->specular[0] green:material->specular[1] blue:material->specular[2] alpha:material->specular[3]],
+                                            @"specularExponent": @(material->shininess)
+                                            };
+        } else {
+            renderParameterValues = @{ @"ambientColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],
+                                            @"diffuseColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],
+                                            @"specularColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],
+                                            @"specularExponent": @(1.0)
+                                            };
+        }
+        
+        GLLModelMeshObj *mesh = [[GLLModelMeshObj alloc] initAsPartOfModel: self fileVertexAccessors:fileAccessors countOfVertices:NSInteger(globalToLocalVertices.size()) elementData:elementDataWrapped textures:textures renderParameterValues:renderParameterValues error:error];
         if (!mesh) return nil;
         mesh.name = [NSString stringWithFormat:NSLocalizedString(@"Mesh %lu", "Mesh name for obj format"), meshNumber++];
         mesh.displayName = mesh.name;

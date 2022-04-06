@@ -15,7 +15,6 @@
 #import "GLLMeshDrawData.h"
 #import "GLLItemMesh.h"
 #import "GLLModel.h"
-#import "GLLModelMesh.h"
 #import "GLLModelProgram.h"
 #import "GLLRenderParameter.h"
 #import "GLLResourceManager.h"

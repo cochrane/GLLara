@@ -12,7 +12,8 @@
 #import "GLLItemBone.h"
 #import "GLLItemMesh+OBJExport.h"
 #import "GLLModelBone.h"
-#import "GLLModelMesh.h"
+
+#import "GLLara-Swift.h"
 
 @implementation GLLItem (OBJExport)
 

@@ -14,7 +14,6 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
-#import "GLLModelMesh.h"
 #import "GLLMeshDrawData.h"
 #import "GLLModelDrawData.h"
 #import "GLLResourceManager.h"
@@ -23,6 +22,8 @@
 #import "GLLUniformBlockBindings.h"
 #import "simd_matrix.h"
 #import "GLLTiming.h"
+
+#import "GLLara-Swift.h"
 
 @interface GLLItemDrawerRun: NSObject
 
@@ -157,7 +158,7 @@
         GLsizei runStart = run.start;
         GLenum elementType = run.state.drawData.elementType;
         if (elementType != 0) {
-            glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, run.state.drawData.elementType, (GLvoid *) (allIndices + runStart), run.length, allBaseVertices + runStart);
+            glMultiDrawElementsBaseVertex(GL_TRIANGLES, allCounts + runStart, elementType, (GLvoid *) (allIndices + runStart), run.length, allBaseVertices + runStart);
         } else {
             glMultiDrawArrays(GL_TRIANGLES, allBaseVertices + runStart, allCounts + runStart, run.length);
         }

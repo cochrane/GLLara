@@ -10,8 +10,9 @@
 
 #import "GLLItem.h"
 #import "GLLItemMesh.h"
-#import "GLLModelMesh.h"
 #import "GLLOptionalPart.h"
+
+#import "GLLara-Swift.h"
 
 @implementation GLLOptionalPartViewController
 

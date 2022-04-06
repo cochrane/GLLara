@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import "GLLModelMesh.h"
+#import "GLLara-Swift.h"
 
 #import "simd_types.h"
 

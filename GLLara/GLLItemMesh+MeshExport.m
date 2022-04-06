@@ -10,7 +10,6 @@
 
 #import "GLLItemMeshTexture.h"
 #import "GLLFloatRenderParameter.h"
-#import "GLLModelMesh.h"
 #import "NSArray+Map.h"
 
 #import "GLLara-Swift.h"
@@ -83,7 +82,7 @@
 {
     XnaLaraShaderDescription *description = [self shaderDescriptionError:error];
     if (!description) return nil;
-    return [self.mesh writeASCIIWithName:[self genericItemNameForShaderDescription:description] texture:[self textureUrlsForDescription:description]];
+    return [self.mesh writeAsciiWithName:[self genericItemNameForShaderDescription:description] texture:[self textureUrlsForDescription:description]];
 }
 - (NSData *)writeBinaryError:(NSError *__autoreleasing*)error;
 {

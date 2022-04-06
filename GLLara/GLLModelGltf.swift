@@ -447,6 +447,52 @@ extension Data {
         _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 4) })
         return result
     }
+    func readInt32(at: Data.Index) throws -> Int32 {
+        guard at + 4 <= self.count else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
+        }
+        var result: Int32 = 0
+        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 4) })
+        return result
+    }
+    func readUInt16(at: Data.Index) throws -> UInt16 {
+        guard at + 2 <= self.count else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
+        }
+        var result: UInt16 = 0
+        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 2) })
+        return result
+    }
+    func readInt16(at: Data.Index) throws -> Int16 {
+        guard at + 2 <= self.count else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
+        }
+        var result: Int16 = 0
+        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 2) })
+        return result
+    }
+    func readUInt8(at: Data.Index) throws -> UInt8 {
+        guard at + 1 <= self.count else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
+        }
+        var result: UInt8 = 0
+        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 1) })
+        return result
+    }
+    func readInt8(at: Data.Index) throws -> Int8 {
+        guard at + 1 <= self.count else {
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
+        }
+        var result: Int8 = 0
+        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 1) })
+        return result
+    }
+    
+    mutating public func append(_ newElement: Float32) {
+        _ = Swift.withUnsafeBytes(of: newElement) {
+            self.append(contentsOf: $0)
+        }
+    }
     
     func checkedSubdata(in range: Range<Data.Index>) throws -> Data {
         if range.max() ?? 0 > self.count {
@@ -599,7 +645,7 @@ class GLLModelGltf: GLLModel {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "Only sets of triangles are supported."])
         }
         
-        let modelMesh = GLLModelMesh(asPartOf: self)!
+        let modelMesh = GLLModelMesh(asPartOfModel: self)
         modelMesh.name = mesh.name ?? "mesh"
         if mesh.primitives.count > 1, let primitiveIndex = mesh.primitives.firstIndex(of: primitive) {
             modelMesh.name = modelMesh.name + " part \(primitiveIndex)"
@@ -607,8 +653,8 @@ class GLLModelGltf: GLLModel {
         modelMesh.displayName = modelMesh.name
         modelMesh.textures = [:]
         modelMesh.shader = self.parameters.shader(base: "glTFDefault")
-        modelMesh.countOfVertices = UInt(finalCountOfVertices)
-        modelMesh.countOfUVLayers = UInt(uvLayers.count)
+        modelMesh.countOfVertices = finalCountOfVertices
+        modelMesh.countOfUVLayers = uvLayers.count
         modelMesh.vertexDataAccessors = GLLVertexAttribAccessorSet(accessors: accessors)
         modelMesh.renderParameterValues = [:]
         
@@ -642,14 +688,14 @@ class GLLModelGltf: GLLModel {
                 throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The element data type is not supported."])
             }
             modelMesh.elementComponentType = GLLVertexAttribComponentType(rawValue:  elements.accessor.componentType)!
-            modelMesh.countOfElements = UInt(elements.accessor.count)
+            modelMesh.countOfElements = elements.accessor.count
         } else {
             modelMesh.elementData = nil
             modelMesh.elementComponentType = .unsignedByte
             modelMesh.countOfElements = 0
         }
         
-        modelMesh.vertexFormat = modelMesh.vertexDataAccessors.vertexFormat(withVertexCount: UInt(modelMesh.countOfVertices), hasIndices: modelMesh.elementData != nil)
+        modelMesh.vertexFormat = modelMesh.vertexDataAccessors!.vertexFormat(withVertexCount: UInt(modelMesh.countOfVertices), hasIndices: modelMesh.elementData != nil)
                             
         self.meshes.append(modelMesh)
     }

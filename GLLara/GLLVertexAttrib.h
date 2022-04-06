@@ -47,6 +47,13 @@ typedef NS_ENUM(NSInteger, GLLVertexAttribComponentType) {
     GLLVertexAttribComponentTypeInt2_10_10_10_Rev = 0x8D9F // Must be vec4
 };
 
+typedef NS_ENUM(NSInteger, GLLCullFaceMode)
+{
+    GLLCullCounterClockWise,
+    GLLCullClockWise,
+    GLLCullNone
+};
+
 @interface GLLVertexAttrib : NSObject<NSCopying>
 
 + (NSUInteger)componentSizeFor:(GLLVertexAttribComponentType)componentType;

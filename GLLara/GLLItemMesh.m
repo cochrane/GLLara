@@ -13,7 +13,6 @@
 #import "GLLItem.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLModel.h"
-#import "GLLModelMesh.h"
 #import "GLLRenderParameter.h"
 #import "NSArray+Map.h"
 

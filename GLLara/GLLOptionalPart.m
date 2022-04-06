@@ -10,7 +10,8 @@
 
 #import "GLLItem.h"
 #import "GLLItemMesh.h"
-#import "GLLModelMesh.h"
+
+#import "GLLara-Swift.h"
 
 @interface GLLOptionalPart() {
     // Whether all meshes are invisible at the start. If yes, it's simply an

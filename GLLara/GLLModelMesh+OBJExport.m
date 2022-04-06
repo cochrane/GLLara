@@ -30,7 +30,7 @@
     GLLVertexAttribAccessor *boneIndexAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribBoneIndices];
     GLLVertexAttribAccessor *boneWeightAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribBoneWeights];
     
-    for (NSUInteger i = 0; i < self.countOfVertices; i++)
+    for (NSInteger i = 0; i < self.countOfVertices; i++)
     {
         const float *position = [positionAccessor elementAt:i];
         const float *normal = [normalAccessor elementAt:i];
@@ -63,7 +63,7 @@
         }
     }
     
-    for (NSUInteger i = 0; i < self.countOfUsedElements; i += 3)
+    for (NSInteger i = 0; i < self.countOfUsedElements; i += 3)
     {
         NSUInteger adjustedElements[3] = {
             [self elementAt:i + 0] + baseIndex + 1,

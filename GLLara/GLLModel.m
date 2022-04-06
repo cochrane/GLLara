@@ -11,7 +11,6 @@
 #import "NSArray+Map.h"
 #import "GLLASCIIScanner.h"
 #import "GLLModelBone.h"
-#import "GLLModelMesh.h"
 #import "GLLModelObj.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
@@ -239,15 +238,9 @@ static NSCache *cachedModels;
     
     NSUInteger numMeshes = [stream readUint32];
     NSMutableArray *meshes = [[NSMutableArray alloc] initWithCapacity:numMeshes];
-    Class meshClass = [GLLModelMesh class];
-    if (genericItemVersion >= 4) {
-        meshClass = [GLLModelMeshV4 class];
-    } else if (genericItemVersion >= 3) {
-        meshClass = [GLLModelMeshV3 class];
-    }
     for (NSUInteger i = 0; i < numMeshes; i++)
     {
-        GLLModelMesh *mesh = [[meshClass alloc] initFromStream:stream partOfModel:self error:error];
+        GLLModelMesh *mesh = [[GLLModelMesh alloc] initFromStream:stream partOfModel:self versionCode: genericItemVersion error:error];
         if (!mesh) return nil;
         [self _addMesh:mesh toArray:meshes];
     }
