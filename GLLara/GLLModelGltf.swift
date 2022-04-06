@@ -695,7 +695,7 @@ class GLLModelGltf: GLLModel {
             modelMesh.countOfElements = 0
         }
         
-        modelMesh.vertexFormat = modelMesh.vertexDataAccessors!.vertexFormat(withVertexCount: UInt(modelMesh.countOfVertices), hasIndices: modelMesh.elementData != nil)
+        modelMesh.vertexFormat = modelMesh.vertexDataAccessors!.vertexFormat(vertexCount: modelMesh.countOfVertices, hasIndices: modelMesh.elementData != nil)
                             
         self.meshes.append(modelMesh)
     }

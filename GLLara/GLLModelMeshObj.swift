@@ -22,7 +22,7 @@ import Foundation
         self.countOfElements = elementData.count / 4
         
         // Previous actions may have disturbed vertex format (because it also depends on count of vertices) so uncache it.
-        vertexFormat = vertexDataAccessors!.vertexFormat(withVertexCount: UInt(countOfVertices), hasIndices: true)
+        vertexFormat = vertexDataAccessors!.vertexFormat(vertexCount: countOfVertices, hasIndices: true)
         
         // Setup material
         // Three options: Diffuse, DiffuseSpecular, DiffuseNormal, DiffuseSpecularNormal

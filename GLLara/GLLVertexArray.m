@@ -9,9 +9,10 @@
 #import "GLLVertexArray.h"
 
 #import "GLLVertexAttribAccessor.h"
-#import "GLLVertexAttribAccessorSet.h"
 #import "GLLVertexFormat.h"
 #import "NSArray+Map.h"
+
+#import "GLLara-Swift.h"
 
 #import <OpenGL/gl3.h>
 
@@ -169,7 +170,7 @@ static inline uint16_t halfFloat(const float *value) {
     for (NSUInteger i = 0; i < numVertices; i++) {
         for (GLLVertexAttribAccessor *writeAccessor in optimizedFormat.accessors) {
         
-            GLLVertexAttribAccessor *readAccessor = [vertexAccessors accessorForSemantic:writeAccessor.attribute.semantic layer:writeAccessor.attribute.layer];
+            GLLVertexAttribAccessor *readAccessor = [vertexAccessors accessorWithSemantic:writeAccessor.attribute.semantic layer:writeAccessor.attribute.layer];
             NSAssert(readAccessor != nil, @"Invalid data");
             
             const void *originalVertex = [readAccessor elementAt:i];

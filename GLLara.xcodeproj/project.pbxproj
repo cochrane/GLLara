@@ -248,6 +248,7 @@
 		5273A3F31630BF55009095F3 /* GLLInvalidASCIIModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5273A3F21630BF55009095F3 /* GLLInvalidASCIIModelTest.m */; };
 		5274446427FCC9C100E5A3FD /* GLLModelMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */; };
 		5274446627FD64F000E5A3FD /* GLLModelMeshObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */; };
+		5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */; };
 		5275F6821607293000978779 /* GLLItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6811607293000978779 /* GLLItemController.m */; };
 		5275F6891607399800978779 /* GLLItemListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6881607399800978779 /* GLLItemListController.m */; };
 		5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6BC1607CD7800978779 /* GLLFloatRenderParameterView.m */; };
@@ -318,7 +319,6 @@
 		52D6A09D15F8BAB0002A0BB4 /* GLLItemMeshState.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshState.m */; };
 		52D8DDA4261CEF570006F0E5 /* GLLVertexAttrib.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D8DDA3261CEF570006F0E5 /* GLLVertexAttrib.m */; };
 		52D8DDAB261D01BD0006F0E5 /* GLLVertexAttribAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D8DDAA261D01BD0006F0E5 /* GLLVertexAttribAccessor.m */; };
-		52D8DDB0261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D8DDAF261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.m */; };
 		52D8DDBE261E06F40006F0E5 /* GLLModelGltf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D8DDBD261E06F40006F0E5 /* GLLModelGltf.swift */; };
 		52D8DDD6261F79E70006F0E5 /* gltfFile.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52D8DDD5261F79E70006F0E5 /* gltfFile.modelparams.plist */; };
 		52D8DDDA26210A200006F0E5 /* DefaultMaterialGLTF.fs in Resources */ = {isa = PBXBuildFile; fileRef = 52D8DDD926210A200006F0E5 /* DefaultMaterialGLTF.fs */; };
@@ -723,6 +723,7 @@
 		5273A3F21630BF55009095F3 /* GLLInvalidASCIIModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLInvalidASCIIModelTest.m; sourceTree = "<group>"; };
 		5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMesh.swift; sourceTree = "<group>"; };
 		5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMeshObj.swift; sourceTree = "<group>"; };
+		5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexAttribAccessorSet.swift; sourceTree = "<group>"; };
 		5275F6801607293000978779 /* GLLItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemController.h; sourceTree = "<group>"; };
 		5275F6811607293000978779 /* GLLItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemController.m; sourceTree = "<group>"; };
 		5275F6871607399800978779 /* GLLItemListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemListController.h; sourceTree = "<group>"; };
@@ -853,8 +854,6 @@
 		52D8DDA3261CEF570006F0E5 /* GLLVertexAttrib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLVertexAttrib.m; sourceTree = "<group>"; };
 		52D8DDA9261D01BD0006F0E5 /* GLLVertexAttribAccessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLVertexAttribAccessor.h; sourceTree = "<group>"; };
 		52D8DDAA261D01BD0006F0E5 /* GLLVertexAttribAccessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLVertexAttribAccessor.m; sourceTree = "<group>"; };
-		52D8DDAE261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLVertexAttribAccessorSet.h; sourceTree = "<group>"; };
-		52D8DDAF261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLVertexAttribAccessorSet.m; sourceTree = "<group>"; };
 		52D8DDBC261E06F30006F0E5 /* GLLara-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GLLara-Bridging-Header.h"; sourceTree = "<group>"; };
 		52D8DDBD261E06F40006F0E5 /* GLLModelGltf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelGltf.swift; sourceTree = "<group>"; };
 		52D8DDD5261F79E70006F0E5 /* gltfFile.modelparams.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = gltfFile.modelparams.plist; sourceTree = "<group>"; };
@@ -1459,8 +1458,7 @@
 				522783311BFA712A002E43FD /* GLLVertexArray.m */,
 				52D8DDA2261CEF570006F0E5 /* GLLVertexAttrib.h */,
 				52D8DDA3261CEF570006F0E5 /* GLLVertexAttrib.m */,
-				52D8DDAE261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.h */,
-				52D8DDAF261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.m */,
+				5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */,
 			);
 			name = "Drawing parts";
 			sourceTree = "<group>";
@@ -1951,6 +1949,7 @@
 			files = (
 				525ACD5815F0F1A700534E7D /* main.m in Sources */,
 				52301E302087E36100B3E331 /* GLLItemOptionalPartMarker.m in Sources */,
+				5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */,
 				525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */,
 				52301E2D2087D91600B3E331 /* GLLOptionalPartController.m in Sources */,
 				52D8DDEC2621D56F0006F0E5 /* GLLRenderParameterDescription.swift in Sources */,
@@ -2010,7 +2009,6 @@
 				5213F8901C0F9EC6007A9EBB /* GLLPreferenceKeys.m in Sources */,
 				526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */,
 				526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */,
-				52D8DDB0261D9FD30006F0E5 /* GLLVertexAttribAccessorSet.m in Sources */,
 				52232EAC1EFC459E007FE9AD /* GLLDropTargetView.m in Sources */,
 				526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */,
 				52301E352087E71400B3E331 /* GLLOptionalPartViewController.m in Sources */,

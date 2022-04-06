@@ -9,8 +9,9 @@
 #import "GLLModelMesh+OBJExport.h"
 
 #import "GLLVertexAttribAccessor.h"
-#import "GLLVertexAttribAccessorSet.h"
 #import "GLLVertexFormat.h"
+
+#import "GLLara-Swift.h"
 
 #import "simd_matrix.h"
 
@@ -23,12 +24,12 @@
     [objString appendFormat:@"g %@\n", [[self.name componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] componentsJoinedByString:@"_"]];
     [objString appendFormat:@"usemtl material%lu\n", self.meshIndex];
     
-    GLLVertexAttribAccessor *positionAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribPosition];
-    GLLVertexAttribAccessor *normalAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribPosition];
-    GLLVertexAttribAccessor *texCoordAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribTexCoord0 layer:0];
-    GLLVertexAttribAccessor *colorAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribColor layer:0];
-    GLLVertexAttribAccessor *boneIndexAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribBoneIndices];
-    GLLVertexAttribAccessor *boneWeightAccessor = [self.vertexDataAccessors accessorForSemantic:GLLVertexAttribBoneWeights];
+    GLLVertexAttribAccessor *positionAccessor = [self.vertexDataAccessors accessorWithSemantic:GLLVertexAttribPosition layer:0];
+    GLLVertexAttribAccessor *normalAccessor = [self.vertexDataAccessors accessorWithSemantic:GLLVertexAttribPosition layer:0];
+    GLLVertexAttribAccessor *texCoordAccessor = [self.vertexDataAccessors accessorWithSemantic:GLLVertexAttribTexCoord0 layer:0];
+    GLLVertexAttribAccessor *colorAccessor = [self.vertexDataAccessors accessorWithSemantic:GLLVertexAttribColor layer:0];
+    GLLVertexAttribAccessor *boneIndexAccessor = [self.vertexDataAccessors accessorWithSemantic:GLLVertexAttribBoneIndices layer:0];
+    GLLVertexAttribAccessor *boneWeightAccessor = [self.vertexDataAccessors accessorWithSemantic:GLLVertexAttribBoneWeights layer:0];
     
     for (NSInteger i = 0; i < self.countOfVertices; i++)
     {

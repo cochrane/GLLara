@@ -79,7 +79,7 @@ import Foundation
             let tangents = calculateTangents(for: fileAccessors)
             vertexDataAccessors = fileAccessors.combining(with: tangents)
         }
-        vertexFormat = vertexDataAccessors!.vertexFormat(withVertexCount: UInt(countOfVertices), hasIndices: true)
+        vertexFormat = vertexDataAccessors!.vertexFormat(vertexCount: countOfVertices, hasIndices: true)
         loadRenderParameters()
     }
     
@@ -211,7 +211,7 @@ import Foundation
         
         let tangents = calculateTangents(for: fileAccessors)
         vertexDataAccessors = fileAccessors.combining(with: tangents)
-        vertexFormat = vertexDataAccessors!.vertexFormat(withVertexCount: UInt(countOfVertices), hasIndices: true)
+        vertexFormat = vertexDataAccessors!.vertexFormat(vertexCount: countOfVertices, hasIndices: true)
         
         guard scanner.isValid else {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
@@ -298,7 +298,7 @@ import Foundation
     @objc func partialMesh(fromSplitter splitter: GLLMeshSplitter) -> GLLModelMesh {
         var newElements = Data()
         
-        let positionData = vertexDataAccessors!.accessor(for: .position)!
+        let positionData = vertexDataAccessors!.accessor(semantic: .position)!
         
         for triangle in 0..<(countOfUsedElements/3) {
             let index = triangle * 3
@@ -374,11 +374,11 @@ import Foundation
     // -- For subclasses
     // Calculates the tangents based on the texture coordinates, and fills them in the correct fields of the data, using the offsets and strides of the file
     @objc func calculateTangents(for vertexData: GLLVertexAttribAccessorSet) -> GLLVertexAttribAccessorSet {
-        let positionData = vertexData.accessor(for: .position)!
-        let normalData = vertexData.accessor(for: .normal)!
+        let positionData = vertexData.accessor(semantic: .position)!
+        let normalData = vertexData.accessor(semantic: .normal)!
         var result: [GLLVertexAttribAccessor] = []
         for layer in 0..<self.countOfUVLayers {
-            let texCoordData = vertexData.accessor(for: .texCoord0, layer: UInt(layer))!
+            let texCoordData = vertexData.accessor(semantic: .texCoord0, layer: layer)!
             
             var tangents = Array(repeating: Float32(0), count: countOfVertices * 4)
             var tangentsU = Array(repeating: Float32(0), count: countOfVertices * 3)
@@ -471,7 +471,7 @@ import Foundation
     // Checks whether all the data is valid and can be used. Should be done before calculateTangents:!
     func validate(vertexData: GLLVertexAttribAccessorSet, indexData: Data?) throws {
         // Check bone indices
-        if let boneIndexData = vertexData.accessor(for: .boneIndices) {
+        if let boneIndexData = vertexData.accessor(semantic: .boneIndices) {
             for i in 0..<countOfVertices {
                 let indices = boneIndexData.element(at: UInt(i)).bindMemory(to: UInt16.self, capacity: 4)
                 for j in 0..<4 {
@@ -502,11 +502,11 @@ import Foundation
     }
     
     @objc func writeAscii(withName name: String, texture textures: [URL]) -> String {
-        let positionAccessor = vertexDataAccessors!.accessor(for: .position)!
-        let normalAccessor = vertexDataAccessors!.accessor(for: .normal)!
-        let colorAccessor = vertexDataAccessors!.accessor(for: .color)!
-        let boneIndexAccessor = vertexDataAccessors!.accessor(for: .boneIndices)
-        let boneWeightAccessor = vertexDataAccessors!.accessor(for: .boneWeights)
+        let positionAccessor = vertexDataAccessors!.accessor(semantic: .position)!
+        let normalAccessor = vertexDataAccessors!.accessor(semantic: .normal)!
+        let colorAccessor = vertexDataAccessors!.accessor(semantic: .color)!
+        let boneIndexAccessor = vertexDataAccessors!.accessor(semantic: .boneIndices)
+        let boneWeightAccessor = vertexDataAccessors!.accessor(semantic: .boneWeights)
         
         var result = ""
         result.append("\(name)\n")
@@ -526,7 +526,7 @@ import Foundation
             result.append("\(colors[0]) \(colors[1]) \(colors[2]) \(colors[3])\n")
             
             for uvLayer in 0..<countOfUVLayers {
-                let texCoordAccessor = vertexDataAccessors!.accessor(for: .texCoord0, layer: UInt(uvLayer))!
+                let texCoordAccessor = vertexDataAccessors!.accessor(semantic: .texCoord0, layer: uvLayer)!
                 
                 let texCoords = texCoordAccessor.element(at: UInt(uvLayer)).bindMemory(to: Float32.self, capacity: 2)
                 result.append("\(texCoords[0]) \(texCoords[1])\n")
@@ -565,11 +565,11 @@ import Foundation
             stream.appendData(vertexDataAccessors!.accessors.first!.dataBuffer)
         } else {
             // Long way round: Combine all the elements, no matter where they're from
-            let positionData = vertexDataAccessors!.accessor(for: .position)!
-            let normalData = vertexDataAccessors!.accessor(for: .normal)!
-            let colorData = vertexDataAccessors!.accessor(for: .color)!
-            let boneIndexData = vertexDataAccessors!.accessor(for: .boneIndices)
-            let boneWeightData = vertexDataAccessors!.accessor(for: .boneWeights)
+            let positionData = vertexDataAccessors!.accessor(semantic: .position)!
+            let normalData = vertexDataAccessors!.accessor(semantic: .normal)!
+            let colorData = vertexDataAccessors!.accessor(semantic: .color)!
+            let boneIndexData = vertexDataAccessors!.accessor(semantic: .boneIndices)
+            let boneWeightData = vertexDataAccessors!.accessor(semantic: .boneWeights)
 
             for i in 0..<countOfVertices {
                 stream.appendData(positionData.elementData(at: UInt(i)))
@@ -577,11 +577,11 @@ import Foundation
                 stream.appendData(normalData.elementData(at: UInt(i)))
                 stream.appendData(colorData.elementData(at: UInt(i)))
                 for layer in 0..<countOfUVLayers {
-                    let texCoordData = vertexDataAccessors!.accessor(for: .texCoord0, layer:UInt(layer))!
+                    let texCoordData = vertexDataAccessors!.accessor(semantic: .texCoord0, layer:layer)!
                     stream.appendData(texCoordData.elementData(at: UInt(i)))
                 }
                 for layer in 0..<countOfUVLayers {
-                    let tangentData = vertexDataAccessors!.accessor(for: .tangent0, layer:UInt(layer))!
+                    let tangentData = vertexDataAccessors!.accessor(semantic: .tangent0, layer:layer)!
                     stream.appendData(tangentData.elementData(at: UInt(i)))
                 }
                 if let boneIndexData = boneIndexData, let boneWeightData = boneWeightData {

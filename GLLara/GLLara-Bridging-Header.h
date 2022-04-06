@@ -7,7 +7,6 @@
 #import "GLLModelBone.h"
 #import "GLLVertexAttrib.h"
 #import "GLLVertexAttribAccessor.h"
-#import "GLLVertexAttribAccessorSet.h"
 #import "GLLVertexFormat.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
