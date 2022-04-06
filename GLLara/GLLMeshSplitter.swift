@@ -9,9 +9,9 @@
 import Foundation
 
 @objc class GLLMeshSplitter: NSObject, Decodable {
-    @objc let min: [Double]
-    @objc let max: [Double]
-    @objc let splitPartName: String
+    let min: [Double]
+    let max: [Double]
+    let splitPartName: String
     
     enum CodingKeys: String, CodingKey {
         case minX

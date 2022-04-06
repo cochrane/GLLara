@@ -277,17 +277,17 @@ import Foundation
         return countOfElements
     }
     
-    @objc var countOfUVLayers: Int = 0
-    @objc var hasBoneWeights: Bool {
+    var countOfUVLayers: Int = 0
+    var hasBoneWeights: Bool {
         return self.model?.hasBones ?? false
     }
-    @objc var hasTangentsInFile: Bool {
+    var hasTangentsInFile: Bool {
         return versionCode < 3
     }
-    @objc var hasVariableBonesPerVertex: Bool {
+    private var hasVariableBonesPerVertex: Bool {
         return versionCode >= 4
     }
-    @objc var colorsAreFloats: Bool {
+    var colorsAreFloats: Bool {
         // For subclasses to override
         return false
     }
