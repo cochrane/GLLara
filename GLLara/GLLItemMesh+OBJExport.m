@@ -8,8 +8,6 @@
 
 #import "GLLItemMesh+OBJExport.h"
 
-#import "GLLModelMesh+OBJExport.h"
-
 #import "GLLara-Swift.h"
 
 @implementation GLLItemMesh (OBJExport)

@@ -75,7 +75,9 @@ static inline vec_float4 simd_flatten(vec_float4 v)
 #if defined(__NEON__)
 #define simd_extract(a, b) vgetq_lane_f32(a, b)
 #else
-#define simd_extract(a, b) ((union float4Union) {a}).scalar[b]
+static inline float simd_extract(vec_float4 a, int b) {
+    return ((union float4Union) {a}).scalar[b];
+}
 #endif
 
 /*!

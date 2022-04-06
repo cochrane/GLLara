@@ -47,7 +47,6 @@
 		522783AD1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 522783AC1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m */; };
 		522783B01C0B7FC0002E43FD /* GLLRenderParameterSelectionPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 522783AF1C0B7FBF002E43FD /* GLLRenderParameterSelectionPlaceholder.m */; };
 		522783B31C0B91EF002E43FD /* GLLItemMeshSelectionPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 522783B21C0B91EF002E43FD /* GLLItemMeshSelectionPlaceholder.m */; };
-		522C4C141609B1F10043FCBA /* GLLModelMesh+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */; };
 		52301E2D2087D91600B3E331 /* GLLOptionalPartController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E2C2087D91600B3E331 /* GLLOptionalPartController.m */; };
 		52301E302087E36100B3E331 /* GLLItemOptionalPartMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E2F2087E36100B3E331 /* GLLItemOptionalPartMarker.m */; };
 		52301E322087E6FC00B3E331 /* GLLOptionalPartView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52301E312087E6FC00B3E331 /* GLLOptionalPartView.xib */; };
@@ -249,6 +248,7 @@
 		5274446427FCC9C100E5A3FD /* GLLModelMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */; };
 		5274446627FD64F000E5A3FD /* GLLModelMeshObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */; };
 		5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */; };
+		5274447027FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446F27FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift */; };
 		5275F6821607293000978779 /* GLLItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6811607293000978779 /* GLLItemController.m */; };
 		5275F6891607399800978779 /* GLLItemListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6881607399800978779 /* GLLItemListController.m */; };
 		5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6BC1607CD7800978779 /* GLLFloatRenderParameterView.m */; };
@@ -475,8 +475,6 @@
 		522783AF1C0B7FBF002E43FD /* GLLRenderParameterSelectionPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderParameterSelectionPlaceholder.m; sourceTree = "<group>"; };
 		522783B11C0B91EF002E43FD /* GLLItemMeshSelectionPlaceholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemMeshSelectionPlaceholder.h; sourceTree = "<group>"; };
 		522783B21C0B91EF002E43FD /* GLLItemMeshSelectionPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemMeshSelectionPlaceholder.m; sourceTree = "<group>"; };
-		522C4C121609B1F10043FCBA /* GLLModelMesh+OBJExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLModelMesh+OBJExport.h"; sourceTree = "<group>"; };
-		522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLModelMesh+OBJExport.m"; sourceTree = "<group>"; };
 		52301E2B2087D91600B3E331 /* GLLOptionalPartController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLOptionalPartController.h; sourceTree = "<group>"; };
 		52301E2C2087D91600B3E331 /* GLLOptionalPartController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLOptionalPartController.m; sourceTree = "<group>"; };
 		52301E2E2087E36100B3E331 /* GLLItemOptionalPartMarker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLItemOptionalPartMarker.h; sourceTree = "<group>"; };
@@ -724,6 +722,7 @@
 		5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMesh.swift; sourceTree = "<group>"; };
 		5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMeshObj.swift; sourceTree = "<group>"; };
 		5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexAttribAccessorSet.swift; sourceTree = "<group>"; };
+		5274446F27FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GLLModelMesh+OBJExport.swift"; sourceTree = "<group>"; };
 		5275F6801607293000978779 /* GLLItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemController.h; sourceTree = "<group>"; };
 		5275F6811607293000978779 /* GLLItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemController.m; sourceTree = "<group>"; };
 		5275F6871607399800978779 /* GLLItemListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemListController.h; sourceTree = "<group>"; };
@@ -1390,8 +1389,6 @@
 				52C9F6151600022B003272E1 /* GLLModelObj.mm */,
 				52C9F619160004E3003272E1 /* GLLObjFile.h */,
 				52C9F618160004E3003272E1 /* GLLObjFile.cpp */,
-				522C4C121609B1F10043FCBA /* GLLModelMesh+OBJExport.h */,
-				522C4C131609B1F10043FCBA /* GLLModelMesh+OBJExport.m */,
 				52474B1A16A73B6C007A0223 /* GLLMtlFile.h */,
 				52474B1916A73B6C007A0223 /* GLLMtlFile.cpp */,
 				52474B1D16A73CB2007A0223 /* GLLStringURLConversion.h */,
@@ -1405,6 +1402,7 @@
 				5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */,
 				5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */,
 				5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */,
+				5274446F27FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift */,
 			);
 			name = "Model Resources";
 			sourceTree = "<group>";
@@ -1995,6 +1993,7 @@
 				52301E502096555E00B3E331 /* GLLDrawingPreferencesViewController.m in Sources */,
 				52C9F61A160004E3003272E1 /* GLLObjFile.cpp in Sources */,
 				526D5AE62060596000DCDE85 /* GLLNotifications.m in Sources */,
+				5274447027FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift in Sources */,
 				52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */,
 				52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */,
 				52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */,
@@ -2005,7 +2004,6 @@
 				5275F6891607399800978779 /* GLLItemListController.m in Sources */,
 				5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */,
 				5275F6C01607D27F00978779 /* GLLColorRenderParameterView.m in Sources */,
-				522C4C141609B1F10043FCBA /* GLLModelMesh+OBJExport.m in Sources */,
 				5213F8901C0F9EC6007A9EBB /* GLLPreferenceKeys.m in Sources */,
 				526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */,
 				526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */,

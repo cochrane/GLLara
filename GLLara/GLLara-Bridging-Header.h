@@ -8,5 +8,6 @@
 #import "GLLVertexAttrib.h"
 #import "GLLVertexAttribAccessor.h"
 #import "GLLVertexFormat.h"
+#import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
