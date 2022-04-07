@@ -42,7 +42,7 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-    
+        
     self.popoverButton.image.template = YES;
     for (NSInteger i = 0; i < self.selectionModeControl.segmentCount; i++)
         [[self.selectionModeControl imageForSegment:i] setTemplate:YES];

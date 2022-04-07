@@ -6,13 +6,12 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import <AppKit/NSView.h>
-#import <AppKit/NSOpenGL.h>
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
+#import <MetalKit/MetalKit.h>
 
 @class GLLCamera;
-@class GLLView;
 @class GLLSceneDrawer;
+@class GLLView;
 
 /*!
  * @abstract Drawer for a single context.
@@ -20,18 +19,15 @@
  * with one view. For actual display, it uses a shared scene drawer. It also
  * handles rendering to files.
  */
-@interface GLLViewDrawer : NSObject
+@interface GLLViewDrawer : NSObject <MTKViewDelegate>
 
-- (id)initWithManagedSceneDrawer:(GLLSceneDrawer *)drawer camera:(GLLCamera *)camera context:(NSOpenGLContext *)openGLContext pixelFormat:(NSOpenGLPixelFormat *)format;
+- (id)initWithManagedSceneDrawer:(GLLSceneDrawer *)drawer camera:(GLLCamera *)camera view:(GLLView *)view;
 
 @property (nonatomic, retain) GLLCamera *camera;
-@property (nonatomic, weak) NSView *view;
-@property (nonatomic, retain) NSOpenGLContext *context;
-@property (nonatomic, retain) NSOpenGLPixelFormat *pixelFormat;
+@property (nonatomic, weak, readonly) GLLView *view;
 @property (nonatomic, readonly) GLLSceneDrawer *sceneDrawer;
 
-- (void)drawShowingSelection:(BOOL)selection;
-- (void)drawWithNewStateShowingSelection:(BOOL)selection;
+- (void)drawShowingSelection:(BOOL)selection resetState:(BOOL)reset;
 
 // Basic support for render to file
 - (void)writeImageToURL:(NSURL *)url fileType:(NSString *)type size:(CGSize)size;

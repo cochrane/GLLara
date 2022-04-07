@@ -11,7 +11,6 @@
 
 @class GLLResourceManager;
 @class GLLItemBone;
-@class GLLView;
 @class GLLDocument;
 
 /*!
@@ -28,8 +27,7 @@
 @property (nonatomic, weak, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) GLLResourceManager *resourceManager;
 
-- (void)drawWithNewStateShowingSelection:(BOOL)showSelection;
-- (void)drawShowingSelection:(BOOL)showSelection;
+- (void)drawShowingSelection:(BOOL)showSelection resetState:(BOOL)reset;
 
 - (void)setSelectedBones:(NSArray<GLLItemBone *> *)selectedBones;
 - (NSArray<GLLItemBone *> *)selectedBones;

@@ -250,6 +250,8 @@
 		5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */; };
 		5274447027FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446F27FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift */; };
 		5274447427FE428000E5A3FD /* GLLModelXNALara.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274447327FE428000E5A3FD /* GLLModelXNALara.swift */; };
+		5274447727FF6C8700E5A3FD /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5274447527FF6C8700E5A3FD /* MetalKit.framework */; };
+		5274447827FF6C8800E5A3FD /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5274447627FF6C8700E5A3FD /* Metal.framework */; };
 		5275F6821607293000978779 /* GLLItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6811607293000978779 /* GLLItemController.m */; };
 		5275F6891607399800978779 /* GLLItemListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6881607399800978779 /* GLLItemListController.m */; };
 		5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6BC1607CD7800978779 /* GLLFloatRenderParameterView.m */; };
@@ -725,6 +727,8 @@
 		5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexAttribAccessorSet.swift; sourceTree = "<group>"; };
 		5274446F27FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GLLModelMesh+OBJExport.swift"; sourceTree = "<group>"; };
 		5274447327FE428000E5A3FD /* GLLModelXNALara.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelXNALara.swift; sourceTree = "<group>"; };
+		5274447527FF6C8700E5A3FD /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		5274447627FF6C8700E5A3FD /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		5275F6801607293000978779 /* GLLItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemController.h; sourceTree = "<group>"; };
 		5275F6811607293000978779 /* GLLItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemController.m; sourceTree = "<group>"; };
 		5275F6871607399800978779 /* GLLItemListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemListController.h; sourceTree = "<group>"; };
@@ -899,7 +903,9 @@
 			files = (
 				52528D711D6ABFF1002E0074 /* QuartzCore.framework in Frameworks */,
 				5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */,
+				5274447827FF6C8800E5A3FD /* Metal.framework in Frameworks */,
 				529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */,
+				5274447727FF6C8700E5A3FD /* MetalKit.framework in Frameworks */,
 				525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
 				529692E615F289EB00DF2FA3 /* OpenGL.framework in Frameworks */,
 			);
@@ -1088,6 +1094,8 @@
 		525ACD4A15F0F1A700534E7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5274447627FF6C8700E5A3FD /* Metal.framework */,
+				5274447527FF6C8700E5A3FD /* MetalKit.framework */,
 				52FC0EA21D6A0E8B00C04885 /* QuartzCore.framework */,
 				5224C8EF15FABC92002A6C76 /* Accelerate.framework */,
 				529692D015F2374F00DF2FA3 /* libz.dylib */,

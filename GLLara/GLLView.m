@@ -40,7 +40,6 @@ static NSMutableCharacterSet *interestingCharacters;
     BOOL inGesture;
     BOOL shiftIsDown;
     BOOL altIsDown;
-    BOOL showSelection;
     
     NSMutableCharacterSet *keysDown;
     
@@ -56,8 +55,6 @@ static NSMutableCharacterSet *interestingCharacters;
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
 - (GLLItemBone *)closestBoneAtScreenPoint:(NSPoint)point fromBones:(id)bones;
 - (void)_updateFromUserSettings;
-
-- (NSOpenGLContext *)_createContext;
 
 @end
 
@@ -82,21 +79,10 @@ const double unitsPerSecond = 0.2;
     didHaveMultisample = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
     currentNumberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
     
-    NSOpenGLContext *context = [self _createContext];
-    
-    if (!context)
-    {
-        NSError *error = [NSError errorWithDomain:self.className code:1 userInfo:@{
-                                                                                   NSLocalizedDescriptionKey : NSLocalizedString(@"Could not create an OpenGL 3.2 Core Profile context.", @"Context creation failed"),
-                                                                                   NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"GLLara requires graphics cards that support OpenGL 3.2 or higher.", @"Context creation failed")
-                                                                                   }];
-        [self presentError:error];
-        return nil;
-    }
-    
-    self.pixelFormat = context.pixelFormat;
-    self.openGLContext = context;
-    self.wantsBestResolutionOpenGLSurface = YES;
+    self.device = MTLCreateSystemDefaultDevice();
+    self.clearColor = MTLClearColorMake(0.5, 0.5, 0.5, 1.0);
+    self.enableSetNeedsDisplay = YES;
+    self.autoResizeDrawable = YES;
     
     // Event handling
     keysDown = [[NSMutableCharacterSet alloc] init];
@@ -113,7 +99,7 @@ const double unitsPerSecond = 0.2;
         });
     }];
     
-    showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
+    self.showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
     
     [self registerForDraggedTypes:@[ (__bridge NSString*) kUTTypeFileURL ]];
     dragDestination = [[GLLItemDragDestination alloc] init];
@@ -129,7 +115,6 @@ const double unitsPerSecond = 0.2;
 
 - (void)unload
 {
-    [self.openGLContext makeCurrentContext];
     _viewDrawer = nil;
     _camera = nil;
 }
@@ -139,8 +124,7 @@ const double unitsPerSecond = 0.2;
     _camera = camera;
     _sceneDrawer = sceneDrawer;
     
-    _viewDrawer = [[GLLViewDrawer alloc] initWithManagedSceneDrawer:sceneDrawer camera:camera context:self.openGLContext pixelFormat:self.pixelFormat];
-    _viewDrawer.view = self;
+    _viewDrawer = [[GLLViewDrawer alloc] initWithManagedSceneDrawer:sceneDrawer camera:camera view: self];
 }
 
 - (void)rotateWithEvent:(NSEvent *)event
@@ -263,28 +247,10 @@ const double unitsPerSecond = 0.2;
 
 - (void)reshape
 {
-    [self.openGLContext makeCurrentContext];
-    
     // Set height and width for camera.
     // Note: This is points, not pixels.
     self.camera.actualWindowWidth = self.bounds.size.width;
     self.camera.actualWindowHeight = self.bounds.size.height;
-    
-    // Pixels are used for glViewport exclusively.
-    NSRect actualPixels = [self convertRectToBacking:[self bounds]];
-    glViewport(0, 0, actualPixels.size.width, actualPixels.size.height);
-    [super reshape];
-}
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-    GLLBeginTiming("Draw");
-    [self.viewDrawer drawShowingSelection:showSelection];
-    GLLBeginTiming("Draw/Flush");
-    [self.openGLContext flushBuffer];
-    GLLEndTiming("Draw/Flush");
-    GLLEndTiming("Draw");
-    //GLLReportTiming();
 }
 
 - (BOOL)acceptsFirstResponder
@@ -299,7 +265,7 @@ const double unitsPerSecond = 0.2;
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    if (showSelection) {
+    if (self.showSelection) {
         // Try to find the bone that corresponds to this event.
         GLLItemBone *bone = [self closestBoneAtScreenPoint:[self convertPoint:theEvent.locationInWindow fromView:nil] fromBones:self.document.allBones];
         
@@ -356,36 +322,14 @@ const double unitsPerSecond = 0.2;
 #pragma mark - Private methods
 
 - (void)_updateFromUserSettings {
-    BOOL stillUsingMSAA = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
-    NSInteger newNumberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
+    BOOL usingMSAA = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
+    NSInteger numberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
     
-    if (stillUsingMSAA != didHaveMultisample || currentNumberOfSamples != newNumberOfSamples) {
-        didHaveMultisample = stillUsingMSAA;
-        currentNumberOfSamples = newNumberOfSamples;
-        
-        // Create a new context
-        NSOpenGLContext *context = [self _createContext];
-        
-        if (!context)
-        {
-            NSError *error = [NSError errorWithDomain:self.className code:1 userInfo:@{
-                                                                                       NSLocalizedDescriptionKey : NSLocalizedString(@"Could not create an OpenGL 3.2 Core Profile context.", @"Context creation failed"),
-                                                                                       NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"GLLara requires graphics cards that support OpenGL 3.2 or higher.", @"Context creation failed")
-                                                                                       }];
-            [self presentError:error];
-            return;
-        }
-        [self.openGLContext clearDrawable];
-        
-        self.pixelFormat = context.pixelFormat;
-        self.openGLContext = context;
-        context.view = self;
-        
-        // Update drawer
-        [self setCamera:_camera sceneDrawer:_sceneDrawer];
-    }
+    NSInteger usedNumberOfSamples = usingMSAA ? numberOfSamples : 1;
     
-    showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
+    self.sampleCount = usedNumberOfSamples;
+    
+    self.showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
 }
 
 - (void)_processEventsStartingWith:(NSEvent *)theEvent;
@@ -546,37 +490,6 @@ const double unitsPerSecond = 0.2;
     }
     
     return closestBone;
-}
-
-- (NSOpenGLContext *)_createContext;
-{
-    NSOpenGLPixelFormatAttribute attribs[] = {
-        NSOpenGLPFADoubleBuffer,
-        NSOpenGLPFADepthSize, 24,
-        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-        NSOpenGLPFAAlphaSize, 8,
-        NSOpenGLPFAColorSize, 24,
-        0, 0, 0, 0, 0, // Multisample
-        0, 0, // Explicit renderer
-        0
-    };
-    NSUInteger usedAttribs = 9;
-    
-    if (didHaveMultisample) {
-        attribs[usedAttribs++] = NSOpenGLPFAMultisample;
-        attribs[usedAttribs++] = NSOpenGLPFASampleBuffers;
-        attribs[usedAttribs++] = 1;
-        attribs[usedAttribs++] = NSOpenGLPFASamples;
-        attribs[usedAttribs++] = (NSOpenGLPixelFormatAttribute) currentNumberOfSamples;
-    }
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefForceSoftwareRendering]) {
-        attribs[usedAttribs++] = NSOpenGLPFARendererID;
-        attribs[usedAttribs++] = kCGLRendererGenericFloatID;
-    }
-    
-    NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
-    NSOpenGLContext *context = [[NSOpenGLContext alloc] initWithFormat:format shareContext:[[GLLResourceManager sharedResourceManager] openGLContext]];
-    return context;
 }
 
 @end

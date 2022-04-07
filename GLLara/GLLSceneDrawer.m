@@ -115,14 +115,12 @@
         [drawer unload];
 }
 
-- (void)drawWithNewStateShowingSelection:(BOOL)showSelection;
+- (void)drawShowingSelection:(BOOL)showSelection resetState:(BOOL)reset;
 {
-    bzero(&state, sizeof(state));
-    [self drawShowingSelection:showSelection];
-}
-
-- (void)drawShowingSelection:(BOOL)showSelection;
-{
+    if (reset) {
+        bzero(&state, sizeof(state));
+    }
+    
     GLLBeginTiming("Draw/Solid");
 	// 1st pass: Draw items that do not need blending. They use shaders without alpha test
 	for (GLLItemDrawer *drawer in itemDrawers)

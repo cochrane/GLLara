@@ -8,8 +8,6 @@
 
 #import "GLLViewDrawer.h"
 
-#import <OpenGL/gl3.h>
-
 #import "NSColor+Color32Bit.h"
 #import "GLLAmbientLight.h"
 #import "GLLCamera.h"
@@ -31,9 +29,12 @@ struct GLLLightBlock
 @interface GLLViewDrawer ()
 {
 	NSArray<NSManagedObject *> *lights; // Always one ambient and three directional ones. Don't watch for mutations.
+    
+    id<MTLDevice> device;
+    id<MTLCommandQueue> commandQueue;
 	
-	GLuint transformBuffer;
-	GLuint lightBuffer;
+    id<MTLBuffer> transformBuffer;
+    id<MTLBuffer> lightBuffer;
 	BOOL needsUpdateMatrices;
 	BOOL needsUpdateLights;
 }
@@ -45,13 +46,15 @@ struct GLLLightBlock
 
 @implementation GLLViewDrawer
 
-- (id)initWithManagedSceneDrawer:(GLLSceneDrawer *)drawer camera:(GLLCamera *)camera context:(NSOpenGLContext *)openGLContext pixelFormat:(NSOpenGLPixelFormat *)format;
+- (id)initWithManagedSceneDrawer:(GLLSceneDrawer *)drawer camera:(GLLCamera *)camera view:(GLLView *)view;
 {
 	if (!(self = [super init])) return nil;
 
-	_context = openGLContext;
-    [_context makeCurrentContext];
-	_pixelFormat = format;
+    _view = view;
+    device = view.device;
+    commandQueue = [device newCommandQueue];
+    _view.delegate = self;
+    
 	_camera = camera;
 	_sceneDrawer = drawer;
 	__weak id weakSelf = self;
@@ -62,9 +65,7 @@ struct GLLLightBlock
 	lights = [[NSMutableArray alloc] initWithCapacity:4];
 	
 	// Prepare light buffer.
-	glGenBuffers(1, &lightBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(struct GLLLightBlock), NULL, GL_STREAM_DRAW);
+    lightBuffer = [device newBufferWithLength:sizeof(struct GLLLightBlock) options:MTLResourceStorageModeShared];
 	
 	// Load existing lights
 	NSFetchRequest *allLightsRequest = [[NSFetchRequest alloc] init];
@@ -81,22 +82,20 @@ struct GLLLightBlock
 		[lights[i + 1] addObserver:self forKeyPath:@"uniformBlock" options:0 context:NULL];
 	
 	// Transform buffer
-	glGenBuffers(1, &transformBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(mat_float16), NULL, GL_STREAM_DRAW);
+    transformBuffer = [device newBufferWithLength:sizeof(mat_float16) options:MTLResourceStorageModeShared];
 	[self.camera addObserver:self forKeyPath:@"viewProjectionMatrix" options:0 context:0];
 	
-	// Other necessary render state. Thanks to Core Profile, that got cut down a lot.
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_MULTISAMPLE);
-	glClearColor(0.2, 0.2, 0.2, 0.0);
-	
+	// Other necessary render state. Thanks to Metal, that got cut down a lot.
+    view.clearColor = MTLClearColorMake(0.2, 0.2, 0.2, 1.0);
+    
+    /*glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
 	glBlendColor(0, 0, 0, 1.0);
 	glBlendEquationSeparate(GL_FUNC_ADD, GL_MAX);
 	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA, GL_DST_ALPHA);
 	
 	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
+	glFrontFace(GL_CW);*/
 	
 	needsUpdateMatrices = YES;
 	needsUpdateLights = YES;
@@ -133,34 +132,16 @@ struct GLLLightBlock
 	}
 }
 
-- (void)setView:(NSView *)view
+- (void)drawShowingSelection:(BOOL)selection resetState:(BOOL)reset;
 {
-	_view = view;
-	_view.needsDisplay = YES;
-}
-
-- (void)drawShowingSelection:(BOOL)selection;
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+    /*
 	if (needsUpdateMatrices) [self _updateMatrices];
 	if (needsUpdateLights) [self _updateLights];
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
 	
-	[self.sceneDrawer drawShowingSelection:selection];
-}
-
-- (void)drawWithNewStateShowingSelection:(BOOL)selection;
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    if (needsUpdateMatrices) [self _updateMatrices];
-    if (needsUpdateLights) [self _updateLights];
-    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
-    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
-    
-    [self.sceneDrawer drawWithNewStateShowingSelection:selection];
+    [self.sceneDrawer drawShowingSelection:selection reset:reset];
+     */
 }
 
 #pragma mark - Image rendering
@@ -201,6 +182,7 @@ struct GLLLightBlock
 
 - (void)renderImageOfSize:(CGSize)size toColorBuffer:(void *)colorData;
 {
+    /*
 	// What is the largest tile that can be rendered?
 	[self.context makeCurrentContext];
 	GLint maxTextureSize, maxRenderbufferSize;
@@ -302,7 +284,7 @@ struct GLLLightBlock
 			// Enable blend for entire scene. That way, new alpha are correctly combined with values in the buffer (instead of stupidly overwriting them), giving the rendered image a correct alpha channel.
 			glEnable(GL_BLEND);
 			
-			[self drawWithNewStateShowingSelection:NO];
+			[self drawShowingSelection:NO resetState:YES];
 			
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			
@@ -325,6 +307,7 @@ struct GLLLightBlock
 	
 	needsUpdateMatrices = YES;
 	self.view.needsDisplay = YES;
+     */
 }
 
 #pragma mark - Private methods
@@ -346,9 +329,9 @@ struct GLLLightBlock
 		GLLDirectionalLight *light = (GLLDirectionalLight *) lights[i+1];
 		lightData.lights[i] = light.uniformBlock;
 	}
-	
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(lightData), &lightData);
+    
+    memcpy(lightBuffer.contents, &lightData, sizeof(lightData));
+    [lightBuffer didModifyRange:NSMakeRange(0, sizeof(lightData))];
 	
 	needsUpdateLights = NO;
 }
@@ -358,10 +341,34 @@ struct GLLLightBlock
 	mat_float16 viewProjection = self.camera.viewProjectionMatrix;
 	
 	// Set the view projection matrix.
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(viewProjection), &viewProjection);
+    memcpy(transformBuffer.contents, &viewProjection, sizeof(viewProjection));
+    [transformBuffer didModifyRange:NSMakeRange(0, sizeof(viewProjection))];
 	
 	needsUpdateMatrices = NO;
+}
+
+#pragma mark - MTKViewDelegate
+
+- (void)mtkView:(MTKView *)view drawableSizeWillChange:(CGSize)size {
+    
+}
+
+- (void)drawInMTKView:(MTKView *)view {
+    MTLRenderPassDescriptor *renderPassDescriptor = view.currentRenderPassDescriptor;
+    if (!renderPassDescriptor) {
+        return;
+    }
+    
+    id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
+    
+    id<MTLRenderCommandEncoder> commandEncoder = [commandBuffer renderCommandEncoderWithDescriptor: renderPassDescriptor];
+    
+    [self drawShowingSelection: self.view.showSelection resetState: NO];
+    
+    [commandEncoder endEncoding];
+    id<MTLDrawable> drawable = view.currentDrawable;
+    [commandBuffer presentDrawable:drawable];
+    [commandBuffer commit];
 }
 
 @end

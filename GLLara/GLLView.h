@@ -6,9 +6,7 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-// Cocoa.h conflicts with gl3.h, because it includes AppKit, which includes Core Image, which includes Core Video, which includes gl.h. A bug is filed as rdar://12227623
-#import <AppKit/NSOpenGL.h>
-#import <AppKit/NSOpenGLView.h>
+#import <MetalKit/MetalKit.h>
 
 @class GLLCamera;
 @class GLLDocument;
@@ -23,7 +21,7 @@
  *
  * The view does not render automatically. Instead, the Scene Drawer does a setNeedsDisplay: when the scene has changed.
  */
-@interface GLLView : NSOpenGLView
+@interface GLLView : MTKView
 
 - (void)setCamera:(GLLCamera *)camera sceneDrawer:(GLLSceneDrawer *)sceneDrawer;
 
@@ -31,6 +29,7 @@
 @property (nonatomic, weak) GLLDocument *document;
 @property (nonatomic, retain, readonly) GLLSceneDrawer *sceneDrawer;
 @property (nonatomic, retain, readonly) GLLViewDrawer *viewDrawer;
+@property (nonatomic, assign) BOOL showSelection;
 
 - (void)unload;
 
