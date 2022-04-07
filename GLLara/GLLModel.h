@@ -35,11 +35,6 @@ extern NSString *GLLModelLoadingErrorDomain;
  */
 + (id)cachedModelFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
 
-- (id)initBinaryFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
-- (id)initBinaryFromData:(NSData *)data baseURL:(NSURL *)baseURL parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
-- (id)initASCIIFromFile:(NSURL *)file parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
-- (id)initASCIIFromString:(NSString *)source baseURL:(NSURL *)baseURL parent:(GLLModel *)parent error:(NSError *__autoreleasing*)error;
-
 @property (nonatomic, copy) NSURL *baseURL;
 
 @property (nonatomic, retain) GLLModelParams *parameters;

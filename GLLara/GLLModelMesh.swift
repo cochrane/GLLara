@@ -361,14 +361,11 @@ import Foundation
     @objc var renderParameterValues: [String: AnyObject] = [:]
     
     private static func normalize(_ array: inout [Float32], from: Int = 0) {
-        var lengthSquared: Float32 = 0
-        for i in 0..<3 {
-            lengthSquared += array[from + i]
-        }
+        let lengthSquared = array[from + 0] * array[from + 0] + array[from + 1] * array[from + 1] + array[from + 2] * array[from + 2]
         let inverseLength = 1.0/sqrt(lengthSquared)
-        for i in 0..<3 {
-            array[from + i] *= inverseLength
-        }
+        array[from + 0] *= inverseLength
+        array[from + 1] *= inverseLength
+        array[from + 2] *= inverseLength
     }
     
     // -- For subclasses
@@ -385,7 +382,8 @@ import Foundation
             var tangentsV = Array(repeating: Float32(0), count: countOfVertices * 3)
             
             // First pass: Sum up the tangents for each vector. We can assume that at the start of this method, the tangent for every vertex is (0, 0, 0, 0)^t.
-            for index in stride(from: 0, to: countOfUsedElements, by: 3) {
+            for triangle in 0..<countOfUsedElements/3 {
+                let index = triangle * 3
                 let elements = [
                     element(at: index + 0),
                     element(at: index + 1),
