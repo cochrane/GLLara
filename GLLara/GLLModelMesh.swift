@@ -19,7 +19,7 @@ import Foundation
         self.model = model
     }
     
-    @objc init(fromStream stream: TRInDataStream, partOfModel model: GLLModel, versionCode: Int) throws {
+    init(fromStream stream: TRInDataStream, partOfModel model: GLLModel, versionCode: Int) throws {
         self.versionCode = versionCode
         super.init()
         self.model = model
@@ -83,7 +83,7 @@ import Foundation
         loadRenderParameters()
     }
     
-    @objc init(fromScanner scanner: GLLASCIIScanner, partOfModel model: GLLModel) throws {
+    init(fromScanner scanner: GLLASCIIScanner, partOfModel model: GLLModel) throws {
         super.init()
         self.model = model
         
@@ -295,7 +295,7 @@ import Foundation
     /*
      * XNALara insists that some meshes need to be split; apparently only for cosmetic reasons. I shall oblige, but in a way that is not specific to exactly one thing, thank you very much. Note that this mesh keeps the bone indices of the original.
      */
-    @objc func partialMesh(fromSplitter splitter: GLLMeshSplitter) -> GLLModelMesh {
+    func partialMesh(fromSplitter splitter: GLLMeshSplitter) -> GLLModelMesh {
         var newElements = Data()
         
         let positionData = vertexDataAccessors!.accessor(semantic: .position)!
@@ -370,7 +370,7 @@ import Foundation
     
     // -- For subclasses
     // Calculates the tangents based on the texture coordinates, and fills them in the correct fields of the data, using the offsets and strides of the file
-    @objc func calculateTangents(for vertexData: GLLVertexAttribAccessorSet) -> GLLVertexAttribAccessorSet {
+    func calculateTangents(for vertexData: GLLVertexAttribAccessorSet) -> GLLVertexAttribAccessorSet {
         let positionData = vertexData.accessor(semantic: .position)!
         let normalData = vertexData.accessor(semantic: .normal)!
         var result: [GLLVertexAttribAccessor] = []

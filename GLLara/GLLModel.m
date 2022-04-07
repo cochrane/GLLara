@@ -19,13 +19,6 @@
 
 NSString *GLLModelLoadingErrorDomain = @"GLL Model loading error domain";
 
-@interface GLLModel ()
-
-// Adds a single mesh to the object, splitting it up into multiple parts if necessary (as specified by the model parameters). Also takes care to add it to the mesh groups and so on.
-- (void)_addMesh:(GLLModelMesh *)mesh toArray:(NSMutableArray *)array;
-
-@end
-
 static NSCache *cachedModels;
 
 @implementation GLLModel
@@ -113,23 +106,6 @@ static NSCache *cachedModels;
     return [self.bones firstObjectMatching:^BOOL(GLLModelBone *bone){
         return [bone.name isEqual:name];
     }];
-}
-
-#pragma mark - Private methods
-
-- (void)_addMesh:(GLLModelMesh *)mesh toArray:(NSMutableArray *)array;
-{
-    GLLMeshParams *params = [self.parameters paramsForMesh:mesh.name];
-    if (params.splitters.count > 0)
-    {
-        [array addObjectsFromArray:[params.splitters map:^(GLLMeshSplitter *splitter) {
-            return [mesh partialMeshFromSplitter:splitter];
-        }]];
-    }
-    else
-    {
-        [array addObject:mesh];
-    }
 }
 
 @end
