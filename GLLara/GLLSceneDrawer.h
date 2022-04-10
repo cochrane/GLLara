@@ -8,6 +8,7 @@
 
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
+#import <Metal/Metal.h>
 
 @class GLLResourceManager;
 @class GLLItemBone;
@@ -27,7 +28,7 @@
 @property (nonatomic, weak, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) GLLResourceManager *resourceManager;
 
-- (void)drawShowingSelection:(BOOL)showSelection resetState:(BOOL)reset;
+- (void)drawShowingSelection:(BOOL)showSelection into:(id<MTLRenderCommandEncoder>)commandEncoder  lightsBuffer:(id<MTLBuffer>)lights transformBuffer:(id<MTLBuffer>)transform;
 
 - (void)setSelectedBones:(NSArray<GLLItemBone *> *)selectedBones;
 - (NSArray<GLLItemBone *> *)selectedBones;

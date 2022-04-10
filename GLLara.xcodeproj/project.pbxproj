@@ -183,7 +183,6 @@
 		52474B1B16A73B6C007A0223 /* GLLMtlFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52474B1916A73B6C007A0223 /* GLLMtlFile.cpp */; };
 		52474B1E16A73CB2007A0223 /* GLLStringURLConversion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52474B1C16A73CB2007A0223 /* GLLStringURLConversion.cpp */; };
 		52474B2116A7518C007A0223 /* GLLBasicOBJModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 52474B2016A7518C007A0223 /* GLLBasicOBJModelTest.m */; };
-		524BEAFF1611250C00EA061D /* GLLSkeletonDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */; };
 		524BEB0316120FCF00EA061D /* GLLSkeletonProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */; };
 		524BEB06161211E400EA061D /* Skeleton.fs in Resources */ = {isa = PBXBuildFile; fileRef = 524BEB04161211E400EA061D /* Skeleton.fs */; };
 		524BEB07161211E400EA061D /* Skeleton.vs in Resources */ = {isa = PBXBuildFile; fileRef = 524BEB05161211E400EA061D /* Skeleton.vs */; };
@@ -252,6 +251,8 @@
 		5274447427FE428000E5A3FD /* GLLModelXNALara.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274447327FE428000E5A3FD /* GLLModelXNALara.swift */; };
 		5274447727FF6C8700E5A3FD /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5274447527FF6C8700E5A3FD /* MetalKit.framework */; };
 		5274447827FF6C8800E5A3FD /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5274447627FF6C8700E5A3FD /* Metal.framework */; };
+		5274447A2802DCC200E5A3FD /* GLLSkeletonDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527444792802DCC200E5A3FD /* GLLSkeletonDrawer.swift */; };
+		5274447E280300F400E5A3FD /* Skeleton.metal in Sources */ = {isa = PBXBuildFile; fileRef = 5274447D280300F400E5A3FD /* Skeleton.metal */; };
 		5275F6821607293000978779 /* GLLItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6811607293000978779 /* GLLItemController.m */; };
 		5275F6891607399800978779 /* GLLItemListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6881607399800978779 /* GLLItemListController.m */; };
 		5275F6BD1607CD7900978779 /* GLLFloatRenderParameterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5275F6BC1607CD7800978779 /* GLLFloatRenderParameterView.m */; };
@@ -633,8 +634,6 @@
 		52474B1D16A73CB2007A0223 /* GLLStringURLConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLStringURLConversion.h; sourceTree = "<group>"; };
 		52474B1F16A7518C007A0223 /* GLLBasicOBJModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBasicOBJModelTest.h; sourceTree = "<group>"; };
 		52474B2016A7518C007A0223 /* GLLBasicOBJModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBasicOBJModelTest.m; sourceTree = "<group>"; };
-		524BEAFD1611250C00EA061D /* GLLSkeletonDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonDrawer.h; sourceTree = "<group>"; };
-		524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSkeletonDrawer.m; sourceTree = "<group>"; };
 		524BEB0116120FCF00EA061D /* GLLSkeletonProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonProgram.h; sourceTree = "<group>"; };
 		524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSkeletonProgram.m; sourceTree = "<group>"; };
 		524BEB04161211E400EA061D /* Skeleton.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Skeleton.fs; sourceTree = "<group>"; };
@@ -729,6 +728,10 @@
 		5274447327FE428000E5A3FD /* GLLModelXNALara.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelXNALara.swift; sourceTree = "<group>"; };
 		5274447527FF6C8700E5A3FD /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		5274447627FF6C8700E5A3FD /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		527444792802DCC200E5A3FD /* GLLSkeletonDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLSkeletonDrawer.swift; sourceTree = "<group>"; };
+		5274447B2802E0A000E5A3FD /* GLLSkeletonDrawerVertexFormat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonDrawerVertexFormat.h; sourceTree = "<group>"; };
+		5274447C2802FA3700E5A3FD /* GLLResourceIDs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLResourceIDs.h; sourceTree = "<group>"; };
+		5274447D280300F400E5A3FD /* Skeleton.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Skeleton.metal; sourceTree = "<group>"; };
 		5275F6801607293000978779 /* GLLItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemController.h; sourceTree = "<group>"; };
 		5275F6811607293000978779 /* GLLItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemController.m; sourceTree = "<group>"; };
 		5275F6871607399800978779 /* GLLItemListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemListController.h; sourceTree = "<group>"; };
@@ -929,6 +932,7 @@
 				5213263A1602B1AA00787AA1 /* Square.vs */,
 				524BEB04161211E400EA061D /* Skeleton.fs */,
 				524BEB05161211E400EA061D /* Skeleton.vs */,
+				5274447D280300F400E5A3FD /* Skeleton.metal */,
 			);
 			name = "Internal use only";
 			sourceTree = "<group>";
@@ -1505,8 +1509,9 @@
 				5296942715F4139300DF2FA3 /* GLLItemDrawer.m */,
 				52D6A09B15F8BAB0002A0BB4 /* GLLItemMeshState.h */,
 				52D6A09C15F8BAB0002A0BB4 /* GLLItemMeshState.m */,
-				524BEAFD1611250C00EA061D /* GLLSkeletonDrawer.h */,
-				524BEAFE1611250C00EA061D /* GLLSkeletonDrawer.m */,
+				527444792802DCC200E5A3FD /* GLLSkeletonDrawer.swift */,
+				5274447B2802E0A000E5A3FD /* GLLSkeletonDrawerVertexFormat.h */,
+				5274447C2802FA3700E5A3FD /* GLLResourceIDs.h */,
 			);
 			name = "Drawing posed items";
 			sourceTree = "<group>";
@@ -2022,7 +2027,6 @@
 				52232EAC1EFC459E007FE9AD /* GLLDropTargetView.m in Sources */,
 				526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */,
 				52301E352087E71400B3E331 /* GLLOptionalPartViewController.m in Sources */,
-				524BEAFF1611250C00EA061D /* GLLSkeletonDrawer.m in Sources */,
 				52D8DDDE2621CFF10006F0E5 /* GLLMeshSplitter.swift in Sources */,
 				524BEB0316120FCF00EA061D /* GLLSkeletonProgram.m in Sources */,
 				524BEB0D1612551800EA061D /* NSColor+Color32Bit.m in Sources */,
@@ -2036,8 +2040,10 @@
 				528934DE16A2281900F05312 /* GLLSettingsListController.m in Sources */,
 				52B5630A1EFD8681008C6CAD /* GLLItemDragDestination.m in Sources */,
 				52D8DDAB261D01BD0006F0E5 /* GLLVertexAttribAccessor.m in Sources */,
+				5274447E280300F400E5A3FD /* Skeleton.metal in Sources */,
 				528934E816A29B8300F05312 /* GLLLightController.m in Sources */,
 				52301E382089372200B3E331 /* GLLOptionalPart.m in Sources */,
+				5274447A2802DCC200E5A3FD /* GLLSkeletonDrawer.swift in Sources */,
 				52D8DDE62621D47E0006F0E5 /* GLLTextureDescription.swift in Sources */,
 				52E864B926B144120005AA82 /* (null) in Sources */,
 				52D8DE022621F5910006F0E5 /* GLLModelParams.swift in Sources */,

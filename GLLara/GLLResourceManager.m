@@ -41,7 +41,6 @@ struct GLLAlphaTestBlock
 - (NSData *)_dataForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
 - (NSString *)_utf8StringForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
 - (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)(void))supplier;
-- (id)_makeWithContext:(id(^)(void))supplier;
 
 @end
 
@@ -61,42 +60,28 @@ static GLLResourceManager *sharedManager;
 {
     if (!(self = [super init])) return nil;
     
-    NSOpenGLPixelFormatAttribute attribs[] = {
-        NSOpenGLPFAOpenGLProfile, (NSOpenGLPixelFormatAttribute) NSOpenGLProfileVersion3_2Core,
-        0, 0, 0
-    };
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefForceSoftwareRendering]) {
-        attribs[2] = NSOpenGLPFARendererID;
-        attribs[3] = kCGLRendererGenericFloatID;
-    }
-    
-    NSOpenGLPixelFormat *format = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
-    _openGLContext = [[NSOpenGLContext alloc] initWithFormat:format shareContext:nil];
-    [_openGLContext makeCurrentContext];
-    NSAssert(_openGLContext, @"Should have an OpenGL context here");
+    _metalDevice = MTLCreateSystemDefaultDevice();
     
     shaders = [[NSMutableDictionary alloc] init];
     programs = [[NSMutableDictionary alloc] init];
     textures = [[NSMutableDictionary alloc] init];
     models = [[NSMutableDictionary alloc] init];
     
+    _library = [_metalDevice newDefaultLibrary];
+    _pixelFormat = MTLPixelFormatBGRA8Unorm;
+    
     // Alpha test buffers
-    glGenBuffers(1, &_alphaTestPassGreaterBuffer);
-    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestPassGreaterBuffer);
     struct GLLAlphaTestBlock alphaBlock = { .mode = 1, .reference = .9 };
-    glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
-    glGenBuffers(1, &_alphaTestPassLessBuffer);
-    glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, _alphaTestPassLessBuffer);
-    alphaBlock.mode = 2;
-    glBufferData(GL_UNIFORM_BUFFER, sizeof(alphaBlock), &alphaBlock, GL_STATIC_DRAW);
+    _alphaTestPassGreaterBuffer = [_metalDevice newBufferWithBytes:&alphaBlock length:sizeof(alphaBlock) options:MTLResourceStorageModeManaged];
+    
+    struct GLLAlphaTestBlock alphaBlockPassLess = { .mode = 2, .reference = .9 };
+    _alphaTestPassLessBuffer = [_metalDevice newBufferWithBytes:&alphaBlockPassLess length:sizeof(alphaBlock) options:MTLResourceStorageModeManaged];
     
     return self;
 }
 
 - (void)dealloc;
 {
-    [self.openGLContext makeCurrentContext];
-    
     [models.allValues makeObjectsPerformSelector:@selector(unload)];
     [textures.allValues makeObjectsPerformSelector:@selector(unload)];
     [programs.allValues makeObjectsPerformSelector:@selector(unload)];
@@ -166,45 +151,30 @@ static GLLResourceManager *sharedManager;
 {
     if (!_squareProgram)
     {
-        _squareProgram = [self _makeWithContext:^{
-            return [[GLLSquareProgram alloc] initWithResourceManager:self error:NULL];
-        }];
+        _squareProgram = [[GLLSquareProgram alloc] initWithResourceManager:self error:NULL];
     }
     return _squareProgram;
 }
 
-- (GLuint)squareVertexArray
+- (id<MTLBuffer>)squareVertexArray
 {
     if (!_squareVertexArray)
     {
-        [self _makeWithContext:^{
-            glGenVertexArrays(1, &self->_squareVertexArray);
-            glBindVertexArray(self->_squareVertexArray);
-            GLuint squareVBO;
-            glGenBuffers(1, &squareVBO);
-            glBindBuffer(GL_ARRAY_BUFFER, squareVBO);
-            float coords[] = {
-                -1.0f, -1.0f,
-                1.0f, -1.0f,
-                -1.0f, 1.0f,
-                1.0f, 1.0f
-            };
-            glBufferData(GL_ARRAY_BUFFER, sizeof(coords), coords, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat [2]), NULL);
-            return (id) nil;
-        }];
+        float coords[] = {
+            -1.0f, -1.0f,
+            1.0f, -1.0f,
+            -1.0f, 1.0f,
+            1.0f, 1.0f
+        };
+        _squareVertexArray = [_metalDevice newBufferWithBytes:coords length:sizeof(coords) options:MTLResourceStorageModePrivate];
     }
     return _squareVertexArray;
 }
 
 - (GLLProgram *)skeletonProgram
 {
-    if (!_skeletonProgram)
-    {
-        _skeletonProgram = [self _makeWithContext:^{
-            return [[GLLSkeletonProgram alloc] initWithResourceManager:self error:NULL];
-        }];
+    if (!_skeletonProgram) {
+        _skeletonProgram = [[GLLSkeletonProgram alloc] initWithResourceManager:self error:NULL];
     }
     return _skeletonProgram;
 }
@@ -213,11 +183,7 @@ static GLLResourceManager *sharedManager;
 
 - (NSInteger)maxAnisotropyLevel
 {
-    return [[self _makeWithContext:^{
-        GLint maxAnisotropyLevel;
-        glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropyLevel);
-        return @(maxAnisotropyLevel);
-    }] integerValue];
+    return 16; // TODO
 }
 
 #pragma mark - Testing
@@ -237,22 +203,13 @@ static GLLResourceManager *sharedManager;
 
 #pragma mark - Private methods
 
-- (id)_makeWithContext:(id(^)(void))supplier;
-{
-    NSOpenGLContext *previous = [NSOpenGLContext currentContext];
-    [self.openGLContext makeCurrentContext];
-    id result = supplier();
-    [previous makeCurrentContext];
-    return result;
-}
-
 - (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)(void))supplier;
 {
     NSParameterAssert(key);
     id result = dictionary[key];
     if (!result)
     {
-        result = [self _makeWithContext:supplier];
+        result = supplier();
         dictionary[key] = result;
     }
     return result;

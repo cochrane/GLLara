@@ -245,14 +245,6 @@ const double unitsPerSecond = 0.2;
     self.camera.latitude -= deltaY;
 }
 
-- (void)reshape
-{
-    // Set height and width for camera.
-    // Note: This is points, not pixels.
-    self.camera.actualWindowWidth = self.bounds.size.width;
-    self.camera.actualWindowHeight = self.bounds.size.height;
-}
-
 - (BOOL)acceptsFirstResponder
 {
     return YES;
@@ -322,12 +314,12 @@ const double unitsPerSecond = 0.2;
 #pragma mark - Private methods
 
 - (void)_updateFromUserSettings {
-    BOOL usingMSAA = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
-    NSInteger numberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
+    //BOOL usingMSAA = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
+    //NSInteger numberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
     
-    NSInteger usedNumberOfSamples = usingMSAA ? numberOfSamples : 1;
+    //NSInteger usedNumberOfSamples = usingMSAA ? numberOfSamples : 1;
     
-    self.sampleCount = usedNumberOfSamples;
+    self.sampleCount = 1;//usedNumberOfSamples;
     
     self.showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
 }

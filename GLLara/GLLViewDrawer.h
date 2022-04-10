@@ -27,7 +27,7 @@
 @property (nonatomic, weak, readonly) GLLView *view;
 @property (nonatomic, readonly) GLLSceneDrawer *sceneDrawer;
 
-- (void)drawShowingSelection:(BOOL)selection resetState:(BOOL)reset;
+- (void)drawShowingSelection:(BOOL)selection into:(id<MTLRenderCommandEncoder>)commandEncoder;
 
 // Basic support for render to file
 - (void)writeImageToURL:(NSURL *)url fileType:(NSString *)type size:(CGSize)size;

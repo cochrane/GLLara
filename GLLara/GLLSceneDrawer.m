@@ -27,8 +27,9 @@
 #import "GLLView.h"
 #import "simd_matrix.h"
 #import "simd_project.h"
-#import "GLLSkeletonDrawer.h"
 #import "GLLTiming.h"
+
+#import "GLLara-Swift.h"
 
 @interface GLLSceneDrawer ()
 {
@@ -36,7 +37,6 @@
 	id managedObjectContextObserver;
     id drawStateNotificationObserver;
 	GLLSkeletonDrawer *skeletonDrawer;
-	GLLDrawState state;
 }
 
 - (void)_addDrawerForItem:(GLLItem *)item;
@@ -51,21 +51,17 @@
 
 	_document = document;
 	_resourceManager = [GLLResourceManager sharedResourceManager];
-	[_resourceManager.openGLContext makeCurrentContext];
 	
 	itemDrawers = [[NSMutableArray alloc] init];
 	
-	NSEntityDescription *itemEntity = [NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
+	/*NSEntityDescription *itemEntity = [NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
 	
 	// Set up loading of future items and destroying items. Also update view.
 	// Store self as weak in the block, so it does not retain this.
 	__block __weak id weakSelf = self;
 	managedObjectContextObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSManagedObjectContextObjectsDidChangeNotification object:self.managedObjectContext queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
 		GLLSceneDrawer *self = weakSelf;
-		
-		// Ensure proper OpenGL context
-		[self->_resourceManager.openGLContext makeCurrentContext];
-		
+				
 		NSMutableArray *toRemove = [[NSMutableArray alloc] init];
 		for (GLLItemDrawer *drawer in self->itemDrawers)
 		{
@@ -90,7 +86,6 @@
 	}];
     
     drawStateNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:GLLDrawStateChangedNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-        bzero(&self->state, sizeof(self->state));
         [self notifyRedraw];
     }];
 	
@@ -100,7 +95,7 @@
 	
 	NSArray *allItems = [self.managedObjectContext executeFetchRequest:allItemsRequest error:NULL];
 	for (GLLItem *item in allItems)
-		[self _addDrawerForItem:item];
+		[self _addDrawerForItem:item];*/
 	
 	skeletonDrawer = [[GLLSkeletonDrawer alloc] initWithResourceManager:self.resourceManager];
 	
@@ -115,16 +110,12 @@
         [drawer unload];
 }
 
-- (void)drawShowingSelection:(BOOL)showSelection resetState:(BOOL)reset;
+- (void)drawShowingSelection:(BOOL)showSelection into:(id<MTLRenderCommandEncoder>)commandEncoder  lightsBuffer:(id<MTLBuffer>)lights transformBuffer:(id<MTLBuffer>)transform
 {
-    if (reset) {
-        bzero(&state, sizeof(state));
-    }
-    
-    GLLBeginTiming("Draw/Solid");
+    /*GLLBeginTiming("Draw/Solid");
 	// 1st pass: Draw items that do not need blending. They use shaders without alpha test
 	for (GLLItemDrawer *drawer in itemDrawers)
-        [drawer drawSolidWithState:&state];
+        [drawer drawSolidInto:commandEncoder];
     GLLEndTiming("Draw/Solid");
     GLLBeginTiming("Draw/AlphaOp");
 	
@@ -134,7 +125,7 @@
 	glEnable(GL_BLEND);
 	
 	for (GLLItemDrawer *drawer in itemDrawers)
-		[drawer drawAlphaWithState:&state];
+		[drawer drawAlphaInto:commandEncoder];
     
     GLLEndTiming("Draw/AlphaOp");
     GLLBeginTiming("Draw/AlphaTrans");
@@ -143,22 +134,17 @@
 	
 	glDepthMask(GL_FALSE);
 	for (GLLItemDrawer *drawer in itemDrawers)
-        [drawer drawAlphaWithState:&state];
-    GLLEndTiming("Draw/AlphaTrans");
+        [drawer drawAlphaInto:commandEncoder];
+    GLLEndTiming("Draw/AlphaTrans");*/
 	
-	if (showSelection)
+	if (showSelection || true)
     {
         GLLBeginTiming("Draw/Skel");
-		glDisable(GL_DEPTH_TEST);
-		glPointSize(10);
-		[skeletonDrawer drawWithState:&state];
-        glEnable(GL_DEPTH_TEST);
+        
+        [skeletonDrawer drawInto:commandEncoder];
+        
         GLLEndTiming("Draw/Skel");
 	}
-	
-	// Special note: Ensure that depthMask is true before doing the next glClear. Otherwise results may be quite funny indeed.
-	glDepthMask(GL_TRUE);
-	glDisable(GL_BLEND);
 }
 
 - (NSManagedObjectContext *)managedObjectContext {

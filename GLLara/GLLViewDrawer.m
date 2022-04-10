@@ -19,6 +19,8 @@
 #import "simd_matrix.h"
 #import "simd_project.h"
 
+#import "GLLResourceIDs.h"
+
 struct GLLLightBlock
 {
 	vec_float4 cameraLocation;
@@ -65,7 +67,7 @@ struct GLLLightBlock
 	lights = [[NSMutableArray alloc] initWithCapacity:4];
 	
 	// Prepare light buffer.
-    lightBuffer = [device newBufferWithLength:sizeof(struct GLLLightBlock) options:MTLResourceStorageModeShared];
+    lightBuffer = [device newBufferWithLength:sizeof(struct GLLLightBlock) options:MTLResourceStorageModeManaged];
 	
 	// Load existing lights
 	NSFetchRequest *allLightsRequest = [[NSFetchRequest alloc] init];
@@ -82,20 +84,11 @@ struct GLLLightBlock
 		[lights[i + 1] addObserver:self forKeyPath:@"uniformBlock" options:0 context:NULL];
 	
 	// Transform buffer
-    transformBuffer = [device newBufferWithLength:sizeof(mat_float16) options:MTLResourceStorageModeShared];
+    transformBuffer = [device newBufferWithLength:sizeof(mat_float16) options:MTLResourceStorageModeManaged];
 	[self.camera addObserver:self forKeyPath:@"viewProjectionMatrix" options:0 context:0];
 	
 	// Other necessary render state. Thanks to Metal, that got cut down a lot.
     view.clearColor = MTLClearColorMake(0.2, 0.2, 0.2, 1.0);
-    
-    /*glEnable(GL_DEPTH_TEST);
-    glEnable(GL_MULTISAMPLE);
-	glBlendColor(0, 0, 0, 1.0);
-	glBlendEquationSeparate(GL_FUNC_ADD, GL_MAX);
-	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA, GL_DST_ALPHA);
-	
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);*/
 	
 	needsUpdateMatrices = YES;
 	needsUpdateLights = YES;
@@ -132,16 +125,15 @@ struct GLLLightBlock
 	}
 }
 
-- (void)drawShowingSelection:(BOOL)selection resetState:(BOOL)reset;
+- (void)drawShowingSelection:(BOOL)selection into:(id<MTLRenderCommandEncoder>)commandEncoder;
 {
-    /*
 	if (needsUpdateMatrices) [self _updateMatrices];
 	if (needsUpdateLights) [self _updateLights];
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
-	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingLights, lightBuffer);
+    
+    [commandEncoder setVertexBuffer:transformBuffer offset:0 atIndex:GLLVertexInputIndexTransforms];
+    [commandEncoder setVertexBuffer:lightBuffer offset:0 atIndex:GLLVertexInputIndexLights];
 	
-    [self.sceneDrawer drawShowingSelection:selection reset:reset];
-     */
+    [self.sceneDrawer drawShowingSelection:selection into:commandEncoder lightsBuffer:lightBuffer transformBuffer:transformBuffer];
 }
 
 #pragma mark - Image rendering
@@ -350,7 +342,8 @@ struct GLLLightBlock
 #pragma mark - MTKViewDelegate
 
 - (void)mtkView:(MTKView *)view drawableSizeWillChange:(CGSize)size {
-    
+    self.camera.actualWindowWidth = size.width;
+    self.camera.actualWindowHeight = size.height;
 }
 
 - (void)drawInMTKView:(MTKView *)view {
@@ -363,7 +356,23 @@ struct GLLLightBlock
     
     id<MTLRenderCommandEncoder> commandEncoder = [commandBuffer renderCommandEncoderWithDescriptor: renderPassDescriptor];
     
-    [self drawShowingSelection: self.view.showSelection resetState: NO];
+    
+    
+    /*glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
+    glBlendColor(0, 0, 0, 1.0);
+    glBlendEquationSeparate(GL_FUNC_ADD, GL_MAX);
+    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA, GL_DST_ALPHA);
+    
+    glEnable(GL_CULL_FACE);
+    glFrontFace(GL_CW);*/
+    
+    [commandEncoder setTriangleFillMode:MTLTriangleFillModeFill];
+    [commandEncoder setFrontFacingWinding:MTLWindingClockwise];
+    [commandEncoder setCullMode:MTLCullModeBack];
+    [commandEncoder setBlendColorRed:0.0f green:0.0f blue:0.0f alpha:1.0f];
+    
+    [self drawShowingSelection: self.view.showSelection into: commandEncoder];
     
     [commandEncoder endEncoding];
     id<MTLDrawable> drawable = view.currentDrawable;

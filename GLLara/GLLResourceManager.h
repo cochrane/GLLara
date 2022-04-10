@@ -9,7 +9,7 @@
 #import <AppKit/NSOpenGL.h>
 #import <Foundation/Foundation.h>
 
-#import <OpenGL/gltypes.h>
+#import <Metal/Metal.h>
 
 @class GLLProgram;
 @class GLLModelProgram;
@@ -32,7 +32,7 @@
 
 @property (nonatomic, readonly, assign) NSInteger maxAnisotropyLevel;
 
-@property (nonatomic, readonly) NSOpenGLContext *openGLContext;
+@property (nonatomic, readonly) id<MTLDevice> metalDevice;
 
 - (GLLModelDrawData *)drawDataForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 - (GLLModelProgram *)programForDescriptor:(GLLShaderData *)description error:(NSError *__autoreleasing*)error;
@@ -43,10 +43,12 @@
 
 @property (nonatomic) GLLProgram *skeletonProgram;
 @property (nonatomic) GLLProgram *squareProgram;
-@property (nonatomic) GLuint squareVertexArray;
+@property (nonatomic) id<MTLBuffer> squareVertexArray;
 
-@property (nonatomic) GLuint alphaTestPassGreaterBuffer;
-@property (nonatomic) GLuint alphaTestPassLessBuffer;
+@property (nonatomic) id<MTLBuffer> alphaTestPassGreaterBuffer;
+@property (nonatomic) id<MTLBuffer> alphaTestPassLessBuffer;
+@property (nonatomic, readonly) id<MTLLibrary> library;
+@property (nonatomic, readonly) MTLPixelFormat pixelFormat;
 
 // Specifically used for testing
 - (void)clearInternalCaches;
