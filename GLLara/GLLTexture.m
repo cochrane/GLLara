@@ -43,7 +43,7 @@ static NSOperationQueue *imageInformationQueue = nil;
 - (BOOL)_loadCGCompatibleTexture:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (BOOL)_loadPDFTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (void)_loadAndFreePremultipliedARGBData:(void *)data;
-- (void)_loadAndFreeUnpremultipliedData:(void *)unpremultipliedBufferData order:(enum GLLTextureOrder)textureOrder;
+- (void)_loadAndFreeUnpremultipliedData:(vImage_Buffer *)unpremultipliedBufferData order:(enum GLLTextureOrder)textureOrder;
 - (void)_loadDefaultTexture;
 
 - (BOOL)_loadDataError:(NSError *__autoreleasing*)error;
@@ -304,6 +304,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     }
     
     _texture = [self.device newTextureWithDescriptor:descriptor];
+    _texture.label = self.url.lastPathComponent;
     
     for (NSUInteger i = 0; i < file.numMipmaps; i++) {
         NSUInteger levelWidth = self.width >> i;
@@ -424,7 +425,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         return NO;
     }
     
-    [self _loadAndFreeUnpremultipliedData:buffer.data order:GLLTextureOrderARGB];
+    [self _loadAndFreeUnpremultipliedData:&buffer order:GLLTextureOrderARGB];
     
     return YES;
 }
@@ -538,7 +539,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     
     vImageVerticalReflect_ARGB8888(&input, &output, 0);
     
-    [self _loadAndFreeUnpremultipliedData:tgaData order:GLLTextureOrderBGRA];
+    [self _loadAndFreeUnpremultipliedData:&output order:GLLTextureOrderBGRA];
     
     return YES;
 }
@@ -551,10 +552,10 @@ static NSOperationQueue *imageInformationQueue = nil;
     vImageUnpremultiplyData_ARGB8888(&input, &output, 0);
     free(bufferData);
     
-    [self _loadAndFreeUnpremultipliedData:unpremultipliedBufferData order:GLLTextureOrderARGB];
+    [self _loadAndFreeUnpremultipliedData:&output order:GLLTextureOrderARGB];
 }
 
-- (void)_loadAndFreeUnpremultipliedData:(void *)unpremultipliedBufferData order:(enum GLLTextureOrder)order; {
+- (void)_loadAndFreeUnpremultipliedData:(vImage_Buffer *)unpremultipliedBufferData order:(enum GLLTextureOrder)order; {
     int numberOfLevels = numMipmapLevels(self.width, self.height);
     
     MTLTextureDescriptor* descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatBGRA8Unorm width:self.width height:self.height mipmapped:YES];
@@ -573,14 +574,15 @@ static NSOperationQueue *imageInformationQueue = nil;
         descriptor.swizzle = channels;
     }
     _texture = [_device newTextureWithDescriptor:descriptor];
+    _texture.label = self.url.lastPathComponent;
     
     //glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, (GLsizei) self.width, (GLsizei) self.height, GL_BGRA, rgbaOrArgb ? GL_UNSIGNED_BYTE : GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
     
     MTLRegion region = MTLRegionMake2D(0, 0, self.width, self.height);
-    [_texture replaceRegion:region mipmapLevel:0 withBytes:unpremultipliedBufferData bytesPerRow:self.width * 4];
+    [_texture replaceRegion:region mipmapLevel:0 withBytes:unpremultipliedBufferData->data bytesPerRow:unpremultipliedBufferData->rowBytes];
     
     // Load mipmaps
-    vImage_Buffer lastBuffer = { .height = self.height, .width = self.width, .rowBytes = 4*self.width, .data = unpremultipliedBufferData };
+    vImage_Buffer lastBuffer = *unpremultipliedBufferData;
     uint8_t *tempBuffer = NULL;
     size_t tempBufferSize = 0;
     for (int i = 1; i < numberOfLevels; i++) {
@@ -623,6 +625,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     MTLTextureDescriptor *descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA8Unorm width:self.width height:self.height mipmapped:YES];
     
     _texture = [self.device newTextureWithDescriptor:descriptor];
+    _texture.label = @"default-texture";
     MTLRegion region = MTLRegionMake2D(0, 0, self.width, self.height);
     
     [self.texture replaceRegion:region mipmapLevel:0 withBytes:defaultTexture bytesPerRow:2*4];
