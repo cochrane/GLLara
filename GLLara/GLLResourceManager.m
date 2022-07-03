@@ -77,6 +77,9 @@ static GLLResourceManager *sharedManager;
     samplerDescriptor.minFilter = MTLSamplerMinMagFilterLinear;
     samplerDescriptor.magFilter = MTLSamplerMinMagFilterLinear;
     samplerDescriptor.mipFilter = MTLSamplerMipFilterLinear;
+    samplerDescriptor.rAddressMode = MTLSamplerAddressModeRepeat;
+    samplerDescriptor.sAddressMode = MTLSamplerAddressModeRepeat;
+    samplerDescriptor.tAddressMode = MTLSamplerAddressModeRepeat;
     samplerDescriptor.supportArgumentBuffers = YES;
     samplerDescriptor.maxAnisotropy = 4; // TODO Update this on User setting changes
     
