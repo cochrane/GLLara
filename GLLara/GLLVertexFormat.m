@@ -18,17 +18,10 @@
     
     _attributes = [attributes copy];
     
-    if (hasIndices) {
-        if (countOfVertices < UINT8_MAX)
-            _numElementBytes = 1;
-        else if (countOfVertices < UINT16_MAX)
-            _numElementBytes = 2;
-        else if (countOfVertices < UINT32_MAX)
-            _numElementBytes = 4;
-        else
-            [NSException raise:NSInvalidArgumentException format:@"%li vertices outside allowed range", countOfVertices];
-    } else {
-        _numElementBytes = 0;
+    _hasIndices = hasIndices;
+    _indexType = MTLIndexTypeUInt32;
+    if (hasIndices && countOfVertices < UINT16_MAX) {
+        _indexType = MTLIndexTypeUInt16;
     }
     
     return self;
@@ -36,7 +29,7 @@
 
 - (NSUInteger)hash
 {
-    return _numElementBytes ^ [_attributes hash];
+    return _indexType ^ [_attributes hash];
 }
 
 - (BOOL)isEqual:(id)object
@@ -45,7 +38,7 @@
         return NO;
     
     GLLVertexFormat *format = (GLLVertexFormat *) object;
-    return format.numElementBytes == self.numElementBytes && [format.attributes isEqual:self.attributes];
+    return format.indexType == self.indexType && format.hasIndices == self.hasIndices && [format.attributes isEqual:self.attributes];
 }
 
 - (NSInteger)stride
@@ -55,10 +48,6 @@
         stride += attribute.sizeInBytes;
     }
     return stride;
-}
-
-- (BOOL)hasIndices {
-    return _numElementBytes > 0;
 }
 
 - (id)copy

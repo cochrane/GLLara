@@ -17,7 +17,7 @@ struct RasterizerData {
 };
 
 vertex RasterizerData skeletonVertex(uint vertexID [[ vertex_id ]],
-                                     constant float4x4 & viewProjection [[ buffer(GLLVertexInputIndexTransforms) ]],
+                                     constant float4x4 & viewProjection [[ buffer(GLLVertexInputIndexViewProjection) ]],
                                      const device GLLSkeletonDrawerVertex * vertices [[ buffer(GLLVertexInputIndexVertices) ]]) {
     RasterizerData out;
     

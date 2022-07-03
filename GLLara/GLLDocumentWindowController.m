@@ -8,6 +8,8 @@
 
 #import "GLLDocumentWindowController.h"
 
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
 #import "NSArray+Map.h"
 #import "GLLAmbientLight.h"
 #import "GLLAmbientLightViewController.h"
@@ -118,7 +120,7 @@
     
     [self _setRightHandController:noSelectionViewController];
     
-    [self.sourceView registerForDraggedTypes:@[ (__bridge NSString*) kUTTypeFileURL ]];
+    [self.sourceView registerForDraggedTypes:@[ [UTTypeFileURL identifier] ]];
     
     dragDestination = [[GLLItemDragDestination alloc] init];
     dragDestination.document = self.document;

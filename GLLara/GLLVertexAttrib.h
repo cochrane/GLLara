@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Metal/Metal.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,28 +26,6 @@ typedef NS_ENUM(NSInteger, GLLVertexAttribSemantic)
     GLLVertexAttribPadding
 };
 
-typedef NS_ENUM(NSInteger, GLLVertexAttribSize) {
-    GLLVertexAttribSizeScalar,
-    GLLVertexAttribSizeVec2,
-    GLLVertexAttribSizeVec3,
-    GLLVertexAttribSizeVec4,
-    GLLVertexAttribSizeMat2,
-    GLLVertexAttribSizeMat3,
-    GLLVertexAttribSizeMat4
-};
-
-typedef NS_ENUM(NSInteger, GLLVertexAttribComponentType) {
-    GLLVertexAttribComponentTypeByte = 5120,
-    GLLVertexAttribComponentTypeUnsignedByte = 5121,
-    GLLVertexAttribComponentTypeShort = 5122,
-    GLLVertexAttribComponentTypeUnsignedShort = 5123,
-    GLLVertexAttribComponentTypeInt = 5124,
-    GLLVertexAttribComponentTypeUnsignedInt = 5125,
-    GLLVertexAttribComponentTypeFloat = 5126,
-    GLLVertexAttribComponentTypeHalfFloat = 0x140B,
-    GLLVertexAttribComponentTypeInt2_10_10_10_Rev = 0x8D9F // Must be vec4
-};
-
 typedef NS_ENUM(NSInteger, GLLCullFaceMode)
 {
     GLLCullCounterClockWise,
@@ -56,17 +35,16 @@ typedef NS_ENUM(NSInteger, GLLCullFaceMode)
 
 @interface GLLVertexAttrib : NSObject<NSCopying>
 
-+ (NSInteger)componentSizeFor:(GLLVertexAttribComponentType)componentType;
-
-- (instancetype)initWithSemantic:(GLLVertexAttribSemantic)semantic layer:(NSInteger) layer size:(GLLVertexAttribSize)size componentType:(GLLVertexAttribComponentType)type;
+- (instancetype)initWithSemantic:(GLLVertexAttribSemantic)semantic layer:(NSInteger) layer format:(MTLVertexFormat) format;
 
 @property (nonatomic, readonly, assign) GLLVertexAttribSemantic semantic;
 @property (nonatomic, readonly, assign) NSInteger layer;
-@property (nonatomic, readonly, assign) GLLVertexAttribSize size;
-@property (nonatomic, readonly, assign) GLLVertexAttribComponentType type;
 
 @property (nonatomic, readonly, assign) NSInteger numberOfElements;
 @property (nonatomic, readonly, assign) NSInteger sizeInBytes;
+
+@property (nonatomic, readonly, assign) NSInteger identifier;
+@property (nonatomic, readonly, assign) MTLVertexFormat mtlFormat;
 
 // Sort according to semantic and layer. Size and type are ignored
 - (NSComparisonResult)compare:(GLLVertexAttrib *)other;

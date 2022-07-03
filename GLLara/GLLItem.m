@@ -371,11 +371,10 @@
 
 - (void)_updateTransform;
 {
-    mat_float16 scale = (mat_float16) { { self.scaleX, 0.0f, 0.0f, 0.0f }, { 0.0f, self.scaleY, 0.0f, 0.0f }, { 0.0f, 0.0f, self.scaleZ, 0.0f }, { 0.0f, 0.0f, 0.0f, 1.0f } };
-    
+    mat_float16 scale = matrix_from_diagonal(simd_make(self.scaleX, self.scaleY, self.scaleZ, 1.0f));
     mat_float16 rotateAndTranslate = simd_mat_euler(simd_make(self.rotationX, self.rotationY, self.rotationZ, 0.0f), simd_make(self.positionX, self.positionY, self.positionZ, 1.0f));
     
-    modelTransform = simd_mat_mul(rotateAndTranslate, scale);
+    modelTransform = simd_mul(rotateAndTranslate, scale);
     [self.rootBones makeObjectsPerformSelector:@selector(updateGlobalTransform)];
 }
 

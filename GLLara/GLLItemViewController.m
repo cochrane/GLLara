@@ -8,6 +8,8 @@
 
 #import "GLLItemViewController.h"
 
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
 #import "GLLItem.h"
 #import "GLLItemMesh.h"
 #import "GLLItemMeshTexture.h"
@@ -38,7 +40,7 @@
 - (void)loadPose:(id)sender
 {
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-    panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.pose" ];
+    panel.allowedContentTypes = @[ [UTType typeWithIdentifier:@"net.sourceforge.xnalara.pose"] ];
     [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result){
         if (result != NSModalResponseOK) return;
         
@@ -72,7 +74,7 @@
     GLLItem *item = self.selectedItems[0];
     
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-    panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj" ];
+    panel.allowedContentTypes = @[ [UTType typeWithIdentifier:@"net.sourceforge.xnalara.mesh"], [UTType typeWithFilenameExtension:@"obj"] ];
     [panel beginSheetModalForWindow:self.view.window completionHandler:^(NSInteger result){
         if (result != NSModalResponseOK) return;
         

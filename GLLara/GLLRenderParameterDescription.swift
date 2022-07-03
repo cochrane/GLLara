@@ -44,6 +44,14 @@ import Foundation
         }
     }
     
+    init(titleKey: String, descriptionKey: String, type: GLLRenderParameterType = .float, min: Double = 0.0, max: Double = 0.0) {
+        self.min = min
+        self.max = max
+        self.type = type
+        self.localizedTitle = Bundle.main.localizedString(forKey: titleKey, value: nil, table: "RenderParameters")
+        self.localizedDescription = Bundle.main.localizedString(forKey: descriptionKey, value: nil, table: "RenderParameters")
+    }
+    
     override var hash: Int {
         var hash = Int(min)
         hash = 31 * hash + Int(max)

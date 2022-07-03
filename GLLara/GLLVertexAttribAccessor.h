@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface GLLVertexAttribAccessor : NSObject
 
-- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)semantic layer:(NSInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData *__nullable)dataBuffer offset:(NSInteger)dataOffset stride:(NSInteger)stride;
+- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)semantic layer:(NSInteger) layer format:(MTLVertexFormat)format dataBuffer:(NSData *__nullable)dataBuffer offset:(NSInteger)dataOffset stride:(NSInteger)stride;
 
 - (instancetype)initWithAttribute:(GLLVertexAttrib *)attribute dataBuffer:(NSData *__nullable)dataBuffer offset:(NSInteger)dataOffset stride:(NSInteger)stride;
 

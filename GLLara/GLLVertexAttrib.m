@@ -8,38 +8,29 @@
 
 #import "GLLVertexAttrib.h"
 
-@interface GLLVertexAttrib()
-
-@property (nonatomic, readonly, assign) NSInteger baseSize;
-
-@end
-
 @implementation GLLVertexAttrib
 
-- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)attrib layer:(NSInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type;
+- (instancetype)initWithSemantic:(GLLVertexAttribSemantic)semantic layer:(NSInteger) layer format:(MTLVertexFormat) format;
 {
     if (!(self = [super init])) {
         return nil;
     }
-        
-    NSAssert(type != GLLVertexAttribComponentTypeInt2_10_10_10_Rev || size == GLLVertexAttribSizeVec4, @"2_10_10_10_Rev only allowed with Vec4");
     
-    _semantic = attrib;
+    _semantic = semantic;
     _layer = layer;
-    _size = size;
-    _type = type;
+    _mtlFormat = format;
     
     return self;
 }
 
 - (NSUInteger)hash
 {
-    return _semantic ^ _layer ^ _size ^ _type;
+    return _semantic ^ _layer ^ _mtlFormat;
 }
 
 - (BOOL)isEqualFormat:(GLLVertexAttrib *)format
 {
-    return format.semantic == self.semantic && format.layer == self.layer && format.size == self.size && format.type == self.type;
+    return format.semantic == self.semantic && format.layer == self.layer && format.mtlFormat == self.mtlFormat;
 }
 
 - (BOOL)isEqual:(id)object
@@ -48,7 +39,7 @@
         return NO;
     
     GLLVertexAttrib *format = (GLLVertexAttrib *) object;
-    return format.semantic == self.semantic && format.layer == self.layer && format.size == self.size && format.type == self.type;
+    return format.semantic == self.semantic && format.layer == self.layer && format.mtlFormat == self.mtlFormat;
 }
 
 - (id)copy
@@ -61,55 +52,85 @@
     return self;
 }
 
-+ (NSInteger)componentSizeFor:(GLLVertexAttribComponentType)componentType {
-    switch (componentType) {
-        case GLLVertexAttribComponentTypeByte:
-        case GLLVertexAttribComponentTypeUnsignedByte:
-            return 1;
-        case GLLVertexAttribComponentTypeShort:
-        case GLLVertexAttribComponentTypeUnsignedShort:
-        case GLLVertexAttribComponentTypeHalfFloat:
-            return 2;
-        case GLLVertexAttribComponentTypeFloat:
-        case GLLVertexAttribComponentTypeInt:
-        case GLLVertexAttribComponentTypeUnsignedInt:
-            return 4;
-        case GLLVertexAttribComponentTypeInt2_10_10_10_Rev:
-            return 1;
-        default:
-            return 0;
-    }
-}
-
-- (NSInteger)baseSize {
-    return [[self class] componentSizeFor:self.type];
-}
-
-- (NSInteger)numberOfElements {
-    switch (self.size) {
-        case GLLVertexAttribSizeScalar:
-            return 1;
-        case GLLVertexAttribSizeVec2:
-            return 2;
-        case GLLVertexAttribSizeVec3:
-            return 3;
-        case GLLVertexAttribSizeVec4:
-        case GLLVertexAttribSizeMat2:
-            return 4;
-        case GLLVertexAttribSizeMat3:
-            return 9;
-        case GLLVertexAttribSizeMat4:
-            return 16;
-        default:
-            return 0;
-    }
-}
-
 - (NSInteger)sizeInBytes {
-    if (self.type == GLLVertexAttribComponentTypeInt2_10_10_10_Rev) {
-        return 4;
+    switch (self.mtlFormat) {
+        case MTLVertexFormatInvalid:
+            return 0;
+        case MTLVertexFormatChar:
+        case MTLVertexFormatUChar:
+        case MTLVertexFormatCharNormalized:
+        case MTLVertexFormatUCharNormalized:
+            return 1;
+        case MTLVertexFormatChar2:
+        case MTLVertexFormatUChar2:
+        case MTLVertexFormatChar2Normalized:
+        case MTLVertexFormatUChar2Normalized:
+            return 2;
+        case MTLVertexFormatChar3:
+        case MTLVertexFormatUChar3:
+        case MTLVertexFormatChar3Normalized:
+        case MTLVertexFormatUChar3Normalized:
+            return 3;
+        case MTLVertexFormatChar4:
+        case MTLVertexFormatUChar4:
+        case MTLVertexFormatChar4Normalized:
+        case MTLVertexFormatUChar4Normalized:
+            return 4;
+        case MTLVertexFormatShort:
+        case MTLVertexFormatUShort:
+        case MTLVertexFormatShortNormalized:
+        case MTLVertexFormatUShortNormalized:
+            return 2;
+        case MTLVertexFormatShort2:
+        case MTLVertexFormatUShort2:
+        case MTLVertexFormatShort2Normalized:
+        case MTLVertexFormatUShort2Normalized:
+            return 4;
+        case MTLVertexFormatShort3:
+        case MTLVertexFormatUShort3:
+        case MTLVertexFormatShort3Normalized:
+        case MTLVertexFormatUShort3Normalized:
+            return 6;
+        case MTLVertexFormatShort4:
+        case MTLVertexFormatUShort4:
+        case MTLVertexFormatShort4Normalized:
+        case MTLVertexFormatUShort4Normalized:
+            return 8;
+        case MTLVertexFormatHalf:
+            return 2;
+        case MTLVertexFormatHalf2:
+            return 4;
+        case MTLVertexFormatHalf3:
+            return 6;
+        case MTLVertexFormatHalf4:
+            return 8;
+        case MTLVertexFormatFloat:
+            return 4;
+        case MTLVertexFormatFloat2:
+            return 8;
+        case MTLVertexFormatFloat3:
+            return 12;
+        case MTLVertexFormatFloat4:
+            return 16;
+        case MTLVertexFormatInt:
+        case MTLVertexFormatUInt:
+            return 4;
+        case MTLVertexFormatInt2:
+        case MTLVertexFormatUInt2:
+            return 8;
+        case MTLVertexFormatInt3:
+        case MTLVertexFormatUInt3:
+            return 12;
+        case MTLVertexFormatInt4:
+        case MTLVertexFormatUInt4:
+            return 16;
+        case MTLVertexFormatInt1010102Normalized:
+            return 4;
+        case MTLVertexFormatUInt1010102Normalized:
+            return 4;
+        case MTLVertexFormatUChar4Normalized_BGRA:
+            return 4;
     }
-    return self.baseSize * self.numberOfElements;
 }
 
 - (NSComparisonResult)compare:(GLLVertexAttrib *)other; {
@@ -125,6 +146,38 @@
         return NSOrderedDescending;
     }
     return NSOrderedSame;
+}
+
+- (NSInteger)identifier {
+    // TODO Needs to match XnaLaraShader attributes
+    switch (self.semantic) {
+        case GLLVertexAttribPosition:
+            return 0;
+        case GLLVertexAttribNormal:
+            return 1;
+        case GLLVertexAttribColor:
+            return 2;
+        case GLLVertexAttribTexCoord0:
+            if (self.layer == 0) {
+                return 3;
+            } else {
+                return 4;
+            }
+        case GLLVertexAttribTangent0:
+            return 5;
+        case GLLVertexAttribBoneIndices:
+            return 6;
+        case GLLVertexAttribBoneWeights:
+            return 7;
+            
+        default:
+            return 100;
+    }
+    /*if (self.semantic == GLLVertexAttribTangent0 || self.semantic == GLLVertexAttribTexCoord0) {
+        return self.semantic + 2 * self.layer;
+    } else {
+        return self.semantic;
+    }*/
 }
 
 @end

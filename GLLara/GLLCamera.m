@@ -144,7 +144,7 @@
 {
     mat_float16 cameraRotation = simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w);
     
-    vec_float4 delta = simd_scale(cameraRotation.x, deltaX) + simd_scale(cameraRotation.y, deltaY) + simd_scale(cameraRotation.z, deltaZ);
+    vec_float4 delta = simd_scale(cameraRotation.columns[0], deltaX) + simd_scale(cameraRotation.columns[1], deltaY) + simd_scale(cameraRotation.columns[2], deltaZ);
     
     self.currentPositionX += simd_extract(delta, 0);
     self.currentPositionY += simd_extract(delta, 1);
@@ -157,7 +157,7 @@
 {
     vec_float4 targetPosition = self.target ? self.target.position : simd_make( self.positionX, self.positionY, self.positionZ, 1.0f );
     
-    vec_float4 viewDirection = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w), -simd_e_z);
+    vec_float4 viewDirection = simd_mul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w), -simd_e_z);
     
     vec_float4 position = targetPosition - viewDirection * simd_splatf(self.distance);
     
@@ -168,7 +168,7 @@
 {
     vec_float4 targetPosition = self.target ? self.target.position : simd_make( self.positionX, self.positionY, self.positionZ, 1.0f );
     
-    vec_float4 viewDirection = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w), -simd_e_z);
+    vec_float4 viewDirection = simd_mul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w), -simd_e_z);
     
     return targetPosition - viewDirection * simd_splatf(self.distance);
 }
@@ -177,7 +177,7 @@
 {
     mat_float16 projection = simd_frustumMatrix(self.fieldOfViewY, aspect, self.nearDistance, self.farDistance);
     
-    return simd_mat_mul(projection, self.viewMatrix);
+    return simd_mul(projection, self.viewMatrix);
 }
 
 - (mat_float16)viewProjectionMatrix

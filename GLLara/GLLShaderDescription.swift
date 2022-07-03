@@ -9,6 +9,10 @@
 import Foundation
 import Combine
 
+extension GLLFunctionConstant: Decodable {
+    
+}
+
 /**
  * A set of inputs for a shader, and associated compile-time defines. Several of these get combined with a base shader (which also inherits from this).
  */
@@ -23,13 +27,22 @@ import Combine
     let parameterUniforms: [String]?
     
     // The preprocessor defines that get used to actually change what the shader does
-    let defines: [String: String]?
+    let activeBoolConstants: [GLLFunctionConstant]?
     
     // The vertex attributes that must be present in order for this module to be usable.
     let requiredVertexAttributes: [String]?
     
     // Other modules that can be activated. If any of them are activated, then this must be activated as well.
     let children: [GLLShaderModule]?
+    
+    init(name: String, textureUniforms: [String]? = nil, parameterUniforms: [String]? = nil, requiredVertexAttributes: [String]? = nil, activeBoolConstants: [GLLFunctionConstant]? = nil, children: [GLLShaderModule]? = nil) {
+        self.name = name
+        self.textureUniforms = textureUniforms
+        self.parameterUniforms = parameterUniforms
+        self.requiredVertexAttributes = requiredVertexAttributes
+        self.activeBoolConstants = activeBoolConstants
+        self.children = children
+    }
     
     private func vertexAttributeEnum(for name: String) -> GLLVertexAttribSemantic? {
         switch (name) {
@@ -96,6 +109,10 @@ import Combine
         }
         return descendants
     }
+    
+    override var debugDescription: String {
+        return super.debugDescription + " - " + self.name
+    }
 }
 
 /**
@@ -104,8 +121,6 @@ import Combine
 @objc class GLLShaderBase: GLLShaderModule {
     /// Name of the vertex shader to use
     let vertex: String?
-    /// Name of the geometry shader to use
-    let geometry: String?
     /// Name of the fragment shader to use
     let fragment: String?
     /**
@@ -136,7 +151,6 @@ import Combine
     
     enum CodingKeys: CodingKey {
         case vertex
-        case geometry
         case fragment
         case texCoordVarNameFormat
         case texCoordDefineFormat
@@ -146,13 +160,20 @@ import Combine
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         vertex = try container.decodeIfPresent(String.self, forKey: .vertex)
-        geometry = try container.decodeIfPresent(String.self, forKey: .geometry)
         fragment = try container.decodeIfPresent(String.self, forKey: .fragment)
         
         texCoordVarNameFormat = try container.decodeIfPresent(String.self, forKey: .texCoordVarNameFormat) ?? "outTexCoord%ld"
         texCoordDefineFormat = try container.decodeIfPresent(String.self, forKey: .texCoordDefineFormat) ?? "%@Coord"
         
         try super.init(from: decoder)
+    }
+    
+    init(name: String, vertex: String? = nil, fragment: String? = nil, textureUniforms: [String]? = nil, parameterUniforms: [String]? = nil, requiredVertexAttributes: [String]? = nil, children: [GLLShaderModule]? = nil) {
+        self.vertex = vertex
+        self.fragment = fragment
+        self.texCoordVarNameFormat = ""
+        self.texCoordDefineFormat = ""
+        super.init(name: name, textureUniforms: textureUniforms, parameterUniforms: parameterUniforms, requiredVertexAttributes: requiredVertexAttributes, children: children)
     }
 }
 
@@ -190,12 +211,17 @@ import Combine
         return parameterUniforms
     }()
     
-    @objc var defines: [String: String] {
-        var defines: [String: String] = base.defines ?? [:]
+    @objc var activeBoolConstants: NSIndexSet {
+        let set = NSMutableIndexSet()
         for module in activeModules {
-            defines.merge(module.defines ?? [:], uniquingKeysWith: { (_, new) in new })
+            guard let constants = module.activeBoolConstants else {
+                continue
+            }
+            for value in constants {
+                set.add(Int(value.rawValue))
+            }
         }
-        return defines
+        return set
     }
     
     /**
@@ -216,10 +242,6 @@ import Combine
     
     @objc var vertexName: String? {
         return base.vertex
-    }
-    
-    @objc var geometryName: String? {
-        return base.geometry
     }
     
     @objc var fragmentName: String? {

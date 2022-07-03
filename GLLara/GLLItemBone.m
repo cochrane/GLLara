@@ -18,6 +18,7 @@
 @interface GLLItemBone ()
 {
     NSArray *children;
+    NSUInteger cachedBoneIndex;
 }
 
 - (void)_standardSetValue:(id)value forKey:(NSString *)key;
@@ -117,7 +118,10 @@
 
 - (NSUInteger)boneIndex
 {
-    return [self.item.bones indexOfObject:self];
+    if (cachedBoneIndex == NSNotFound) {
+        cachedBoneIndex = [self.item.bones indexOfObject:self];
+    }
+    return cachedBoneIndex;
 }
 
 - (GLLModelBone *)bone
@@ -194,12 +198,14 @@
 
 - (void)_updateRelativeTransform
 {
-    mat_float16 transform = simd_mat_positional(simd_make(self.positionX, self.positionY, self.positionZ, 1.0f));
-    transform = simd_mat_mul(transform, simd_mat_rotate(self.rotationY, simd_e_y));
-    transform = simd_mat_mul(transform, simd_mat_rotate(self.rotationX, simd_e_x));
-    transform = simd_mat_mul(transform, simd_mat_rotate(self.rotationZ, simd_e_z));
+    cachedBoneIndex = NSNotFound;
     
-    self.relativeTransform = [NSValue valueWithBytes:&transform objCType:@encode(float [16])];
+    mat_float16 transform = simd_mat_positional(simd_make(self.positionX, self.positionY, self.positionZ, 1.0f));
+    transform = simd_mul(transform, simd_mat_rotate(self.rotationY, simd_e_y));
+    transform = simd_mul(transform, simd_mat_rotate(self.rotationX, simd_e_x));
+    transform = simd_mul(transform, simd_mat_rotate(self.rotationZ, simd_e_z));
+    
+    self.relativeTransform = transform;
     
     [self updateGlobalTransform];
 }
@@ -210,20 +216,18 @@
     if (!self.parent)
         parentGlobalTransform = self.item.modelTransform;
     else
-        [self.parent.globalTransform getValue:&parentGlobalTransform];
+        parentGlobalTransform = self.parent.globalTransform;
     
-    mat_float16 ownLocalTransform;
-    [self.relativeTransform getValue:&ownLocalTransform];
+    mat_float16 ownLocalTransform = self.relativeTransform;
     
     mat_float16 transform = self.bone.inversePositionMatrix;
-    transform = simd_mat_mul(ownLocalTransform, transform);
-    transform = simd_mat_mul(self.bone.positionMatrix, transform);
-    transform = simd_mat_mul(parentGlobalTransform, transform);
+    transform = simd_mul(ownLocalTransform, transform);
+    transform = simd_mul(self.bone.positionMatrix, transform);
+    transform = simd_mul(parentGlobalTransform, transform);
     
-    self.globalTransform = [NSValue valueWithBytes:&transform objCType:@encode(float [16])];
+    self.globalTransform = transform;
     
-    vec_float4 position = simd_mat_vecmul(transform, simd_make(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0f));
-    self.globalPosition = [NSValue valueWithBytes:&position objCType:@encode(float [4])];
+    self.globalPosition = simd_mul(transform, simd_make(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0f));
     
     [self.children makeObjectsPerformSelector:@selector(updateGlobalTransform)];
 }

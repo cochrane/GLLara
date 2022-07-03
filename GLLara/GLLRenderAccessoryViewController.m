@@ -8,6 +8,8 @@
 
 #import "GLLRenderAccessoryViewController.h"
 
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
 #import "NSArray+Map.h"
 
 @interface GLLRenderViewAccessoryControllerFileType : NSObject
@@ -31,8 +33,11 @@
 }
 
 - (NSString *)typeDescription {
-    NSString *description = (__bridge_transfer NSString *) UTTypeCopyDescription((__bridge CFStringRef) self.type);
-    return description ? description : self.type;
+    UTType *currentType = [UTType typeWithIdentifier:self.type];
+    if (!currentType) {
+        return self.type;
+    }
+    return currentType.localizedDescription;
 }
 
 @end
@@ -56,7 +61,7 @@
 - (void)setSelectedFileType:(GLLRenderViewAccessoryControllerFileType *)selectedFileType
 {
     _selectedFileType = selectedFileType;
-    self.savePanel.allowedFileTypes = @[ selectedFileType.type ];
+    self.savePanel.allowedContentTypes = @[ [UTType typeWithIdentifier:selectedFileType.type] ];
 }
 
 - (NSString *)selectedTypeIdentifier

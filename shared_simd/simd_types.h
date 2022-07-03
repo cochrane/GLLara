@@ -8,8 +8,7 @@
  *
  */
 
-#include <math.h>
-#include <stdlib.h>
+#include <simd/simd.h>
 
 /*!
  * @abstract Datentyp für Vektor
@@ -17,45 +16,10 @@
  * ist gleich dem Standard-Namen, den IBM fuer den Cell (sowohl PPU als auch
  * SPU) verwendet.
  */
-#if defined(__SSE__)
-#include <xmmintrin.h>
-typedef float vec_float4 __attribute__ ((__vector_size__ (16)));
-typedef unsigned int vec_uint4 __attribute__ ((__vector_size__ (16)));
-typedef unsigned short vec_ushort8 __attribute__ ((__vector_size__ (16)));
-typedef unsigned char vec_uchar16 __attribute__ ((__vector_size__ (16)));
-#elif defined(__VEC__) || defined(__PPU__)
-#define SIMD_HAS_PERM 1
-#if !defined(__APPLE_ALTIVEC__)
-#include <altivec.h>
-#endif /* __APPLE_ALTIVEC__ */
-#if !defined(__VEC__)
-#define __VEC__
-#endif
-#ifdef __APPLE_CC__
-typedef __vector float vec_float4;
-typedef __vector unsigned int vec_uint4;
-typedef __vector unsigned short vec_ushort8;
-typedef __vector unsigned char vec_uchar16;
-#else /* Nicht Mac */
-#include <vec_types.h>
-#endif /* __APPLE_CC__ */
-#elif defined(__SPU__)
-#define SIMD_HAS_PERM 1
-#include <spu_intrinsics.h>
-#elif defined(_ARM_ARCH_7)
-#define __NEON__
-#include <arm_neon.h>
-typedef float32x4_t vec_float4 __attribute__((may_alias));
-typedef uint32x4_t vec_uint4;
-typedef uint16x8_t vec_ushort8;
-typedef uint8x16_t vec_uchar16;
-#else /* Generisch */
-#define SCALAR_ONLY
-typedef float vec_float4 __attribute__ ((__vector_size__ (16)));
-typedef unsigned int vec_uint4 __attribute__ ((__vector_size__ (16)));
-typedef unsigned short vec_ushort8 __attribute__ ((__vector_size__ (16)));
-typedef unsigned char vec_uchar16 __attribute__ ((__vector_size__ (16)));
-#endif
+typedef vector_float4 vec_float4;
+typedef vector_uint4 vec_uint4;
+typedef vector_ushort8 vec_ushort8;
+typedef vector_uchar16 vec_uchar16;
 
 /*!
  * @abstract Definiert eine 4x4-Matrix
@@ -66,9 +30,4 @@ typedef unsigned char vec_uchar16 __attribute__ ((__vector_size__ (16)));
  * macht dies keinen Unterschied, aber einige Methoden gehen davon aus, dass
  * die Matrizen diesem Muster entsprechen.
  */
-typedef struct __mat_float16 {
-    vec_float4 x;
-    vec_float4 y;
-    vec_float4 z;
-    vec_float4 w;
-} mat_float16;
+typedef matrix_float4x4 mat_float16;

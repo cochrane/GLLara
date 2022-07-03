@@ -104,10 +104,10 @@
         
         // Set up vertex attributes
         GLLVertexAttribAccessorSet *fileAccessors = [[GLLVertexAttribAccessorSet alloc] initWithAccessors:@[
-        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribPosition layer:0 size:GLLVertexAttribSizeVec3 componentType:GLLVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, vert) stride:sizeof(GLLObjFile::VertexData)],
-        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribNormal layer:0 size:GLLVertexAttribSizeVec3 componentType:GLLVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, norm) stride:sizeof(GLLObjFile::VertexData)],
-        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribColor layer:0 size:GLLVertexAttribSizeVec4 componentType:GLLVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, color) stride:sizeof(GLLObjFile::VertexData)],
-        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribTexCoord0 layer:0 size:GLLVertexAttribSizeVec2 componentType:GLLVertexAttribComponentTypeFloat dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, tex) stride:sizeof(GLLObjFile::VertexData)]]];
+        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribPosition layer:0 format: MTLVertexFormatFloat3 dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, vert) stride:sizeof(GLLObjFile::VertexData)],
+        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribNormal layer:0 format: MTLVertexFormatFloat3 dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, norm) stride:sizeof(GLLObjFile::VertexData)],
+        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribColor layer:0 format: MTLVertexFormatFloat4 dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, color) stride:sizeof(GLLObjFile::VertexData)],
+        [[GLLVertexAttribAccessor alloc] initWithSemantic:GLLVertexAttribTexCoord0 layer:0 format: MTLVertexFormatFloat2 dataBuffer:vertices offset:offsetof(GLLObjFile::VertexData, tex) stride:sizeof(GLLObjFile::VertexData)]]];
         
         NSData *elementDataWrapped = [NSData dataWithBytesNoCopy:elementData length:sizeof(uint32_t) * (range.end - range.start) freeWhenDone:YES];
 

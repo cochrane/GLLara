@@ -12,12 +12,7 @@
 
 #import "simd_types.h"
 
-struct GLLLightUniformBlock
-{
-	float diffuseColor[4];
-	float specularColor[4];
-	vec_float4 direction;
-};
+#import "GLLRenderParameters.h"
 
 /*!
  * @abstract A directional light.
@@ -34,6 +29,6 @@ struct GLLLightUniformBlock
 @property (nonatomic, retain) NSColor *diffuseColor;
 @property (nonatomic, retain) NSColor *specularColor;
 
-@property (nonatomic, readonly) struct GLLLightUniformBlock uniformBlock;
+@property (nonatomic, readonly) struct GLLLightBuffer uniformBlock;
 
 @end

@@ -187,14 +187,14 @@ void main()
         float specularFactor = pow(max(dot(cameraDirection, reflectedLightDirection), 0), exponent);
 #ifndef SPECULAR_COLOR_VALUE
         // TODO: Would make sense to get rid of this amount factor and just offer users a specular color
-        specularFactor *= parameters.bumpSpecularAmount;
+        specularFactor *= parameters.bumpSpecularAmount; // In MTL: Fold into RenderParameters/specularColor
 #endif
         if (diffuseFactor <= 0.001) specularFactor = 0;
         vec4 specularContribution = lightData.lights[i].specularColor * specularFactor;
 #ifdef SEPARATE_SPECULAR_TEXTURE
         specularContribution *= specularColor;
 #endif
-#ifdef MATERIAL_PARAMETERS
+#ifdef MATERIAL_PARAMETERS // In MTL: Always present
         specularContribution *= parameters.specularColor;
 #endif
         color += specularContribution;

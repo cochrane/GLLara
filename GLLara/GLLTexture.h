@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#import <OpenGL/gltypes.h>
+#import <Metal/Metal.h>
 
 extern NSString *GLLTextureChangeNotification;
 
@@ -18,7 +17,7 @@ extern NSString *GLLTextureChangeNotification;
  */
 @interface GLLTexture : NSObject <NSFilePresenter>
 
-- (id)initWithURL:(NSURL *)url error:(NSError *__autoreleasing *)error __attribute__((nonnull(1)));
+- (id)initWithURL:(NSURL *)url device:(id<MTLDevice>)device error:(NSError *__autoreleasing *)error __attribute__((nonnull(1)));
 
 /*!
  * @abstract Load from data (assuming this is part of some other file)
@@ -29,14 +28,15 @@ extern NSString *GLLTextureChangeNotification;
  * @param url The URL to use for error messages
  * @param error Output error
  */
-- (id)initWithData:(NSData *)data sourceURL:(NSURL *)url error:(NSError *__autoreleasing *)error __attribute__((nonnull(1)));
+- (id)initWithData:(NSData *)data sourceURL:(NSURL *)url device:(id<MTLDevice>)device error:(NSError *__autoreleasing *)error __attribute__((nonnull(1)));
 
 - (void)unload;
 
 @property (nonatomic, assign, readonly) NSUInteger width;
 @property (nonatomic, assign, readonly) NSUInteger height;
 
+@property (nonatomic) id<MTLDevice> device;
 @property (nonatomic) NSURL *url;
-@property (nonatomic, assign, readonly) GLuint textureID;
+@property (nonatomic, readonly) id<MTLTexture> texture;
 
 @end

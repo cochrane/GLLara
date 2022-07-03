@@ -29,8 +29,8 @@
     _positionY = 0;
     _positionZ = 0;
     
-    _positionMatrix = simd_mat_identity();
-    _inversePositionMatrix = simd_mat_identity();
+    _positionMatrix = matrix_identity_float4x4;
+    _inversePositionMatrix = matrix_identity_float4x4;
     
     _name = NSLocalizedString(@"Root bone", @"Only bone in a boneless format");
     

@@ -33,13 +33,10 @@ extension GLLModelMesh {
                 let boneIndices = boneIndexAccessor.typedElement(at: i, type: UInt16.self)
                 let boneWeights = boneWeightAccessor.typedElement(at: i, type: Float.self)
                 
-                transform = simd_mat_scale(transformations[Int(boneIndices[0])], boneWeights[0])
-                transform = simd_mat_add(transform, simd_mat_scale(transformations[Int(boneIndices[1])], boneWeights[1]))
-                transform = simd_mat_add(transform, simd_mat_scale(transformations[Int(boneIndices[2])], boneWeights[2]))
-                transform = simd_mat_add(transform, simd_mat_scale(transformations[Int(boneIndices[3])], boneWeights[3]))
+                transform = simd_linear_combination(boneWeights[0], transformations[Int(boneIndices[0])], boneWeights[1], transformations[Int(boneIndices[1])]) + simd_linear_combination(boneWeights[2], transformations[Int(boneIndices[2])], boneWeights[3], transformations[Int(boneIndices[3])])
             }
             
-            let transformedPosition = simd_mat_vecmul(transform, simd_make(position[0], position[1], position[2], 1.0))
+            let transformedPosition = simd_mul(transform, simd_make(position[0], position[1], position[2], 1.0))
             let transformedNormal = simd_mat_vecrotate(transform, simd_make(normal[0], normal[1], normal[2], 0.0))
             
             objString.append("v \(simd_extract(transformedPosition, 0)) \(simd_extract(transformedPosition, 1)) \(simd_extract(transformedPosition, 2))")

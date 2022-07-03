@@ -43,7 +43,7 @@
         [weakSelf update];
     }];
     
-    _multipleSelectionMarker = NSMultipleValuesMarker;
+    _multipleSelectionMarker = NSBindingSelectionMarker.multipleValuesSelectionMarker;
     
     return self;
 }

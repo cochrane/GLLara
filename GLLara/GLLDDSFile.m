@@ -137,16 +137,17 @@ static NSString *ddsError = @"DDS File Loading";
         {
             if (header.pixelFormat.rgbBitCount == 32)
             {
+                // Mentally swap the constants!
                 if ((header.pixelFormat.aBitMask == 0xff000000) &&
                      (header.pixelFormat.rBitMask == 0x00ff0000) &&
                      (header.pixelFormat.gBitMask == 0x0000ff00) &&
                      (header.pixelFormat.bBitMask == 0x000000ff)) {
-                    _dataFormat = GLL_DDS_ARGB_8;
+                    _dataFormat = GLL_DDS_BGRA_8;
                 } else if ((header.pixelFormat.aBitMask == 0xff000000) &&
                            (header.pixelFormat.rBitMask == 0x000000ff) &&
                            (header.pixelFormat.gBitMask == 0x0000ff00) &&
                            (header.pixelFormat.bBitMask == 0x00ff0000)) {
-                    _dataFormat = GLL_DDS_ABGR_8;
+                    _dataFormat = GLL_DDS_RGBA_8;
                 } else {
                     if (error)
                         *error = [NSError errorWithDomain:ddsError code:1 userInfo:@{
@@ -211,7 +212,7 @@ static NSString *ddsError = @"DDS File Loading";
                                                                                      NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"The file uses a data layout that is not supported. Only RGB is supported for 24 bit uncompressed textures.", @"DDS: Unknown 24-bit non-alpha format")}];
                     return nil;
                 }
-                _dataFormat = GLL_DDS_RGB_8;
+                _dataFormat = GLL_DDS_BGR_8;
             }
             else if (header.pixelFormat.rgbBitCount == 16)
             {
@@ -287,11 +288,11 @@ static NSString *ddsError = @"DDS File Loading";
             case GLL_DDS_RGB_565:
                 size = (width * height) * 2;
                 break;
-            case GLL_DDS_RGB_8:
+            case GLL_DDS_BGR_8:
                 size = (width * height) * 3;
                 break;
-            case GLL_DDS_ARGB_8:
-            case GLL_DDS_ABGR_8:
+            case GLL_DDS_RGBA_8:
+            case GLL_DDS_BGRA_8:
             case GLL_DDS_BGRX_8:
                 size = (width * height) * 4;
                 break;

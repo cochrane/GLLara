@@ -240,78 +240,6 @@ static inline vec_float4 simd_mix(vec_float4 vec1, vec_float4 vec2, unsigned cha
 #endif /* __VEC__ */
 
 /*!
- * @abstract Berechnet Skalarprodukt der ersten drei Komponenten zweier Vektoren
- * @result Das Skalarprodukt der beider Vektoren in allen Elementen des Rueckgabevektors.
- * @discussion Das ist haeufig sinnvoller, als das Ergebnis als float zu haben.
- */
-static inline vec_float4 simd_dot(vec_float4 a, vec_float4 b)
-{
-    vec_float4 c = a * b;
-    return simd_splat(c, 0) + simd_splat(c, 1) + simd_splat(c, 2) + simd_splat(c, 3);
-}
-
-/*!
- * @abstract Berechnet das Skalarprodukt der beiden Vektoren und liefert es als float
- * züruck.
- * @discussion Speziell für ARM.
- */
-static inline float simd_dotf(vec_float4 a, vec_float4 b)
-{
-#if defined(SCALAR_ONLY)
-    vec_float4 c = a*b;
-    const float* restrict cF = (const float *) &c;
-    return cF[0] + cF[1] + cF[2] + cF[3];
-#else
-    return simd_extract(simd_dot(a, b), 0);
-#endif
-}
-
-/*!
- * @abstract Berechnet eine angenaehert normalisierte Version des Vektors
- * @discussion Verwendet, wo vorhanden, Funktionen die 1/sqrt approximieren.
- * Ignoriert die vierte Komponente des Vektors voellig.
- */
-static inline vec_float4 simd_normalize_e(vec_float4 a)
-{
-    // scale = 1.0 / sqrt(a^2), result = a * scale
-#if defined(TARGET_OS_MAC) && !defined(__NEON__) && 0
-    vec_float4 dot = simd_dot(a, a);
-    vec_float4 scale = vrsqrtf(simd_dot(a, a));
-    scale = scale*(simd_splatf(1.5f) - simd_splatf(0.5f)*dot*scale*scale);
-#elif defined(__SSE__)
-    vec_float4 dot = simd_dot(a, a);
-    vec_float4 scale = _mm_rsqrt_ps(simd_dot(a, a));
-    scale = scale*(simd_splatf(1.5f) - simd_splatf(0.5f)*dot*scale*scale);
-#elif defined(__VEC__)
-    vec_float4 dot = simd_dot(a, a);
-    vec_float4 scale = vec_rsqrte(simd_dot(a, a));
-    scale = scale*(simd_splatf(1.5f) - simd_splatf(0.5f)*dot*scale*scale);
-#elif defined(__SPU__)
-    vec_float4 dot = simd_dot(a, a);
-    vec_float4 scale = squ_rsqrte(simd_dot(a, a));
-    scale = scale*(simd_splatf(1.5f) - simd_splatf(0.5f)*dot*scale*scale);
-#elif defined(__NEON__)
-    vec_float4 dot = simd_dot(a, a);
-    vec_float4 scale = vrsqrteq_f32(dot);
-    scale = scale*vrsqrtsq_f32(dot, scale*scale);
-#else
-    vec_float4 squared = a * a;
-    const float* restrict squaredf = (const float *) &squared;
-    vec_float4 scale = simd_splatf(1.0f / sqrtf(squaredf[0] + squaredf[1] + squaredf[2]));
-#endif
-    return a * scale;
-}
-
-/*!
- * @abstract Länge des Vektors.
- * @discussion Achtung, berücksichtigt auch die w-Komponente. Im Normalfall ist es aber sowieso ein Logikfehler, die Länge von einem Punkt statt einem Vektor zu bestimmen.
- */
-static inline float simd_length(vec_float4 a)
-{
-    return simd_dotf(a, simd_normalize_e(a));
-}
-
-/*!
  * @abstract Berechnet das Kreuzprodukt zweier Vektoren
  * @discussion Ignoriert die vierte Komponente voellig. Beim Ausgabevektor wird
  * sie auf 0 gesetzt, so lange sie vorher nicht was komisches (Nan, Infinity
@@ -319,93 +247,7 @@ static inline float simd_length(vec_float4 a)
  */
 static inline vec_float4 simd_cross3(const vec_float4 a, const vec_float4 b)
 {
-    return simd_shuffle(a, 1, 2, 0, 3) * simd_shuffle(b, 2, 0, 1, 3) - simd_shuffle(a, 2, 0, 1, 3) * simd_shuffle(b, 1, 2, 0, 3);
-}
-
-/*!
- * @abstract Liefert für jedes Element von value den Wert a, wenn value größer
- * als reference ist, und b sonst.
- */
-static inline vec_float4 simd_select_gt(vec_float4 value, vec_float4 reference, vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    vec_float4 mask = _mm_cmpgt_ps(value, reference);
-    return _mm_or_ps(_mm_and_ps(mask, a), _mm_andnot_ps(mask, b));
-#elif defined(__VEC__)
-    vector bool mask = vec_cmpgt(value, reference);
-    return (vector float) vec_sel(mask, a, b);
-#elif defined(__NEON__)
-    uint32x4_t mask = vcgtq_f32(value, reference);
-    return (vec_float4) vbslq_f32(mask, a, b);
-#else
-    const float *valueF = (const float *) &value;
-    const float *referenceF = (const float *) &reference;
-    const float *aF = (const float *) &a;
-    const float *bF = (const float *) &b;
-    return (vec_float4) { valueF[0] > referenceF[0] ? aF[0] : bF[0],
-        valueF[1] > referenceF[1] ? aF[1] : bF[1],
-        valueF[2] > referenceF[2] ? aF[2] : bF[2],
-        valueF[3] > referenceF[3] ? aF[3] : bF[3] };
-#endif
-}
-
-static inline vec_float4 simd_select_neq(vec_float4 value, vec_float4 reference, vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    vec_float4 mask = _mm_cmpneq_ps(value, reference);
-    return _mm_or_ps(_mm_and_ps(mask, a), _mm_andnot_ps(mask, b));
-#elif defined(__VEC__)
-    vector bool mask = vec_cmpneq(value, reference);
-    return (vector float) vec_sel(mask, a, b);
-#elif defined(__NEON__)
-    uint32x4_t mask = vceqq_f32(value, reference);
-    return (vec_float4) vbslq_f32(mask, b, a); // Reversed since NEON has no != comparison
-#else
-    const float *valueF = (const float *) &value;
-    const float *referenceF = (const float *) &reference;
-    const float *aF = (const float *) &a;
-    const float *bF = (const float *) &b;
-    return (vec_float4) { valueF[0] != referenceF[0] ? aF[0] : bF[0],
-        valueF[1] != referenceF[1] ? aF[1] : bF[1],
-        valueF[2] != referenceF[2] ? aF[2] : bF[2],
-        valueF[3] != referenceF[3] ? aF[3] : bF[3] };
-#endif
-}
-
-/*!
- * @abstract Liefert das jeweils größere Element der beiden Vektoren
- */
-static inline vec_float4 simd_max(vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    return _mm_max_ps(a, b);
-#elif defined(__VEC__)
-    return vec_max(a, b);
-#elif defined(__NEON__)
-    return vmaxq_f32(a, b);
-#else
-    const float *aF = (const float *) &a;
-    const float *bF = (const float *) &b;
-    return (vec_float4) { fmaxf(aF[0], bF[0]), fmaxf(aF[1], bF[1]), fmaxf(aF[2], bF[2]), fmaxf(aF[3], bF[3]) };
-#endif
-}
-
-/*!
- * @abstract Liefert das jeweils kleinere Element der beiden Vektoren
- */
-static inline vec_float4 simd_min(vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    return _mm_min_ps(a, b);
-#elif defined(__VEC__)
-    return vec_min(a, b);
-#elif defined(__NEON__)
-    return vminq_f32(a, b);
-#else
-    const float *aF = (const float *) &a;
-    const float *bF = (const float *) &b;
-    return (vec_float4) { fminf(aF[0], bF[0]), fminf(aF[1], bF[1]), fminf(aF[2], bF[2]), fminf(aF[3], bF[3]) };
-#endif
+    return a.yzxw * b.zxyw - a.zxyw * b.yzxw;
 }
 
 /*!
@@ -429,166 +271,14 @@ static inline vec_float4 simd_maxvalv(vec_float4 a)
 }
 
 /*!
- * @abstract Liefert zurück, ob einer der Werte von a größer ist als der passende
- * von b
- */
-static inline int simd_any_gt(vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    __m128 mask = _mm_cmpgt_ps(a, b);
-    return _mm_movemask_ps(mask);
-#elif defined(__VEC__)
-    return vec_any_gt(a, b);
-#else
-    const float *vA = (const float *) &a;
-    const float *vB = (const float *) &b;
-    return (vA[0] > vB[0]) || (vA[1] > vB[1]) || (vA[2] > vB[2]) || (vA[3] > vB[3]);
-#endif
-}
-
-/*!
- * @abstract Liefert zurück, ob einer der Werte von a kleiner ist als der passende
- * von b.
- */
-static inline int simd_any_lt(vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    __m128 mask = _mm_cmplt_ps(a, b);
-    return _mm_movemask_ps(mask);
-#elif defined(__VEC__)
-    return vec_any_lt(a, b);
-#else
-    const float *vA = (const float *) &a;
-    const float *vB = (const float *) &b;
-    return (vA[0] < vB[0]) || (vA[1] < vB[1]) || (vA[2] < vB[2]) || (vA[3] < vB[3]);
-#endif
-}
-
-static inline int simd_any_lte(vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    __m128 mask = _mm_cmple_ps(a, b);
-    return _mm_movemask_ps(mask);
-#elif defined(__VEC__)
-    return vec_any_le(a, b);
-#else
-    const float *vA = (const float *) &a;
-    const float *vB = (const float *) &b;
-    return (vA[0] <= vB[0]) || (vA[1] <= vB[1]) || (vA[2] <= vB[2]) || (vA[3] <= vB[3]);
-#endif
-}
-
-static inline int simd_any_gte(vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    __m128 mask = _mm_cmpge_ps(a, b);
-    return _mm_movemask_ps(mask);
-#elif defined(__VEC__)
-    return vec_any_ge(a, b);
-#else
-    const float *vA = (const float *) &a;
-    const float *vB = (const float *) &b;
-    return (vA[0] >= vB[0]) || (vA[1] >= vB[1]) || (vA[2] >= vB[2]) || (vA[3] >= vB[3]);
-#endif
-}
-
-static inline int simd_all_gte(vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    __m128 mask = _mm_cmpge_ps(a, b);
-    return _mm_movemask_ps(mask) == 0xF;
-#elif defined(__VEC__)
-    return vec_all_ge(a, b);
-#else
-    const float *vA = (const float *) &a;
-    const float *vB = (const float *) &b;
-    return (vA[0] >= vB[0]) && (vA[1] >= vB[1]) && (vA[2] >= vB[2]) && (vA[3] >= vB[3]);
-#endif
-}
-static inline int simd_all_lte(vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    __m128 mask = _mm_cmple_ps(a, b);
-    return _mm_movemask_ps(mask) == 0xF;
-#elif defined(__VEC__)
-    return vec_all_le(a, b);
-#else
-    const float *vA = (const float *) &a;
-    const float *vB = (const float *) &b;
-    return (vA[0] <= vB[0]) && (vA[1] <= vB[1]) && (vA[2] <= vB[2]) && (vA[3] <= vB[3]);
-#endif
-}
-
-/*!
- * @abstract Absolute value
- */
-static inline vec_float4 simd_abs(vec_float4 v)
-{
-#if defined(__SSE__)
-    return (vec_float4) _mm_srli_epi32(_mm_slli_epi32((__m128i) v, 1), 1);
-#elif defined(__NEON__)
-    return vabsq_f32(v);
-#else
-    const float *vA = (const float *) &v;
-    return (vec_float4) { fabsf(vA[0]), fabsf(vA[1]), fabsf(vA[2]), fabsf(vA[3]) };
-#endif
-}
-
-/*!
  * @abstract Berechnet floor des Eingabewertes
  */
 static inline vec_float4 simd_floor(vec_float4 v)
 {
-#if defined(__SSE__)
-    // Source: http://developer.apple.com/hardwaredrivers/ve/sse.html#Translation
-    
-    const vec_float4 twoTo23 = simd_make(0x1.0p23f, 0x1.0p23f, 0x1.0p23f, 0x1.0p23f);
-    vec_float4 b = (vec_float4) _mm_srli_epi32( _mm_slli_epi32( (__m128i) v, 1 ), 1 ); //fabs(v)
-    vec_float4 d = _mm_sub_ps( _mm_add_ps( _mm_add_ps( _mm_sub_ps( v, twoTo23 ), twoTo23 ), twoTo23 ), twoTo23 ); //the meat of floor
-    vec_float4 largeMaskE = (vec_float4) _mm_cmpgt_ps( b, twoTo23 ); //-1 if v >= 2**23
-    vec_float4 g = (vec_float4) _mm_cmplt_ps( v, d ); //check for possible off by one error
-    vec_float4 h = _mm_cvtepi32_ps( (__m128i) g ); //convert positive check result to -1.0, negative to 0.0
-    vec_float4 t = _mm_add_ps( d, h ); //add in the error if there is one
-    
-    //Select between output result and input value based on v >= 2**23
-    v = _mm_and_ps( v, largeMaskE );
-    t = _mm_andnot_ps( largeMaskE, t );
-    
-    return _mm_or_ps( t, v );
-#elif defined(__VEC__)
-    return vec_floor(v);
-#elif defined(__NEON__)
-    // Convert float to int, then that int back to float
-    return vcvtq_f32_s32(vcvtq_s32_f32(v));
-#else
-    const float* restrict vA = (const float *) &v;
-    return (vec_float4) { floorf(vA[0]), floorf(vA[1]), floorf(vA[2]), floorf(vA[3]) };
-#endif
+    return v - simd_fract(v);
 }
 
 #pragma mark Integer-Berechnungen
-
-/*!
- * @abstract Liefert Elemente entsprechend einer Maske zurück.
- * @discussion 0 -> a, 1 -> b
- */
-static inline vec_float4 simd_select(const vec_float4 a, const vec_float4 b, const vec_uint4 mask)
-{
-#if defined(__SSE__)
-    return _mm_or_ps(_mm_andnot_ps((vec_float4) mask, a), _mm_and_ps((vec_float4) mask, b));
-#elif defined(__VEC__)
-    return vec_sel(a, b, mask);
-#elif defined(__NEON__)
-    return vbslq_f32(mask, a, b);
-#else
-    const unsigned* restrict maskU = (const unsigned *) &mask;
-    vec_uint4 aInt = (vec_uint4) a;
-    vec_uint4 bInt = (vec_uint4) b;
-    const unsigned* restrict aU = (const unsigned *) &aInt;
-    const unsigned* restrict bU = (const unsigned *) &bInt;
-    return (vec_float4) ((vec_uint4) { (aU[0] & ~maskU[0]) | (bU[0] & maskU[0]), (aU[1] & ~maskU[1]) | (bU[1] & maskU[1]), (aU[2] & ~maskU[2]) | (bU[2] & maskU[2]), (aU[3] & ~maskU[3]) | (bU[0] & maskU[3]) });
-#endif
-}
 
 /*!
  * @abstract Vereint zwei 32-bit Vektoren auf einen mit 16
@@ -658,8 +348,8 @@ static inline void simd_getAABBPoints(const vec_float4 min, const vec_float4 max
  */
 static inline vec_float4 simd_plane(const vec_float4 normal, const vec_float4 position)
 {
-    vec_float4 unitNormal = simd_normalize_e(normal);
-    return simd_select(unitNormal, -simd_dot(unitNormal, position), (vec_uint4) { 0, 0, 0, UINT32_MAX });
+    vec_float4 unitNormal = simd_fast_normalize(normal);
+    return simd_make_float4(unitNormal.xyz, -simd_dot(unitNormal, position));
 }
 
 #pragma mark Raytracing
@@ -670,7 +360,7 @@ static inline vec_float4 simd_plane(const vec_float4 normal, const vec_float4 po
 static inline float simd_rayDistance(const vec_float4 start, const vec_float4 direction, const vec_float4 point)
 {
     const vec_float4 startToPoint = point - start;
-    const vec_float4 normalizedDirection = simd_normalize_e(direction);
+    const vec_float4 normalizedDirection = simd_fast_normalize(direction);
     vec_float4 alongStart = simd_dot(startToPoint, normalizedDirection);
     alongStart = simd_max(alongStart, (vec_float4) { 0.0f, 0.0f, 0.0f, 0.0f});
     alongStart = simd_min(alongStart, (vec_float4) { 1.0f, 1.0f, 1.0f, 0.0f});
@@ -687,17 +377,17 @@ static inline int simd_rayIntersectsAABB(const vec_float4 start, const vec_float
     const vec_float4 zero = simd_zero();
     const vec_float4 one = simd_splatf(1.0f);
     
-    vec_float4 startCorner = simd_select_gt(direction, zero, min, max);
-    vec_float4 endCorner = simd_select_gt(direction, zero, max, min);
+    vec_float4 startCorner = simd_select(min, max, direction > zero);
+    vec_float4 endCorner = simd_select(max, min, direction > zero);
     
-    vec_float4 startTs = simd_select_neq(direction, zero, (startCorner - start) / direction, zero);
+    vec_float4 startTs = simd_select((startCorner - start) / direction, zero, direction != zero);
     
-    vec_float4 endTs = simd_select_neq(direction, zero, (endCorner - start) / direction, one);
+    vec_float4 endTs = simd_select((endCorner - start) / direction, one, direction != zero);
     
     *tStart = simd_max(simd_maxvalv(startTs), zero);
     *tEnd = simd_min(simd_minvalv(endTs), one);
     
-    return simd_all_lte(*tStart, one) && simd_all_gte(*tEnd, zero) && simd_all_lte(*tStart, *tEnd);
+    return simd_all(*tStart <= one) && simd_all(*tEnd >= zero) && simd_all(*tStart <= *tEnd);
 }
 
 /*!
@@ -719,8 +409,8 @@ static inline int simd_rayIntersectsTriangle(const vec_float4 start, const vec_f
     //	(n(p-s))/(n*d) = t
     
     *outFactor = simd_dot(normal, points[0]-start) / simd_dot(normal, direction);
-    if (simd_any_gt(*outFactor, one)) return 0;
-    if (simd_any_lt(*outFactor, zero)) return 0;
+    if (simd_any(*outFactor > one)) return 0;
+    if (simd_any(*outFactor < zero)) return 0;
     
     const vec_float4 hitPoint = start + *outFactor * direction;
     const vec_float4 p0hp = hitPoint - points[0];
@@ -749,5 +439,5 @@ static inline int simd_rayIntersectsTriangle(const vec_float4 start, const vec_f
     const vec_float4 u = (dot11 * dot02 - dot01 * dot12) * invDenom;
     const vec_float4 v = (dot00 * dot12 - dot01 * dot02) * invDenom;
     
-    return simd_all_gte(u, zero) && simd_all_gte(v, zero) && simd_all_lte(u+v, one);
+    return simd_all(u >= zero) && simd_all(v >= zero) && simd_all(u+v <= one);
 }

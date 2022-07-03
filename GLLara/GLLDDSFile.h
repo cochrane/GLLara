@@ -17,10 +17,12 @@ enum GLLDDSDataFormat
 	GLL_DDS_ARGB_1555,
 	GLL_DDS_ARGB_4,
 	GLL_DDS_RGB_565,
-	GLL_DDS_RGB_8,
-    GLL_DDS_ARGB_8,
-    GLL_DDS_ABGR_8,
+    GLL_DDS_BGR_8,
+    
+    GLL_DDS_BGRA_8,
+    GLL_DDS_RGBA_8,
 	GLL_DDS_BGRX_8
+    
 };
 
 /*!

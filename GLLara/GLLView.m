@@ -10,9 +10,7 @@
 
 #import <AppKit/NSUserDefaultsController.h>
 #import <AppKit/NSWindow.h>
-#import <OpenGL/gl3.h>
-#import <OpenGL/gl3ext.h>
-#import <OpenGL/CGLRenderers.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 #import "GLLCamera.h"
 #import "GLLDocument.h"
@@ -81,7 +79,10 @@ const double unitsPerSecond = 0.2;
     
     self.device = MTLCreateSystemDefaultDevice();
     self.clearColor = MTLClearColorMake(0.5, 0.5, 0.5, 1.0);
-    self.enableSetNeedsDisplay = YES;
+    self.depthStencilPixelFormat = MTLPixelFormatDepth32Float;
+    self.clearDepth = 1.0;
+    self.enableSetNeedsDisplay = NO;
+    self.paused = NO;
     self.autoResizeDrawable = YES;
     
     // Event handling
@@ -90,7 +91,7 @@ const double unitsPerSecond = 0.2;
     __weak GLLView *weakSelf = self;
     textureChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:GLLTextureChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
         dispatch_async(dispatch_get_main_queue(), ^(){
-            weakSelf.needsDisplay = YES;
+            //weakSelf.needsDisplay = YES;
         });
     }];
     settingsChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
@@ -101,7 +102,7 @@ const double unitsPerSecond = 0.2;
     
     self.showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
     
-    [self registerForDraggedTypes:@[ (__bridge NSString*) kUTTypeFileURL ]];
+    [self registerForDraggedTypes:@[ UTTypeFileURL.identifier ]];
     dragDestination = [[GLLItemDragDestination alloc] init];
     
     return self;
@@ -192,7 +193,7 @@ const double unitsPerSecond = 0.2;
             item.positionZ += simd_extract(delta, 2);
         }
         
-        self.needsDisplay = YES;
+        //self.needsDisplay = YES;
     }
     else if (theEvent.modifierFlags & NSEventModifierFlagShift && ![wasdCharacters hasIntersectionWithSet:keysDown])
     {
@@ -233,7 +234,7 @@ const double unitsPerSecond = 0.2;
     cameraRelativeLongitude -= deltaX;
     cameraRelativeLatitude -= deltaY;
     
-    vec_float4 viewDirection = simd_mat_vecmul(simd_mat_euler(simd_make(cameraRelativeLatitude, cameraRelativeLongitude, 0.0f, 0.0f), simd_e_w), simd_e_z);
+    vec_float4 viewDirection = simd_mul(simd_mat_euler(simd_make(cameraRelativeLatitude, cameraRelativeLongitude, 0.0f, 0.0f), simd_e_w), simd_e_z);
     
     vec_float4 newTargetPosition = position - viewDirection * simd_splatf(self.camera.distance);
     self.camera.positionX = simd_extract(newTargetPosition, 0);
@@ -344,7 +345,7 @@ const double unitsPerSecond = 0.2;
                 if (theEvent.subtype == NSEventSubtypeApplicationDeactivated)
                 {
                     [NSEvent stopPeriodicEvents];
-                    self.needsDisplay = YES;
+                    //self.needsDisplay = YES;
                     return;
                 }
                 break;
@@ -438,13 +439,13 @@ const double unitsPerSecond = 0.2;
         }
         
         // - Prepare for next move through the loop
-        self.needsDisplay = YES;
+        //self.needsDisplay = YES;
         
         theEvent = [self.window nextEventMatchingMask:NSEventMaskKeyDown | NSEventMaskKeyUp | NSEventMaskRightMouseDragged | NSEventMaskLeftMouseDragged | NSEventMaskRightMouseDragged |NSEventMaskFlagsChanged | NSEventMaskScrollWheel | NSEventMaskPeriodic | NSEventTypeAppKitDefined untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
     }
     [NSEvent stopPeriodicEvents];
     
-    self.needsDisplay = YES;
+    //self.needsDisplay = YES;
 }
 
 - (GLLItemBone *)closestBoneAtScreenPoint:(NSPoint)point fromBones:(id)bones;
@@ -461,9 +462,8 @@ const double unitsPerSecond = 0.2;
     
     for (GLLItemBone *bone in bones)
     {
-        vec_float4 position;
-        [bone.globalPosition getValue:&position];
-        vec_float4 screenPosition = simd_mat_vecmul(viewProjection, position);
+        vec_float4 position = bone.globalPosition;
+        vec_float4 screenPosition = simd_mul(viewProjection, position);
         screenPosition /= simd_splat(screenPosition, 3);
         
         float screenX = (simd_extract(screenPosition, 0) * 0.5 + 0.5) * width;

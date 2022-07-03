@@ -10,9 +10,9 @@
 
 @implementation GLLVertexAttribAccessor
 
-- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)semantic layer:(NSInteger) layer size:(enum GLLVertexAttribSize)size componentType:(enum GLLVertexAttribComponentType)type dataBuffer:(NSData *__nullable)dataBuffer offset:(NSInteger)dataOffset stride:(NSInteger)stride;
+- (instancetype)initWithSemantic:(enum GLLVertexAttribSemantic)semantic layer:(NSInteger) layer format:(MTLVertexFormat)format dataBuffer:(NSData *__nullable)dataBuffer offset:(NSInteger)dataOffset stride:(NSInteger)stride;
 {
-    return [self initWithAttribute:[[GLLVertexAttrib alloc] initWithSemantic:semantic layer:layer size:size componentType:type] dataBuffer:dataBuffer offset:dataOffset stride:stride];
+    return [self initWithAttribute:[[GLLVertexAttrib alloc] initWithSemantic:semantic layer:layer format:format] dataBuffer:dataBuffer offset:dataOffset stride:stride];
 }
 
 - (instancetype)initWithAttribute:(GLLVertexAttrib *)attribute dataBuffer:(NSData *__nullable)dataBuffer offset:(NSInteger)dataOffset stride:(NSInteger)stride;

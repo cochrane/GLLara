@@ -13,14 +13,14 @@
 #import <OpenGL/CGLRenderers.h>
 
 #import "GLLModel.h"
-#import "GLLModelDrawData.h"
 #import "GLLModelProgram.h"
 #import "GLLPreferenceKeys.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLShader.h"
-#import "GLLSkeletonProgram.h"
-#import "GLLSquareProgram.h"
+//#import "GLLSkeletonProgram.h"
+//#import "GLLSquareProgram.h"
 #import "GLLTexture.h"
+#import "GLLVertexAttribAccessor.h"
 
 #import "GLLara-Swift.h"
 
@@ -36,11 +36,14 @@ struct GLLAlphaTestBlock
     NSMutableDictionary<GLLShaderData*, GLLModelProgram *> *programs;
     NSMutableDictionary *textures;
     NSMutableDictionary *models;
+    NSMutableDictionary<NSString *, GLLPipelineStateInformation*> *pipelines;
+    NSMutableDictionary<NSString *, id<MTLFunction>> *functions;
 }
 
 - (NSData *)_dataForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
 - (NSString *)_utf8StringForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
 - (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)(void))supplier;
+- (id<MTLFunction>)_functionForName:(NSString *)name shader:(GLLShaderData*)shader error:(NSError *__autoreleasing*)error;
 
 @end
 
@@ -48,7 +51,7 @@ static GLLResourceManager *sharedManager;
 
 @implementation GLLResourceManager
 
-+ (id)sharedResourceManager
++ (GLLResourceManager *)sharedResourceManager
 {
     if (!sharedManager)
         sharedManager = [[GLLResourceManager alloc] init];
@@ -69,13 +72,30 @@ static GLLResourceManager *sharedManager;
     
     _library = [_metalDevice newDefaultLibrary];
     _pixelFormat = MTLPixelFormatBGRA8Unorm;
+    _depthPixelFormat = MTLPixelFormatDepth32Float;
+    
+    MTLSamplerDescriptor *samplerDescriptor = [[MTLSamplerDescriptor alloc] init];
+    samplerDescriptor.minFilter = MTLSamplerMinMagFilterLinear;
+    samplerDescriptor.magFilter = MTLSamplerMinMagFilterLinear;
+    samplerDescriptor.mipFilter = MTLSamplerMipFilterLinear;
+    samplerDescriptor.supportArgumentBuffers = YES;
+    samplerDescriptor.maxAnisotropy = 4; // TODO Update this on User setting changes
+    
+    _metalSampler = [_metalDevice newSamplerStateWithDescriptor:samplerDescriptor];
+    
+    MTLDepthStencilDescriptor *depthDescriptor = [[MTLDepthStencilDescriptor alloc] init];
+    depthDescriptor.depthCompareFunction = MTLCompareFunctionLessEqual;
+    depthDescriptor.depthWriteEnabled = YES;
+    _normalDepthStencilState = [_metalDevice newDepthStencilStateWithDescriptor:depthDescriptor];
     
     // Alpha test buffers
     struct GLLAlphaTestBlock alphaBlock = { .mode = 1, .reference = .9 };
     _alphaTestPassGreaterBuffer = [_metalDevice newBufferWithBytes:&alphaBlock length:sizeof(alphaBlock) options:MTLResourceStorageModeManaged];
+    _alphaTestPassGreaterBuffer.label = @"alpha-test-pass-greater";
     
     struct GLLAlphaTestBlock alphaBlockPassLess = { .mode = 2, .reference = .9 };
     _alphaTestPassLessBuffer = [_metalDevice newBufferWithBytes:&alphaBlockPassLess length:sizeof(alphaBlock) options:MTLResourceStorageModeManaged];
+    _alphaTestPassLessBuffer.label = @"alpha-test-pass-less";
     
     return self;
 }
@@ -98,18 +118,18 @@ static GLLResourceManager *sharedManager;
 - (GLLModelDrawData *)drawDataForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
 {
     return [self _valueForKey:model.baseURL from:models ifNotFound:^{
-        return [[GLLModelDrawData alloc] initWithModel:model resourceManager:self error:error];
+        return [[GLLModelDrawData alloc] initWithModel:model resourceManager:self];
     }];
 }
 
-- (GLLModelProgram *)programForDescriptor:(GLLShaderData *)description error:(NSError *__autoreleasing*)error;
+/*- (GLLModelProgram *)programForDescriptor:(GLLShaderData *)description error:(NSError *__autoreleasing*)error;
 {
     NSParameterAssert(description);
     
     return [self _valueForKey:description from:programs ifNotFound:^{
         return [[GLLModelProgram alloc] initWithDescriptor:description resourceManager:self error:error];
     }];
-}
+}*/
 
 - (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error;
 {
@@ -124,11 +144,11 @@ static GLLResourceManager *sharedManager;
             if (!effectiveURL)
                 return (GLLTexture *) nil;
         }
-        return [[GLLTexture alloc] initWithURL:effectiveURL error:error];
+        return [[GLLTexture alloc] initWithURL:effectiveURL device:self.metalDevice error:error];
     }];
 }
 
-- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines usedTexCoords:(NSIndexSet *)texCoords type:(GLenum)type error:(NSError *__autoreleasing*)error;
+/*- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines usedTexCoords:(NSIndexSet *)texCoords type:(GLenum)type error:(NSError *__autoreleasing*)error;
 {
     NSParameterAssert(shaderName);
     NSParameterAssert(defines);
@@ -145,16 +165,57 @@ static GLLResourceManager *sharedManager;
         // Actual loading
         return [[GLLShader alloc] initWithSource:shaderSource name:shaderName additionalDefines:defines usedTexCoords:texCoords type:type error:error];
     }];
+}*/
+
+- (GLLPipelineStateInformation *)pipelineForVertex:(GLLVertexAttribAccessorSet *)vertexDescriptor shader:(GLLShaderData *)shader error:(NSError *__autoreleasing*)error; {
+    NSParameterAssert(vertexDescriptor);
+    NSParameterAssert(shader);
+    
+    // TODO Does this work?
+    NSDictionary *key = @{
+        @"shader": shader,
+        @"vertexDescriptor": vertexDescriptor.vertexDescriptor
+    };
+    
+    return [self _valueForKey:key from:pipelines ifNotFound:(id)^{
+        id<MTLFunction> vertexFunction = [self _functionForName:shader.vertexName shader:shader error:error];
+        if (!vertexFunction) {
+            return (id)nil;
+        }
+        
+        id<MTLFunction> fragmentFunction = [self _functionForName:shader.fragmentName shader:shader error:error];
+        if (!fragmentFunction) {
+            return (id)nil;
+        }
+        
+        MTLRenderPipelineDescriptor *descriptor = [[MTLRenderPipelineDescriptor alloc] init];
+        descriptor.vertexFunction = vertexFunction;
+        descriptor.fragmentFunction = fragmentFunction;
+        descriptor.colorAttachments[0].pixelFormat = self.pixelFormat;
+        descriptor.depthAttachmentPixelFormat = self.depthPixelFormat;
+        descriptor.vertexDescriptor = vertexDescriptor.vertexDescriptor;
+        
+        id<MTLRenderPipelineState> renderPipelineState = [self.metalDevice newRenderPipelineStateWithDescriptor:descriptor error:error];
+        if (!renderPipelineState) {
+            return (id)nil;
+        }
+        
+        GLLPipelineStateInformation *information = [[GLLPipelineStateInformation alloc] init];
+        information.vertexProgram = vertexFunction;
+        information.fragmentProgram = fragmentFunction;
+        information.pipelineState = renderPipelineState;
+        return (id)information;
+    }];
 }
 
-- (GLLProgram *)squareProgram
+/*- (GLLProgram *)squareProgram
 {
     if (!_squareProgram)
     {
         _squareProgram = [[GLLSquareProgram alloc] initWithResourceManager:self error:NULL];
     }
     return _squareProgram;
-}
+}*/
 
 - (id<MTLBuffer>)squareVertexArray
 {
@@ -167,17 +228,18 @@ static GLLResourceManager *sharedManager;
             1.0f, 1.0f
         };
         _squareVertexArray = [_metalDevice newBufferWithBytes:coords length:sizeof(coords) options:MTLResourceStorageModePrivate];
+        _squareVertexArray.label = @"square-vertex";
     }
     return _squareVertexArray;
 }
 
-- (GLLProgram *)skeletonProgram
+/*- (GLLProgram *)skeletonProgram
 {
     if (!_skeletonProgram) {
         _skeletonProgram = [[GLLSkeletonProgram alloc] initWithResourceManager:self error:NULL];
     }
     return _skeletonProgram;
-}
+}*/
 
 #pragma mark - OpenGL limits
 
@@ -233,6 +295,35 @@ static GLLResourceManager *sharedManager;
     if (!data) return nil;
     
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
+- (id<MTLFunction>)_functionForName:(NSString *)name shader:(GLLShaderData*)shader error:(NSError *__autoreleasing*)error {
+    NSParameterAssert(name);
+    NSParameterAssert(shader);
+    
+    NSDictionary *key = @{
+        @"name": name,
+        @"shader": shader
+    };
+    
+    return [self _valueForKey:key from:pipelines ifNotFound:(id)^{
+        MTLFunctionConstantValues *values = [[MTLFunctionConstantValues alloc] init];
+        bool *valuesArray = calloc(sizeof(bool), GLLFunctionConstantBoolMax);
+        NSIndexSet *setParameters = shader.activeBoolConstants;
+        for (NSUInteger i = 0; i < GLLFunctionConstantBoolMax; i++) {
+            if ([setParameters containsIndex:i]) {
+                valuesArray[i] = true;
+            }
+        }
+        [values setConstantValues:valuesArray type:MTLDataTypeBool withRange:NSMakeRange(0, GLLFunctionConstantBoolMax)];
+        //free(valuesArray);
+        
+        // TODO Make this dependent on what is actually going on in the scene
+        int oneLight = 1;
+        [values setConstantValue:&oneLight type:MTLDataTypeInt atIndex:GLLFunctionConstantNumberOfUsedLights];
+        
+        return [self.library newFunctionWithName:name constantValues:values error:error];
+    }];
 }
 
 @end

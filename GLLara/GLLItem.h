@@ -11,7 +11,7 @@
 
 #import "simd_types.h"
 
-enum GLLItemChannelAssignment
+typedef NS_ENUM(int16_t, GLLItemChannelAssignment)
 {
 	GLLNormalPos,
 	GLLNormalNeg,

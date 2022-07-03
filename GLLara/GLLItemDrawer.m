@@ -14,8 +14,6 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
-#import "GLLMeshDrawData.h"
-#import "GLLModelDrawData.h"
 #import "GLLResourceManager.h"
 #import "GLLSceneDrawer.h"
 #import "GLLItemMeshState.h"
@@ -197,12 +195,12 @@
     glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingBoneMatrices, transformsBuffer);
     glBufferData(GL_UNIFORM_BUFFER, matrixCount * sizeof(mat_float16), NULL, GL_STREAM_DRAW);
     mat_float16 *matrices = glMapBuffer(GL_UNIFORM_BUFFER, GL_WRITE_ONLY);
-    matrices[0].x = [self _permutationTableColumn:self.item.normalChannelAssignmentR];
-    matrices[0].y = [self _permutationTableColumn:self.item.normalChannelAssignmentG];
-    matrices[0].z = [self _permutationTableColumn:self.item.normalChannelAssignmentB];
-    matrices[0].w = simd_e_w;
+    matrices[0].columns[0] = [self _permutationTableColumn:self.item.normalChannelAssignmentR];
+    matrices[0].columns[1] = [self _permutationTableColumn:self.item.normalChannelAssignmentG];
+    matrices[0].columns[2] = [self _permutationTableColumn:self.item.normalChannelAssignmentB];
+    matrices[0].columns[3] = simd_e_w;
     for (NSUInteger i = 0; i < boneCount; i++)
-        [[[self.item.bones objectAtIndex:i] globalTransform] getValue:&matrices[i + 1]];
+        matrices[i+1] = self.item.bones[i].globalTransform;
     glUnmapBuffer(GL_UNIFORM_BUFFER);
     GLLEndTiming("Draw/Update/Transforms");
     

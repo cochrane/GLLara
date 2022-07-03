@@ -21,7 +21,7 @@ mat_float16 simd_frustumMatrix(float angle, float aspect, float near, float far)
     float ymax = near * tanf(angle * M_PI / 360.0f);
     float xmax = ymax * aspect;
     
-    mat_float16 frustumMatrix = simd_mat_identity();
+    mat_float16 frustumMatrix = matrix_identity_float4x4;
     
     float *frustumMatrixF = (float *) &frustumMatrix;
     
@@ -42,7 +42,7 @@ mat_float16 simd_inverseFrustumMatrix(float angle, float aspect, float near, flo
     float ymax = near * tanf(angle * M_PI / 360.0f);
     float xmax = ymax * aspect;
     
-    mat_float16 inverseFrustumMatrix = simd_mat_identity();
+    mat_float16 inverseFrustumMatrix = matrix_identity_float4x4;
     
     float *inverseFrustumMatrixF = (float *) &inverseFrustumMatrix;
     
@@ -61,7 +61,7 @@ mat_float16 simd_inverseFrustumMatrix(float angle, float aspect, float near, flo
 
 mat_float16 simd_orthoMatrix(float left, float right, float bottom, float top, float near, float far)
 {
-    mat_float16 result = simd_mat_identity();
+    mat_float16 result = matrix_identity_float4x4;
     
     float *resultF = (float *) &result;
     
@@ -77,7 +77,7 @@ mat_float16 simd_orthoMatrix(float left, float right, float bottom, float top, f
 }
 mat_float16 simd_inverseOrthoMatrix(float left, float right, float bottom, float top, float near, float far)
 {
-    mat_float16 result = simd_mat_identity();
+    mat_float16 result = matrix_identity_float4x4;
     
     float *resultF = (float *) &result;
     

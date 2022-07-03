@@ -7,12 +7,40 @@
 //
 
 import Foundation
+import Metal
 
 @objc class GLLVertexAttribAccessorSet: NSObject {
     @objc var accessors: [GLLVertexAttribAccessor]
     
+    @objc let vertexDescriptor: MTLVertexDescriptor
+    
     @objc init(accessors: [GLLVertexAttribAccessor]) {
         self.accessors = accessors
+        
+        // Set up the vertex descriptor
+        // - Keep track of which buffers are found in the layouts section
+        var orderedBuffers: [Data] = []
+        vertexDescriptor = MTLVertexDescriptor()
+        vertexDescriptor.layouts[10].stepFunction = .perVertex
+        vertexDescriptor.layouts[10].stride = accessors.first?.stride ?? 0
+        for accessor in accessors {
+            let index = accessor.attribute.identifier
+            vertexDescriptor.attributes[index].offset = accessor.dataOffset
+            vertexDescriptor.attributes[index].format = accessor.attribute.mtlFormat
+            vertexDescriptor.attributes[index].bufferIndex = 10
+            
+            if let data = accessor.dataBuffer {
+                if let bufferIndex = orderedBuffers.firstIndex(of: data) {
+                    vertexDescriptor.attributes[index].bufferIndex = bufferIndex
+                } else {
+                    let bufferIndex = orderedBuffers.count + 10
+                    vertexDescriptor.attributes[index].bufferIndex = bufferIndex
+                    orderedBuffers.append(data)
+                    vertexDescriptor.layouts[bufferIndex].stepFunction = .perVertex
+                    vertexDescriptor.layouts[bufferIndex].stride = accessor.stride
+                }
+            }
+        }
     }
     
     func combining(with other: GLLVertexAttribAccessorSet) -> GLLVertexAttribAccessorSet {

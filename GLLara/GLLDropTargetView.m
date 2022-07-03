@@ -8,6 +8,8 @@
 
 #import "GLLDropTargetView.h"
 
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
 #import "GLLDocument.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLItemDragDestination.h"
@@ -21,7 +23,7 @@
 @implementation GLLDropTargetView
 
 - (void)awakeFromNib {
-    [self registerForDraggedTypes:@[ (__bridge NSString*) kUTTypeFileURL ]];
+    [self registerForDraggedTypes:@[ UTTypeFileURL.identifier ]];
     self.dragDestination = [[GLLItemDragDestination alloc] init];
 }
 

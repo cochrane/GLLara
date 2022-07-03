@@ -8,6 +8,8 @@
 
 #import "GLLDocument.h"
 
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
 #import "GLLAmbientLight.h"
 #import "GLLAngleRangeValueTransformer.h"
 #import "GLLCamera.h"
@@ -82,7 +84,7 @@
 }
 
 - (id)initWithContentsOfURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError * _Nullable __autoreleasing *)outError {
-    if (UTTypeConformsTo((__bridge CFStringRef) typeName, CFSTR("net.sourceforge.xnalara.mesh"))) {
+    if ([[UTType typeWithIdentifier:typeName] conformsToType:[UTType typeWithIdentifier:@"net.sourceforge.xnalara.mesh"]]) {
         /*
          * Special feature: When double-clicking a model file (or similar),
          * GLLara should launch (if not yet) and create a new empty document
@@ -235,7 +237,7 @@
 - (IBAction)loadMesh:(id)sender;
 {
     NSOpenPanel *panel = [NSOpenPanel openPanel];
-    panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.mesh", @"obj", @"com.khronos.gltf", @"com.khronos.glb" ];
+    panel.allowedContentTypes = @[ [UTType typeWithIdentifier:@"net.sourceforge.xnalara.mesh"], [UTType typeWithFilenameExtension:@"obj"], [UTType typeWithIdentifier:@"com.khronos.gltf"], [UTType typeWithIdentifier:@"com.khronos.glb"] ];
     [panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
         if (result != NSModalResponseOK) return;
         
@@ -250,13 +252,14 @@
     NSOpenPanel *panel = [NSOpenPanel openPanel];
     
     // Find the valid input types
-    NSMutableArray<NSString *> *validTypes = [NSMutableArray array];
+    NSMutableArray<UTType *>* validTypes = [NSMutableArray array];
     NSArray *imageIOTypes = (__bridge_transfer NSArray *) CGImageSourceCopyTypeIdentifiers();
-    [validTypes addObjectsFromArray:imageIOTypes];
-    [validTypes addObject:@"dds"];
+    for (NSString *typeIdentifier in imageIOTypes) {
+        [validTypes addObject:[UTType typeWithIdentifier:typeIdentifier]];
+    }
+    [validTypes addObject:[UTType typeWithFilenameExtension:@"dds"]];
     
-    // TODO Proper array here - don't forget DDS
-    panel.allowedFileTypes = validTypes;
+    panel.allowedContentTypes = validTypes;
     [panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
         if (result != NSModalResponseOK) return;
         
@@ -284,7 +287,7 @@
     GLLItem *item = [[self.selection valueForKeyPath:@"selectedItems"] objectAtIndex:0];
     
     NSSavePanel *panel = [NSSavePanel savePanel];
-    panel.allowedFileTypes = @[ @"obj" ];
+    panel.allowedContentTypes = @[ [UTType typeWithFilenameExtension:@"obj"] ];
     panel.delegate = self;
     
     GLLItemExportViewController *controller = [[GLLItemExportViewController alloc] init];
@@ -322,7 +325,7 @@
     NSAssert([[self.selection valueForKeyPath:@"selectedBones"] count] != 0, @"Can only export if some bones are selected");
     
     NSSavePanel *panel = [NSSavePanel savePanel];
-    panel.allowedFileTypes = @[ @"net.sourceforge.xnalara.pose" ];
+    panel.allowedContentTypes = @[ [UTType typeWithIdentifier:@"net.sourceforge.xnalara.pose"] ];
     
     GLLPoseExportViewController *controller = [[GLLPoseExportViewController alloc] init];
     panel.accessoryView = controller.view;
@@ -360,7 +363,7 @@
     
     NSSavePanel *panel = [NSSavePanel savePanel];
     panel.canCreateDirectories = YES;
-    panel.allowedFileTypes = @[ (__bridge NSString *) kUTTypeFolder ];
+    panel.allowedContentTypes = @[ UTTypeFolder ];
     
     [panel beginSheetModalForWindow:self.windowForSheet completionHandler:^(NSInteger result){
         if (result != NSModalResponseOK) return;

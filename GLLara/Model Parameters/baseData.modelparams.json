@@ -123,7 +123,7 @@
             "type": "float",
             "max": 1000.0,
             "min": 0.0,
-            "description": "Sharpness of the highlights. Higher values produce smaller, more focused highlights"
+            "description": "Sharpness of the highlights. Higher values produce smaller, more focused highlights."
         },
         "specularTextureScale": {
             "title": "Specular Texture Scale",

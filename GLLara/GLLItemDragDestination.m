@@ -8,6 +8,8 @@
 
 #import "GLLItemDragDestination.h"
 
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
 #import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLSelection.h"
@@ -30,7 +32,7 @@
     for (NSPasteboardItem *item in pasteboard.pasteboardItems) {
         // Wait, does Apple really not have a method to get multiple URLs from
         // the pasteboard? I'm not complaining, just surprised.
-        NSString *urlAsString = [item stringForType:(__bridge NSString*) kUTTypeFileURL];
+        NSString *urlAsString = [item stringForType:[UTTypeFileURL identifier]];
         NSURL *url = [NSURL URLWithString:urlAsString].filePathURL;
         NSString *filename = url.lastPathComponent.lowercaseString;
         
@@ -91,9 +93,11 @@
         return YES;
     
     // Try to find image type
-    NSString *typeId = CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef) extension, kUTTypeImage));
-    if (!typeId)
+    UTType *fileType = nil;
+    if (![url getResourceValue:&fileType forKey:NSURLContentTypeKey error:NULL]) {
         return NO;
+    }
+    NSString *typeId = fileType.identifier;
     
     NSArray *imageSourceTypes = (__bridge_transfer NSArray *) CGImageSourceCopyTypeIdentifiers();
     return [imageSourceTypes containsObject:typeId];
@@ -109,7 +113,7 @@
     for (NSPasteboardItem *item in pasteboard.pasteboardItems) {
         // Wait, does Apple really not have a method to get multiple URLs from
         // the pasteboard? I'm not complaining, just surprised.
-        NSString *urlAsString = [item stringForType:(__bridge NSString*) kUTTypeFileURL];
+        NSString *urlAsString = [item stringForType:[UTTypeFileURL identifier]];
         NSURL *url = [NSURL URLWithString:urlAsString].filePathURL;
         
         NSError *ourError = 0;

@@ -36,7 +36,7 @@
     for (GLLItemBone *bone in self.bones)
     {
         if (transform)
-            [bone.globalTransform getValue:&transforms[boneIndex]];
+            transforms[boneIndex] = bone.globalTransform;
         else
             transforms[boneIndex] = bone.bone.positionMatrix;
         boneIndex += 1;

@@ -8,6 +8,8 @@
 
 #import "GLLModel.h"
 
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
 #import "NSArray+Map.h"
 #import "GLLASCIIScanner.h"
 #import "GLLModelBone.h"
@@ -67,14 +69,15 @@ static NSCache *cachedModels;
             if (error)
             {
                 // Find display name for this extension
-                CFStringRef fileType = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef) file.pathExtension, NULL);
-                CFStringRef fileTypeDescription = UTTypeCopyDescription(fileType);
-                CFRelease(fileType);
+                UTType *fileType;
+                if (![file getResourceValue:&fileType forKey:NSURLContentTypeKey error:error]) {
+                    return nil;
+                }
+                NSString *fileTypeDescription = fileType.localizedDescription;
                 
                 *error = [NSError errorWithDomain:GLLModelLoadingErrorDomain code:GLLModelLoadingError_FileTypeNotSupported userInfo:@{
-                                                                                                                                       NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Files of type %@ are not supported.", @"Tried to load unsupported format"), (__bridge NSString *)fileTypeDescription],
+                                                                                                                                       NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Files of type %@ are not supported.", @"Tried to load unsupported format"), fileTypeDescription],
                                                                                                                                        NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Only .mesh, .mesh.ascii and .obj files can be loaded.", @"Tried to load unsupported format")}];
-                CFRelease(fileTypeDescription);
             }
             return nil;
         }

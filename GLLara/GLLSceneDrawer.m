@@ -18,7 +18,6 @@
 #import "GLLDocument.h"
 #import "GLLDrawState.h"
 #import "GLLItem.h"
-#import "GLLItemDrawer.h"
 #import "GLLModelProgram.h"
 #import "GLLNotifications.h"
 #import "GLLRenderParameter.h"
@@ -54,7 +53,7 @@
 	
 	itemDrawers = [[NSMutableArray alloc] init];
 	
-	/*NSEntityDescription *itemEntity = [NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
+	NSEntityDescription *itemEntity = [NSEntityDescription entityForName:@"GLLItem" inManagedObjectContext:self.managedObjectContext];
 	
 	// Set up loading of future items and destroying items. Also update view.
 	// Store self as weak in the block, so it does not retain this.
@@ -69,7 +68,6 @@
 				continue;
 			
 			[toRemove addObject:drawer];
-			[drawer unload];
 		}
 		[self->itemDrawers removeObjectsInArray:toRemove];
 				
@@ -95,7 +93,7 @@
 	
 	NSArray *allItems = [self.managedObjectContext executeFetchRequest:allItemsRequest error:NULL];
 	for (GLLItem *item in allItems)
-		[self _addDrawerForItem:item];*/
+		[self _addDrawerForItem:item];
 	
 	skeletonDrawer = [[GLLSkeletonDrawer alloc] initWithResourceManager:self.resourceManager];
 	
@@ -105,21 +103,18 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:managedObjectContextObserver];
-	
-	for (GLLItemDrawer *drawer in itemDrawers)
-        [drawer unload];
 }
 
 - (void)drawShowingSelection:(BOOL)showSelection into:(id<MTLRenderCommandEncoder>)commandEncoder  lightsBuffer:(id<MTLBuffer>)lights transformBuffer:(id<MTLBuffer>)transform
 {
-    /*GLLBeginTiming("Draw/Solid");
+    GLLBeginTiming("Draw/Solid");
 	// 1st pass: Draw items that do not need blending. They use shaders without alpha test
 	for (GLLItemDrawer *drawer in itemDrawers)
         [drawer drawSolidInto:commandEncoder];
     GLLEndTiming("Draw/Solid");
     GLLBeginTiming("Draw/AlphaOp");
 	
-	// 2nd pass: Draw blended items, but only those pixels that are "almost opaque"
+	/*// 2nd pass: Draw blended items, but only those pixels that are "almost opaque"
 	glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingAlphaTest, self.resourceManager.alphaTestPassGreaterBuffer);
 	
 	glEnable(GL_BLEND);
@@ -137,7 +132,7 @@
         [drawer drawAlphaInto:commandEncoder];
     GLLEndTiming("Draw/AlphaTrans");*/
 	
-	if (showSelection || true)
+	if (showSelection)
     {
         GLLBeginTiming("Draw/Skel");
         
@@ -168,8 +163,7 @@
 - (void)_addDrawerForItem:(GLLItem *)item;
 {
 	NSError *error = nil;
-    NSDictionary<NSURL*,NSError*> *replacedTextures = @{};
-    GLLItemDrawer *drawer = [[GLLItemDrawer alloc] initWithItem:item sceneDrawer:self replacedTextures:&replacedTextures error:&error];
+    GLLItemDrawer *drawer = [[GLLItemDrawer alloc] initWithItem:item sceneDrawer:self error:&error];
 	
 	if (!drawer)
 	{
@@ -181,8 +175,10 @@
 		}
 		
 		return;
-    } else if (replacedTextures && replacedTextures.count > 0) {
-        [self.document notifyTexturesNotLoaded:replacedTextures];
+    }
+    
+    if (drawer.replacedTextures.count > 0) {
+        [self.document notifyTexturesNotLoaded:drawer.replacedTextures];
     }
 	
 	[itemDrawers addObject:drawer];

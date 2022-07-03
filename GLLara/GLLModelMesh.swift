@@ -243,7 +243,7 @@ import Foundation
     
     // Element data. Arranged as triangles, often but not necessarily UInt32
     @objc var elementData: Data?
-    @objc var elementComponentType: GLLVertexAttribComponentType = .unsignedInt
+    @objc var elementSize: Int = 4
     @objc var countOfElements: Int = 0
     
     // Returns the element fo the index. If there is no element buffer (i.e. directly), returns its index
@@ -251,21 +251,16 @@ import Foundation
         guard let elementData = elementData else {
             return index
         }
-        switch (elementComponentType) {
-        case .byte:
+        switch elementSize {
+        case 1:
             return try! Int(elementData.readUInt8(at: index * 1))
-        case .unsignedByte:
-            return try! Int(elementData.readInt8(at: index * 1))
-        case .short:
-            return try! Int(elementData.readInt16(at: index * 2))
-        case .unsignedShort:
+        case 2:
             return try! Int(elementData.readUInt16(at: index * 2))
-        case .int:
-            return try! Int(elementData.readInt32(at: index * 4))
-        case .unsignedInt:
+        case 4:
             return try! Int(elementData.readUInt32(at: index * 4))
         default:
-            assert(false, "Shouldn't happen")
+            assertionFailure("Unknown element component type")
+            return 0
         }
     }
     
@@ -460,7 +455,7 @@ import Foundation
             let tangentData = tangents.withUnsafeBufferPointer {
                 Data(buffer: $0)
             }
-            let attribute = GLLVertexAttrib(semantic: .tangent0, layer: layer, size: .vec4, componentType: .float)
+            let attribute = GLLVertexAttrib(semantic: .tangent0, layer: layer, format: .float4)
             result.append(GLLVertexAttribAccessor(attribute: attribute, dataBuffer: tangentData, offset: 0, stride: Int(attribute.sizeInBytes)))
         }
         return GLLVertexAttribAccessorSet(accessors: result)
@@ -619,23 +614,23 @@ import Foundation
     // The vertex format for the things that are in the file
     private var fileVertexFormat: GLLVertexFormat {
         var attributes: [GLLVertexAttrib] = []
-        attributes.append(GLLVertexAttrib(semantic: .position, layer: 0, size: .vec3, componentType: .float))
-        attributes.append(GLLVertexAttrib(semantic: .normal, layer: 0, size: .vec3, componentType: .float))
-        attributes.append(GLLVertexAttrib(semantic: .color, layer: 0, size: .vec4, componentType: colorsAreFloats ? .float : .unsignedByte))
+        attributes.append(GLLVertexAttrib(semantic: .position, layer: 0, format: .float3))
+        attributes.append(GLLVertexAttrib(semantic: .normal, layer: 0, format: .float3))
+        attributes.append(GLLVertexAttrib(semantic: .color, layer: 0, format: colorsAreFloats ? .float4 : .uchar4Normalized))
         for i in 0..<countOfUVLayers {
-            attributes.append(GLLVertexAttrib(semantic: .texCoord0, layer: i, size: .vec2, componentType: .float))
+            attributes.append(GLLVertexAttrib(semantic: .texCoord0, layer: i, format: .float2))
         }
         if hasTangentsInFile {
             for i in 0..<countOfUVLayers {
-                attributes.append(GLLVertexAttrib(semantic: .tangent0, layer: i, size: .vec4, componentType: .float))
+                attributes.append(GLLVertexAttrib(semantic: .tangent0, layer: i, format: .float4))
             }
         } else if hasVariableBonesPerVertex {
             // TODO implement this properly
-            attributes.append(GLLVertexAttrib(semantic: .padding, layer: 0, size: .scalar, componentType: .unsignedShort))
+            attributes.append(GLLVertexAttrib(semantic: .padding, layer: 0, format: .ushort))
         }
         if hasBoneWeights {
-            attributes.append(GLLVertexAttrib(semantic: .boneIndices, layer: 0, size: .vec4, componentType: .unsignedShort))
-            attributes.append(GLLVertexAttrib(semantic: .boneWeights, layer: 0, size: .vec4, componentType: .float))
+            attributes.append(GLLVertexAttrib(semantic: .boneIndices, layer: 0, format: .ushort4))
+            attributes.append(GLLVertexAttrib(semantic: .boneWeights, layer: 0, format: .float4))
         }
         
         return GLLVertexFormat(attributes: attributes, countOfVertices: 0, hasIndices: true)

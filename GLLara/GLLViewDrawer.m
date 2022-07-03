@@ -20,13 +20,8 @@
 #import "simd_project.h"
 
 #import "GLLResourceIDs.h"
-
-struct GLLLightBlock
-{
-	vec_float4 cameraLocation;
-	float ambientColor[4];
-	struct GLLLightUniformBlock lights[3];
-};
+#import "GLLRenderParameters.h"
+#import "GLLResourceManager.h"
 
 @interface GLLViewDrawer ()
 {
@@ -67,7 +62,8 @@ struct GLLLightBlock
 	lights = [[NSMutableArray alloc] initWithCapacity:4];
 	
 	// Prepare light buffer.
-    lightBuffer = [device newBufferWithLength:sizeof(struct GLLLightBlock) options:MTLResourceStorageModeManaged];
+    lightBuffer = [device newBufferWithLength:sizeof(struct GLLLightsBuffer) options:MTLResourceStorageModeManaged];
+    lightBuffer.label = @"global-lights";
 	
 	// Load existing lights
 	NSFetchRequest *allLightsRequest = [[NSFetchRequest alloc] init];
@@ -85,6 +81,7 @@ struct GLLLightBlock
 	
 	// Transform buffer
     transformBuffer = [device newBufferWithLength:sizeof(mat_float16) options:MTLResourceStorageModeManaged];
+    transformBuffer.label = @"global-transform";
 	[self.camera addObserver:self forKeyPath:@"viewProjectionMatrix" options:0 context:0];
 	
 	// Other necessary render state. Thanks to Metal, that got cut down a lot.
@@ -130,8 +127,9 @@ struct GLLLightBlock
 	if (needsUpdateMatrices) [self _updateMatrices];
 	if (needsUpdateLights) [self _updateLights];
     
-    [commandEncoder setVertexBuffer:transformBuffer offset:0 atIndex:GLLVertexInputIndexTransforms];
+    [commandEncoder setVertexBuffer:transformBuffer offset:0 atIndex:GLLVertexInputIndexViewProjection];
     [commandEncoder setVertexBuffer:lightBuffer offset:0 atIndex:GLLVertexInputIndexLights];
+    [commandEncoder setFragmentBuffer:lightBuffer offset:0 atIndex:GLLFragmentBufferIndexLights];
 	
     [self.sceneDrawer drawShowingSelection:selection into:commandEncoder lightsBuffer:lightBuffer transformBuffer:transformBuffer];
 }
@@ -262,9 +260,9 @@ struct GLLLightBlock
 			
 			// Setup matrix. First, flip the y direction because OpenGL textures are not the same way around as CGImages. Then, use ortho to select the part that corresponds to the current tile.
 			mat_float16 flipMatrix = (mat_float16) { {1,0,0,0},{0, -1, 0,0}, {0,0,1,0}, {0,0,0,1} };
-			mat_float16 combinedMatrix = simd_mat_mul(flipMatrix, cameraMatrix);
+			mat_float16 combinedMatrix = simd_mul(flipMatrix, cameraMatrix);
 			mat_float16 partOfCameraMatrix = simd_orthoMatrix((x/size.width)*2.0-1.0, ((x+width)/size.width)*2.0-1.0, (y/size.height)*2.0-1.0, ((y+height)/size.height)*2.0-1.0, 1, -1);
-			combinedMatrix = simd_mat_mul(partOfCameraMatrix, combinedMatrix);
+			combinedMatrix = simd_mul(partOfCameraMatrix, combinedMatrix);
 			
 			glBindBufferBase(GL_UNIFORM_BUFFER, GLLUniformBlockBindingTransforms, transformBuffer);
 			glBufferData(GL_UNIFORM_BUFFER, sizeof(combinedMatrix), NULL, GL_STREAM_DRAW);
@@ -306,14 +304,15 @@ struct GLLLightBlock
 
 - (void)_updateLights;
 {
-	struct GLLLightBlock lightData;
+	struct GLLLightsBuffer lightData;
+    NSLog(@"light data size: %lu", sizeof(lightData));
 	
 	// Camera position
-	lightData.cameraLocation = self.camera.cameraWorldPosition;
+    lightData.cameraPosition = self.camera.cameraWorldPosition;
 	
 	// Ambient
 	GLLAmbientLight *ambient = (GLLAmbientLight *) lights[0];
-	[ambient.color get128BitRGBAComponents:lightData.ambientColor];
+	[ambient.color get128BitRGBAComponents:(float*) &lightData.ambientColor];
 	
 	// Diffuse + Specular
 	for (NSUInteger i = 0; i < 3; i++)
@@ -370,6 +369,8 @@ struct GLLLightBlock
     [commandEncoder setTriangleFillMode:MTLTriangleFillModeFill];
     [commandEncoder setFrontFacingWinding:MTLWindingClockwise];
     [commandEncoder setCullMode:MTLCullModeBack];
+    [commandEncoder setDepthStencilState: _sceneDrawer.resourceManager.normalDepthStencilState];
+    [commandEncoder setFragmentSamplerState:_sceneDrawer.resourceManager.metalSampler atIndex:0];
     [commandEncoder setBlendColorRed:0.0f green:0.0f blue:0.0f alpha:1.0f];
     
     [self drawShowingSelection: self.view.showSelection into: commandEncoder];

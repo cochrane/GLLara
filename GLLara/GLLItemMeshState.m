@@ -12,7 +12,6 @@
 
 #import "GLLItemDrawer.h"
 #import "GLLItemMeshTexture.h"
-#import "GLLMeshDrawData.h"
 #import "GLLItemMesh.h"
 #import "GLLModel.h"
 #import "GLLModelProgram.h"

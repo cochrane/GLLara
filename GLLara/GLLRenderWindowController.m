@@ -8,6 +8,8 @@
 
 #import "GLLRenderWindowController.h"
 
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+
 #import "GLLCamera.h"
 #import "GLLDocument.h"
 #import "GLLView.h"
@@ -130,7 +132,12 @@
     savePanelAccessoryViewController.savePanel = savePanel;
     savePanel.accessoryView = savePanelAccessoryViewController.view;
     
-    savePanel.allowedFileTypes = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
+    NSArray *allowedTypeIdentifiers = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
+    NSMutableArray<UTType*>* allowedTypes = [NSMutableArray arrayWithCapacity:allowedTypeIdentifiers.count];
+    for (NSString *identifier in allowedTypeIdentifiers) {
+        [allowedTypes addObject:[UTType typeWithIdentifier:identifier]];
+    }
+    savePanel.allowedContentTypes = allowedTypes;
     
     [savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
         if (result != NSModalResponseOK) return;

@@ -18,6 +18,8 @@
 @class GLLModelDrawData;
 @class GLLShader;
 @class GLLShaderData;
+@class GLLPipelineStateInformation;
+@class GLLVertexAttribAccessorSet;
 
 /*
  * Stores all resources for the program.
@@ -28,27 +30,32 @@
  */
 @interface GLLResourceManager : NSObject
 
-+ (id)sharedResourceManager;
++ (GLLResourceManager *)sharedResourceManager;
 
 @property (nonatomic, readonly, assign) NSInteger maxAnisotropyLevel;
 
 @property (nonatomic, readonly) id<MTLDevice> metalDevice;
 
 - (GLLModelDrawData *)drawDataForModel:(GLLModel *)model error:(NSError *__autoreleasing*)error;
-- (GLLModelProgram *)programForDescriptor:(GLLShaderData *)description error:(NSError *__autoreleasing*)error;
+//- (GLLModelProgram *)programForDescriptor:(GLLShaderData *)description error:(NSError *__autoreleasing*)error;
 - (GLLTexture *)textureForURL:(NSURL *)textureURL error:(NSError *__autoreleasing*)error;
-- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines usedTexCoords:(NSIndexSet *)texCoords type:(GLenum)type error:(NSError *__autoreleasing*)error;
+//- (GLLShader *)shaderForName:(NSString *)shaderName additionalDefines:(NSDictionary *)defines usedTexCoords:(NSIndexSet *)texCoords type:(GLenum)type error:(NSError *__autoreleasing*)error;
 
 // Shared programs and buffers that everyone needs sometime
 
-@property (nonatomic) GLLProgram *skeletonProgram;
-@property (nonatomic) GLLProgram *squareProgram;
+//@property (nonatomic) GLLProgram *skeletonProgram;
+//@property (nonatomic) GLLProgram *squareProgram;
 @property (nonatomic) id<MTLBuffer> squareVertexArray;
 
 @property (nonatomic) id<MTLBuffer> alphaTestPassGreaterBuffer;
 @property (nonatomic) id<MTLBuffer> alphaTestPassLessBuffer;
 @property (nonatomic, readonly) id<MTLLibrary> library;
 @property (nonatomic, readonly) MTLPixelFormat pixelFormat;
+@property (nonatomic, readonly) MTLPixelFormat depthPixelFormat;
+@property (nonatomic, readonly) id<MTLSamplerState> metalSampler;
+@property (nonatomic, readonly) id<MTLDepthStencilState> normalDepthStencilState;
+
+- (GLLPipelineStateInformation *)pipelineForVertex:(GLLVertexAttribAccessorSet *)vertexDescriptor shader:(GLLShaderData *)shader error:(NSError *__autoreleasing*)error;
 
 // Specifically used for testing
 - (void)clearInternalCaches;

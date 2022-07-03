@@ -7,15 +7,19 @@
 //
 
 import Foundation
-import OpenGL.GL3
-import OpenGL
+import Metal
 
 @objc class GLLVertexArray: NSObject {
     
     private var vertexData: Data? = Data()
     private var elementData: Data? = Data()
     @objc var format: GLLVertexFormat
-    private var optimizedFormat: GLLVertexAttribAccessorSet
+    @objc var optimizedFormat: GLLVertexAttribAccessorSet
+    
+    var vertexBuffer: MTLBuffer? = nil
+    var elementBuffer: MTLBuffer? = nil
+    
+    @objc var debugLabel: String = "gllvertexarray"
     
     @objc init(format: GLLVertexFormat) {
         self.format = format
@@ -36,8 +40,26 @@ import OpenGL
         super.init()
     }
     
+    var vertexDescriptor: MTLVertexDescriptor {
+        return optimizedFormat.vertexDescriptor
+    }
+    
     var stride: Int {
         return optimizedFormat.accessors.first?.stride ?? 0
+    }
+    
+    var numberOfElementBytes: Int {
+        if !format.hasIndices {
+            return 0
+        }
+        switch format.indexType {
+        case .uint16:
+            return 2
+        case .uint32:
+            return 4
+        @unknown default:
+            fatalError()
+        }
     }
     
     @objc var countOfVertices: Int {
@@ -48,7 +70,7 @@ import OpenGL
         return elementData!.count
     }
     
-    @objc func add(vertices: GLLVertexAttribAccessorSet, count: Int, elements: Data, elementsType: GLLVertexAttribComponentType) {
+    @objc func add(vertices: GLLVertexAttribAccessorSet, count: Int, elements: Data?, bytesPerElement: Int) {
         // Process vertex data
         let actualStride = stride
         let newBytes = UnsafeMutableRawBufferPointer.allocate(byteCount: count * actualStride, alignment: MemoryLayout<Int32>.alignment)
@@ -61,7 +83,7 @@ import OpenGL
                 let originalVertex = readAccessor.element(at: i)
                 let vertex = newBytes.baseAddress!.advanced(by: writeAccessor.offset(forElement: i))
                 // Need to do some processing
-                if attribute.semantic == .normal && attribute.size == .vec4 && attribute.type == .int2_10_10_10_Rev {
+                if attribute.semantic == .normal && attribute.mtlFormat == .int1010102Normalized {
                     // Normal. Compress from float[3] to int_2_10_10_10_rev format
                     let normal = originalVertex.bindMemory(to: Float32.self, capacity: 3)
                     var value = UInt32(0)
@@ -69,13 +91,13 @@ import OpenGL
                     value += packSignedFloat(value: normal[1], bits: 10) << 10;
                     value += packSignedFloat(value: normal[2], bits: 10) << 20;
                     vertex.bindMemory(to: UInt32.self, capacity: 1)[0] = value
-                } else if attribute.semantic == .texCoord0 && attribute.size == .vec2 && attribute.type == .halfFloat {
+                } else if attribute.semantic == .texCoord0 && attribute.mtlFormat == .half2 {
                     // Tex coord. Compress to half float
                     let originalTexCoord = originalVertex.bindMemory(to: Float32.self, capacity: 2)
-                    var newTexCoord = vertex.bindMemory(to: UInt16.self, capacity: 2)
+                    let newTexCoord = vertex.bindMemory(to: UInt16.self, capacity: 2)
                     newTexCoord[0] = halfFloat(value: originalTexCoord[0])
                     newTexCoord[1] = halfFloat(value: originalTexCoord[1])
-                } else if attribute.semantic == .tangent0 && attribute.size == .vec4 && attribute.type == .int2_10_10_10_Rev {
+                } else if attribute.semantic == .tangent0 && attribute.mtlFormat == .int1010102Normalized {
                     let tangents = originalVertex.bindMemory(to: Float32.self, capacity: 4)
                     var normalized = UInt32(0)
                     let invLength = 1.0 / sqrt(tangents[0]*tangents[0] + tangents[1]*tangents[1] + tangents[2]*tangents[2]);
@@ -84,10 +106,10 @@ import OpenGL
                     normalized |= packSignedFloat(value: tangents[2] * invLength, bits: 10) << 20;
                     normalized |= packSignedFloat(value: copysign(tangents[3], 1.0), bits: 2) << 30;
                     vertex.bindMemory(to: UInt32.self, capacity: 1)[0] = normalized
-                } else if attribute.semantic == .boneWeights && attribute.size == .vec4 && attribute.type == .unsignedShort {
+                } else if attribute.semantic == .boneWeights && attribute.mtlFormat == .uchar2Normalized {
                     // Compress bone weights to half float
                     let weights = originalVertex.bindMemory(to: Float32.self, capacity: 4)
-                    var newBoneWeights = vertex.bindMemory(to: UInt16.self, capacity: 4)
+                    let newBoneWeights = vertex.bindMemory(to: UInt16.self, capacity: 4)
                     let sum = weights[0] + weights[0] + weights[1] + weights[2] + weights[3]
                     if sum == 0 {
                         newBoneWeights[0] = 0xFFFF
@@ -101,7 +123,7 @@ import OpenGL
                     }
                 } else {
                     // Not optimized, just memcpy
-                    vertex.copyMemory(from: vertex, byteCount: attribute.sizeInBytes)
+                    vertex.copyMemory(from: originalVertex, byteCount: attribute.sizeInBytes)
                 }
             }
         }
@@ -110,35 +132,24 @@ import OpenGL
         newBytes.deallocate()
         
         // Compress elements
-        if self.format.hasIndices {
-            var inputElementBytes = 0
-            if elementsType == .unsignedInt || elementsType == .int {
-                inputElementBytes = 4
-            } else if elementsType == .unsignedShort || elementsType == .short {
-                inputElementBytes = 2
-            } else if elementsType == .unsignedByte || elementsType == .byte {
-                inputElementBytes = 1
-            } else {
-                assertionFailure()
-            }
-            
-            if inputElementBytes == format.numElementBytes {
+        if self.format.hasIndices, let elements = elements {
+            let ourElementBytes = numberOfElementBytes
+            if bytesPerElement == ourElementBytes {
                 // Straight copy
                 elementData!.append(elements)
             } else {
-                let outputElementBytes = format.numElementBytes
-                let count = elements.count / inputElementBytes
-                elementData!.reserveCapacity(elementData!.count + count*outputElementBytes)
-                if outputElementBytes < inputElementBytes {
+                let additionalCount = elements.count / bytesPerElement
+                elementData!.reserveCapacity(elementData!.count + count*ourElementBytes)
+                if ourElementBytes <= bytesPerElement {
                     // Downsample. Assumes little endian. RIP PPC :(
-                    for i in 0..<count {
-                        elementData!.append(elements.subdata(in: i*inputElementBytes ..< i*inputElementBytes+outputElementBytes))
+                    for i in 0..<additionalCount {
+                        elementData!.append(elements.subdata(in: i*bytesPerElement ..< i*bytesPerElement+ourElementBytes))
                     }
                 } else {
                     // Upsample. Assumes little endian. RIP PPC :(
-                    for i in 0..<count {
-                        elementData!.append(elements.subdata(in: i*inputElementBytes ..< (i+1)*inputElementBytes))
-                        elementData!.append(contentsOf: Array.init(repeating: UInt8(0), count: outputElementBytes - inputElementBytes))
+                    for i in 0..<additionalCount {
+                        elementData!.append(elements.subdata(in:i*bytesPerElement ..< (i+1)*bytesPerElement))
+                        elementData!.append(contentsOf: Array.init(repeating: UInt8(0), count: ourElementBytes - bytesPerElement))
                     }
                 }
             }
@@ -239,61 +250,20 @@ import OpenGL
     @objc var vertexArrayIndex = UInt32(0)
     
     @objc func upload() {
-        // Create the element and vertex buffers, and spend a lot of time setting up the vertex attribute arrays and pointers.
-        glGenVertexArrays(1, &vertexArrayIndex);
-        glBindVertexArray(vertexArrayIndex);
+        // TODO do this in Metal style
+        // Can we use vertex descriptors to simplify this? It seems like we're actually fairly close to them already.
+        // Edit: Yes! We can do that! They're specifically for this in fact!
         
-        let usedBuffers: GLsizei = self.format.hasIndices ? 2 : 1;
-        var buffers: [GLuint] = [ 0, 0 ];
-        buffers.withUnsafeMutableBufferPointer {
-            glGenBuffers(usedBuffers, $0.baseAddress);
+        let device = GLLResourceManager.shared().metalDevice!
+        vertexData!.withUnsafeBytes {
+            vertexBuffer = device.makeBuffer(bytes: $0.baseAddress!, length: $0.count, options: .storageModeManaged)
+            vertexBuffer?.label = "vertex-" + debugLabel
         }
-        
-        glBindBuffer(GLenum(GL_ARRAY_BUFFER), buffers[0]);
-        _ = vertexData!.withUnsafeBytes {
-            glBufferData(GLenum(GL_ARRAY_BUFFER), vertexData!.count, $0, GLenum(GL_STATIC_DRAW));
+        elementData!.withUnsafeBytes {
+            elementBuffer = device.makeBuffer(bytes: $0.baseAddress!, length: $0.count, options: .storageModeManaged)
+            elementBuffer?.label = "elements-" + debugLabel
         }
-            
-        for attributeAccessor in optimizedFormat.accessors {
-            let attribute = attributeAccessor.attribute;
-            var attribIndex = GLuint(attribute.semantic.rawValue);
-            if (attribute.semantic == .tangent0 || attribute.semantic == .texCoord0) {
-                attribIndex += 2 * GLuint(attribute.layer);
-            }
-            
-            glEnableVertexAttribArray(attribIndex);
-            
-            if (attribute.semantic == .boneIndices) {
-                glVertexAttribIPointer(attribIndex, GLint(attribute.numberOfElements), GLenum(attribute.type.rawValue), GLsizei(attributeAccessor.stride), UnsafeRawPointer(bitPattern: attributeAccessor.dataOffset));
-            } else {
-                var normalized = GLboolean(GL_FALSE);
-                if (attribute.type.rawValue == GL_UNSIGNED_BYTE && attribute.semantic == .color) {
-                    normalized = GLboolean(GL_TRUE);
-                } else if (attribute.type.rawValue == GL_INT_2_10_10_10_REV) {
-                    normalized = GLboolean(GL_TRUE);
-                } else if (attribute.type.rawValue == GL_UNSIGNED_SHORT && attribute.semantic == .boneWeights) {
-                    normalized = GLboolean(GL_TRUE);
-                }
-                glVertexAttribPointer(attribIndex, GLint(attribute.numberOfElements), GLenum(attribute.type.rawValue), normalized, GLsizei(attributeAccessor.stride), UnsafeRawPointer(bitPattern: attributeAccessor.dataOffset));
-            }
-        }
-        
-        if (self.format.hasIndices) {
-            glBindBuffer(GLenum(GL_ELEMENT_ARRAY_BUFFER), buffers[1]);
-            _ = elementData!.withUnsafeBytes {
-                glBufferData(GLenum(GL_ELEMENT_ARRAY_BUFFER), elementData!.count, $0, GLenum(GL_STATIC_DRAW));
-            }
-        }
-        
-        glBindVertexArray(0);
-        glDeleteBuffers(usedBuffers, buffers);
-        
-        vertexData = nil;
-        elementData = nil;
-    }
-    
-    func unload() {
-        glDeleteVertexArrays(1, [ vertexArrayIndex ]);
-        vertexArrayIndex = 0;
+        vertexData = nil
+        elementData = nil
     }
 }

@@ -36,20 +36,20 @@
     [self didChangeValueForKey:@"longitude"];
 }
 
-- (struct GLLLightUniformBlock)uniformBlock
+- (struct GLLLightBuffer)uniformBlock
 {
     if (!self.isEnabled)
     {
-        struct GLLLightUniformBlock block;
+        struct GLLLightBuffer block;
         bzero(&block, sizeof(block));
         return block;
     }
     
-    struct GLLLightUniformBlock block;
-    block.direction = simd_mat_vecmul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
+    struct GLLLightBuffer block;
+    block.direction = simd_mul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
     
-    [self.diffuseColor get128BitRGBAComponents:block.diffuseColor];
-    [self.specularColor get128BitRGBAComponents:block.specularColor];
+    [self.diffuseColor get128BitRGBAComponents:(float*)&block.diffuseColor];
+    [self.specularColor get128BitRGBAComponents:(float*)&block.specularColor];
     
     return block;
 }

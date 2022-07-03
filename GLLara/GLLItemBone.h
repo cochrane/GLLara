@@ -9,6 +9,8 @@
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
+#import "simd_matrix.h"
+
 @class GLLItem;
 @class GLLModelBone;
 @class TRInDataStream;
@@ -34,9 +36,9 @@
 @property (nonatomic, readonly) GLLItem *item;
 
 // Local
-@property (nonatomic) NSValue *relativeTransform;
-@property (nonatomic) NSValue *globalTransform;
-@property (nonatomic) NSValue *globalPosition;
+@property (nonatomic) mat_float16 relativeTransform;
+@property (nonatomic) mat_float16 globalTransform;
+@property (nonatomic) vec_float4 globalPosition;
 
 // Derived
 @property (nonatomic, readonly) NSUInteger boneIndex;

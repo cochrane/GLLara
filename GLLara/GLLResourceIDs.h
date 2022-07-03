@@ -9,11 +9,41 @@
 #ifndef GLLResourceIDs_h
 #define GLLResourceIDs_h
 
+#include <simd/simd.h>
+
 typedef enum GLLVertexInputIndex {
-    GLLVertexInputIndexTransforms = 0,
-    GLLVertexInputIndexLights = 1,
-    GLLVertexInputIndexViewport = 2,
-    GLLVertexInputIndexVertices = 3
+    GLLVertexInputIndexViewProjection = 0,
+    GLLVertexInputIndexTransforms,
+    GLLVertexInputIndexLights,
+    GLLVertexInputIndexViewport,
+    GLLVertexInputIndexVertices
 } GLLVertexInputIndex;
+
+typedef enum GLLFragmentArgumentIndex {
+    GLLFragmentArgumentIndexTextureDiffuse = 0,
+    GLLFragmentArgumentIndexTextureSpecular,
+    GLLFragmentArgumentIndexTextureEmission,
+    GLLFragmentArgumentIndexTextureBump,
+    GLLFragmentArgumentIndexTextureBump1,
+    GLLFragmentArgumentIndexTextureBump2,
+    GLLFragmentArgumentIndexTextureMask,
+    GLLFragmentArgumentIndexTextureLightmap,
+    GLLFragmentArgumentIndexTextureReflection,
+    
+    GLLFragmentArgumentIndexAmbientColor,
+    GLLFragmentArgumentIndexDiffuseColor,
+    GLLFragmentArgumentIndexSpecularColor,
+    
+    GLLFragmentArgumentIndexSpecularExponent,
+    GLLFragmentArgumentIndexBump1UVScale,
+    GLLFragmentArgumentIndexBump2UVScale,
+    GLLFragmentArgumentIndexSpecularTextureScale,
+    GLLFragmentArgumentIndexReflectionAmount
+} GLLFragmentArgumentIndex;
+
+typedef enum GLLFragmentBufferIndex {
+    GLLFragmentBufferIndexArguments = 1,
+    GLLFragmentBufferIndexLights = 3
+} GLLFragmentBufferIndex;
 
 #endif /* GLLResourceIDs_h */

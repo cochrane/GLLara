@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import UniformTypeIdentifiers
 
 @objc class GLLMeshParams: NSObject {
     @objc var meshGroups: [String] = []
@@ -42,12 +43,12 @@ import Cocoa
     
     @objc static func parameters(forModel model: GLLModel) throws -> GLLModelParams {
         // Check whether it is an XPS file
-        let typeIdentifiers = UTTypeCreateAllIdentifiersForTag(kUTTagClassFilenameExtension, model.baseURL.pathExtension as CFString, nil)!.takeRetainedValue() as! [String]
-        if typeIdentifiers.contains("com.home-forum.xnalara.xpsmesh") {
+        let resourceValues = try model.baseURL.resourceValues(forKeys: [.contentTypeKey])
+        if resourceValues.contentType?.identifier == "com.home-forum.xnalara.xpsmesh" {
             return try GLLModelParams(model: model)
         }
         
-        let name = ((model.baseURL.lastPathComponent as NSString).deletingPathExtension as NSString).deletingPathExtension.lowercased()
+        let name = model.baseURL.deletingPathExtension().deletingPathExtension().lastPathComponent
         if name == "generic_item" || name == "character" || name == "outfit" {
             return try GLLModelParams(model: model)
         }
@@ -57,7 +58,18 @@ import Cocoa
     
     private static var parametersCache: [String: GLLModelParams] = [:]
     
+    static func register(parameters: GLLModelParams, forName name: String) {
+        parametersCache[name] = parameters
+    }
+    
+    static var registeredInitialData = false
+    
     @objc static func parameters(forName name: String) throws -> GLLModelParams {
+        if !registeredInitialData {
+            registeredInitialData = true
+            registerModelParams()
+        }
+        
         if let result = parametersCache[name] {
             return result
         }
@@ -84,13 +96,13 @@ import Cocoa
         /**
          * Name of a file that is essentially the superclass
          */
-        var base: String?
+        var base: String? = nil
         /**
          * Generic: The shaders that can be used, and the modules that can
          * apply. Presumably there will be only very few possible shaders, and
          * the variation is mainly in the modules.
          */
-        var shaders: [GLLShaderBase]?
+        var shaders: [GLLShaderBase]? = nil
         /**
          * Generic: End user readable descriptions (or rather the localization
          * keys) for the various render parameters that shaders use. Render
@@ -98,51 +110,51 @@ import Cocoa
          * have the same name are assumed to do the same thing no matter who
          * uses them.
          */
-        var renderParameterDescriptions: [String: GLLRenderParameterDescription]?
+        var renderParameterDescriptions: [String: GLLRenderParameterDescription]? = nil
         /**
          * Default values to be used by the render parameters for the different
          * shaders. Default values can be set per model, or failing that,
          * in the base value.
          */
-        var defaultRenderParameters: [String: Double]?
+        var defaultRenderParameters: [String: Double]? = nil
         /**
          * Generic: End user readable descriptions (or rather the localization
          * keys) for the various textures that shaders used. Same logic as for
          * render parameters
          */
-        var textureDescriptions: [String: GLLTextureDescription]?
+        var textureDescriptions: [String: GLLTextureDescription]? = nil
         /**
          * Generic: The default textures for the various texture types used.
          * In general these are designed to have no effect on rendering
          * whatsoever.
          */
-        var defaultTextures: [String: String]?
+        var defaultTextures: [String: String]? = nil
         /**
          * For XNALara files: The mesh groups that apply to a mesh with the
          * given name for this model (may be more than one but only one of those
          * will actually render)
          */
-        var meshGroupNames: [String: [String]]?
+        var meshGroupNames: [String: [String]]? = nil
         /**
          * For XNALara files: Values for render parameters for meshes. Only
          * float render parameters get values in the plist because XNALara had
          * no color parameters
          */
-        var renderParameters: [String: [String: Double]]?
+        var renderParameters: [String: [String: Double]]? = nil
         /**
          * For XNALara files: Pre-defined camera targets, and the bones that
          * belong to them.
          */
-        var cameraTargets: [String: [String]]?
+        var cameraTargets: [String: [String]]? = nil
         /**
          * For XNALara files: The mesh group that all meshes belong to that
          * aren't menitoned in meshGroupNames
          */
-        var defaultMeshGroup: String?
+        var defaultMeshGroup: String? = nil
         /**
          * For XNALara files: Which meshes to split, and how. Very rare.
          */
-        var meshSplitters: [String : [GLLMeshSplitter]]?
+        var meshSplitters: [String : [GLLMeshSplitter]]? = nil
         /**
          * For XNALara files: Maps from an old shader name (which GLLara used
          * up to version 0.2.10) or from mesh group names to the base shader
@@ -153,7 +165,7 @@ import Cocoa
          * This one doesn't need to be a map, it just makes it easier for me to
          * keep track
          */
-        var xnaLaraShaderDescriptions: [String: XnaLaraShaderDescription]?
+        var xnaLaraShaderDescriptions: [String: XnaLaraShaderDescription]? = nil
     }
     private let model: GLLModel?
     private let plistData: PlistDataTransferObject?
@@ -177,6 +189,19 @@ import Cocoa
         }
         
         super.init()
+    }
+    
+    // Init for hardcoded things
+    init(plistData: PlistDataTransferObject) throws {
+        self.plistData = plistData;
+        
+        model = nil
+        
+        if let baseName = plistData.base {
+            self.base = try GLLModelParams.parameters(forName: baseName)
+        } else {
+            self.base = nil
+        }
     }
     
     // Generic item format

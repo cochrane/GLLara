@@ -599,31 +599,108 @@ class GLLModelGltf: GLLModel {
                 uvLayers.insert(layer)
             }
             
-            let size: GLLVertexAttribSize
+            let format: MTLVertexFormat
             switch fileAccessor.accessor.type {
             case "SCALAR":
-                size = .scalar
+                switch fileAccessor.accessor.componentType {
+                case 0x1400: // Byte
+                    format = .char
+                case 0x1401:
+                    format = .uchar
+                case 0x1402:
+                    format = .short
+                case 0x1403:
+                    format = .ushort
+                case 0x1404:
+                    format = .int
+                case 0x1405:
+                    format = .uint
+                case 0x1406:
+                    format = .float
+                default:
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
+                }
             case "VEC2":
-                size = .vec2
+                switch fileAccessor.accessor.componentType {
+                case 0x1400: // Byte
+                    format = .char2
+                case 0x1401:
+                    format = .uchar2
+                case 0x1402:
+                    format = .short2
+                case 0x1403:
+                    format = .ushort2
+                case 0x1404:
+                    format = .int2
+                case 0x1405:
+                    format = .uint2
+                case 0x1406:
+                    format = .float2
+                default:
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
+                }
             case "VEC3":
-                size = .vec3
+                switch fileAccessor.accessor.componentType {
+                case 0x1400: // Byte
+                    format = .char3
+                case 0x1401:
+                    format = .uchar3
+                case 0x1402:
+                    format = .short3
+                case 0x1403:
+                    format = .ushort3
+                case 0x1404:
+                    format = .int3
+                case 0x1405:
+                    format = .uint3
+                case 0x1406:
+                    format = .float3
+                default:
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
+                }
             case "VEC4":
-                size = .vec4
+                switch fileAccessor.accessor.componentType {
+                case 0x1400: // Byte
+                    format = .char4
+                case 0x1401:
+                    format = .uchar4
+                case 0x1402:
+                    format = .short4
+                case 0x1403:
+                    format = .ushort4
+                case 0x1404:
+                    format = .int4
+                case 0x1405:
+                    format = .uint4
+                case 0x1406:
+                    format = .float4
+                default:
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
+                }
             case "MAT2":
-                size = .mat2
+                switch fileAccessor.accessor.componentType {
+                default:
+                    // TODO Consider splitting into multiple attributes
+                    // In general accessors with these types are not intended for vertices, but for bones and similar.
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
+                }
             case "MAT3":
-                size = .mat3
+                switch fileAccessor.accessor.componentType {
+                default:
+                    // TODO Consider splitting into multiple attributes.
+                    // In general accessors with these types are not intended for vertices, but for bones and similar.
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
+                }
             case "MAT4":
-                size = .mat4
+                switch fileAccessor.accessor.componentType {
+                default:
+                    // TODO Consider splitting into multiple attributes
+                    // In general accessors with these types are not intended for vertices, but for bones and similar.
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
+                }
             default:
                 throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute size value is not supported."])
             }
-            
-            if ![5120, 5121, 5122, 5123, 5126].contains(fileAccessor.accessor.componentType) {
-                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "A vertex attribute type value is not supported."])
-
-            }
-            let componentType = GLLVertexAttribComponentType(rawValue:  fileAccessor.accessor.componentType)!
             
             if let existingCount = countOfVertices {
                 if existingCount != fileAccessor.accessor.count {
@@ -634,7 +711,7 @@ class GLLModelGltf: GLLModel {
             }
             
             let underlyingView = document.bufferViews![fileAccessor.accessor.bufferView]
-            let vertexAttrib = GLLVertexAttrib(semantic: semantic, layer: layer, size: size, componentType: componentType)
+            let vertexAttrib = GLLVertexAttrib(semantic: semantic, layer: layer, format: format)
             let vertexAccessor = GLLVertexAttribAccessor(attribute: vertexAttrib, dataBuffer: fileAccessor.view.buffer.data, offset: fileAccessor.accessor.byteOffset ?? 0 + fileAccessor.view.range.first!, stride: underlyingView.byteStride ?? 0)
             accessors.append(vertexAccessor)
         }
@@ -684,14 +761,26 @@ class GLLModelGltf: GLLModel {
         if let indicesKey = primitive.indices {
             let elements = try loadData.getUnboundAccessor(for: indicesKey)
             modelMesh.elementData = elements.view.buffer.data.subdata(in: elements.view.range)
-            if ![5120, 5121, 5122, 5123, 5124, 5125, 5126].contains(elements.accessor.componentType) {
+            switch elements.accessor.componentType {
+            case 0x1400: // Byte (treating as if it was unsigned)
+                modelMesh.elementSize = 1
+            case 0x1401: // Unsigned byte
+                modelMesh.elementSize = 1
+            case 0x1402: // Short (treating it as unsigned)
+                modelMesh.elementSize = 2
+            case 0x1403: // Unsigned short
+                modelMesh.elementSize = 2
+            case 0x1404: // Int (treating it as unsigned
+                modelMesh.elementSize = 4
+            case 0x1405: // Unsigned int
+                modelMesh.elementSize = 4
+            default:
                 throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_FileTypeNotSupported.rawValue), userInfo: [NSLocalizedDescriptionKey: "The element data type is not supported."])
             }
-            modelMesh.elementComponentType = GLLVertexAttribComponentType(rawValue:  elements.accessor.componentType)!
             modelMesh.countOfElements = elements.accessor.count
         } else {
             modelMesh.elementData = nil
-            modelMesh.elementComponentType = .unsignedByte
+            modelMesh.elementSize = 0
             modelMesh.countOfElements = 0
         }
         

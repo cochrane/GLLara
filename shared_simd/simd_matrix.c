@@ -39,7 +39,7 @@ mat_float16 simd_mat_euler(vec_float4 angles, vec_float4 position)
     mat[10] = -sh*sa*sb + ch*cb;
     mat[11] = 0.0f;
     
-    result.w = position;
+    result.columns[3] = position;
     
     return result;
 }

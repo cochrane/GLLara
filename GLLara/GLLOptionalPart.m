@@ -63,7 +63,7 @@
         [mesh addObserver:self forKeyPath:@"isVisible" options:0 context:NULL];
     }
     for (GLLOptionalPart *child in self.children) {
-        if (child.visible == NSMultipleValuesMarker) {
+        if (child.visible == NSBindingSelectionMarker.multipleValuesSelectionMarker) {
             haveInvisibles = YES;
             haveVisibles = YES;
             break;
@@ -138,18 +138,18 @@
         }
         
         if (foundActive && foundInactive)
-            return NSMultipleValuesMarker;
+            return NSBindingSelectionMarker.multipleValuesSelectionMarker;
     }
     for (GLLOptionalPart *child in self.children) {
-        if (child.visible == NSMultipleValuesMarker)
-            return NSMultipleValuesMarker;
+        if (child.visible == NSBindingSelectionMarker.multipleValuesSelectionMarker)
+            return NSBindingSelectionMarker.multipleValuesSelectionMarker;
         else if ([child.visible boolValue])
             foundActive = YES;
         else if (![child.visible boolValue])
             foundInactive = YES;
         
         if (foundActive && foundInactive)
-            return NSMultipleValuesMarker;
+            return NSBindingSelectionMarker.multipleValuesSelectionMarker;
     }
     if (foundActive)
         return @(YES);
@@ -157,7 +157,7 @@
 }
 
 - (void)setVisible:(id)visible {
-    if (visible == NSMultipleValuesMarker) {
+    if (visible == NSBindingSelectionMarker.multipleValuesSelectionMarker) {
         return;
     }
     

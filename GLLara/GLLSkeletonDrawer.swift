@@ -13,6 +13,7 @@ import Metal
     
     let device: MTLDevice
     let pipeline: MTLRenderPipelineState
+    let depthState: MTLDepthStencilState
     
     var defaultColor = NSColor.yellow.withAlphaComponent(0.5)
     var selectedColor = NSColor.red.withAlphaComponent(0.5)
@@ -31,16 +32,26 @@ import Metal
         
         let values = MTLFunctionConstantValues()
         
+        let depthDescriptor = MTLDepthStencilDescriptor()
+        depthDescriptor.isDepthWriteEnabled = false
+        depthDescriptor.depthCompareFunction = .always
+        depthDescriptor.label = "skeleton-depthstate"
+        depthState = device.makeDepthStencilState(descriptor: depthDescriptor)!
+        
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.label = "Skeleton"
         pipelineDescriptor.vertexFunction = try! library.makeFunction(name: "skeletonVertex", constantValues: values)
         pipelineDescriptor.fragmentFunction = try! library.makeFunction(name: "skeletonFragment", constantValues: values)
         pipelineDescriptor.colorAttachments[0].pixelFormat = resourceManager.pixelFormat;
+        pipelineDescriptor.depthAttachmentPixelFormat = resourceManager.depthPixelFormat;
+        pipelineDescriptor.label = "skeleton-pipeline"
         
         pipeline = try! device.makeRenderPipelineState(descriptor: pipelineDescriptor)
         
         verticesBuffer = device.makeBuffer(length: GLLSkeletonDrawer.vertexCapacity(for: 512), options: .storageModeManaged)!
+        verticesBuffer.label = "skeleton-vertices"
         elementsBuffer = device.makeBuffer(length: GLLSkeletonDrawer.elementCapacity(for: 512), options: .storageModeManaged)!
+        elementsBuffer.label = "skeleton-elements"
     }
     
     private static func elementCapacity(for boneCount: Int) -> Int {
@@ -98,13 +109,16 @@ import Metal
     }
     
     private func updateBuffers() {
-        numberOfPoints = selection.keys.reduce(0, { count, item in count + item.combinedBones().count })
+        let numberOfBones = selection.keys.reduce(0, { count, item in count + item.combinedBones().count })
+        numberOfPoints = 2*numberOfBones
         
         if numberOfPoints > bufferCapacity {
             // Double or increase to new count, whichever is larger
             let newCount = max(numberOfPoints, bufferCapacity*2)
             verticesBuffer = device.makeBuffer(length: GLLSkeletonDrawer.vertexCapacity(for: newCount), options: .storageModeManaged)!
+            verticesBuffer.label = "skeleton-vertices"
             elementsBuffer = device.makeBuffer(length: GLLSkeletonDrawer.elementCapacity(for: newCount), options: .storageModeManaged)!
+            elementsBuffer.label = "skeleton-elements"
         }
         
         // Update vertices
@@ -123,10 +137,7 @@ import Metal
             for element in bones {
                 let bone = element as! GLLItemBone
                 
-                var position = vec_float4()
-                withUnsafeMutableBytes(of: &position) {
-                    bone.globalPosition!.getValue($0.baseAddress!, size: $0.count)
-                }
+                let position = bone.globalPosition
                 vertices[offset].position.x = simd_extract(position, 0)
                 vertices[offset].position.y = simd_extract(position, 1)
                 vertices[offset].position.z = simd_extract(position, 2)
@@ -170,6 +181,7 @@ import Metal
         
         commandEncoder.setRenderPipelineState(pipeline)
         commandEncoder.setVertexBuffer(verticesBuffer, offset: 0, index: Int(GLLVertexInputIndexVertices.rawValue))
+        commandEncoder.setDepthStencilState(depthState)
         commandEncoder.drawIndexedPrimitives(type: .line, indexCount: numberOfPoints, indexType: .uint16, indexBuffer: elementsBuffer, indexBufferOffset: 0)
     }
     
