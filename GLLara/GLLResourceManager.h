@@ -43,7 +43,6 @@
 
 // Shared programs and buffers that everyone needs sometime
 
-//@property (nonatomic) GLLProgram *skeletonProgram;
 //@property (nonatomic) GLLProgram *squareProgram;
 @property (nonatomic) id<MTLBuffer> squareVertexArray;
 

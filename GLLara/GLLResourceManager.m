@@ -17,7 +17,6 @@
 #import "GLLPreferenceKeys.h"
 #import "GLLUniformBlockBindings.h"
 #import "GLLShader.h"
-//#import "GLLSkeletonProgram.h"
 //#import "GLLSquareProgram.h"
 #import "GLLTexture.h"
 #import "GLLVertexAttribAccessor.h"
@@ -232,14 +231,6 @@ static GLLResourceManager *sharedManager;
     }
     return _squareVertexArray;
 }
-
-/*- (GLLProgram *)skeletonProgram
-{
-    if (!_skeletonProgram) {
-        _skeletonProgram = [[GLLSkeletonProgram alloc] initWithResourceManager:self error:NULL];
-    }
-    return _skeletonProgram;
-}*/
 
 #pragma mark - OpenGL limits
 

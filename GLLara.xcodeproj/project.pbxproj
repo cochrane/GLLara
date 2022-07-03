@@ -630,8 +630,6 @@
 		52474B1D16A73CB2007A0223 /* GLLStringURLConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLStringURLConversion.h; sourceTree = "<group>"; };
 		52474B1F16A7518C007A0223 /* GLLBasicOBJModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBasicOBJModelTest.h; sourceTree = "<group>"; };
 		52474B2016A7518C007A0223 /* GLLBasicOBJModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBasicOBJModelTest.m; sourceTree = "<group>"; };
-		524BEB0116120FCF00EA061D /* GLLSkeletonProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSkeletonProgram.h; sourceTree = "<group>"; };
-		524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSkeletonProgram.m; sourceTree = "<group>"; };
 		524BEB04161211E400EA061D /* Skeleton.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Skeleton.fs; sourceTree = "<group>"; };
 		524BEB05161211E400EA061D /* Skeleton.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = Skeleton.vs; sourceTree = "<group>"; };
 		524BEB0B1612551800EA061D /* NSColor+Color32Bit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+Color32Bit.h"; sourceTree = "<group>"; };
@@ -1494,8 +1492,6 @@
 				5296944815F565D100DF2FA3 /* GLLResourceManager.m */,
 				5213263C1602BB8000787AA1 /* GLLSquareProgram.h */,
 				5213263D1602BB8000787AA1 /* GLLSquareProgram.m */,
-				524BEB0116120FCF00EA061D /* GLLSkeletonProgram.h */,
-				524BEB0216120FCF00EA061D /* GLLSkeletonProgram.m */,
 				52152CED16B66951001AE54C /* GLLDDSFile.h */,
 				52152CEE16B66951001AE54C /* GLLDDSFile.m */,
 				52D8DDA9261D01BD0006F0E5 /* GLLVertexAttribAccessor.h */,
