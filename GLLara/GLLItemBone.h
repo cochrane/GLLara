@@ -39,6 +39,7 @@
 @property (nonatomic) mat_float16 relativeTransform;
 @property (nonatomic) mat_float16 globalTransform;
 @property (nonatomic) vec_float4 globalPosition;
+@property (nonatomic, copy) NSData *globalTransformValue;
 
 // Derived
 @property (nonatomic, readonly) NSUInteger boneIndex;

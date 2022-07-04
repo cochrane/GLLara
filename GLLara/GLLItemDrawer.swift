@@ -42,12 +42,12 @@ import Metal
         observations.append(item.observe(\.normalChannelAssignmentB, options: .new, changeHandler: updateTransformsHandler))
         
         // Observe all the bones
-        let updateBoneHandler = { [weak self] (item: GLLItemBone, change: NSKeyValueObservedChange<mat_float16>) -> Void in
+        let updateBoneHandler = { [weak self] (item: GLLItemBone, change: NSKeyValueObservedChange<Data?>) -> Void in
             self?.markUpdateTransforms()
         }
         for boneItem in item.bones {
             let bone = boneItem as! GLLItemBone
-            observations.append(bone.observe(\.globalTransform, options: .new, changeHandler: updateBoneHandler))
+            observations.append(bone.observe(\.globalTransformValue, options: .new, changeHandler: updateBoneHandler))
         }
         
         // Observe the settings of all the meshes

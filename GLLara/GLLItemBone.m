@@ -45,6 +45,7 @@
 @synthesize parent;
 @synthesize relativeTransform;
 @synthesize globalTransform;
+@synthesize globalTransformValue;
 @synthesize globalPosition;
 
 - (void)awakeFromFetch
@@ -226,6 +227,7 @@
     transform = simd_mul(parentGlobalTransform, transform);
     
     self.globalTransform = transform;
+    self.globalTransformValue = [NSData dataWithBytes:&transform length:sizeof(transform)];
     
     self.globalPosition = simd_mul(transform, simd_make(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0f));
     

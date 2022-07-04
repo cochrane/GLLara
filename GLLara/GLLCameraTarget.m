@@ -65,13 +65,13 @@ static void *contextMarker = (void *) 0xdeadbeef;
     {
         if (![change[NSKeyValueChangeOldKey] isKindOfClass:[NSNull class]])
             for (GLLItemBone *transform in change[NSKeyValueChangeOldKey])
-                [transform removeObserver:self forKeyPath:@"globalTransform"];
+                [transform removeObserver:self forKeyPath:@"globalTransformValue"];
         
         if (![change[NSKeyValueChangeNewKey] isKindOfClass:[NSNull class]])
             for (GLLItemBone *transform in change[NSKeyValueChangeNewKey])
-                [transform addObserver:self forKeyPath:@"globalTransform" options: NSKeyValueObservingOptionInitial context:contextMarker];
+                [transform addObserver:self forKeyPath:@"globalTransformValue" options: NSKeyValueObservingOptionInitial context:contextMarker];
     }
-    else if (context == contextMarker && [keyPath isEqual:@"globalTransform"])
+    else if (context == contextMarker && [keyPath isEqual:@"globalTransformValue"])
     {
         [self _updatePosition];
     }
