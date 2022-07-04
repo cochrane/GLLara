@@ -42,7 +42,7 @@ struct XnaLaraInputData {
     float2 texCoord0 [[ attribute(3), function_constant(hasTexCoord0) ]];
     float2 texCoord1 [[ attribute(4), function_constant(hasTexCoord1) ]];
     float4 tangent [[ attribute(5), function_constant(hasTexCoord0) ]];
-    ushort2 boneIndices [[ attribute(6), function_constant(useSkinning) ]];
+    ushort4 boneIndices [[ attribute(6), function_constant(useSkinning) ]];
     float4 boneWeights [[ attribute(7), function_constant(useSkinning) ]];
 };
 
@@ -70,7 +70,10 @@ vertex XnaLaraRasterizerData xnaLaraVertex(XnaLaraInputData in [[ stage_in ]],
     // Bones 0 is the permute for the normal values (TODO should it be?)
     float4x4 boneTransform;
     if (useSkinning) {
-        boneTransform = bones[in.boneIndices[0] + 1] * in.boneWeights[0] + bones[in.boneIndices[1] + 1] * in.boneWeights[2] + bones[in.boneIndices[2] + 1] * in.boneWeights[2] + bones[in.boneIndices[3] + 1] * in.boneWeights[3];
+        boneTransform = bones[in.boneIndices[0] + 1] * in.boneWeights[0]
+                        + bones[in.boneIndices[1] + 1] * in.boneWeights[1]
+                        + bones[in.boneIndices[2] + 1] * in.boneWeights[2]
+                        + bones[in.boneIndices[3] + 1] * in.boneWeights[3];
     } else {
         boneTransform = bones[1];
     }

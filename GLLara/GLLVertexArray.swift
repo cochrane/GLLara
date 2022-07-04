@@ -118,7 +118,22 @@ import Metal
                             newBoneWeights[3] = 0
                         } else {
                             for j in 0..<4 {
-                                newBoneWeights[j] = UInt16(packSignedFloat(value: weights[i] / sum, bits: 16))
+                                newBoneWeights[j] = UInt16(packSignedFloat(value: weights[j] / sum, bits: 16))
+                            }
+                        }
+                    } else if attribute.semantic == .boneWeights && attribute.mtlFormat == .float4 {
+                        // Compress bone weights to half float
+                        let weights = originalVertex.bindMemory(to: Float32.self)
+                        let newBoneWeights = vertex.bindMemory(to: Float32.self, capacity: 4)
+                        let sum = weights[0] + weights[1] + weights[2] + weights[3]
+                        if sum == 0 {
+                            newBoneWeights[0] = 1.0
+                            newBoneWeights[1] = 0
+                            newBoneWeights[2] = 0
+                            newBoneWeights[3] = 0
+                        } else {
+                            for j in 0..<4 {
+                                newBoneWeights[j] = weights[j] / sum
                             }
                         }
                     } else {
