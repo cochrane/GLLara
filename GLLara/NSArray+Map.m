@@ -78,27 +78,6 @@ static id map(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(
 
 @end
 
-@implementation NSDictionary (Map)
-
-- (NSDictionary *)mapValues:(id (^)(id))block;
-{
-    return [self mapValuesWithKey:^(id key, id value) { return block(value); }];
-}
-- (NSDictionary *)mapValuesWithKey:(id (^)(id key, id value))block;
-{
-    NSMutableDictionary *result = [[NSMutableDictionary alloc] initWithCapacity:self.count];
-    
-    for (id key in self)
-    {
-        id newObject = block(key, self[key]);
-        if (!newObject) continue;
-        result[key] = newObject;
-    }
-    return [result copy];
-}
-
-@end
-
 @implementation NSSet (Map)
 
 - (NSArray *)map:(id (^)(id))block;
