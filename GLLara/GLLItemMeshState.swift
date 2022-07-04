@@ -75,7 +75,11 @@ extension GLLRenderParameter {
     private func updateTextureObjects() {
         textureObservations.removeAll()
         
-        for itemMeshTexture in itemMesh.textures {
+        guard let newTextures = itemMesh.textures else {
+            return
+        }
+        
+        for itemMeshTexture in newTextures {
             textureObservations.append(itemMeshTexture.observe(\.textureURL) { [weak self] _,_ in
                 self?.needsTextureUpdate = true
                 self?.drawer.propertiesChanged()
@@ -90,7 +94,11 @@ extension GLLRenderParameter {
     private func updateParameterObjects() {
         renderParameterObservations.removeAll()
         
-        for parameter in itemMesh.renderParameters {
+        guard let newRenderParameters = itemMesh.renderParameters else {
+            return;
+        }
+        
+        for parameter in newRenderParameters {
             renderParameterObservations.append(parameter.observe(\.uniformValue) { [weak self] _,_ in
                 self?.updateArgumentBuffer()
                 self?.drawer.propertiesChanged()
