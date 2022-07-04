@@ -15,7 +15,6 @@
 #import "GLLModel.h"
 #import "GLLPreferenceKeys.h"
 #import "GLLTexture.h"
-#import "GLLVertexAttribAccessor.h"
 
 #import "GLLara-Swift.h"
 

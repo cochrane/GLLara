@@ -25,13 +25,13 @@ extension GLLModelMesh {
         let boneWeightAccessor = vertexDataAccessors!.accessor(semantic: .boneWeights)
         
         for i in 0..<countOfVertices {
-            let position = positionAccessor.typedElement(at: i, type: Float.self)
-            let normal = normalAccessor.typedElement(at: i, type: Float.self)
+            let position = positionAccessor.typedElementArray(at: i, type: Float.self)
+            let normal = normalAccessor.typedElementArray(at: i, type: Float.self)
             
             var transform = transformations[0]
             if let boneIndexAccessor = boneIndexAccessor, let boneWeightAccessor = boneWeightAccessor {
-                let boneIndices = boneIndexAccessor.typedElement(at: i, type: UInt16.self)
-                let boneWeights = boneWeightAccessor.typedElement(at: i, type: Float.self)
+                let boneIndices = boneIndexAccessor.typedElementArray(at: i, type: UInt16.self)
+                let boneWeights = boneWeightAccessor.typedElementArray(at: i, type: Float.self)
                 
                 transform = simd_linear_combination(boneWeights[0], transformations[Int(boneIndices[0])], boneWeights[1], transformations[Int(boneIndices[1])]) + simd_linear_combination(boneWeights[2], transformations[Int(boneIndices[2])], boneWeights[3], transformations[Int(boneIndices[3])])
             }
@@ -43,11 +43,11 @@ extension GLLModelMesh {
             
             objString.append("vn \(simd_extract(transformedNormal, 0)) \(simd_extract(transformedNormal, 1)) \(simd_extract(transformedNormal, 2))")
             
-            let texCoords = texCoordAccessor.typedElement(at: i, type: Float.self)
+            let texCoords = texCoordAccessor.typedElementArray(at: i, type: Float.self)
             objString.append("vt \(texCoords[0]) \(1.0 - texCoords[1])") // Turn tex coords around (because I don't want to swap the whole image)
             
             if includeColors {
-                let color = colorAccessor.typedElement(at: i, type: UInt8.self)
+                let color = colorAccessor.typedElementArray(at: i, type: UInt8.self)
                 let r = Double(color[0]) / 255.0
                 let g = Double(color[1]) / 255.0
                 let b = Double(color[2]) / 255.0

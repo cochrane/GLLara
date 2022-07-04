@@ -304,7 +304,6 @@
 - (void)_updateLights;
 {
 	struct GLLLightsBuffer lightData;
-    NSLog(@"light data size: %lu", sizeof(lightData));
 	
 	// Camera position
     lightData.cameraPosition = self.camera.cameraWorldPosition;

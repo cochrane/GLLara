@@ -80,50 +80,51 @@ import Metal
                 let attribute = writeAccessor.attribute
                 let readAccessor = vertices.accessor(semantic: attribute.semantic, layer: attribute.layer)!
                 
-                let originalVertex = readAccessor.element(at: i)
-                let vertex = newBytes.baseAddress!.advanced(by: writeAccessor.offset(forElement: i))
-                // Need to do some processing
-                if attribute.semantic == .normal && attribute.mtlFormat == .int1010102Normalized {
-                    // Normal. Compress from float[3] to int_2_10_10_10_rev format
-                    let normal = originalVertex.bindMemory(to: Float32.self, capacity: 3)
-                    var value = UInt32(0)
-                    value += packSignedFloat(value: normal[0], bits: 10);
-                    value += packSignedFloat(value: normal[1], bits: 10) << 10;
-                    value += packSignedFloat(value: normal[2], bits: 10) << 20;
-                    vertex.bindMemory(to: UInt32.self, capacity: 1)[0] = value
-                } else if attribute.semantic == .texCoord0 && attribute.mtlFormat == .half2 {
-                    // Tex coord. Compress to half float
-                    let originalTexCoord = originalVertex.bindMemory(to: Float32.self, capacity: 2)
-                    let newTexCoord = vertex.bindMemory(to: UInt16.self, capacity: 2)
-                    newTexCoord[0] = halfFloat(value: originalTexCoord[0])
-                    newTexCoord[1] = halfFloat(value: originalTexCoord[1])
-                } else if attribute.semantic == .tangent0 && attribute.mtlFormat == .int1010102Normalized {
-                    let tangents = originalVertex.bindMemory(to: Float32.self, capacity: 4)
-                    var normalized = UInt32(0)
-                    let invLength = 1.0 / sqrt(tangents[0]*tangents[0] + tangents[1]*tangents[1] + tangents[2]*tangents[2]);
-                    normalized |= packSignedFloat(value: tangents[0] * invLength, bits: 10);
-                    normalized |= packSignedFloat(value: tangents[1] * invLength, bits: 10) << 10;
-                    normalized |= packSignedFloat(value: tangents[2] * invLength, bits: 10) << 20;
-                    normalized |= packSignedFloat(value: copysign(tangents[3], 1.0), bits: 2) << 30;
-                    vertex.bindMemory(to: UInt32.self, capacity: 1)[0] = normalized
-                } else if attribute.semantic == .boneWeights && attribute.mtlFormat == .uchar2Normalized {
-                    // Compress bone weights to half float
-                    let weights = originalVertex.bindMemory(to: Float32.self, capacity: 4)
-                    let newBoneWeights = vertex.bindMemory(to: UInt16.self, capacity: 4)
-                    let sum = weights[0] + weights[0] + weights[1] + weights[2] + weights[3]
-                    if sum == 0 {
-                        newBoneWeights[0] = 0xFFFF
-                        newBoneWeights[1] = 0
-                        newBoneWeights[2] = 0
-                        newBoneWeights[3] = 0
-                    } else {
-                        for j in 0..<4 {
-                            newBoneWeights[j] = UInt16(packSignedFloat(value: weights[i] / sum, bits: 16))
+                readAccessor.withBytes(element: i) { originalVertex in
+                    let vertex = newBytes.baseAddress!.advanced(by: writeAccessor.offset(element: i))
+                    // Need to do some processing
+                    if attribute.semantic == .normal && attribute.mtlFormat == .int1010102Normalized {
+                        // Normal. Compress from float[3] to int_2_10_10_10_rev format
+                        let normal = originalVertex.bindMemory(to: Float32.self)
+                        var value = UInt32(0)
+                        value += packSignedFloat(value: normal[0], bits: 10);
+                        value += packSignedFloat(value: normal[1], bits: 10) << 10;
+                        value += packSignedFloat(value: normal[2], bits: 10) << 20;
+                        vertex.bindMemory(to: UInt32.self, capacity: 1)[0] = value
+                    } else if attribute.semantic == .texCoord0 && attribute.mtlFormat == .half2 {
+                        // Tex coord. Compress to half float
+                        let originalTexCoord = originalVertex.bindMemory(to: Float32.self)
+                        let newTexCoord = vertex.bindMemory(to: UInt16.self, capacity: 2)
+                        newTexCoord[0] = halfFloat(value: originalTexCoord[0])
+                        newTexCoord[1] = halfFloat(value: originalTexCoord[1])
+                    } else if attribute.semantic == .tangent0 && attribute.mtlFormat == .int1010102Normalized {
+                        let tangents = originalVertex.bindMemory(to: Float32.self)
+                        var normalized = UInt32(0)
+                        let invLength = 1.0 / sqrt(tangents[0]*tangents[0] + tangents[1]*tangents[1] + tangents[2]*tangents[2]);
+                        normalized |= packSignedFloat(value: tangents[0] * invLength, bits: 10);
+                        normalized |= packSignedFloat(value: tangents[1] * invLength, bits: 10) << 10;
+                        normalized |= packSignedFloat(value: tangents[2] * invLength, bits: 10) << 20;
+                        normalized |= packSignedFloat(value: copysign(tangents[3], 1.0), bits: 2) << 30;
+                        vertex.bindMemory(to: UInt32.self, capacity: 1)[0] = normalized
+                    } else if attribute.semantic == .boneWeights && attribute.mtlFormat == .uchar2Normalized {
+                        // Compress bone weights to half float
+                        let weights = originalVertex.bindMemory(to: Float32.self)
+                        let newBoneWeights = vertex.bindMemory(to: UInt16.self, capacity: 4)
+                        let sum = weights[0] + weights[0] + weights[1] + weights[2] + weights[3]
+                        if sum == 0 {
+                            newBoneWeights[0] = 0xFFFF
+                            newBoneWeights[1] = 0
+                            newBoneWeights[2] = 0
+                            newBoneWeights[3] = 0
+                        } else {
+                            for j in 0..<4 {
+                                newBoneWeights[j] = UInt16(packSignedFloat(value: weights[i] / sum, bits: 16))
+                            }
                         }
+                    } else {
+                        // Not optimized, just memcpy
+                        vertex.copyMemory(from: originalVertex.baseAddress!, byteCount: attribute.sizeInBytes)
                     }
-                } else {
-                    // Not optimized, just memcpy
-                    vertex.copyMemory(from: originalVertex, byteCount: attribute.sizeInBytes)
                 }
             }
         }
