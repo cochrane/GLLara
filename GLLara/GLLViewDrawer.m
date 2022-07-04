@@ -13,7 +13,6 @@
 #import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
 #import "GLLNotifications.h"
-#import "GLLUniformBlockBindings.h"
 #import "GLLSceneDrawer.h"
 #import "GLLView.h"
 #import "simd_matrix.h"

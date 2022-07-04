@@ -13,11 +13,7 @@
 #import <OpenGL/CGLRenderers.h>
 
 #import "GLLModel.h"
-#import "GLLModelProgram.h"
 #import "GLLPreferenceKeys.h"
-#import "GLLUniformBlockBindings.h"
-#import "GLLShader.h"
-//#import "GLLSquareProgram.h"
 #import "GLLTexture.h"
 #import "GLLVertexAttribAccessor.h"
 
@@ -209,15 +205,6 @@ static GLLResourceManager *sharedManager;
         return (id)information;
     }];
 }
-
-/*- (GLLProgram *)squareProgram
-{
-    if (!_squareProgram)
-    {
-        _squareProgram = [[GLLSquareProgram alloc] initWithResourceManager:self error:NULL];
-    }
-    return _squareProgram;
-}*/
 
 - (id<MTLBuffer>)squareVertexArray
 {
