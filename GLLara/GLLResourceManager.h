@@ -6,9 +6,7 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
-#import <AppKit/NSOpenGL.h>
-#import <Foundation/Foundation.h>
-
+#import <Cocoa/Cocoa.h>
 #import <Metal/Metal.h>
 
 @class GLLProgram;

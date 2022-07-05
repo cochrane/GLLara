@@ -8,10 +8,6 @@
 
 #import "GLLResourceManager.h"
 
-#import <OpenGL/gl3.h>
-#import <OpenGL/gl3ext.h>
-#import <OpenGL/CGLRenderers.h>
-
 #import "GLLModel.h"
 #import "GLLPreferenceKeys.h"
 #import "GLLTexture.h"
@@ -38,6 +34,7 @@ struct GLLAlphaTestBlock
 - (NSString *)_utf8StringForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
 - (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)(void))supplier;
 - (id<MTLFunction>)_functionForName:(NSString *)name shader:(GLLShaderData*)shader error:(NSError *__autoreleasing*)error;
+- (void)_recreateSampler;
 
 @end
 
@@ -68,17 +65,7 @@ static GLLResourceManager *sharedManager;
     _pixelFormat = MTLPixelFormatBGRA8Unorm;
     _depthPixelFormat = MTLPixelFormatDepth32Float;
     
-    MTLSamplerDescriptor *samplerDescriptor = [[MTLSamplerDescriptor alloc] init];
-    samplerDescriptor.minFilter = MTLSamplerMinMagFilterLinear;
-    samplerDescriptor.magFilter = MTLSamplerMinMagFilterLinear;
-    samplerDescriptor.mipFilter = MTLSamplerMipFilterLinear;
-    samplerDescriptor.rAddressMode = MTLSamplerAddressModeRepeat;
-    samplerDescriptor.sAddressMode = MTLSamplerAddressModeRepeat;
-    samplerDescriptor.tAddressMode = MTLSamplerAddressModeRepeat;
-    samplerDescriptor.supportArgumentBuffers = YES;
-    samplerDescriptor.maxAnisotropy = 4; // TODO Update this on User setting changes
-    
-    _metalSampler = [_metalDevice newSamplerStateWithDescriptor:samplerDescriptor];
+    [self _recreateSampler];
     
     MTLDepthStencilDescriptor *depthDescriptor = [[MTLDepthStencilDescriptor alloc] init];
     depthDescriptor.depthCompareFunction = MTLCompareFunctionLessEqual;
@@ -93,6 +80,9 @@ static GLLResourceManager *sharedManager;
     struct GLLAlphaTestBlock alphaBlockPassLess = { .mode = 2, .reference = .9 };
     _alphaTestPassLessBuffer = [_metalDevice newBufferWithBytes:&alphaBlockPassLess length:sizeof(alphaBlock) options:MTLResourceStorageModeManaged];
     _alphaTestPassLessBuffer.label = @"alpha-test-pass-less";
+    
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefAnisotropyAmount] options:NSKeyValueObservingOptionNew context:0];
+    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefUseAnisotropy] options:NSKeyValueObservingOptionNew context:0];
     
     return self;
 }
@@ -243,6 +233,14 @@ static GLLResourceManager *sharedManager;
     [shaders removeAllObjects];
 }
 
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if (object == [NSUserDefaultsController sharedUserDefaultsController]) {
+        [self _recreateSampler];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
 #pragma mark - Private methods
 
 - (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)(void))supplier;
@@ -304,6 +302,23 @@ static GLLResourceManager *sharedManager;
         
         return [self.library newFunctionWithName:name constantValues:values error:error];
     }];
+}
+
+- (void)_recreateSampler {
+    MTLSamplerDescriptor *samplerDescriptor = [[MTLSamplerDescriptor alloc] init];
+    samplerDescriptor.minFilter = MTLSamplerMinMagFilterLinear;
+    samplerDescriptor.magFilter = MTLSamplerMinMagFilterLinear;
+    samplerDescriptor.mipFilter = MTLSamplerMipFilterLinear;
+    samplerDescriptor.rAddressMode = MTLSamplerAddressModeRepeat;
+    samplerDescriptor.sAddressMode = MTLSamplerAddressModeRepeat;
+    samplerDescriptor.tAddressMode = MTLSamplerAddressModeRepeat;
+    samplerDescriptor.supportArgumentBuffers = YES;
+    
+    BOOL useAnisotropy = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseAnisotropy];
+    NSInteger anisotropyAmount = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefAnisotropyAmount];
+    samplerDescriptor.maxAnisotropy = useAnisotropy ? anisotropyAmount : 0;
+    
+    _metalSampler = [_metalDevice newSamplerStateWithDescriptor:samplerDescriptor];
 }
 
 @end

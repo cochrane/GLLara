@@ -84,10 +84,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     
     BOOL success = [self _loadDataError:error];
     if (!success) return nil;
-    
-    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefAnisotropyAmount] options:NSKeyValueObservingOptionNew context:0];
-    [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefUseAnisotropy] options:NSKeyValueObservingOptionNew context:0];
-    
+        
     return self;
 }
 
@@ -576,8 +573,6 @@ static NSOperationQueue *imageInformationQueue = nil;
     _texture = [_device newTextureWithDescriptor:descriptor];
     _texture.label = self.url.lastPathComponent;
     
-    //glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, (GLsizei) self.width, (GLsizei) self.height, GL_BGRA, rgbaOrArgb ? GL_UNSIGNED_BYTE : GL_UNSIGNED_INT_8_8_8_8, unpremultipliedBufferData);
-    
     MTLRegion region = MTLRegionMake2D(0, 0, self.width, self.height);
     [_texture replaceRegion:region mipmapLevel:0 withBytes:unpremultipliedBufferData->data bytesPerRow:unpremultipliedBufferData->rowBytes];
     
@@ -636,18 +631,5 @@ static NSOperationQueue *imageInformationQueue = nil;
     MTLRegion regionLevel1 = MTLRegionMake2D(0, 0, 1, 1);
     [self.texture replaceRegion:regionLevel1 mipmapLevel:1 withBytes:defaultTextureSmall bytesPerRow:4];
 }
-
-// TODO Handle anisotropy changes by updating the samplers we have
-/*- (void)_updateAnisotropy;
-{
-    glBindTexture(GL_TEXTURE_2D, _textureID);
-    BOOL useAnisotropy = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseAnisotropy];
-    NSInteger anisotropyAmount = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefAnisotropyAmount];
-    if (useAnisotropy)
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anisotropyAmount);
-    else
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1.0f);
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
-}*/
 
 @end
