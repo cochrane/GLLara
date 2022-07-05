@@ -26,7 +26,7 @@ extension GLLRenderParameter {
     }
 }
 
-@objc class GLLItemMeshState: NSObject {
+class GLLItemMeshState {
     let drawer: GLLItemDrawer
     let itemMesh: GLLItemMesh
     let meshData: GLLMeshDrawData
@@ -48,8 +48,6 @@ extension GLLRenderParameter {
         if let shader = itemMesh.shader {
             pipelineStateInformation = try drawer.resourceManager.pipeline(forVertex: meshData.vertexArray.optimizedFormat, shader: shader)
         }
-
-        super.init()
         
         observations.append(itemMesh.observe(\.shader) { [weak self] _,_ in
             self?.needsTextureUpdate = true

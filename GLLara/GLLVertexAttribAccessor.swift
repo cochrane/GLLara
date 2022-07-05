@@ -24,9 +24,9 @@ import Foundation
     }
     
     let attribute: GLLVertexAttrib
-    @objc let dataBuffer: Data?
-    @objc let dataOffset: Int
-    @objc let stride: Int
+    let dataBuffer: Data?
+    let dataOffset: Int
+    let stride: Int
     
     func offset(element: Int) -> Int {
         return dataOffset + element * stride

@@ -9,17 +9,17 @@
 import Foundation
 import Metal
 
-@objc class GLLVertexArray: NSObject {
+class GLLVertexArray {
     
     private var vertexData: Data? = Data()
     private var elementData: Data? = Data()
     var format: GLLVertexFormat
-    @objc var optimizedFormat: GLLVertexAttribAccessorSet
+    var optimizedFormat: GLLVertexAttribAccessorSet
     
     var vertexBuffer: MTLBuffer? = nil
     var elementBuffer: MTLBuffer? = nil
     
-    @objc var debugLabel: String = "gllvertexarray"
+    var debugLabel: String = "gllvertexarray"
     
     init(format: GLLVertexFormat) {
         self.format = format
@@ -35,9 +35,7 @@ import Metal
             writingAccessors.append(accessor)
         }
         
-        self.optimizedFormat = GLLVertexAttribAccessorSet(accessors: writingAccessors)
-        
-        super.init()
+        self.optimizedFormat = GLLVertexAttribAccessorSet(accessors: writingAccessors)        
     }
     
     var vertexDescriptor: MTLVertexDescriptor {
@@ -62,15 +60,15 @@ import Metal
         }
     }
     
-    @objc var countOfVertices: Int {
+    var countOfVertices: Int {
         return vertexData!.count / stride
     }
     
-    @objc var elementDataLength: Int {
+    var elementDataLength: Int {
         return elementData!.count
     }
     
-    @objc func add(vertices: GLLVertexAttribAccessorSet, count: Int, elements: Data?, bytesPerElement: Int) {
+    func add(vertices: GLLVertexAttribAccessorSet, count: Int, elements: Data?, bytesPerElement: Int) {
         // Process vertex data
         let actualStride = stride
         let newBytes = UnsafeMutableRawBufferPointer.allocate(byteCount: count * actualStride, alignment: MemoryLayout<Int32>.alignment)
@@ -263,9 +261,7 @@ import Metal
         return UInt16(reduceFloat(value: value, exponentBits: 5, mantissaBits: 10, signBits: 1));
     }
     
-    @objc var vertexArrayIndex = UInt32(0)
-    
-    @objc func upload() {
+    func upload() {
         // TODO do this in Metal style
         // Can we use vertex descriptors to simplify this? It seems like we're actually fairly close to them already.
         // Edit: Yes! We can do that! They're specifically for this in fact!

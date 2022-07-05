@@ -13,7 +13,7 @@ import Foundation
     private let model: GLLModel
     private weak var resourceManager: GLLResourceManager?
     
-    @objc let meshDrawData: [GLLMeshDrawData]
+    let meshDrawData: [GLLMeshDrawData]
     
     @objc init(model: GLLModel, resourceManager: GLLResourceManager) {
         self.model = model

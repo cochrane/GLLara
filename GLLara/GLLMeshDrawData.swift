@@ -9,7 +9,7 @@
 import Foundation
 import Metal
 
-@objc class GLLMeshDrawData: NSObject {
+class GLLMeshDrawData {
     
     let modelMesh: GLLModelMesh
     

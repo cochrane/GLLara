@@ -17,7 +17,7 @@ import UniformTypeIdentifiers
     @objc var xnaLaraShaderData: XnaLaraShaderDescription? = nil
     @objc var transparent: Bool = false
     @objc var renderParameters: [String: Double] = [:]
-    @objc var splitters: [GLLMeshSplitter] = []
+    var splitters: [GLLMeshSplitter] = []
     
     var cameraTargetName: String? = nil
     var cameraTargetBones: [String] = []

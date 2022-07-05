@@ -8,7 +8,7 @@
 
 import Foundation
 
-@objc class GLLMeshSplitter: NSObject, Decodable {
+class GLLMeshSplitter: Decodable {
     let min: [Double]
     let max: [Double]
     let splitPartName: String
