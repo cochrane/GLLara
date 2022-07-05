@@ -16,14 +16,14 @@ import Foundation
         self.init(attribute: attribute, dataBuffer: dataBuffer, offset: offset, stride: stride)
     }
     
-    @objc init(attribute: GLLVertexAttrib, dataBuffer: Data?, offset: Int, stride: Int) {
+    init(attribute: GLLVertexAttrib, dataBuffer: Data?, offset: Int, stride: Int) {
         self.attribute = attribute
         self.dataBuffer = dataBuffer
         self.dataOffset = offset
         self.stride = stride
     }
     
-    @objc let attribute: GLLVertexAttrib
+    let attribute: GLLVertexAttrib
     @objc let dataBuffer: Data?
     @objc let dataOffset: Int
     @objc let stride: Int

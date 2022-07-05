@@ -26,7 +26,7 @@ import Metal
         for accessor in accessors {
             let index = accessor.attribute.identifier
             vertexDescriptor.attributes[index].offset = accessor.dataOffset
-            vertexDescriptor.attributes[index].format = accessor.attribute.mtlFormat
+            vertexDescriptor.attributes[index].format = accessor.attribute.format
             vertexDescriptor.attributes[index].bufferIndex = 10
             
             if let data = accessor.dataBuffer {

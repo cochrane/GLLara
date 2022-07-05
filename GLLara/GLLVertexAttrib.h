@@ -33,22 +33,4 @@ typedef NS_ENUM(NSInteger, GLLCullFaceMode)
     GLLCullNone
 };
 
-@interface GLLVertexAttrib : NSObject<NSCopying>
-
-- (instancetype)initWithSemantic:(GLLVertexAttribSemantic)semantic layer:(NSInteger) layer format:(MTLVertexFormat) format;
-
-@property (nonatomic, readonly, assign) GLLVertexAttribSemantic semantic;
-@property (nonatomic, readonly, assign) NSInteger layer;
-
-@property (nonatomic, readonly, assign) NSInteger numberOfElements;
-@property (nonatomic, readonly, assign) NSInteger sizeInBytes;
-
-@property (nonatomic, readonly, assign) NSInteger identifier;
-@property (nonatomic, readonly, assign) MTLVertexFormat mtlFormat;
-
-// Sort according to semantic and layer. Size and type are ignored
-- (NSComparisonResult)compare:(GLLVertexAttrib *)other;
-
-@end
-
 NS_ASSUME_NONNULL_END
