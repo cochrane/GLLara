@@ -27,7 +27,9 @@ func registerModelParams() {
             ]),
         ]),
         GLLShaderModule(name: "reflection", textureUniforms: [ "reflectionTexture" ], requiredVertexAttributes: [ "normal" ], activeBoolConstants: [ .hasReflection, .hasNormal ]),
-        GLLShaderModule(name: "lightmap", textureUniforms: [ "lightmapTexture" ], activeBoolConstants: [ .hasLightmap ]),
+        GLLShaderModule(name: "lightmap", textureUniforms: [ "lightmapTexture" ], activeBoolConstants: [ .hasLightmap ], children: [
+            GLLShaderModule(name: "lightmapTexCoord1", requiredVertexAttributes: [ "texCoord1"], activeBoolConstants: [ .hasTexCoord1, .lightmapTexCoord1 ])
+        ]),
         GLLShaderModule(name: "emission", textureUniforms: [ "emissionTexture" ], activeBoolConstants: [ .hasEmission ])
     ])
     ], renderParameterDescriptions: [

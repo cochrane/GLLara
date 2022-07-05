@@ -31,6 +31,7 @@ constant bool hasDiffuseLighting [[ function_constant(GLLFunctionConstantHasDiff
 constant bool hasLightmap [[ function_constant(GLLFunctionConstantHasLightmap) ]];
 constant bool hasEmission [[ function_constant(GLLFunctionConstantHasEmission) ]];
 constant bool hasVertexColor [[ function_constant(GLLFunctionConstantHasVertexColor) ]];
+constant bool lightmapUsesTexCoord1 [[ function_constant(GLLFunctionConstantLightmapTexCoord1) ]];
 
 constant bool hasTangentMatrixWorld = hasNormal && calculateTangentToWorld;
 constant bool hasNormalWorld = hasNormal && !calculateTangentToWorld;
@@ -221,7 +222,11 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
     // Lightmap
     if (hasLightmap) {
         // TODO isn't lightmap the one that sometimes gets other tex coords?
-        color *= arguments.lightmapTexture.sample(textureSampler, in.texCoord0);
+        float2 coords = in.texCoord0;
+        if (lightmapUsesTexCoord1) {
+            coords = in.texCoord1;
+        }
+        color *= arguments.lightmapTexture.sample(textureSampler, coords);
     }
     
     // Reflection

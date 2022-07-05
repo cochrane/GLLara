@@ -171,6 +171,7 @@
 				<string>vertexColor</string>
 				<string>diffuseLighting</string>
 				<string>lightmap</string>
+				<string>lightmapTexCoord1</string>
 			</array>
 			<key>texCoordSets</key>
 			<dict>
