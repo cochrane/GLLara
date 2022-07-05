@@ -239,7 +239,7 @@ import Foundation
     @objc var countOfVertices: Int = 0
     @objc var vertexDataAccessors: GLLVertexAttribAccessorSet?
     
-    @objc var vertexFormat: GLLVertexFormat?
+    var vertexFormat: GLLVertexFormat?
     
     // Element data. Arranged as triangles, often but not necessarily UInt32
     @objc var elementData: Data?

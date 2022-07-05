@@ -11,7 +11,6 @@
 #import "GLLModelBone.h"
 #import "GLLResourceManager.h"
 #import "GLLVertexAttrib.h"
-#import "GLLVertexFormat.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameters.h"
 #import "GLLSceneDrawer.h"

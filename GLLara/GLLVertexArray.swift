@@ -13,7 +13,7 @@ import Metal
     
     private var vertexData: Data? = Data()
     private var elementData: Data? = Data()
-    @objc var format: GLLVertexFormat
+    var format: GLLVertexFormat
     @objc var optimizedFormat: GLLVertexAttribAccessorSet
     
     var vertexBuffer: MTLBuffer? = nil
@@ -21,7 +21,7 @@ import Metal
     
     @objc var debugLabel: String = "gllvertexarray"
     
-    @objc init(format: GLLVertexFormat) {
+    init(format: GLLVertexFormat) {
         self.format = format
         
         let optimizedAttributes = format.attributes.compactMap { GLLVertexArray.optimizedVersion(attribute: $0) }
