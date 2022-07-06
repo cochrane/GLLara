@@ -412,13 +412,13 @@ static NSOperationQueue *imageInformationQueue = nil;
     CFRelease(source);
     
     vImage_Error result = vImageBuffer_InitWithCGImage(&buffer, &format, backgroundColor, cgImage, kvImageNoFlags);
+    CGImageRelease(cgImage);
     if (result != kvImageNoError) {
         if (error)
             *error = [NSError errorWithDomain:@"Textures" code:13 userInfo:@{
                                                                              NSLocalizedDescriptionKey : [NSString stringWithFormat:NSLocalizedString(@"Texture file %@ could not be loaded because the properties could not be loaded.", @"texture status probably a PDF"), self.url.lastPathComponent]
                                                                              }];
         [self _loadDefaultTexture];
-        CGImageRelease(cgImage);
         return NO;
     }
     
