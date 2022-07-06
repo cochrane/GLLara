@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Torsten Kammer. All rights reserved.
 //
 
+#import <Cocoa/Cocoa.h>
 #import <MetalKit/MetalKit.h>
 
 @class GLLCamera;

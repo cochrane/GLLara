@@ -8,8 +8,6 @@
 
 #import "GLLView.h"
 
-#import <AppKit/NSUserDefaultsController.h>
-#import <AppKit/NSWindow.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 #import "GLLCamera.h"
@@ -21,11 +19,12 @@
 #import "GLLPreferenceKeys.h"
 #import "GLLSelection.h"
 #import "GLLTexture.h"
-#import "GLLViewDrawer.h"
 #import "NSCharacterSet+SetOperations.h"
 #import "simd_matrix.h"
 #import "simd_project.h"
 #import "GLLTiming.h"
+
+#include "GLLara-Swift.h"
 
 static NSCharacterSet *wasdCharacters;
 static NSCharacterSet *xyzCharacters;
@@ -124,7 +123,7 @@ const double unitsPerSecond = 0.2;
     _camera = camera;
     _sceneDrawer = sceneDrawer;
     
-    _viewDrawer = [[GLLViewDrawer alloc] initWithManagedSceneDrawer:sceneDrawer camera:camera view: self];
+    _viewDrawer = [[GLLViewDrawer alloc] initWithSceneDrawer:sceneDrawer camera:camera view: self];
 }
 
 - (void)rotateWithEvent:(NSEvent *)event

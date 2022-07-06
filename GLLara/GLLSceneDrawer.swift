@@ -22,19 +22,22 @@ import CoreData
                 return
             }
             
-            let deletedObjects = notification.userInfo![NSDeletedObjectsKey] as! NSSet
-            self.itemDrawers.removeAll { drawer in
-                deletedObjects.contains(drawer.item)
+            let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? NSSet
+            if let deletedObjects = deletedObjects {
+                self.itemDrawers.removeAll { drawer in
+                    deletedObjects.contains(drawer.item)
+                }
             }
             
-            let insertedObjects = notification.userInfo![NSInsertedObjectsKey] as! NSSet
-            for newItem in insertedObjects {
-                if (deletedObjects.contains(newItem)) {
-                    continue;
-                }
-                
-                if let gllitem = newItem as? GLLItem {
-                    self.addDrawer(for: gllitem);
+            if let insertedObjects = notification.userInfo?[NSInsertedObjectsKey] as? NSSet {
+                for newItem in insertedObjects {
+                    if let deletedObjects = deletedObjects, deletedObjects.contains(newItem) {
+                        continue;
+                    }
+                    
+                    if let gllitem = newItem as? GLLItem {
+                        self.addDrawer(for: gllitem);
+                    }
                 }
             }
         }
@@ -44,10 +47,11 @@ import CoreData
         }
         
         // Load existing items
-        let allItemsRequest = GLLItem.fetchRequest()
-        let allItems = try! document.managedObjectContext?.fetch(allItemsRequest)
-        for item in allItems! {
-            addDrawer(for: item as! GLLItem)
+        let allItemsRequest = NSFetchRequest<GLLItem>()
+        allItemsRequest.entity = NSEntityDescription.entity(forEntityName: "GLLItem", in: document.managedObjectContext!)
+        let allItems = try! document.managedObjectContext!.fetch(allItemsRequest)
+        for item in allItems {
+            addDrawer(for: item)
         }
         
     }
@@ -70,7 +74,7 @@ import CoreData
         return GLLResourceManager.shared()
     }
     
-    var selectedBones: [GLLItemBone] {
+    @objc var selectedBones: [GLLItemBone] {
         set {
             skeletonDrawer.selectedBones = newValue
             notifyRedraw()

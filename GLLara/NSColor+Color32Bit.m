@@ -32,4 +32,12 @@
     components[3] = (float) a;
 }
 
+- (vector_float4)rgbaComponents128Bit {
+    NSColor *selfAsRGB = [self colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];
+    CGFloat r, g, b, a;
+    [selfAsRGB getRed:&r green:&g blue:&b alpha:&a];
+    
+    return vector4((float) r, (float) g, (float) b, (float) a);
+}
+
 @end

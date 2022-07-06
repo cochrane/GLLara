@@ -14,7 +14,8 @@
 #import "GLLDocument.h"
 #import "GLLView.h"
 #import "GLLRenderAccessoryViewController.h"
-#import "GLLViewDrawer.h"
+
+#include "GLLara-Swift.h"
 
 @interface GLLRenderWindowController ()
 {
@@ -150,7 +151,7 @@
 
 - (void)renderToFile:(NSURL *)file type:(NSString *)typeUTI width:(NSUInteger)width height:(NSUInteger)height;
 {
-    [self.renderView.viewDrawer writeImageToURL:file fileType:typeUTI size:CGSizeMake(width, height)];
+    [self.renderView.viewDrawer writeImageTo:file fileType:[UTType typeWithIdentifier:typeUTI] size:CGSizeMake(width, height)];
 }
 
 #pragma mark - Popover

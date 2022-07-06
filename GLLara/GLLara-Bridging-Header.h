@@ -3,6 +3,9 @@
 //
 
 #import "GLLASCIIScanner.h"
+#import "GLLAmbientLight.h"
+#import "GLLCamera.h"
+#import "GLLDirectionalLight.h"
 #import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
@@ -13,10 +16,12 @@
 #import "GLLNotifications.h"
 #import "GLLResourceManager.h"
 #import "GLLVertexAttrib.h"
+#import "GLLView.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameters.h"
 #import "GLLSkeletonDrawerVertexFormat.h"
 #import "GLLTexture.h"
+#import "NSColor+Color32Bit.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
