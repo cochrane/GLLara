@@ -314,6 +314,7 @@
 		52CDFEA82874161400BC4298 /* GLLVertexAttrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CDFEA72874161400BC4298 /* GLLVertexAttrib.swift */; };
 		52CDFEE42875B46700BC4298 /* GLLSceneDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CDFEE32875B46700BC4298 /* GLLSceneDrawer.swift */; };
 		52CDFEE62875C4AA00BC4298 /* GLLViewDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CDFEE52875C4AA00BC4298 /* GLLViewDrawer.swift */; };
+		52CDFEE8287619D800BC4298 /* Square.metal in Sources */ = {isa = PBXBuildFile; fileRef = 52CDFEE7287619D800BC4298 /* Square.metal */; };
 		52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m */; };
 		52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */; };
@@ -827,6 +828,7 @@
 		52CDFEA72874161400BC4298 /* GLLVertexAttrib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexAttrib.swift; sourceTree = "<group>"; };
 		52CDFEE32875B46700BC4298 /* GLLSceneDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLSceneDrawer.swift; sourceTree = "<group>"; };
 		52CDFEE52875C4AA00BC4298 /* GLLViewDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLViewDrawer.swift; sourceTree = "<group>"; };
+		52CDFEE7287619D800BC4298 /* Square.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Square.metal; sourceTree = "<group>"; };
 		52CE280A1605FE98005A86E9 /* GLLLogarithmicValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLogarithmicValueTransformer.h; sourceTree = "<group>"; };
 		52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLogarithmicValueTransformer.m; sourceTree = "<group>"; };
 		52D3D72716029BD8006CB743 /* GLLRenderAccessoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderAccessoryViewController.h; sourceTree = "<group>"; };
@@ -1352,6 +1354,7 @@
 				52D8DDD926210A200006F0E5 /* DefaultMaterialGLTF.fs */,
 				5211F82B2623A2EA00A1EC23 /* UnlitGLTF.fs */,
 				5274448A280606A200E5A3FD /* XnaLaraShader.metal */,
+				52CDFEE7287619D800BC4298 /* Square.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1979,6 +1982,7 @@
 				52ED9E3B16999E370082EABB /* NSArray+Map.m in Sources */,
 				52ED9E8416A225D90082EABB /* GLLLightsListController.m in Sources */,
 				5274448828034E1600E5A3FD /* GLLItemMeshState.swift in Sources */,
+				52CDFEE8287619D800BC4298 /* Square.metal in Sources */,
 				528934DE16A2281900F05312 /* GLLSettingsListController.m in Sources */,
 				52B5630A1EFD8681008C6CAD /* GLLItemDragDestination.m in Sources */,
 				5274447E280300F400E5A3FD /* Skeleton.metal in Sources */,

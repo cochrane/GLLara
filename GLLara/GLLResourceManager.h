@@ -42,9 +42,8 @@
 // Shared programs and buffers that everyone needs sometime
 
 @property (nonatomic) id<MTLBuffer> squareVertexArray;
+@property (nonatomic) id<MTLRenderPipelineState> squarePipelineState;
 
-@property (nonatomic) id<MTLBuffer> alphaTestPassGreaterBuffer;
-@property (nonatomic) id<MTLBuffer> alphaTestPassLessBuffer;
 @property (nonatomic, readonly) id<MTLLibrary> library;
 @property (nonatomic, readonly) MTLPixelFormat pixelFormat;
 @property (nonatomic, readonly) MTLPixelFormat depthPixelFormat;

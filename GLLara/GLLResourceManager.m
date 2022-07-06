@@ -71,16 +71,7 @@ static GLLResourceManager *sharedManager;
     depthDescriptor.depthCompareFunction = MTLCompareFunctionLessEqual;
     depthDescriptor.depthWriteEnabled = YES;
     _normalDepthStencilState = [_metalDevice newDepthStencilStateWithDescriptor:depthDescriptor];
-    
-    // Alpha test buffers
-    struct GLLAlphaTestBlock alphaBlock = { .mode = 1, .reference = .9 };
-    _alphaTestPassGreaterBuffer = [_metalDevice newBufferWithBytes:&alphaBlock length:sizeof(alphaBlock) options:MTLResourceStorageModeManaged];
-    _alphaTestPassGreaterBuffer.label = @"alpha-test-pass-greater";
-    
-    struct GLLAlphaTestBlock alphaBlockPassLess = { .mode = 2, .reference = .9 };
-    _alphaTestPassLessBuffer = [_metalDevice newBufferWithBytes:&alphaBlockPassLess length:sizeof(alphaBlock) options:MTLResourceStorageModeManaged];
-    _alphaTestPassLessBuffer.label = @"alpha-test-pass-less";
-    
+        
     [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefAnisotropyAmount] options:NSKeyValueObservingOptionNew context:0];
     [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefUseAnisotropy] options:NSKeyValueObservingOptionNew context:0];
     
@@ -182,6 +173,7 @@ static GLLResourceManager *sharedManager;
         descriptor.colorAttachments[0].pixelFormat = self.pixelFormat;
         descriptor.depthAttachmentPixelFormat = self.depthPixelFormat;
         descriptor.vertexDescriptor = vertexDescriptor.vertexDescriptor;
+        descriptor.rasterSampleCount = 4;
         
         id<MTLRenderPipelineState> renderPipelineState = [self.metalDevice newRenderPipelineStateWithDescriptor:descriptor error:error];
         if (!renderPipelineState) {
@@ -206,10 +198,30 @@ static GLLResourceManager *sharedManager;
             -1.0f, 1.0f,
             1.0f, 1.0f
         };
-        _squareVertexArray = [_metalDevice newBufferWithBytes:coords length:sizeof(coords) options:MTLResourceStorageModePrivate];
+        _squareVertexArray = [_metalDevice newBufferWithBytes:coords length:sizeof(coords) options:MTLResourceStorageModeManaged];
         _squareVertexArray.label = @"square-vertex";
     }
     return _squareVertexArray;
+}
+
+- (id<MTLRenderPipelineState>)squarePipelineState {
+    if (!_squarePipelineState) {
+        MTLRenderPipelineDescriptor *descriptor = [[MTLRenderPipelineDescriptor alloc] init];
+        
+        descriptor.vertexFunction = [self.library newFunctionWithName:@"squareVertex"];
+        descriptor.fragmentFunction = [self.library newFunctionWithName:@"squareFragment"];
+        descriptor.colorAttachments[0].pixelFormat = self.pixelFormat;
+        descriptor.colorAttachments[0].blendingEnabled = true;
+        descriptor.colorAttachments[0].destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+        descriptor.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+        descriptor.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactorSourceAlpha;
+        descriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactorSourceAlpha;
+        descriptor.label = @"square";
+        
+        _squarePipelineState = [self.metalDevice newRenderPipelineStateWithDescriptor:descriptor error:NULL];
+        NSAssert(_squarePipelineState, @"need to have pipeline state");
+    }
+    return _squarePipelineState;
 }
 
 #pragma mark - OpenGL limits
@@ -316,6 +328,9 @@ static GLLResourceManager *sharedManager;
         // TODO Make this dependent on what is actually going on in the scene
         int32_t oneLight = 1;
         [values setConstantValue:&oneLight type:MTLDataTypeInt atIndex:GLLFunctionConstantNumberOfUsedLights];
+        
+        bool depthPeelActive = shader.alphaBlending;
+        [values setConstantValue:&depthPeelActive type:MTLDataTypeBool atIndex:GLLFunctionConstantHasDepthPeelFrontBuffer];
         
         id<MTLFunction> result = [self.library newFunctionWithName:name constantValues:values error:error];
         free(valuesArray);

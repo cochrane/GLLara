@@ -84,14 +84,14 @@ import CoreData
         }
     }
     
-    @objc func draw(showingSelection: Bool, into commandEncoder: MTLRenderCommandEncoder) {
+    func draw(into commandEncoder: MTLRenderCommandEncoder, blended: Bool) {
         for itemDrawer in itemDrawers {
-            itemDrawer.draw(into: commandEncoder, blended: false)
+            itemDrawer.draw(into: commandEncoder, blended: blended)
         }
-        
-        if showingSelection {
-            skeletonDrawer.draw(into: commandEncoder)
-        }
+    }
+    
+    func drawSelection(int commandEncoder: MTLRenderCommandEncoder) {
+        skeletonDrawer.draw(into: commandEncoder)
     }
     
     func notifyRedraw() {

@@ -40,7 +40,10 @@ typedef enum GLLFragmentArgumentIndex {
     GLLFragmentArgumentIndexBump1UVScale,
     GLLFragmentArgumentIndexBump2UVScale,
     GLLFragmentArgumentIndexSpecularTextureScale,
-    GLLFragmentArgumentIndexReflectionAmount
+    GLLFragmentArgumentIndexReflectionAmount,
+    
+    // Separate from other textures, not provided by us
+    GLLFragmentArgumentIndexTextureDepthPeelFront,
 } GLLFragmentArgumentIndex;
 
 typedef enum GLLFragmentBufferIndex {

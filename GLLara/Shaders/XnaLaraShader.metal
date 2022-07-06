@@ -31,6 +31,8 @@ constant bool hasLightmap [[ function_constant(GLLFunctionConstantHasLightmap) ]
 constant bool hasEmission [[ function_constant(GLLFunctionConstantHasEmission) ]];
 constant bool hasVertexColor [[ function_constant(GLLFunctionConstantHasVertexColor) ]];
 
+constant bool hasDepthPeelFrontBuffer [[ function_constant(GLLFunctionConstantHasDepthPeelFrontBuffer) ]];
+
 // TODO Probably need same for tangents when adding GLTF support
 constant int numberOfTexCoordSets [[ function_constant(GLLFunctionConstantNumberOfTexCoordSets) ]];
 constant bool hasTexCoord0 = numberOfTexCoordSets >= 1;
@@ -56,6 +58,7 @@ struct XnaLaraInputData {
 
 struct XnaLaraRasterizerData {
     float4 position [[ position ]];
+    float4 screenPosition [[ function_constant(hasDepthPeelFrontBuffer) ]];
     float3 worldPosition;
     float4 color;
     float2 texCoord0 [[ function_constant(hasTexCoord0) ]];
@@ -104,6 +107,10 @@ vertex XnaLaraRasterizerData xnaLaraVertex(XnaLaraInputData in [[ stage_in ]],
     auto worldPosition = boneTransform * float4(in.position, 1.0);
     out.position = viewProjection * worldPosition;
     out.worldPosition = worldPosition.xyz;
+    
+    if (hasDepthPeelFrontBuffer) {
+        out.screenPosition = out.position;
+    }
     
     if (hasNormal) {
         if (calculateTangentToWorld && hasTexCoord0) {
@@ -181,20 +188,45 @@ struct XnaLaraFragmentArguments {
 fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
         device XnaLaraFragmentArguments & arguments [[ buffer(GLLFragmentBufferIndexArguments) ]],
         device GLLLightsBuffer & lights [[ buffer(GLLFragmentBufferIndexLights) ]],
-        sampler textureSampler [[ sampler(0) ]]) {
+        sampler textureSampler [[ sampler(0) ]],
+        depth2d_ms<float> depthPeelFrontBuffer [[ texture(GLLFragmentArgumentIndexTextureDepthPeelFront), function_constant(hasDepthPeelFrontBuffer) ]],
+        uint currentSample [[ sample_id ]]) {
+    
+    if (hasDepthPeelFrontBuffer) {
+        float depth = in.screenPosition.z / in.screenPosition.w;
+        float illustrativeDepth = depth * 128;
+        uint2 coords = uint2(in.position.xy);
+        float frontDepth = depthPeelFrontBuffer.read(coords, currentSample);
+        float illustrativeFrontDepth = frontDepth * 128;
+        if (/*illustrativeDepth > illustrativeFrontDepth*/ false) {
+            discard_fragment();
+            return float4(1, 0, 0.5, 1);
+        }
+    }
     
     // Calculate diffuse color
     float4 diffuseTextureColor = float4(1);
     if (hasDiffuseTexture && hasTexCoord0) {
         diffuseTextureColor = arguments.diffuseTexture.sample(textureSampler, in.texCoordFor(texCoordSetDiffuse));
     }
+    float4 usedDiffuseColor = diffuseTextureColor;
     if (hasVertexColor) {
-        diffuseTextureColor *= in.color;
+        usedDiffuseColor *= in.color;
     }
+    
+    // DEBUG!
+    if (hasDepthPeelFrontBuffer) {
+        // Apply alpha from diffuse texture
+        return diffuseTextureColor;
+    } else {
+        // Solid
+        return float4(diffuseTextureColor.rgb, 1.0);
+    }
+    // DEBUG!
     
     // If Shadeless then return just this diffuse color
     if (isShadeless) {
-        return diffuseTextureColor;
+        return usedDiffuseColor;
     }
     
     // Calculate normal
@@ -236,7 +268,7 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
     }
     
     // Total color: Add in ambient; do this always, no ambient is represented by black ambient material color
-    float4 color = lights.ambientColor * arguments.ambientColor * diffuseTextureColor;
+    float4 color = lights.ambientColor * arguments.ambientColor * usedDiffuseColor;
     
     for (int i = 0; i < numberOfUsedLights; i++) {
         const device auto& light = lights.lights[i];
@@ -244,7 +276,7 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
         // Diffuse term
         float diffuseFactor = max(dot(-normal, light.direction.xyz), 0.0f);
         if (hasDiffuseLighting) {
-            color += diffuseTextureColor * arguments.diffuseColor * light.diffuseColor * diffuseFactor;
+            color += usedDiffuseColor * arguments.diffuseColor * light.diffuseColor * diffuseFactor;
         }
         
         // Specular term
@@ -284,8 +316,13 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
         color += arguments.emissionTexture.sample(textureSampler, in.texCoordFor(texCoordSetEmission));
     }
     
-    // Apply alpha from diffuse texture
-    color.a = diffuseTextureColor.a;
+    if (hasDepthPeelFrontBuffer) {
+        // Apply alpha from diffuse texture
+        color.a = diffuseTextureColor.a;
+    } else {
+        // Solid
+        color.a = 1.0;
+    }
     
     return color;
 }

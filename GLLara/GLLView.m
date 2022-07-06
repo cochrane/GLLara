@@ -77,8 +77,6 @@ const double unitsPerSecond = 0.2;
     
     self.device = MTLCreateSystemDefaultDevice();
     self.clearColor = MTLClearColorMake(0.5, 0.5, 0.5, 1.0);
-    self.depthStencilPixelFormat = MTLPixelFormatDepth32Float;
-    self.clearDepth = 1.0;
     self.enableSetNeedsDisplay = NO;
     self.paused = NO;
     self.autoResizeDrawable = YES;
