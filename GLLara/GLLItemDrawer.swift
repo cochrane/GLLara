@@ -9,17 +9,17 @@
 import Foundation
 import Metal
 
-@objc class GLLItemDrawer: NSObject {
-    @objc let item: GLLItem
+class GLLItemDrawer {
+    let item: GLLItem
     weak var sceneDrawer: GLLSceneDrawer?
     var needUpdateTransforms = true
-    @objc var replacedTextures: [URL:Error] = [:]
+    var replacedTextures: [URL:Error] = [:]
     var meshStates: [GLLItemMeshState] = []
     
     private let transformsBuffer: MTLBuffer
     private var observations: [NSKeyValueObservation] = []
     
-    @objc init(item: GLLItem, sceneDrawer: GLLSceneDrawer) throws {
+    init(item: GLLItem, sceneDrawer: GLLSceneDrawer) throws {
         self.item = item
         self.sceneDrawer = sceneDrawer
         
@@ -30,8 +30,6 @@ import Metal
         
         // Prepare draw data
         let drawData = try sceneDrawer.resourceManager.drawData(for: item.model)
-        
-        super.init()
         
         // Observe channel assignments
         let updateTransformsHandler = { [weak self] (item: GLLItem, change: NSKeyValueObservedChange<Int16>) -> Void in
@@ -58,11 +56,6 @@ import Metal
             replacedTextures.merge(failedTextures, uniquingKeysWith: { a, b in return b })
             meshStates.append(meshState)
         }
-        
-        // TODO All the actual setup stuff like finding runs
-        // Which we probably don't need to anymore with metal
-        // Just setup whatever we need to make drawSolid and drawAlpha do the right things
-        // And also update those
     }
     
     var resourceManager: GLLResourceManager {
@@ -113,7 +106,7 @@ import Metal
         needUpdateTransforms = false
     }
     
-    @objc func drawSolid(into commandEncoder: MTLRenderCommandEncoder) {
+    func draw(into commandEncoder: MTLRenderCommandEncoder, blended: Bool = false) {
         if (needUpdateTransforms) {
             updateTransforms()
         }
@@ -121,7 +114,9 @@ import Metal
         commandEncoder.setVertexBuffer(transformsBuffer, offset: 0, index: Int(GLLVertexInputIndexTransforms.rawValue))
         
         for meshState in meshStates {
-            meshState.render(into: commandEncoder)
+            if meshState.isBlended == blended {
+                meshState.render(into: commandEncoder)
+            }
         }
     }
 }

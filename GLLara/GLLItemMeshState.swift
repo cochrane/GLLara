@@ -212,6 +212,14 @@ class GLLItemMeshState {
         assignParameterFloat(name: "reflectionAmount", defaultValue: 0.0, encoder: encoder, index: GLLFragmentArgumentIndexReflectionAmount)
     }
     
+    var isBlended: Bool {
+        guard let shader = itemMesh.shader else {
+            return false;
+        }
+        
+        return shader.alphaBlending
+    }
+    
     /**
      * Updates the textures. Returns which ones could not be loaded and the associated error.
      */

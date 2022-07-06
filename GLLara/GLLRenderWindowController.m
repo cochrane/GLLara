@@ -14,7 +14,6 @@
 #import "GLLDocument.h"
 #import "GLLView.h"
 #import "GLLRenderAccessoryViewController.h"
-#import "GLLSceneDrawer.h"
 #import "GLLViewDrawer.h"
 
 @interface GLLRenderWindowController ()

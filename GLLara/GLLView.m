@@ -19,7 +19,6 @@
 #import "GLLItemDragDestination.h"
 #import "GLLResourceManager.h"
 #import "GLLPreferenceKeys.h"
-#import "GLLSceneDrawer.h"
 #import "GLLSelection.h"
 #import "GLLTexture.h"
 #import "GLLViewDrawer.h"

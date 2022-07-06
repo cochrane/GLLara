@@ -13,10 +13,11 @@
 #import "GLLCamera.h"
 #import "GLLDirectionalLight.h"
 #import "GLLNotifications.h"
-#import "GLLSceneDrawer.h"
 #import "GLLView.h"
 #import "simd_matrix.h"
 #import "simd_project.h"
+
+#import "GLLara-Swift.h"
 
 #import "GLLResourceIDs.h"
 #import "GLLRenderParameters.h"
@@ -130,7 +131,7 @@
     [commandEncoder setVertexBuffer:lightBuffer offset:0 atIndex:GLLVertexInputIndexLights];
     [commandEncoder setFragmentBuffer:lightBuffer offset:0 atIndex:GLLFragmentBufferIndexLights];
 	
-    [self.sceneDrawer drawShowingSelection:selection into:commandEncoder lightsBuffer:lightBuffer transformBuffer:transformBuffer];
+    [self.sceneDrawer drawWithShowingSelection:selection into:commandEncoder];
 }
 
 #pragma mark - Image rendering
@@ -352,17 +353,6 @@
     id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
     
     id<MTLRenderCommandEncoder> commandEncoder = [commandBuffer renderCommandEncoderWithDescriptor: renderPassDescriptor];
-    
-    
-    
-    /*glEnable(GL_DEPTH_TEST);
-    glEnable(GL_MULTISAMPLE);
-    glBlendColor(0, 0, 0, 1.0);
-    glBlendEquationSeparate(GL_FUNC_ADD, GL_MAX);
-    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA, GL_DST_ALPHA);
-    
-    glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CW);*/
     
     [commandEncoder setTriangleFillMode:MTLTriangleFillModeFill];
     [commandEncoder setFrontFacingWinding:MTLWindingClockwise];

@@ -29,9 +29,10 @@
 #import "GLLPoseExportViewController.h"
 #import "GLLRenderWindowController.h"
 #import "GLLResourceManager.h"
-#import "GLLSceneDrawer.h"
 #import "GLLSelection.h"
 #import "GLLTexture.h"
+
+#import "GLLara-Swift.h"
 
 @interface GLLDocument () <NSOpenSavePanelDelegate>
 {
