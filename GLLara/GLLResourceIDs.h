@@ -30,6 +30,8 @@ typedef enum GLLFragmentArgumentIndex {
     GLLFragmentArgumentIndexTextureLightmap,
     GLLFragmentArgumentIndexTextureReflection,
     
+    GLLFragmentArgumentIndexTextureMax,
+    
     GLLFragmentArgumentIndexAmbientColor,
     GLLFragmentArgumentIndexDiffuseColor,
     GLLFragmentArgumentIndexSpecularColor,

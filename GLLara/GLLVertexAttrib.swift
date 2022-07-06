@@ -132,35 +132,11 @@ struct GLLVertexAttrib: Hashable, Comparable {
     }
     
     var identifier: Int {
-        // TODO Needs to match XnaLaraShader attributes
-        switch self.semantic {
-        case .position:
-            return 0;
-        case .normal:
-            return 1;
-        case .color:
-            return 2;
-        case .texCoord0:
-            if (self.layer == 0) {
-                return 3;
-            } else {
-                return 4;
-            }
-        case .tangent0:
-            return 5;
-        case .boneIndices:
-            return 6;
-        case .boneWeights:
-            return 7;
-                
-        default:
-            return 100;
-        }
-        /*if (self.semantic == GLLVertexAttribTangent0 || self.semantic == GLLVertexAttribTexCoord0) {
-            return self.semantic + 2 * self.layer;
+        if (self.semantic == .tangent0 || self.semantic == .texCoord0) {
+           return self.semantic.rawValue + 2 * self.layer;
         } else {
-            return self.semantic;
-        }*/
+            return self.semantic.rawValue;
+        }
     }
     
     static func < (lhs: GLLVertexAttrib, rhs: GLLVertexAttrib) -> Bool {

@@ -9,14 +9,14 @@
 import Cocoa
 import UniformTypeIdentifiers
 
-@objc class GLLMeshParams: NSObject {
-    @objc var meshGroups: [String] = []
-    @objc var displayName: String = ""
-    @objc var visible: Bool = true
-    @objc var optionalPartNames: [String] = []
-    @objc var xnaLaraShaderData: XnaLaraShaderDescription? = nil
-    @objc var transparent: Bool = false
-    @objc var renderParameters: [String: Double] = [:]
+struct GLLMeshParams {
+    var meshGroups: [String] = []
+    var displayName: String = ""
+    var visible: Bool = true
+    var optionalPartNames: [String] = []
+    var xnaLaraShaderData: XnaLaraShaderDescription? = nil
+    var transparent: Bool = false
+    var renderParameters: [String: Double] = [:]
     var splitters: [GLLMeshSplitter] = []
     
     var cameraTargetName: String? = nil
@@ -234,8 +234,8 @@ _([^_\\n]+)
     
     private static let meshNameRegexp = try! NSRegularExpression(pattern:meshNameRegexpString, options: [.allowCommentsAndWhitespace, .anchorsMatchLines])
     
-    @objc func params(forMesh meshName: String) -> GLLMeshParams {
-        let params = GLLMeshParams()
+    func params(forMesh meshName: String) -> GLLMeshParams {
+        var params = GLLMeshParams()
         params.displayName = meshName
         
         if self.model != nil {

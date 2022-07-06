@@ -45,9 +45,7 @@ class GLLItemMeshState {
         self.itemMesh = itemMesh
         self.meshData = meshData
         
-        if let shader = itemMesh.shader {
-            pipelineStateInformation = try drawer.resourceManager.pipeline(forVertex: meshData.vertexArray.optimizedFormat, shader: shader)
-        }
+        updatePipelineState()
         
         observations.append(itemMesh.observe(\.shader) { [weak self] _,_ in
             self?.needsTextureUpdate = true
@@ -249,7 +247,22 @@ class GLLItemMeshState {
             return;
             
         }
-        pipelineStateInformation = try! drawer.resourceManager.pipeline(forVertex: meshData.vertexArray.optimizedFormat, shader: shader)
+        
+        var texCoordAssignments: [Int: Int] = [:]
+        for identifier in shader.textureUniforms {
+            let index = textureIndex(for: identifier)
+            if let assignment = itemMesh.texture(withIdentifier: identifier) {
+                if (assignment.texCoordSet < 0) {
+                    if let texture = itemMesh.mesh.textures[identifier], texture.texCoordSet > 0 {
+                        texCoordAssignments[index] = min(texture.texCoordSet, itemMesh.mesh.countOfUVLayers - 1)
+                    }
+                } else if assignment.texCoordSet >= 1{
+                    texCoordAssignments[index] = min(Int(assignment.texCoordSet), itemMesh.mesh.countOfUVLayers - 1)
+                }
+            }
+        }
+        
+        pipelineStateInformation = try! drawer.resourceManager.pipeline(forVertex: meshData.vertexArray.optimizedFormat, shader: shader, numberOfTexCoordSets: itemMesh.mesh.countOfUVLayers, texCoordSetAssignments: texCoordAssignments)
         
         updateArgumentBuffer()
     }

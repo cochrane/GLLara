@@ -33,7 +33,7 @@ struct GLLAlphaTestBlock
 - (NSData *)_dataForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
 - (NSString *)_utf8StringForFilename:(NSString *)filename error:(NSError *__autoreleasing*)error;
 - (id)_valueForKey:(id)key from:(NSMutableDictionary *)dictionary ifNotFound:(id(^)(void))supplier;
-- (id<MTLFunction>)_functionForName:(NSString *)name shader:(GLLShaderData*)shader error:(NSError *__autoreleasing*)error;
+- (id<MTLFunction>)_functionForName:(NSString *)name shader:(GLLShaderData*)shader numberOfTexCoordSets:(NSInteger)numTexCoordSets texCoordSetAssignments:(NSDictionary*)assignments error:(NSError *__autoreleasing*)error;
 - (void)_recreateSampler;
 
 @end
@@ -154,7 +154,7 @@ static GLLResourceManager *sharedManager;
     }];
 }*/
 
-- (GLLPipelineStateInformation *)pipelineForVertex:(GLLVertexAttribAccessorSet *)vertexDescriptor shader:(GLLShaderData *)shader error:(NSError *__autoreleasing*)error; {
+- (GLLPipelineStateInformation *)pipelineForVertex:(GLLVertexAttribAccessorSet *)vertexDescriptor shader:(GLLShaderData *)shader numberOfTexCoordSets:(NSInteger)numTexCoordSets texCoordSetAssignments:(NSDictionary*)assignments error:(NSError *__autoreleasing*)error; {
     NSParameterAssert(vertexDescriptor);
     NSParameterAssert(shader);
     
@@ -165,12 +165,13 @@ static GLLResourceManager *sharedManager;
     };
     
     return [self _valueForKey:key from:pipelines ifNotFound:(id)^{
-        id<MTLFunction> vertexFunction = [self _functionForName:shader.vertexName shader:shader error:error];
+        id<MTLFunction> vertexFunction = [self _functionForName:shader.vertexName shader:shader numberOfTexCoordSets:numTexCoordSets texCoordSetAssignments:assignments error:error];
         if (!vertexFunction) {
             return (id)nil;
         }
         
-        id<MTLFunction> fragmentFunction = [self _functionForName:shader.fragmentName shader:shader error:error];
+        
+        id<MTLFunction> fragmentFunction = [self _functionForName:shader.fragmentName shader:shader numberOfTexCoordSets:numTexCoordSets texCoordSetAssignments:assignments error:error];
         if (!fragmentFunction) {
             return (id)nil;
         }
@@ -275,16 +276,19 @@ static GLLResourceManager *sharedManager;
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-- (id<MTLFunction>)_functionForName:(NSString *)name shader:(GLLShaderData*)shader error:(NSError *__autoreleasing*)error {
+- (id<MTLFunction>)_functionForName:(NSString *)name shader:(GLLShaderData*)shader numberOfTexCoordSets:(NSInteger)numTexCoordSets texCoordSetAssignments:(NSDictionary*)assignments error:(NSError *__autoreleasing*)error; {
     NSParameterAssert(name);
     NSParameterAssert(shader);
     
     NSDictionary *key = @{
         @"name": name,
-        @"shader": shader
+        @"shader": shader,
+        @"numTexCoords": @(numTexCoordSets),
+        @"assignments": assignments
     };
     
     return [self _valueForKey:key from:pipelines ifNotFound:(id)^{
+        // Assign bools for active things
         MTLFunctionConstantValues *values = [[MTLFunctionConstantValues alloc] init];
         bool *valuesArray = calloc(sizeof(bool), GLLFunctionConstantBoolMax);
         NSIndexSet *setParameters = shader.activeBoolConstants;
@@ -294,13 +298,29 @@ static GLLResourceManager *sharedManager;
             }
         }
         [values setConstantValues:valuesArray type:MTLDataTypeBool withRange:NSMakeRange(0, GLLFunctionConstantBoolMax)];
-        //free(valuesArray);
+        
+        // Assign value for tex coord
+        int32_t numTexCoordSets32 = (int32_t) numTexCoordSets;
+        [values setConstantValue:&numTexCoordSets32 type:MTLDataTypeInt atIndex:GLLFunctionConstantNumberOfTexCoordSets];
+        
+        // Assign values for tex coord assignments
+        int32_t* indexValuesArray = calloc(sizeof(int32_t), GLLFragmentArgumentIndexTextureMax);
+        for (NSInteger i = 0; i < GLLFragmentArgumentIndexTextureMax; i++) {
+            NSNumber* assignedIndex = assignments[@(i)];
+            if (assignedIndex) {
+                indexValuesArray[i] = assignedIndex.intValue;
+            }
+        }
+        [values setConstantValues:indexValuesArray type:MTLDataTypeInt withRange:NSMakeRange(100, GLLFragmentArgumentIndexTextureMax)];
         
         // TODO Make this dependent on what is actually going on in the scene
-        int oneLight = 1;
+        int32_t oneLight = 1;
         [values setConstantValue:&oneLight type:MTLDataTypeInt atIndex:GLLFunctionConstantNumberOfUsedLights];
         
-        return [self.library newFunctionWithName:name constantValues:values error:error];
+        id<MTLFunction> result = [self.library newFunctionWithName:name constantValues:values error:error];
+        free(valuesArray);
+        free(indexValuesArray);
+        return result;
     }];
 }
 

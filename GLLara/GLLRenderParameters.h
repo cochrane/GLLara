@@ -35,8 +35,6 @@ typedef NS_ENUM(NSInteger, GLLFunctionConstant) {
     GLLFunctionConstantHasNormal = 0,
     GLLFunctionConstantCalculateTangentWorld,
     GLLFunctionConstantUseSkinning,
-    GLLFunctionConstantHasTexCoord0,
-    GLLFunctionConstantHasTexCoord1,
     GLLFunctionConstantHasDiffuseTexture,
     GLLFunctionConstantHasNormalDetailMap,
     GLLFunctionConstantIsShadeless,
@@ -48,11 +46,11 @@ typedef NS_ENUM(NSInteger, GLLFunctionConstant) {
     GLLFunctionConstantHasLightmap,
     GLLFunctionConstantHasEmission,
     GLLFunctionConstantHasVertexColor,
-    GLLFunctionConstantLightmapTexCoord1,
     
     GLLFunctionConstantBoolMax,
     
     GLLFunctionConstantNumberOfUsedLights,
+    GLLFunctionConstantNumberOfTexCoordSets,
     
     GLLFunctionConstantMax
 };

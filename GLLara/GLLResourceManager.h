@@ -51,7 +51,7 @@
 @property (nonatomic, readonly) id<MTLSamplerState> metalSampler;
 @property (nonatomic, readonly) id<MTLDepthStencilState> normalDepthStencilState;
 
-- (GLLPipelineStateInformation *)pipelineForVertex:(GLLVertexAttribAccessorSet *)vertexDescriptor shader:(GLLShaderData *)shader error:(NSError *__autoreleasing*)error;
+- (GLLPipelineStateInformation *)pipelineForVertex:(GLLVertexAttribAccessorSet *)vertexDescriptor shader:(GLLShaderData *)shader numberOfTexCoordSets:(NSInteger)numTexCoordSets texCoordSetAssignments:(NSDictionary*)assignments error:(NSError *__autoreleasing*)error;
 
 // Specifically used for testing
 - (void)clearInternalCaches;

@@ -46,8 +46,7 @@ import Foundation
                 guard let textureUrl = URL(string: urlPath, relativeTo: model.baseURL) else {
                     throw NSError()
                 }
-                let textureDescription = model.parameters.description(forTexture: identifier)
-                textures[identifier] = GLLTextureAssignment(url: textureUrl, texCoordSet: textureDescription.xnaLaraTexCoordSet)
+                textures[identifier] = GLLTextureAssignment(url: textureUrl, texCoordSet: meshParams.xnaLaraShaderData?.texCoordSet(for: identifier) ?? 0)
             }
         }
         
@@ -109,8 +108,7 @@ import Foundation
                 guard let textureUrl = URL(string: urlPath, relativeTo: model.baseURL) else {
                     throw NSError()
                 }
-                let textureDescription = model.parameters.description(forTexture: identifier)
-                textures[identifier] = GLLTextureAssignment(url: textureUrl, texCoordSet: textureDescription.xnaLaraTexCoordSet)
+                textures[identifier] = GLLTextureAssignment(url: textureUrl, texCoordSet: meshParams.xnaLaraShaderData?.texCoordSet(for: identifier) ?? 0)
             }
         }
         

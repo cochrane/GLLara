@@ -12,7 +12,7 @@ func registerModelParams() {
     let baseData = try! GLLModelParams(plistData: GLLModelParams.PlistDataTransferObject(shaders: [
     GLLShaderBase(name: "default", vertex: "xnaLaraVertex", fragment: "xnaLaraFragment", children: [
         GLLShaderModule(name: "skinning", requiredVertexAttributes: ["boneIndices", "boneWeights"], activeBoolConstants: [ .useSkinning ]),
-        GLLShaderModule(name: "diffuseTexture", textureUniforms: [ "diffuseTexture" ], activeBoolConstants: [ .hasDiffuseTexture, .hasTexCoord0 ]),
+        GLLShaderModule(name: "diffuseTexture", textureUniforms: [ "diffuseTexture" ], activeBoolConstants: [ .hasDiffuseTexture ]),
         GLLShaderModule(name: "vertexColor", requiredVertexAttributes: [ "vertexColor" ], activeBoolConstants: [ .hasVertexColor ]),
         GLLShaderModule(name: "normalMap", textureUniforms: [ "bumpTexture" ], requiredVertexAttributes: [ "normal" ], activeBoolConstants: [ .calculateTangentWorld, .hasNormal
             ], children: [
@@ -27,9 +27,7 @@ func registerModelParams() {
             ]),
         ]),
         GLLShaderModule(name: "reflection", textureUniforms: [ "reflectionTexture" ], requiredVertexAttributes: [ "normal" ], activeBoolConstants: [ .hasReflection, .hasNormal ]),
-        GLLShaderModule(name: "lightmap", textureUniforms: [ "lightmapTexture" ], activeBoolConstants: [ .hasLightmap ], children: [
-            GLLShaderModule(name: "lightmapTexCoord1", requiredVertexAttributes: [ "texCoord1"], activeBoolConstants: [ .hasTexCoord1, .lightmapTexCoord1 ])
-        ]),
+        GLLShaderModule(name: "lightmap", textureUniforms: [ "lightmapTexture" ], activeBoolConstants: [ .hasLightmap ], children: []),
         GLLShaderModule(name: "emission", textureUniforms: [ "emissionTexture" ], activeBoolConstants: [ .hasEmission ])
     ])
     ], renderParameterDescriptions: [

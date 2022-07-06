@@ -10,7 +10,7 @@ import Foundation
 import Metal
 
 @objc class GLLVertexAttribAccessorSet: NSObject {
-    @objc var accessors: [GLLVertexAttribAccessor]
+    var accessors: [GLLVertexAttribAccessor]
     
     @objc let vertexDescriptor: MTLVertexDescriptor
     
@@ -47,7 +47,7 @@ import Metal
         return GLLVertexAttribAccessorSet(accessors: accessors + other.accessors)
     }
     
-    @objc func accessor(semantic: GLLVertexAttribSemantic, layer: Int = 0) -> GLLVertexAttribAccessor? {
+    func accessor(semantic: GLLVertexAttribSemantic, layer: Int = 0) -> GLLVertexAttribAccessor? {
         return accessors.first {
             $0.attribute.semantic == semantic && $0.attribute.layer == layer
         }

@@ -6,8 +6,24 @@
 //  Copyright © 2021 Torsten Kammer. All rights reserved.
 //
 
+#ifdef __METAL_MACOS__
+
+#ifndef NS_ASSUME_NONNULL_BEGIN
+#define NS_ASSUME_NONNULL_BEGIN
+#endif
+
+#ifndef NS_ASSUME_NONNULL_END
+#define NS_ASSUME_NONNULL_END
+#endif
+
+#define NS_ENUM(a, b) enum b: a
+typedef int NSInteger;
+
+#else
+
 #import <Foundation/Foundation.h>
-#import <Metal/Metal.h>
+
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,9 +37,10 @@ typedef NS_ENUM(NSInteger, GLLVertexAttribSemantic)
     GLLVertexAttribColor,
     GLLVertexAttribBoneIndices,
     GLLVertexAttribBoneWeights,
+    GLLVertexAttribPadding,
+    
     GLLVertexAttribTexCoord0,
     GLLVertexAttribTangent0,
-    GLLVertexAttribPadding
 };
 
 typedef NS_ENUM(NSInteger, GLLCullFaceMode)

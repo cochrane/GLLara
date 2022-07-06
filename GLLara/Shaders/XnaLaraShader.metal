@@ -9,6 +9,7 @@
 
 #include "../GLLResourceIDs.h"
 #include "../GLLRenderParameters.h"
+#include "../GLLVertexAttrib.h"
 
 #include <metal_stdlib>
 using namespace metal;
@@ -18,8 +19,6 @@ constant int numberOfUsedLights [[ function_constant(GLLFunctionConstantNumberOf
 constant bool hasNormal [[function_constant(GLLFunctionConstantHasNormal)]];
 constant bool calculateTangentToWorld [[function_constant(GLLFunctionConstantCalculateTangentWorld)]];
 constant bool useSkinning [[function_constant(GLLFunctionConstantUseSkinning)]];
-constant bool hasTexCoord0 [[function_constant(GLLFunctionConstantHasTexCoord0)]];
-constant bool hasTexCoord1 [[function_constant(GLLFunctionConstantHasTexCoord1)]];
 constant bool hasDiffuseTexture [[ function_constant(GLLFunctionConstantHasDiffuseTexture) ]];
 constant bool hasNormalDetailMap [[ function_constant(GLLFunctionConstantHasNormalDetailMap) ]];
 constant bool isShadeless [[ function_constant(GLLFunctionConstantIsShadeless) ]];
@@ -31,20 +30,28 @@ constant bool hasDiffuseLighting [[ function_constant(GLLFunctionConstantHasDiff
 constant bool hasLightmap [[ function_constant(GLLFunctionConstantHasLightmap) ]];
 constant bool hasEmission [[ function_constant(GLLFunctionConstantHasEmission) ]];
 constant bool hasVertexColor [[ function_constant(GLLFunctionConstantHasVertexColor) ]];
-constant bool lightmapUsesTexCoord1 [[ function_constant(GLLFunctionConstantLightmapTexCoord1) ]];
+
+// TODO Probably need same for tangents when adding GLTF support
+constant int numberOfTexCoordSets [[ function_constant(GLLFunctionConstantNumberOfTexCoordSets) ]];
+constant bool hasTexCoord0 = numberOfTexCoordSets >= 1;
+constant bool hasTexCoord1 = numberOfTexCoordSets >= 2;
+constant bool hasTexCoord2 = numberOfTexCoordSets >= 3;
+constant bool hasTexCoord3 = numberOfTexCoordSets >= 4;
 
 constant bool hasTangentMatrixWorld = hasNormal && calculateTangentToWorld;
 constant bool hasNormalWorld = hasNormal && !calculateTangentToWorld;
 
 struct XnaLaraInputData {
-    float3 position [[ attribute(0) ]];
-    float3 normal [[ attribute(1) ]];
-    float4 color [[ attribute(2) ]];
-    float2 texCoord0 [[ attribute(3), function_constant(hasTexCoord0) ]];
-    float2 texCoord1 [[ attribute(4), function_constant(hasTexCoord1) ]];
-    float4 tangent [[ attribute(5), function_constant(hasTexCoord0) ]];
-    ushort4 boneIndices [[ attribute(6), function_constant(useSkinning) ]];
-    float4 boneWeights [[ attribute(7), function_constant(useSkinning) ]];
+    float3 position [[ attribute(GLLVertexAttribPosition) ]];
+    float3 normal [[ attribute(GLLVertexAttribNormal) ]];
+    float4 color [[ attribute(GLLVertexAttribColor) ]];
+    ushort4 boneIndices [[ attribute(GLLVertexAttribBoneIndices), function_constant(useSkinning) ]];
+    float4 boneWeights [[ attribute(GLLVertexAttribBoneWeights), function_constant(useSkinning) ]];
+    float2 texCoord0 [[ attribute(GLLVertexAttribTexCoord0 + 2 * 0), function_constant(hasTexCoord0) ]];
+    float2 texCoord1 [[ attribute(GLLVertexAttribTexCoord0 + 2 * 1), function_constant(hasTexCoord1) ]];
+    float2 texCoord2 [[ attribute(GLLVertexAttribTexCoord0 + 2 * 2), function_constant(hasTexCoord2) ]];
+    float2 texCoord3 [[ attribute(GLLVertexAttribTexCoord0 + 2 * 3), function_constant(hasTexCoord3) ]];
+    float4 tangent [[ attribute(GLLVertexAttribTangent0 + 2 * 0), function_constant(hasTexCoord0) ]];
 };
 
 struct XnaLaraRasterizerData {
@@ -53,10 +60,26 @@ struct XnaLaraRasterizerData {
     float4 color;
     float2 texCoord0 [[ function_constant(hasTexCoord0) ]];
     float2 texCoord1 [[ function_constant(hasTexCoord1) ]];
+    float2 texCoord2 [[ function_constant(hasTexCoord2) ]];
+    float2 texCoord3 [[ function_constant(hasTexCoord3) ]];
     float3 tangentToWorld0 [[ function_constant(hasTangentMatrixWorld) ]];
     float3 tangentToWorld1 [[ function_constant(hasTangentMatrixWorld) ]];
     float3 tangentToWorld2 [[ function_constant(hasTangentMatrixWorld) ]];
     float3 normalWorld [[ function_constant(hasNormalWorld) ]];
+    
+    float2 texCoordFor(int layer) {
+        switch (layer) {
+            case 0:
+            default:
+                return texCoord0;
+            case 1:
+                return texCoord1;
+            case 2:
+                return texCoord2;
+            case 3:
+                return texCoord3;
+        }
+    }
 };
 
 float3x3 upperLeft(float4x4 a) {
@@ -105,9 +128,25 @@ vertex XnaLaraRasterizerData xnaLaraVertex(XnaLaraInputData in [[ stage_in ]],
     if (hasTexCoord1) {
         out.texCoord1 = in.texCoord1;
     }
+    if (hasTexCoord2) {
+        out.texCoord2 = in.texCoord2;
+    }
+    if (hasTexCoord3) {
+        out.texCoord3 = in.texCoord3;
+    }
     
     return out;
 }
+
+constant int texCoordSetDiffuse [[ function_constant(100 + GLLFragmentArgumentIndexTextureDiffuse) ]];
+constant int texCoordSetSpecular [[ function_constant(100 + GLLFragmentArgumentIndexTextureSpecular) ]];
+constant int texCoordSetEmission [[ function_constant(100 + GLLFragmentArgumentIndexTextureEmission) ]];
+constant int texCoordSetBump [[ function_constant(100 + GLLFragmentArgumentIndexTextureBump) ]];
+constant int texCoordSetBump1 [[ function_constant(100 + GLLFragmentArgumentIndexTextureBump1) ]];
+constant int texCoordSetBump2 [[ function_constant(100 + GLLFragmentArgumentIndexTextureBump2) ]];
+constant int texCoordSetMask [[ function_constant(100 + GLLFragmentArgumentIndexTextureMask) ]];
+constant int texCoordSetLightmap [[ function_constant(100 + GLLFragmentArgumentIndexTextureLightmap) ]];
+// reflection tex coord is calculated dynamically that's the whole point
 
 struct XnaLaraFragmentArguments {
     texture2d<float> diffuseTexture [[ id(GLLFragmentArgumentIndexTextureDiffuse) ]];
@@ -147,7 +186,7 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
     // Calculate diffuse color
     float4 diffuseTextureColor = float4(1);
     if (hasDiffuseTexture && hasTexCoord0) {
-        diffuseTextureColor = arguments.diffuseTexture.sample(textureSampler, in.texCoord0);
+        diffuseTextureColor = arguments.diffuseTexture.sample(textureSampler, in.texCoordFor(texCoordSetDiffuse));
     }
     if (hasVertexColor) {
         diffuseTextureColor *= in.color;
@@ -162,14 +201,14 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
     float3 normal;
     if (hasNormal) {
         if (calculateTangentToWorld) {
-            float3 normalMapColor = arguments.bumpTexture.sample(textureSampler, in.texCoord0).xyz;
+            float3 normalMapColor = arguments.bumpTexture.sample(textureSampler, in.texCoordFor(texCoordSetBump)).xyz;
             if (hasNormalDetailMap) {
-                float2 maskColor = arguments.maskTexture.sample(textureSampler, in.texCoord0).xy;
+                float2 maskColor = arguments.maskTexture.sample(textureSampler, in.texCoordFor(texCoordSetMask)).xy;
                 
-                float3 detailNormalMap1 = arguments.bump1Texture.sample(textureSampler, in.texCoord0).xyz;
+                float3 detailNormalMap1 = arguments.bump1Texture.sample(textureSampler, in.texCoordFor(texCoordSetBump1)).xyz;
                 normalMapColor += detailNormalMap1 * maskColor.x;
                 
-                float3 detailNormalMap2 = arguments.bump2Texture.sample(textureSampler, in.texCoord0).xyz;
+                float3 detailNormalMap2 = arguments.bump2Texture.sample(textureSampler, in.texCoordFor(texCoordSetBump2)).xyz;
                 normalMapColor += detailNormalMap2 * maskColor.y;
             }
             float3 normalFromMap = normalMapColor * 2 - 1;
@@ -189,7 +228,7 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
     // Separate specular color
     float4 specularColor = arguments.specularColor;
     if (hasSpecularTexture) {
-        float2 specularTextureCoord = in.texCoord0;
+        float2 specularTextureCoord = in.texCoordFor(texCoordSetSpecular);
         if (hasSpecularTextureScale) {
             specularTextureCoord *= arguments.specularTextureScale;
         }
@@ -222,10 +261,7 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
     // Lightmap
     if (hasLightmap) {
         // TODO isn't lightmap the one that sometimes gets other tex coords?
-        float2 coords = in.texCoord0;
-        if (lightmapUsesTexCoord1) {
-            coords = in.texCoord1;
-        }
+        float2 coords = in.texCoordFor(texCoordSetLightmap);
         color *= arguments.lightmapTexture.sample(textureSampler, coords);
     }
     
@@ -245,7 +281,7 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
     
     // Emission
     if (hasEmission) {
-        color += arguments.emissionTexture.sample(textureSampler, in.texCoord0);
+        color += arguments.emissionTexture.sample(textureSampler, in.texCoordFor(texCoordSetEmission));
     }
     
     // Apply alpha from diffuse texture
