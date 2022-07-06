@@ -39,6 +39,7 @@ class GLLItemMeshState {
     private var textureObservations: [NSKeyValueObservation] = []
     private var renderParameterObservations: [NSKeyValueObservation] = []
     private var needsTextureUpdate = true
+    private var argumentsEncoder: MTLArgumentEncoder? = nil
     
     init(itemDrawer: GLLItemDrawer, meshData: GLLMeshDrawData, itemMesh: GLLItemMesh) throws {
         drawer = itemDrawer
@@ -172,7 +173,12 @@ class GLLItemMeshState {
             return
         }
         
-        let encoder = pipelineStateInformation.fragmentProgram.makeArgumentEncoder(bufferIndex: Int(GLLFragmentBufferIndexArguments.rawValue))
+        if argumentsEncoder == nil {
+            argumentsEncoder = pipelineStateInformation.fragmentProgram.makeArgumentEncoder(bufferIndex: Int(GLLFragmentBufferIndexArguments.rawValue))
+        }
+        guard let encoder = argumentsEncoder else {
+            return
+        }
         
         let size = encoder.encodedLength
         
@@ -244,8 +250,8 @@ class GLLItemMeshState {
             }
         }
         
+        needsTextureUpdate = false
         updateArgumentBuffer()
-        
         return failures
     }
         
@@ -272,6 +278,7 @@ class GLLItemMeshState {
         
         pipelineStateInformation = try! drawer.resourceManager.pipeline(forVertex: meshData.vertexArray.optimizedFormat, shader: shader, numberOfTexCoordSets: itemMesh.mesh.countOfUVLayers, texCoordSetAssignments: texCoordAssignments)
         
+        argumentsEncoder = nil
         updateArgumentBuffer()
     }
     
