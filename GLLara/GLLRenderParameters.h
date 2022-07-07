@@ -52,6 +52,8 @@ typedef NS_ENUM(NSInteger, GLLFunctionConstant) {
     GLLFunctionConstantNumberOfUsedLights,
     GLLFunctionConstantNumberOfTexCoordSets,
     
+    GLLFunctionConstantHasDepthPeelFrontBuffer,
+    
     GLLFunctionConstantMax
 };
 
