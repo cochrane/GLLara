@@ -68,8 +68,8 @@ import AppKit
         
         super.init()
         
-        NSUserDefaultsController.addObserver(self, forKeyPath: "values." + GLLPrefAnisotropyAmount, context: nil)
-        NSUserDefaultsController.addObserver(self, forKeyPath: "values." + GLLPrefUseAnisotropy, context: nil)
+        NSUserDefaultsController.shared.addObserver(self, forKeyPath: ("values." + GLLPrefAnisotropyAmount), context: nil)
+        NSUserDefaultsController.shared.addObserver(self, forKeyPath: ("values." + GLLPrefUseAnisotropy), context: nil)
         
         recreateSampler()
     }

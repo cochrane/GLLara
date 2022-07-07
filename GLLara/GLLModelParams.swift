@@ -489,12 +489,16 @@ _([^_\\n]+)
     }
     
     func shader(base baseName: String, modules: [String] = [], presentTextures: [String] = [], presentVertexAttributes: [GLLVertexAttribSemantic] = [], texCoordAssignments: [String: Int] = [:], alphaBlending: Bool = false) -> GLLShaderData? {
+        return shader(base: baseName, modules: modules, presentTextures: presentTextures, presentVertexAttributes: presentVertexAttributes, texCoordAssignments: texCoordAssignments, alphaBlending: alphaBlending, baseParameters: self)
+    }
+    
+    private func shader(base baseName: String, modules: [String] = [], presentTextures: [String] = [], presentVertexAttributes: [GLLVertexAttribSemantic] = [], texCoordAssignments: [String: Int] = [:], alphaBlending: Bool = false, baseParameters: GLLModelParams) -> GLLShaderData? {
         if let baseShader = plistData?.shaders?.first(where: { $0.name == baseName }) {
             let namedModules = baseShader.allModules(forNames: modules)
             let implicitModules = baseShader.descendantsMatching(textures: presentTextures, vertexAttributes: presentVertexAttributes)
-            return GLLShaderData(base: baseShader, activeModules: namedModules + implicitModules, texCoordAssignments: texCoordAssignments, alphaBlending: alphaBlending, parameters: self)
+            return GLLShaderData(base: baseShader, activeModules: namedModules + implicitModules, texCoordAssignments: texCoordAssignments, alphaBlending: alphaBlending, parameters: baseParameters)
         } else if let baseObject = base {
-            return baseObject.shader(base: baseName, modules: modules, presentTextures: presentTextures, presentVertexAttributes: presentVertexAttributes, texCoordAssignments: texCoordAssignments, alphaBlending: alphaBlending)
+            return baseObject.shader(base: baseName, modules: modules, presentTextures: presentTextures, presentVertexAttributes: presentVertexAttributes, texCoordAssignments: texCoordAssignments, alphaBlending: alphaBlending, baseParameters: baseParameters)
         }
         return nil
     }

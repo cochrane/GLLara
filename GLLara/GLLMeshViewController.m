@@ -241,6 +241,10 @@
     {
         renderParameterNames = @[];
         textureNames = @[];
+        self.possibleShaders = @[];
+        
+        [self.renderParametersView reloadData];
+        [self.textureAssignmentsView reloadData];
         return;
     }
     
@@ -258,7 +262,7 @@
     textureNames = [textureNamesSet sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
     
     // Find possible and actual shaders
-    self.possibleShaders = [selectedMeshes valueForKeyPath:@"@distinctUnionOfArrays.possibleShaderDescriptions"];
+    self.possibleShaders = @[];
     
     [self.renderParametersView reloadData];
     [self.textureAssignmentsView reloadData];
