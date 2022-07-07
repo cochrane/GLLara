@@ -92,7 +92,6 @@ import UniformTypeIdentifiers
     private var drawPassResolvedTextures: [MTLTexture] = []
     private var drawPassSolidDepthTexture: MTLTexture? = nil
     private var drawPassDepthTextures: [MTLTexture] = []
-    private var resolvedDepthTextures: [MTLTexture] = []
     
     private var solidFence: MTLFence
     private var initializeDepthBufferFence: MTLFence
@@ -297,7 +296,7 @@ import UniformTypeIdentifiers
         multisampleTextureDescriptor.usage = [ .renderTarget ]
         
         drawPassMultisampleTexture = device.makeTexture(descriptor: multisampleTextureDescriptor)!
-        drawPassMultisampleTexture!.label = "drawpass-multisample"
+        drawPassMultisampleTexture!.label = "multisample"
         
         drawPassResolvedTextures.removeAll()
         let depthPeelLayerCount = 8
@@ -312,7 +311,7 @@ import UniformTypeIdentifiers
             resolvedTextureDescriptor.usage = [ .shaderRead, .renderTarget ]
             
             let texture = device.makeTexture(descriptor: resolvedTextureDescriptor)!
-            texture.label = "drawpass-resolved-\(i)"
+            texture.label = "color-res-\(i)"
             drawPassResolvedTextures.append(texture)
         }
         
@@ -327,27 +326,13 @@ import UniformTypeIdentifiers
         depthTextureDescriptor.usage = [ .shaderRead, .renderTarget ]
         
         drawPassSolidDepthTexture = device.makeTexture(descriptor: depthTextureDescriptor)!
-        drawPassSolidDepthTexture!.label = "drawpass-depth-solid"
-        
-        let resolvedDepthTextureDescriptor = MTLTextureDescriptor()
-        resolvedDepthTextureDescriptor.width = Int(size.width)
-        resolvedDepthTextureDescriptor.height = Int(size.height)
-        resolvedDepthTextureDescriptor.allowGPUOptimizedContents = true
-        resolvedDepthTextureDescriptor.textureType = .type2D
-        resolvedDepthTextureDescriptor.pixelFormat = .depth32Float
-        resolvedDepthTextureDescriptor.storageMode = .private
-        resolvedDepthTextureDescriptor.usage = [ .shaderRead, .renderTarget ]
+        drawPassSolidDepthTexture!.label = "depth-solid"
         
         drawPassDepthTextures.removeAll()
-        resolvedDepthTextures.removeAll()
         for i in 0..<2 {
             let depthTexture = device.makeTexture(descriptor: depthTextureDescriptor)!
-            depthTexture.label = "drawpass-depth-\(i)"
+            depthTexture.label = "depth-\(i)"
             drawPassDepthTextures.append(depthTexture)
-
-            let resolvedDepthTexture = device.makeTexture(descriptor: resolvedDepthTextureDescriptor)!
-            resolvedDepthTexture.label = "drawpass-depth-resolved-\(i)"
-            resolvedDepthTextures.append(resolvedDepthTexture)
         }
         
 
@@ -401,7 +386,18 @@ import UniformTypeIdentifiers
         // - Use previous depth buffer as peel front buffer (only things behind it get drawn)
         // - Use other depth buffer as normal depth buffer, but initialized to depth buffer from solid
         // - Draw alpha, into multisample texture, resolving to resolved texture i
-        //TODO
+        
+        let clearDepthBuffer0PassDescriptor = MTLRenderPassDescriptor()
+        clearDepthBuffer0PassDescriptor.depthAttachment.texture = drawPassDepthTextures[0]
+        clearDepthBuffer0PassDescriptor.depthAttachment.loadAction = .clear
+        clearDepthBuffer0PassDescriptor.depthAttachment.storeAction = .store
+        clearDepthBuffer0PassDescriptor.depthAttachment.clearDepth = 0.0
+        clearDepthBuffer0PassDescriptor.renderTargetWidth = drawPassSolidDepthTexture!.width
+        clearDepthBuffer0PassDescriptor.renderTargetHeight = drawPassSolidDepthTexture!.height
+        let clearDepthBuffer0Pass = commandBuffer.makeRenderCommandEncoder(descriptor: clearDepthBuffer0PassDescriptor)!
+        clearDepthBuffer0Pass.label = "Clear Depth Buffer 0"
+        clearDepthBuffer0Pass.updateFence(lastBufferDoneFence, after: [.fragment])
+        clearDepthBuffer0Pass.endEncoding()
         
         var lastWrittenDepthBuffer = 0
         for i in 1 ..< drawPassResolvedTextures.count {
@@ -410,11 +406,9 @@ import UniformTypeIdentifiers
             
             let initializeDepthBufferEncoder = commandBuffer.makeBlitCommandEncoder()!
             initializeDepthBufferEncoder.label = "Initialize Depth Buffer \(i)"
-            if i > 1 {
-                initializeDepthBufferEncoder.waitForFence(lastBufferDoneFence)
-            } else {
+            initializeDepthBufferEncoder.waitForFence(lastBufferDoneFence)
+            if i == 1 {
                 initializeDepthBufferEncoder.waitForFence(solidFence)
-                initializeDepthBufferEncoder.copy(from: drawPassSolidDepthTexture!, to: drawPassDepthTextures[lastWrittenDepthBuffer])
             }
             initializeDepthBufferEncoder.copy(from: drawPassSolidDepthTexture!, to: drawPassDepthTextures[otherDepthBuffer])
             initializeDepthBufferEncoder.updateFence(initializeDepthBufferFence)
@@ -464,8 +458,11 @@ import UniformTypeIdentifiers
         commandEncoder.setRenderPipelineState(sceneDrawer.resourceManager.squarePipelineState)
         commandEncoder.setVertexBuffer(sceneDrawer.resourceManager.squareVertexArray, offset: 0, index: 0)
         
-        for texture in drawPassResolvedTextures {
-            commandEncoder.setFragmentTexture(texture, index: 0)
+        // Order: 0, n-1, n-2, ..., 1
+        commandEncoder.setFragmentTexture(drawPassResolvedTextures[0], index: 0)
+        commandEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
+        for i in 1 ..< drawPassResolvedTextures.count {
+            commandEncoder.setFragmentTexture(drawPassResolvedTextures[drawPassResolvedTextures.count - i], index: 0)
             commandEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
         }
         

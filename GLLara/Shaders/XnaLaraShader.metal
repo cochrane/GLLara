@@ -193,12 +193,10 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
         uint currentSample [[ sample_id ]]) {
     
     if (hasDepthPeelFrontBuffer) {
-        float depth = in.screenPosition.z / in.screenPosition.w;
-        float illustrativeDepth = depth * 128;
+        float depth = in.position.z;
         uint2 coords = uint2(in.position.xy);
         float frontDepth = depthPeelFrontBuffer.read(coords, currentSample);
-        float illustrativeFrontDepth = frontDepth * 128;
-        if (/*illustrativeDepth > illustrativeFrontDepth*/ false) {
+        if (depth <= frontDepth) {
             discard_fragment();
             return float4(1, 0, 0.5, 1);
         }
@@ -213,16 +211,6 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
     if (hasVertexColor) {
         usedDiffuseColor *= in.color;
     }
-    
-    // DEBUG!
-    if (hasDepthPeelFrontBuffer) {
-        // Apply alpha from diffuse texture
-        return diffuseTextureColor;
-    } else {
-        // Solid
-        return float4(diffuseTextureColor.rgb, 1.0);
-    }
-    // DEBUG!
     
     // If Shadeless then return just this diffuse color
     if (isShadeless) {
