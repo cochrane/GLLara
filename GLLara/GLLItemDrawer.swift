@@ -29,7 +29,7 @@ class GLLItemDrawer {
         transformsBuffer.label = item.displayName + "-transforms"
         
         // Prepare draw data
-        let drawData = try sceneDrawer.resourceManager.drawData(for: item.model)
+        let drawData = try sceneDrawer.resourceManager.drawData(model: item.model)
         
         // Observe channel assignments
         let updateTransformsHandler = { [weak self] (item: GLLItem, change: NSKeyValueObservedChange<Int16>) -> Void in

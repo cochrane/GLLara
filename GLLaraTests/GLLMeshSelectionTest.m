@@ -13,10 +13,11 @@
 #import "GLLItemMesh.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLModel.h"
-#import "GLLResourceManager.h"
 #import "GLLSelection.h"
 
 #import "GLLTestObjectWriter.h"
+
+#import "GLLara-Swift.h"
 
 #import <Cocoa/Cocoa.h>
 

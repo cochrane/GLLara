@@ -108,7 +108,7 @@ class GLLItemMeshState {
         
         if let url = textureAssignment?.textureURL {
             // Load from the given URL (where possible
-            return try drawer.resourceManager.texture(for: url)
+            return try drawer.resourceManager.texture(url: url)
         } else if let data = itemMesh.mesh.textures[identifier]?.data {
             // Load what the model provided
             return try GLLTexture(data: data, sourceURL: itemMesh.mesh.model!.baseURL, device: drawer.resourceManager.metalDevice)
@@ -245,7 +245,7 @@ class GLLItemMeshState {
                 failures[identifier] = error
                 
                 // Load default
-                let texture = try! drawer.resourceManager.texture(for: itemMesh.mesh.model!.parameters.defaultValue(forTexture: identifier))
+                let texture = try! drawer.resourceManager.texture(url: itemMesh.mesh.model!.parameters.defaultValue(forTexture: identifier))
                 texturesForResourceIds[textureIndex(for: identifier)] = texture.texture
             }
         }
@@ -276,7 +276,7 @@ class GLLItemMeshState {
             }
         }
         
-        pipelineStateInformation = try! drawer.resourceManager.pipeline(forVertex: meshData.vertexArray.optimizedFormat, shader: shader, numberOfTexCoordSets: itemMesh.mesh.countOfUVLayers, texCoordSetAssignments: texCoordAssignments)
+        pipelineStateInformation = try! drawer.resourceManager.pipeline(vertex: meshData.vertexArray.optimizedFormat, shader: shader, numberOfTexCoordSets: itemMesh.mesh.countOfUVLayers, texCoordAssignments: texCoordAssignments)
         
         argumentsEncoder = nil
         updateArgumentBuffer()

@@ -13,8 +13,8 @@ import Metal
  * Arrange pipeline state and associated functions. Needed so we can
  * initialize the argument buffer correctly.
  */
-@objc class GLLPipelineStateInformation: NSObject {
-    @objc var pipelineState: MTLRenderPipelineState! = nil
-    @objc var fragmentProgram: MTLFunction! = nil
-    @objc var vertexProgram: MTLFunction! = nil
+struct GLLPipelineStateInformation {
+    let pipelineState: MTLRenderPipelineState
+    let vertexProgram: MTLFunction
+    let fragmentProgram: MTLFunction
 }

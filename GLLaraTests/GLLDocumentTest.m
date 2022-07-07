@@ -11,7 +11,8 @@
 #import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
-#import "GLLResourceManager.h"
+
+#import "GLLara-Swift.h"
 
 #import <Cocoa/Cocoa.h>
 

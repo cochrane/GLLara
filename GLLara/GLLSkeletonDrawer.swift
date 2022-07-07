@@ -28,7 +28,7 @@ import Metal
     
     @objc init(resourceManager: GLLResourceManager) {
         device = resourceManager.metalDevice
-        let library = resourceManager.library!
+        let library = resourceManager.library
         
         let values = MTLFunctionConstantValues()
         

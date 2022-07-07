@@ -79,7 +79,7 @@ import UniformTypeIdentifiers
     
     private let ambientLight: GLLAmbientLight
     private let directionalLights: [GLLDirectionalLight] // Always three, mutations aren't checked
-    private let device = GLLResourceManager.shared().metalDevice!
+    private let device = GLLResourceManager.shared.metalDevice
     private let commandQueue: MTLCommandQueue
     private var transformBuffer: MTLBuffer
     private var lightBuffer: MTLBuffer

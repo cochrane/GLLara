@@ -15,7 +15,6 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLItemDragDestination.h"
-#import "GLLResourceManager.h"
 #import "GLLPreferenceKeys.h"
 #import "GLLSelection.h"
 #import "GLLTexture.h"

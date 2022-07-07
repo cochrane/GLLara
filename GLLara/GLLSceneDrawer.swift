@@ -13,7 +13,7 @@ import CoreData
     
     @objc init(document: GLLDocument) {
         self.document = document
-        skeletonDrawer = GLLSkeletonDrawer(resourceManager: GLLResourceManager.shared())
+        skeletonDrawer = GLLSkeletonDrawer(resourceManager: GLLResourceManager.shared)
         
         super.init()
         
@@ -71,7 +71,7 @@ import CoreData
         return document?.managedObjectContext
     }
     @objc var resourceManager: GLLResourceManager {
-        return GLLResourceManager.shared()
+        return GLLResourceManager.shared
     }
     
     @objc var selectedBones: [GLLItemBone] {

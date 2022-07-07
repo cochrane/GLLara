@@ -8,7 +8,7 @@
 
 #import "GLLDrawingPreferencesViewController.h"
 
-#import "GLLResourceManager.h"
+#import "GLLara-Swift.h"
 
 @interface GLLDrawingPreferencesViewController ()
 
@@ -29,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.maxAnisotropyLevel = [[GLLResourceManager sharedResourceManager] maxAnisotropyLevel];
+    self.maxAnisotropyLevel = [[GLLResourceManager shared] maxAnisotropyLevel];
 }
 
 @end

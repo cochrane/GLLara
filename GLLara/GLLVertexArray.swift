@@ -266,7 +266,7 @@ class GLLVertexArray {
         // Can we use vertex descriptors to simplify this? It seems like we're actually fairly close to them already.
         // Edit: Yes! We can do that! They're specifically for this in fact!
         
-        let device = GLLResourceManager.shared().metalDevice!
+        let device = GLLResourceManager.shared.metalDevice
         vertexData!.withUnsafeBytes {
             vertexBuffer = device.makeBuffer(bytes: $0.baseAddress!, length: $0.count, options: .storageModeManaged)
             vertexBuffer?.label = "vertex-" + debugLabel

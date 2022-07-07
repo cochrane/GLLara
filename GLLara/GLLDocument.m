@@ -28,7 +28,6 @@
 #import "GLLPoseExporter.h"
 #import "GLLPoseExportViewController.h"
 #import "GLLRenderWindowController.h"
-#import "GLLResourceManager.h"
 #import "GLLSelection.h"
 #import "GLLTexture.h"
 
@@ -167,7 +166,7 @@
 
 - (GLLItem *)addImagePlane:(NSURL *)url error:(NSError *__autoreleasing*)error {
     // First load the texture explicitly, to capture errors and size
-    GLLTexture *texture = [[GLLResourceManager sharedResourceManager] textureForURL:url error:error];
+    GLLTexture *texture = [[GLLResourceManager shared] textureWithUrl:url error:error];
     if (!texture) {
         return nil;
     }
