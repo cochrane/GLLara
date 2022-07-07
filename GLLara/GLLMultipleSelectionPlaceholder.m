@@ -45,6 +45,9 @@
     
     _multipleSelectionMarker = NSBindingSelectionMarker.multipleValuesSelectionMarker;
     
+    // Initial value
+    [self update];
+    
     return self;
 }
 

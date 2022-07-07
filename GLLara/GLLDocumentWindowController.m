@@ -222,6 +222,10 @@
 {
     Class firstClass = Nil;
     
+    if (proposedSelectionIndexes.count == 0) {
+        return proposedSelectionIndexes;
+    }
+    
     for (NSUInteger index = proposedSelectionIndexes.firstIndex; index <= proposedSelectionIndexes.lastIndex; index = [proposedSelectionIndexes indexGreaterThanIndex:index])
     {
         id item = [outlineView itemAtRow:index];

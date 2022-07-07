@@ -67,8 +67,6 @@
 {
     NSArray *renderParameterNames;
     NSArray *textureNames;
-    NSMutableDictionary *viewsForRenderParameters;
-    NSMutableDictionary *viewsForTextureNames;
 }
 
 - (void)_findRenderParameterNames;
@@ -82,9 +80,6 @@
     if (!(self = [super initWithNibName:@"GLLMeshView" bundle:[NSBundle mainBundle]]))
         return nil;
     
-    viewsForRenderParameters = [[NSMutableDictionary alloc] init];
-    viewsForTextureNames = [[NSMutableDictionary alloc] init];
-    
     _selection = selection;
     [_selection addObserver:self forKeyPath:@"selectedMeshes" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
     _managedObjectContext = context;
@@ -93,7 +88,7 @@
     _usingBlending = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"isUsingBlending" selection:selection];
     _selectedShader = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"shader" selection:selection];
     _cullFace = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"cullFaceMode" selection:selection];
-    
+        
     return self;
 }
 
@@ -136,9 +131,6 @@
     if (tableView == self.renderParametersView)
     {
         NSString *parameterName = [renderParameterNames objectAtIndex:row];
-        NSView *result = viewsForRenderParameters[parameterName];
-        if (result)
-            return result;
         
         GLLRenderParameterDescription *descriptionForName = nil;
         for (GLLItemMesh *mesh in [self.selection valueForKey:@"selectedMeshes"])
@@ -163,8 +155,6 @@
             GLLRenderParameterSelectionPlaceholder *valuePlaceholder = [[GLLRenderParameterSelectionPlaceholder alloc] initWithParameterName:parameterName keyPath:@"value" selection:self.selection];
             [result.parameterValue bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
             
-            viewsForRenderParameters[parameterName] = result;
-            
             return result;
             
         }
@@ -183,8 +173,6 @@
             [result.parameterSlider bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
             [result.parameterValueField bind:@"value" toObject:valuePlaceholder withKeyPath:@"value" options:nil];
             
-            viewsForRenderParameters[parameterName] = result;
-            
             return result;
         }
         else
@@ -193,11 +181,8 @@
     else if (tableView == self.textureAssignmentsView)
     {
         NSString *textureName = [textureNames objectAtIndex:row];
-        GLLTextureAssignmentView *result = viewsForTextureNames[textureName];
-        if (result)
-            return result;
         
-        result = [tableView makeViewWithIdentifier:@"TextureAssignment" owner:self];
+        GLLTextureAssignmentView *result = [tableView makeViewWithIdentifier:@"TextureAssignment" owner:self];
         
         GLLMultipleSelectionPlaceholder *textureDescriptionPlaceholder = [[GLLItemMeshTextureSelectionPlaceholder alloc] initWithTextureName:textureName keyPath:@"textureDescription" selection:self.selection];
         
@@ -208,7 +193,10 @@
         
         [result.textureImage bind:@"imageURL" toObject:textureURLPlaceholder withKeyPath:@"value" options:nil];
         
-        viewsForTextureNames[textureName] = result;
+        //viewsForTextureNames[textureName] = result;
+        
+        //[placeholders addObject:textureDescriptionPlaceholder];
+        //[placeholders addObject:textureURLPlaceholder];
         
         return result;
     }

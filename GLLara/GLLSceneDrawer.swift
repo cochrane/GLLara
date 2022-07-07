@@ -40,6 +40,7 @@ import CoreData
                     }
                 }
             }
+            self.notifyRedraw()
         }
         
         drawStateNotificationObserver = NotificationCenter.default.addObserver(forName: Notification.Name.GLLDrawStateChanged, object: nil, queue: OperationQueue.main) { [weak self] notification in
