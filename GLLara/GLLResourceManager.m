@@ -60,6 +60,7 @@ static GLLResourceManager *sharedManager;
     programs = [[NSMutableDictionary alloc] init];
     textures = [[NSMutableDictionary alloc] init];
     models = [[NSMutableDictionary alloc] init];
+    pipelines = [[NSMutableDictionary alloc] init];
     
     _library = [_metalDevice newDefaultLibrary];
     _pixelFormat = MTLPixelFormatBGRA8Unorm;
@@ -72,6 +73,12 @@ static GLLResourceManager *sharedManager;
     depthDescriptor.depthWriteEnabled = YES;
     _normalDepthStencilState = [_metalDevice newDepthStencilStateWithDescriptor:depthDescriptor];
         
+    MTLDepthStencilDescriptor *copyDepthDescriptor = [[MTLDepthStencilDescriptor alloc] init];
+    copyDepthDescriptor.depthCompareFunction = MTLCompareFunctionGreaterEqual;
+    copyDepthDescriptor.depthWriteEnabled = YES;
+    _depthStencilStateForCopy = [_metalDevice newDepthStencilStateWithDescriptor:copyDepthDescriptor];
+
+    
     [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefAnisotropyAmount] options:NSKeyValueObservingOptionNew context:0];
     [[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:[@"values." stringByAppendingString:GLLPrefUseAnisotropy] options:NSKeyValueObservingOptionNew context:0];
     
@@ -154,18 +161,19 @@ static GLLResourceManager *sharedManager;
         @"shader": shader,
         @"vertexDescriptor": vertexDescriptor.vertexDescriptor
     };
-    
+        
     return [self _valueForKey:key from:pipelines ifNotFound:(id)^{
         id<MTLFunction> vertexFunction = [self _functionForName:shader.vertexName shader:shader numberOfTexCoordSets:numTexCoordSets texCoordSetAssignments:assignments error:error];
         if (!vertexFunction) {
             return (id)nil;
         }
         
-        
         id<MTLFunction> fragmentFunction = [self _functionForName:shader.fragmentName shader:shader numberOfTexCoordSets:numTexCoordSets texCoordSetAssignments:assignments error:error];
         if (!fragmentFunction) {
             return (id)nil;
         }
+        
+        NSLog(@"Creating new pipeline state number %lu", self->pipelines.count + 1);
         
         MTLRenderPipelineDescriptor *descriptor = [[MTLRenderPipelineDescriptor alloc] init];
         descriptor.vertexFunction = vertexFunction;
@@ -222,6 +230,23 @@ static GLLResourceManager *sharedManager;
         NSAssert(_squarePipelineState, @"need to have pipeline state");
     }
     return _squarePipelineState;
+}
+
+- (id<MTLRenderPipelineState>)copyDepthPipelineState {
+    if (!_copyDepthPipelineState) {
+        MTLRenderPipelineDescriptor *descriptor = [[MTLRenderPipelineDescriptor alloc] init];
+        
+        descriptor.vertexFunction = [self.library newFunctionWithName:@"copyDepthVertex"];
+        descriptor.fragmentFunction = [self.library newFunctionWithName:@"copyDepthFragment"];
+        descriptor.colorAttachments[0].pixelFormat = self.pixelFormat;
+        descriptor.depthAttachmentPixelFormat = self.depthPixelFormat;
+        descriptor.rasterSampleCount = 4;
+        descriptor.label = @"copyDepth";
+        
+        _copyDepthPipelineState = [self.metalDevice newRenderPipelineStateWithDescriptor:descriptor error:NULL];
+        NSAssert(_copyDepthPipelineState, @"need to have pipeline state");
+    }
+    return _copyDepthPipelineState;
 }
 
 #pragma mark - OpenGL limits

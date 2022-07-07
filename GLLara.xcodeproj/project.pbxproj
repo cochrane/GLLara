@@ -279,6 +279,7 @@
 		5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */; };
 		5296947315F7FB3300DF2FA3 /* GLLItemMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947215F7FB3200DF2FA3 /* GLLItemMesh.m */; };
 		5296947815F80F4800DF2FA3 /* GLLBoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */; };
+		52AC5DC62876F315004949D4 /* CopyDepth.metal in Sources */ = {isa = PBXBuildFile; fileRef = 52AC5DC52876F315004949D4 /* CopyDepth.metal */; };
 		52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */; };
 		52B5630A1EFD8681008C6CAD /* GLLItemDragDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B563091EFD8681008C6CAD /* GLLItemDragDestination.m */; };
 		52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */; };
@@ -779,6 +780,7 @@
 		5296947215F7FB3200DF2FA3 /* GLLItemMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemMesh.m; sourceTree = "<group>"; };
 		5296947515F80F4500DF2FA3 /* GLLBoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneViewController.h; sourceTree = "<group>"; };
 		5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneViewController.m; sourceTree = "<group>"; };
+		52AC5DC52876F315004949D4 /* CopyDepth.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CopyDepth.metal; sourceTree = "<group>"; };
 		52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLCameraTarget.h; sourceTree = "<group>"; };
 		52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLCameraTarget.m; sourceTree = "<group>"; };
 		52B563081EFD8681008C6CAD /* GLLItemDragDestination.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLItemDragDestination.h; sourceTree = "<group>"; };
@@ -1355,6 +1357,7 @@
 				5211F82B2623A2EA00A1EC23 /* UnlitGLTF.fs */,
 				5274448A280606A200E5A3FD /* XnaLaraShader.metal */,
 				52CDFEE7287619D800BC4298 /* Square.metal */,
+				52AC5DC52876F315004949D4 /* CopyDepth.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1947,6 +1950,7 @@
 				5291DB9415FBF7BE00ECDBCA /* GLLAmbientLight.m in Sources */,
 				52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */,
 				52528D751D6AC2AA002E0074 /* GLLTiming.cpp in Sources */,
+				52AC5DC62876F315004949D4 /* CopyDepth.metal in Sources */,
 				52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */,
 				52BB21DB15FCF02200937450 /* GLLCamera.m in Sources */,
 				52C9F60E15FF1753003272E1 /* GLLItemViewController.m in Sources */,

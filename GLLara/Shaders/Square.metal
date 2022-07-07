@@ -9,8 +9,6 @@
 #include <metal_stdlib>
 using namespace metal;
 
-#include "../GLLSkeletonDrawerVertexFormat.h"
-
 struct RasterizerData {
     float4 position [[position]];
     float2 screenSpacePosition;

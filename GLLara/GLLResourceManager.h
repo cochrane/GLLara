@@ -43,12 +43,14 @@
 
 @property (nonatomic) id<MTLBuffer> squareVertexArray;
 @property (nonatomic) id<MTLRenderPipelineState> squarePipelineState;
+@property (nonatomic) id<MTLRenderPipelineState> copyDepthPipelineState;
 
 @property (nonatomic, readonly) id<MTLLibrary> library;
 @property (nonatomic, readonly) MTLPixelFormat pixelFormat;
 @property (nonatomic, readonly) MTLPixelFormat depthPixelFormat;
 @property (nonatomic, readonly) id<MTLSamplerState> metalSampler;
 @property (nonatomic, readonly) id<MTLDepthStencilState> normalDepthStencilState;
+@property (nonatomic, readonly) id<MTLDepthStencilState> depthStencilStateForCopy;
 
 - (GLLPipelineStateInformation *)pipelineForVertex:(GLLVertexAttribAccessorSet *)vertexDescriptor shader:(GLLShaderData *)shader numberOfTexCoordSets:(NSInteger)numTexCoordSets texCoordSetAssignments:(NSDictionary*)assignments error:(NSError *__autoreleasing*)error;
 
