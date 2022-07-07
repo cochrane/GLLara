@@ -68,6 +68,9 @@ import AppKit
         
         super.init()
         
+        NSUserDefaultsController.addObserver(self, forKeyPath: "values." + GLLPrefAnisotropyAmount, context: nil)
+        NSUserDefaultsController.addObserver(self, forKeyPath: "values." + GLLPrefUseAnisotropy, context: nil)
+        
         recreateSampler()
     }
     
@@ -226,5 +229,13 @@ import AppKit
         let newItem = try ifNotFound()
         dictionary[key] = newItem
         return newItem
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if object is NSUserDefaultsController.Type {
+            recreateSampler()
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
     }
 }
