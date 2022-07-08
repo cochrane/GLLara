@@ -58,6 +58,45 @@ import Foundation
         }
     }
     
+    func simd2Element<T>(at element: Int, base: T.Type) -> SIMD2<T> where T: SIMDScalar {
+        guard let dataBuffer = dataBuffer else {
+            assertionFailure()
+            return []
+        }
+        
+        return dataBuffer.withUnsafeBytes { start -> SIMD2<T> in
+            let slice = start[range(element: element)]
+            let typed = UnsafeRawBufferPointer(rebasing: slice).bindMemory(to: T.self)
+            return SIMD2<T>(x: typed[0], y: typed[1])
+        }
+    }
+    
+    func simd3Element<T>(at element: Int, base: T.Type) -> SIMD3<T> where T: SIMDScalar {
+        guard let dataBuffer = dataBuffer else {
+            assertionFailure()
+            return []
+        }
+        
+        return dataBuffer.withUnsafeBytes { start -> SIMD3<T> in
+            let slice = start[range(element: element)]
+            let typed = UnsafeRawBufferPointer(rebasing: slice).bindMemory(to: T.self)
+            return SIMD3<T>(x: typed[0], y: typed[1], z: typed[2])
+        }
+    }
+    
+    func simd4Element<T>(at element: Int, base: T.Type) -> SIMD4<T> where T: SIMDScalar {
+        guard let dataBuffer = dataBuffer else {
+            assertionFailure()
+            return []
+        }
+        
+        return dataBuffer.withUnsafeBytes { start -> SIMD4<T> in
+            let slice = start[range(element: element)]
+            let typed = UnsafeRawBufferPointer(rebasing: slice).bindMemory(to: T.self)
+            return SIMD4<T>(x: typed[0], y: typed[1], z: typed[2], w: typed[3])
+        }
+    }
+    
     func withBytes(element: Int, action: (UnsafeRawBufferPointer) throws ->()) rethrows {
         guard let dataBuffer = dataBuffer else {
             assertionFailure()

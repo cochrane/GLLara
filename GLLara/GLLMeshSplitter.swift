@@ -36,4 +36,12 @@ class GLLMeshSplitter: Decodable {
         
         splitPartName = try container.decode(String.self, forKey: .Name)
     }
+    
+    var minSimd: SIMD3<Float32> {
+        return SIMD3<Float32>(Float32(min[0]), Float32(min[1]), Float32(min[2]))
+    }
+    
+    var maxSimd: SIMD3<Float32> {
+        return SIMD3<Float32>(Float32(max[0]), Float32(max[1]), Float32(max[2]))
+    }
 }

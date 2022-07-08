@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import simd
 
 /*!
  * @abstract Vertex and element data.
@@ -296,26 +297,14 @@ import Foundation
         for triangle in 0..<(countOfUsedElements/3) {
             let index = triangle * 3
             
-            let elements = [
-                element(at: index + 0),
-                element(at: index + 1),
-                element(at: index + 2)
-            ]
-            let position = [
-                positionData.typedElementArray(at: elements[0], type: Float32.self),
-                positionData.typedElementArray(at: elements[1], type: Float32.self),
-                positionData.typedElementArray(at: elements[2], type: Float32.self)
-            ]
+            let min = splitter.minSimd
+            let max = splitter.maxSimd
             
             // Find out if one corner is completely in the box. If yes, then this triangle becomes part of the split mesh.
             var anyCornerInBox = false
-            for corner in 0..<3 {
-                var allCoordsInBox = true
-                for coord in 0..<3 {
-                    let cornerPositionAtCoord = Double(position[corner][coord])
-                    allCoordsInBox = allCoordsInBox && cornerPositionAtCoord >= splitter.min[coord] && cornerPositionAtCoord <= splitter.max[coord]
-                }
-                if allCoordsInBox {
+            for i in 0..<3 {
+                let corner = positionData.simd3Element(at: element(at: index + i), base: Float32.self)
+                if all(corner .>= min .& corner .<= max) {
                     anyCornerInBox = true
                 }
             }
@@ -325,7 +314,7 @@ import Foundation
             }
             
             for corner in 0..<3 {
-                let index = UInt32(elements[corner])
+                let index = element(at: index + corner)
                 _ = Swift.withUnsafeBytes(of: index) {
                     newElements.append(contentsOf: $0)
                 }
@@ -370,9 +359,9 @@ import Foundation
         for layer in 0..<self.countOfUVLayers {
             let texCoordData = vertexData.accessor(semantic: .texCoord0, layer: layer)!
             
-            var tangents = Array(repeating: Float32(0), count: countOfVertices * 4)
-            var tangentsU = Array(repeating: Float32(0), count: countOfVertices * 3)
-            var tangentsV = Array(repeating: Float32(0), count: countOfVertices * 3)
+            var tangents = Array(repeating: simd_float4(0, 0, 0, 0), count: countOfVertices)
+            var tangentsU = Array(repeating: simd_float3(0, 0, 0), count: countOfVertices)
+            var tangentsV = Array(repeating: simd_float3(0, 0, 0), count: countOfVertices)
             
             // First pass: Sum up the tangents for each vector. We can assume that at the start of this method, the tangent for every vertex is (0, 0, 0, 0)^t.
             for triangle in 0..<countOfUsedElements/3 {
@@ -383,23 +372,19 @@ import Foundation
                     element(at: index + 2)
                 ]
                 let positions = [
-                    positionData.typedElementArray(at: elements[0], type: Float32.self),
-                    positionData.typedElementArray(at: elements[1], type: Float32.self),
-                    positionData.typedElementArray(at: elements[2], type: Float32.self)
+                    positionData.simd3Element(at: elements[0], base: Float32.self),
+                    positionData.simd3Element(at: elements[1], base: Float32.self),
+                    positionData.simd3Element(at: elements[2], base: Float32.self)
                 ]
                 let texCoords = [
-                    texCoordData.typedElementArray(at: elements[0], type: Float32.self),
-                    texCoordData.typedElementArray(at: elements[1], type: Float32.self),
-                    texCoordData.typedElementArray(at: elements[2], type: Float32.self)
+                    texCoordData.simd2Element(at: elements[0], base: Float32.self),
+                    texCoordData.simd2Element(at: elements[1], base: Float32.self),
+                    texCoordData.simd2Element(at: elements[2], base: Float32.self)
                 ]
                 
                 // Calculate tangents
-                let q1 = [ positions[1][0] - positions[0][0],
-                           positions[1][1] - positions[0][1],
-                           positions[1][2] - positions[0][2] ]
-                let q2 = [ positions[2][0] - positions[0][0],
-                           positions[2][1] - positions[0][1],
-                           positions[2][2] - positions[0][2] ]
+                let q1 = positions[1] - positions[0]
+                let q2 = positions[2] - positions[0]
                 
                 let s1 = texCoords[1][0] - texCoords[0][0]
                 let t1 = texCoords[1][1] - texCoords[0][1]
@@ -410,48 +395,26 @@ import Foundation
                     continue
                 }
                 
-                var tangentU = [
-                    (t2 * q1[0] - t1 * q2[0]) / d,
-                    (t2 * q1[1] - t1 * q2[1]) / d,
-                    (t2 * q1[2] - t1 * q2[2]) / d
-                ]
-                GLLModelMesh.normalize(&tangentU)
-                var tangentV = [
-                    (s2 * q2[0] - s1 * q1[0]) / d,
-                    (s2 * q2[1] - s1 * q1[1]) / d,
-                    (s2 * q2[2] - s1 * q1[2]) / d,
-                ]
-                GLLModelMesh.normalize(&tangentV)
+                let tangentU = simd_normalize((t2 * q1 - t1 * q2) / d)
+                let tangentV = simd_normalize((s2 * q2 - s1 * q1) / d)
                 
                 // Add them to the per-layer tangents
                 for vertex in 0..<3 {
-                    for coord in 0..<3 {
-                        tangentsU[elements[vertex] * 3 + coord] += tangentU[coord]
-                        tangentsV[elements[vertex] * 3 + coord] += tangentV[coord]
-                    }
+                    tangentsU[elements[vertex]] += tangentU
+                    tangentsV[elements[vertex]] += tangentV
                 }
             }
             
             for vertex in 0..<countOfVertices {
-                GLLModelMesh.normalize(&tangentsU, from: vertex*3)
-                GLLModelMesh.normalize(&tangentsV, from: vertex*3)
-                let normal = normalData.typedElementArray(at: vertex, type: Float32.self)
-                let normalDotTangentU = normal[0] * tangentsU[vertex*3 + 0] + normal[1] * tangentsU[vertex*3 + 1] + normal[2] * tangentsU[vertex*3 + 2]
-                var tangent = [
-                    tangentsU[vertex*3 + 0] - normal[0] * normalDotTangentU,
-                    tangentsU[vertex*3 + 1] - normal[1] * normalDotTangentU,
-                    tangentsU[vertex*3 + 2] - normal[2] * normalDotTangentU
-                ]
-                GLLModelMesh.normalize(&tangent)
+                let tangentU = simd_normalize(tangentsU[vertex])
+                let tangentV = simd_normalize(tangentsV[vertex])
+                let normal = normalData.simd3Element(at: vertex, base: Float32.self)
                 
-                let w = tangentsV[vertex*3 + 0] * (normal[1] * tangentsU[vertex*3 + 2] - normal[2] * tangentsU[vertex*3 + 1]) +
-                tangentsV[vertex*3 + 1] * (normal[2] * tangentsU[vertex*3 + 0] - normal[0] * tangentsU[vertex*3 + 2]) +
-                tangentsV[vertex*3 + 2] * (normal[0] * tangentsU[vertex*3 + 1] - normal[1] * tangentsU[vertex*3 + 0])
+                let normalDotTangentU = simd_dot(normal, tangentU)
+                let tangent = simd_normalize(tangentU - normal * normalDotTangentU)
+                let w = simd_dot(tangentV, simd_cross(normal, tangentU))
                 
-                tangents[vertex*4 + 0] = tangent[0]
-                tangents[vertex*4 + 1] = tangent[1]
-                tangents[vertex*4 + 2] = tangent[2]
-                tangents[vertex*4 + 3] = w > 0 ? 1 : -1
+                tangents[vertex] = vec_float4(tangent, w > 0 ? 1 : -1)
             }
             
             let tangentData = tangents.withUnsafeBufferPointer {
