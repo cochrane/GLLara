@@ -394,8 +394,12 @@ import Foundation
                 ]
                 
                 // Calculate tangents
-                let q1 = [ positions[1][0] - positions[0][0], positions[1][1] - positions[0][1], positions[1][2] - positions[0][2] ]
-                let q2 = [ positions[1][0] - positions[0][0], positions[1][1] - positions[0][1], positions[1][2] - positions[0][2] ]
+                let q1 = [ positions[1][0] - positions[0][0],
+                           positions[1][1] - positions[0][1],
+                           positions[1][2] - positions[0][2] ]
+                let q2 = [ positions[2][0] - positions[0][0],
+                           positions[2][1] - positions[0][1],
+                           positions[2][2] - positions[0][2] ]
                 
                 let s1 = texCoords[1][0] - texCoords[0][0]
                 let t1 = texCoords[1][1] - texCoords[0][1]
