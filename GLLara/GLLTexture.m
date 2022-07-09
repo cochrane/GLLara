@@ -39,7 +39,6 @@ static NSOperationQueue *imageInformationQueue = nil;
 @interface GLLTexture ()
 
 - (BOOL)_loadDDSTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
-- (BOOL)_loadTGATextureWithData:(NSData *)data;
 - (BOOL)_loadCGCompatibleTexture:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (BOOL)_loadPDFTextureWithData:(NSData *)data error:(NSError *__autoreleasing*)error;
 - (void)_loadAndFreePremultipliedARGBData:(void *)data;
@@ -368,14 +367,6 @@ static NSOperationQueue *imageInformationQueue = nil;
         CFRelease(source);
         return result;
     }
-    if ([sourceType isEqual:@"com.truevision.tga-image"]) {
-        // Try loading TGA directly, to avoid the premultiply-unpremultiply dance that causes problems some times
-        // Our TGA loader is primitive and handles only uncompressed RGBA; for everything else we use core graphics
-        if ([self _loadTGATextureWithData: data]) {
-            CFRelease(source);
-            return YES;
-        }
-    }
     
     CFDictionaryRef dict = CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
     if (!dict) {
@@ -496,48 +487,6 @@ static NSOperationQueue *imageInformationQueue = nil;
     CGPDFDocumentRelease(document);
     
     [self _loadAndFreePremultipliedARGBData:bufferData];
-    return YES;
-}
-
-// Explicitly not premultiplied. Only deals with BGRA images.
-- (BOOL)_loadTGATextureWithData:(NSData *)data; {
-    if (data.length < 18) {
-        return NO; // Let CGImage deal with this
-    }
-    
-    const uint8_t *bytes = data.bytes;
-    uint8_t pictureIdLength = bytes[0];
-    uint8_t paletteType = bytes[1];
-    uint8_t pictureType = bytes[2];
-    uint16_t paletteStart = bytes[3] | (((uint16_t) bytes[4]) << 8);
-    uint16_t paletteLength = bytes[5] | (((uint16_t) bytes[6]) << 8);
-    uint8_t bitsPerPaletteEntry = bytes[7];
-    uint16_t originX = bytes[8] | (((uint16_t) bytes[9]) << 8);
-    uint16_t originY = bytes[10] | (((uint16_t) bytes[11]) << 8);
-    uint16_t width = bytes[12] | (((uint16_t) bytes[13]) << 8);
-    uint16_t height = bytes[14] | (((uint16_t) bytes[15]) << 8);
-    uint8_t bitsPerPixel = bytes[16];
-    uint8_t pictureAttribute = bytes[17];
-    
-    NSUInteger expectedLength = 18 + 4*width*height + pictureIdLength;
-
-    if (paletteType != 0 || pictureType != 2 || paletteStart != 0 || paletteLength != 0 || bitsPerPaletteEntry != 0 || originX != 0 || originY != 0 || bitsPerPixel != 32 || (pictureAttribute & 0xF) != 8 || data.length < expectedLength) {
-        return NO; // Let CGImage deal with this
-    }
-    
-    self.height = height;
-    self.width = width;
-    
-    // Need to flip the result to get what we actually want to have
-    char *tgaData = malloc(4*width*height);
-    
-    vImage_Buffer input = { .height = self.height, .width = self.width, .rowBytes = 4*self.width, .data = (void*) (bytes + 18 + pictureIdLength) };
-    vImage_Buffer output = { .height = self.height, .width = self.width, .rowBytes = 4*self.width, .data = tgaData };
-    
-    vImageVerticalReflect_ARGB8888(&input, &output, 0);
-    
-    [self _loadAndFreeUnpremultipliedData:&output order:GLLTextureOrderBGRA];
-    
     return YES;
 }
 

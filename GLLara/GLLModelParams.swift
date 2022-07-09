@@ -48,7 +48,7 @@ struct GLLMeshParams {
             return try GLLModelParams(model: model)
         }
         
-        let name = model.baseURL.deletingPathExtension().deletingPathExtension().lastPathComponent
+        let name = model.baseURL.deletingPathExtension().deletingPathExtension().lastPathComponent.lowercased()
         if name == "generic_item" || name == "character" || name == "outfit" {
             return try GLLModelParams(model: model)
         }
