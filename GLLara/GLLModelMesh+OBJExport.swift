@@ -25,8 +25,8 @@ extension GLLModelMesh {
         let boneWeightAccessor = vertexDataAccessors!.accessor(semantic: .boneWeights)
         
         for i in 0..<countOfVertices {
-            let position = positionAccessor.typedElementArray(at: i, type: Float.self)
-            let normal = normalAccessor.typedElementArray(at: i, type: Float.self)
+            let position = positionAccessor.simd3Element(at: i, base: Float32.self)
+            let normal = normalAccessor.simd3Element(at: i, base: Float.self)
             
             var transform = transformations[0]
             if let boneIndexAccessor = boneIndexAccessor, let boneWeightAccessor = boneWeightAccessor {
@@ -36,12 +36,12 @@ extension GLLModelMesh {
                 transform = simd_linear_combination(boneWeights[0], transformations[Int(boneIndices[0])], boneWeights[1], transformations[Int(boneIndices[1])]) + simd_linear_combination(boneWeights[2], transformations[Int(boneIndices[2])], boneWeights[3], transformations[Int(boneIndices[3])])
             }
             
-            let transformedPosition = simd_mul(transform, simd_make(position[0], position[1], position[2], 1.0))
-            let transformedNormal = simd_mat_vecrotate(transform, simd_make(normal[0], normal[1], normal[2], 0.0))
+            let transformedPosition = simd_mul(transform, vec_float4(position, 1.0))
+            let transformedNormal = simd_mat_vecrotate(transform, vec_float4(normal, 0.0))
             
-            objString.append("v \(simd_extract(transformedPosition, 0)) \(simd_extract(transformedPosition, 1)) \(simd_extract(transformedPosition, 2))")
+            objString.append("v \(transformedPosition.x) \(transformedPosition.y) \(transformedPosition.z)")
             
-            objString.append("vn \(simd_extract(transformedNormal, 0)) \(simd_extract(transformedNormal, 1)) \(simd_extract(transformedNormal, 2))")
+            objString.append("vn \(transformedNormal.x) \(transformedNormal.y) \(transformedNormal.z)")
             
             let texCoords = texCoordAccessor.typedElementArray(at: i, type: Float.self)
             objString.append("vt \(texCoords[0]) \(1.0 - texCoords[1])") // Turn tex coords around (because I don't want to swap the whole image)
