@@ -199,8 +199,6 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
         if (depth <= frontDepth) {
             discard_fragment();
             return float4(1, 0, 0.5, 1);
-        } else {
-            return float4(1, 0, 0, 0.5);
         }
     }
     
