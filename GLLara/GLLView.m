@@ -76,9 +76,10 @@ const double unitsPerSecond = 0.2;
     
     self.device = MTLCreateSystemDefaultDevice();
     self.clearColor = MTLClearColorMake(0.5, 0.5, 0.5, 1.0);
-    self.enableSetNeedsDisplay = NO;
-    self.paused = NO;
+    self.enableSetNeedsDisplay = YES;
+    self.paused = YES;
     self.autoResizeDrawable = YES;
+    self.sampleCount = 1;
     
     // Event handling
     keysDown = [[NSMutableCharacterSet alloc] init];
@@ -86,7 +87,7 @@ const double unitsPerSecond = 0.2;
     __weak GLLView *weakSelf = self;
     textureChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:GLLTextureChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
         dispatch_async(dispatch_get_main_queue(), ^(){
-            //weakSelf.needsDisplay = YES;
+            weakSelf.needsDisplay = YES;
         });
     }];
     settingsChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:NSUserDefaultsDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
@@ -188,7 +189,7 @@ const double unitsPerSecond = 0.2;
             item.positionZ += simd_extract(delta, 2);
         }
         
-        //self.needsDisplay = YES;
+        self.needsDisplay = YES;
     }
     else if (theEvent.modifierFlags & NSEventModifierFlagShift && ![wasdCharacters hasIntersectionWithSet:keysDown])
     {
@@ -310,13 +311,6 @@ const double unitsPerSecond = 0.2;
 #pragma mark - Private methods
 
 - (void)_updateFromUserSettings {
-    //BOOL usingMSAA = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefUseMSAA];
-    //NSInteger numberOfSamples = [[NSUserDefaults standardUserDefaults] integerForKey:GLLPrefMSAAAmount];
-    
-    //NSInteger usedNumberOfSamples = usingMSAA ? numberOfSamples : 1;
-    
-    self.sampleCount = 1;//usedNumberOfSamples;
-    
     self.showSelection = [[NSUserDefaults standardUserDefaults] boolForKey:GLLPrefShowSkeleton];
 }
 
@@ -340,7 +334,7 @@ const double unitsPerSecond = 0.2;
                 if (theEvent.subtype == NSEventSubtypeApplicationDeactivated)
                 {
                     [NSEvent stopPeriodicEvents];
-                    //self.needsDisplay = YES;
+                    self.needsDisplay = YES;
                     return;
                 }
                 break;
@@ -434,13 +428,13 @@ const double unitsPerSecond = 0.2;
         }
         
         // - Prepare for next move through the loop
-        //self.needsDisplay = YES;
+        self.needsDisplay = YES;
         
         theEvent = [self.window nextEventMatchingMask:NSEventMaskKeyDown | NSEventMaskKeyUp | NSEventMaskRightMouseDragged | NSEventMaskLeftMouseDragged | NSEventMaskRightMouseDragged |NSEventMaskFlagsChanged | NSEventMaskScrollWheel | NSEventMaskPeriodic | NSEventTypeAppKitDefined untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
     }
     [NSEvent stopPeriodicEvents];
     
-    //self.needsDisplay = YES;
+    self.needsDisplay = YES;
 }
 
 - (GLLItemBone *)closestBoneAtScreenPoint:(NSPoint)point fromBones:(id)bones;

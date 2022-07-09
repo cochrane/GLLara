@@ -189,16 +189,18 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
         device XnaLaraFragmentArguments & arguments [[ buffer(GLLFragmentBufferIndexArguments) ]],
         device GLLLightsBuffer & lights [[ buffer(GLLFragmentBufferIndexLights) ]],
         sampler textureSampler [[ sampler(0) ]],
-        depth2d_ms<float> depthPeelFrontBuffer [[ texture(GLLFragmentArgumentIndexTextureDepthPeelFront), function_constant(hasDepthPeelFrontBuffer) ]],
+        depth2d<float> depthPeelFrontBuffer [[ texture(GLLFragmentArgumentIndexTextureDepthPeelFront), function_constant(hasDepthPeelFrontBuffer) ]],
         uint currentSample [[ sample_id ]]) {
     
     if (hasDepthPeelFrontBuffer) {
         float depth = in.position.z;
         uint2 coords = uint2(in.position.xy);
-        float frontDepth = depthPeelFrontBuffer.read(coords, currentSample);
+        float frontDepth = depthPeelFrontBuffer.read(coords);
         if (depth <= frontDepth) {
             discard_fragment();
             return float4(1, 0, 0.5, 1);
+        } else {
+            return float4(1, 0, 0, 0.5);
         }
     }
     

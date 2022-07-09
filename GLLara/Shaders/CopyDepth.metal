@@ -35,10 +35,10 @@ struct FragmentResult {
 };
 
 fragment FragmentResult copyDepthFragment(RasterizerData in [[stage_in]],
-                                          depth2d_ms<float> depthPeelFrontBuffer [[ texture(GLLFragmentArgumentIndexTextureDepthPeelFront) ]],
+                                          depth2d<float> depthPeelFrontBuffer [[ texture(GLLFragmentArgumentIndexTextureDepthPeelFront) ]],
                                           uint currentSample [[ sample_id ]]) {
     uint2 coords = uint2(in.position.xy);
-    float frontDepth = depthPeelFrontBuffer.read(coords, currentSample);
+    float frontDepth = depthPeelFrontBuffer.read(coords);
     
     FragmentResult result;
     result.color = float4(0);

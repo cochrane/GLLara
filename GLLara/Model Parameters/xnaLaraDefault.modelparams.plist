@@ -168,7 +168,6 @@
 			<array>
 				<string>diffuseTexture</string>
 				<string>ambient</string>
-				<string>vertexColor</string>
 				<string>diffuseLighting</string>
 				<string>lightmap</string>
 			</array>
@@ -646,11 +645,6 @@
 				<string>bumpSpecularAmount</string>
 			</array>
 		</dict>
-	</dict>
-	<key>defaultTextureCoordSets</key>
-	<dict>
-		<key>lightmap</key>
-		<integer>1</integer>
 	</dict>
 	<key>defaultTextures</key>
 	<dict>

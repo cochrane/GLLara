@@ -62,9 +62,15 @@ import AppKit
         copyDepthPipelineDescriptor.fragmentFunction = library.makeFunction(name: "copyDepthFragment")!
         copyDepthPipelineDescriptor.colorAttachments[0].pixelFormat = pixelFormat
         copyDepthPipelineDescriptor.depthAttachmentPixelFormat = depthPixelFormat
-        copyDepthPipelineDescriptor.rasterSampleCount = 4 // TODO Make adjustable
         copyDepthPipelineDescriptor.label = "copyDepth"
         copyDepthPipelineState = try! metalDevice.makeRenderPipelineState(descriptor: copyDepthPipelineDescriptor)
+        
+        let checkDepthPipelineDescriptor = MTLRenderPipelineDescriptor()
+        checkDepthPipelineDescriptor.vertexFunction = library.makeFunction(name: "depthBufferCheckVertex")!
+        checkDepthPipelineDescriptor.fragmentFunction = library.makeFunction(name: "depthBufferCheckFragment")!
+        checkDepthPipelineDescriptor.colorAttachments[0].pixelFormat = pixelFormat
+        checkDepthPipelineDescriptor.label = "checkDepth"
+        depthBufferCheckState = try! metalDevice.makeRenderPipelineState(descriptor: checkDepthPipelineDescriptor)
         
         super.init()
         
@@ -81,6 +87,7 @@ import AppKit
     let squareVertexArray: MTLBuffer
     let squarePipelineState: MTLRenderPipelineState
     let copyDepthPipelineState: MTLRenderPipelineState
+    let depthBufferCheckState: MTLRenderPipelineState // Only used for debugging
     
     let library: MTLLibrary
     let pixelFormat: MTLPixelFormat
@@ -135,9 +142,9 @@ import AppKit
             descriptor.vertexFunction = vertexFunction
             descriptor.fragmentFunction = fragmentFunction
             descriptor.colorAttachments[0].pixelFormat = pixelFormat
+            descriptor.colorAttachments[0].isBlendingEnabled = false
             descriptor.depthAttachmentPixelFormat = depthPixelFormat
             descriptor.vertexDescriptor = vertex.vertexDescriptor
-            descriptor.rasterSampleCount = 4 // TODO Make adjustable
             
             let pipelineState = try metalDevice.makeRenderPipelineState(descriptor: descriptor)
             return GLLPipelineStateInformation(pipelineState: pipelineState, vertexProgram: vertexFunction, fragmentProgram: fragmentFunction)

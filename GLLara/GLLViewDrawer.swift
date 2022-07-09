@@ -50,6 +50,11 @@ import UniformTypeIdentifiers
         lastBufferDoneFence = device.makeFence()!
         lastBufferDoneFence.label = "Depth pass done"
         
+        let size = view.drawableSize
+        camera.actualWindowWidth = Float(size.width)
+        camera.actualWindowHeight = Float(size.height)
+        surface = Surface(width: Int(size.width), height: Int(size.height), device: device)
+        
         super.init()
         
         keyValueObservers.append(camera.observe(\.viewProjectionMatrix) { [weak self] _,_ in
@@ -67,8 +72,6 @@ import UniformTypeIdentifiers
                 self?.view?.needsDisplay = true
             })
         }
-        
-        mtkView(view, drawableSizeWillChange: view.drawableSize)
         
         view.delegate = self
     }
@@ -88,16 +91,79 @@ import UniformTypeIdentifiers
     private var keyValueObservers: [NSKeyValueObservation] = []
     
     // Depth peeling
-    private var drawPassMultisampleTexture: MTLTexture? = nil
-    private var drawPassResolvedTextures: [MTLTexture] = []
-    private var drawPassSolidDepthTexture: MTLTexture? = nil
-    private var drawPassDepthTextures: [MTLTexture] = []
-    
-    private var clearDepthBuffer0PassDescriptor: MTLRenderPassDescriptor? = nil
+    private struct Surface {
+        var colorTextures: [MTLTexture] = []
+        var solidDepthTexture: MTLTexture
+        var peelDepthTextures: [MTLTexture] = []
+        
+        var clearDepthBuffer0PassDescriptor: MTLRenderPassDescriptor
+        var solidRenderPassDescriptor: MTLRenderPassDescriptor
+        
+        init(width: Int, height: Int, device: MTLDevice) {
+            colorTextures.removeAll()
+            let depthPeelLayerCount = 8
+            for i in 0..<depthPeelLayerCount {
+                let resolvedTextureDescriptor = MTLTextureDescriptor()
+                resolvedTextureDescriptor.width = width
+                resolvedTextureDescriptor.height = height
+                resolvedTextureDescriptor.allowGPUOptimizedContents = true
+                resolvedTextureDescriptor.textureType = .type2D
+                resolvedTextureDescriptor.pixelFormat = .bgra8Unorm
+                resolvedTextureDescriptor.storageMode = .private
+                resolvedTextureDescriptor.usage = [ .shaderRead, .renderTarget ]
+                
+                let texture = device.makeTexture(descriptor: resolvedTextureDescriptor)!
+                texture.label = "color-res-\(i)"
+                colorTextures.append(texture)
+            }
+            
+            let depthTextureDescriptor = MTLTextureDescriptor()
+            depthTextureDescriptor.width = width
+            depthTextureDescriptor.height = height
+            depthTextureDescriptor.allowGPUOptimizedContents = true
+            depthTextureDescriptor.textureType = .type2DMultisample
+            depthTextureDescriptor.pixelFormat = .depth32Float
+            depthTextureDescriptor.storageMode = .private
+            depthTextureDescriptor.textureType = .type2D
+            depthTextureDescriptor.usage = [ .shaderRead, .renderTarget ]
+            
+            solidDepthTexture = device.makeTexture(descriptor: depthTextureDescriptor)!
+            solidDepthTexture.label = "depth-solid"
+            
+            peelDepthTextures.removeAll()
+            for i in 0..<2 {
+                let depthTexture = device.makeTexture(descriptor: depthTextureDescriptor)!
+                depthTexture.label = "depth-\(i)"
+                peelDepthTextures.append(depthTexture)
+            }
+            
+            clearDepthBuffer0PassDescriptor = MTLRenderPassDescriptor()
+            clearDepthBuffer0PassDescriptor.depthAttachment.texture = peelDepthTextures[0]
+            clearDepthBuffer0PassDescriptor.depthAttachment.loadAction = .clear
+            clearDepthBuffer0PassDescriptor.depthAttachment.storeAction = .store
+            clearDepthBuffer0PassDescriptor.depthAttachment.clearDepth = 0.0
+            clearDepthBuffer0PassDescriptor.renderTargetWidth = solidDepthTexture.width
+            clearDepthBuffer0PassDescriptor.renderTargetHeight = solidDepthTexture.height
+
+            solidRenderPassDescriptor = MTLRenderPassDescriptor()
+            solidRenderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.2, 0.2, 0.2, 1.0)
+            solidRenderPassDescriptor.colorAttachments[0].texture = colorTextures[0]
+            solidRenderPassDescriptor.colorAttachments[0].loadAction = .clear
+            solidRenderPassDescriptor.colorAttachments[0].storeAction = .store
+            solidRenderPassDescriptor.depthAttachment.texture = solidDepthTexture
+            solidRenderPassDescriptor.depthAttachment.loadAction = .clear
+            solidRenderPassDescriptor.depthAttachment.storeAction = .store
+            solidRenderPassDescriptor.renderTargetWidth = solidDepthTexture.width
+            solidRenderPassDescriptor.renderTargetHeight = solidDepthTexture.height
+        }
+    }
+    private var surface: Surface
     
     private var solidFence: MTLFence
     private var initializeDepthBufferFence: MTLFence
     private var lastBufferDoneFence: MTLFence
+    
+    private var useMultisample = false
     
     private func updateLights() {
         var lightData = GLLLightsBuffer()
@@ -287,63 +353,7 @@ import UniformTypeIdentifiers
         camera.actualWindowHeight = Float(size.height)
         
         // Recreate textures
-        let multisampleTextureDescriptor = MTLTextureDescriptor()
-        multisampleTextureDescriptor.width = Int(size.width)
-        multisampleTextureDescriptor.height = Int(size.height)
-        multisampleTextureDescriptor.allowGPUOptimizedContents = true
-        multisampleTextureDescriptor.textureType = .type2DMultisample
-        multisampleTextureDescriptor.pixelFormat = .bgra8Unorm
-        multisampleTextureDescriptor.storageMode = .private
-        multisampleTextureDescriptor.sampleCount = 4 // TODO Make dependent on user settings
-        multisampleTextureDescriptor.usage = [ .renderTarget ]
-        
-        drawPassMultisampleTexture = device.makeTexture(descriptor: multisampleTextureDescriptor)!
-        drawPassMultisampleTexture!.label = "multisample"
-        
-        drawPassResolvedTextures.removeAll()
-        let depthPeelLayerCount = 8
-        for i in 0..<depthPeelLayerCount {
-            let resolvedTextureDescriptor = MTLTextureDescriptor()
-            resolvedTextureDescriptor.width = Int(size.width)
-            resolvedTextureDescriptor.height = Int(size.height)
-            resolvedTextureDescriptor.allowGPUOptimizedContents = true
-            resolvedTextureDescriptor.textureType = .type2D
-            resolvedTextureDescriptor.pixelFormat = .bgra8Unorm
-            resolvedTextureDescriptor.storageMode = .private
-            resolvedTextureDescriptor.usage = [ .shaderRead, .renderTarget ]
-            
-            let texture = device.makeTexture(descriptor: resolvedTextureDescriptor)!
-            texture.label = "color-res-\(i)"
-            drawPassResolvedTextures.append(texture)
-        }
-        
-        let depthTextureDescriptor = MTLTextureDescriptor()
-        depthTextureDescriptor.width = Int(size.width)
-        depthTextureDescriptor.height = Int(size.height)
-        depthTextureDescriptor.allowGPUOptimizedContents = true
-        depthTextureDescriptor.textureType = .type2DMultisample
-        depthTextureDescriptor.pixelFormat = .depth32Float
-        depthTextureDescriptor.storageMode = .private
-        depthTextureDescriptor.sampleCount = 4 // TODO Make dependent on user settings
-        depthTextureDescriptor.usage = [ .shaderRead, .renderTarget ]
-        
-        drawPassSolidDepthTexture = device.makeTexture(descriptor: depthTextureDescriptor)!
-        drawPassSolidDepthTexture!.label = "depth-solid"
-        
-        drawPassDepthTextures.removeAll()
-        for i in 0..<2 {
-            let depthTexture = device.makeTexture(descriptor: depthTextureDescriptor)!
-            depthTexture.label = "depth-\(i)"
-            drawPassDepthTextures.append(depthTexture)
-        }
-        
-        clearDepthBuffer0PassDescriptor = MTLRenderPassDescriptor()
-        clearDepthBuffer0PassDescriptor!.depthAttachment.texture = drawPassDepthTextures[0]
-        clearDepthBuffer0PassDescriptor!.depthAttachment.loadAction = .clear
-        clearDepthBuffer0PassDescriptor!.depthAttachment.storeAction = .store
-        clearDepthBuffer0PassDescriptor!.depthAttachment.clearDepth = 0.0
-        clearDepthBuffer0PassDescriptor!.renderTargetWidth = drawPassSolidDepthTexture!.width
-        clearDepthBuffer0PassDescriptor!.renderTargetHeight = drawPassSolidDepthTexture!.height
+        surface = Surface(width: Int(size.width), height: Int(size.height), device: device)
     }
     
     func draw(in view: MTKView) {
@@ -361,21 +371,8 @@ import UniformTypeIdentifiers
             updateLights()
         }
         
-        // Step 1: Create render pass that renders everything solid, to the multisample texture, with depth buffer 0 as normal depth buffer, resolving to resolved texture 0.
-        //TODO
-        let solidRenderPassDescriptor = MTLRenderPassDescriptor()
-        solidRenderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.2, 0.2, 0.2, 1.0)
-        solidRenderPassDescriptor.colorAttachments[0].texture = drawPassMultisampleTexture!
-        solidRenderPassDescriptor.colorAttachments[0].loadAction = .clear
-        solidRenderPassDescriptor.colorAttachments[0].storeAction = .multisampleResolve
-        solidRenderPassDescriptor.colorAttachments[0].resolveTexture = drawPassResolvedTextures[0]
-        solidRenderPassDescriptor.depthAttachment.texture = drawPassSolidDepthTexture!
-        solidRenderPassDescriptor.depthAttachment.loadAction = .clear
-        solidRenderPassDescriptor.depthAttachment.storeAction = .store
-        solidRenderPassDescriptor.renderTargetWidth = drawPassSolidDepthTexture!.width
-        solidRenderPassDescriptor.renderTargetHeight = drawPassSolidDepthTexture!.height
-        
-        let solidPassEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: solidRenderPassDescriptor)!
+        // Step 1: Render everything solid, with depth buffer 0 as normal depth buffer, to texture 0.
+        let solidPassEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: surface.solidRenderPassDescriptor)!
         solidPassEncoder.label = "Draw solids"
         solidPassEncoder.setCullMode(.back)
         solidPassEncoder.setDepthStencilState(sceneDrawer.resourceManager.normalDepthStencilState)
@@ -389,31 +386,31 @@ import UniformTypeIdentifiers
         solidPassEncoder.updateFence(solidFence, after: [.fragment])
         solidPassEncoder.endEncoding()
 
+
         // Step 2: For every further resolved texture we have:
         // - Use previous depth buffer as peel front buffer (only things behind it get drawn)
         // - Use other depth buffer as normal depth buffer, but initialized to depth buffer from solid
         // - Draw alpha, into multisample texture, resolving to resolved texture i
         
-        let clearDepthBuffer0Pass = commandBuffer.makeRenderCommandEncoder(descriptor: clearDepthBuffer0PassDescriptor!)!
+        let clearDepthBuffer0Pass = commandBuffer.makeRenderCommandEncoder(descriptor: surface.clearDepthBuffer0PassDescriptor)!
         clearDepthBuffer0Pass.label = "Clear Depth Buffer 0"
         clearDepthBuffer0Pass.updateFence(lastBufferDoneFence, after: [.fragment])
         clearDepthBuffer0Pass.endEncoding()
         
         let depthPeelPassDescriptor = MTLRenderPassDescriptor()
         depthPeelPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 0.0)
-        depthPeelPassDescriptor.colorAttachments[0].texture = drawPassMultisampleTexture!
         depthPeelPassDescriptor.colorAttachments[0].loadAction = .clear
-        depthPeelPassDescriptor.colorAttachments[0].storeAction = .multisampleResolve
+        depthPeelPassDescriptor.colorAttachments[0].storeAction = .store
         depthPeelPassDescriptor.depthAttachment.loadAction = .load
         depthPeelPassDescriptor.depthAttachment.storeAction = .store
-        depthPeelPassDescriptor.renderTargetWidth = drawPassSolidDepthTexture!.width
-        depthPeelPassDescriptor.renderTargetHeight = drawPassSolidDepthTexture!.height
+        depthPeelPassDescriptor.renderTargetWidth = surface.solidDepthTexture.width
+        depthPeelPassDescriptor.renderTargetHeight = surface.solidDepthTexture.height
 
         
         var lastWrittenDepthBuffer = 0
-        for i in 1 ..< drawPassResolvedTextures.count {
+        for i in 1 ..< surface.colorTextures.count {
             let backDepthBuffer = 1 - lastWrittenDepthBuffer
-            let isLast = i + 1 == drawPassResolvedTextures.count
+            let isLast = i + 1 == surface.colorTextures.count
             
             let initializeDepthBufferEncoder = commandBuffer.makeBlitCommandEncoder()!
             initializeDepthBufferEncoder.label = "Initialize Depth Buffer \(i)"
@@ -421,19 +418,19 @@ import UniformTypeIdentifiers
             if i == 1 {
                 initializeDepthBufferEncoder.waitForFence(solidFence)
             }
-            initializeDepthBufferEncoder.copy(from: drawPassSolidDepthTexture!, to: drawPassDepthTextures[backDepthBuffer])
+            initializeDepthBufferEncoder.copy(from: surface.solidDepthTexture, to: surface.peelDepthTextures[backDepthBuffer])
             initializeDepthBufferEncoder.updateFence(initializeDepthBufferFence)
             initializeDepthBufferEncoder.endEncoding()
             
-            depthPeelPassDescriptor.colorAttachments[0].resolveTexture = drawPassResolvedTextures[i]
-            depthPeelPassDescriptor.depthAttachment.texture = drawPassDepthTextures[backDepthBuffer]
+            depthPeelPassDescriptor.colorAttachments[0].texture = surface.colorTextures[i]
+            depthPeelPassDescriptor.depthAttachment.texture = surface.peelDepthTextures[backDepthBuffer]
             if isLast {
                 depthPeelPassDescriptor.depthAttachment.storeAction = .dontCare
             }
 
             let depthPeelPassEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: depthPeelPassDescriptor)!
             depthPeelPassEncoder.label = "Depth Peel Layer \(i)"
-            depthPeelPassEncoder.waitForFence(initializeDepthBufferFence, before: [ .fragment ])
+            depthPeelPassEncoder.waitForFence(initializeDepthBufferFence, before: [ .vertex ])
             depthPeelPassEncoder.setCullMode(.back)
             depthPeelPassEncoder.setDepthStencilState(sceneDrawer.resourceManager.normalDepthStencilState)
             depthPeelPassEncoder.setFragmentSamplerState(sceneDrawer.resourceManager.metalSampler, index: 0)
@@ -441,17 +438,9 @@ import UniformTypeIdentifiers
             depthPeelPassEncoder.setVertexBuffer(lightBuffer, offset: 0, index: Int(GLLVertexInputIndexLights.rawValue))
             depthPeelPassEncoder.setFragmentBuffer(lightBuffer, offset: 0, index: Int(GLLFragmentBufferIndexLights.rawValue))
             
-            depthPeelPassEncoder.setFragmentTexture(drawPassDepthTextures[lastWrittenDepthBuffer], index: Int(GLLFragmentArgumentIndexTextureDepthPeelFront.rawValue))
+            depthPeelPassEncoder.setFragmentTexture(surface.peelDepthTextures[lastWrittenDepthBuffer], index: Int(GLLFragmentArgumentIndexTextureDepthPeelFront.rawValue))
             
             sceneDrawer.draw(into: depthPeelPassEncoder, blended: true)
-            
-            // TODO We should combine the buffer we were reading from into the back buffer/next front buffer here, storing the max of each pixel
-           /* if !isLast {
-                depthPeelPassEncoder.setRenderPipelineState(sceneDrawer.resourceManager.copyDepthPipelineState)
-                depthPeelPassEncoder.setDepthStencilState(sceneDrawer.resourceManager.depthStencilStateForCopy)
-                depthPeelPassEncoder.setVertexBuffer(sceneDrawer.resourceManager.squareVertexArray, offset: 0, index: 0)
-                depthPeelPassEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
-            }*/
             
             depthPeelPassEncoder.updateFence(lastBufferDoneFence, after: [ .fragment ])
             depthPeelPassEncoder.endEncoding()
@@ -463,15 +452,15 @@ import UniformTypeIdentifiers
         let combineCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: viewRenderPassDescriptor)!
         
         combineCommandEncoder.label = "Final combine"
-        combineCommandEncoder.waitForFence(lastBufferDoneFence, before: [.fragment])
+        combineCommandEncoder.waitForFence(lastBufferDoneFence, before: [.vertex])
         combineCommandEncoder.setRenderPipelineState(sceneDrawer.resourceManager.squarePipelineState)
         combineCommandEncoder.setVertexBuffer(sceneDrawer.resourceManager.squareVertexArray, offset: 0, index: 0)
         
         // Order: 0, n-1, n-2, ..., 1
-        combineCommandEncoder.setFragmentTexture(drawPassResolvedTextures[0], index: 0)
+        combineCommandEncoder.setFragmentTexture(surface.colorTextures[0], index: 0)
         combineCommandEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
-        for i in 1 ..< drawPassResolvedTextures.count {
-            combineCommandEncoder.setFragmentTexture(drawPassResolvedTextures[drawPassResolvedTextures.count - i], index: 0)
+        for i in 1 ..< surface.colorTextures.count {
+            combineCommandEncoder.setFragmentTexture(surface.colorTextures[surface.colorTextures.count - i], index: 0)
             combineCommandEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
         }
         

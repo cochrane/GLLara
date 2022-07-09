@@ -265,7 +265,6 @@
 		529692D415F24EF100DF2FA3 /* GLLModelBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D315F24EF100DF2FA3 /* GLLModelBone.m */; };
 		529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D915F2625200DF2FA3 /* GLLItem.m */; };
 		529692DD15F2759400DF2FA3 /* GLLItemBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692DC15F2759400DF2FA3 /* GLLItemBone.m */; };
-		529692E615F289EB00DF2FA3 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692E515F289EB00DF2FA3 /* OpenGL.framework */; };
 		529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692E815F28BFB00DF2FA3 /* GLLTexture.m */; };
 		529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 529693F415F2B58B00DF2FA3 /* GLLASCIIScanner.m */; };
 		529693F815F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */; };
@@ -334,6 +333,7 @@
 		52ED9E29169333050082EABB /* GLLBoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E28169333050082EABB /* GLLBoneController.m */; };
 		52ED9E3B16999E370082EABB /* NSArray+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E3A16999E370082EABB /* NSArray+Map.m */; };
 		52ED9E8416A225D90082EABB /* GLLLightsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52ED9E8316A225D90082EABB /* GLLLightsListController.m */; };
+		52FB1FD82879846A006ABC4F /* DepthBufferCheck.metal in Sources */ = {isa = PBXBuildFile; fileRef = 52FB1FD72879846A006ABC4F /* DepthBufferCheck.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -862,6 +862,8 @@
 		52ED9E3A16999E370082EABB /* NSArray+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Map.m"; sourceTree = "<group>"; };
 		52ED9E8216A225D90082EABB /* GLLLightsListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLightsListController.h; sourceTree = "<group>"; };
 		52ED9E8316A225D90082EABB /* GLLLightsListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLightsListController.m; sourceTree = "<group>"; };
+		52FB1FD628796E49006ABC4F /* find_tga_empty.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = find_tga_empty.py; sourceTree = "<group>"; };
+		52FB1FD72879846A006ABC4F /* DepthBufferCheck.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = DepthBufferCheck.metal; sourceTree = "<group>"; };
 		52FC0EA21D6A0E8B00C04885 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -884,7 +886,6 @@
 				529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */,
 				5274447727FF6C8700E5A3FD /* MetalKit.framework in Frameworks */,
 				525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */,
-				529692E615F289EB00DF2FA3 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1041,6 +1042,7 @@
 		525ACD3C15F0F1A700534E7D = {
 			isa = PBXGroup;
 			children = (
+				52FB1FD628796E49006ABC4F /* find_tga_empty.py */,
 				52C659BD28688D54006755D8 /* Transparency Notes.md */,
 				5296943E15F51F2B00DF2FA3 /* Readme.md */,
 				529692D515F258E600DF2FA3 /* Documentation */,
@@ -1357,6 +1359,7 @@
 				5274448A280606A200E5A3FD /* XnaLaraShader.metal */,
 				52CDFEE7287619D800BC4298 /* Square.metal */,
 				52AC5DC52876F315004949D4 /* CopyDepth.metal */,
+				52FB1FD72879846A006ABC4F /* DepthBufferCheck.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1913,6 +1916,7 @@
 				52301E302087E36100B3E331 /* GLLItemOptionalPartMarker.m in Sources */,
 				5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */,
 				525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */,
+				52FB1FD82879846A006ABC4F /* DepthBufferCheck.metal in Sources */,
 				52301E2D2087D91600B3E331 /* GLLOptionalPartController.m in Sources */,
 				52D8DDEC2621D56F0006F0E5 /* GLLRenderParameterDescription.swift in Sources */,
 				525ACD8415F0F33700534E7D /* GLLModel.m in Sources */,
@@ -2403,7 +2407,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -2424,6 +2428,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2462,7 +2467,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -2516,17 +2521,15 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = MXAKMKWG34;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 0.2.12;
+				MARKETING_VERSION = 0.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "GLLara/GLLara-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2542,17 +2545,15 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = MXAKMKWG34;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 0.2.12;
+				MARKETING_VERSION = 0.3.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "GLLara/GLLara-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
