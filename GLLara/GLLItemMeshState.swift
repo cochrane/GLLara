@@ -282,6 +282,20 @@ class GLLItemMeshState {
         updateArgumentBuffer()
     }
     
+    var cullMode: MTLCullMode {
+        let cullFaceMode = GLLCullFaceMode(rawValue: Int(itemMesh.cullFaceMode))!
+        switch cullFaceMode {
+        case .counterClockWise:
+            return .back
+        case .clockWise:
+            return .front
+        case .none:
+            return .none
+        @unknown default:
+            fatalError()
+        }
+    }
+    
     func render(into commandEncoder: MTLRenderCommandEncoder) {
         guard let pipelineStateInformation = pipelineStateInformation, itemMesh.isVisible else {
             return
@@ -298,6 +312,7 @@ class GLLItemMeshState {
         commandEncoder.setRenderPipelineState(pipelineStateInformation.pipelineState)
         commandEncoder.setFragmentBuffer(fragmentArgumentBuffer, offset: 0, index: Int(GLLFragmentBufferIndexArguments.rawValue))
         commandEncoder.setVertexBuffer(meshData.vertexArray.vertexBuffer, offset: 0, index: 10)
+        commandEncoder.setCullMode(cullMode)
 
         if let elementBuffer = meshData.vertexArray.elementBuffer {
             commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: meshData.elementsOrVerticesCount, indexType: meshData.elementType, indexBuffer: elementBuffer, indexBufferOffset: meshData.indicesStart, instanceCount: 1, baseVertex: meshData.baseVertex, baseInstance: 0)
