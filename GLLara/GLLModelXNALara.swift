@@ -121,13 +121,13 @@ import Foundation
         // Ignore the trailing data. XNALara writes some metadata there that varies depending on the version, but doesn't seem to be actually necessary for anything (famous last words…?)
     }
     
-    @objc convenience init(ASCIIFromFile file: URL!, parent: GLLModel!) throws {
+    @objc convenience init(ASCIIFromFile file: URL!, parent: GLLModel?) throws {
         var encoding: String.Encoding = .utf8
         let source = try String(contentsOf: file, usedEncoding: &encoding)
         try self.init(asciiFrom: source, baseURL: file, parent: parent)
     }
     
-    @objc init(asciiFrom string: String, baseURL: URL, parent: GLLModel) throws {
+    @objc init(asciiFrom string: String, baseURL: URL, parent: GLLModel?) throws {
         super.init()
         
         self.baseURL = baseURL
@@ -140,7 +140,7 @@ import Foundation
             let bone = try GLLModelBone(fromSequentialData: scanner, partOf: self, at: UInt(i))
             
             // Check whether parent has this bone and defer to it instead
-            if let boneInParent = parent.bone(forName: bone.name) {
+            if let boneInParent = parent?.bone(forName: bone.name) {
                 bones.append(boneInParent)
             } else {
                 bones.append(bone)
