@@ -10,7 +10,6 @@
 		5211F82C2623A2EA00A1EC23 /* UnlitGLTF.fs in Resources */ = {isa = PBXBuildFile; fileRef = 5211F82B2623A2EA00A1EC23 /* UnlitGLTF.fs */; };
 		5211F83226246EE600A1EC23 /* GLLTextureAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */; };
 		5213F8831C0E411C007A9EBB /* GLLPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213F8811C0E411C007A9EBB /* GLLPreferencesWindowController.m */; };
-		5213F8871C0E452E007A9EBB /* GLLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213F8861C0E452E007A9EBB /* GLLAppDelegate.m */; };
 		5213F8881C0E478C007A9EBB /* GLLPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5213F88A1C0E478C007A9EBB /* GLLPreferencesWindow.xib */; };
 		5213F8901C0F9EC6007A9EBB /* GLLPreferenceKeys.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213F88F1C0F9EC6007A9EBB /* GLLPreferenceKeys.m */; };
 		5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470016DBBBEB003E260F /* GLLAmbientLightViewController.m */; };
@@ -72,6 +71,8 @@
 		523AEEDC16C4883A0062C025 /* defaultColor.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED816C4883A0062C025 /* defaultColor.png */; };
 		523AEEDD16C4883A0062C025 /* defaultWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 523AEED916C4883A0062C025 /* defaultWhite.png */; };
 		523AEEDF16C488960062C025 /* defaultReflection.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 523AEEDE16C488960062C025 /* defaultReflection.jpg */; };
+		523BBAFD287B0FDC00B2D52E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523BBAFC287B0FDC00B2D52E /* IOKit.framework */; };
+		523BBAFF287B23D600B2D52E /* GLLRenderWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523BBAFE287B23D600B2D52E /* GLLRenderWindow.swift */; };
 		523D368116BEB29F004FAD4B /* GLLSubItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523D368016BEB29F004FAD4B /* GLLSubItemController.m */; };
 		523D368516BED84B004FAD4B /* GLLItemMeshTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 523D368416BED84A004FAD4B /* GLLItemMeshTexture.m */; };
 		523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */; };
@@ -203,6 +204,9 @@
 		525ACD6E15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD7415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD8415F0F33700534E7D /* GLLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8315F0F33700534E7D /* GLLModel.m */; };
+		525BF2992879E31F00E30D48 /* GLLSpaceMouseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525BF2982879E31F00E30D48 /* GLLSpaceMouseManager.swift */; };
+		525BF29B2879E95800E30D48 /* GLLAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525BF29A2879E95800E30D48 /* GLLAppDelegate.swift */; };
+		525BF29D287A0AE200E30D48 /* GLLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525BF29C287A0AE200E30D48 /* GLLView.swift */; };
 		52653D8116BAB729001D802F /* GLLPoseExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52653D8016BAB729001D802F /* GLLPoseExporter.m */; };
 		52653D8616BAB965001D802F /* GLLPoseExportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52653D8416BAB965001D802F /* GLLPoseExportViewController.m */; };
 		526756A416BF3B0700FB85CA /* GLLTextureAssignmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 526756A316BF3B0600FB85CA /* GLLTextureAssignmentView.m */; };
@@ -272,7 +276,6 @@
 		529693FE15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 529693FD15F37AAF00DF2FA3 /* lara_dlc_bikini_blue.modelparams.plist */; };
 		5296943515F421D900DF2FA3 /* simd_matrix.c in Sources */ = {isa = PBXBuildFile; fileRef = 5296942F15F421D900DF2FA3 /* simd_matrix.c */; };
 		5296943615F421D900DF2FA3 /* simd_project.c in Sources */ = {isa = PBXBuildFile; fileRef = 5296943115F421D900DF2FA3 /* simd_project.c */; };
-		5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296945315F60F3C00DF2FA3 /* GLLView.m */; };
 		5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */; };
 		5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296946815F7DAA300DF2FA3 /* GLLDocumentWindowController.m */; };
 		5296947315F7FB3300DF2FA3 /* GLLItemMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947215F7FB3200DF2FA3 /* GLLItemMesh.m */; };
@@ -373,8 +376,6 @@
 		5211F84A262B800300A1EC23 /* GLLSceneModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		5213F8801C0E411C007A9EBB /* GLLPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLPreferencesWindowController.h; sourceTree = "<group>"; };
 		5213F8811C0E411C007A9EBB /* GLLPreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLPreferencesWindowController.m; sourceTree = "<group>"; };
-		5213F8851C0E452E007A9EBB /* GLLAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAppDelegate.h; sourceTree = "<group>"; };
-		5213F8861C0E452E007A9EBB /* GLLAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAppDelegate.m; sourceTree = "<group>"; };
 		5213F8891C0E478C007A9EBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLPreferencesWindow.xib; sourceTree = "<group>"; };
 		5213F88C1C0E4790007A9EBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLPreferencesWindow.strings; sourceTree = "<group>"; };
 		5213F88E1C0E4791007A9EBB /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GLLPreferencesWindow.strings; sourceTree = "<group>"; };
@@ -504,6 +505,8 @@
 		523AEED816C4883A0062C025 /* defaultColor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultColor.png; sourceTree = "<group>"; };
 		523AEED916C4883A0062C025 /* defaultWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultWhite.png; sourceTree = "<group>"; };
 		523AEEDE16C488960062C025 /* defaultReflection.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = defaultReflection.jpg; sourceTree = "<group>"; };
+		523BBAFC287B0FDC00B2D52E /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		523BBAFE287B23D600B2D52E /* GLLRenderWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLRenderWindow.swift; sourceTree = "<group>"; };
 		523D367F16BEB29F004FAD4B /* GLLSubItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSubItemController.h; sourceTree = "<group>"; };
 		523D368016BEB29F004FAD4B /* GLLSubItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSubItemController.m; sourceTree = "<group>"; };
 		523D368316BED849004FAD4B /* GLLItemMeshTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemMeshTexture.h; sourceTree = "<group>"; };
@@ -658,6 +661,9 @@
 		525ACD7515F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		525ACD8215F0F33700534E7D /* GLLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModel.h; sourceTree = "<group>"; };
 		525ACD8315F0F33700534E7D /* GLLModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModel.m; sourceTree = "<group>"; };
+		525BF2982879E31F00E30D48 /* GLLSpaceMouseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLSpaceMouseManager.swift; sourceTree = "<group>"; };
+		525BF29A2879E95800E30D48 /* GLLAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLAppDelegate.swift; sourceTree = "<group>"; };
+		525BF29C287A0AE200E30D48 /* GLLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLView.swift; sourceTree = "<group>"; };
 		5260CE9C163B16450069459D /* GLLSceneModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 2.xcdatamodel"; sourceTree = "<group>"; };
 		52653D7F16BAB729001D802F /* GLLPoseExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLPoseExporter.h; sourceTree = "<group>"; };
 		52653D8016BAB729001D802F /* GLLPoseExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLPoseExporter.m; sourceTree = "<group>"; };
@@ -768,8 +774,6 @@
 		5296943315F421D900DF2FA3 /* simd_quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simd_quaternion.h; sourceTree = "<group>"; };
 		5296943415F421D900DF2FA3 /* simd_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simd_types.h; sourceTree = "<group>"; };
 		5296943E15F51F2B00DF2FA3 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
-		5296945215F60F3900DF2FA3 /* GLLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLView.h; sourceTree = "<group>"; };
-		5296945315F60F3C00DF2FA3 /* GLLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLView.m; sourceTree = "<group>"; };
 		5296946215F7B28300DF2FA3 /* GLLRenderWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderWindowController.h; sourceTree = "<group>"; };
 		5296946315F7B28300DF2FA3 /* GLLRenderWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderWindowController.m; sourceTree = "<group>"; };
 		5296946715F7DAA200DF2FA3 /* GLLDocumentWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDocumentWindowController.h; sourceTree = "<group>"; };
@@ -880,6 +884,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				523BBAFD287B0FDC00B2D52E /* IOKit.framework in Frameworks */,
 				52528D711D6ABFF1002E0074 /* QuartzCore.framework in Frameworks */,
 				5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */,
 				5274447827FF6C8800E5A3FD /* Metal.framework in Frameworks */,
@@ -1067,6 +1072,7 @@
 		525ACD4A15F0F1A700534E7D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				523BBAFC287B0FDC00B2D52E /* IOKit.framework */,
 				5274447627FF6C8700E5A3FD /* Metal.framework */,
 				5274447527FF6C8700E5A3FD /* MetalKit.framework */,
 				52FC0EA21D6A0E8B00C04885 /* QuartzCore.framework */,
@@ -1492,8 +1498,6 @@
 			children = (
 				52423B6E160619F4009F5753 /* Source List */,
 				522783651C0A60B0002E43FD /* MainMenu.xib */,
-				5296945215F60F3900DF2FA3 /* GLLView.h */,
-				5296945315F60F3C00DF2FA3 /* GLLView.m */,
 				525ACD5D15F0F1A700534E7D /* GLLDocument.h */,
 				525ACD5E15F0F1A700534E7D /* GLLDocument.m */,
 				5296946215F7B28300DF2FA3 /* GLLRenderWindowController.h */,
@@ -1555,8 +1559,6 @@
 				5213F8801C0E411C007A9EBB /* GLLPreferencesWindowController.h */,
 				5213F8811C0E411C007A9EBB /* GLLPreferencesWindowController.m */,
 				5213F88A1C0E478C007A9EBB /* GLLPreferencesWindow.xib */,
-				5213F8851C0E452E007A9EBB /* GLLAppDelegate.h */,
-				5213F8861C0E452E007A9EBB /* GLLAppDelegate.m */,
 				5213F88F1C0F9EC6007A9EBB /* GLLPreferenceKeys.m */,
 				5213F8911C0F9EE2007A9EBB /* GLLPreferenceKeys.h */,
 				52232EAA1EFC459E007FE9AD /* GLLDropTargetView.h */,
@@ -1571,6 +1573,10 @@
 				52301E492096518500B3E331 /* GLLDrawingPreferencesView.xib */,
 				52301E4E2096555E00B3E331 /* GLLDrawingPreferencesViewController.h */,
 				52301E4F2096555E00B3E331 /* GLLDrawingPreferencesViewController.m */,
+				525BF2982879E31F00E30D48 /* GLLSpaceMouseManager.swift */,
+				525BF29A2879E95800E30D48 /* GLLAppDelegate.swift */,
+				525BF29C287A0AE200E30D48 /* GLLView.swift */,
+				523BBAFE287B23D600B2D52E /* GLLRenderWindow.swift */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1926,6 +1932,7 @@
 				5274446427FCC9C100E5A3FD /* GLLModelMesh.swift in Sources */,
 				52D8DDBE261E06F40006F0E5 /* GLLModelGltf.swift in Sources */,
 				529692D415F24EF100DF2FA3 /* GLLModelBone.m in Sources */,
+				525BF2992879E31F00E30D48 /* GLLSpaceMouseManager.swift in Sources */,
 				529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */,
 				529692DD15F2759400DF2FA3 /* GLLItemBone.m in Sources */,
 				529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */,
@@ -1937,7 +1944,6 @@
 				5296943515F421D900DF2FA3 /* simd_matrix.c in Sources */,
 				52CDFEA62874145F00BC4298 /* GLLVertexFormat.swift in Sources */,
 				5296943615F421D900DF2FA3 /* simd_project.c in Sources */,
-				5296945415F60F3E00DF2FA3 /* GLLView.m in Sources */,
 				5296946515F7B28300DF2FA3 /* GLLRenderWindowController.m in Sources */,
 				5296946915F7DAA300DF2FA3 /* GLLDocumentWindowController.m in Sources */,
 				5296947315F7FB3300DF2FA3 /* GLLItemMesh.m in Sources */,
@@ -1973,6 +1979,7 @@
 				5213F8901C0F9EC6007A9EBB /* GLLPreferenceKeys.m in Sources */,
 				526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */,
 				526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */,
+				525BF29D287A0AE200E30D48 /* GLLView.swift in Sources */,
 				52CDFEE42875B46700BC4298 /* GLLSceneDrawer.swift in Sources */,
 				52232EAC1EFC459E007FE9AD /* GLLDropTargetView.m in Sources */,
 				526AB3201609CCE900940A74 /* GLLItemExportViewController.m in Sources */,
@@ -2008,9 +2015,11 @@
 				52D8DDF72621E67F0006F0E5 /* GLLShaderDescription.swift in Sources */,
 				52653D8116BAB729001D802F /* GLLPoseExporter.m in Sources */,
 				52653D8616BAB965001D802F /* GLLPoseExportViewController.m in Sources */,
+				523BBAFF287B23D600B2D52E /* GLLRenderWindow.swift in Sources */,
 				523D368116BEB29F004FAD4B /* GLLSubItemController.m in Sources */,
 				523D368516BED84B004FAD4B /* GLLItemMeshTexture.m in Sources */,
 				522783B01C0B7FC0002E43FD /* GLLRenderParameterSelectionPlaceholder.m in Sources */,
+				525BF29B2879E95800E30D48 /* GLLAppDelegate.swift in Sources */,
 				526756A416BF3B0700FB85CA /* GLLTextureAssignmentView.m in Sources */,
 				5211F83226246EE600A1EC23 /* GLLTextureAssignment.swift in Sources */,
 				522783AA1C0B3ED8002E43FD /* GLLMultipleSelectionPlaceholder.m in Sources */,
@@ -2018,7 +2027,6 @@
 				522783AD1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m in Sources */,
 				526756AA16BF543800FB85CA /* GLLImageView.m in Sources */,
 				5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */,
-				5213F8871C0E452E007A9EBB /* GLLAppDelegate.m in Sources */,
 				5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */,
 				5214470416DBBC42003E260F /* GLLLightViewController.m in Sources */,
 				5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.m in Sources */,

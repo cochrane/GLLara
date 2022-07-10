@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -22,20 +21,20 @@
                 <binding destination="-2" name="managedObjectContext" keyPath="managedObjectContext" id="141"/>
             </connections>
         </arrayController>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="1">
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="1" customClass="GLLRenderWindow" customModule="GLLara" customModuleProvider="target">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="549" height="465"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="549" height="465"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="5" customClass="GLLView">
+                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="5" customClass="GLLView" customModule="GLLara">
                         <rect key="frame" x="0.0" y="22" width="549" height="443"/>
                     </customView>
                     <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="53">
-                        <rect key="frame" x="323" y="3" width="199" height="17"/>
+                        <rect key="frame" x="323" y="2" width="199" height="17"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="199" id="144"/>
                         </constraints>
@@ -67,7 +66,7 @@
                         </connections>
                     </popUpButton>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="69">
-                        <rect key="frame" x="521" y="3" width="25" height="17"/>
+                        <rect key="frame" x="521" y="2" width="25" height="17"/>
                         <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="cameratemplate" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="70">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -77,7 +76,7 @@
                         </connections>
                     </button>
                     <segmentedControl hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="202">
-                        <rect key="frame" x="2" y="1" width="113" height="19"/>
+                        <rect key="frame" x="1" y="0.0" width="94" height="19"/>
                         <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" segmentDistribution="fill" style="texturedSquare" trackingMode="selectOne" id="203">
                             <font key="font" metaFont="smallSystem"/>
                             <segments>
@@ -113,7 +112,9 @@
             <contentBorderThickness minY="22"/>
             <connections>
                 <outlet property="delegate" destination="-2" id="163"/>
+                <outlet property="renderView" destination="5" id="Y6r-FJ-NKG"/>
             </connections>
+            <point key="canvasLocation" x="139" y="144"/>
         </window>
         <viewController title="Window Settings Popover Controller" nibName="GLLWindowSettingsPopoverView" id="83" userLabel="Popover View Controller"/>
         <popover id="84">

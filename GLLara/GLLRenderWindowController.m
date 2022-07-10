@@ -12,7 +12,6 @@
 
 #import "GLLCamera.h"
 #import "GLLDocument.h"
-#import "GLLView.h"
 #import "GLLRenderAccessoryViewController.h"
 
 #include "GLLara-Swift.h"
@@ -51,7 +50,7 @@
     
     self.window.delegate = self;
     
-    [self.renderView setCamera:self.camera sceneDrawer:self.sceneDrawer];
+    [self.renderView setWithCamera:self.camera sceneDrawer:self.sceneDrawer];
     self.popover.delegate = self;
     
     [self.camera addObserver:self forKeyPath:@"windowWidth" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial

@@ -37,6 +37,9 @@
 
 @property (nonatomic) NSMutableArray *selectedObjects;
 
+@property (nonatomic) NSArray<GLLItemBone*>* selectedBones;
+@property (nonatomic, readonly) NSArray<GLLItem*>* selectedItems;
+
 - (NSUInteger)countOfSelectedBones;
 - (NSUInteger)countOfSelectedItems;
 - (NSUInteger)countOfSelectedLights;

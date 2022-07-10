@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication"/>
@@ -28,7 +27,7 @@
                             </menuItem>
                             <menuItem title="Preferences…" keyEquivalent="," id="129">
                                 <connections>
-                                    <action selector="openPreferences:" target="-1" id="564"/>
+                                    <action selector="openPreferencesWithSender:" target="562" id="jbA-L0-yNS"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">
@@ -705,9 +704,10 @@
                     </menu>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="-162" y="154"/>
         </menu>
         <customObject id="419" customClass="NSFontManager"/>
         <userDefaultsController representsSharedInstance="YES" id="551"/>
-        <customObject id="562" customClass="GLLAppDelegate"/>
+        <customObject id="562" customClass="GLLAppDelegate" customModule="GLLara"/>
     </objects>
 </document>

@@ -17,7 +17,6 @@
 #import "GLLModel.h"
 #import "GLLTestObjectWriter.h"
 #import "GLLRenderWindowController.h"
-#import "GLLView.h"
 #import "NSArray+Map.h"
 
 #import "GLLara-Swift.h"

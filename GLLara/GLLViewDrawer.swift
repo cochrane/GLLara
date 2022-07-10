@@ -11,7 +11,7 @@ import MetalKit
 import UniformTypeIdentifiers
 
 @objc class GLLViewDrawer: NSObject, MTKViewDelegate {
-    @objc init(sceneDrawer: GLLSceneDrawer, camera: GLLCamera, view: GLLView) {
+    init(sceneDrawer: GLLSceneDrawer, camera: GLLCamera, view: GLLView) {
         self.sceneDrawer = sceneDrawer
         self.camera = camera
         self.view = view

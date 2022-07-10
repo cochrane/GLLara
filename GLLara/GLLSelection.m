@@ -61,6 +61,11 @@
         return @[];
 }
 
+- (void)setSelectedBones:(NSArray<GLLItemBone *> *)selectedBones {
+    [self.selectedObjects removeAllObjects];
+    [self.selectedObjects addObjectsFromArray:selectedBones];
+}
+
 - (NSArray<GLLItem *> *)selectedItems
 {
     if ([self.selectedObjects.lastObject isKindOfClass:[GLLItem class]])
