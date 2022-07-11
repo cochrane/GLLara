@@ -813,7 +813,6 @@
 		52C516FE2871998C000EB8C2 /* GLLPipelineStateInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLPipelineStateInformation.swift; sourceTree = "<group>"; };
 		52C517002871CBBB000EB8C2 /* baseData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = baseData.swift; sourceTree = "<group>"; };
 		52C6115A2877080900ED8112 /* GLLResourceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLResourceManager.swift; sourceTree = "<group>"; };
-		52C659BD28688D54006755D8 /* Transparency Notes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = "Transparency Notes.md"; path = "Documentation/Transparency Notes.md"; sourceTree = "<group>"; };
 		52C7B5DB16AA15A100FC2927 /* MapTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTests.h; sourceTree = "<group>"; };
 		52C7B5DC16AA15A100FC2927 /* MapTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTests.m; sourceTree = "<group>"; };
 		52C7B5DF16ABEB3000FC2927 /* GLLModelParametersTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModelParametersTest.h; sourceTree = "<group>"; };
@@ -1048,7 +1047,6 @@
 			isa = PBXGroup;
 			children = (
 				52FB1FD628796E49006ABC4F /* find_tga_empty.py */,
-				52C659BD28688D54006755D8 /* Transparency Notes.md */,
 				5296943E15F51F2B00DF2FA3 /* Readme.md */,
 				529692D515F258E600DF2FA3 /* Documentation */,
 				525ACD5115F0F1A700534E7D /* GLLara */,
