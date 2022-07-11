@@ -249,7 +249,9 @@ static NSOperationQueue *imageInformationQueue = nil;
     // Find pixel format
     MTLTextureDescriptor *descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA8Unorm width:file.width height:file.height mipmapped:file.hasMipmaps];
     
-    descriptor.mipmapLevelCount = file.numMipmaps;
+    if (file.numMipmaps != 0) {
+        descriptor.mipmapLevelCount = file.numMipmaps;
+    }
     
     BOOL expand24BitFormat = NO;
     switch (file.dataFormat) {
@@ -303,8 +305,8 @@ static NSOperationQueue *imageInformationQueue = nil;
     _texture.label = self.url.lastPathComponent;
     
     for (NSUInteger i = 0; i < file.numMipmaps; i++) {
-        NSUInteger levelWidth = self.width >> i;
-        NSUInteger levelHeight = self.width >> i;
+        NSUInteger levelWidth = MAX(self.width >> i, 1);
+        NSUInteger levelHeight = MAX(self.height >> i, 1);
         
         MTLRegion region = MTLRegionMake2D(0, 0, levelWidth, levelHeight);
         
@@ -324,7 +326,21 @@ static NSOperationQueue *imageInformationQueue = nil;
             [_texture replaceRegion:region mipmapLevel:i withBytes:resizedData bytesPerRow:levelWidth * 4];
             free(resizedData);
         } else {
-            [_texture replaceRegion:region mipmapLevel:i withBytes:data.bytes bytesPerRow:data.length / levelHeight];
+            NSUInteger bytesPerRow = data.length / levelHeight;
+            if (descriptor.pixelFormat == MTLPixelFormatBC1_RGBA) {
+                // TODO Hacky heuristic fix later
+                bytesPerRow = 8*levelWidth;
+                if (bytesPerRow < 32) {
+                    bytesPerRow = data.length;
+                }
+            } else if (descriptor.pixelFormat == MTLPixelFormatBC2_RGBA || descriptor.pixelFormat == MTLPixelFormatBC3_RGBA) {
+                // TODO Hacky heuristic fix later
+                bytesPerRow = 4*levelWidth;
+                if (bytesPerRow < 16) {
+                    bytesPerRow = data.length;
+                }
+            }
+            [_texture replaceRegion:region mipmapLevel:i withBytes:data.bytes bytesPerRow:bytesPerRow];
         }
     }
     

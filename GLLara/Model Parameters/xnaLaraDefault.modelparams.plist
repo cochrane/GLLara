@@ -542,6 +542,7 @@
 			<key>modules</key>
 			<array>
 				<string>diffuseTexture</string>
+				<string>lighting</string>
 				<string>skinning</string>
 				<string>ambient</string>
 				<string>diffuseLighting</string>
