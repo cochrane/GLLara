@@ -181,6 +181,7 @@ import MetalKit
     
     override func keyDown(with event: NSEvent) {
         keysDown.formUnion(CharacterSet(charactersIn: event.charactersIgnoringModifiers?.lowercased() ?? ""))
+        print("- down Noaw down \(keysDown)")
         currentModifierFlags = event.modifierFlags
     }
     
@@ -208,6 +209,7 @@ import MetalKit
     
     override func keyUp(with event: NSEvent) {
         keysDown.subtract(CharacterSet(charactersIn: event.charactersIgnoringModifiers?.lowercased() ?? ""))
+        print("- up Now down \(keysDown)")
         currentModifierFlags = event.modifierFlags
     }
     
@@ -282,6 +284,7 @@ import MetalKit
         let adjustedPosition = rawSpaceMousePosition.replacing(with: 0.0, where: positionInsideDeadzone)
         
         // Check whether we should still be moving
+        print("active keys", keysDown)
         if GLLView.interestingCharacters.intersection(keysDown).isEmpty && currentModifierFlags.isDisjoint(with: [.shift, .option]) && all(rotationInsideDeadzone) && all(positionInsideDeadzone) {
         }
         
@@ -290,45 +293,55 @@ import MetalKit
         if let camera = camera, !camera.cameraLocked {
             let deltaX = directionFactor(positive: ["d"], negative: ["a"])
             let deltaZ = directionFactor(positive: ["s"], negative: ["w"])
-            camera.moveLocalX(deltaX * Float(diff * GLLView.unitsPerSecond), y: 0, z: deltaZ * Float(diff * GLLView.unitsPerSecond))
+            if deltaX != nil || deltaZ != nil {
+                let diffX = (deltaX ?? 0) * Float(diff * GLLView.unitsPerSecond)
+                let diffZ = (deltaZ ?? 0) * Float(diff * GLLView.unitsPerSecond)
+                camera.moveLocalX(diffX, y: 0, z: diffZ)
+            }
         }
         
         // Move bones with arrow keys
         if !GLLView.xyzCharacters.intersection(keysDown).isEmpty {
-            let delta = directionFactor(positive: [UnicodeScalar(NSLeftArrowFunctionKey)!, UnicodeScalar(NSUpArrowFunctionKey)!], negative: [UnicodeScalar(NSRightArrowFunctionKey)!, UnicodeScalar(NSDownArrowFunctionKey)!]) * Float(diff * 0.1 * GLLView.unitsPerSecond)
-            
-            for bone in document?.selection.selectedBones ?? [] {
-                if keysDown.contains("x") {
-                    bone.positionX += Float(delta)
-                }
-                if keysDown.contains("y") {
-                    bone.positionY += Float(delta)
-                }
-                if keysDown.contains("z") {
-                    bone.positionZ += Float(delta)
+            if let delta = directionFactor(positive: [UnicodeScalar(NSLeftArrowFunctionKey)!, UnicodeScalar(NSUpArrowFunctionKey)!], negative: [UnicodeScalar(NSRightArrowFunctionKey)!, UnicodeScalar(NSDownArrowFunctionKey)!]) {
+                let speed = delta * Float(diff * 0.1 * GLLView.unitsPerSecond)
+                for bone in document?.selection.selectedBones ?? [] {
+                    if keysDown.contains("x") {
+                        bone.positionX += speed
+                    }
+                    if keysDown.contains("y") {
+                        bone.positionY += speed
+                    }
+                    if keysDown.contains("z") {
+                        bone.positionZ += speed
+                    }
                 }
             }
         } else if currentModifierFlags.contains(.option) {
             // Move the object up or down with arrow keys
-            let deltaY = directionFactor(positive: [UnicodeScalar(NSUpArrowFunctionKey)!], negative: [UnicodeScalar(NSDownArrowFunctionKey)!])
+            if let deltaY = directionFactor(positive: [UnicodeScalar(NSUpArrowFunctionKey)!], negative: [UnicodeScalar(NSDownArrowFunctionKey)!]) {
             
-            for item in document?.selection.selectedItems ?? [] {
-                item.positionY += deltaY * 0.1 * Float(diff * GLLView.unitsPerSecond)
+                for item in document?.selection.selectedItems ?? [] {
+                    item.positionY += deltaY * 0.1 * Float(diff * GLLView.unitsPerSecond)
+                }
             }
         } else if !GLLView.arrowCharacters.intersection(keysDown).isEmpty {
             if let camera = camera {
                 let deltaX = directionFactor(positive: [UnicodeScalar(NSRightArrowFunctionKey)!], negative: [UnicodeScalar(NSLeftArrowFunctionKey)!])
                 let deltaZ = directionFactor(positive: [UnicodeScalar(NSDownArrowFunctionKey)!], negative: [UnicodeScalar(NSUpArrowFunctionKey)!])
                 
-                let screenDelta = SIMD4<Float32>(x: deltaX * 0.1 * Float(diff * GLLView.unitsPerSecond),
-                                                 y: 0,
-                                                 z: deltaZ * 0.1 * Float(diff * GLLView.unitsPerSecond),
-                                                 w: 0)
-                let worldDelta = camera.viewMatrix.inverse * screenDelta
-                
-                for item in document?.selection.selectedItems ?? [] {
-                    item.positionX += worldDelta.x
-                    item.positionZ += worldDelta.z
+                if deltaX != nil || deltaZ != nil {
+                    let diffX = (deltaX ?? 0) * 0.1 * Float(diff * GLLView.unitsPerSecond)
+                    let diffZ = (deltaZ ?? 0) * 0.1 * Float(diff * GLLView.unitsPerSecond)
+                    let screenDelta = SIMD4<Float32>(x: diffX,
+                                                     y: 0,
+                                                     z: diffZ,
+                                                     w: 0)
+                    let worldDelta = camera.viewMatrix.inverse * screenDelta
+                    
+                    for item in document?.selection.selectedItems ?? [] {
+                        item.positionX += worldDelta.x
+                        item.positionZ += worldDelta.z
+                    }
                 }
             }
         }
@@ -351,7 +364,7 @@ import MetalKit
     /**
      Returns 1 if any "positive" keys are pressed and none of the "negative" ones, -1 if any of the "negative" keys are pressed and none of the positive ones, and 0 if keys from neither or both sets are pressed
      */
-    private func directionFactor(positive: [UnicodeScalar], negative: [UnicodeScalar]) -> Float {
+    private func directionFactor(positive: [UnicodeScalar], negative: [UnicodeScalar]) -> Float? {
         let anyInPositive = !CharacterSet(positive).isDisjoint(with: keysDown)
         let anyInNegative = !CharacterSet(negative).isDisjoint(with: keysDown)
         if anyInPositive && !anyInNegative {
@@ -359,7 +372,7 @@ import MetalKit
         } else if anyInNegative && !anyInPositive {
             return -1.0
         } else {
-            return 0
+            return nil
         }
     }
     
