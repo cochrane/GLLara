@@ -18,7 +18,7 @@ func registerModelParams() {
             ], children: [
                 GLLShaderModule(name: "normalDetailMap", textureUniforms: [ "bump1Texture", "bump2Texture", "maskTexture"], parameterUniforms: [ "bump1UVScale", "bump2UVScale"], activeBoolConstants: [ .hasNormalDetailMap ])
         ]),
-        GLLShaderModule(name: "lighting", requiredVertexAttributes: [ "normal" ], children: [
+        GLLShaderModule(name: "lighting", requiredVertexAttributes: [ "normal" ], activeBoolConstants: [ .hasNormal ], children: [
             GLLShaderModule(name: "diffuseLighting", activeBoolConstants: [ .hasDiffuseLighting ]),
             GLLShaderModule(name: "specularLighting", parameterUniforms: [ "bumpSpecularGloss", "bumpSpecularAmount" ], activeBoolConstants: [ .hasSpecularLighting ], children: [
                 GLLShaderModule(name: "specularTexture", textureUniforms: [ "specularTexture" ], activeBoolConstants: [ .hasSpecularTexture ], children: [
