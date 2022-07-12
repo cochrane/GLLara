@@ -225,10 +225,10 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
             if (hasNormalDetailMap) {
                 float2 maskColor = arguments.maskTexture.sample(textureSampler, in.texCoordFor(texCoordSetMask)).xy;
                 
-                float3 detailNormalMap1 = arguments.bump1Texture.sample(textureSampler, in.texCoordFor(texCoordSetBump1)).xyz;
+                float3 detailNormalMap1 = arguments.bump1Texture.sample(textureSampler, in.texCoordFor(texCoordSetBump1) * arguments.bump1UVScale).xyz;
                 normalMapColor += detailNormalMap1 * maskColor.x;
                 
-                float3 detailNormalMap2 = arguments.bump2Texture.sample(textureSampler, in.texCoordFor(texCoordSetBump2)).xyz;
+                float3 detailNormalMap2 = arguments.bump2Texture.sample(textureSampler, in.texCoordFor(texCoordSetBump2) * arguments.bump2UVScale).xyz;
                 normalMapColor += detailNormalMap2 * maskColor.y;
             }
             float3 normalFromMap = normalMapColor * 2 - 1;
