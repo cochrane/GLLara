@@ -119,7 +119,7 @@
 
 - (NSUInteger)boneIndex
 {
-    if (cachedBoneIndex == NSNotFound) {
+    if (cachedBoneIndex == NSNotFound && self.item != nil) {
         cachedBoneIndex = [self.item.bones indexOfObject:self];
     }
     return cachedBoneIndex;
@@ -144,8 +144,12 @@
 {
     if (!children) {
         NSOrderedSet<GLLItemBone *> *combinedBones = self.item.combinedBones;
+        if (combinedBones == nil) {
+            return nil;
+        }
+        NSUInteger myIndex = [combinedBones indexOfObject:self];
         NSIndexSet *childIndices = [combinedBones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
-            return bone.parent == self;
+            return bone.parentIndexInCombined == myIndex;
         }];
         children = [combinedBones objectsAtIndexes:childIndices];
     }
