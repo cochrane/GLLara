@@ -43,7 +43,6 @@ import Metal
         pipelineDescriptor.vertexFunction = try! library.makeFunction(name: "skeletonVertex", constantValues: values)
         pipelineDescriptor.fragmentFunction = try! library.makeFunction(name: "skeletonFragment", constantValues: values)
         pipelineDescriptor.colorAttachments[0].pixelFormat = resourceManager.pixelFormat;
-        pipelineDescriptor.depthAttachmentPixelFormat = resourceManager.depthPixelFormat;
         pipelineDescriptor.label = "skeleton-pipeline"
         
         pipeline = try! device.makeRenderPipelineState(descriptor: pipelineDescriptor)
