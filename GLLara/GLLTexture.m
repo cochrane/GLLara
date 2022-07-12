@@ -250,6 +250,9 @@ static NSOperationQueue *imageInformationQueue = nil;
     MTLTextureDescriptor *descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA8Unorm width:file.width height:file.height mipmapped:file.hasMipmaps];
     
     if (file.numMipmaps != 0) {
+        if (file.numMipmaps != descriptor.mipmapLevelCount) {
+            NSLog(@"Unexpectedly few mipmaps on %@", self.url.lastPathComponent);
+        }
         descriptor.mipmapLevelCount = file.numMipmaps;
     }
     
@@ -267,6 +270,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         case GLL_DDS_BGR_8:
             descriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
             expand24BitFormat = YES;
+            break;
         case GLL_DDS_BGRA_8:
             descriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
             break;
@@ -304,7 +308,7 @@ static NSOperationQueue *imageInformationQueue = nil;
     _texture = [self.device newTextureWithDescriptor:descriptor];
     _texture.label = self.url.lastPathComponent;
     
-    for (NSUInteger i = 0; i < file.numMipmaps; i++) {
+    for (NSUInteger i = 0; i < descriptor.mipmapLevelCount; i++) {
         NSUInteger levelWidth = MAX(self.width >> i, 1);
         NSUInteger levelHeight = MAX(self.height >> i, 1);
         
@@ -328,17 +332,13 @@ static NSOperationQueue *imageInformationQueue = nil;
         } else {
             NSUInteger bytesPerRow = data.length / levelHeight;
             if (descriptor.pixelFormat == MTLPixelFormatBC1_RGBA) {
-                // TODO Hacky heuristic fix later
-                bytesPerRow = 8*levelWidth;
-                if (bytesPerRow < 32) {
-                    bytesPerRow = data.length;
-                }
+                NSUInteger blocksPerRow = MAX(1, levelWidth / 4);
+                NSUInteger blockSize = 8;
+                bytesPerRow = blocksPerRow * blockSize;
             } else if (descriptor.pixelFormat == MTLPixelFormatBC2_RGBA || descriptor.pixelFormat == MTLPixelFormatBC3_RGBA) {
-                // TODO Hacky heuristic fix later
-                bytesPerRow = 4*levelWidth;
-                if (bytesPerRow < 16) {
-                    bytesPerRow = data.length;
-                }
+                NSUInteger blocksPerRow = MAX(1, levelWidth / 4);
+                NSUInteger blockSize = 16;
+                bytesPerRow = blocksPerRow * blockSize;
             }
             [_texture replaceRegion:region mipmapLevel:i withBytes:data.bytes bytesPerRow:bytesPerRow];
         }
