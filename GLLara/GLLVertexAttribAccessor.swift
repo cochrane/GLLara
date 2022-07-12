@@ -24,7 +24,7 @@ import Foundation
     }
     
     let attribute: GLLVertexAttrib
-    let dataBuffer: Data?
+    var dataBuffer: Data?
     let dataOffset: Int
     let stride: Int
     
@@ -46,12 +46,7 @@ import Foundation
     }
     
     func typedElementArray<T>(at element: Int, type: T.Type) -> [T] {
-        guard let dataBuffer = dataBuffer else {
-            assertionFailure()
-            return []
-        }
-        
-        return dataBuffer.withUnsafeBytes { start -> [T] in
+        return dataBuffer!.withUnsafeBytes { start -> [T] in
             let slice = start[range(element: element)]
             let typed = UnsafeRawBufferPointer(rebasing: slice).bindMemory(to: T.self)
             return Array(typed)
@@ -59,12 +54,7 @@ import Foundation
     }
     
     func simd2Element<T>(at element: Int, base: T.Type) -> SIMD2<T> where T: SIMDScalar {
-        guard let dataBuffer = dataBuffer else {
-            assertionFailure()
-            return []
-        }
-        
-        return dataBuffer.withUnsafeBytes { start -> SIMD2<T> in
+        return dataBuffer!.withUnsafeBytes { start -> SIMD2<T> in
             let slice = start[range(element: element)]
             let typed = UnsafeRawBufferPointer(rebasing: slice).bindMemory(to: T.self)
             return SIMD2<T>(x: typed[0], y: typed[1])
@@ -72,12 +62,7 @@ import Foundation
     }
     
     func simd3Element<T>(at element: Int, base: T.Type) -> SIMD3<T> where T: SIMDScalar {
-        guard let dataBuffer = dataBuffer else {
-            assertionFailure()
-            return []
-        }
-        
-        return dataBuffer.withUnsafeBytes { start -> SIMD3<T> in
+        return dataBuffer!.withUnsafeBytes { start -> SIMD3<T> in
             let slice = start[range(element: element)]
             let typed = UnsafeRawBufferPointer(rebasing: slice).bindMemory(to: T.self)
             return SIMD3<T>(x: typed[0], y: typed[1], z: typed[2])
@@ -85,12 +70,7 @@ import Foundation
     }
     
     func simd4Element<T>(at element: Int, base: T.Type) -> SIMD4<T> where T: SIMDScalar {
-        guard let dataBuffer = dataBuffer else {
-            assertionFailure()
-            return []
-        }
-        
-        return dataBuffer.withUnsafeBytes { start -> SIMD4<T> in
+        return dataBuffer!.withUnsafeBytes { start -> SIMD4<T> in
             let slice = start[range(element: element)]
             let typed = UnsafeRawBufferPointer(rebasing: slice).bindMemory(to: T.self)
             return SIMD4<T>(x: typed[0], y: typed[1], z: typed[2], w: typed[3])
@@ -98,14 +78,16 @@ import Foundation
     }
     
     func withBytes(element: Int, action: (UnsafeRawBufferPointer) throws ->()) rethrows {
-        guard let dataBuffer = dataBuffer else {
-            assertionFailure()
-            return
-        }
-        
-        try dataBuffer.withUnsafeBytes { start in
+        try dataBuffer!.withUnsafeBytes { start in
             let slice = start[range(element: element)]
             try action(UnsafeRawBufferPointer(rebasing: slice))
+        }
+    }
+    
+    func withMutableBytes(element: Int, action: (UnsafeMutableRawBufferPointer) throws ->()) rethrows {
+        try dataBuffer!.withUnsafeMutableBytes { start in
+            let slice = start[range(element: element)]
+            try action(UnsafeMutableRawBufferPointer(rebasing: slice))
         }
     }
 }

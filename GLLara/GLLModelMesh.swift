@@ -73,12 +73,10 @@ import simd
         
         try validate(vertexData: fileAccessors, indexData: elementData)
         
-        if hasTangentsInFile {
-            vertexDataAccessors = fileAccessors
-        } else {
-            let tangents = calculateTangents(for: fileAccessors)
-            vertexDataAccessors = fileAccessors.combining(with: tangents)
-        }
+        // Always recalculate tangents, the ones in the model file can be 0
+        let tangents = calculateTangents(for: fileAccessors)
+        vertexDataAccessors = fileAccessors.combining(with: tangents)
+        
         vertexFormat = vertexDataAccessors!.vertexFormat(vertexCount: countOfVertices, hasIndices: true)
         loadRenderParameters()
     }
@@ -386,17 +384,17 @@ import simd
                 let q1 = positions[1] - positions[0]
                 let q2 = positions[2] - positions[0]
                 
-                let s1 = texCoords[1][0] - texCoords[0][0]
-                let t1 = texCoords[1][1] - texCoords[0][1]
-                let s2 = texCoords[2][0] - texCoords[0][0]
-                let t2 = texCoords[2][1] - texCoords[0][1]
+                let s1 = texCoords[1].x - texCoords[0].x
+                let t1 = texCoords[1].y - texCoords[0].y
+                let s2 = texCoords[2].x - texCoords[0].x
+                let t2 = texCoords[2].y - texCoords[0].y
                 let d = s1 * t2 - s2 * t1
                 if (d == 0) {
                     continue
                 }
                 
-                let tangentU = simd_normalize((t2 * q1 - t1 * q2) / d)
-                let tangentV = simd_normalize((s2 * q2 - s1 * q1) / d)
+                let tangentU = (t2 * q1 - t1 * q2) / d
+                let tangentV = (s1 * q2 - s2 * q1) / d
                 
                 // Add them to the per-layer tangents
                 for vertex in 0..<3 {

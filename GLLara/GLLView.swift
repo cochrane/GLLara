@@ -181,7 +181,6 @@ import MetalKit
     
     override func keyDown(with event: NSEvent) {
         keysDown.formUnion(CharacterSet(charactersIn: event.charactersIgnoringModifiers?.lowercased() ?? ""))
-        print("- down Noaw down \(keysDown)")
         currentModifierFlags = event.modifierFlags
     }
     
@@ -209,7 +208,6 @@ import MetalKit
     
     override func keyUp(with event: NSEvent) {
         keysDown.subtract(CharacterSet(charactersIn: event.charactersIgnoringModifiers?.lowercased() ?? ""))
-        print("- up Now down \(keysDown)")
         currentModifierFlags = event.modifierFlags
     }
     
@@ -284,7 +282,6 @@ import MetalKit
         let adjustedPosition = rawSpaceMousePosition.replacing(with: 0.0, where: positionInsideDeadzone)
         
         // Check whether we should still be moving
-        print("active keys", keysDown)
         if GLLView.interestingCharacters.intersection(keysDown).isEmpty && currentModifierFlags.isDisjoint(with: [.shift, .option]) && all(rotationInsideDeadzone) && all(positionInsideDeadzone) {
         }
         

@@ -44,7 +44,11 @@ import Metal
     }
     
     func combining(with other: GLLVertexAttribAccessorSet) -> GLLVertexAttribAccessorSet {
-        return GLLVertexAttribAccessorSet(accessors: accessors + other.accessors)
+        var adjustedAccessors = accessors
+        adjustedAccessors.removeAll {
+            other.accessor(semantic: $0.attribute.semantic, layer: $0.attribute.layer) != nil
+        }
+        return GLLVertexAttribAccessorSet(accessors: adjustedAccessors + other.accessors)
     }
     
     func accessor(semantic: GLLVertexAttribSemantic, layer: Int = 0) -> GLLVertexAttribAccessor? {
