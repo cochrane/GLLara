@@ -348,18 +348,47 @@ import MetalKit
                 }
             }
         }
-        // Update based on space mouse inputs
-        if GLLView.lastActiveView == self, !all(rotationInsideDeadzone) || !all(positionInsideDeadzone), let camera = camera, !camera.cameraLocked {
-            // Need to swap the coordinates because the space mouse uses a different coordinate system from us
-            let positionSpeed = Float(spaceMouseTranslationSpeed * diff)
-            camera.moveLocalX(adjustedPosition.x * positionSpeed, y: -adjustedPosition.z * positionSpeed, z: adjustedPosition.y * positionSpeed)
+        // Controller input
+        if GLLView.lastActiveView == self, let camera = camera, !camera.cameraLocked {
+            if !all(rotationInsideDeadzone) || !all(positionInsideDeadzone) {
+                // Update based on space mouse inputs
+                // Need to swap the coordinates because the space mouse uses a different coordinate system from us
+                let positionSpeed = Float(spaceMouseTranslationSpeed * diff)
+                camera.moveLocalX(adjustedPosition.x * positionSpeed, y: -adjustedPosition.z * positionSpeed, z: adjustedPosition.y * positionSpeed)
+                
+                let rotationSpeed = Float(spaceMouseRotationSpeed * diff)
+                if spaceMouseMode == .rotateAroundTarget {
+                    camera.longitude -= adjustedRotation.z * rotationSpeed;
+                    camera.latitude += adjustedRotation.x * rotationSpeed;
+                } else {
+                    turnAroundCamera(deltaX: adjustedRotation.z * rotationSpeed, deltaY: adjustedRotation.x * rotationSpeed)
+                }
+            }
             
-            let rotationSpeed = Float(spaceMouseRotationSpeed * diff)
-            if spaceMouseMode == .rotateAroundTarget {
-                camera.longitude -= adjustedRotation.z * rotationSpeed;
-                camera.latitude += adjustedRotation.x * rotationSpeed;
-            } else {
-                turnAroundCamera(deltaX: adjustedRotation.z * rotationSpeed, deltaY: adjustedRotation.x * rotationSpeed)
+            // Game controller input
+            for controller in GLLCameControllerManager.shared.knownDevices {
+                // Rotate camera based on left thumbstick
+                let rotationX = controller.extendedGamepad!.leftThumbstick.xAxis.value
+                let rotationY = controller.extendedGamepad!.leftThumbstick.yAxis.value
+                
+                let rotationSpeed = Float(controllerRotationSpeedCamera * diff)
+                if controllerLeftStickMode == .rotateAroundTarget {
+                    camera.longitude -= rotationX * rotationSpeed;
+                    camera.latitude += rotationY * rotationSpeed;
+                } else {
+                    turnAroundCamera(deltaX: rotationX * rotationSpeed, deltaY: rotationY * rotationSpeed)
+                }
+                
+                if controllerRightStickMode == .moveCamera {
+                    let moveX = controller.extendedGamepad!.rightThumbstick.xAxis.value
+                    let moveZ = -controller.extendedGamepad!.rightThumbstick.yAxis.value
+                    let moveY = controller.extendedGamepad!.leftTrigger.value * -1 + controller.extendedGamepad!.rightTrigger.value
+                    
+                    let positionSpeed = Float(controllerMoveCameraSpeed * diff)
+                    camera.moveLocalX(moveX * positionSpeed, y: moveY * positionSpeed, z: moveZ * positionSpeed)
+                } else {
+                    // TODO!
+                }
             }
         }
     }
@@ -452,11 +481,32 @@ import MetalKit
         UserDefaults.standard.double(forKey: GLLPrefSpaceMouseSpeedTranslation)
     }
     
-    enum SpaceMouseMode: String {
+    var controllerRotationSpeedCamera: Double {
+        return 0.5
+    }
+    
+    enum CameraMovementMode: String {
         case rotateAroundTarget
         case rotateAroundCamera
     }
-    var spaceMouseMode: SpaceMouseMode {
-        return SpaceMouseMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefSpaceMouseMode) ?? SpaceMouseMode.rotateAroundTarget.rawValue) ?? .rotateAroundTarget
+    var spaceMouseMode: CameraMovementMode {
+        return CameraMovementMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefSpaceMouseMode) ?? CameraMovementMode.rotateAroundTarget.rawValue) ?? .rotateAroundTarget
+    }
+    
+    var controllerLeftStickMode: CameraMovementMode {
+        return CameraMovementMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefControllerLeftStickMode) ?? CameraMovementMode.rotateAroundTarget.rawValue) ?? .rotateAroundTarget
+    }
+    
+    var controllerMoveCameraSpeed: Double {
+        return 1
+    }
+    
+    enum ControllerRightStickMode: String {
+        case moveCamera
+        case rotateBones
+        case moveBones
+    }
+    var controllerRightStickMode: ControllerRightStickMode {
+        return ControllerRightStickMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefControllerRightStickMode) ?? ControllerRightStickMode.moveCamera.rawValue) ?? .moveCamera
     }
 }

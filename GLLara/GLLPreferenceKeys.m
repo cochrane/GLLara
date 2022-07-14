@@ -23,3 +23,7 @@ NSString *GLLPrefSpaceMouseSpeedRotation = @"spaceMouseSpeedRotation";
 NSString *GLLPrefSpaceMouseMode = @"spaceMouseMode";
 NSString *GLLPrefSpaceMouseDeadzoneTranslation = @"spaceMouseDeadzoneTranslation";
 NSString *GLLPrefSpaceMouseDeadzoneRotation = @"spaceMouseDeadzoneRotation";
+NSString *GLLPrefControllerInvertXAxis = @"controllerInvertXAxis";
+NSString *GLLPrefControllerInvertYAxis = @"controllerInvertYAxis";
+NSString *GLLPrefControllerLeftStickMode = @"controllerLeftStickMode";
+NSString *GLLPrefControllerRightStickMode = @"controllerRightStickMode";

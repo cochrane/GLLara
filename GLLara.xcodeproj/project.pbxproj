@@ -74,6 +74,7 @@
 		523BBAFD287B0FDC00B2D52E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523BBAFC287B0FDC00B2D52E /* IOKit.framework */; };
 		523BBAFF287B23D600B2D52E /* GLLRenderWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523BBAFE287B23D600B2D52E /* GLLRenderWindow.swift */; };
 		523BBB01287E94EF00B2D52E /* GLLControllerPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523BBB00287E94EF00B2D52E /* GLLControllerPreferencesView.swift */; };
+		523BBB052880BCB300B2D52E /* GLLGameControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523BBB042880BCB300B2D52E /* GLLGameControllerManager.swift */; };
 		523D368116BEB29F004FAD4B /* GLLSubItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523D368016BEB29F004FAD4B /* GLLSubItemController.m */; };
 		523D368516BED84B004FAD4B /* GLLItemMeshTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 523D368416BED84A004FAD4B /* GLLItemMeshTexture.m */; };
 		523DE0D61604A14200BB9F61 /* glasses.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 523DE0D51604A14200BB9F61 /* glasses.modelparams.plist */; };
@@ -509,6 +510,7 @@
 		523BBAFC287B0FDC00B2D52E /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		523BBAFE287B23D600B2D52E /* GLLRenderWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLRenderWindow.swift; sourceTree = "<group>"; };
 		523BBB00287E94EF00B2D52E /* GLLControllerPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLControllerPreferencesView.swift; sourceTree = "<group>"; };
+		523BBB042880BCB300B2D52E /* GLLGameControllerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLGameControllerManager.swift; sourceTree = "<group>"; };
 		523D367F16BEB29F004FAD4B /* GLLSubItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLSubItemController.h; sourceTree = "<group>"; };
 		523D368016BEB29F004FAD4B /* GLLSubItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLSubItemController.m; sourceTree = "<group>"; };
 		523D368316BED849004FAD4B /* GLLItemMeshTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemMeshTexture.h; sourceTree = "<group>"; };
@@ -1578,6 +1580,7 @@
 				525BF29C287A0AE200E30D48 /* GLLView.swift */,
 				523BBAFE287B23D600B2D52E /* GLLRenderWindow.swift */,
 				523BBB00287E94EF00B2D52E /* GLLControllerPreferencesView.swift */,
+				523BBB042880BCB300B2D52E /* GLLGameControllerManager.swift */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1936,6 +1939,7 @@
 				525BF2992879E31F00E30D48 /* GLLSpaceMouseManager.swift in Sources */,
 				529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */,
 				529692DD15F2759400DF2FA3 /* GLLItemBone.m in Sources */,
+				523BBB052880BCB300B2D52E /* GLLGameControllerManager.swift in Sources */,
 				529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */,
 				529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */,
 				5274448B280606A200E5A3FD /* XnaLaraShader.metal in Sources */,

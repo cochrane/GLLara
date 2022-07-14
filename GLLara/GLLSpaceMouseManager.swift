@@ -165,8 +165,6 @@ class GLLSpaceMouseManager: ObservableObject {
         }
     }
     
-    var pauseUpdates = false
-    
     var averageRotationAndPosition: (SIMD3<Float>, SIMD3<Float>) {
         var rotation = SIMD3<Float>()
         var position = SIMD3<Float>()

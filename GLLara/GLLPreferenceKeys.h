@@ -23,3 +23,7 @@ extern NSString *GLLPrefSpaceMouseSpeedRotation;
 extern NSString *GLLPrefSpaceMouseMode;
 extern NSString *GLLPrefSpaceMouseDeadzoneTranslation;
 extern NSString *GLLPrefSpaceMouseDeadzoneRotation;
+extern NSString *GLLPrefControllerInvertXAxis;
+extern NSString *GLLPrefControllerInvertYAxis;
+extern NSString *GLLPrefControllerLeftStickMode;
+extern NSString *GLLPrefControllerRightStickMode;
