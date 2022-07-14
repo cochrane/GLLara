@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,25 +15,37 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="F0z-JX-Cv5" customClass="NSPanel">
+        <window title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="474" height="328"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="474" height="328"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             </view>
             <toolbar key="toolbar" implicitIdentifier="7128B661-7BFF-4B44-98EC-FB94EA1DB10B" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="uDc-QX-Pto">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="F22A53AB-6C2A-4420-A706-CD359AF54D87" explicitItemIdentifier="GraphicsPreferences" label="Graphics" paletteLabel="Graphics" tag="-1" image="NSColorPanel" selectable="YES" id="tie-qh-DBf">
+                    <toolbarItem implicitItemIdentifier="F22A53AB-6C2A-4420-A706-CD359AF54D87" explicitItemIdentifier="GraphicsPreferences" label="Graphics" paletteLabel="Graphics" tag="-1" selectable="YES" id="tie-qh-DBf">
+                        <imageReference key="image" image="camera.fill" catalog="system" symbolScale="large"/>
+                        <size key="minSize" width="59" height="32"/>
+                        <size key="maxSize" width="59" height="32"/>
                         <connections>
                             <action selector="navigateToPage:" target="-2" id="uMr-xV-Kva"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="4E0E231C-11A1-49EA-8FF4-1FDF7F604A29" explicitItemIdentifier="ControllerPreferences" label="Controllers" paletteLabel="Controllers" tag="-1" selectable="YES" id="Ku1-s2-mqi">
+                        <imageReference key="image" image="gamecontroller.fill" catalog="system" symbolScale="large"/>
+                        <size key="minSize" width="67.5" height="31"/>
+                        <size key="maxSize" width="67.5" height="31"/>
+                        <connections>
+                            <action selector="navigateToPage:" target="-2" id="qe7-6D-guv"/>
                         </connections>
                     </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="tie-qh-DBf"/>
+                    <toolbarItem reference="Ku1-s2-mqi"/>
                 </defaultToolbarItems>
             </toolbar>
             <connections>
@@ -50,6 +62,7 @@
         </pagecontroller>
     </objects>
     <resources>
-        <image name="NSColorPanel" width="32" height="32"/>
+        <image name="camera.fill" catalog="system" width="24" height="19"/>
+        <image name="gamecontroller.fill" catalog="system" width="28" height="18"/>
     </resources>
 </document>

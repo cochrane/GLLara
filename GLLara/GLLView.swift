@@ -263,6 +263,15 @@ import MetalKit
     
     private var lastPositionUpdate: TimeInterval?
     
+    private func adjustForDeadzone(vector: SIMD3<Float>, deadzone: Double) -> (SIMD3<Float>, SIMDMask<SIMD3<Float>.MaskStorage>) {
+        let deadzoneVector = SIMD3<Float>(repeating: Float(deadzone))
+        let insideDeadzone = simd_abs(vector) .<= deadzoneVector
+        
+        let adjustedRangeMin = __tg_copysign(deadzoneVector, vector);
+        let adjusted = (vector - adjustedRangeMin) / (SIMD3<Float>(repeating: 1.0) - deadzoneVector)
+        return (adjusted.replacing(with: 0.0, where: insideDeadzone), insideDeadzone)
+    }
+    
     private func updatePositions() {
         let now = Date.timeIntervalSinceReferenceDate
         var diff = now - (lastPositionUpdate ?? now)
@@ -275,11 +284,8 @@ import MetalKit
         // Get the current state for the space mouse
         let (rawSpaceMouseRotation, rawSpaceMousePosition) = GLLSpaceMouseManager.shared.averageRotationAndPosition
         
-        let rotationInsideDeadzone = simd_abs(rawSpaceMouseRotation) .<= SIMD3<Float>(repeating: Float(spaceMouseDeadZone))
-        let adjustedRotation = rawSpaceMouseRotation.replacing(with: 0.0, where: rotationInsideDeadzone)
-        
-        let positionInsideDeadzone = simd_abs(rawSpaceMousePosition) .<= SIMD3<Float>(repeating: Float(spaceMouseDeadZone))
-        let adjustedPosition = rawSpaceMousePosition.replacing(with: 0.0, where: positionInsideDeadzone)
+        let (adjustedRotation, rotationInsideDeadzone) = adjustForDeadzone(vector: rawSpaceMouseRotation, deadzone: spaceMouseDeadZoneRotation)
+        let (adjustedPosition, positionInsideDeadzone) = adjustForDeadzone(vector: rawSpaceMousePosition, deadzone: spaceMouseDeadZoneTranslation)
         
         // Check whether we should still be moving
         if GLLView.interestingCharacters.intersection(keysDown).isEmpty && currentModifierFlags.isDisjoint(with: [.shift, .option]) && all(rotationInsideDeadzone) && all(positionInsideDeadzone) {
@@ -345,10 +351,10 @@ import MetalKit
         // Update based on space mouse inputs
         if GLLView.lastActiveView == self, !all(rotationInsideDeadzone) || !all(positionInsideDeadzone), let camera = camera, !camera.cameraLocked {
             // Need to swap the coordinates because the space mouse uses a different coordinate system from us
-            let positionSpeed = Float(spaceMouseSpeed * diff * GLLView.unitsPerSecond)
+            let positionSpeed = Float(spaceMouseTranslationSpeed * diff)
             camera.moveLocalX(adjustedPosition.x * positionSpeed, y: -adjustedPosition.z * positionSpeed, z: adjustedPosition.y * positionSpeed)
             
-            let rotationSpeed = Float(spaceMouseSpeed * diff * GLLView.unitsPerSecond)
+            let rotationSpeed = Float(spaceMouseRotationSpeed * diff)
             if spaceMouseMode == .rotateAroundTarget {
                 camera.longitude -= adjustedRotation.z * rotationSpeed;
                 camera.latitude += adjustedRotation.x * rotationSpeed;
@@ -433,12 +439,24 @@ import MetalKit
     }
     
     // TODO Read from prefs
-    let spaceMouseDeadZone = 0.00
-    let spaceMouseSpeed = 6.0
+    var spaceMouseDeadZoneTranslation: Double {
+        UserDefaults.standard.double(forKey: GLLPrefSpaceMouseDeadzoneTranslation)
+    }
+    var spaceMouseDeadZoneRotation: Double {
+        UserDefaults.standard.double(forKey: GLLPrefSpaceMouseDeadzoneRotation)
+    }
+    var spaceMouseRotationSpeed: Double {
+        UserDefaults.standard.double(forKey: GLLPrefSpaceMouseSpeedRotation)
+    }
+    var spaceMouseTranslationSpeed: Double {
+        UserDefaults.standard.double(forKey: GLLPrefSpaceMouseSpeedTranslation)
+    }
     
     enum SpaceMouseMode: String {
         case rotateAroundTarget
         case rotateAroundCamera
     }
-    let spaceMouseMode = SpaceMouseMode.rotateAroundTarget
+    var spaceMouseMode: SpaceMouseMode {
+        return SpaceMouseMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefSpaceMouseMode) ?? SpaceMouseMode.rotateAroundTarget.rawValue) ?? .rotateAroundTarget
+    }
 }

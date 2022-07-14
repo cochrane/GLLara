@@ -9,12 +9,14 @@
 #import "GLLPreferencesWindowController.h"
 
 #import "GLLDrawingPreferencesViewController.h"
+#import "GLLara-Swift.h"
 
 @interface GLLPreferencesWindowController ()
 
 @end
 
 static id graphicsPreferences = @"GraphicsPreferences";
+static id controllerPreferences = @"ControllerPreferences";
 
 @implementation GLLPreferencesWindowController
 
@@ -26,7 +28,7 @@ static id graphicsPreferences = @"GraphicsPreferences";
     [super windowDidLoad];
     
     // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-    self.pageController.arrangedObjects = @[ graphicsPreferences ];
+    self.pageController.arrangedObjects = @[ graphicsPreferences, controllerPreferences ];
     self.pageController.selectedIndex = 0;
     self.toolbar.selectedItemIdentifier = self.pageController.arrangedObjects[self.pageController.selectedIndex];
 }
@@ -43,12 +45,17 @@ static id graphicsPreferences = @"GraphicsPreferences";
 - (NSPageControllerObjectIdentifier)pageController:(NSPageController *)pageController identifierForObject:(id)object {
     if ([object isEqual:graphicsPreferences])
         return graphicsPreferences;
+    else if ([object isEqual:controllerPreferences]) {
+        return controllerPreferences;
+    }
     return nil;
 }
 
 - (NSViewController *)pageController:(NSPageController *)pageController viewControllerForIdentifier:(NSPageControllerObjectIdentifier)identifier {
     if ([identifier isEqual:graphicsPreferences]) {
         return [[GLLDrawingPreferencesViewController alloc] init];
+    } else if ([identifier isEqual:controllerPreferences]) {
+        return [[GLLControllerPreferencesViewController alloc] init];
     }
     return nil;
 }

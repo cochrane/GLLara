@@ -8,6 +8,7 @@
 
 import Cocoa
 import IOKit.hid
+import Combine
 
 /**
  * Manager that listens to inputs on a 3D or "space" mouse device, if any is
@@ -17,7 +18,7 @@ import IOKit.hid
  * These devices are rare but fun. It works with classic HID interfaces
  * internally.
  */
-@objc class GLLSpaceMouseManager: NSObject {
+class GLLSpaceMouseManager: ObservableObject {
     private let hidManager: IOHIDManager
     private let dispatchQueue: DispatchQueue
     
@@ -82,18 +83,23 @@ import IOKit.hid
                 // Ignored
             }
         }
+        
+        lazy var name: String = {
+            if let name = IOHIDDeviceGetProperty(device, kIOHIDProductKey as CFString) as! CFString? {
+                return name as String
+            }
+            return "Unknown"
+        }()
     }
     
-    private var knownDevices: [DeviceState] = []
+    @Published private var knownDevices: [DeviceState] = []
     
-    @objc static let shared = GLLSpaceMouseManager()
+    static let shared = GLLSpaceMouseManager()
     
-    override init() {
+    init() {
         hidManager = IOHIDManagerCreate(nil, 0)
         dispatchQueue = DispatchQueue(label: "spacemouse-hid", qos: .default, attributes: [])
-        
-        super.init()
-        
+              
         let deviceMatching = [
             kIOHIDDeviceUsagePageKey: kHIDPage_GenericDesktop,
             kIOHIDDeviceUsageKey: kHIDUsage_GD_MultiAxisController
@@ -145,6 +151,18 @@ import IOKit.hid
     
     private func deviceRemoved(device: IOHIDDevice) {
         knownDevices.removeAll { $0.device == device }
+    }
+    
+    var firstDeviceName: String? {
+        get {
+            guard knownDevices.count > 0  else {
+                return nil
+            }
+            return knownDevices[0].name
+        }
+        set {
+            // Does nothing, just here to make this property SwiftUI compatible
+        }
     }
     
     var pauseUpdates = false

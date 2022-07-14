@@ -18,3 +18,8 @@ extern NSString *GLLPrefPoseExportIncludesUnused;
 extern NSString *GLLPrefPoseExportOnlySelected;
 extern NSString *GLLPrefShowSkeleton;
 extern NSString *GLLPrefForceSoftwareRendering;
+extern NSString *GLLPrefSpaceMouseSpeedTranslation;
+extern NSString *GLLPrefSpaceMouseSpeedRotation;
+extern NSString *GLLPrefSpaceMouseMode;
+extern NSString *GLLPrefSpaceMouseDeadzoneTranslation;
+extern NSString *GLLPrefSpaceMouseDeadzoneRotation;
