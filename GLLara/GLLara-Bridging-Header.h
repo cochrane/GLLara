@@ -18,7 +18,6 @@
 #import "GLLModelBone.h"
 #import "GLLNotifications.h"
 #import "GLLVertexAttrib.h"
-#import "GLLPreferenceKeys.h"
 #import "GLLPreferencesWindowController.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameters.h"

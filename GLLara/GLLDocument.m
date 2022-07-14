@@ -24,7 +24,6 @@
 #import "GLLItem+OBJExport.h"
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLModel.h"
-#import "GLLPreferenceKeys.h"
 #import "GLLPoseExporter.h"
 #import "GLLPoseExportViewController.h"
 #import "GLLRenderWindowController.h"

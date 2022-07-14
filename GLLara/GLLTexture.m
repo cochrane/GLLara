@@ -15,7 +15,6 @@
 
 #import "GLLDDSFile.h"
 #import "GLLNotifications.h"
-#import "GLLPreferenceKeys.h"
 #import "GLLTiming.h"
 
 NSString *GLLTextureChangeNotification = @"GLL Texture Change Notification";
