@@ -481,10 +481,6 @@ import MetalKit
         UserDefaults.standard.double(forKey: GLLPrefSpaceMouseSpeedTranslation)
     }
     
-    var controllerRotationSpeedCamera: Double {
-        return 0.5
-    }
-    
     enum CameraMovementMode: String {
         case rotateAroundTarget
         case rotateAroundCamera
@@ -497,8 +493,12 @@ import MetalKit
         return CameraMovementMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefControllerLeftStickMode) ?? CameraMovementMode.rotateAroundTarget.rawValue) ?? .rotateAroundTarget
     }
     
+    var controllerRotationSpeedCamera: Double {
+        return UserDefaults.standard.double(forKey: GLLPrefControllerCameraRotationSpeed)
+    }
+    
     var controllerMoveCameraSpeed: Double {
-        return 1
+        return UserDefaults.standard.double(forKey: GLLPrefControllerCameraMovementSpeed)
     }
     
     enum ControllerRightStickMode: String {

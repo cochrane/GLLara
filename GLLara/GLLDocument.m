@@ -32,6 +32,11 @@
 
 #import "GLLara-Swift.h"
 
+NSString* GLLPrefObjExportIncludesTransforms = @"objExportIncludeTransformations";
+NSString* GLLPrefObjExportIncludesVertexColors = @"objExportIncludeVertexColors";
+NSString* GLLPrefPoseExportIncludesUnused = @"exportPose-includeUnused";
+NSString* GLLPrefPoseExportOnlySelected = @"exportPose-onlySelected";
+
 @interface GLLDocument () <NSOpenSavePanelDelegate>
 {
     GLLDocumentWindowController *documentWindowController;

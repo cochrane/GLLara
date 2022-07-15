@@ -27,7 +27,9 @@ import Cocoa
             GLLPrefSpaceMouseDeadzoneTranslation: 0.0,
             GLLPrefSpaceMouseSpeedRotation: 90.0 * Double.pi / 180.0,
             GLLPrefSpaceMouseDeadzoneRotation: 0.0,
-            GLLPrefSpaceMouseMode: GLLView.CameraMovementMode.rotateAroundTarget.rawValue
+            GLLPrefSpaceMouseMode: GLLView.CameraMovementMode.rotateAroundTarget.rawValue,
+            GLLPrefControllerCameraRotationSpeed: 30.0 * Double.pi / 180.0,
+            GLLPrefControllerCameraMovementSpeed: 1,
         ])
     }
     

@@ -10,6 +10,38 @@ import SwiftUI
 import Cocoa
 import GameController
 
+fileprivate struct ControllerPreferencesSlider: View {
+    
+    @State var value: Double
+    
+    let range: ClosedRange<Double>
+    let preferenceKey: String
+    let label: LocalizedStringKey
+    let valueDescription: (Double) -> LocalizedStringKey
+    
+    init(for preferenceKey: String, in range: ClosedRange<Double>,  label: LocalizedStringKey, valueDescription: @escaping (Double) -> LocalizedStringKey) {
+        self.range = range
+        self.value = UserDefaults.standard.double(forKey: preferenceKey)
+        self.preferenceKey = preferenceKey
+        self.label = label
+        self.valueDescription = valueDescription
+    }
+    
+    var body: some View {
+        HStack {
+            Text(label).frame(width: 100, height: nil, alignment: .trailing)
+            
+            Slider(value: $value, in: range)
+                .onChange(of: value) { newValue in
+                    UserDefaults.standard.set(newValue, forKey: preferenceKey)
+                }
+            
+            Text(valueDescription(value)).frame(width: 75, height: nil, alignment: .leading)
+        }
+
+    }
+}
+
 struct GLLControllerPreferencesView: View {
     // Mode is not set here, that is something the user can adjust on the fly using the buttons (eventually)
     // Note: Going via @state and explicit update instead of @appstorage because otherwise the labels on the sliders don't work
@@ -37,23 +69,16 @@ struct GLLControllerPreferencesView: View {
                         Text("No game controller connected")
                     }
                     
-                    Toggle("Invert X-Axis", isOn: $invertXAxis)
-                    Toggle("Invert Y-Axis", isOn: $invertYAxis)
-                    
-                    HStack {
-                        if discoveringWirelessControllers {
-                            Button("Cancel connecting", action: {
-                                GCController.stopWirelessControllerDiscovery()
-                            })
-                            ProgressView()
-                        } else {
-                            Button("Connect wireless controller", action: {
-                                discoveringWirelessControllers = true
-                                GCController.startWirelessControllerDiscovery {
-                                    discoveringWirelessControllers = false
-                                }
-                            })
-                        }
+                    GroupBox("Camera") {
+                        Toggle("Invert X-Axis", isOn: $invertXAxis)
+                        Toggle("Invert Y-Axis", isOn: $invertYAxis)
+                        
+                        ControllerPreferencesSlider(for: GLLPrefControllerCameraMovementSpeed, in : 0 ... 3, label: "Movement:", valueDescription: { value in
+                            "\(value, specifier: "%.1f") unit/s"
+                        })
+                        ControllerPreferencesSlider(for: GLLPrefControllerCameraRotationSpeed, in : 0 ... 360.0*Double.pi/180.0, label: "Rotation:", valueDescription: { value in
+                            "\(speedRotation * 180.0 / Double.pi, specifier: "%.0f")°/s"
+                        })
                     }
                 }
             }
@@ -66,48 +91,20 @@ struct GLLControllerPreferencesView: View {
                         Text("No 3D mouse connected")
                     }
                     GroupBox("Movement") {
-                        HStack {
-                            Text("Speed:").frame(width: 100, height: nil, alignment: .trailing)
-                            
-                            Slider(value: $speedTranslation, in: 0 ... 3)
-                                .onChange(of: speedTranslation) { newValue in
-                                    UserDefaults.standard.set(newValue, forKey: GLLPrefSpaceMouseSpeedTranslation)
-                                }
-                            
-                            Text("\(speedTranslation, specifier: "%.1f") unit/s").frame(width: 75, height: nil, alignment: .leading)
-                        }
-                        HStack {
-                            Text("Dead zone:").frame(width: 100, height: nil, alignment: .trailing)
-                            
-                            Slider(value: $deadZoneTranslation, in: 0 ... 1)
-                                .onChange(of: deadZoneTranslation) { newValue in
-                                    UserDefaults.standard.set(newValue, forKey: GLLPrefSpaceMouseDeadzoneTranslation)
-                                }
-                            
-                            Text("\(Int(deadZoneTranslation * 100)) %").frame(width: 75, height: nil, alignment: .leading)
-                        }
+                        ControllerPreferencesSlider(for: GLLPrefSpaceMouseSpeedTranslation, in : 0 ... 3, label: "Speed:", valueDescription: { value in
+                            "\(value, specifier: "%.1f") unit/s"
+                        })
+                        ControllerPreferencesSlider(for: GLLPrefSpaceMouseDeadzoneTranslation, in : 0 ... 1, label: "Dead zone:", valueDescription: { value in
+                            "\(Int(value * 100)) %"
+                        })
                     }
                     GroupBox("Rotation") {
-                        HStack {
-                            Text("Speed:").frame(width: 100, height: nil, alignment: .trailing)
-                            
-                            Slider(value: $speedRotation, in: 0 ... 360.0*Double.pi/180.0)
-                                .onChange(of: speedRotation) { newValue in
-                                    UserDefaults.standard.set(newValue, forKey: GLLPrefSpaceMouseSpeedRotation)
-                                }
-                            
-                            Text("\(speedRotation * 180.0 / Double.pi, specifier: "%.0f")°/s").frame(width: 75, height: nil, alignment: .leading)
-                        }
-                        HStack {
-                            Text("Dead zone:").frame(width: 100, height: nil, alignment: .trailing)
-                            
-                            Slider(value: $deadZoneRotation, in: 0 ... 1)
-                                .onChange(of: deadZoneRotation) { newValue in
-                                    UserDefaults.standard.set(newValue, forKey: GLLPrefSpaceMouseDeadzoneRotation)
-                                }
-                            
-                            Text("\(Int(deadZoneRotation * 100)) %").frame(width: 75, height: nil, alignment: .leading)
-                        }
+                        ControllerPreferencesSlider(for: GLLPrefSpaceMouseSpeedRotation, in : 0 ... 360.0*Double.pi/180.0, label: "Speed:", valueDescription: { value in
+                            "\(speedRotation * 180.0 / Double.pi, specifier: "%.0f")°/s"
+                        })
+                        ControllerPreferencesSlider(for: GLLPrefSpaceMouseDeadzoneRotation, in : 0 ... 1, label: "Dead zone:", valueDescription: { value in
+                            "\(Int(value * 100)) %"
+                        })
                     }
                 }.padding()
             }

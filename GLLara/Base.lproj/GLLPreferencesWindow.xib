@@ -18,10 +18,10 @@
         <window title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="F0z-JX-Cv5" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="474" height="328"/>
+            <rect key="contentRect" x="196" y="240" width="525" height="581"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
             <view key="contentView" id="se5-gp-TjO">
-                <rect key="frame" x="0.0" y="0.0" width="474" height="328"/>
+                <rect key="frame" x="0.0" y="0.0" width="525" height="581"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             </view>
             <toolbar key="toolbar" implicitIdentifier="7128B661-7BFF-4B44-98EC-FB94EA1DB10B" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="uDc-QX-Pto">
@@ -51,7 +51,7 @@
             <connections>
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
-            <point key="canvasLocation" x="-61" y="310"/>
+            <point key="canvasLocation" x="-35.5" y="335.5"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="YQP-MC-h0C"/>
         <pagecontroller transitionStyle="horizontalStrip" id="K2b-SZ-9Uc">
