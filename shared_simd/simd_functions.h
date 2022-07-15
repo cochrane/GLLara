@@ -148,34 +148,6 @@ static inline vec_float4 simd_smuladd(vec_float4 a, vec_float4 b, float c)
 #endif
 }
 
-static inline vec_float4 simd_pack_lo(vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    return _mm_unpacklo_ps(a, b);
-#elif defined(__VEC__)
-    return vec_mergeh(a, b);
-#else
-    const float *restrict aV = (const float *) &a;
-    const float *restrict bV = (const float *) &b;
-    
-    return simd_make(aV[0], bV[0], aV[1], bV[1]);
-#endif
-}
-
-static inline vec_float4 simd_pack_hi(vec_float4 a, vec_float4 b)
-{
-#if defined(__SSE__)
-    return _mm_unpackhi_ps(a, b);
-#elif defined(__VEC__)
-    return vec_mergel(a, b);
-#else
-    const float *restrict aV = (const float *) &a;
-    const float *restrict bV = (const float *) &b;
-    
-    return simd_make(aV[2], bV[2], aV[3], bV[3]);
-#endif
-}
-
 /*!
  * @abstract Vertauscht Elemente eines Vektors
  * @discussion Fuer SSE muss die Maske immer eine Compilezeit-Konstante sein.
@@ -194,7 +166,7 @@ static inline vec_float4 simd_shuffle(vec_float4 vec, unsigned char a, unsigned 
 #elif defined(__SPU__)
     return spu_shuffle(vec, vec, (vector unsigned char) {(a)*4+0, (a)*4+1, (a)*4+2, (a)*4+3,  (b)*4+0, (b)*4+1, (b)*4+2, (b)*4+3,  (c)*4+0, (c)*4+1, (c)*4+2, (c)*4+3,  (d)*4+0, (d)*4+1, (d)*4+2, (d)*4+3});
 #else
-    const float* restrict value = (const float *) &vec;
+    const float* value = (const float *) &vec;
     return (vec_float4) { value[a], value[b], value[c], value[d] };
 #endif /* __VEC__ || __SPU__ */
 }
@@ -317,24 +289,6 @@ static inline vec_uchar16 simd_conv16to8(const vec_ushort8 a, const vec_ushort8 
     const unsigned short *bS = (const unsigned short *) &b;
     return (vec_uchar16) { (unsigned char) aS[0], (unsigned char) aS[1], (unsigned char) aS[2], (unsigned char) aS[3], (unsigned char) aS[4], (unsigned char) aS[5], (unsigned char) aS[6], (unsigned char) aS[7], (unsigned char) bS[0], (unsigned char) bS[1], (unsigned char) bS[2], (unsigned char) bS[3], (unsigned char) bS[4], (unsigned char) bS[5], (unsigned char) bS[6], (unsigned char) bS[7] };
 #endif
-}
-
-#pragma mark AABBs
-
-static inline void simd_getAABBPoints(const vec_float4 min, const vec_float4 max, vec_float4 *points)
-{
-    vec_float4 xxyy = simd_pack_lo(min, max);
-    vec_float4 zzww = simd_pack_hi(min, max);
-    
-    points[0] = simd_mix(xxyy, zzww, 0, 2, 0, 2);
-    points[1] = simd_mix(xxyy, zzww, 0, 2, 1, 2);
-    points[2] = simd_mix(xxyy, zzww, 0, 3, 0, 2);
-    points[3] = simd_mix(xxyy, zzww, 0, 3, 1, 2);
-    
-    points[4] = simd_mix(xxyy, zzww, 1, 2, 0, 2);
-    points[5] = simd_mix(xxyy, zzww, 1, 2, 1, 2);
-    points[6] = simd_mix(xxyy, zzww, 1, 3, 0, 2);
-    points[7] = simd_mix(xxyy, zzww, 1, 3, 1, 2);
 }
 
 #pragma mark Ebenengleichung

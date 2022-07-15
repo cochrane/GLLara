@@ -28,6 +28,8 @@ import MetalKit
         })
         
         showSelection = UserDefaults.standard.bool(forKey: GLLPrefShowSkeleton)
+        
+        registerForDraggedTypes( [ NSPasteboard.PasteboardType.fileURL ] )
     }
     
     required init(coder: NSCoder) {
@@ -149,7 +151,7 @@ import MetalKit
                 item.positionX += deltaWorld.x;
                 item.positionZ += deltaWorld.z;
             }
-        } else if event.modifierFlags.contains(.shift) && !GLLView.wasdCharacters.intersection(keysDown).isEmpty {
+        } else if event.modifierFlags.contains(.shift) && GLLView.wasdCharacters.intersection(keysDown).isEmpty {
             // This is a move event
             guard let camera = camera, !camera.cameraLocked else {
                 return
