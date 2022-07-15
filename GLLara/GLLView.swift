@@ -363,7 +363,7 @@ import MetalKit
                     camera.longitude -= adjustedRotation.z * rotationSpeed;
                     camera.latitude += adjustedRotation.x * rotationSpeed;
                 } else {
-                    turnAroundCamera(deltaX: adjustedRotation.z * rotationSpeed, deltaY: adjustedRotation.x * rotationSpeed)
+                    turnAroundCamera(deltaX: adjustedRotation.z * rotationSpeed, deltaY: -adjustedRotation.x * rotationSpeed)
                 }
             }
             
@@ -378,7 +378,7 @@ import MetalKit
                     camera.longitude -= rotationX * rotationSpeed;
                     camera.latitude += rotationY * rotationSpeed;
                 } else {
-                    turnAroundCamera(deltaX: rotationX * rotationSpeed, deltaY: rotationY * rotationSpeed)
+                    turnAroundCamera(deltaX: rotationX * rotationSpeed, deltaY: -rotationY * rotationSpeed)
                 }
                 
                 if controllerRightStickMode == .moveCamera {
@@ -488,11 +488,11 @@ import MetalKit
         case rotateAroundCamera
     }
     var spaceMouseMode: CameraMovementMode {
-        return CameraMovementMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefSpaceMouseMode) ?? CameraMovementMode.rotateAroundTarget.rawValue) ?? .rotateAroundTarget
+        return CameraMovementMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefSpaceMouseMode) ?? CameraMovementMode.rotateAroundCamera.rawValue) ?? .rotateAroundCamera
     }
     
     var controllerLeftStickMode: CameraMovementMode {
-        return CameraMovementMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefControllerLeftStickMode) ?? CameraMovementMode.rotateAroundTarget.rawValue) ?? .rotateAroundTarget
+        return CameraMovementMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefControllerLeftStickMode) ?? CameraMovementMode.rotateAroundCamera.rawValue) ?? .rotateAroundCamera
     }
     
     var controllerRotationSpeedCamera: Double {
