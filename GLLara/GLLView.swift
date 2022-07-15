@@ -159,7 +159,7 @@ import MetalKit
             
             let deltaX = Float(event.deltaX / self.bounds.size.width)
             let deltaY = Float(event.deltaY / self.bounds.size.height)
-            camera.moveLocalX(deltaX, y: deltaY, z: 0)
+            camera.moveLocalX(-deltaX, y: deltaY, z: 0)
         } else if event.modifierFlags.contains(.control) {
             self.rightMouseDragged(with: event)
         } else {
@@ -453,8 +453,8 @@ import MetalKit
         // 1. Find current position
         let position = camera.cameraWorldPosition
         // 2. Calculate new position of target
-        let cameraRelativeLatitude = camera.latitude - deltaX
-        let cameraRelativeLongitude = camera.longitude - deltaY
+        let cameraRelativeLatitude = camera.latitude - deltaY
+        let cameraRelativeLongitude = camera.longitude - deltaX
         
         let viewDirection = simd_mat_euler(vec_float4(cameraRelativeLatitude, cameraRelativeLongitude, 0, 0), vec_float4(0, 0, 0, 1)) * vec_float4(0, 0, 1, 0)
         
