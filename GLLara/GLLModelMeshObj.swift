@@ -13,10 +13,10 @@ import Foundation
         super.init(asPartOfModel: model)
         countOfUVLayers = 1
         
+        self.countOfVertices = countOfVertices
+        
         let tangents = calculateTangents(for: fileVertexAccessors)
         vertexDataAccessors = fileVertexAccessors.combining(with: tangents)
-        
-        self.countOfVertices = countOfVertices
         
         self.elementData = elementData
         self.countOfElements = elementData.count / 4
@@ -30,7 +30,7 @@ import Foundation
         self.renderParameterValues = renderParameterValues
         
         let objModelParams = try GLLModelParams.parameters(forName: "objFileParameters")
-        shader = objModelParams.shader(base: "ObjDefault", modules: [], presentTextures: Array(textures.keys), vertexAccessors: vertexDataAccessors!, alphaBlending: true)
+        shader = objModelParams.shader(base: "default", modules: [], presentTextures: Array(textures.keys), vertexAccessors: vertexDataAccessors!, alphaBlending: true)
         
         // Always use blending, since I can't prove that it doesn't otherwise.
         usesAlphaBlending = true

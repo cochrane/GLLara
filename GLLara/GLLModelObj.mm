@@ -113,8 +113,6 @@
 
         // Setup material
         // Three options: Diffuse, DiffuseSpecular, DiffuseNormal, DiffuseSpecularNormal
-        GLLModelParams *objModelParams = [GLLModelParams parametersForName:@"objFileParameters" error:error];
-        NSAssert(objModelParams, @"obj file parameters must always exist");
         
         const GLLMtlFile::Material *material = NULL;
         for (auto iter = materialFiles.begin(); iter != materialFiles.end(); iter++)
@@ -126,7 +124,12 @@
             }
         }
         NSMutableDictionary *textures = [[NSMutableDictionary alloc] init];
-        NSDictionary *renderParameterValues = @{};
+        NSMutableDictionary *renderParameterValues = [[NSMutableDictionary alloc] initWithDictionary:
+                                                      @{ @"ambientColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],
+                                                         @"diffuseColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],
+                                                         @"specularColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],
+                                                         @"specularExponent": @(1.0)
+                                                      }];
         if (material) {
             if (material->diffuseTexture) {
                 textures[@"diffuseTexture"] = [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->diffuseTexture texCoordSet: 0];
@@ -137,17 +140,10 @@
             if (material->normalTexture) {
                 textures[@"bumpTexture"] = [[GLLTextureAssignment alloc] initWithUrl:(__bridge NSURL *) material->normalTexture texCoordSet: 0];
             }
-            renderParameterValues = @{ @"ambientColor" : [NSColor colorWithCalibratedRed:material->ambient[0] green:material->ambient[1] blue:material->ambient[2] alpha:material->ambient[3]],
-                                            @"diffuseColor" : [NSColor colorWithCalibratedRed:material->diffuse[0] green:material->diffuse[1] blue:material->diffuse[2] alpha:material->diffuse[3]],
-                                            @"specularColor" : [NSColor colorWithCalibratedRed:material->specular[0] green:material->specular[1] blue:material->specular[2] alpha:material->specular[3]],
-                                            @"specularExponent": @(material->shininess)
-                                            };
-        } else {
-            renderParameterValues = @{ @"ambientColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],
-                                            @"diffuseColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],
-                                            @"specularColor" : [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:1.0],
-                                            @"specularExponent": @(1.0)
-                                            };
+            renderParameterValues[@"ambientColor"] = [NSColor colorWithCalibratedRed:material->ambient[0] green:material->ambient[1] blue:material->ambient[2] alpha:material->ambient[3]];
+            renderParameterValues[@"diffuseColor"] = [NSColor colorWithCalibratedRed:material->diffuse[0] green:material->diffuse[1] blue:material->diffuse[2] alpha:material->diffuse[3]];
+            renderParameterValues[@"diffuseColor"] = [NSColor colorWithCalibratedRed:material->specular[0] green:material->specular[1] blue:material->specular[2] alpha:material->specular[3]];
+            renderParameterValues[@"specularExponent"] = @(material->shininess);
         }
         
         GLLModelMeshObj *mesh = [[GLLModelMeshObj alloc] initAsPartOfModel: self fileVertexAccessors:fileAccessors countOfVertices:NSInteger(globalToLocalVertices.size()) elementData:elementDataWrapped textures:textures renderParameterValues:renderParameterValues error:error];
