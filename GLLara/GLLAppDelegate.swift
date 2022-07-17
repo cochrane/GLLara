@@ -26,6 +26,7 @@ import Cocoa
             GLLPrefPoseExportIncludesUnused: false,
             GLLPrefPoseExportOnlySelected: true,
             GLLPrefShowSkeleton: true,
+            GLLPrefHideUnusedBones: true,
             GLLPrefSpaceMouseSpeedTranslation: 1,
             GLLPrefSpaceMouseDeadzoneTranslation: 0.0,
             GLLPrefSpaceMouseSpeedRotation: 90.0 * Double.pi / 180.0,

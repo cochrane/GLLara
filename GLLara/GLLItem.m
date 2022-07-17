@@ -270,6 +270,20 @@
     
     return combinedBones;
 }
+- (NSOrderedSet<GLLItemBone *> *)combinedUsedBones;
+{
+    NSOrderedSet<GLLItemBone *>* bones = [self valueForKeyPath:@"bones"];
+    NSMutableOrderedSet<GLLItemBone *> *combinedBones = [NSMutableOrderedSet orderedSetWithCapacity:bones.count];
+    for (GLLItemBone *bone in bones) {
+        if (![bone.bone.name hasPrefix:@"unused"]) {
+            [combinedBones addObject:bone];
+        }
+    }
+    for (GLLItem *child in [self valueForKeyPath:@"childItems"])
+        [combinedBones unionOrderedSet:child.combinedUsedBones];
+    
+    return combinedBones;
+}
 
 - (GLLItem *)rootItem
 {

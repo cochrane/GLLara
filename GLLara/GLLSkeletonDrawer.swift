@@ -51,6 +51,12 @@ import Metal
         verticesBuffer.label = "skeleton-vertices"
         elementsBuffer = device.makeBuffer(length: GLLSkeletonDrawer.elementCapacity(for: 512), options: .storageModeManaged)!
         elementsBuffer.label = "skeleton-elements"
+        
+        super.init()
+        
+        settingsChangedNotification = NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: OperationQueue.main) { [weak self] _ in
+            self?.displayedBones.removeAll()
+        }
     }
     
     private static func elementCapacity(for boneCount: Int) -> Int {
@@ -67,6 +73,11 @@ import Metal
     
     /// The selection. Stores only the root items for anything selected.
     private var selection: [GLLItem: [GLLItemBone]] = [:]
+    private var selectionObservers: [NSKeyValueObservation] = []
+    
+    // A private cache of which bones to display. Asking dynamically takes way too long
+    private var displayedBones: [GLLItem: NSOrderedSet] = [:]
+    private var settingsChangedNotification: NSObjectProtocol? = nil
     
     @objc var selectedBones: [GLLItemBone] {
         get {
@@ -74,28 +85,22 @@ import Metal
         }
         set {
             selection.removeAll()
+            selectionObservers.removeAll()
             for bone in newValue {
                 let root = bone.item.root!
                 if let existing = selection[root] {
                     selection[root] = existing + [bone]
                 } else {
                     selection[root] = [bone]
+                    for entry in root.combinedBones() {
+                        let anyBone = entry as! GLLItemBone
+                        selectionObservers.append(anyBone.observe(\.globalTransformValue, changeHandler: { [weak self] _,_ in
+                            self?.buffersNeedUpdate = true
+                        }))
+                    }
                 }
             }
-            buffersNeedUpdate = true
-        }
-    }
-    
-    var items: Set<GLLItem> {
-        get {
-            return Set(selection.keys)
-        }
-        set {
-            selection.removeAll()
-            for item in newValue {
-                let root = item.root!
-                selection[root] = Array(_immutableCocoaArray: root.combinedBones())
-            }
+            displayedBones.removeAll()
             buffersNeedUpdate = true
         }
     }
@@ -108,7 +113,21 @@ import Metal
     }
     
     private func updateBuffers() {
-        let numberOfBones = selection.keys.reduce(0, { count, item in count + item.combinedBones().count })
+        if selection.isEmpty {
+            return
+        }
+        if displayedBones.isEmpty {
+            let hideUnused = UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones)
+            for item in selection.keys {
+                if hideUnused {
+                    displayedBones[item] = item.combinedUsedBones()!
+                } else {
+                    displayedBones[item] = item.combinedBones()!
+                }
+            }
+        }
+        
+        let numberOfBones = selection.keys.reduce(0, { count, item in count + displayedBones[item]!.count })
         numberOfPoints = 2*numberOfBones
         
         if numberOfPoints > bufferCapacity {
@@ -130,9 +149,9 @@ import Metal
         let colorDefault = toRgba8(color: defaultColor)
         
         var elementsBase = 0
-        for item in items {
+        for item in selection.keys {
             var relativeOffset = 0
-            let bones = item.combinedBones()!
+            let bones = displayedBones[item]!
             for element in bones {
                 let bone = element as! GLLItemBone
                 

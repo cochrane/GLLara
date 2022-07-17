@@ -83,6 +83,7 @@ typedef NS_ENUM(int16_t, GLLItemChannelAssignment)
 // Bones
 - (GLLItemBone *)boneForName:(NSString *)name;
 - (NSOrderedSet<GLLItemBone *> *)combinedBones;
+- (NSOrderedSet<GLLItemBone *> *)combinedUsedBones;
 
 @end
 
