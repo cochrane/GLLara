@@ -9,7 +9,7 @@
 import Foundation
 import Metal
 
-@objc class GLLSkeletonDrawer: NSObject {
+class GLLSkeletonDrawer: NSObject {
     
     let device: MTLDevice
     let pipeline: MTLRenderPipelineState
@@ -26,7 +26,7 @@ import Metal
     
     private var numberOfPoints = 0
     
-    @objc init(resourceManager: GLLResourceManager) {
+    init(resourceManager: GLLResourceManager) {
         device = resourceManager.metalDevice
         let library = resourceManager.library
         
@@ -79,7 +79,7 @@ import Metal
     private var displayedBones: [GLLItem: NSOrderedSet] = [:]
     private var settingsChangedNotification: NSObjectProtocol? = nil
     
-    @objc var selectedBones: [GLLItemBone] {
+    var selectedBones: [GLLItemBone] {
         get {
             return selection.values.reduce(Array<GLLItemBone>(), { list, new in list + new })
         }
@@ -189,7 +189,7 @@ import Metal
         buffersNeedUpdate = false;
     }
     
-    @objc func draw(into commandEncoder: MTLRenderCommandEncoder) {
+    func draw(into commandEncoder: MTLRenderCommandEncoder) {
         if buffersNeedUpdate {
             updateBuffers()
         }

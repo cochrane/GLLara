@@ -12,7 +12,7 @@ import Metal
 @objc class GLLVertexAttribAccessorSet: NSObject {
     var accessors: [GLLVertexAttribAccessor]
     
-    @objc let vertexDescriptor: MTLVertexDescriptor
+    let vertexDescriptor: MTLVertexDescriptor
     
     @objc init(accessors: [GLLVertexAttribAccessor]) {
         self.accessors = accessors

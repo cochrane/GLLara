@@ -11,7 +11,7 @@ using namespace metal;
 
 struct RasterizerData {
     float4 position [[position]];
-    float2 screenSpacePosition;
+    float2 texCoord;
 };
 
 vertex RasterizerData squareVertex(uint vertexID [[ vertex_id ]],
@@ -19,15 +19,15 @@ vertex RasterizerData squareVertex(uint vertexID [[ vertex_id ]],
     RasterizerData out;
     
     float2 position = vertices[vertexID];
-    out.screenSpacePosition = position;
     out.position = float4(position, 0, 1);
+    
+    float2 texCoord = position * float2(0.5, -0.5) + float2(0.5);
+    out.texCoord = texCoord;
     
     return out;
 }
 
 fragment float4 squareFragment(RasterizerData in [[stage_in]], texture2d<float> texture [[ texture(0) ]]) {
     constexpr sampler textureSampler(mag_filter::linear, min_filter::linear);
-    float2 texCoord = (in.screenSpacePosition + float2(1.0f)) * 0.5f;
-    texCoord.y = 1.0f - texCoord.y;
-    return texture.sample(textureSampler, texCoord);
+    return texture.sample(textureSampler, in.texCoord);
 }

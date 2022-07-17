@@ -8,14 +8,14 @@
 
 import Foundation
 
-@objc class GLLModelDrawData: NSObject {
+class GLLModelDrawData {
     
     private let model: GLLModel
     private weak var resourceManager: GLLResourceManager?
     
     let meshDrawData: [GLLMeshDrawData]
     
-    @objc init(model: GLLModel, resourceManager: GLLResourceManager) {
+    init(model: GLLModel, resourceManager: GLLResourceManager) {
         self.model = model
         self.resourceManager = resourceManager
         

@@ -230,7 +230,7 @@ extension GLLFunctionConstant: Decodable {
      * The number of the texture coordinate set to use for the texture with the
      * given identifier. This is usually 0.
      */
-    @objc func texCoordSet(forTexture textureUniformName: String) -> Int {
+    func texCoordSet(forTexture textureUniformName: String) -> Int {
         return texCoordAssignments[textureUniformName] ?? 0
     }
     
@@ -242,11 +242,11 @@ extension GLLFunctionConstant: Decodable {
         return parameters.description(forTexture: textureUniformName)
     }
     
-    @objc var vertexName: String? {
+    var vertexName: String? {
         return base.vertex
     }
     
-    @objc var fragmentName: String? {
+    var fragmentName: String? {
         return base.fragment
     }
     
