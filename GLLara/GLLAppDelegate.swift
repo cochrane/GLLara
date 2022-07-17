@@ -13,6 +13,9 @@ import Cocoa
     var preferencesWindowController: GLLPreferencesWindowController? = nil
     
     override class func awakeFromNib() {
+    }
+    
+    func applicationDidFinishLaunching(_ notification: Notification) {
         UserDefaults.standard.register(defaults: [
             GLLPrefUseAnisotropy: true,
             GLLPrefUseMSAA: false,
@@ -29,11 +32,8 @@ import Cocoa
             GLLPrefSpaceMouseDeadzoneRotation: 0.0,
             GLLPrefSpaceMouseMode: GLLView.CameraMovementMode.rotateAroundTarget.rawValue,
             GLLPrefControllerCameraRotationSpeed: 30.0 * Double.pi / 180.0,
-            GLLPrefControllerCameraMovementSpeed: 1,
+            GLLPrefControllerCameraMovementSpeed: 1.0,
         ])
-    }
-    
-    func applicationDidFinishLaunching(_ notification: Notification) {
     }
     
     @IBAction func openPreferences(sender: Any?) {

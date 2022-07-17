@@ -172,8 +172,8 @@
 }
 - (BOOL)isChildOfAny:(id)boneSet;
 {
-    if ([boneSet containsObject:self]) return YES;
     if (!self.parent) return NO;
+    if ([boneSet containsObject:self.parent]) return YES;
     return [self.parent isChildOfAny:boneSet];
 }
 

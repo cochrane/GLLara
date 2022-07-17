@@ -18,22 +18,22 @@ import GameController
  * These devices are rare but fun. It works with classic HID interfaces
  * internally.
  */
-class GLLCameControllerManager: ObservableObject {
+class GLLGameControllerManager: ObservableObject {
     
     @Published var knownDevices: [GCController] = []
     
-    static let shared = GLLCameControllerManager()
+    static let shared = GLLGameControllerManager()
     
     init() {
-        for controller in GCController.controllers() {
-            if controller.extendedGamepad != nil {
-                self.knownDevices.append(controller)
-            }
-        }
         NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidConnect, object: nil, queue: nil) { notification in
-            if let controller = notification.object as? GCController, controller.extendedGamepad != nil {
+            if let controller = notification.object as? GCController, let gamepad =  controller.extendedGamepad {
                 self.knownDevices.append(controller)
-                // TODO Observe value changes to the gamepad to trigger the GLLView
+                
+                gamepad.valueChangedHandler = { gamepad, changedElement in
+                    if let view = GLLView.lastActiveView {
+                        view.gamepadChanged(gamepad: gamepad, element: changedElement)
+                    }
+                }
             }
         }
         NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidDisconnect, object: nil, queue: nil) { notification in

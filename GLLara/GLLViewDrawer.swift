@@ -352,6 +352,10 @@ import UniformTypeIdentifiers
         camera.actualWindowWidth = Float(size.width)
         camera.actualWindowHeight = Float(size.height)
         
+        if size.width == 0 || size.height == 0 {
+            return;
+        }
+        
         // Recreate textures
         surface = Surface(width: Int(size.width), height: Int(size.height), device: device)
     }

@@ -55,7 +55,7 @@ struct GLLControllerPreferencesView: View {
     
     @State var discoveringWirelessControllers = false
     
-    @ObservedObject var gameControllerManager = GLLCameControllerManager.shared
+    @ObservedObject var gameControllerManager = GLLGameControllerManager.shared
     @ObservedObject var spaceMouseManager = GLLSpaceMouseManager.shared
     
     var body: some View {
