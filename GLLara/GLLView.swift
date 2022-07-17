@@ -238,7 +238,7 @@ import GameController
             return
         }
         if let firstBone = item.bones.firstObject as? GLLItemBone {
-            document.selection.selectedBones = [ firstBone ]
+            document.selection.selectedObjects = [ firstBone ]
         }
     }
     
@@ -282,7 +282,7 @@ import GameController
             bone.isChild(ofAny: selectedBones)
         }
         if let first = filteredBones.first, let parent = first.parent {
-            document.selection.selectedBones = [ parent ]
+            document.selection.selectedObjects = [ parent ]
         }
     }
     
@@ -318,7 +318,7 @@ import GameController
             ancestorsOfSelected.contains(bone)
         }
         if let last = filteredBones.last, let firstChild = last.children.first {
-            document.selection.selectedBones = [ firstChild ]
+            document.selection.selectedObjects = [ firstChild ]
         }
     }
     
@@ -343,25 +343,34 @@ import GameController
         if let lastBone = selection?.last {
             if let parent = lastBone.parent {
                 let siblings = parent.children!
-                if let index = siblings.firstIndex(of: lastBone), index < siblings.count - 1 {
-                    document.selection.selectedBones = [ siblings[index + 1] ]
+                if let index = siblings.firstIndex(of: lastBone) {
+                    let nextIndex = index < siblings.count - 1 ? index + 1 : 0
+                    document.selection.selectedObjects = [ siblings[nextIndex] ]
                 }
             } else {
                 // If root bone: Either next root bone or next model
                 let item = lastBone.item!
                 let rootBones = item.rootBones!
-                if let index = rootBones.firstIndex(of: lastBone), index < rootBones.count - 1 {
-                    document.selection.selectedBones = [ item.rootBones[index + 1] ]
+                if let index = rootBones.firstIndex(of: lastBone) {
+                    let nextIndex = index < rootBones.count - 1 ? index + 1 : 0
+                    document.selection.selectedObjects = [ item.rootBones[nextIndex] ]
                 } else {
                     // Root of next item
                     let fetchRequest = NSFetchRequest<GLLItem>()
                     fetchRequest.entity = NSEntityDescription.entity(forEntityName: "GLLItem", in: managedObjectContext)
                     fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayName", ascending: true) ]
                     
-                    if let result = try? managedObjectContext.fetch(fetchRequest), let index = result.firstIndex(of: item), index < result.count - 1 {
-                        let nextItem = result[index + 1]
-                        if let firstRoot = nextItem.rootBones.first {
-                            document.selection.selectedBones = [ firstRoot ]
+                    if let result = try? managedObjectContext.fetch(fetchRequest), let index = result.firstIndex(of: item) {
+                        if index < result.count - 1 {
+                            let nextItem = result[index + 1]
+                            if let firstRoot = nextItem.rootBones.first {
+                                document.selection.selectedObjects = [ firstRoot ]
+                            }
+                        } else {
+                            let firstItem = result[0]
+                            if let lastRoot = firstItem.rootBones.last {
+                                document.selection.selectedObjects = [ lastRoot ]
+                            }
                         }
                     }
                 }
@@ -390,25 +399,34 @@ import GameController
         if let firstBone = selection?.first {
             if let parent = firstBone.parent {
                 let siblings = parent.children!
-                if let index = siblings.firstIndex(of: firstBone), index > 0 {
-                    document.selection.selectedBones = [ siblings[index - 1] ]
+                if let index = siblings.firstIndex(of: firstBone) {
+                    let nextIndex = index > 0 ? index - 1 : siblings.count - 1
+                    document.selection.selectedObjects = [ siblings[nextIndex] ]
                 }
             } else {
                 // If root bone: Either next root bone or next model
                 let item = firstBone.item!
                 let rootBones = item.rootBones!
-                if let index = rootBones.firstIndex(of: firstBone), index > 0 {
-                    document.selection.selectedBones = [ item.rootBones[index - 1] ]
+                if let index = rootBones.firstIndex(of: firstBone) {
+                    let nextIndex = index > 0 ? index - 1 : rootBones.count - 1
+                    document.selection.selectedObjects = [ item.rootBones[nextIndex] ]
                 } else {
                     // Root of previous item
                     let fetchRequest = NSFetchRequest<GLLItem>()
                     fetchRequest.entity = NSEntityDescription.entity(forEntityName: "GLLItem", in: managedObjectContext)
                     fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayName", ascending: true) ]
                     
-                    if let result = try? managedObjectContext.fetch(fetchRequest), let index = result.firstIndex(of: item), index > 0 {
-                        let previousItem = result[index - 1]
-                        if let lastRoot = previousItem.rootBones.last {
-                            document.selection.selectedBones = [ lastRoot ]
+                    if let result = try? managedObjectContext.fetch(fetchRequest), let index = result.firstIndex(of: item) {
+                        if index > 0 {
+                            let previousItem = result[index - 1]
+                            if let lastRoot = previousItem.rootBones.last {
+                                document.selection.selectedObjects = [ lastRoot ]
+                            }
+                        } else {
+                            let firstItem = result[0]
+                            if let firstRoot = firstItem.rootBones.first {
+                                document.selection.selectedObjects = [ firstRoot ]
+                            }
                         }
                     }
                 }
