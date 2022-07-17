@@ -647,24 +647,16 @@ import GameController
                     }
                 }
                 
-                var otherStickX = controller.extendedGamepad!.rightThumbstick.xAxis.value
-                var otherStickY = -controller.extendedGamepad!.rightThumbstick.yAxis.value
+                let otherStickX = controller.extendedGamepad!.rightThumbstick.xAxis.value
+                let otherStickY = -controller.extendedGamepad!.rightThumbstick.yAxis.value
                 let otherStickZ = controller.extendedGamepad!.leftTrigger.value * -1 + controller.extendedGamepad!.rightTrigger.value
                 if otherStickX != 0.0 || otherStickZ != 0.0 || otherStickY != 0.0 {
                     if controllerRightStickMode == .moveCamera {
                         let positionSpeed = Float(controllerMoveCameraSpeed * diff)
                         camera.moveLocalX(otherStickX * positionSpeed, y: otherStickZ * positionSpeed, z: otherStickY * positionSpeed)
                     } else if let bones = document?.selection.selectedBones, !bones.isEmpty {
-                        if controllerRightStickOneAxisOnly {
-                            // TODO Maybe we need to save some state here
-                            if otherStickX > otherStickY {
-                                otherStickX = 0
-                            } else {
-                                otherStickY = 0
-                            }
-                        }
                         if controllerRightStickMode == .moveBones {
-                            let movementSpeed = Float(controllerMoveCameraSpeed * 0.01 * diff)
+                            let movementSpeed = Float(controllerMoveCameraSpeed * 0.02 * diff)
                             for bone in bones {
                                 // Move bone
                                 bone.positionX += otherStickX * movementSpeed
@@ -672,7 +664,7 @@ import GameController
                                 bone.positionZ += otherStickY * movementSpeed
                             }
                         } else {
-                            let rotationSpeed = Float(controllerRotationSpeedCamera * 0.1 * diff)
+                            let rotationSpeed = Float(controllerRotationSpeedCamera * 0.2 * diff)
                             for bone in bones {
                                 // Rotate bone
                                 bone.rotationX += otherStickY * rotationSpeed
@@ -801,9 +793,5 @@ import GameController
     }
     var controllerRightStickMode: ControllerRightStickMode {
         return ControllerRightStickMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefControllerRightStickMode) ?? ControllerRightStickMode.moveCamera.rawValue) ?? .moveCamera
-    }
-    
-    var controllerRightStickOneAxisOnly: Bool {
-        return UserDefaults.standard.bool(forKey: GLLPrefControllerRightStickOneAxisOnly)
     }
 }

@@ -12,10 +12,7 @@ import Cocoa
     
     var preferencesWindowController: GLLPreferencesWindowController? = nil
     
-    override class func awakeFromNib() {
-    }
-    
-    func applicationDidFinishLaunching(_ notification: Notification) {
+    override init() {
         UserDefaults.standard.register(defaults: [
             GLLPrefUseAnisotropy: true,
             GLLPrefUseMSAA: false,
