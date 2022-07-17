@@ -31,6 +31,8 @@ import Cocoa
             GLLPrefSpaceMouseMode: GLLView.CameraMovementMode.rotateAroundTarget.rawValue,
             GLLPrefControllerCameraRotationSpeed: 30.0 * Double.pi / 180.0,
             GLLPrefControllerCameraMovementSpeed: 1.0,
+            GLLPrefControllerBoneMovementSpeed: 0.02,
+            GLLPrefControllerBoneRotationSpeed: 11.25 * Double.pi / 180.0
         ])
     }
     

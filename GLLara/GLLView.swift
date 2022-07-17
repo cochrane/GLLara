@@ -656,7 +656,7 @@ import GameController
                         camera.moveLocalX(otherStickX * positionSpeed, y: otherStickZ * positionSpeed, z: otherStickY * positionSpeed)
                     } else if let bones = document?.selection.selectedBones, !bones.isEmpty {
                         if controllerRightStickMode == .moveBones {
-                            let movementSpeed = Float(controllerMoveCameraSpeed * 0.02 * diff)
+                            let movementSpeed = Float(controllerMoveCameraSpeed * controllerMoveBoneSpeed * diff)
                             for bone in bones {
                                 // Move bone
                                 bone.positionX += otherStickX * movementSpeed
@@ -664,7 +664,7 @@ import GameController
                                 bone.positionZ += otherStickY * movementSpeed
                             }
                         } else {
-                            let rotationSpeed = Float(controllerRotationSpeedCamera * 0.2 * diff)
+                            let rotationSpeed = Float(controllerRotationSpeedCamera * controllerRotationSpeedBone * diff)
                             for bone in bones {
                                 // Rotate bone
                                 bone.rotationX += otherStickY * rotationSpeed
@@ -784,6 +784,14 @@ import GameController
     
     var controllerMoveCameraSpeed: Double {
         return UserDefaults.standard.double(forKey: GLLPrefControllerCameraMovementSpeed)
+    }
+    
+    var controllerRotationSpeedBone: Double {
+        return UserDefaults.standard.double(forKey: GLLPrefControllerBoneRotationSpeed)
+    }
+    
+    var controllerMoveBoneSpeed: Double {
+        return UserDefaults.standard.double(forKey: GLLPrefControllerBoneMovementSpeed)
     }
     
     enum ControllerRightStickMode: String {

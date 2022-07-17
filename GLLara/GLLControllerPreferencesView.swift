@@ -77,11 +77,21 @@ struct GLLControllerPreferencesView: View {
                             "\(value, specifier: "%.1f") unit/s"
                         })
                         ControllerPreferencesSlider(for: GLLPrefControllerCameraRotationSpeed, in : 0 ... 360.0*Double.pi/180.0, label: "Rotation:", valueDescription: { value in
-                            "\(speedRotation * 180.0 / Double.pi, specifier: "%.0f")°/s"
+                            "\(value * 180.0 / Double.pi, specifier: "%.0f")°/s"
+                        })
+                    }
+                    GroupBox("Posing bones") {
+                        ControllerPreferencesSlider(for: GLLPrefControllerBoneMovementSpeed, in : 0 ... 0.1, label: "Movement:", valueDescription: { value in
+                            "\(value, specifier: "%.2f") unit/s"
+                        })
+                        ControllerPreferencesSlider(for: GLLPrefControllerBoneRotationSpeed, in : 0 ... 90.0*Double.pi/180.0, label: "Rotation:", valueDescription: { value in
+                            "\(value * 180.0 / Double.pi, specifier: "%.1f")°/s"
                         })
                     }
                 }
+                .padding()
             }
+            .padding()
             
             GroupBox("3D Mouse") {
                 VStack(alignment: .leading) {
@@ -100,7 +110,7 @@ struct GLLControllerPreferencesView: View {
                     }
                     GroupBox("Rotation") {
                         ControllerPreferencesSlider(for: GLLPrefSpaceMouseSpeedRotation, in : 0 ... 360.0*Double.pi/180.0, label: "Speed:", valueDescription: { value in
-                            "\(speedRotation * 180.0 / Double.pi, specifier: "%.0f")°/s"
+                            "\(value * 180.0 / Double.pi, specifier: "%.0f")°/s"
                         })
                         ControllerPreferencesSlider(for: GLLPrefSpaceMouseDeadzoneRotation, in : 0 ... 1, label: "Dead zone:", valueDescription: { value in
                             "\(Int(value * 100)) %"
