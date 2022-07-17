@@ -26,7 +26,7 @@ func registerModelParams() {
                 ])
             ]),
         ]),
-        GLLShaderModule(name: "reflection", textureUniforms: [ "reflectionTexture" ], requiredVertexAttributes: [ "normal" ], activeBoolConstants: [ .hasReflection, .hasNormal ]),
+        GLLShaderModule(name: "reflection", textureUniforms: [ "reflectionTexture" ], parameterUniforms: [ "reflectionAmount"], requiredVertexAttributes: [ "normal" ], activeBoolConstants: [ .hasReflection, .hasNormal ]),
         GLLShaderModule(name: "lightmap", textureUniforms: [ "lightmapTexture" ], activeBoolConstants: [ .hasLightmap ], children: []),
         GLLShaderModule(name: "emission", textureUniforms: [ "emissionTexture" ], activeBoolConstants: [ .hasEmission ])
     ])
