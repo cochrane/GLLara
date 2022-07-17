@@ -19,6 +19,8 @@
     // visibility). Otherwise meshes starting with a "-" are alternate meshes,
     // to be shown when the part is turned off.
     BOOL initiallyAllInvisible;
+    
+    NSArray<GLLItemMesh*>* meshes;
 }
 
 - (void)recalculateInitialVisibility;
@@ -27,7 +29,7 @@
 - (void)addChild:(GLLOptionalPart *_Nonnull)child;
 
 // Checks whether the mesh belongs to this part.
-- (BOOL)meshBelongsToThisPart:(GLLItemMesh *)mesh;
+- (BOOL)containsMesh:(GLLItemMesh *)mesh;
 
 @end
 
@@ -44,9 +46,18 @@
     _parent = parent;
     _children = [NSMutableArray array];
     
+    NSMutableArray<GLLItemMesh*> *mutableMeshes = [[NSMutableArray alloc] init];
+    for (GLLItemMesh *mesh in self.item.meshes) {
+        if ([self containsMesh:mesh]) {
+            [mutableMeshes addObject:mesh];
+        }
+    }
+    meshes = [mutableMeshes copy];
+    
     [self recalculateInitialVisibility];
     if (parent)
         [parent addChild:self];
+    
     
     return self;
 }
@@ -54,10 +65,7 @@
 - (void)recalculateInitialVisibility; {
     BOOL haveVisibles = NO;
     BOOL haveInvisibles = NO;
-    for (GLLItemMesh *mesh in self.item.meshes) {
-        if (![self meshBelongsToThisPart:mesh]) {
-            continue;
-        }
+    for (GLLItemMesh *mesh in meshes) {
         haveInvisibles = haveInvisibles || !mesh.mesh.initiallyVisible;
         haveVisibles = haveVisibles || mesh.mesh.initiallyVisible;
         [mesh addObserver:self forKeyPath:@"isVisible" options:0 context:NULL];
@@ -79,9 +87,8 @@
 }
 
 - (void)dealloc {
-    for (GLLItemMesh *mesh in _item.meshes) {
-        if ([self meshBelongsToThisPart:mesh])
-            [mesh removeObserver:self forKeyPath:@"isVisible"];
+    for (GLLItemMesh *mesh in meshes) {
+        [mesh removeObserver:self forKeyPath:@"isVisible"];
     }
     for (GLLOptionalPart *child in _children) {
         [child removeObserver:self forKeyPath:@"visible"];
@@ -122,11 +129,7 @@
 - (id)visible {
     BOOL foundActive = NO;
     BOOL foundInactive = NO;
-    for (GLLItemMesh *mesh in self.item.meshes) {
-        if (![self meshBelongsToThisPart:mesh]) {
-            continue;
-        }
-        
+    for (GLLItemMesh *mesh in meshes) {
         if (mesh.mesh.initiallyVisible || initiallyAllInvisible) {
             // Supposed to be visible for this item
             foundActive = foundActive || mesh.isVisible;
@@ -162,11 +165,7 @@
     }
     
     [self willChangeValueForKey:@"visible"];
-    for (GLLItemMesh *mesh in self.item.meshes) {
-        if (![self meshBelongsToThisPart:mesh]) {
-            continue;
-        }
-        
+    for (GLLItemMesh *mesh in meshes) {
         if (initiallyAllInvisible || mesh.mesh.initiallyVisible) {
             // Visible for this item
             mesh.isVisible = [visible boolValue];
@@ -181,7 +180,7 @@
     [self didChangeValueForKey:@"visible"];
 }
 
-- (BOOL)meshBelongsToThisPart:(GLLItemMesh *)mesh {
+- (BOOL)containsMesh:(GLLItemMesh *)mesh {
     NSArray<NSString *> *nameParts = mesh.mesh.optionalPartNames;
     if (nameParts.count == 0)
         return NO;
