@@ -434,15 +434,28 @@ import GameController
         }
     }
     
+    private func selectGamepadMode(delta: Int) {
+        let current = controllerRightStickMode
+        let orderedModes: [ControllerRightStickMode] = [ .moveCamera, .rotateBones, .moveBones ]
+        if let index = orderedModes.firstIndex(of: current) {
+            var nextIndex = index + delta
+            if nextIndex < 0 {
+                nextIndex = orderedModes.count
+            }
+            let next = orderedModes[nextIndex % orderedModes.count]
+            UserDefaults.standard.set(next.rawValue, forKey: GLLPrefControllerRightStickMode)
+        }
+    }
+    
     func gamepadChanged(gamepad: GCExtendedGamepad, element: GCControllerElement) {
         // Left shoulder: Go to previous controller mode
         if element == gamepad.leftShoulder && buttonPressed(element: element) {
-            print("Left shoulder pressed")
+            selectGamepadMode(delta: -1)
         }
         
         // Right trigger: Go to next controller mode
         if element == gamepad.rightShoulder && buttonPressed(element: element) {
-            print("Right shoulder pressed")
+            selectGamepadMode(delta: +1)
         }
         
         // DPad: Go to different bone
@@ -459,7 +472,7 @@ import GameController
         }
         
         // Cleanup: Update "was pressed" state
-        for button in gamepad.allButtons {
+        if let button = element as? GCDeviceButtonInput {
             if button.isPressed {
                 buttonWasDown.insert(button)
             } else {
@@ -787,8 +800,7 @@ import GameController
         case moveBones
     }
     var controllerRightStickMode: ControllerRightStickMode {
-        return .rotateBones
-        //return ControllerRightStickMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefControllerRightStickMode) ?? ControllerRightStickMode.moveCamera.rawValue) ?? .moveCamera
+        return ControllerRightStickMode(rawValue: UserDefaults.standard.string(forKey: GLLPrefControllerRightStickMode) ?? ControllerRightStickMode.moveCamera.rawValue) ?? .moveCamera
     }
     
     var controllerRightStickOneAxisOnly: Bool {
