@@ -20,6 +20,10 @@
 #import "GLLara-Swift.h"
 
 @interface GLLItem ()
+{
+    NSOrderedSet* cachedCombinedBones;
+    id childItemsObserver;
+}
 
 - (void)_standardSetValue:(id)value forKey:(NSString *)key;
 - (void)_updateTransform;
@@ -103,6 +107,16 @@
 }
 
 #pragma mark - Non-standard attributes
+
+- (instancetype)init {
+    if (!(self = [super init])) {
+        return nil;
+    }
+    
+    [self addObserver:self forKeyPath:@"childItems" options:NSKeyValueObservingOptionNew context:0];
+    
+    return self;
+}
 
 - (void)awakeFromFetch
 {
@@ -264,11 +278,15 @@
 }
 - (NSOrderedSet<GLLItemBone *> *)combinedBones;
 {
+    if (cachedCombinedBones) {
+        return cachedCombinedBones;
+    }
     NSMutableOrderedSet<GLLItemBone *> *combinedBones = [NSMutableOrderedSet orderedSetWithOrderedSet:[self valueForKeyPath:@"bones"]];
     for (GLLItem *child in [self valueForKeyPath:@"childItems"])
         [combinedBones unionOrderedSet:child.combinedBones];
     
-    return combinedBones;
+    cachedCombinedBones = combinedBones;
+    return cachedCombinedBones;
 }
 - (NSOrderedSet<GLLItemBone *> *)combinedUsedBones;
 {
@@ -299,6 +317,14 @@
             return YES;
     }
     return NO;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
+    if ([keyPath isEqual:@"childItems"] && object == self) {
+        cachedCombinedBones = nil;
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 #pragma mark - Poses I/O
