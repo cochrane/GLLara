@@ -12,6 +12,7 @@ func registerModelParams() {
     let baseData = try! GLLModelParams(plistData: GLLModelParams.PlistDataTransferObject(shaders: [
     GLLShaderBase(name: "default", vertex: "xnaLaraVertex", fragment: "xnaLaraFragment", children: [
         GLLShaderModule(name: "skinning", requiredVertexAttributes: ["boneIndices", "boneWeights"], activeBoolConstants: [ .useSkinning ]),
+        GLLShaderModule(name: "skinningVariable", requiredVertexAttributes: ["boneDataOffsetLength"], activeBoolConstants: [ .hasVariableBoneWeights ]),
         GLLShaderModule(name: "diffuseTexture", textureUniforms: [ "diffuseTexture" ], activeBoolConstants: [ .hasDiffuseTexture ]),
         GLLShaderModule(name: "vertexColor", requiredVertexAttributes: [ "vertexColor" ], activeBoolConstants: [ .hasVertexColor ]),
         GLLShaderModule(name: "normalMap", textureUniforms: [ "bumpTexture" ], requiredVertexAttributes: [ "normal" ], activeBoolConstants: [ .calculateTangentWorld, .hasNormal

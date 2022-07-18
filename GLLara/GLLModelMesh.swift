@@ -56,10 +56,58 @@ import simd
         }
         
         countOfVertices = Int(stream.readUint32())
-        let fileVertexFormat = self.fileVertexFormat
-        guard let vertexData = stream.data(withLength: countOfVertices * fileVertexFormat.stride) else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
-                                                                                                                           NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The vertex data for a mesh could not be loaded.", comment: "Premature end of file error") ])
+        let fileAccessors: GLLVertexAttribAccessorSet
+        if (hasVariableBonesPerVertex) {
+            // Special difficult case!
+            var vertexData = Data(capacity: countOfVertices * Int(fileVertexFormat.stride))
+            var boneIndices: [UInt16] = []
+            var boneWeights: [Float] = []
+            let sizeToCopy = MemoryLayout<Float>.stride * 3 // position
+            + MemoryLayout<Float>.stride * 3 // normal
+            + MemoryLayout<UInt8>.stride * 4 // color
+            + MemoryLayout<Float>.stride * 2 * countOfUVLayers // tex coord
+            
+            for _ in 0 ..< countOfVertices {
+                // Vertices, normals, color, tex coords (no tangents)
+                vertexData.append(stream.data(withLength: sizeToCopy))
+                
+                // Variable number of bones
+                let numberOfBones = stream.readUint16()
+                let boneOffset = boneIndices.count
+                for _ in 0 ..< numberOfBones {
+                    boneIndices.append(stream.readUint16())
+                }
+                var weightSum: Float = 0.0
+                for _ in 0 ..< numberOfBones {
+                    let weight = stream.readFloat32()
+                    boneWeights.append(weight)
+                    weightSum += weight
+                }
+                if weightSum == 0.0 {
+                    boneWeights[boneOffset] = 1.0
+                    for i in 1 ..< numberOfBones {
+                        boneWeights[boneOffset + Int(i)] = 0.0
+                    }
+                } else {
+                    for i in 0 ..< numberOfBones {
+                        boneWeights[boneOffset + Int(i)] /= weightSum
+                    }
+                }
+                
+                // Append index and position
+                vertexData.append(UInt16(exactly: boneOffset)!)
+                vertexData.append(numberOfBones)
+            }
+            fileAccessors = accessors(forFile: vertexData, format: fileVertexFormat)
+            variableBoneIndices = boneIndices
+            variableBoneWeights = boneWeights
+        } else {
+            let fileVertexFormat = self.fileVertexFormat
+            guard let vertexData = stream.data(withLength: countOfVertices * fileVertexFormat.stride) else {
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
+                                                                                                                               NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The vertex data for a mesh could not be loaded.", comment: "Premature end of file error") ])
+            }
+            fileAccessors = accessors(forFile: vertexData, format: fileVertexFormat)
         }
         
         countOfElements = 3 * Int(stream.readUint32())
@@ -69,7 +117,6 @@ import simd
         self.elementData = elementData
         
         // Prepare the vertex data
-        let fileAccessors = accessors(forFile: vertexData, format: fileVertexFormat)
         
         try validate(vertexData: fileAccessors, indexData: elementData)
         
@@ -283,6 +330,9 @@ import simd
         // For subclasses to override
         return false
     }
+    
+    var variableBoneIndices: [UInt16]? = nil
+    var variableBoneWeights: [Float]? = nil
     
     /*
      * XNALara insists that some meshes need to be split; apparently only for cosmetic reasons. I shall oblige, but in a way that is not specific to exactly one thing, thank you very much. Note that this mesh keeps the bone indices of the original.
@@ -588,10 +638,9 @@ import simd
                 attributes.append(GLLVertexAttrib(semantic: .tangent0, layer: i, format: .float4))
             }
         } else if hasVariableBonesPerVertex {
-            // TODO implement this properly
-            attributes.append(GLLVertexAttrib(semantic: .padding, layer: 0, format: .ushort))
+            attributes.append(GLLVertexAttrib(semantic: .boneDataOffsetLength, layer: 0, format: .ushort2))
         }
-        if hasBoneWeights {
+        if hasBoneWeights && !hasVariableBonesPerVertex {
             attributes.append(GLLVertexAttrib(semantic: .boneIndices, layer: 0, format: .ushort4))
             attributes.append(GLLVertexAttrib(semantic: .boneWeights, layer: 0, format: .float4))
         }

@@ -494,6 +494,12 @@ extension Data {
         }
     }
     
+    mutating public func append(_ newElement: UInt16) {
+        _ = Swift.withUnsafeBytes(of: newElement) {
+            self.append(contentsOf: $0)
+        }
+    }
+    
     func checkedSubdata(in range: Range<Data.Index>) throws -> Data {
         if range.max() ?? 0 > self.count {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])

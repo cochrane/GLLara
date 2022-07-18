@@ -54,10 +54,10 @@ extension GLLFunctionConstant: Decodable {
             return .boneIndices
         case "boneWeights":
             return .boneWeights
+        case "boneDataOffsetLength":
+            return .boneDataOffsetLength
         case "tangents":
             return .tangent0
-        case "texCoord1":
-            return .texCoord0 // TODO Obviously bullshit, will need to rework this
         default:
             return nil
         }

@@ -18,6 +18,8 @@ class GLLMeshDrawData {
     let indicesStart: Int
     let elementsOrVerticesCount: Int
     let vertexArray: GLLVertexArray
+    let boneDataArray: MTLBuffer?
+    let boneIndexOffset: Int?
     
     init(mesh: GLLModelMesh, vertexArray array: GLLVertexArray, resourceManager: GLLResourceManager) {
         modelMesh = mesh
@@ -33,6 +35,20 @@ class GLLMeshDrawData {
         }
         
         vertexArray.add(vertices: mesh.vertexDataAccessors!, count: mesh.countOfVertices, elements: mesh.elementData, bytesPerElement: mesh.elementSize)
+        
+        if let boneIndices = mesh.variableBoneIndices, let boneWeights = mesh.variableBoneWeights {
+            let weightsSize = MemoryLayout<Float>.stride * boneWeights.count
+            let indicesSize = MemoryLayout<UInt16>.stride * boneIndices.count
+            
+            boneDataArray = resourceManager.metalDevice.makeBuffer(length: weightsSize + indicesSize, options: .storageModeShared)
+            boneDataArray!.contents().copyMemory(from: boneWeights, byteCount: weightsSize)
+            boneDataArray!.contents().advanced(by: weightsSize).copyMemory(from: boneIndices, byteCount: indicesSize)
+            boneDataArray!.label = mesh.displayName + "-bonedata"
+            boneIndexOffset = weightsSize
+        } else {
+            boneDataArray = nil
+            boneIndexOffset = nil
+        }
     }
     
 }

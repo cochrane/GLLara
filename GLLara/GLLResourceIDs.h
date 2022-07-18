@@ -16,7 +16,9 @@ typedef enum GLLVertexInputIndex {
     GLLVertexInputIndexTransforms,
     GLLVertexInputIndexLights,
     GLLVertexInputIndexViewport,
-    GLLVertexInputIndexVertices
+    GLLVertexInputIndexVertices,
+    GLLVertexInputIndexBoneIndexBuffer,
+    GLLVertexInputIndexBoneWeightBuffer,
 } GLLVertexInputIndex;
 
 typedef enum GLLFragmentArgumentIndex {

@@ -38,6 +38,7 @@ typedef NS_ENUM(NSInteger, GLLVertexAttribSemantic)
     GLLVertexAttribBoneIndices,
     GLLVertexAttribBoneWeights,
     GLLVertexAttribPadding,
+    GLLVertexAttribBoneDataOffsetLength,
     
     GLLVertexAttribTexCoord0,
     GLLVertexAttribTangent0,

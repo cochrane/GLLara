@@ -46,6 +46,7 @@ typedef NS_ENUM(NSInteger, GLLFunctionConstant) {
     GLLFunctionConstantHasLightmap,
     GLLFunctionConstantHasEmission,
     GLLFunctionConstantHasVertexColor,
+    GLLFunctionConstantHasVariableBoneWeights,
     
     GLLFunctionConstantBoolMax,
     

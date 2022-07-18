@@ -124,18 +124,19 @@ import AppKit
         }
     }
     
-    func pipeline(vertex: GLLVertexAttribAccessorSet, shader: GLLShaderData, numberOfTexCoordSets: Int, texCoordAssignments: [Int:Int]) throws -> GLLPipelineStateInformation {
+    func pipeline(vertex: GLLVertexAttribAccessorSet, shader: GLLShaderData, numberOfTexCoordSets: Int, texCoordAssignments: [Int:Int], hasVariableBoneWeights: Bool = false) throws -> GLLPipelineStateInformation {
         // TODO Does this work?
         let key: [String : AnyHashable] = [
             "shader": shader,
             "vertexDescriptor": vertex.vertexDescriptor,
             "numTexCoords": numberOfTexCoordSets,
-            "assignments": texCoordAssignments
+            "assignments": texCoordAssignments,
+            "variableBoneWeights": hasVariableBoneWeights
         ]
         
         return try value(key: key, from: &pipelines) {
-            let vertexFunction = try function(name: shader.vertexName!, shader: shader, numberOfTexCoordSets: numberOfTexCoordSets, texCoordAssignments: texCoordAssignments)
-            let fragmentFunction = try function(name: shader.fragmentName!, shader: shader, numberOfTexCoordSets: numberOfTexCoordSets, texCoordAssignments: texCoordAssignments)
+            let vertexFunction = try function(name: shader.vertexName!, shader: shader, numberOfTexCoordSets: numberOfTexCoordSets, texCoordAssignments: texCoordAssignments, hasVariableBoneWeights: hasVariableBoneWeights)
+            let fragmentFunction = try function(name: shader.fragmentName!, shader: shader, numberOfTexCoordSets: numberOfTexCoordSets, texCoordAssignments: texCoordAssignments, hasVariableBoneWeights: hasVariableBoneWeights)
             
             let descriptor = MTLRenderPipelineDescriptor()
             
@@ -164,13 +165,14 @@ import AppKit
     private var pipelines: [AnyHashable: GLLPipelineStateInformation] = [:]
     private var functions: [AnyHashable: MTLFunction] = [:]
     
-    private func function(name: String, shader: GLLShaderData, numberOfTexCoordSets: Int, texCoordAssignments: [Int:Int]) throws -> MTLFunction {
+    private func function(name: String, shader: GLLShaderData, numberOfTexCoordSets: Int, texCoordAssignments: [Int:Int], hasVariableBoneWeights: Bool) throws -> MTLFunction {
         // TODO does this work?
         let key: [String : AnyHashable] = [
             "name": name,
             "shader": shader,
             "numTexCoords": numberOfTexCoordSets,
-            "assignments": texCoordAssignments
+            "assignments": texCoordAssignments,
+            "variableBoneWeights": hasVariableBoneWeights
         ]
         
         return try value(key: key, from: &functions) {
@@ -185,6 +187,10 @@ import AppKit
                 }
             }
             constantValues.setConstantValues(valuesArray, type: .bool, range: 0 ..< valuesArray.count)
+            
+            // Not handled as a feature because it's part of the model file
+            var variableBoneWeights = hasVariableBoneWeights
+            constantValues.setConstantValue(&variableBoneWeights, type: .bool, index: GLLFunctionConstant.hasVariableBoneWeights.rawValue)
             
             // Assign value for tex coord
             var numTexCoords32 = Int32(numberOfTexCoordSets)

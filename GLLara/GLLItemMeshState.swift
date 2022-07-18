@@ -276,7 +276,7 @@ class GLLItemMeshState {
             }
         }
         
-        pipelineStateInformation = try! drawer.resourceManager.pipeline(vertex: meshData.vertexArray.optimizedFormat, shader: shader, numberOfTexCoordSets: itemMesh.mesh.countOfUVLayers, texCoordAssignments: texCoordAssignments)
+        pipelineStateInformation = try! drawer.resourceManager.pipeline(vertex: meshData.vertexArray.optimizedFormat, shader: shader, numberOfTexCoordSets: itemMesh.mesh.countOfUVLayers, texCoordAssignments: texCoordAssignments, hasVariableBoneWeights: itemMesh.mesh.variableBoneWeights != nil)
         
         argumentsEncoder = nil
         updateArgumentBuffer()
@@ -313,6 +313,11 @@ class GLLItemMeshState {
         commandEncoder.setFragmentBuffer(fragmentArgumentBuffer, offset: 0, index: Int(GLLFragmentBufferIndexArguments.rawValue))
         commandEncoder.setVertexBuffer(meshData.vertexArray.vertexBuffer, offset: 0, index: 10)
         commandEncoder.setCullMode(cullMode)
+        
+        if let boneDataBuffer = meshData.boneDataArray {
+            commandEncoder.setVertexBuffer(boneDataBuffer, offset: 0, index: Int(GLLVertexInputIndexBoneWeightBuffer.rawValue))
+            commandEncoder.setVertexBuffer(boneDataBuffer, offset: meshData.boneIndexOffset!, index: Int(GLLVertexInputIndexBoneIndexBuffer.rawValue))
+        }
 
         if let elementBuffer = meshData.vertexArray.elementBuffer {
             commandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: meshData.elementsOrVerticesCount, indexType: meshData.elementType, indexBuffer: elementBuffer, indexBufferOffset: meshData.indicesStart, instanceCount: 1, baseVertex: meshData.baseVertex, baseInstance: 0)

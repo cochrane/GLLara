@@ -30,6 +30,7 @@ constant bool hasDiffuseLighting [[ function_constant(GLLFunctionConstantHasDiff
 constant bool hasLightmap [[ function_constant(GLLFunctionConstantHasLightmap) ]];
 constant bool hasEmission [[ function_constant(GLLFunctionConstantHasEmission) ]];
 constant bool hasVertexColor [[ function_constant(GLLFunctionConstantHasVertexColor) ]];
+constant bool hasVariableBoneWeights [[ function_constant(GLLFunctionConstantHasVariableBoneWeights) ]];
 
 constant bool hasDepthPeelFrontBuffer [[ function_constant(GLLFunctionConstantHasDepthPeelFrontBuffer) ]];
 
@@ -43,12 +44,15 @@ constant bool hasTexCoord3 = numberOfTexCoordSets >= 4;
 constant bool hasTangentMatrixWorld = hasNormal && calculateTangentToWorld;
 constant bool hasNormalWorld = hasNormal && !calculateTangentToWorld;
 
+constant bool hasNormalSkinning = useSkinning && !hasVariableBoneWeights;
+
 struct XnaLaraInputData {
     float3 position [[ attribute(GLLVertexAttribPosition) ]];
     float3 normal [[ attribute(GLLVertexAttribNormal) ]];
     float4 color [[ attribute(GLLVertexAttribColor) ]];
-    ushort4 boneIndices [[ attribute(GLLVertexAttribBoneIndices), function_constant(useSkinning) ]];
-    float4 boneWeights [[ attribute(GLLVertexAttribBoneWeights), function_constant(useSkinning) ]];
+    ushort4 boneIndices [[ attribute(GLLVertexAttribBoneIndices), function_constant(hasNormalSkinning) ]];
+    float4 boneWeights [[ attribute(GLLVertexAttribBoneWeights), function_constant(hasNormalSkinning) ]];
+    ushort2 boneDataOffsetLength [[ attribute(GLLVertexAttribBoneDataOffsetLength), function_constant(hasVariableBoneWeights) ]];
     float2 texCoord0 [[ attribute(GLLVertexAttribTexCoord0 + 2 * 0), function_constant(hasTexCoord0) ]];
     float2 texCoord1 [[ attribute(GLLVertexAttribTexCoord0 + 2 * 1), function_constant(hasTexCoord1) ]];
     float2 texCoord2 [[ attribute(GLLVertexAttribTexCoord0 + 2 * 2), function_constant(hasTexCoord2) ]];
@@ -89,14 +93,25 @@ float3x3 upperLeft(float4x4 a) {
     return float3x3(a.columns[0].xyz, a.columns[1].xyz, a.columns[2].xyz);
 }
 
-vertex XnaLaraRasterizerData xnaLaraVertex(XnaLaraInputData in [[ stage_in ]],
-                                           const device float4x4 *bones [[ buffer(GLLVertexInputIndexTransforms) ]],
-                                           constant float4x4 & viewProjection [[ buffer(GLLVertexInputIndexViewProjection) ]]) {
+vertex XnaLaraRasterizerData xnaLaraVertex(
+    XnaLaraInputData in [[ stage_in ]],
+    const device float4x4 *bones [[ buffer(GLLVertexInputIndexTransforms) ]],
+    constant float4x4 & viewProjection [[ buffer(GLLVertexInputIndexViewProjection) ]],
+    const device ushort* boneIndices [[ buffer(GLLVertexInputIndexBoneIndexBuffer), function_constant(hasVariableBoneWeights) ]],
+    const device float* boneWeights [[ buffer(GLLVertexInputIndexBoneWeightBuffer), function_constant(hasVariableBoneWeights) ]]
+                                           ) {
     XnaLaraRasterizerData out;
     
     // Bones 0 is the permute for the normal values (TODO should it be?)
     float4x4 boneTransform;
-    if (useSkinning) {
+    if (hasVariableBoneWeights) {
+        boneTransform = float4x4(0);
+        for (ushort i = 0; i < in.boneDataOffsetLength.y; i++) {
+            const ushort index = boneIndices[in.boneDataOffsetLength.x + i];
+            const float weight = boneWeights[in.boneDataOffsetLength.x + i];
+            boneTransform += bones[index + 1] * weight;
+        }
+    } else if (useSkinning) {
         boneTransform = bones[in.boneIndices[0] + 1] * in.boneWeights[0]
                         + bones[in.boneIndices[1] + 1] * in.boneWeights[1]
                         + bones[in.boneIndices[2] + 1] * in.boneWeights[2]
