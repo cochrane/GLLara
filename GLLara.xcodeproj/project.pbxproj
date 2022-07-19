@@ -263,7 +263,6 @@
 		528934E816A29B8300F05312 /* GLLLightController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528934E716A29B8300F05312 /* GLLLightController.m */; };
 		528934EB16A332BD00F05312 /* GLLMeshListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528934EA16A332BC00F05312 /* GLLMeshListController.m */; };
 		528934EE16A3593500F05312 /* GLLBoneListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528934ED16A3593400F05312 /* GLLBoneListController.m */; };
-		52919A1515FDF0A7004ACBA5 /* cameratemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */; };
 		5291DB9415FBF7BE00ECDBCA /* GLLAmbientLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5291DB9315FBF7BD00ECDBCA /* GLLAmbientLight.m */; };
 		529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692C915F1568200DF2FA3 /* TRInDataStream.m */; };
 		529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692CB15F1568200DF2FA3 /* TROutDataStream.m */; };
@@ -743,7 +742,6 @@
 		528934EA16A332BC00F05312 /* GLLMeshListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLMeshListController.m; sourceTree = "<group>"; };
 		528934EC16A3593400F05312 /* GLLBoneListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneListController.h; sourceTree = "<group>"; };
 		528934ED16A3593400F05312 /* GLLBoneListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneListController.m; sourceTree = "<group>"; };
-		52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = cameratemplate.pdf; sourceTree = "<group>"; };
 		5291DB7F15FB711900ECDBCA /* Model Parameters (english).md */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Model Parameters (english).md"; sourceTree = "<group>"; };
 		5291DB9215FBF7BC00ECDBCA /* GLLAmbientLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAmbientLight.h; sourceTree = "<group>"; };
 		5291DB9315FBF7BD00ECDBCA /* GLLAmbientLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAmbientLight.m; sourceTree = "<group>"; };
@@ -961,7 +959,6 @@
 				5267F1B31615B2C400987717 /* moveChildren.pdf */,
 				5267F1B41615B2C400987717 /* moveNodeOnly.pdf */,
 				5267F1B51615B2C400987717 /* moveParent.pdf */,
-				52919A1415FDF0A7004ACBA5 /* cameratemplate.pdf */,
 			);
 			name = Images;
 			path = ../Images;
@@ -1710,7 +1707,6 @@
 				52BB21D115FCA6DC00937450 /* amanda_heavy.modelparams.plist in Resources */,
 				5227834B1C0A6088002E43FD /* GLLWindowSettingsPopoverView.xib in Resources */,
 				52BB21D715FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist in Resources */,
-				52919A1515FDF0A7004ACBA5 /* cameratemplate.pdf in Resources */,
 				526DD0E41EF4010C0033A327 /* Combined.fs in Resources */,
 				522783511C0A6091002E43FD /* GLLItemView.xib in Resources */,
 				52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */,

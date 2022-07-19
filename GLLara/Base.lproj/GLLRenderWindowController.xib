@@ -25,7 +25,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="549" height="465"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1415"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1470" height="919"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="549" height="465"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -66,8 +66,8 @@
                         </connections>
                     </popUpButton>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="69">
-                        <rect key="frame" x="521" y="2" width="25" height="17"/>
-                        <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="cameratemplate" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="70">
+                        <rect key="frame" x="519" y="2" width="27" height="17"/>
+                        <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="camera.fill" catalog="system" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="70">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
                         </buttonCell>
@@ -124,6 +124,7 @@
         </popover>
     </objects>
     <resources>
+        <image name="camera.fill" catalog="system" width="19" height="15"/>
         <image name="cameratemplate" width="15" height="10"/>
         <image name="moveChildren" width="14" height="10"/>
         <image name="moveNodeOnly" width="14" height="10"/>
