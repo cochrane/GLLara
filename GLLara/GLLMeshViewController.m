@@ -86,6 +86,7 @@
     [_selection addObserver:self forKeyPath:@"selectedMeshes" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
     _managedObjectContext = context;
     observedMeshes = [[NSMutableArray alloc] init];
+    _shaderObserver = [[GLLItemMeshShaderObserver alloc] initWithMesh:nil];
     
     _visible = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"isVisible" selection:selection];
     _usingBlending = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"isUsingBlending" selection:selection];
@@ -103,6 +104,10 @@
 - (void)loadView
 {
     [super loadView];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -237,7 +242,6 @@
     {
         renderParameterNames = @[];
         textureNames = @[];
-        self.possibleShaders = @[];
         
         [self.renderParametersView reloadData];
         [self.textureAssignmentsView reloadData];
@@ -257,31 +261,16 @@
     
     renderParameterNames = [parameterNames sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
     textureNames = [textureNamesSet sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
-    
-    // Find possible and actual shaders
-    self.possibleShaders = @[];
-    
+        
     [self.renderParametersView reloadData];
     [self.textureAssignmentsView reloadData];
     
-    // Reload the features view
-    if (self.shaderFeaturesView == nil) {
-        dispatch_after(1, dispatch_get_main_queue(), ^() { [self _findRenderParameterNames]; });
-        return;
-    }
-    if (selectedMeshes.count == 1) {
-        NSView *view = [[[GLLItemMeshShaderViewWrapper alloc] init] createShaderViewWithItemMesh:selectedMeshes[0]];
-        view.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        self.shaderFeaturesView.documentView = view;
-        NSClipView *clipView = self.shaderFeaturesView.contentView;
-        clipView.translatesAutoresizingMaskIntoConstraints = NO;
-        [clipView addConstraint:[NSLayoutConstraint constraintWithItem:clipView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]];
-        [clipView addConstraint:[NSLayoutConstraint constraintWithItem:clipView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
-        [clipView addConstraint:[NSLayoutConstraint constraintWithItem:clipView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0]];
-        [clipView addConstraint:[NSLayoutConstraint constraintWithItem:clipView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+    if (selectedMeshes.count == 1 && selectedMeshes[0]) {
+        if (_shaderObserver.mesh != selectedMeshes[0]) {
+            _shaderObserver.mesh = selectedMeshes[0];
+        }
     } else {
-        self.shaderFeaturesView.documentView = nil;
+        _shaderObserver.mesh = nil;
     }
 }
 

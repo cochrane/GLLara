@@ -1,4 +1,5 @@
 #  Version 0.3 todo
+To be clear: Not all of them will make it to 0.3
 
 ## Missing existing features
 
@@ -6,19 +7,21 @@
 - Fix automatic view updating (can’t do full automatic rendering on laptop). Maybe make target frame rate configurable or dependent on battery state.
     - Make updating of the GLLView pause once nothing is happening (and make it start up again if there is key down, mouse down, or value change on space mouse or game controller)
 - Add support for SSAA
+- Actually that shader feature view is ugly as hell. Redo it with an NSOutlineView
 
 ## Missing things from new features
 
 - Autogenerate the always present render parameters, in particular materials. Automatically replace specular intensity with specular color.
 - Add assign tex coord to textures in mesh view; consider redoing textures as normal table view
+- Game controller stuff (see further down)
 
 ## Completely new
 
-- Consider three-point light setup as default
-- Make the optional parts (handgun in hand and holster, Thor stuff) officially optional
-- Include feedback link that brings you to Github, with a form you can fill out
 - Add „show in finder“ context menu item to models
 - Add „show in finder“ context menu item to textures; show filename somewhere
+- Include feedback link that brings you to Github, with a form you can fill out
+- Consider three-point light setup as default
+- Make the optional parts (handgun in hand and holster, Thor stuff) officially optional
 
 ### Graphics features
 
@@ -63,11 +66,13 @@
 - Support for 3D mouse (still needs a hint on first launch if a 3D mouse is found and the setup page has never been shown before)
 - Support for gamepads now with Apple APIs instead of HID stuff (needs overview window, current state view, hint on first launch)
 - Game controller bonus feature: Use some key (menu?) to open context menu that allows accessing more features and settings. Features should include: Reset (bone and recursive), undo, redo, …
+- Actually use those invert X/Y settings we have
 
 ## Camera
 
 - Can we store the camera as a quaternion instead? (how to translate that back to euler angles for the UI?)
 - At least limit max camera up angle
+- Quaternion-based editing for bones perhaps?
 
 ## Refactoring
 

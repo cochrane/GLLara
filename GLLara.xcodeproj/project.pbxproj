@@ -193,7 +193,6 @@
 		524C706D16087B2C0038823B /* GLLWindowSettingsPopoverView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C706F16087B2C0038823B /* GLLWindowSettingsPopoverView.strings */; };
 		524C707016087B310038823B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C707216087B310038823B /* Localizable.strings */; };
 		524C707316087B350038823B /* MainMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C707516087B350038823B /* MainMenu.strings */; };
-		524F99AB2887300A0081F335 /* GLLItemMeshShaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524F99AA2887300A0081F335 /* GLLItemMeshShaderView.swift */; };
 		524F99AD288888DA0081F335 /* ShaderFeatures.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524F99AC288888DA0081F335 /* ShaderFeatures.strings */; };
 		5251BCE2162E248700973E0A /* GLLBasicBinaryModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE1162E248700973E0A /* GLLBasicBinaryModelTest.m */; };
 		5251BCE5162EA7F200973E0A /* GLLBasicASCIIModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE4162EA7F200973E0A /* GLLBasicASCIIModelTest.m */; };
@@ -642,7 +641,6 @@
 		524C706E16087B2C0038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GLLWindowSettingsPopoverView.strings; sourceTree = "<group>"; };
 		524C707116087B310038823B /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		524C707416087B350038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
-		524F99AA2887300A0081F335 /* GLLItemMeshShaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLItemMeshShaderView.swift; sourceTree = "<group>"; };
 		524F99AC288888DA0081F335 /* ShaderFeatures.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = ShaderFeatures.strings; sourceTree = "<group>"; };
 		5251BCE0162E248700973E0A /* GLLBasicBinaryModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBasicBinaryModelTest.h; sourceTree = "<group>"; };
 		5251BCE1162E248700973E0A /* GLLBasicBinaryModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBasicBinaryModelTest.m; sourceTree = "<group>"; };
@@ -1586,7 +1584,6 @@
 				523BBB042880BCB300B2D52E /* GLLGameControllerManager.swift */,
 				523BBB062880C78600B2D52E /* GLLPreferenceKeys.swift */,
 				5247C499288726E700AF4088 /* GLLItemMeshShaderObserver.swift */,
-				524F99AA2887300A0081F335 /* GLLItemMeshShaderView.swift */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1979,7 +1976,6 @@
 				5274447427FE428000E5A3FD /* GLLModelXNALara.swift in Sources */,
 				526D5AE62060596000DCDE85 /* GLLNotifications.m in Sources */,
 				5274447027FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift in Sources */,
-				524F99AB2887300A0081F335 /* GLLItemMeshShaderView.swift in Sources */,
 				52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */,
 				52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */,
 				52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */,

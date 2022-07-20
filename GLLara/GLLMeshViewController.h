@@ -12,6 +12,7 @@
 
 @class GLLSelection;
 @class GLLShaderDescription;
+@class GLLItemMeshShaderObserver;
 
 /*
  * @abstract View controller for a mesh.
@@ -23,7 +24,7 @@
 
 @property (nonatomic, assign) IBOutlet NSTableView *renderParametersView;
 @property (nonatomic, assign) IBOutlet NSTableView *textureAssignmentsView;
-@property (nonatomic, assign) IBOutlet NSScrollView *shaderFeaturesView;
+@property (nonatomic, assign) IBOutlet NSTreeController *shaderFeaturesController;
 
 @property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *visible;
 @property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *usingBlending;
@@ -32,7 +33,7 @@
 
 @property (nonatomic, readonly) GLLSelection *selection;
 
-@property (nonatomic) NSArray<GLLShaderDescription *> *possibleShaders;
+@property (nonatomic, readonly) GLLItemMeshShaderObserver *shaderObserver;
 
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 
