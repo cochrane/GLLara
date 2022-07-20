@@ -1,0 +1,26 @@
+/* 
+  ShaderFeatures.strings
+  GLLara
+
+  Created by Torsten Kammer on 20.07.22.
+  Copyright © 2022 Torsten Kammer. All rights reserved.
+*/
+
+"default" = "Default Shader";
+
+/* These two do the same thing but with different vertex data */
+"skinning" = "Skinning";
+"skinningVariable" = "Skinning";
+
+"diffuseTexture" = "Diffuse Texture";
+"vertexColor" = "Vertex Color";
+"normalMap" = "Bump Map";
+"normalDetailMap" = "Detail Bump Maps";
+"lighting" = "Lighting";
+"diffuseLighting" = "Diffuse";
+"specularLighting" = "Specular";
+"specularTexture" = "Specular Texture";
+"specularTextureScale" = "Texture Scale";
+"reflection" = "Reflection";
+"lightmap" = "Lightmap Texture";
+"emission" = "Emission Texture";

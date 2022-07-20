@@ -67,6 +67,8 @@
 {
     NSArray *renderParameterNames;
     NSArray *textureNames;
+    
+    NSMutableArray *observedMeshes;
 }
 
 - (void)_findRenderParameterNames;
@@ -83,6 +85,7 @@
     _selection = selection;
     [_selection addObserver:self forKeyPath:@"selectedMeshes" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
     _managedObjectContext = context;
+    observedMeshes = [[NSMutableArray alloc] init];
     
     _visible = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"isVisible" selection:selection];
     _usingBlending = [[GLLItemMeshSelectionPlaceholder alloc] initWithKeyPath:@"isUsingBlending" selection:selection];
@@ -108,7 +111,7 @@
     {
         [self _findRenderParameterNames];
     }
-    else if ([keyPath isEqual:@"selection.shader"])
+    else if ([keyPath isEqual:@"shader"])
     {
         [self _findRenderParameterNames];
     }
@@ -223,6 +226,11 @@
 
 - (void)_findRenderParameterNames;
 {
+    for (GLLItemMesh *mesh in observedMeshes) {
+        [mesh removeObserver:self forKeyPath:@"shader" context:0];
+    }
+    [observedMeshes removeAllObjects];
+    
     NSArray *selectedMeshes = [self.selection valueForKey:@"selectedMeshes"];
     
     if (selectedMeshes.count == 0)
@@ -240,10 +248,11 @@
     NSMutableSet *parameterNames = [[selectedMeshes[0] valueForKeyPath:@"renderParameters.name"] mutableCopy];
     NSMutableSet *textureNamesSet = [[selectedMeshes[0] valueForKeyPath:@"textures.identifier"] mutableCopy];
     
-    for (GLLItemMesh *mesh in selectedMeshes)
-    {
+    for (GLLItemMesh *mesh in selectedMeshes) {
         [parameterNames intersectSet:[mesh valueForKeyPath:@"renderParameters.name"]];
         [textureNamesSet intersectSet:[mesh valueForKeyPath:@"textures.identifier"]];
+        [mesh addObserver:self forKeyPath:@"shader" options:0 context:0];
+        [observedMeshes addObject:mesh];
     }
     
     renderParameterNames = [parameterNames sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES] ] ];
@@ -257,6 +266,7 @@
     
     // Reload the features view
     if (self.shaderFeaturesView == nil) {
+        dispatch_after(1, dispatch_get_main_queue(), ^() { [self _findRenderParameterNames]; });
         return;
     }
     if (selectedMeshes.count == 1) {

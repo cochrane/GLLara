@@ -48,7 +48,7 @@
 @property (nonatomic, copy, readonly) NSSet<NSString *> *shaderModules;
 
 // Local
-@property (nonatomic, retain, readonly) GLLShaderData *shader;
+@property (nonatomic, retain, readwrite) GLLShaderData *shader;
 
 // Called only internally and from child objects, in case some setting changed that requires a shader recompile
 - (void)updateShader;

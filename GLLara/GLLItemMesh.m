@@ -23,8 +23,6 @@
     __weak GLLModelMesh *underlyingMesh;
 }
 
-@property (nonatomic, retain, readwrite) GLLShaderData *shader;
-
 /*!
  * Assign the textures from the model to this item.
  * Used when creating this object, or when loading a (very) old file that was
@@ -260,7 +258,9 @@
         }
     }
     
+    [self willChangeValueForKey:@"shader"];
     self.shader = shaderDescription;
+    [self didChangeValueForKey:@"shader"];
 }
 
 #pragma mark - Derived

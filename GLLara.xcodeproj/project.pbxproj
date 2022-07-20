@@ -194,6 +194,7 @@
 		524C707016087B310038823B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C707216087B310038823B /* Localizable.strings */; };
 		524C707316087B350038823B /* MainMenu.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524C707516087B350038823B /* MainMenu.strings */; };
 		524F99AB2887300A0081F335 /* GLLItemMeshShaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524F99AA2887300A0081F335 /* GLLItemMeshShaderView.swift */; };
+		524F99AD288888DA0081F335 /* ShaderFeatures.strings in Resources */ = {isa = PBXBuildFile; fileRef = 524F99AC288888DA0081F335 /* ShaderFeatures.strings */; };
 		5251BCE2162E248700973E0A /* GLLBasicBinaryModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE1162E248700973E0A /* GLLBasicBinaryModelTest.m */; };
 		5251BCE5162EA7F200973E0A /* GLLBasicASCIIModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE4162EA7F200973E0A /* GLLBasicASCIIModelTest.m */; };
 		5251BCE8162EB84F00973E0A /* GLLInvalidBinaryModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE7162EB84F00973E0A /* GLLInvalidBinaryModelTest.m */; };
@@ -642,6 +643,7 @@
 		524C707116087B310038823B /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		524C707416087B350038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		524F99AA2887300A0081F335 /* GLLItemMeshShaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLItemMeshShaderView.swift; sourceTree = "<group>"; };
+		524F99AC288888DA0081F335 /* ShaderFeatures.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = ShaderFeatures.strings; sourceTree = "<group>"; };
 		5251BCE0162E248700973E0A /* GLLBasicBinaryModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBasicBinaryModelTest.h; sourceTree = "<group>"; };
 		5251BCE1162E248700973E0A /* GLLBasicBinaryModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBasicBinaryModelTest.m; sourceTree = "<group>"; };
 		5251BCE3162EA7F200973E0A /* GLLBasicASCIIModelTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBasicASCIIModelTest.h; sourceTree = "<group>"; };
@@ -938,6 +940,7 @@
 				52329F5416C1D76200338A0A /* Textures.strings */,
 				525ACD5415F0F1A700534E7D /* InfoPlist.strings */,
 				52B9E0B01602815800641518 /* RenderParameters.strings */,
+				524F99AC288888DA0081F335 /* ShaderFeatures.strings */,
 			);
 			name = Strings;
 			sourceTree = "<group>";
@@ -1773,6 +1776,7 @@
 				52423AF41604EB35009F5753 /* panther_thrall.modelparams.plist in Resources */,
 				52423AF51604EB35009F5753 /* panther.modelparams.plist in Resources */,
 				52423AF61604EB35009F5753 /* poacher.modelparams.plist in Resources */,
+				524F99AD288888DA0081F335 /* ShaderFeatures.strings in Resources */,
 				52423AF71604EB35009F5753 /* ponytail.modelparams.plist in Resources */,
 				52423AF81604EB35009F5753 /* recorder.modelparams.plist in Resources */,
 				52423AF91604EB35009F5753 /* scion1.modelparams.plist in Resources */,

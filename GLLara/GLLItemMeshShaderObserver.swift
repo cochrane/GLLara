@@ -33,7 +33,11 @@ class GLLItemMeshShaderObserver: ObservableObject {
     }
     
     private static func buildTree(module: GLLShaderModule?, item: GLLItemMesh) -> GLLShaderModuleObserver {
-        let childObservers = (module?.children ?? []).map { buildTree(module: $0, item: item) }
+        let vertexSemantics = (item.mesh.vertexDataAccessors?.accessors.map { $0.attribute.semantic }) ?? []
+        let childArray: [GLLShaderModule] = module?.children ?? []
+        let childObservers = childArray.filter { child in
+            return child.matches(vertexAttributes: vertexSemantics)
+        }.map { buildTree(module: $0, item: item) }
         return GLLShaderModuleObserver(item: item, module: module, children: childObservers)
     }
 }

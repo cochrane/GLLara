@@ -6,12 +6,6 @@
 - Fix automatic view updating (can’t do full automatic rendering on laptop). Maybe make target frame rate configurable or dependent on battery state.
     - Make updating of the GLLView pause once nothing is happening (and make it start up again if there is key down, mouse down, or value change on space mouse or game controller)
 - Add support for SSAA
-- UI to select shader features
-    - Needs localized names for features, descriptions
-    - Show only features that current file supports
-    - Disable children when parent gets disabled
-    - Some layout issues
-    - Add the missing render parameters, texture assignments when adding a feature
 
 ## Missing things from new features
 

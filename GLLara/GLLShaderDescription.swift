@@ -85,6 +85,15 @@ extension GLLFunctionConstant: Decodable {
         return true
     }
     
+    func matches(vertexAttributes: [GLLVertexAttribSemantic]) -> Bool {
+        guard let requiredVertexAttribEnums = requiredVertexAttribEnums else {
+            // Always true if no vertex attributes are required
+            return true
+        }
+        
+        return requiredVertexAttribEnums.allSatisfy { vertexAttributes.contains($0) }
+    }
+
     func descendantsMatching(textures: [String], vertexAttributes: [GLLVertexAttribSemantic]) -> [GLLShaderModule] {
         var descendants: [GLLShaderModule] = []
         if let children = children {
@@ -115,6 +124,8 @@ extension GLLFunctionConstant: Decodable {
     override var debugDescription: String {
         return super.debugDescription + " - " + self.name
     }
+    
+    lazy var localizedTitle: String = Bundle.main.localizedString(forKey: self.name, value: nil, table: "ShaderFeatures")
 }
 
 /**

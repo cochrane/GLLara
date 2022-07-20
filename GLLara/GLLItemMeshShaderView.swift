@@ -15,12 +15,12 @@ struct GLLShaderModuleView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Toggle(moduleObserver.module?.name ?? "No name", isOn: $moduleObserver.isIncluded)
+                Toggle(moduleObserver.module?.localizedTitle ?? "No name", isOn: $moduleObserver.isIncluded)
                     .disabled(ancestorDisabled)
             }
             ForEach($moduleObserver.children) { child in
                 HStack {
-                    Spacer(minLength: 20.0)
+                    Spacer().frame(minWidth: 20.0, idealWidth: 20.0, maxWidth: 20.0)
                     GLLShaderModuleView(moduleObserver: child, ancestorDisabled: ancestorDisabled || !moduleObserver.isIncluded)
                 }
             }
@@ -37,6 +37,7 @@ struct GLLItemMeshShaderView: View {
                 GLLShaderModuleView(moduleObserver: child, ancestorDisabled: false)
             }
         }
+        .padding()
     }
 }
 
