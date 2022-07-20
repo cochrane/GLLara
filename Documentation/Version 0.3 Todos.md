@@ -51,7 +51,6 @@
 - Make private list of interesting test files and what they test. 
 - Do something about NSKeyedUnarchiveFromData
 - Initial Visible state seems wrong sometimes (e.g. Ruby, Weiss from RWBY)
-- Detail normal map produces vastly wrong normals. They look better with the (also wrong) default lighting so I've never noticed, but I think it's been wrong since 2012.
 
 ## Stuff to think about if it becomes a performance issue
 

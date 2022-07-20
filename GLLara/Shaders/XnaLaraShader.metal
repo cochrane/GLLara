@@ -241,10 +241,12 @@ fragment float4 xnaLaraFragment(XnaLaraRasterizerData in [[ stage_in ]],
                 float2 maskColor = arguments.maskTexture.sample(textureSampler, in.texCoordFor(texCoordSetMask)).xy;
                 
                 float3 detailNormalMap1 = arguments.bump1Texture.sample(textureSampler, in.texCoordFor(texCoordSetBump1) * arguments.bump1UVScale).xyz;
-                normalMapColor += detailNormalMap1 * maskColor.x;
+                normalMapColor += detailNormalMap1 * maskColor.x * 0.5;
                 
                 float3 detailNormalMap2 = arguments.bump2Texture.sample(textureSampler, in.texCoordFor(texCoordSetBump2) * arguments.bump2UVScale).xyz;
-                normalMapColor += detailNormalMap2 * maskColor.y;
+                normalMapColor += detailNormalMap2 * maskColor.y * 0.5;
+                
+                normalMapColor /= (1 + maskColor.x*0.5 + maskColor.y*0.5);
             }
             float3 normalFromMap = normalMapColor * 2 - 1;
             float3x3 tangentMatrix(in.tangentToWorld0, in.tangentToWorld1, in.tangentToWorld2);
