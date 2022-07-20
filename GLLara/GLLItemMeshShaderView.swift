@@ -13,9 +13,11 @@ struct GLLShaderModuleView: View {
     var ancestorDisabled: Bool
     
     var body: some View {
-        VStack {
-            Toggle(moduleObserver.module.name, isOn: $moduleObserver.isIncluded)
-                .disabled(ancestorDisabled)
+        VStack(alignment: .leading) {
+            HStack {
+                Toggle(moduleObserver.module?.name ?? "No name", isOn: $moduleObserver.isIncluded)
+                    .disabled(ancestorDisabled)
+            }
             ForEach($moduleObserver.children) { child in
                 HStack {
                     Spacer(minLength: 20.0)
@@ -27,12 +29,20 @@ struct GLLShaderModuleView: View {
 }
 
 struct GLLItemMeshShaderView: View {
-    @ObservedObject var observer: GLLItemMeshShaderObserver
+    @StateObject var observer: GLLItemMeshShaderObserver
     
     var body: some View {
-        HStack {
-            Text("Features:")
-            GLLShaderModuleView(moduleObserver: $observer.root, ancestorDisabled: false)
+        VStack(alignment: .leading) {
+            ForEach($observer.root.children) { child in
+                GLLShaderModuleView(moduleObserver: child, ancestorDisabled: false)
+            }
         }
+    }
+}
+
+@objc class GLLItemMeshShaderViewWrapper: NSObject {
+    @objc func createShaderView(itemMesh: GLLItemMesh) -> NSView {
+        let observer = GLLItemMeshShaderObserver(item: itemMesh)
+        return NSHostingView(rootView: GLLItemMeshShaderView(observer: observer))
     }
 }

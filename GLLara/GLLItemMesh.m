@@ -172,10 +172,14 @@
         [nameHolder setValue:module forKey:@"name"];
         [shaderFeatures addObject:nameHolder];
     } else {
+        NSManagedObject *firstFound = nil;
         for (NSManagedObject *nameHolder in shaderFeatures) {
             if ([[nameHolder valueForKey:@"name"] isEqual:module]) {
-                [shaderFeatures removeObject:nameHolder];
+                firstFound = nameHolder;
             }
+        }
+        if (firstFound) {
+            [shaderFeatures removeObject:firstFound];
         }
     }
 }

@@ -736,6 +736,8 @@
 	</dict>
 	<key>defaultRenderParameters</key>
 	<dict>
+		<key>specularTextureScale</key>
+		<integer>1</integer>
 		<key>bump1UVScale</key>
 		<integer>1</integer>
 		<key>bumpUVScale</key>

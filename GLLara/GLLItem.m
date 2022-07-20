@@ -133,7 +133,11 @@
     NSURL *itemURL = self.itemURL;
     if (itemURL)
     {
-        GLLModel *model = [GLLModel cachedModelFromFile:itemURL parent:self.parent.model error:NULL];
+        NSError *error = nil;
+        GLLModel *model = [GLLModel cachedModelFromFile:itemURL parent:self.parent.model error:&error];
+        if (!model) {
+            NSLog(@"Could not load model due to %@", error);
+        }
         [self setPrimitiveValue:model forKey:@"model"];
     }
     

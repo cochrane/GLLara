@@ -23,6 +23,7 @@
 
 @property (nonatomic, assign) IBOutlet NSTableView *renderParametersView;
 @property (nonatomic, assign) IBOutlet NSTableView *textureAssignmentsView;
+@property (nonatomic, assign) IBOutlet NSScrollView *shaderFeaturesView;
 
 @property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *visible;
 @property (nonatomic, readonly) GLLMultipleSelectionPlaceholder *usingBlending;

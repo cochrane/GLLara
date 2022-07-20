@@ -254,6 +254,25 @@
     
     [self.renderParametersView reloadData];
     [self.textureAssignmentsView reloadData];
+    
+    // Reload the features view
+    if (self.shaderFeaturesView == nil) {
+        return;
+    }
+    if (selectedMeshes.count == 1) {
+        NSView *view = [[[GLLItemMeshShaderViewWrapper alloc] init] createShaderViewWithItemMesh:selectedMeshes[0]];
+        view.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        self.shaderFeaturesView.documentView = view;
+        NSClipView *clipView = self.shaderFeaturesView.contentView;
+        clipView.translatesAutoresizingMaskIntoConstraints = NO;
+        [clipView addConstraint:[NSLayoutConstraint constraintWithItem:clipView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]];
+        [clipView addConstraint:[NSLayoutConstraint constraintWithItem:clipView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
+        [clipView addConstraint:[NSLayoutConstraint constraintWithItem:clipView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0]];
+        [clipView addConstraint:[NSLayoutConstraint constraintWithItem:clipView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+    } else {
+        self.shaderFeaturesView.documentView = nil;
+    }
 }
 
 @end
