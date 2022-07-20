@@ -201,11 +201,6 @@
         
         [result.textureImage bind:@"imageURL" toObject:textureURLPlaceholder withKeyPath:@"value" options:nil];
         
-        //viewsForTextureNames[textureName] = result;
-        
-        //[placeholders addObject:textureDescriptionPlaceholder];
-        //[placeholders addObject:textureURLPlaceholder];
-        
         return result;
     }
     else

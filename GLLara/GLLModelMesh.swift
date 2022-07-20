@@ -614,13 +614,17 @@ import simd
             renderParameterValues[param.key] = param.value as AnyObject
         }
         guard let xnaLaraShaderData = meshParams.xnaLaraShaderData else {
-            print("No shader for \(name)")
+            print("No shader for \(name), using default")
+            shader = model!.parameters.shader(base: "default")!
+            initiallyVisible = false
             return
         }
         shader = model!.parameters.shader(xnaData: xnaLaraShaderData, vertexAccessors: vertexDataAccessors!, alphaBlending: usesAlphaBlending)
         
         if shader == nil {
-            print("No shader for \(name)")
+            print("No shader for \(name), using default")
+            shader = model!.parameters.shader(base: "default")
+            initiallyVisible = false
         }
     }
     

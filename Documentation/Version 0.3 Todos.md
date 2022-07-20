@@ -7,7 +7,6 @@ To be clear: Not all of them will make it to 0.3
 - Fix automatic view updating (can’t do full automatic rendering on laptop). Maybe make target frame rate configurable or dependent on battery state.
     - Make updating of the GLLView pause once nothing is happening (and make it start up again if there is key down, mouse down, or value change on space mouse or game controller)
 - Add support for SSAA
-- Actually that shader feature view is ugly as hell. Redo it with an NSOutlineView
 
 ## Missing things from new features
 
