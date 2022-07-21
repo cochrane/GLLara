@@ -30,7 +30,7 @@ constant bool hasDiffuseLighting [[ function_constant(GLLFunctionConstantHasDiff
 constant bool hasLightmap [[ function_constant(GLLFunctionConstantHasLightmap) ]];
 constant bool hasEmission [[ function_constant(GLLFunctionConstantHasEmission) ]];
 constant bool hasVertexColor [[ function_constant(GLLFunctionConstantHasVertexColor) ]];
-constant bool hasVariableBoneWeights [[ function_constant(GLLFunctionConstantHasVariableBoneWeights) ]];
+constant bool hasVariableBoneWeights [[ function_constant(GLLFunctionConstantHasVariableBoneWeights) ]];
 
 constant bool hasDepthPeelFrontBuffer [[ function_constant(GLLFunctionConstantHasDepthPeelFrontBuffer) ]];
 

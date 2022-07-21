@@ -66,11 +66,8 @@ class GLLItemMeshState {
         observations.append(itemMesh.observe(\.renderParameters) { [weak self] _,_ in
             _ = self?.updateParameterObjects()
         })
-        observations.append(itemMesh.observe(\.shaderModules) { [weak self] _,_ in
-            _ = self?.updatePipelineState()
-            self?.drawer.propertiesChanged()
-        })
         
+        updateTextureObjects()
     }
     
     private func updateTextureObjects() {
