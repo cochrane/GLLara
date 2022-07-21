@@ -6,32 +6,20 @@
 //  Copyright © 2021 Torsten Kammer. All rights reserved.
 //
 
-#ifdef __METAL_MACOS__
-
-#ifndef NS_ASSUME_NONNULL_BEGIN
-#define NS_ASSUME_NONNULL_BEGIN
-#endif
-
-#ifndef NS_ASSUME_NONNULL_END
-#define NS_ASSUME_NONNULL_END
-#endif
-
-#define NS_ENUM(a, b) enum b: a
-typedef int NSInteger;
-
-#else
+#ifndef __METAL_MACOS__
 
 #import <Foundation/Foundation.h>
 
 #endif
 
-NS_ASSUME_NONNULL_BEGIN
-
 /*!
  * @abstract Defines the indices for the different vertex attribute arrays.
  */
-typedef NS_ENUM(NSInteger, GLLVertexAttribSemantic)
-{
+#ifdef __cplusplus
+enum GLLVertexAttribSemantic {
+#else
+typedef NS_ENUM(NSInteger, GLLVertexAttribSemantic) {
+#endif
     GLLVertexAttribPosition,
     GLLVertexAttribNormal,
     GLLVertexAttribColor,
@@ -44,11 +32,12 @@ typedef NS_ENUM(NSInteger, GLLVertexAttribSemantic)
     GLLVertexAttribTangent0,
 };
 
-typedef NS_ENUM(NSInteger, GLLCullFaceMode)
-{
+#ifdef __cplusplus
+enum GLLCullFaceMode {
+#else
+typedef NS_ENUM(NSInteger, GLLCullFaceMode) {
+#endif
     GLLCullCounterClockWise,
     GLLCullClockWise,
     GLLCullNone
 };
-
-NS_ASSUME_NONNULL_END
