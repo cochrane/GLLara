@@ -20,6 +20,8 @@ To be clear: Not all of them will make it to 0.3
 - Add „show in finder“ context menu item to textures; show filename somewhere
 - Include feedback link that brings you to Github, with a form you can fill out
 - Consider three-point light setup as default
+    - Floor
+    - Camera Position
 - Make the optional parts (handgun in hand and holster, Thor stuff) officially optional
 
 ### Graphics features

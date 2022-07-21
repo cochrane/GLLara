@@ -199,7 +199,6 @@
 		5251BCE8162EB84F00973E0A /* GLLInvalidBinaryModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5251BCE7162EB84F00973E0A /* GLLInvalidBinaryModelTest.m */; };
 		52528D711D6ABFF1002E0074 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52FC0EA21D6A0E8B00C04885 /* QuartzCore.framework */; };
 		52528D751D6AC2AA002E0074 /* GLLTiming.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52528D731D6AC2AA002E0074 /* GLLTiming.cpp */; };
-		5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5254601B16DAB41C00919729 /* NSCharacterSet+SetOperations.m */; };
 		525ACD4C15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD5615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD5415F0F1A700534E7D /* InfoPlist.strings */; };
 		525ACD5815F0F1A700534E7D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5715F0F1A700534E7D /* main.m */; };
@@ -650,8 +649,6 @@
 		5251BCE7162EB84F00973E0A /* GLLInvalidBinaryModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLInvalidBinaryModelTest.m; sourceTree = "<group>"; };
 		52528D731D6AC2AA002E0074 /* GLLTiming.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLLTiming.cpp; sourceTree = "<group>"; };
 		52528D741D6AC2AA002E0074 /* GLLTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTiming.h; sourceTree = "<group>"; };
-		5254601A16DAB41C00919729 /* NSCharacterSet+SetOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+SetOperations.h"; sourceTree = "<group>"; };
-		5254601B16DAB41C00919729 /* NSCharacterSet+SetOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+SetOperations.m"; sourceTree = "<group>"; };
 		525ACD4715F0F1A700534E7D /* GLLara.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLLara.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD4B15F0F1A700534E7D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		525ACD4E15F0F1A700534E7D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -1138,8 +1135,6 @@
 				524BEB0C1612551800EA061D /* NSColor+Color32Bit.m */,
 				52ED9E3916999E370082EABB /* NSArray+Map.h */,
 				52ED9E3A16999E370082EABB /* NSArray+Map.m */,
-				5254601A16DAB41C00919729 /* NSCharacterSet+SetOperations.h */,
-				5254601B16DAB41C00919729 /* NSCharacterSet+SetOperations.m */,
 				52232EAD1EFC57D4007FE9AD /* XYAlignedSquare.obj */,
 			);
 			name = "Supporting Files";
@@ -2036,7 +2031,6 @@
 				5213F8831C0E411C007A9EBB /* GLLPreferencesWindowController.m in Sources */,
 				522783AD1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m in Sources */,
 				526756AA16BF543800FB85CA /* GLLImageView.m in Sources */,
-				5254601C16DAB41C00919729 /* NSCharacterSet+SetOperations.m in Sources */,
 				5214470116DBBBEC003E260F /* GLLAmbientLightViewController.m in Sources */,
 				5214470416DBBC42003E260F /* GLLLightViewController.m in Sources */,
 				5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.m in Sources */,

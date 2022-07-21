@@ -8,7 +8,6 @@
         <customObject id="-2" userLabel="File's Owner" customClass="GLLMeshViewController">
             <connections>
                 <outlet property="renderParametersView" destination="69" id="335"/>
-                <outlet property="shaderFeaturesController" destination="JhK-sS-oVr" id="ibl-6M-1GX"/>
                 <outlet property="textureAssignmentsView" destination="425" id="449"/>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
@@ -88,8 +87,8 @@
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
                                                                 <connections>
-                                                                    <binding destination="AJH-U4-CVv" name="title" keyPath="objectValue.name" id="6lu-IZ-AtA"/>
                                                                     <binding destination="AJH-U4-CVv" name="value" keyPath="objectValue.included" id="RhS-03-zs7"/>
+                                                                    <binding destination="AJH-U4-CVv" name="title" keyPath="objectValue.name" id="6lu-IZ-AtA"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -249,14 +248,14 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </tableHeaderView>
                         </scrollView>
-                        <scrollView fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="61" horizontalPageScroll="10" verticalLineScroll="61" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="424">
+                        <scrollView fixedFrame="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="59" horizontalPageScroll="10" verticalLineScroll="59" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="424">
                             <rect key="frame" x="0.0" y="317" width="490" height="133"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <clipView key="contentView" id="Yav-IB-V54">
                                 <rect key="frame" x="0.0" y="0.0" width="490" height="133"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="59" rowSizeStyle="automatic" headerView="427" viewBased="YES" id="425">
+                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="57" rowSizeStyle="automatic" headerView="427" viewBased="YES" id="425">
                                         <rect key="frame" x="0.0" y="0.0" width="490" height="105"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <size key="intercellSpacing" width="3" height="2"/>
