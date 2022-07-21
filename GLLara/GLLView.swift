@@ -22,15 +22,29 @@ import GameController
         sampleCount = 1
         
         notificationObservers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.GLLTextureChange, object: nil, queue: OperationQueue.main) { [weak self] notification in
-            self?.needsDisplay = true
+            self?.unpause()
         })
         notificationObservers.append(NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: OperationQueue.main) { [weak self] notification in
             self?.showSelection = UserDefaults.standard.bool(forKey: GLLPrefShowSkeleton)
+        })
+        notificationObservers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.GLLSceneDrawerNeedsUpdate, object: nil, queue: OperationQueue.main) { [weak self] notification in
+            self?.unpause()
         })
         
         showSelection = UserDefaults.standard.bool(forKey: GLLPrefShowSkeleton)
         
         registerForDraggedTypes( [ NSPasteboard.PasteboardType.fileURL ] )
+        
+        // Trigger loading of manager
+        _ = GLLGameControllerManager.shared
+    }
+    
+    func unpause() {
+        if isPaused {
+            lastPositionUpdate = Date.timeIntervalSinceReferenceDate
+        }
+        somethingChangedLastFrame = true
+        isPaused = false
     }
     
     required init(coder: NSCoder) {
@@ -81,7 +95,7 @@ import GameController
         
         let angle = event.rotation * Float.pi / 180.0
         camera.longitude -= angle
-        needsDisplay = true
+        unpause()
     }
     
     override func magnify(with event: NSEvent) {
@@ -90,7 +104,7 @@ import GameController
         }
         
         camera.distance *= Float(1 + event.magnification)
-        needsDisplay = true
+        unpause()
     }
     
     override func beginGesture(with event: NSEvent) {
@@ -111,7 +125,7 @@ import GameController
         }
         camera.managedObjectContext?.undoManager?.setActionName(NSLocalizedString("Camera changed", comment: "Undo: data of camera has changed"))
         camera.managedObjectContext?.undoManager?.endUndoGrouping()
-        needsDisplay = true
+        unpause()
     }
     
     override func scrollWheel(with event: NSEvent) {
@@ -121,7 +135,7 @@ import GameController
         
         camera.currentPositionX += Float(event.deltaX / bounds.size.width)
         camera.currentPositionY += Float(event.deltaY / bounds.size.height)
-        needsDisplay = true
+        unpause()
     }
     
     override func mouseDragged(with event: NSEvent) {
@@ -172,7 +186,7 @@ import GameController
             camera.latitude -= Float(event.deltaY * Double.pi / self.bounds.size.height);
         }
         
-        needsDisplay = true
+        unpause()
     }
     
     override func rightMouseDragged(with event: NSEvent) {
@@ -185,6 +199,7 @@ import GameController
     override func keyDown(with event: NSEvent) {
         keysDown.formUnion(CharacterSet(charactersIn: event.charactersIgnoringModifiers?.lowercased() ?? ""))
         currentModifierFlags = event.modifierFlags
+        unpause()
     }
     
     override func mouseDown(with event: NSEvent) {
@@ -206,16 +221,19 @@ import GameController
                     document.selection.selectedBones = [bone]
                 }
             }
+            unpause()
         }
     }
     
     override func keyUp(with event: NSEvent) {
         keysDown.subtract(CharacterSet(charactersIn: event.charactersIgnoringModifiers?.lowercased() ?? ""))
         currentModifierFlags = event.modifierFlags
+        unpause()
     }
     
     override func flagsChanged(with event: NSEvent) {
         currentModifierFlags = event.modifierFlags
+        unpause()
     }
     
     private var buttonWasDown = Set<GCControllerButtonInput>()
@@ -479,12 +497,25 @@ import GameController
                 buttonWasDown.remove(button)
             }
         }
+        
+        // Draw a frame
+        self.contiuousInputActive = true
+        unpause()
     }
+    
+    private var somethingChangedLastFrame = true
     
     override func draw() {
         updatePositions()
         
         super.draw()
+        
+        if !contiuousInputActive && !somethingChangedLastFrame {
+            isPaused = true
+        }
+        if somethingChangedLastFrame {
+            somethingChangedLastFrame = false
+        }
     }
     
     // MARK: - Drag and drop
@@ -538,6 +569,15 @@ import GameController
         return (adjusted.replacing(with: 0.0, where: insideDeadzone), insideDeadzone)
     }
     
+    // Whether any continuous input is going on, including keyboard or controllers
+    private var contiuousInputActive: Bool = false {
+        didSet {
+            if contiuousInputActive {
+                unpause()
+            }
+        }
+    }
+    
     private func updatePositions() {
         let now = Date.timeIntervalSinceReferenceDate
         var diff = now - (lastPositionUpdate ?? now)
@@ -554,8 +594,11 @@ import GameController
         let (adjustedPosition, positionInsideDeadzone) = adjustForDeadzone(vector: rawSpaceMousePosition, deadzone: spaceMouseDeadZoneTranslation)
         
         // Check whether we should still be moving
-        if GLLView.interestingCharacters.intersection(keysDown).isEmpty && currentModifierFlags.isDisjoint(with: [.shift, .option]) && all(rotationInsideDeadzone) && all(positionInsideDeadzone) {
+        if GLLView.interestingCharacters.intersection(keysDown).isEmpty && currentModifierFlags.isDisjoint(with: [.shift, .option]) && all(rotationInsideDeadzone) && all(positionInsideDeadzone) && !currentControllerActive {
+            contiuousInputActive = false
+            return
         }
+        contiuousInputActive = true
         
         // Perform actions
         // - Move
@@ -677,6 +720,13 @@ import GameController
             }
         }
     }
+    
+    private var currentControllerActive: Bool {
+        guard let gamepad = GCController.current?.extendedGamepad else {
+            return false
+        }
+        return gamepad.leftTrigger.value != 0 || gamepad.rightTrigger.value != 0 || gamepad.leftThumbstick.xAxis.value != 0 || gamepad.leftThumbstick.yAxis.value != 0 || gamepad.rightThumbstick.xAxis.value != 0 || gamepad.rightThumbstick.yAxis.value != 0
+    }
         
     /**
      Returns 1 if any "positive" keys are pressed and none of the "negative" ones, -1 if any of the "negative" keys are pressed and none of the positive ones, and 0 if keys from neither or both sets are pressed
@@ -750,6 +800,8 @@ import GameController
         // 3. Calculate new rotation of camera
         camera.longitude -= deltaX;
         camera.latitude -= deltaY;
+        
+        unpause()
     }
     
     // TODO Read from prefs

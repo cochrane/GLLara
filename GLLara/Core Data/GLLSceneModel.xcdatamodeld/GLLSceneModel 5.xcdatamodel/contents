@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D91" minimumToolsVersion="Xcode 4.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G72" minimumToolsVersion="Xcode 4.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="GLLAmbientLight" representedClassName="GLLAmbientLight" parentEntity="GLLLight" syncable="YES">
         <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
@@ -11,7 +11,7 @@
         <attribute name="index" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="latitude" attributeType="Float" minValueString="-1.5707963267949" maxValueString="1.5707963267949" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="longitude" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="nearDistance" attributeType="Float" minValueString="1e-05" defaultValueString="0.1" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="nearDistance" attributeType="Float" minValueString="1e-05" defaultValueString="0.01" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="positionX" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="positionY" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="positionZ" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
@@ -107,7 +107,7 @@
     </entity>
     <elements>
         <element name="GLLAmbientLight" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="GLLCamera" positionX="0" positionY="0" width="128" height="270"/>
+        <element name="GLLCamera" positionX="0" positionY="0" width="128" height="254"/>
         <element name="GLLCameraTarget" positionX="0" positionY="0" width="128" height="90"/>
         <element name="GLLColorRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLDirectionalLight" positionX="0" positionY="0" width="128" height="120"/>

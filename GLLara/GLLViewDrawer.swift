@@ -60,16 +60,16 @@ import UniformTypeIdentifiers
         keyValueObservers.append(camera.observe(\.viewProjectionMatrix) { [weak self] _,_ in
             self?.needsUpdateMatrices = true
             self?.needsUpdateLights = true
-            self?.view?.needsDisplay = true
+            self?.view?.unpause()
         })
         keyValueObservers.append(ambientLight.observe(\.color) { [weak self] _,_ in
             self?.needsUpdateLights = true
-            self?.view?.needsDisplay = true
+            self?.view?.unpause()
         })
         for light in directionalLights {
             keyValueObservers.append(light.observe(\.uniformBlock) { [weak self] _,_ in
                 self?.needsUpdateLights = true
-                self?.view?.needsDisplay = true
+                self?.view?.unpause()
             })
         }
         

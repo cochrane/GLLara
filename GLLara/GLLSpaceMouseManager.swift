@@ -142,6 +142,10 @@ class GLLSpaceMouseManager: ObservableObject {
         
         if let state = knownDevices.first(where: { $0.device == device }) {
             state.valueChanged(element: element, newValue: value)
+            
+            if let view = GLLView.lastActiveView {
+                view.unpause()
+            }
         }
     }
     

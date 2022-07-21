@@ -39,6 +39,17 @@ class GLLGameControllerManager: ObservableObject {
         NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidDisconnect, object: nil, queue: nil) { notification in
             self.knownDevices.removeAll { $0 == notification.object as? GCController }
         }
+        for controller in GCController.controllers() {
+            if let gamepad = controller.extendedGamepad, !self.knownDevices.contains(controller) {
+                self.knownDevices.append(controller)
+                
+                gamepad.valueChangedHandler = { gamepad, changedElement in
+                    if let view = GLLView.lastActiveView {
+                        view.gamepadChanged(gamepad: gamepad, element: changedElement)
+                    }
+                }
+            }
+        }
     }
     
     var firstDeviceName: String? {
