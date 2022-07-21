@@ -78,22 +78,14 @@
                         </connections>
                     </button>
                     <segmentedControl hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="202">
-                        <rect key="frame" x="1" y="0.0" width="94" height="19"/>
+                        <rect key="frame" x="1" y="0.0" width="96" height="19"/>
                         <segmentedCell key="cell" controlSize="small" borderStyle="border" alignment="left" segmentDistribution="fill" style="texturedSquare" trackingMode="selectOne" id="203">
                             <font key="font" metaFont="smallSystem"/>
                             <segments>
-                                <segment toolTip="Move camera" image="cameratemplate">
-                                    <nil key="label"/>
-                                </segment>
-                                <segment toolTip="Move bone and all children" image="moveChildren" selected="YES" tag="1">
-                                    <nil key="label"/>
-                                </segment>
-                                <segment toolTip="Move bone but not children" image="moveNodeOnly">
-                                    <nil key="label"/>
-                                </segment>
-                                <segment toolTip="Move bone and parent" image="moveParent">
-                                    <nil key="label"/>
-                                </segment>
+                                <segment toolTip="Move camera" image="camera.fill" catalog="system"/>
+                                <segment toolTip="Move bone and all children" image="moveChildren" selected="YES" tag="1"/>
+                                <segment toolTip="Move bone but not children" image="moveNodeOnly"/>
+                                <segment toolTip="Move bone and parent" image="moveParent"/>
                             </segments>
                         </segmentedCell>
                     </segmentedControl>
@@ -127,7 +119,6 @@
     </objects>
     <resources>
         <image name="camera.fill" catalog="system" width="19" height="15"/>
-        <image name="cameratemplate" width="15" height="10"/>
         <image name="moveChildren" width="14" height="10"/>
         <image name="moveNodeOnly" width="14" height="10"/>
         <image name="moveParent" width="14" height="10"/>

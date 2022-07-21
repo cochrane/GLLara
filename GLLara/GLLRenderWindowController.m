@@ -45,7 +45,7 @@
     [super windowDidLoad];
         
     self.popoverButton.image.template = YES;
-    for (NSInteger i = 0; i < self.selectionModeControl.segmentCount; i++)
+    for (NSInteger i = 1; i < self.selectionModeControl.segmentCount; i++)
         [[self.selectionModeControl imageForSegment:i] setTemplate:YES];
     
     self.window.delegate = self;
