@@ -17,7 +17,7 @@ import Cocoa
             GLLPrefUseAnisotropy: true,
             GLLPrefUseMSAA: false,
             GLLPrefAnisotropyAmount: 4,
-            GLLPrefMSAAAmount: 0,
+            GLLPrefMSAAAmount: 2,
             GLLPrefObjExportIncludesTransforms: true,
             GLLPrefObjExportIncludesVertexColors: false,
             GLLPrefPoseExportIncludesUnused: false,

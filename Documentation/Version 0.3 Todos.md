@@ -1,10 +1,6 @@
 #  Version 0.3 todo
 To be clear: Not all of them will make it to 0.3
 
-## Missing existing features
-
-- Add support for SSAA
-
 ## Missing things from new features
 
 - Autogenerate the always present render parameters, in particular materials. Automatically replace specular intensity with specular color.

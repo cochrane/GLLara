@@ -67,6 +67,10 @@ import UniformTypeIdentifiers
                 self?.view?.unpause()
             })
         }
+        notificationObservers.append(NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: OperationQueue.main) { [weak self] notification in
+            self?.updateScaleFactor()
+        })
+        updateScaleFactor()
         
         view.delegate = self
     }
@@ -82,6 +86,25 @@ import UniformTypeIdentifiers
     private var lightBuffer: MTLBuffer
     private var needsUpdateLights = true
     private var keyValueObservers: [NSKeyValueObservation] = []
+    private var notificationObservers: [NSObjectProtocol] = []
+    
+    private var internalBufferScaleFactor = 1.0
+    private func updateScaleFactor() {
+        let newScaleFactor: Double
+        if UserDefaults.standard.bool(forKey: GLLPrefUseMSAA) {
+            newScaleFactor = 2.0
+        } else {
+            newScaleFactor = 1.0
+        }
+        if newScaleFactor != internalBufferScaleFactor {
+            internalBufferScaleFactor = newScaleFactor
+            // Recreate textures
+            if let view = view {
+                let size = view.drawableSize
+                surface = Surface(width: Int(size.width * internalBufferScaleFactor), height: Int(size.height * internalBufferScaleFactor), device: device)
+            }
+        }
+    }
     
     // Depth peeling
     private struct Surface {
@@ -260,7 +283,7 @@ import UniformTypeIdentifiers
         }
         
         // Recreate textures
-        surface = Surface(width: Int(size.width), height: Int(size.height), device: device)
+        surface = Surface(width: Int(size.width * internalBufferScaleFactor), height: Int(size.height * internalBufferScaleFactor), device: device)
     }
     
     private func draw(commandBuffer: MTLCommandBuffer, viewRenderPassDescriptor: MTLRenderPassDescriptor, surface: Surface, includeUI: Bool = true) {

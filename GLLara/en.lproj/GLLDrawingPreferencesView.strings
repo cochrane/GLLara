@@ -1,6 +1,6 @@
 
 /* Class = "NSButtonCell"; title = "Use Multisampling"; ObjectID = "5cs-Sn-xsp"; */
-"5cs-Sn-xsp.title" = "Use Multisampling";
+"5cs-Sn-xsp.title" = "Use 2x Supersampling";
 
 /* Class = "NSButtonCell"; title = "Use Anisotropy"; ObjectID = "Ext-sQ-x96"; */
 "Ext-sQ-x96.title" = "Use Anisotropy";
