@@ -247,6 +247,9 @@ static NSOperationQueue *imageInformationQueue = nil;
     
     // Find pixel format
     MTLTextureDescriptor *descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA8Unorm width:file.width height:file.height mipmapped:file.hasMipmaps];
+    if (self.device.hasUnifiedMemory) {
+        descriptor.storageMode = MTLStorageModeShared;
+    }
     
     if (file.numMipmaps != 0) {
         if (file.numMipmaps != descriptor.mipmapLevelCount) {
@@ -520,6 +523,9 @@ static NSOperationQueue *imageInformationQueue = nil;
     int numberOfLevels = numMipmapLevels(self.width, self.height);
     
     MTLTextureDescriptor* descriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatBGRA8Unorm width:self.width height:self.height mipmapped:YES];
+    if (self.device.hasUnifiedMemory) {
+        descriptor.storageMode = MTLStorageModeShared;
+    }
     if (order == GLLTextureOrderARGB) {
         // Metal does not support any alpha-first formats, and we need ARGB for the unpremultiply to work, so swizzle
         // A -> B

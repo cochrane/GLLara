@@ -9,6 +9,7 @@ To be clear: Not all of them will make it to 0.3
 
 - Autogenerate the always present render parameters, in particular materials. Automatically replace specular intensity with specular color.
 - Add assign tex coord to textures in mesh view; consider redoing textures as normal table view
+    - Maybe also redo render parameters as normal table view? Dream would be a combined view including features, numeric values, color values and textures (with coordinates), similar in overall design to how Metal shows resources
 - Game controller stuff (see further down)
 
 ## Completely new
