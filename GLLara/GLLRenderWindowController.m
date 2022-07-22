@@ -124,6 +124,7 @@
                                                                                     @"width" : @(pixelRect.size.width),
                                                                                     @"height" : @(pixelRect.size.height),
                                                                                     @"maxSamples" : @8,
+                                                                                    @"transparentBackground": @NO
                                                                                     }];
     
     NSSavePanel *savePanel = [NSSavePanel savePanel];
@@ -146,9 +147,10 @@
         
         NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
         NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
+        bool transparentBackground = [saveData[@"transparentBackground"] boolValue];
         
         NSError *writeError = nil;
-        if (![self.renderView.viewDrawer writeImageTo:savePanel.URL fileType:self->savePanelAccessoryViewController.selectedFileType size:CGSizeMake(width, height) error:&writeError]) {
+        if (![self.renderView.viewDrawer writeImageTo:savePanel.URL fileType:self->savePanelAccessoryViewController.selectedFileType size:CGSizeMake(width, height) transparentBackground:transparentBackground error:&writeError]) {
             [self presentError:writeError];
         }
     }];

@@ -13,59 +13,11 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="1">
-            <rect key="frame" x="0.0" y="0.0" width="297" height="130"/>
+            <rect key="frame" x="0.0" y="0.0" width="297" height="150"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5">
-                    <rect key="frame" x="72" y="49" width="205" height="21"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="6">
-                        <numberFormatter key="formatter" formatterBehavior="custom10_4" allowsFloats="NO" usesGroupingSeparator="NO" lenient="YES" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" positiveSuffix=" Px" id="68">
-                            <integer key="minimum" value="1"/>
-                        </numberFormatter>
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="-2" name="maxValue" keyPath="maxSize" id="sDM-zb-t6r"/>
-                        <binding destination="-2" name="minValue" keyPath="minSize" previousBinding="sDM-zb-t6r" id="j9i-k0-Jee"/>
-                        <binding destination="3" name="value" keyPath="selection.width" previousBinding="j9i-k0-Jee" id="SMt-K1-hm8"/>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="10">
-                    <rect key="frame" x="18" y="52" width="48" height="16"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Width:" id="11">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="14">
-                    <rect key="frame" x="72" y="20" width="205" height="21"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="16">
-                        <numberFormatter key="formatter" formatterBehavior="custom10_4" allowsFloats="NO" usesGroupingSeparator="NO" lenient="YES" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" positiveSuffix=" Px" id="67">
-                            <integer key="minimum" value="1"/>
-                        </numberFormatter>
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <binding destination="-2" name="maxValue" keyPath="maxSize" id="P6f-h1-7w6"/>
-                        <binding destination="-2" name="minValue" keyPath="minSize" previousBinding="P6f-h1-7w6" id="P5d-0P-uWQ"/>
-                        <binding destination="3" name="value" keyPath="selection.height" previousBinding="P5d-0P-uWQ" id="rdN-m1-y6g"/>
-                    </connections>
-                </textField>
-                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="20">
-                    <rect key="frame" x="18" y="23" width="48" height="16"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Height:" id="21">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="70">
-                    <rect key="frame" x="17" y="86" width="264" height="25"/>
+                    <rect key="frame" x="17" y="106" width="264" height="25"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="73" id="71">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -83,25 +35,86 @@
                         <binding destination="-2" name="selectedObject" keyPath="selectedFileType" previousBinding="b7Z-eA-GaO" id="pEW-pR-euL"/>
                     </connections>
                 </popUpButton>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NgL-Dl-Yhs">
+                    <rect key="frame" x="70" y="19" width="207" height="18"/>
+                    <buttonCell key="cell" type="check" title="Transparent background" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Q39-wf-fBb">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="3" name="value" keyPath="selection.transparentBackground" id="XIS-Lf-Lzw"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5">
+                    <rect key="frame" x="72" y="75" width="205" height="21"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="6">
+                        <numberFormatter key="formatter" formatterBehavior="custom10_4" allowsFloats="NO" usesGroupingSeparator="NO" lenient="YES" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" positiveSuffix=" Px" id="68">
+                            <integer key="minimum" value="1"/>
+                        </numberFormatter>
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="maxValue" keyPath="maxSize" id="sDM-zb-t6r"/>
+                        <binding destination="-2" name="minValue" keyPath="minSize" previousBinding="sDM-zb-t6r" id="j9i-k0-Jee"/>
+                        <binding destination="3" name="value" keyPath="selection.width" previousBinding="j9i-k0-Jee" id="SMt-K1-hm8"/>
+                    </connections>
+                </textField>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="10">
+                    <rect key="frame" x="18" y="78" width="48" height="16"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Width:" id="11">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="14">
+                    <rect key="frame" x="72" y="44" width="205" height="21"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="16">
+                        <numberFormatter key="formatter" formatterBehavior="custom10_4" allowsFloats="NO" usesGroupingSeparator="NO" lenient="YES" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" positiveSuffix=" Px" id="67">
+                            <integer key="minimum" value="1"/>
+                        </numberFormatter>
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="-2" name="maxValue" keyPath="maxSize" id="P6f-h1-7w6"/>
+                        <binding destination="-2" name="minValue" keyPath="minSize" previousBinding="P6f-h1-7w6" id="P5d-0P-uWQ"/>
+                        <binding destination="3" name="value" keyPath="selection.height" previousBinding="P5d-0P-uWQ" id="rdN-m1-y6g"/>
+                    </connections>
+                </textField>
+                <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="20">
+                    <rect key="frame" x="18" y="47" width="48" height="16"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Height:" id="21">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="10" firstAttribute="baseline" secondItem="5" secondAttribute="baseline" id="12"/>
-                <constraint firstItem="20" firstAttribute="baseline" secondItem="14" secondAttribute="baseline" id="23"/>
-                <constraint firstAttribute="trailing" secondItem="5" secondAttribute="trailing" constant="20" symbolic="YES" id="54"/>
-                <constraint firstAttribute="trailing" secondItem="14" secondAttribute="trailing" constant="20" symbolic="YES" id="55"/>
-                <constraint firstAttribute="trailing" secondItem="70" secondAttribute="trailing" constant="20" symbolic="YES" id="78"/>
-                <constraint firstItem="70" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="81"/>
-                <constraint firstItem="5" firstAttribute="top" secondItem="70" secondAttribute="bottom" constant="20" id="84"/>
-                <constraint firstItem="70" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" symbolic="YES" id="85"/>
-                <constraint firstItem="20" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="88"/>
-                <constraint firstItem="10" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="90"/>
-                <constraint firstItem="14" firstAttribute="leading" secondItem="20" secondAttribute="trailing" constant="8" symbolic="YES" id="154"/>
-                <constraint firstItem="14" firstAttribute="leading" secondItem="5" secondAttribute="leading" id="158"/>
-                <constraint firstItem="5" firstAttribute="leading" secondItem="10" secondAttribute="trailing" constant="8" symbolic="YES" id="159"/>
-                <constraint firstAttribute="bottom" secondItem="14" secondAttribute="bottom" constant="20" symbolic="YES" id="162"/>
-                <constraint firstItem="14" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="8" id="PAF-J1-PeQ"/>
+                <constraint firstItem="14" firstAttribute="leading" secondItem="20" secondAttribute="trailing" constant="8" symbolic="YES" id="29E-WC-CD8"/>
+                <constraint firstItem="70" firstAttribute="trailing" secondItem="5" secondAttribute="trailing" id="30v-z2-Roh"/>
+                <constraint firstItem="70" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" symbolic="YES" id="3Ey-xL-QpV"/>
+                <constraint firstItem="70" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="3VS-ng-y9y"/>
+                <constraint firstItem="14" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="10" symbolic="YES" id="EA2-ei-T0F"/>
+                <constraint firstAttribute="bottom" secondItem="NgL-Dl-Yhs" secondAttribute="bottom" constant="20" symbolic="YES" id="Mg3-Vj-ANl"/>
+                <constraint firstItem="14" firstAttribute="leading" secondItem="NgL-Dl-Yhs" secondAttribute="leading" id="OsA-Bn-PI1"/>
+                <constraint firstItem="5" firstAttribute="leading" secondItem="10" secondAttribute="trailing" constant="8" symbolic="YES" id="R77-4T-Ai4"/>
+                <constraint firstItem="70" firstAttribute="leading" secondItem="10" secondAttribute="leading" id="SQW-gT-1Jl"/>
+                <constraint firstItem="10" firstAttribute="leading" secondItem="20" secondAttribute="leading" id="gNv-Er-hEs"/>
+                <constraint firstItem="5" firstAttribute="trailing" secondItem="14" secondAttribute="trailing" id="kCb-Gy-dZi"/>
+                <constraint firstItem="5" firstAttribute="firstBaseline" secondItem="70" secondAttribute="baseline" constant="35" id="krm-Ib-5g4"/>
+                <constraint firstItem="5" firstAttribute="leading" secondItem="14" secondAttribute="leading" id="leX-EZ-qFb"/>
+                <constraint firstItem="10" firstAttribute="baseline" secondItem="5" secondAttribute="baseline" id="mWQ-Mo-mJd"/>
+                <constraint firstAttribute="trailing" secondItem="70" secondAttribute="trailing" constant="20" symbolic="YES" id="pHJ-WE-gQf"/>
+                <constraint firstItem="14" firstAttribute="trailing" secondItem="NgL-Dl-Yhs" secondAttribute="trailing" id="vcw-RM-C6s"/>
+                <constraint firstItem="NgL-Dl-Yhs" firstAttribute="top" secondItem="14" secondAttribute="bottom" constant="8" symbolic="YES" id="vgd-Co-3BC"/>
+                <constraint firstItem="20" firstAttribute="baseline" secondItem="14" secondAttribute="baseline" id="zBM-tQ-zWQ"/>
             </constraints>
-            <point key="canvasLocation" x="140" y="136"/>
+            <point key="canvasLocation" x="139.5" y="146"/>
         </customView>
         <objectController id="3">
             <declaredKeys>

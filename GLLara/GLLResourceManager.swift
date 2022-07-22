@@ -50,10 +50,11 @@ import AppKit
         squarePipelineDescriptor.fragmentFunction = library.makeFunction(name: "squareFragment")!
         squarePipelineDescriptor.colorAttachments[0].pixelFormat = pixelFormat
         squarePipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
+        squarePipelineDescriptor.colorAttachments[0].alphaBlendOperation = .max
         squarePipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
-        squarePipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .sourceAlpha
+        squarePipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .one
         squarePipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
-        squarePipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
+        squarePipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .one
         squarePipelineDescriptor.label = "square"
         squarePipelineState = try! metalDevice.makeRenderPipelineState(descriptor: squarePipelineDescriptor)
         

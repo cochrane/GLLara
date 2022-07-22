@@ -3,7 +3,6 @@ To be clear: Not all of them will make it to 0.3
 
 ## Missing existing features
 
-- Implement render to file
 - Add support for SSAA
 
 ## Missing things from new features

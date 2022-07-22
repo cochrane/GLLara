@@ -145,7 +145,7 @@ import UniformTypeIdentifiers
             clearDepthBuffer0PassDescriptor.renderTargetHeight = solidDepthTexture.height
 
             solidRenderPassDescriptor = MTLRenderPassDescriptor()
-            solidRenderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.2, 0.2, 0.2, 1.0)
+            solidRenderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 0.0)
             solidRenderPassDescriptor.colorAttachments[0].texture = colorTextures[0]
             solidRenderPassDescriptor.colorAttachments[0].loadAction = .clear
             solidRenderPassDescriptor.colorAttachments[0].storeAction = .store
@@ -185,18 +185,18 @@ import UniformTypeIdentifiers
     
     // MARK: - Image rendering
     // Basic support for render to file
-    @objc func writeImage(to url: URL, fileType: UTType, size: CGSize) throws {
+    @objc func writeImage(to url: URL, fileType: UTType, size: CGSize, transparentBackground: Bool) throws {
         // TODO Not yet implemented for metal
         let dataSize = Int(size.width) * Int(size.height) * 4;
         var imageData = Data(count: dataSize);
         imageData.withUnsafeMutableBytes { bytes in
-            renderImage(size: size, toColorBuffer: bytes)
+            renderImage(size: size, toColorBuffer: bytes, clearColor: transparentBackground ? MTLClearColorMake(0.0, 0.0, 0.0, 0.0) : MTLClearColorMake(0.2, 0.2, 0.2, 1.0))
         }
         
         let dataProvider = CGDataProvider(data: imageData as CFData)!
         
         let colorSpace = CGColorSpace(name: CGColorSpace.sRGB)!
-        let image = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: 4 * Int(size.width), space: colorSpace, bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipFirst.rawValue + CGImageByteOrderInfo.order32Little.rawValue), provider: dataProvider, decode: nil, shouldInterpolate: true, intent: .defaultIntent)!
+        let image = CGImage(width: Int(size.width), height: Int(size.height), bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: 4 * Int(size.width), space: colorSpace, bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.first.rawValue + CGImageByteOrderInfo.order32Little.rawValue), provider: dataProvider, decode: nil, shouldInterpolate: true, intent: .defaultIntent)!
         
         guard let imageDestination = CGImageDestinationCreateWithURL(url as CFURL, fileType.identifier as CFString, 1, nil) else {
             throw NSError(domain: "exporting", code: 1, userInfo: [
@@ -212,7 +212,7 @@ import UniformTypeIdentifiers
         }
     }
     
-    func renderImage(size: CGSize, toColorBuffer colorData: UnsafeMutableRawBufferPointer) {
+    func renderImage(size: CGSize, toColorBuffer colorData: UnsafeMutableRawBufferPointer, clearColor: MTLClearColor) {
         // TODO Not yet implemented in swift and for metal
         
         let surface = Surface(width: Int(size.width), height: Int(size.height), device: GLLResourceManager.shared.metalDevice)
@@ -234,7 +234,7 @@ import UniformTypeIdentifiers
         let outputTexture = device.makeTexture(descriptor: outputTextureDescriptor)!
         
         let outputRenderDescriptor = MTLRenderPassDescriptor()
-        outputRenderDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
+        outputRenderDescriptor.colorAttachments[0].clearColor = clearColor
         outputRenderDescriptor.colorAttachments[0].loadAction = .clear
         outputRenderDescriptor.colorAttachments[0].storeAction = .store
         outputRenderDescriptor.colorAttachments[0].texture = outputTexture
