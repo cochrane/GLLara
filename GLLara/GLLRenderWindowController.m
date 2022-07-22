@@ -134,7 +134,10 @@
     NSArray *allowedTypeIdentifiers = (__bridge_transfer NSArray *) CGImageDestinationCopyTypeIdentifiers();
     NSMutableArray<UTType*>* allowedTypes = [NSMutableArray arrayWithCapacity:allowedTypeIdentifiers.count];
     for (NSString *identifier in allowedTypeIdentifiers) {
-        [allowedTypes addObject:[UTType typeWithIdentifier:identifier]];
+        UTType* type = [UTType typeWithIdentifier:identifier];
+        if (type) {
+            [allowedTypes addObject:type];
+        }
     }
     savePanel.allowedContentTypes = allowedTypes;
     
@@ -144,13 +147,11 @@
         NSUInteger width = [saveData[@"width"] unsignedIntegerValue];
         NSUInteger height = [saveData[@"height"] unsignedIntegerValue];
         
-        [self renderToFile:savePanel.URL type:self->savePanelAccessoryViewController.selectedTypeIdentifier width:width height:height];
+        NSError *writeError = nil;
+        if (![self.renderView.viewDrawer writeImageTo:savePanel.URL fileType:self->savePanelAccessoryViewController.selectedFileType size:CGSizeMake(width, height) error:&writeError]) {
+            [self presentError:writeError];
+        }
     }];
-}
-
-- (void)renderToFile:(NSURL *)file type:(NSString *)typeUTI width:(NSUInteger)width height:(NSUInteger)height;
-{
-    [self.renderView.viewDrawer writeImageTo:file fileType:[UTType typeWithIdentifier:typeUTI] size:CGSizeMake(width, height)];
 }
 
 #pragma mark - Popover

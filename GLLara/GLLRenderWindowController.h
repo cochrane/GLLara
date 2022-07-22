@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 @class GLLCamera;
 @class GLLDocument;
@@ -32,7 +33,5 @@
 
 - (IBAction)showPopoverFrom:(id)sender;
 - (IBAction)renderToFile:(id)sender;
-
-- (void)renderToFile:(NSURL *)file type:(NSString *)typeUTI width:(NSUInteger)width height:(NSUInteger)height;
 
 @end

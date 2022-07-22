@@ -725,7 +725,7 @@ import GameController
         guard let gamepad = GCController.current?.extendedGamepad else {
             return false
         }
-        return gamepad.leftTrigger.value != 0 || gamepad.rightTrigger.value != 0 || gamepad.leftThumbstick.xAxis.value != 0 || gamepad.leftThumbstick.yAxis.value != 0 || gamepad.rightThumbstick.xAxis.value != 0 || gamepad.rightThumbstick.yAxis.value != 0
+        return gamepad.leftTrigger.value != 0 || gamepad.rightTrigger.value != 0 || gamepad.leftThumbstick.xAxis.value != 0 || gamepad.leftThumbstick.yAxis.value != 0 || gamepad.rightThumbstick.xAxis.value != 0 || gamepad.rightThumbstick.yAxis.value != 0
     }
         
     /**

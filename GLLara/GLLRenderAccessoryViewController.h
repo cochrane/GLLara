@@ -8,8 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class GLLRenderViewAccessoryControllerFileType;
-
 /*!
  * @abstract Provides accessory view for exporting images.
  * @discussion This controller provides the accessory view for the save panel
@@ -18,9 +16,11 @@
 @interface GLLRenderAccessoryViewController : NSViewController
 
 @property (nonatomic) NSSavePanel *savePanel;
-@property (nonatomic, readonly) NSString *selectedTypeIdentifier;
 
-@property (nonatomic) NSArray<GLLRenderViewAccessoryControllerFileType *> *fileTypes;
-@property (nonatomic) GLLRenderViewAccessoryControllerFileType *selectedFileType;
+@property (nonatomic) NSArray<UTType*> *fileTypes;
+@property (nonatomic) UTType* selectedFileType;
+
+@property (nonatomic, assign, readonly) NSUInteger minSize;
+@property (nonatomic, assign, readonly) NSUInteger maxSize;
 
 @end

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,25 +13,27 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="1">
-            <rect key="frame" x="0.0" y="0.0" width="297" height="133"/>
+            <rect key="frame" x="0.0" y="0.0" width="297" height="130"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5">
-                    <rect key="frame" x="72" y="50" width="205" height="22"/>
+                    <rect key="frame" x="72" y="49" width="205" height="21"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="6">
                         <numberFormatter key="formatter" formatterBehavior="custom10_4" allowsFloats="NO" usesGroupingSeparator="NO" lenient="YES" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" positiveSuffix=" Px" id="68">
                             <integer key="minimum" value="1"/>
                         </numberFormatter>
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="3" name="value" keyPath="selection.width" id="64"/>
+                        <binding destination="-2" name="maxValue" keyPath="maxSize" id="sDM-zb-t6r"/>
+                        <binding destination="-2" name="minValue" keyPath="minSize" previousBinding="sDM-zb-t6r" id="j9i-k0-Jee"/>
+                        <binding destination="3" name="value" keyPath="selection.width" previousBinding="j9i-k0-Jee" id="SMt-K1-hm8"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="10">
-                    <rect key="frame" x="18" y="53" width="48" height="17"/>
+                    <rect key="frame" x="18" y="52" width="48" height="16"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Width:" id="11">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -40,21 +41,23 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="14">
-                    <rect key="frame" x="72" y="20" width="205" height="22"/>
+                    <rect key="frame" x="72" y="20" width="205" height="21"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="16">
                         <numberFormatter key="formatter" formatterBehavior="custom10_4" allowsFloats="NO" usesGroupingSeparator="NO" lenient="YES" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" positiveSuffix=" Px" id="67">
                             <integer key="minimum" value="1"/>
                         </numberFormatter>
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <binding destination="3" name="value" keyPath="selection.height" id="65"/>
+                        <binding destination="-2" name="maxValue" keyPath="maxSize" id="P6f-h1-7w6"/>
+                        <binding destination="-2" name="minValue" keyPath="minSize" previousBinding="P6f-h1-7w6" id="P5d-0P-uWQ"/>
+                        <binding destination="3" name="value" keyPath="selection.height" previousBinding="P5d-0P-uWQ" id="rdN-m1-y6g"/>
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="20">
-                    <rect key="frame" x="18" y="23" width="48" height="17"/>
+                    <rect key="frame" x="18" y="23" width="48" height="16"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Height:" id="21">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -62,7 +65,7 @@
                     </textFieldCell>
                 </textField>
                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="70">
-                    <rect key="frame" x="18" y="89" width="262" height="26"/>
+                    <rect key="frame" x="17" y="86" width="264" height="25"/>
                     <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="73" id="71">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
@@ -75,9 +78,9 @@
                         </menu>
                     </popUpButtonCell>
                     <connections>
+                        <binding destination="-2" name="contentValues" keyPath="fileTypes.localizedDescription" previousBinding="138" id="b7Z-eA-GaO"/>
                         <binding destination="-2" name="content" keyPath="fileTypes" id="138"/>
-                        <binding destination="-2" name="contentValues" keyPath="fileTypes.typeDescription" previousBinding="138" id="141"/>
-                        <binding destination="-2" name="selectedObject" keyPath="selectedFileType" previousBinding="141" id="142"/>
+                        <binding destination="-2" name="selectedObject" keyPath="selectedFileType" previousBinding="b7Z-eA-GaO" id="pEW-pR-euL"/>
                     </connections>
                 </popUpButton>
             </subviews>
@@ -98,6 +101,7 @@
                 <constraint firstAttribute="bottom" secondItem="14" secondAttribute="bottom" constant="20" symbolic="YES" id="162"/>
                 <constraint firstItem="14" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="8" id="PAF-J1-PeQ"/>
             </constraints>
+            <point key="canvasLocation" x="140" y="136"/>
         </customView>
         <objectController id="3">
             <declaredKeys>
