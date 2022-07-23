@@ -1,5 +1,6 @@
 xcuserdata
 .DS_Store
 DeveloperSettings.xcconfig
+build
 
 GLLara.xcodeproj/project.xcworkspace/xcshareddata/GLLara.xccheckout
