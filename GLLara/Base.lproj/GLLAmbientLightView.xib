@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="GLLAmbientLightViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="GLLAmbientLightViewController" customModule="GLLara" customModuleProvider="target">
             <connections>
                 <outlet property="view" destination="1" id="2"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="1">
             <rect key="frame" x="0.0" y="0.0" width="264" height="82"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -43,7 +42,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="help:" target="-2" id="24"/>
+                        <action selector="showContextHelp:" target="-2" id="Uf0-Gz-mjR"/>
                     </connections>
                 </button>
             </subviews>
@@ -58,6 +57,7 @@
             <point key="canvasLocation" x="18" y="143"/>
         </customView>
         <objectController objectClassName="GLLAmbientLight" id="14">
+            <classReference key="objectClass" className="GLLAmbientLight"/>
             <connections>
                 <binding destination="-2" name="contentObject" keyPath="representedObject" id="15"/>
             </connections>

@@ -8,7 +8,6 @@
 
 #import "GLLPreferencesWindowController.h"
 
-#import "GLLDrawingPreferencesViewController.h"
 #import "GLLara-Swift.h"
 
 @interface GLLPreferencesWindowController ()

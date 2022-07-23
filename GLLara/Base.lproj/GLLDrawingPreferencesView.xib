@@ -5,7 +5,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="GLLDrawingPreferencesViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="GLLDrawingPreferencesViewController" customModule="GLLara" customModuleProvider="target">
             <connections>
                 <outlet property="view" destination="c22-O7-iKe" id="Ogk-G5-Lba"/>
             </connections>

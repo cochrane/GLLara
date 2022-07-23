@@ -144,7 +144,7 @@
                                                 </textFieldCell>
                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 <prototypeCellViews>
-                                                    <customView identifier="FloatRenderParameterView" focusRingType="none" id="344" customClass="GLLFloatRenderParameterView">
+                                                    <customView identifier="FloatRenderParameterView" focusRingType="none" id="344" customClass="GLLFloatRenderParameterView" customModule="GLLara" customModuleProvider="target">
                                                         <rect key="frame" x="11" y="1" width="467" height="86"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
@@ -190,7 +190,7 @@
                                                             <outlet property="parameterValueField" destination="360" id="375"/>
                                                         </connections>
                                                     </customView>
-                                                    <customView identifier="ColorRenderParameterView" focusRingType="none" id="377" customClass="GLLColorRenderParameterView">
+                                                    <customView identifier="ColorRenderParameterView" focusRingType="none" id="377" customClass="GLLColorRenderParameterView" customModule="GLLara" customModuleProvider="target">
                                                         <rect key="frame" x="11" y="89" width="467" height="86"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
@@ -274,7 +274,7 @@
                                                 </textFieldCell>
                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                 <prototypeCellViews>
-                                                    <tableCellView identifier="TextureAssignment" id="433" customClass="GLLTextureAssignmentView">
+                                                    <tableCellView identifier="TextureAssignment" id="433" customClass="GLLTextureAssignmentView" customModule="GLLara" customModuleProvider="target">
                                                         <rect key="frame" x="11" y="1" width="467" height="57"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>

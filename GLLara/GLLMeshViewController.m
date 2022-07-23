@@ -8,8 +8,6 @@
 
 #import "GLLMeshViewController.h"
 
-#import "GLLColorRenderParameterView.h"
-#import "GLLFloatRenderParameterView.h"
 #import "GLLItemMesh.h"
 #import "GLLItemMeshSelectionPlaceholder.h"
 #import "GLLItemMeshTexture.h"
@@ -17,7 +15,6 @@
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterSelectionPlaceholder.h"
 #import "GLLSelection.h"
-#import "GLLTextureAssignmentView.h"
 #import "GLLMultipleSelectionPlaceholder.h"
 
 #import "GLLara-Swift.h"

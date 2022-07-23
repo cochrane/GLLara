@@ -246,7 +246,7 @@ import AppKit
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if object is NSUserDefaultsController.Type {
+        if object is NSUserDefaultsController {
             recreateSampler()
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)

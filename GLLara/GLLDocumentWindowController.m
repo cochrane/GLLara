@@ -12,7 +12,6 @@
 
 #import "NSArray+Map.h"
 #import "GLLAmbientLight.h"
-#import "GLLAmbientLightViewController.h"
 #import "GLLBoneViewController.h"
 #import "GLLDirectionalLight.h"
 #import "GLLDocument.h"
@@ -21,19 +20,18 @@
 #import "GLLItemBone.h"
 #import "GLLItemController.h"
 #import "GLLItemDragDestination.h"
-#import "GLLItemExportViewController.h"
 #import "GLLItemListController.h"
 #import "GLLItemMesh.h"
 #import "GLLItemOptionalPartMarker.h"
 #import "GLLItemViewController.h"
 #import "GLLLightsListController.h"
-#import "GLLLightViewController.h"
 #import "GLLMeshViewController.h"
 #import "GLLModel.h"
-#import "GLLNoSelectionViewController.h"
 #import "GLLOptionalPartViewController.h"
 #import "GLLSelection.h"
 #import "GLLSettingsListController.h"
+
+#import "GLLara-Swift.h"
 
 @interface GLLDocumentWindowController ()
 {
