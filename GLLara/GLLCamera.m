@@ -112,7 +112,7 @@
 }
 - (float)currentPositionX
 {
-    if (self.target) return simd_extract(self.target.position, 0);
+    if (self.target) return self.target.position.x;
     else return self.positionX;
 }
 
@@ -123,7 +123,7 @@
 }
 - (float)currentPositionY
 {
-    if (self.target) return simd_extract(self.target.position, 1);
+    if (self.target) return self.target.position.y;
     else return self.positionY;
 }
 
@@ -134,7 +134,7 @@
 }
 - (float)currentPositionZ
 {
-    if (self.target) return simd_extract(self.target.position, 2);
+    if (self.target) return self.target.position.z;
     else return self.positionZ;
 }
 
@@ -142,35 +142,36 @@
 
 - (void)moveLocalX:(float)deltaX y:(float)deltaY z:(float)deltaZ;
 {
-    mat_float16 cameraRotation = simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w);
+    mat_float16 cameraRotation = simd_mat_euler(simd_make_float4(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w);
     
-    vec_float4 delta = simd_scale(cameraRotation.columns[0], deltaX) + simd_scale(cameraRotation.columns[1], deltaY) + simd_scale(cameraRotation.columns[2], deltaZ);
+    // TODO isn't that just a rotate?
+    vec_float4 delta = cameraRotation.columns[0] * deltaX + cameraRotation.columns[1] * deltaY + cameraRotation.columns[2] * deltaZ;
     
-    self.currentPositionX += simd_extract(delta, 0);
-    self.currentPositionY += simd_extract(delta, 1);
-    self.currentPositionZ += simd_extract(delta, 2);
+    self.currentPositionX += delta.x;
+    self.currentPositionY += delta.y;
+    self.currentPositionZ += delta.z;
 }
 
 #pragma mark - Calculate matrices
 
 - (mat_float16)viewMatrix
 {
-    vec_float4 targetPosition = self.target ? self.target.position : simd_make( self.positionX, self.positionY, self.positionZ, 1.0f );
+    vec_float4 targetPosition = self.target ? self.target.position : simd_make_float4( self.positionX, self.positionY, self.positionZ, 1.0f );
     
-    vec_float4 viewDirection = simd_mul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w), -simd_e_z);
+    vec_float4 viewDirection = simd_mul(simd_mat_euler(simd_make_float4(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w), -simd_e_z);
     
-    vec_float4 position = targetPosition - viewDirection * simd_splatf(self.distance);
+    vec_float4 position = targetPosition - viewDirection * self.distance;
     
     return simd_mat_lookat(viewDirection, position);
 }
 
 - (vec_float4)cameraWorldPosition
 {
-    vec_float4 targetPosition = self.target ? self.target.position : simd_make( self.positionX, self.positionY, self.positionZ, 1.0f );
+    vec_float4 targetPosition = self.target ? self.target.position : simd_make_float4( self.positionX, self.positionY, self.positionZ, 1.0f );
     
-    vec_float4 viewDirection = simd_mul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w), -simd_e_z);
+    vec_float4 viewDirection = simd_mul(simd_mat_euler(simd_make_float4(self.latitude, self.longitude, 0.0f, 0.0f), simd_e_w), -simd_e_z);
     
-    return targetPosition - viewDirection * simd_splatf(self.distance);
+    return targetPosition - viewDirection * self.distance;
 }
 
 - (mat_float16)viewProjectionMatrixForAspectRatio:(float)aspect;
@@ -192,9 +193,9 @@
     if (!self.target) return;
     
     vec_float4 targetPosition = self.target.position;
-    self.positionX = simd_extract(targetPosition, 0);
-    self.positionY = simd_extract(targetPosition, 1);
-    self.positionZ = simd_extract(targetPosition, 2);
+    self.positionX = targetPosition.x;
+    self.positionY = targetPosition.y;
+    self.positionZ = targetPosition.z;
     self.target = nil;
 }
 

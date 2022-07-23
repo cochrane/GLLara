@@ -84,8 +84,8 @@
         return nil;
     }
     
-    _positionMatrix = simd_mat_positional(simd_make(_positionX, _positionY, _positionZ, 1.0f));
-    _inversePositionMatrix = simd_mat_positional(simd_make(-_positionX, -_positionY, -_positionZ, 1.0f));
+    _positionMatrix = simd_mat_positional(simd_make_float4(_positionX, _positionY, _positionZ, 1.0f));
+    _inversePositionMatrix = simd_mat_positional(simd_make_float4(-_positionX, -_positionY, -_positionZ, 1.0f));
     
     return self;
 }

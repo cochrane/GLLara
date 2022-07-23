@@ -156,9 +156,9 @@ class GLLSkeletonDrawer: NSObject {
                 let bone = element as! GLLItemBone
                 
                 let position = bone.globalPosition
-                vertices[offset].position.x = simd_extract(position, 0)
-                vertices[offset].position.y = simd_extract(position, 1)
-                vertices[offset].position.z = simd_extract(position, 2)
+                vertices[offset].position.x = position.x
+                vertices[offset].position.y = position.y
+                vertices[offset].position.z = position.z
                 
                 if selection.values.contains(where: { $0.contains(bone) }) {
                     vertices[offset].color = colorSelected;

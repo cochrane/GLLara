@@ -774,7 +774,6 @@
 		5296943015F421D900DF2FA3 /* simd_matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simd_matrix.h; sourceTree = "<group>"; };
 		5296943115F421D900DF2FA3 /* simd_project.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = simd_project.c; sourceTree = "<group>"; };
 		5296943215F421D900DF2FA3 /* simd_project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simd_project.h; sourceTree = "<group>"; };
-		5296943315F421D900DF2FA3 /* simd_quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simd_quaternion.h; sourceTree = "<group>"; };
 		5296943415F421D900DF2FA3 /* simd_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simd_types.h; sourceTree = "<group>"; };
 		5296943E15F51F2B00DF2FA3 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.md; sourceTree = "<group>"; };
 		5296946215F7B28300DF2FA3 /* GLLRenderWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderWindowController.h; sourceTree = "<group>"; };
@@ -1487,7 +1486,6 @@
 				5296943015F421D900DF2FA3 /* simd_matrix.h */,
 				5296943115F421D900DF2FA3 /* simd_project.c */,
 				5296943215F421D900DF2FA3 /* simd_project.h */,
-				5296943315F421D900DF2FA3 /* simd_quaternion.h */,
 				5296943415F421D900DF2FA3 /* simd_types.h */,
 			);
 			path = shared_simd;

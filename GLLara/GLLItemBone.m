@@ -205,7 +205,7 @@
 {
     cachedBoneIndex = NSNotFound;
     
-    mat_float16 transform = simd_mat_positional(simd_make(self.positionX, self.positionY, self.positionZ, 1.0f));
+    mat_float16 transform = simd_mat_positional(simd_make_float4(self.positionX, self.positionY, self.positionZ, 1.0f));
     transform = simd_mul(transform, simd_mat_rotate(self.rotationY, simd_e_y));
     transform = simd_mul(transform, simd_mat_rotate(self.rotationX, simd_e_x));
     transform = simd_mul(transform, simd_mat_rotate(self.rotationZ, simd_e_z));
@@ -233,7 +233,7 @@
     self.globalTransform = transform;
     self.globalTransformValue = [NSData dataWithBytes:&transform length:sizeof(transform)];
     
-    self.globalPosition = simd_mul(transform, simd_make(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0f));
+    self.globalPosition = simd_mul(transform, simd_make_float4(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0f));
     
     [self.children makeObjectsPerformSelector:@selector(updateGlobalTransform)];
 }

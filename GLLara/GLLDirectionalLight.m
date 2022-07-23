@@ -46,7 +46,7 @@
     }
     
     struct GLLLightBuffer block;
-    block.direction = simd_mul(simd_mat_euler(simd_make(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
+    block.direction = simd_mul(simd_mat_euler(simd_make_float4(self.latitude, self.longitude, 0.0, 0.0), simd_e_w), -simd_e_z);
     
     [self.diffuseColor get128BitRGBAComponents:(float*)&block.diffuseColor];
     [self.specularColor get128BitRGBAComponents:(float*)&block.specularColor];
