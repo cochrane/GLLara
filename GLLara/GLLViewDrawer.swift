@@ -32,8 +32,6 @@ import UniformTypeIdentifiers
         directionalLightRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
         directionalLights = try! sceneDrawer.managedObjectContext!.fetch(directionalLightRequest)
         
-        assert(directionalLights.count == 3, "Only exactly four lights supported at the moment")
-        
         // Other necessary render state. Thanks to Metal, that got cut down a lot.
         view.clearColor = MTLClearColorMake(0.2, 0.2, 0.2, 1.0)
         
@@ -73,6 +71,8 @@ import UniformTypeIdentifiers
         updateScaleFactor()
         
         view.delegate = self
+        
+        assert(directionalLights.count == 3, "Only exactly four lights supported at the moment")
     }
     
     let sceneDrawer: GLLSceneDrawer
