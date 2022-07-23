@@ -369,6 +369,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		521102DC288C0302001BE4BC /* GLLara.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GLLara.xcconfig; sourceTree = "<group>"; };
 		5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLTextureAssignment.swift; sourceTree = "<group>"; };
 		5211F84A262B800300A1EC23 /* GLLSceneModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		5213F8801C0E411C007A9EBB /* GLLPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -1031,6 +1032,7 @@
 		525ACD3C15F0F1A700534E7D = {
 			isa = PBXGroup;
 			children = (
+				521102DC288C0302001BE4BC /* GLLara.xcconfig */,
 				52FB1FD628796E49006ABC4F /* find_tga_empty.py */,
 				5296943E15F51F2B00DF2FA3 /* Readme.md */,
 				529692D515F258E600DF2FA3 /* Documentation */,
@@ -1619,10 +1621,16 @@
 				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = "Torsten Kammer";
 				TargetAttributes = {
+					523DE0DD1604A5ED00BB9F61 = {
+						DevelopmentTeam = T7AV5E4TN9;
+					};
 					525ACD4615F0F1A700534E7D = {
-						DevelopmentTeam = MXAKMKWG34;
+						DevelopmentTeam = T7AV5E4TN9;
 						LastSwiftMigration = 1240;
 						ProvisioningStyle = Automatic;
+					};
+					525ACD6A15F0F1A700534E7D = {
+						DevelopmentTeam = T7AV5E4TN9;
 					};
 				};
 			};
@@ -2380,6 +2388,7 @@
 		};
 		525ACD7A15F0F1A700534E7D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 521102DC288C0302001BE4BC /* GLLara.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -2440,6 +2449,7 @@
 		};
 		525ACD7B15F0F1A700534E7D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 521102DC288C0302001BE4BC /* GLLara.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -2498,13 +2508,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 20;
-				DEVELOPMENT_TEAM = MXAKMKWG34;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MARKETING_VERSION = 0.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "${ORGANIZATION_IDENTIFIER}.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "GLLara/GLLara-Bridging-Header.h";
@@ -2522,13 +2531,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 20;
-				DEVELOPMENT_TEAM = MXAKMKWG34;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
 				MARKETING_VERSION = 0.3.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "${ORGANIZATION_IDENTIFIER}.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "GLLara/GLLara-Bridging-Header.h";

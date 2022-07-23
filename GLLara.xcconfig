@@ -1,0 +1,15 @@
+//
+//  GLLara.xcconfig
+//  GLLara
+//
+//  Created by Torsten Kammer on 23.07.22.
+//  Copyright © 2022 Torsten Kammer. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+DEVELOPMENT_TEAM = MXAKMKWG34
+ORGANIZATION_IDENTIFIER = de.ferroequinologist
+
+#include? "DeveloperSettings.xcconfig"
