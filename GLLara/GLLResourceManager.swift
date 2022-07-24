@@ -73,6 +73,19 @@ import AppKit
         checkDepthPipelineDescriptor.label = "checkDepth"
         depthBufferCheckState = try! metalDevice.makeRenderPipelineState(descriptor: checkDepthPipelineDescriptor)
         
+        let drawHudPipelineDescriptor = MTLRenderPipelineDescriptor()
+        drawHudPipelineDescriptor.vertexFunction = library.makeFunction(name: "hudTextDrawerVertex")!
+        drawHudPipelineDescriptor.fragmentFunction = library.makeFunction(name: "hudTextDrawerFragment")!
+        drawHudPipelineDescriptor.colorAttachments[0].pixelFormat = pixelFormat
+        drawHudPipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
+        // Texture for this is premultiplied
+        drawHudPipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .one
+        drawHudPipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .one
+        drawHudPipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
+        drawHudPipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
+        drawHudPipelineDescriptor.label = "checkDepth"
+        drawHudPipelineState = try! metalDevice.makeRenderPipelineState(descriptor: drawHudPipelineDescriptor)
+        
         super.init()
         
         NSUserDefaultsController.shared.addObserver(self, forKeyPath: ("values." + GLLPrefAnisotropyAmount), context: nil)
@@ -89,6 +102,7 @@ import AppKit
     let squarePipelineState: MTLRenderPipelineState
     let copyDepthPipelineState: MTLRenderPipelineState
     let depthBufferCheckState: MTLRenderPipelineState // Only used for debugging
+    let drawHudPipelineState: MTLRenderPipelineState
     
     let library: MTLLibrary
     let pixelFormat: MTLPixelFormat

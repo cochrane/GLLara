@@ -187,6 +187,8 @@ import UniformTypeIdentifiers
     
     private var useMultisample = false
     
+    private let hud = HUD()
+    
     private func updateLights() {
         var lightData = GLLLightsBuffer()
         // Camera position
