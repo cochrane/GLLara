@@ -63,8 +63,8 @@ struct GLLControllerPreferencesView: View {
             
             GroupBox("Game controller") {
                 VStack(alignment: .leading) {
-                    if gameControllerManager.firstDeviceName != nil {
-                        Text("Connected: \(gameControllerManager.firstDeviceName!)")
+                    if let controller = GCController.current, controller.extendedGamepad != nil {
+                        Text("Connected: \(controller.vendorName ?? "some")")
                     } else {
                         Text("No game controller connected")
                     }

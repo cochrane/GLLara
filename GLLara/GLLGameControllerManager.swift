@@ -20,15 +20,11 @@ import GameController
  */
 class GLLGameControllerManager: ObservableObject {
     
-    @Published var knownDevices: [GCController] = []
-    
     static let shared = GLLGameControllerManager()
     
     init() {
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidConnect, object: nil, queue: nil) { notification in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidBecomeCurrent, object: nil, queue: nil) { notification in
             if let controller = notification.object as? GCController, let gamepad =  controller.extendedGamepad {
-                self.knownDevices.append(controller)
-                
                 gamepad.valueChangedHandler = { gamepad, changedElement in
                     if let view = GLLView.lastActiveView {
                         view.gamepadChanged(gamepad: gamepad, element: changedElement)
@@ -36,31 +32,17 @@ class GLLGameControllerManager: ObservableObject {
                 }
             }
         }
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidDisconnect, object: nil, queue: nil) { notification in
-            self.knownDevices.removeAll { $0 == notification.object as? GCController }
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidStopBeingCurrent, object: nil, queue: nil) { notification in
+            if let controller = notification.object as? GCController, let gamepad =  controller.extendedGamepad {
+                gamepad.valueChangedHandler = nil
+            }
         }
-        for controller in GCController.controllers() {
-            if let gamepad = controller.extendedGamepad, !self.knownDevices.contains(controller) {
-                self.knownDevices.append(controller)
-                
-                gamepad.valueChangedHandler = { gamepad, changedElement in
-                    if let view = GLLView.lastActiveView {
-                        view.gamepadChanged(gamepad: gamepad, element: changedElement)
-                    }
+        if let gamepad = GCController.current?.extendedGamepad {
+            gamepad.valueChangedHandler = { gamepad, changedElement in
+                if let view = GLLView.lastActiveView {
+                    view.gamepadChanged(gamepad: gamepad, element: changedElement)
                 }
             }
-        }
-    }
-    
-    var firstDeviceName: String? {
-        get {
-            guard knownDevices.count > 0  else {
-                return nil
-            }
-            return knownDevices[0].vendorName
-        }
-        set {
-            // Does nothing, just here to make this property SwiftUI compatible
         }
     }
 }

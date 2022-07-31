@@ -680,10 +680,10 @@ import GameController
             }
             
             // Game controller input
-            for controller in GLLGameControllerManager.shared.knownDevices {
+            if let controller = GCController.current, let extendedGamepad = controller.extendedGamepad {
                 // Rotate camera based on left thumbstick
-                let rotationX = controller.extendedGamepad!.leftThumbstick.xAxis.value
-                let rotationY = controller.extendedGamepad!.leftThumbstick.yAxis.value
+                let rotationX = extendedGamepad.leftThumbstick.xAxis.value
+                let rotationY = extendedGamepad.leftThumbstick.yAxis.value
                 
                 if rotationX != 0.0 || rotationY != 0.0 {
                 let rotationSpeed = Float(controllerRotationSpeedCamera * diff)
@@ -695,9 +695,9 @@ import GameController
                     }
                 }
                 
-                let otherStickX = controller.extendedGamepad!.rightThumbstick.xAxis.value
-                let otherStickY = -controller.extendedGamepad!.rightThumbstick.yAxis.value
-                let otherStickZ = controller.extendedGamepad!.leftTrigger.value * -1 + controller.extendedGamepad!.rightTrigger.value
+                let otherStickX = extendedGamepad.rightThumbstick.xAxis.value
+                let otherStickY = -extendedGamepad.rightThumbstick.yAxis.value
+                let otherStickZ = extendedGamepad.leftTrigger.value * -1 + extendedGamepad.rightTrigger.value
                 if otherStickX != 0.0 || otherStickZ != 0.0 || otherStickY != 0.0 {
                     if controllerRightStickMode == .moveCamera {
                         let positionSpeed = Float(controllerMoveCameraSpeed * diff)
