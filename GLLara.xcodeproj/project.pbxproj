@@ -378,6 +378,7 @@
 		521102E2288C2126001BE4BC /* HUDControllerMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDControllerMode.swift; sourceTree = "<group>"; };
 		521102E4288DAB0E001BE4BC /* HUDTextDrawer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = HUDTextDrawer.metal; sourceTree = "<group>"; };
 		521102E6288DBF72001BE4BC /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
+		521102E8288F28ED001BE4BC /* HUDShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUDShared.h; sourceTree = "<group>"; };
 		5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLTextureAssignment.swift; sourceTree = "<group>"; };
 		5211F84A262B800300A1EC23 /* GLLSceneModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		5213F8801C0E411C007A9EBB /* GLLPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -904,6 +905,7 @@
 				521102DE288C1FB7001BE4BC /* HUDTextDrawer.swift */,
 				521102E2288C2126001BE4BC /* HUDControllerMode.swift */,
 				521102E6288DBF72001BE4BC /* HUD.swift */,
+				521102E8288F28ED001BE4BC /* HUDShared.h */,
 			);
 			name = HUD;
 			sourceTree = "<group>";

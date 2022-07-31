@@ -398,9 +398,19 @@ import UniformTypeIdentifiers
                 
                 sceneDrawer.drawSelection(int: combineCommandEncoder)
             }
+            
+            hud.draw(size: CGSize(width: CGFloat(surface.width), height: CGFloat(surface.height)), into: combineCommandEncoder)
         }
         
         combineCommandEncoder.endEncoding()
+    }
+    
+    func updateHudAnimation(delta: TimeInterval) {
+        hud.update(delta: delta)
+    }
+    
+    var runningAnimation: Bool {
+        return hud.runningAnimation
     }
     
     func draw(in view: MTKView) {

@@ -79,8 +79,8 @@ import AppKit
         drawHudPipelineDescriptor.colorAttachments[0].pixelFormat = pixelFormat
         drawHudPipelineDescriptor.colorAttachments[0].isBlendingEnabled = true
         // Texture for this is premultiplied
-        drawHudPipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .one
-        drawHudPipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .one
+        drawHudPipelineDescriptor.colorAttachments[0].sourceRGBBlendFactor = .sourceAlpha
+        drawHudPipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = .sourceAlpha
         drawHudPipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = .oneMinusSourceAlpha
         drawHudPipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor = .oneMinusSourceAlpha
         drawHudPipelineDescriptor.label = "checkDepth"

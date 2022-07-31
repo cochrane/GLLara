@@ -30,6 +30,9 @@ import GameController
         notificationObservers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.GLLSceneDrawerNeedsUpdate, object: nil, queue: OperationQueue.main) { [weak self] notification in
             self?.unpause()
         })
+        notificationObservers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidBecomeCurrent, object: nil, queue: OperationQueue.main) { [weak self] notification in
+            self?.unpause()
+        })
         
         showSelection = UserDefaults.standard.bool(forKey: GLLPrefShowSkeleton)
         
@@ -454,11 +457,11 @@ import GameController
     
     private func selectGamepadMode(delta: Int) {
         let current = controllerRightStickMode
-        let orderedModes: [ControllerRightStickMode] = [ .moveCamera, .rotateBones, .moveBones ]
+        let orderedModes = ControllerRightStickMode.allCases
         if let index = orderedModes.firstIndex(of: current) {
             var nextIndex = index + delta
             if nextIndex < 0 {
-                nextIndex = orderedModes.count
+                nextIndex = orderedModes.count - 1
             }
             let next = orderedModes[nextIndex % orderedModes.count]
             UserDefaults.standard.set(next.rawValue, forKey: GLLPrefControllerRightStickMode)
@@ -510,7 +513,7 @@ import GameController
         
         super.draw()
         
-        if !contiuousInputActive && !somethingChangedLastFrame {
+        if !contiuousInputActive && !somethingChangedLastFrame && !(viewDrawer?.runningAnimation ?? false) {
             isPaused = true
         }
         if somethingChangedLastFrame {
@@ -582,6 +585,8 @@ import GameController
         let now = Date.timeIntervalSinceReferenceDate
         var diff = now - (lastPositionUpdate ?? now)
         lastPositionUpdate = now
+        
+        viewDrawer?.updateHudAnimation(delta: diff)
     
         if currentModifierFlags.contains(.shift) {
             diff *= 10
@@ -846,7 +851,7 @@ import GameController
         return UserDefaults.standard.double(forKey: GLLPrefControllerBoneMovementSpeed)
     }
     
-    enum ControllerRightStickMode: String {
+    enum ControllerRightStickMode: String, CaseIterable {
         case moveCamera
         case rotateBones
         case moveBones

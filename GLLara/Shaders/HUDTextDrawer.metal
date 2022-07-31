@@ -9,10 +9,7 @@
 #include <metal_stdlib>
 using namespace metal;
 
-struct InputData {
-    float2 position;
-    float2 texCoord;
-};
+#include "../HUDShared.h"
 
 struct RasterizerData {
     float4 position [[position]];
@@ -20,12 +17,11 @@ struct RasterizerData {
 };
 
 vertex RasterizerData hudTextDrawerVertex(uint vertexID [[ vertex_id ]],
-                                     const device InputData * vertices [[ buffer(0) ]],
-                                         const device float2* screenSize [[ buffer(1) ]]) {
+                                     const device HUDVertex * vertices [[ buffer(HUDVertexBufferData) ]],
+                                         const device HUDVertexParams* params [[ buffer(HUDVertexBufferParams) ]]) {
     RasterizerData out;
     
-    float2 size = *screenSize;
-    float2 position = (2 * vertices[vertexID].position / size) - 1;
+    float2 position = (2 * vertices[vertexID].position / params->screenSize) - 1;
     
     out.position = float4(position, 0, 1);
     out.texCoord = vertices[vertexID].texCoord;
@@ -33,8 +29,21 @@ vertex RasterizerData hudTextDrawerVertex(uint vertexID [[ vertex_id ]],
     return out;
 }
 
-fragment float4 hudTextDrawerFragment(RasterizerData in [[stage_in]], texture2d<float> texture [[ texture(0) ]]) {
+static float fraction(float in, float valueFor0, float valueFor1) {
+    return clamp((in - valueFor0) / (valueFor1 - valueFor0), 0.0, 1.0);
+}
+
+fragment float4 hudTextDrawerFragment(RasterizerData in [[stage_in]],
+                                      texture2d<float> texture [[ texture(HUDFragmentTextureBase) ]],
+                                      const device HUDFragmentParams* params [[ buffer(HUDFragmentBufferParams) ]]) {
     constexpr sampler textureSampler(mag_filter::linear, min_filter::linear);
-    return texture.sample(textureSampler, in.texCoord);
+    float4 color = texture.sample(textureSampler, in.texCoord);
+    
+    color.a *= fraction(in.position.x, params->fadeOutEndBox[0].x, params->fadeOutStartBox[0].x);
+    color.a *= fraction(in.position.y, params->fadeOutEndBox[0].y, params->fadeOutStartBox[0].y);
+    color.a *= fraction(in.position.x, params->fadeOutEndBox[1].x, params->fadeOutStartBox[1].x);
+    color.a *= fraction(in.position.y, params->fadeOutEndBox[1].y, params->fadeOutStartBox[1].y);
+    
+    return color * params->alpha;
 }
 

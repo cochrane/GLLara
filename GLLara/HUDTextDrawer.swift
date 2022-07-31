@@ -10,6 +10,13 @@ import Cocoa
 import Metal
 import SwiftUI
 
+extension HUDVertex {
+    init(x: Float, y: Float, tx: Float, ty: Float) {
+        self.init(position: SIMD2<Float>(x: x, y: y),
+                  texCoord: SIMD2<Float>(x: tx, y: ty))
+    }
+}
+
 /**
  A drawer that draws its text on the screen, using a default HUD style. The text is an attributed string to allow for adding SFSymbols, but the overall styling is handled by this drawer internally
  */
@@ -25,7 +32,7 @@ struct HUDTextDrawer {
         let width: Int
         var data: Data
         
-        init(text: NSAttributedString) {
+        init(text: NSAttributedString, highlighted: Bool) {
             self.attributedString = text
             
             // Find size
@@ -36,44 +43,46 @@ struct HUDTextDrawer {
             data = Data(count: height*width*4)
     
             // Create graphics context
-            let colorSpace = CGColorSpaceCreateDeviceRGB();
             data.withUnsafeMutableBytes { bytes in
-                let cgContext = CGContext(data: bytes.baseAddress!, width: self.width, height: self.height, bitsPerComponent: 8, bytesPerRow: self.width * 4, space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue + CGImageByteOrderInfo.order32Little.rawValue )!;
-
-                // Draw the capsule
-                cgContext.beginPath()
-                cgContext.move(to: CGPoint(x:0, y:CGFloat(height) - capsuleCornerRadius))
-                cgContext.addArc(tangent1End: CGPoint(x:0, y:CGFloat(height)),
-                                 tangent2End: CGPoint(x:capsuleCornerRadius, y:CGFloat(height)),
-                                 radius: capsuleCornerRadius)
-                cgContext.addLine(to: CGPoint(x:CGFloat(width) - capsuleCornerRadius, y:CGFloat(height)))
-                cgContext.addArc(tangent1End: CGPoint(x:CGFloat(width), y:CGFloat(height)),
-                                 tangent2End: CGPoint(x:CGFloat(width), y:CGFloat(height) - capsuleCornerRadius),
-                                 radius: capsuleCornerRadius)
-                cgContext.addLine(to: CGPoint(x:CGFloat(width), y: capsuleCornerRadius))
-                cgContext.addArc(tangent1End: CGPoint(x: CGFloat(width), y: 0),
-                                 tangent2End: CGPoint(x: CGFloat(width) - capsuleCornerRadius, y: 0),
-                                 radius: capsuleCornerRadius)
-                cgContext.addLine(to: CGPoint(x:capsuleCornerRadius, y: 0))
-                cgContext.addArc(tangent1End: CGPoint(x:0, y:0),
-                                 tangent2End: CGPoint(x:0, y:capsuleCornerRadius),
-                                 radius: capsuleCornerRadius)
-                cgContext.closePath()
-                cgContext.setFillColor(gray: 1.0, alpha: 0.5)
-                cgContext.fillPath()
+                var mutableBytes = bytes.bindMemory(to: UInt8.self).baseAddress
+                let bitmapImageRep = NSBitmapImageRep(bitmapDataPlanes: &mutableBytes,
+                                                      pixelsWide: self.width,
+                                                      pixelsHigh: self.height,
+                                                      bitsPerSample: 8,
+                                                      samplesPerPixel: 4,
+                                                      hasAlpha: true,
+                                                      isPlanar: false,
+                                                      colorSpaceName: .calibratedRGB,
+                                                      bitmapFormat: [.thirtyTwoBitLittleEndian],
+                                                      bytesPerRow: self.width*4,
+                                                      bitsPerPixel: 32)!
                 
-                // Draw the text
-                let nsContext = NSGraphicsContext(cgContext: cgContext, flipped: false)
+                let graphicsContext = NSGraphicsContext(bitmapImageRep: bitmapImageRep)
                 let oldContext = NSGraphicsContext.current
-                NSGraphicsContext.current = nsContext
+                NSGraphicsContext.current = graphicsContext
                 
-                let shadow = NSShadow()
-                shadow.shadowOffset = NSSize(width: 0, height: 0)
-                shadow.shadowBlurRadius = 3.0
-                shadow.shadowColor = NSColor.white
-                shadow.set()
+                let path = NSBezierPath(roundedRect: NSMakeRect(0, 0, CGFloat(width), CGFloat(height)),
+                                        xRadius: capsuleCornerRadius,
+                                        yRadius: capsuleCornerRadius)
                 
-                text.draw(with: NSMakeRect(CGFloat(capsulePaddingLeftRight), capsuleBaseline, frame.width, frame.height), options: [ .truncatesLastVisibleLine ])
+                if highlighted {
+                    let color = NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 0.95)
+                    color.set()
+                } else {
+                    let color = NSColor(calibratedRed: 0.0, green: 0.0, blue: 0.0, alpha: 0.5)
+                    color.set()
+                }
+                path.fill()
+                
+                if !highlighted {
+                    let shadow = NSShadow()
+                    shadow.shadowOffset = NSSize(width: 0, height: 0)
+                    shadow.shadowBlurRadius = 3.0
+                    shadow.shadowColor = NSColor.black
+                    shadow.set()
+                }
+                
+                text.draw(with: NSMakeRect(CGFloat(capsulePaddingLeftRight), capsuleBaseline, frame.width, frame.height), options: [ .truncatesLastVisibleLine, .usesFontLeading ])
                 
                 NSGraphicsContext.current = oldContext
             }
@@ -137,39 +146,53 @@ struct HUDTextDrawer {
     
     private static var textureAtlases: [TextureAtlas] = []
     private static var drawers: [NSAttributedString: HUDTextDrawer] = [:]
+    private static var highlightedDrawers: [NSAttributedString: HUDTextDrawer] = [:]
     
-    static func drawer(string: String) -> HUDTextDrawer {
-        return drawer(attributedString: NSAttributedString(string: string))
+    static func drawer(string: String, highlighted: Bool = false) -> HUDTextDrawer {
+        return drawer(attributedString: NSAttributedString(string: string), highlighted: highlighted)
     }
     
-    static func drawer(systemImage: String) -> HUDTextDrawer {
+    static func drawer(systemImage: String, highlighted: Bool = false) -> HUDTextDrawer {
+        let image = NSImage(systemSymbolName: systemImage, accessibilityDescription: nil)!
         let attachment = NSTextAttachment()
-        attachment.image = NSImage(systemSymbolName: systemImage, accessibilityDescription: nil)
+        attachment.image = image
         
-        return drawer(attributedString: NSAttributedString(attachment: attachment))
+        let attributedString = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attachment))
+        attributedString.addAttributes([
+            .baselineOffset: (CGFloat(capsuleHeight) - (image.size.height * 2)) * 0.5
+        ], range: NSRange(location: 0, length: attributedString.length))
+        
+        return drawer(attributedString: attributedString, highlighted: highlighted)
     }
     
-    static func drawer(attributedString: NSAttributedString) -> HUDTextDrawer {
+    static func drawer(attributedString: NSAttributedString, highlighted: Bool = false) -> HUDTextDrawer {
         // Adjust attributed string to match what we expect
         
         let adjustedString = NSMutableAttributedString(attributedString: attributedString)
         let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: NSColor.black,
+            .foregroundColor: highlighted ? NSColor.black : NSColor.white,
             .font: NSFont.systemFont(ofSize: 25.0, weight: .bold),
         ]
         
         adjustedString.addAttributes(attributes, range: NSRange(location: 0, length: adjustedString.length))
         
-        if let drawer = drawers[adjustedString] {
+        if !highlighted, let drawer = drawers[adjustedString] {
+            return drawer
+        }
+        if highlighted, let drawer = highlightedDrawers[adjustedString] {
             return drawer
         }
         
         // Need to draw and insert into a texture atlas
-        let drawnText = DrawnText(text: adjustedString)
+        let drawnText = DrawnText(text: adjustedString, highlighted: highlighted)
         for textureAtlas in textureAtlases {
             if let rect = textureAtlas.tryAdd(drawnText) {
                 let drawer = HUDTextDrawer(atlas: textureAtlas, area: rect)
-                drawers[adjustedString] = drawer
+                if (highlighted) {
+                    highlightedDrawers[adjustedString] = drawer
+                } else {
+                    drawers[adjustedString] = drawer
+                }
                 return drawer
             }
         }
@@ -179,7 +202,11 @@ struct HUDTextDrawer {
         let rect = newAtlas.tryAdd(drawnText)!
         
         let drawer = HUDTextDrawer(atlas: newAtlas, area: rect)
-        drawers[adjustedString] = drawer
+        if (highlighted) {
+            highlightedDrawers[adjustedString] = drawer
+        } else {
+            drawers[adjustedString] = drawer
+        }
         return drawer
     }
     
@@ -217,7 +244,7 @@ struct HUDTextDrawer {
     /**
      Draws at the given point. active is a double specifically for animation
      */
-    func draw(position: CGPoint, reference: PositionReference = .bottomLeft, active: Double = 1.0, clippedTo: CGRect = CGRect(x: 0.0, y: 0.0, width: CGFloat.infinity, height: CGFloat.infinity), clipFalloff: Double = 10.0, into encoder: MTLRenderCommandEncoder) {
+    func draw(position: CGPoint, reference: PositionReference = .bottomLeft, active: Double = 1.0, fadeOutEnd: CGRect = CGRect(x: -10.0, y: -10.0, width: 1e7, height: 1e7), fadeOutLength: Double = 10.0, into encoder: MTLRenderCommandEncoder) {
         
         let ownSize = SIMD2<Float>(x: Float(size.width), y: Float(size.height))
         let lowerLeft = SIMD2<Float>(x: Float(position.x - reference.offsetX * size.width), y: Float(position.y - reference.offsetY * size.height))
@@ -226,19 +253,34 @@ struct HUDTextDrawer {
         let textureSize = SIMD2<Float>(repeating: 2048)
         let textureLowerLeft = SIMD2<Float>(x: Float(area.minX), y: Float(area.minY)) / textureSize
         let textureUpperRight = SIMD2<Float>(x: Float(area.maxX), y: Float(area.maxY)) / textureSize
-        encoder.setFragmentTexture(atlas.texture, index: 0)
+        encoder.setFragmentTexture(atlas.texture, index: Int(HUDFragmentTextureBase.rawValue))
         
+        let alpha = Float(active)
         
-        let coords: [Float32] = [
-            lowerLeft.x, lowerLeft.y, textureLowerLeft.x, textureUpperRight.y,
-            upperRight.x, lowerLeft.y, textureUpperRight.x, textureUpperRight.y,
-            lowerLeft.x, upperRight.y, textureLowerLeft.x, textureLowerLeft.y,
-            upperRight.x, upperRight.y, textureUpperRight.x, textureLowerLeft.y
+        // Extra float for alignment
+        let coords: [HUDVertex] = [
+            HUDVertex(x: lowerLeft.x, y: lowerLeft.y, tx: textureLowerLeft.x, ty: textureUpperRight.y),
+            HUDVertex(x: upperRight.x, y: lowerLeft.y, tx: textureUpperRight.x, ty: textureUpperRight.y),
+            HUDVertex(x: lowerLeft.x, y: upperRight.y, tx: textureLowerLeft.x, ty: textureLowerLeft.y),
+            HUDVertex(x: upperRight.x, y: upperRight.y, tx: textureUpperRight.x, ty: textureLowerLeft.y)
         ]
         
         coords.withUnsafeBytes { bytes in
-            encoder.setVertexBytes(bytes.baseAddress!, length: bytes.count, index: 0)
+            encoder.setVertexBytes(bytes.baseAddress!, length: bytes.count, index: Int(HUDVertexBufferData.rawValue))
         }
+        
+        let fadeOutEndBox = (
+            SIMD2<Float>(x: Float(fadeOutEnd.minX), y: Float(fadeOutEnd.minY)),
+            SIMD2<Float>(x: Float(fadeOutEnd.maxX), y: Float(fadeOutEnd.maxY))
+        )
+        let fadeOutStartBox = (
+            fadeOutEndBox.0 + SIMD2<Float>(repeating: Float(fadeOutLength)),
+            fadeOutEndBox.1 - SIMD2<Float>(repeating: Float(fadeOutLength))
+        )
+        
+        var fragmentParams = HUDFragmentParams(alpha: alpha, fadeOutStartBox: fadeOutStartBox, fadeOutEndBox: fadeOutEndBox)
+        encoder.setFragmentBytes(&fragmentParams, length: MemoryLayout<HUDFragmentParams>.stride, index: Int(HUDFragmentBufferParams.rawValue))
+        
         encoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
     }
 }
