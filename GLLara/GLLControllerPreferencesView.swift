@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import Cocoa
 import GameController
 
 fileprivate struct ControllerPreferencesSlider: View {
@@ -42,6 +41,48 @@ fileprivate struct ControllerPreferencesSlider: View {
     }
 }
 
+struct ChargeLevelView: View {
+    var level: Double
+    
+    var body: some View {
+        let distance: Double = 0.25
+        let offset: Double = distance/2
+        if level >= 1.0 - offset {
+            SwiftUI.Image(systemName: "battery.100")
+        } else if level >= 0.75 - offset {
+            SwiftUI.Image(systemName: "battery.75")
+        } else if level >= 0.5 - offset {
+            SwiftUI.Image(systemName: "battery.50")
+        } else if level >= 0.25 - offset {
+            SwiftUI.Image(systemName: "battery.25")
+        } else {
+            SwiftUI.Image(systemName: "battery.0")
+        }
+    }
+}
+
+struct ControllerBatteryView: View {
+    @State var controller: GCController
+    
+    var body: some View {
+        HStack {
+            if let battery = controller.battery {
+                if battery.batteryState == .charging {
+                    SwiftUI.Image(systemName: "battery.100.bolt")
+                    Text("Charging")
+                } else if battery.batteryState == .full {
+                    SwiftUI.Image(systemName: "battery.100")
+                    Text("Full")
+                } else if battery.batteryState == .discharging {
+                    ChargeLevelView(level: Double(battery.batteryLevel))
+                    Text("\(Int(battery.batteryLevel) * 100) %")
+                }
+            }
+        }
+    }
+    
+}
+
 struct GLLControllerPreferencesView: View {
     // Mode is not set here, that is something the user can adjust on the fly using the buttons (eventually)
     // Note: Going via @state and explicit update instead of @appstorage because otherwise the labels on the sliders don't work
@@ -64,7 +105,10 @@ struct GLLControllerPreferencesView: View {
             GroupBox("Game controller") {
                 VStack(alignment: .leading) {
                     if let controller = GCController.current, controller.extendedGamepad != nil {
-                        Text("Connected: \(controller.vendorName ?? "some")")
+                        HStack {
+                            Text("Connected: \(controller.vendorName ?? "some")")
+                            ControllerBatteryView(controller: controller)
+                        }
                     } else {
                         Text("No game controller connected")
                     }
