@@ -173,7 +173,6 @@ class HUDControllerMode {
         let shiftingRight = currentIndex == (previousIndex + 1) % 3
         let absoluteShiftAmount = (modeDrawerWidth + spacing) * (1.0 - frame.currentIsCentered)
         let shiftAmount = shiftingAtAll ? (shiftingRight ? absoluteShiftAmount : -absoluteShiftAmount) : 0.0
-        print("shifting \(shiftAmount) cur \(currentIndex) prev \(previousIndex)")
         
         let indicatorAreaWidth = inNarrowMode ? max(size.width - buttonsTotalWidth, minIndicatorWidth) : maxIndicatorWidth
         
@@ -185,12 +184,10 @@ class HUDControllerMode {
             let baseOffset = Double(i) * (modeDrawerWidth + spacing)
             let drawPosition = baseOffset + shiftAmount + size.width/2
             
-            // TODO draw center one (i == 0) different
             let active: Double
             let index = indices[i+2]
             if index == currentIndex {
                 active = (frame.currentIsCentered * (fullyActive - fullyInactive)) + fullyInactive
-                print("current active \(active) shift \(shiftAmount) index \(i)")
             } else if index == previousIndex {
                 active = ((1.0-frame.currentIsCentered) * (fullyActive - fullyInactive)) + fullyInactive
             } else {
