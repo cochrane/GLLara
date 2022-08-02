@@ -46,8 +46,18 @@ class HUDBoneNames {
      Finds the siblings for the given bone and returns the appropriate drawers. Returns them and the index the center bone has in the list.
      The second bone can be passed, in which case it will be included and its index returned as well. The second index is undefined if the other bone is not given or not included
      */
-    private func findSiblings(center bone: GLLItemBone, other: GLLItemBone? = nil) -> ([BoneAndDrawer], Int, Int?) {
-        guard let parent = bone.parent, let siblings = parent.children, let index = siblings.firstIndex(of: bone) else {
+    private func findSiblings(center bone: GLLItemBone, other: GLLItemBone? = nil, hideUnusedBones: Bool) -> ([BoneAndDrawer], Int, Int?) {
+        guard let parent = bone.parent, let rawSiblings = parent.children else {
+            return ([ BoneAndDrawer(bone: bone) ], 0, 0)
+        }
+        
+        let siblings: [GLLItemBone]
+        if hideUnusedBones {
+            siblings = rawSiblings.filter { !$0.bone.name.hasPrefix("unused") }
+        } else {
+            siblings = rawSiblings
+        }
+        guard let index = siblings.firstIndex(of: bone) else {
             return ([ BoneAndDrawer(bone: bone) ], 0, 0)
         }
         
@@ -59,18 +69,22 @@ class HUDBoneNames {
         return (drawers, index, secondIndex)
     }
     
-    private func lineage(center bone: GLLItemBone) -> ([BoneAndDrawer], [BoneAndDrawer]) {
+    private func lineage(center bone: GLLItemBone, hideUnusedBones: Bool) -> ([BoneAndDrawer], [BoneAndDrawer]) {
         var parent = bone.parent
         var ancestors: [BoneAndDrawer] = []
         while let current = parent, ancestors.count < 2 {
-            ancestors.append(BoneAndDrawer(bone: current))
+            if !hideUnusedBones || !current.bone.name.hasPrefix("unused") {
+                ancestors.append(BoneAndDrawer(bone: current))
+            }
             parent = current.parent
         }
         
         var descendants: [BoneAndDrawer] = []
         var child = bone.children?.first
         while let current = child, descendants.count < 2 {
-            descendants.append(BoneAndDrawer(bone: current))
+            if !hideUnusedBones || !current.bone.name.hasPrefix("unused") {
+                descendants.append(BoneAndDrawer(bone: current))
+            }
             child = current.children?.first
         }
         return (ancestors, descendants)
@@ -144,6 +158,8 @@ class HUDBoneNames {
             return
         }
         
+        let hideUnusedBones = UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones)
+        
         let frame = frame(at: transition)
         
         let boneForAncestors: GLLItemBone
@@ -153,9 +169,9 @@ class HUDBoneNames {
             boneForAncestors = transitioningTo.bone
         }
         
-        let (siblings, indexCurrent, indexPrevious) = findSiblings(center: transitioningTo.bone, other: previous)
+        let (siblings, indexCurrent, indexPrevious) = findSiblings(center: transitioningTo.bone, other: previous, hideUnusedBones: hideUnusedBones)
         let maxSiblingWidth = siblings.reduce(0.0) { max($0, $1.drawer.size.x) }
-        let (parents, children) = lineage(center: boneForAncestors)
+        let (parents, children) = lineage(center: boneForAncestors, hideUnusedBones: hideUnusedBones)
         
         // Always draw entire thing in a big box, shifting up, down, left, right depending on animation direction
         let shift: SIMD2<Float>
@@ -179,7 +195,7 @@ class HUDBoneNames {
         
         var parentOffset = SIMD2<Float>(x: 0.0, y: verticalStride)
         let parentShift: SIMD2<Float>
-        let (previousAncestors, previousDescendants) = lineage(center: previous)
+        let (previousAncestors, previousDescendants) = lineage(center: previous, hideUnusedBones: hideUnusedBones)
         var prevParentWidth = parents.first?.drawer.size.x
         var prevChildWidth = children.first?.drawer.size.x
         if let width = previousDescendants.first?.drawer.size.x {
@@ -192,7 +208,7 @@ class HUDBoneNames {
             parentShift = shift
             
             // Calculate prevBox - the box for the previous thing, used for attaching the direction indicators
-            let (previousSiblings, _, _) = findSiblings(center: previous)
+            let (previousSiblings, _, _) = findSiblings(center: previous, hideUnusedBones: hideUnusedBones)
             let maxPrevSiblingsWidth = previousSiblings.reduce(0.0) { max($0, $1.drawer.size.x) }
             let prevBoxSize = SIMD2<Float>(x: maxPrevSiblingsWidth * 3 + spacing * 4,
                                        y: Float(HUDTextDrawer.capsuleHeight) * 3 + spacing * 4)
@@ -271,7 +287,7 @@ class HUDBoneNames {
             drawerUp.draw(position: SIMD2<Float>(x: center.x - size/2 - spacing, y: center.y + verticalStride),
                           reference: .centerRight,
                           highlighted: highlighted,
-                          active: frame.fade * 0.75,
+                          active: frame.fade,
                           into: encoder)
         }
         
@@ -284,7 +300,7 @@ class HUDBoneNames {
             drawerDown.draw(position: SIMD2<Float>(x: center.x - size/2 - spacing, y: center.y - verticalStride),
                             reference: .centerRight,
                             highlighted: highlighted,
-                            active: frame.fade * childVisible * 0.75,
+                            active: frame.fade * childVisible,
                             into: encoder)
         }
         
@@ -316,11 +332,23 @@ class HUDBoneNames {
         transition = 0.0
     }
     
+    private func parent(of bone: GLLItemBone?) -> GLLItemBone? {
+        let hideUnusedBones = UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones)
+        var parent = bone?.parent
+        while let current = parent {
+            if !hideUnusedBones || !current.bone.name.hasPrefix("unused") {
+                return current
+            }
+            parent = current.parent
+        }
+        return nil
+    }
+    
     func setNext(bone: GLLItemBone) {
         if previous != nil, let lastStep = steps.last?.bone {
-            if bone.parent == lastStep {
+            if parent(of: bone) == lastStep {
                 steps.append(AnimationStep(direction: .firstChild, bone: bone))
-            } else if lastStep.parent == bone {
+            } else if parent(of: lastStep) == bone {
                 steps.append(AnimationStep(direction: .parent, bone: bone))
             } else {
                 steps.append(AnimationStep(direction: .sibling, bone: bone))

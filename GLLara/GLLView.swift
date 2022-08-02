@@ -254,10 +254,6 @@ import GameController
         }
     }
     
-    private func firstBone(of item: GLLItem) -> GLLItemBone? {
-        return item.bones.firstObject as? GLLItemBone
-    }
-    
     private func boneOfDocument(first: Bool) -> GLLItemBone? {
         guard let document = document, let managedObjectContext = document.managedObjectContext else {
             return nil
@@ -269,7 +265,7 @@ import GameController
         fetchRequest.fetchLimit = 1
         
         let result = (try? managedObjectContext.fetch(fetchRequest)) ?? []
-        return result.first?.bones.firstObject as? GLLItemBone
+        return firstBone(item: result.first)
     }
 
     private func parentBone() -> GLLItemBone? {
@@ -293,7 +289,55 @@ import GameController
         filteredBones.removeAll { bone in
             bone.isChild(ofAny: selectedBones)
         }
-        return filteredBones.first?.parent
+        return parent(of: filteredBones.first)
+    }
+    
+    private func isValid(bone: GLLItemBone?) -> Bool {
+        guard let bone = bone else {
+            return false
+        }
+        return !UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones) || !bone.bone.name.hasPrefix("unused")
+    }
+    
+    private func child(of bone: GLLItemBone?) -> GLLItemBone? {
+        var child = bone?.children?.first
+        while let current = child {
+            if isValid(bone: current) {
+                return current
+            }
+            child = current.children?.first
+        }
+        return nil
+    }
+    
+    private func parent(of bone: GLLItemBone?) -> GLLItemBone? {
+        var parent = bone?.parent
+        while let current = parent {
+            if isValid(bone: current) {
+                return current
+            }
+            parent = current.parent
+        }
+        return nil
+    }
+    
+    private func firstBone(item: GLLItem?) -> GLLItemBone? {
+        return item?.bones.first(where: { isValid(bone: $0 as? GLLItemBone) }) as? GLLItemBone
+    }
+    
+    private func lastBone(item: GLLItem?) -> GLLItemBone? {
+        return item?.bones.reverseObjectEnumerator().first(where: { isValid(bone: $0 as? GLLItemBone) }) as? GLLItemBone
+    }
+    
+    private func siblings(of bone: GLLItemBone?) -> [GLLItemBone]? {
+        guard let parent = bone?.parent, let otherChildren = parent.children else {
+            return nil
+        }
+        if UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones) {
+            return otherChildren.filter { !$0.bone.name.hasPrefix("unused") }
+        } else {
+            return otherChildren
+        }
     }
     
     private func childBone() -> GLLItemBone? {
@@ -303,7 +347,7 @@ import GameController
         
         // If item is selected: Select its root bone
         if let firstSelected = document.selection.selectedObjects.firstObject as? GLLItem {
-            return firstSelected.bones.firstObject as? GLLItemBone
+            return firstBone(item: firstSelected)
         }
         
         // If nothing selected: Root bone of first model
@@ -325,7 +369,7 @@ import GameController
         filteredBones.removeAll { bone in
             ancestorsOfSelected.contains(bone)
         }
-        return filteredBones.last?.children.first
+        return child(of: filteredBones.last)
     }
     
     private func nextSiblingBone() -> GLLItemBone? {
@@ -335,7 +379,7 @@ import GameController
         
         // If item is selected: Select its root bone
         if let firstSelected = document.selection.selectedObjects.firstObject as? GLLItem {
-            return firstSelected.bones.firstObject as? GLLItemBone
+            return firstBone(item: firstSelected)
         }
         
         // If nothing selected: Root bone of first model
@@ -344,18 +388,17 @@ import GameController
         }
         // Select next sibling bone of last selected bone.
         let selection = document.selection.selectedBones
-        if let lastBone = selection?.last {
-            if let parent = lastBone.parent {
-                let siblings = parent.children!
-                if let index = siblings.firstIndex(of: lastBone) {
+        if let lastSelectedBone = selection?.last {
+            if let siblings = siblings(of: lastSelectedBone) {
+                if let index = siblings.firstIndex(of: lastSelectedBone) {
                     let nextIndex = index < siblings.count - 1 ? index + 1 : 0
                     return siblings[nextIndex]
                 }
             } else {
                 // If root bone: Either next root bone or next model
-                let item = lastBone.item!
+                let item = lastSelectedBone.item!
                 let rootBones = item.rootBones!
-                if let index = rootBones.firstIndex(of: lastBone) {
+                if let index = rootBones.firstIndex(of: lastSelectedBone) {
                     let nextIndex = index < rootBones.count - 1 ? index + 1 : 0
                     return item.rootBones[nextIndex]
                 } else {
@@ -366,9 +409,9 @@ import GameController
                     
                     if let result = try? managedObjectContext.fetch(fetchRequest), let index = result.firstIndex(of: item) {
                         if index < result.count - 1 {
-                            return result[index + 1].rootBones.first
+                            return firstBone(item: result[index + 1])
                         } else {
-                            return result[0].rootBones.last
+                            return lastBone(item: result[0])
                         }
                     }
                 }
@@ -384,7 +427,7 @@ import GameController
         
         // If item is selected: Select its root bone
         if let firstSelected = document.selection.selectedObjects.firstObject as? GLLItem {
-            return firstSelected.bones.firstObject as? GLLItemBone
+            return firstBone(item: firstSelected)
         }
         
         // If nothing selected: Root bone of last model
@@ -393,18 +436,17 @@ import GameController
         }
         // Select next sibling bone of last selected bone.
         let selection = document.selection.selectedBones
-        if let firstBone = selection?.first {
-            if let parent = firstBone.parent {
-                let siblings = parent.children!
-                if let index = siblings.firstIndex(of: firstBone) {
+        if let firstSelectedBone = selection?.first {
+            if let siblings = siblings(of: firstSelectedBone) {
+                if let index = siblings.firstIndex(of: firstSelectedBone) {
                     let nextIndex = index > 0 ? index - 1 : siblings.count - 1
                     return siblings[nextIndex]
                 }
             } else {
                 // If root bone: Either next root bone or next model
-                let item = firstBone.item!
+                let item = firstSelectedBone.item!
                 let rootBones = item.rootBones!
-                if let index = rootBones.firstIndex(of: firstBone) {
+                if let index = rootBones.firstIndex(of: firstSelectedBone) {
                     let nextIndex = index > 0 ? index - 1 : rootBones.count - 1
                     return item.rootBones[nextIndex]
                 } else {
@@ -415,9 +457,9 @@ import GameController
                     
                     if let result = try? managedObjectContext.fetch(fetchRequest), let index = result.firstIndex(of: item) {
                         if index > 0 {
-                            return result[index - 1].rootBones.last
+                            return lastBone(item: result[index - 1])
                         } else {
-                            return result[0].rootBones.first
+                            return firstBone(item: result[0])
                         }
                     }
                 }
