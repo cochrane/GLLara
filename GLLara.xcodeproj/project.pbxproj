@@ -13,6 +13,7 @@
 		521102E7288DBF72001BE4BC /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521102E6288DBF72001BE4BC /* HUD.swift */; };
 		521102EC28972939001BE4BC /* HUDButtonDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521102EB28972939001BE4BC /* HUDButtonDrawer.swift */; };
 		521102ED2897E9A8001BE4BC /* HUDBoneNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521102E928968865001BE4BC /* HUDBoneNames.swift */; };
+		521102EF2899C430001BE4BC /* GLLItemBoneExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521102EE2899C430001BE4BC /* GLLItemBoneExtensions.swift */; };
 		5211F83226246EE600A1EC23 /* GLLTextureAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */; };
 		5213F8831C0E411C007A9EBB /* GLLPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213F8811C0E411C007A9EBB /* GLLPreferencesWindowController.m */; };
 		5213F8881C0E478C007A9EBB /* GLLPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5213F88A1C0E478C007A9EBB /* GLLPreferencesWindow.xib */; };
@@ -383,6 +384,7 @@
 		521102E8288F28ED001BE4BC /* HUDShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUDShared.h; sourceTree = "<group>"; };
 		521102E928968865001BE4BC /* HUDBoneNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDBoneNames.swift; sourceTree = "<group>"; };
 		521102EB28972939001BE4BC /* HUDButtonDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDButtonDrawer.swift; sourceTree = "<group>"; };
+		521102EE2899C430001BE4BC /* GLLItemBoneExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLItemBoneExtensions.swift; sourceTree = "<group>"; };
 		5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLTextureAssignment.swift; sourceTree = "<group>"; };
 		5211F84A262B800300A1EC23 /* GLLSceneModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		5213F8801C0E411C007A9EBB /* GLLPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -1441,6 +1443,7 @@
 				5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */,
 				5214470B16DC2312003E260F /* GLLItem+MeshExport.h */,
 				5214470C16DC2312003E260F /* GLLItem+MeshExport.m */,
+				521102EE2899C430001BE4BC /* GLLItemBoneExtensions.swift */,
 			);
 			name = "Scene members";
 			sourceTree = "<group>";
@@ -1964,6 +1967,7 @@
 				5274448228031C0C00E5A3FD /* GLLModelDrawData.swift in Sources */,
 				5291DB9415FBF7BE00ECDBCA /* GLLAmbientLight.m in Sources */,
 				52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */,
+				521102EF2899C430001BE4BC /* GLLItemBoneExtensions.swift in Sources */,
 				52528D751D6AC2AA002E0074 /* GLLTiming.cpp in Sources */,
 				523BBB072880C78600B2D52E /* GLLPreferenceKeys.swift in Sources */,
 				52AC5DC62876F315004949D4 /* CopyDepth.metal in Sources */,

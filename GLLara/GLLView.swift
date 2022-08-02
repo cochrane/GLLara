@@ -289,7 +289,8 @@ import GameController
         filteredBones.removeAll { bone in
             bone.isChild(ofAny: selectedBones)
         }
-        return parent(of: filteredBones.first)
+        let skipUnused = UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones)
+        return filteredBones.first?.parent(skippingUnused: skipUnused)
     }
     
     private func isValid(bone: GLLItemBone?) -> Bool {
@@ -299,45 +300,12 @@ import GameController
         return !UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones) || !bone.bone.name.hasPrefix("unused")
     }
     
-    private func child(of bone: GLLItemBone?) -> GLLItemBone? {
-        var child = bone?.children?.first
-        while let current = child {
-            if isValid(bone: current) {
-                return current
-            }
-            child = current.children?.first
-        }
-        return nil
-    }
-    
-    private func parent(of bone: GLLItemBone?) -> GLLItemBone? {
-        var parent = bone?.parent
-        while let current = parent {
-            if isValid(bone: current) {
-                return current
-            }
-            parent = current.parent
-        }
-        return nil
-    }
-    
     private func firstBone(item: GLLItem?) -> GLLItemBone? {
         return item?.bones.first(where: { isValid(bone: $0 as? GLLItemBone) }) as? GLLItemBone
     }
     
     private func lastBone(item: GLLItem?) -> GLLItemBone? {
         return item?.bones.reverseObjectEnumerator().first(where: { isValid(bone: $0 as? GLLItemBone) }) as? GLLItemBone
-    }
-    
-    private func siblings(of bone: GLLItemBone?) -> [GLLItemBone]? {
-        guard let parent = bone?.parent, let otherChildren = parent.children else {
-            return nil
-        }
-        if UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones) {
-            return otherChildren.filter { !$0.bone.name.hasPrefix("unused") }
-        } else {
-            return otherChildren
-        }
     }
     
     private func childBone() -> GLLItemBone? {
@@ -369,7 +337,8 @@ import GameController
         filteredBones.removeAll { bone in
             ancestorsOfSelected.contains(bone)
         }
-        return child(of: filteredBones.last)
+        let skipUnused = UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones)
+        return filteredBones.last?.firstChild(skippingUnused: skipUnused)
     }
     
     private func nextSiblingBone() -> GLLItemBone? {
@@ -386,10 +355,11 @@ import GameController
         if document.selection.selectedBones.isEmpty {
             return boneOfDocument(first: true)
         }
+        let skipUnused = UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones)
         // Select next sibling bone of last selected bone.
         let selection = document.selection.selectedBones
         if let lastSelectedBone = selection?.last {
-            if let siblings = siblings(of: lastSelectedBone) {
+            if let siblings = lastSelectedBone.siblings(skippingUnused: skipUnused) {
                 if let index = siblings.firstIndex(of: lastSelectedBone) {
                     let nextIndex = index < siblings.count - 1 ? index + 1 : 0
                     return siblings[nextIndex]
@@ -434,10 +404,11 @@ import GameController
         if document.selection.selectedBones.isEmpty {
             return boneOfDocument(first: false)
         }
+        let skipUnused = UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones)
         // Select next sibling bone of last selected bone.
         let selection = document.selection.selectedBones
         if let firstSelectedBone = selection?.first {
-            if let siblings = siblings(of: firstSelectedBone) {
+            if let siblings = firstSelectedBone.siblings(skippingUnused: skipUnused) {
                 if let index = siblings.firstIndex(of: firstSelectedBone) {
                     let nextIndex = index > 0 ? index - 1 : siblings.count - 1
                     return siblings[nextIndex]

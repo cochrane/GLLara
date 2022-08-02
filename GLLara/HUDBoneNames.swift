@@ -47,17 +47,7 @@ class HUDBoneNames {
      The second bone can be passed, in which case it will be included and its index returned as well. The second index is undefined if the other bone is not given or not included
      */
     private func findSiblings(center bone: GLLItemBone, other: GLLItemBone? = nil, hideUnusedBones: Bool) -> ([BoneAndDrawer], Int, Int?) {
-        guard let parent = bone.parent, let rawSiblings = parent.children else {
-            return ([ BoneAndDrawer(bone: bone) ], 0, 0)
-        }
-        
-        let siblings: [GLLItemBone]
-        if hideUnusedBones {
-            siblings = rawSiblings.filter { !$0.bone.name.hasPrefix("unused") }
-        } else {
-            siblings = rawSiblings
-        }
-        guard let index = siblings.firstIndex(of: bone) else {
+        guard let siblings = bone.siblings(skippingUnused: hideUnusedBones), let index = siblings.firstIndex(of: bone) else {
             return ([ BoneAndDrawer(bone: bone) ], 0, 0)
         }
         
@@ -70,22 +60,18 @@ class HUDBoneNames {
     }
     
     private func lineage(center bone: GLLItemBone, hideUnusedBones: Bool) -> ([BoneAndDrawer], [BoneAndDrawer]) {
-        var parent = bone.parent
+        var parent = bone.parent(skippingUnused: hideUnusedBones)
         var ancestors: [BoneAndDrawer] = []
         while let current = parent, ancestors.count < 2 {
-            if !hideUnusedBones || !current.bone.name.hasPrefix("unused") {
-                ancestors.append(BoneAndDrawer(bone: current))
-            }
-            parent = current.parent
+            ancestors.append(BoneAndDrawer(bone: current))
+            parent = current.parent(skippingUnused: hideUnusedBones)
         }
         
         var descendants: [BoneAndDrawer] = []
-        var child = bone.children?.first
+        var child = bone.firstChild(skippingUnused: hideUnusedBones)
         while let current = child, descendants.count < 2 {
-            if !hideUnusedBones || !current.bone.name.hasPrefix("unused") {
-                descendants.append(BoneAndDrawer(bone: current))
-            }
-            child = current.children?.first
+            descendants.append(BoneAndDrawer(bone: current))
+            child = current.firstChild(skippingUnused: hideUnusedBones)
         }
         return (ancestors, descendants)
     }
@@ -332,23 +318,12 @@ class HUDBoneNames {
         transition = 0.0
     }
     
-    private func parent(of bone: GLLItemBone?) -> GLLItemBone? {
-        let hideUnusedBones = UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones)
-        var parent = bone?.parent
-        while let current = parent {
-            if !hideUnusedBones || !current.bone.name.hasPrefix("unused") {
-                return current
-            }
-            parent = current.parent
-        }
-        return nil
-    }
-    
     func setNext(bone: GLLItemBone) {
+        let skipUnused = UserDefaults.standard.bool(forKey: GLLPrefHideUnusedBones)
         if previous != nil, let lastStep = steps.last?.bone {
-            if parent(of: bone) == lastStep {
+            if bone.parent(skippingUnused: skipUnused) == lastStep {
                 steps.append(AnimationStep(direction: .firstChild, bone: bone))
-            } else if parent(of: lastStep) == bone {
+            } else if lastStep.parent(skippingUnused: skipUnused) == bone {
                 steps.append(AnimationStep(direction: .parent, bone: bone))
             } else {
                 steps.append(AnimationStep(direction: .sibling, bone: bone))
