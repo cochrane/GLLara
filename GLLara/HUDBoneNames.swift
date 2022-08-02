@@ -85,9 +85,8 @@ class HUDBoneNames {
     }
     
     private let keyframes = [
-        AnimationKeyFrame(time: 0.0, currentIsCentered: 0.0),
-        AnimationKeyFrame(time: 0.05, currentIsCentered: 0.0, otherAxisVisible: 0.0),
-        AnimationKeyFrame(time: 0.25, currentIsCentered: 1.0, otherAxisVisible: 0.0),
+        AnimationKeyFrame(time: 0.0, currentIsCentered: 0.0, otherAxisVisible: 0.0),
+        AnimationKeyFrame(time: 0.2, currentIsCentered: 0.7, otherAxisVisible: 0.0),
         AnimationKeyFrame(time: 0.3, currentIsCentered: 1.0, canStartNext: true),
         AnimationKeyFrame(time: 2.0, currentIsCentered: 1.0, canStartNext: true),
         AnimationKeyFrame(time: 2.5, currentIsCentered: 1.0, fade: 0.0, canStartNext: true)
@@ -180,6 +179,12 @@ class HUDBoneNames {
         
         var parentOffset = SIMD2<Float>(x: 0.0, y: verticalStride)
         let parentShift: SIMD2<Float>
+        let (previousAncestors, previousDescendants) = lineage(center: previous)
+        var prevParentWidth = parents.first?.drawer.size.x
+        var prevChildWidth = children.first?.drawer.size.x
+        if let width = previousDescendants.first?.drawer.size.x {
+            prevChildWidth = width
+        }
         var prevBox = box
         if transitioningTo.direction == .sibling {
             parentShift = SIMD2<Float>(repeating: 0)
@@ -192,7 +197,13 @@ class HUDBoneNames {
             let prevBoxSize = SIMD2<Float>(x: maxPrevSiblingsWidth * 3 + spacing * 4,
                                        y: Float(HUDTextDrawer.capsuleHeight) * 3 + spacing * 4)
             prevBox = HUDTextDrawer.Rectangle(lowerLeft: max(indicatorLeftSafeArea, center - prevBoxSize/2), upperRight: min(center + prevBoxSize/2, indicatorRightSafeArea))
+            
+            if let width = previousAncestors.first?.drawer.size.x {
+                prevParentWidth = width
+            }
         }
+        
+        
         for parent in parents {
             parent.drawer.draw(position: center + parentOffset + parentShift,
                         reference: .center,
@@ -202,22 +213,28 @@ class HUDBoneNames {
                         into: encoder)
             parentOffset.y += verticalStride
         }
+        let childVisible = transitioningTo.direction == .sibling ? frame.otherAxisVisible : 1.0
         var childOffset = SIMD2<Float>(x: 0.0, y: -verticalStride)
         for child in children {
             child.drawer.draw(position: center + childOffset + shift,
                               reference: .center,
-                              active: active(bone: child.bone, frame: frame),
+                              active: childVisible * active(bone: child.bone, frame: frame),
                               fadeOutEnd: box,
                               fadeOutLength: 20.0,
                               into: encoder)
             childOffset.y -= verticalStride
         }
         
+        let siblingVisible = transitioningTo.direction == .sibling ? 1.0 : frame.otherAxisVisible
         var siblingOffset = baseSiblingShift
         for sibling in siblings {
+            var visible = active(bone: sibling.bone, frame: frame)
+            if sibling.bone != transitioningTo.bone && sibling.bone != previous.bone {
+                visible *= siblingVisible
+            }
             sibling.drawer.draw(position: center + shift + SIMD2<Float>(x: siblingOffset, y: 0.0),
                                 reference: .center,
-                                active: active(bone: sibling.bone, frame: frame),
+                                active: visible,
                                 fadeOutEnd: box,
                                 fadeOutLength: 20.0,
                                 into: encoder)
@@ -225,9 +242,7 @@ class HUDBoneNames {
         }
         
         // Left/right DPad indicators
-        let drawIndicatorLeft = indexCurrent > 0
-        let drawIndicatorRight = indexCurrent < (siblings.count - 1)
-        if drawIndicatorLeft {
+        if indexCurrent > 0 {
             let positionLeft = box.lowerLeft.x * frame.currentIsCentered + prevBox.lowerLeft.x * (1 - frame.currentIsCentered)
             let highlighted = GCController.current?.extendedGamepad?.dpad.left.isPressed ?? false
             drawerLeft.draw(position: SIMD2<Float>(x: positionLeft, y: center.y),
@@ -236,7 +251,7 @@ class HUDBoneNames {
                             active: frame.fade,
                             into: encoder)
         }
-        if drawIndicatorRight {
+        if indexCurrent < (siblings.count - 1) {
             let positionRight = box.upperRight.x * frame.currentIsCentered + prevBox.upperRight.x * (1 - frame.currentIsCentered)
             let highlighted = GCController.current?.extendedGamepad?.dpad.right.isPressed ?? false
             drawerRight.draw(position: SIMD2<Float>(x: positionRight, y: center.y),
@@ -244,6 +259,33 @@ class HUDBoneNames {
                              highlighted: highlighted,
                              active: frame.fade,
                              into: encoder)
+        }
+        
+        // Top/down DPad indicators
+        if !parents.isEmpty {
+            var size = parents.first!.drawer.size.x
+            if let previous = prevParentWidth {
+                size = size * frame.currentIsCentered + previous * (1 - frame.currentIsCentered)
+            }
+            let highlighted = GCController.current?.extendedGamepad?.dpad.up.isPressed ?? false
+            drawerUp.draw(position: SIMD2<Float>(x: center.x - size/2 - spacing, y: center.y + verticalStride),
+                          reference: .centerRight,
+                          highlighted: highlighted,
+                          active: frame.fade * 0.75,
+                          into: encoder)
+        }
+        
+        if !children.isEmpty {
+            var size = children.first!.drawer.size.x
+            if let previous = prevChildWidth {
+                size = size * frame.currentIsCentered + previous * (1 - frame.currentIsCentered)
+            }
+            let highlighted = GCController.current?.extendedGamepad?.dpad.down.isPressed ?? false
+            drawerDown.draw(position: SIMD2<Float>(x: center.x - size/2 - spacing, y: center.y - verticalStride),
+                            reference: .centerRight,
+                            highlighted: highlighted,
+                            active: frame.fade * childVisible * 0.75,
+                            into: encoder)
         }
         
         // Bonus special case for the up/down DPad indicators whose positions shift if we're going up/down
