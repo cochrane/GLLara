@@ -6,7 +6,6 @@ To be clear: Not all of them will make it to 0.3
 - Autogenerate the always present render parameters, in particular materials. Automatically replace specular intensity with specular color.
 - Add assign tex coord to textures in mesh view; consider redoing textures as normal table view
     - Maybe also redo render parameters as normal table view? Dream would be a combined view including features, numeric values, color values and textures (with coordinates), similar in overall design to how Metal shows resources
-- Game controller stuff (see further down)
 
 ## Completely new
 
@@ -57,18 +56,14 @@ To be clear: Not all of them will make it to 0.3
 
 ## Finish game controller support
 
-- Use only current game controller
-- Show battery state of game controller in settings
-- Support for 3D mouse (still needs a hint on first launch if a 3D mouse is found and the setup page has never been shown before)
-- Support for gamepads now with Apple APIs instead of HID stuff (needs overview window, current state view, hint on first launch)
+- Hint on first launch for 3D mouse, gamepad
 - Game controller bonus feature: Use some key (menu?) to open context menu that allows accessing more features and settings. Features should include: Reset (bone and recursive), undo, redo, …
-- Actually use those invert X/Y settings we have
 
 ## Camera
 
 - Can we store the camera as a quaternion instead? (how to translate that back to euler angles for the UI?)
 - At least limit max camera up angle
-- Quaternion-based editing for bones perhaps?
+- Quaternion-based editing for bones perhaps? (at least for game controllers)
 
 ## Refactoring
 

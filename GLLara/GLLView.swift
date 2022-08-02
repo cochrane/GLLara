@@ -677,12 +677,14 @@ import GameController
                 let rotationY = extendedGamepad.leftThumbstick.yAxis.value
                 
                 if rotationX != 0.0 || rotationY != 0.0 {
-                let rotationSpeed = Float(controllerRotationSpeedCamera * diff)
+                    let rotationSpeed = Float(controllerRotationSpeedCamera * diff)
+                    let xSign: Float = UserDefaults.standard.bool(forKey: GLLPrefControllerInvertXAxis) ? -1.0 : 1.0
+                    let ySign: Float = UserDefaults.standard.bool(forKey: GLLPrefControllerInvertYAxis) ? -1.0 : 1.0
                     if controllerLeftStickMode == .rotateAroundTarget {
-                        camera.longitude -= rotationX * rotationSpeed;
-                        camera.latitude += rotationY * rotationSpeed;
+                        camera.longitude -= rotationX * rotationSpeed * xSign;
+                        camera.latitude += rotationY * rotationSpeed * ySign;
                     } else {
-                        turnAroundCamera(deltaX: rotationX * rotationSpeed, deltaY: -rotationY * rotationSpeed)
+                        turnAroundCamera(deltaX: rotationX * rotationSpeed * xSign, deltaY: -rotationY * rotationSpeed * ySign)
                     }
                 }
                 

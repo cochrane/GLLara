@@ -100,69 +100,71 @@ struct GLLControllerPreferencesView: View {
     @ObservedObject var spaceMouseManager = GLLSpaceMouseManager.shared
     
     var body: some View {
-        VStack {
-            
-            GroupBox("Game controller") {
-                VStack(alignment: .leading) {
-                    if let controller = GCController.current, controller.extendedGamepad != nil {
-                        HStack {
-                            Text("Connected: \(controller.vendorName ?? "some")")
-                            ControllerBatteryView(controller: controller)
+        ScrollView {
+            VStack {
+                
+                GroupBox("Game controller") {
+                    VStack(alignment: .leading) {
+                        if let controller = GCController.current, controller.extendedGamepad != nil {
+                            HStack {
+                                Text("Connected: \(controller.vendorName ?? "some")")
+                                ControllerBatteryView(controller: controller)
+                            }
+                        } else {
+                            Text("No game controller connected")
                         }
-                    } else {
-                        Text("No game controller connected")
-                    }
-                    
-                    GroupBox("Camera") {
-                        Toggle("Invert X-Axis", isOn: $invertXAxis)
-                        Toggle("Invert Y-Axis", isOn: $invertYAxis)
                         
-                        ControllerPreferencesSlider(for: GLLPrefControllerCameraMovementSpeed, in : 0 ... 3, label: "Movement:", valueDescription: { value in
-                            "\(value, specifier: "%.1f") unit/s"
-                        })
-                        ControllerPreferencesSlider(for: GLLPrefControllerCameraRotationSpeed, in : 0 ... 360.0*Double.pi/180.0, label: "Rotation:", valueDescription: { value in
-                            "\(value * 180.0 / Double.pi, specifier: "%.0f")°/s"
-                        })
+                        GroupBox("Camera") {
+                            Toggle("Invert X-Axis", isOn: $invertXAxis)
+                            Toggle("Invert Y-Axis", isOn: $invertYAxis)
+                            
+                            ControllerPreferencesSlider(for: GLLPrefControllerCameraMovementSpeed, in : 0 ... 3, label: "Movement:", valueDescription: { value in
+                                "\(value, specifier: "%.1f") unit/s"
+                            })
+                            ControllerPreferencesSlider(for: GLLPrefControllerCameraRotationSpeed, in : 0 ... 360.0*Double.pi/180.0, label: "Rotation:", valueDescription: { value in
+                                "\(value * 180.0 / Double.pi, specifier: "%.0f")°/s"
+                            })
+                        }
+                        GroupBox("Posing bones") {
+                            ControllerPreferencesSlider(for: GLLPrefControllerBoneMovementSpeed, in : 0 ... 0.1, label: "Movement:", valueDescription: { value in
+                                "\(value, specifier: "%.2f") unit/s"
+                            })
+                            ControllerPreferencesSlider(for: GLLPrefControllerBoneRotationSpeed, in : 0 ... 90.0*Double.pi/180.0, label: "Rotation:", valueDescription: { value in
+                                "\(value * 180.0 / Double.pi, specifier: "%.1f")°/s"
+                            })
+                        }
                     }
-                    GroupBox("Posing bones") {
-                        ControllerPreferencesSlider(for: GLLPrefControllerBoneMovementSpeed, in : 0 ... 0.1, label: "Movement:", valueDescription: { value in
-                            "\(value, specifier: "%.2f") unit/s"
-                        })
-                        ControllerPreferencesSlider(for: GLLPrefControllerBoneRotationSpeed, in : 0 ... 90.0*Double.pi/180.0, label: "Rotation:", valueDescription: { value in
-                            "\(value * 180.0 / Double.pi, specifier: "%.1f")°/s"
-                        })
-                    }
+                    .padding()
+                }
+                .padding()
+                
+                GroupBox("3D Mouse") {
+                    VStack(alignment: .leading) {
+                        if spaceMouseManager.firstDeviceName != nil {
+                            Text("Connected: \(spaceMouseManager.firstDeviceName!)")
+                        } else {
+                            Text("No 3D mouse connected")
+                        }
+                        GroupBox("Movement") {
+                            ControllerPreferencesSlider(for: GLLPrefSpaceMouseSpeedTranslation, in : 0 ... 3, label: "Speed:", valueDescription: { value in
+                                "\(value, specifier: "%.1f") unit/s"
+                            })
+                            ControllerPreferencesSlider(for: GLLPrefSpaceMouseDeadzoneTranslation, in : 0 ... 1, label: "Dead zone:", valueDescription: { value in
+                                "\(Int(value * 100)) %"
+                            })
+                        }
+                        GroupBox("Rotation") {
+                            ControllerPreferencesSlider(for: GLLPrefSpaceMouseSpeedRotation, in : 0 ... 360.0*Double.pi/180.0, label: "Speed:", valueDescription: { value in
+                                "\(value * 180.0 / Double.pi, specifier: "%.0f")°/s"
+                            })
+                            ControllerPreferencesSlider(for: GLLPrefSpaceMouseDeadzoneRotation, in : 0 ... 1, label: "Dead zone:", valueDescription: { value in
+                                "\(Int(value * 100)) %"
+                            })
+                        }
+                    }.padding()
                 }
                 .padding()
             }
-            .padding()
-            
-            GroupBox("3D Mouse") {
-                VStack(alignment: .leading) {
-                    if spaceMouseManager.firstDeviceName != nil {
-                        Text("Connected: \(spaceMouseManager.firstDeviceName!)")
-                    } else {
-                        Text("No 3D mouse connected")
-                    }
-                    GroupBox("Movement") {
-                        ControllerPreferencesSlider(for: GLLPrefSpaceMouseSpeedTranslation, in : 0 ... 3, label: "Speed:", valueDescription: { value in
-                            "\(value, specifier: "%.1f") unit/s"
-                        })
-                        ControllerPreferencesSlider(for: GLLPrefSpaceMouseDeadzoneTranslation, in : 0 ... 1, label: "Dead zone:", valueDescription: { value in
-                            "\(Int(value * 100)) %"
-                        })
-                    }
-                    GroupBox("Rotation") {
-                        ControllerPreferencesSlider(for: GLLPrefSpaceMouseSpeedRotation, in : 0 ... 360.0*Double.pi/180.0, label: "Speed:", valueDescription: { value in
-                            "\(value * 180.0 / Double.pi, specifier: "%.0f")°/s"
-                        })
-                        ControllerPreferencesSlider(for: GLLPrefSpaceMouseDeadzoneRotation, in : 0 ... 1, label: "Dead zone:", valueDescription: { value in
-                            "\(Int(value * 100)) %"
-                        })
-                    }
-                }.padding()
-            }
-            .padding()
         }
     }
 }
