@@ -288,7 +288,7 @@ import UniformTypeIdentifiers
         surface = Surface(width: Int(size.width * internalBufferScaleFactor), height: Int(size.height * internalBufferScaleFactor), device: device)
     }
     
-    private func draw(commandBuffer: MTLCommandBuffer, viewRenderPassDescriptor: MTLRenderPassDescriptor, surface: Surface, includeUI: Bool = true) {
+    private func draw(commandBuffer: MTLCommandBuffer, viewRenderPassDescriptor: MTLRenderPassDescriptor, surface: Surface, includeUI: Bool = true, screenScale: Double = 2.0) {
         
         var viewProjection = camera.viewProjectionMatrix(forAspectRatio: Float(surface.width) / Float(surface.height))
         
@@ -399,7 +399,10 @@ import UniformTypeIdentifiers
                 sceneDrawer.drawSelection(int: combineCommandEncoder)
             }
             
-            hud.draw(size: CGSize(width: CGFloat(surface.width), height: CGFloat(surface.height)), into: combineCommandEncoder)
+            let defaultScreenScale: Float = 2.0
+            let adjustment = Float(screenScale) / defaultScreenScale
+            
+            hud.draw(size: SIMD2<Float>(x: Float(surface.width) / adjustment, y: Float(surface.height) / adjustment), into: combineCommandEncoder)
         }
         
         combineCommandEncoder.endEncoding()
@@ -413,6 +416,10 @@ import UniformTypeIdentifiers
         return hud.runningAnimation
     }
     
+    func selectViaController(bone: GLLItemBone) {
+        hud.setCurrent(bone: bone)
+    }
+
     func draw(in view: MTKView) {
         guard let viewRenderPassDescriptor = view.currentRenderPassDescriptor else {
             return
@@ -422,7 +429,8 @@ import UniformTypeIdentifiers
             return
         }
         
-        draw(commandBuffer: commandBuffer, viewRenderPassDescriptor: viewRenderPassDescriptor, surface: surface, includeUI: true)
+        let screenScale = view.window?.screen?.backingScaleFactor ?? 2.0
+        draw(commandBuffer: commandBuffer, viewRenderPassDescriptor: viewRenderPassDescriptor, surface: surface, includeUI: true, screenScale: screenScale)
         
         let drawable = view.currentDrawable
         commandBuffer.present(drawable!)

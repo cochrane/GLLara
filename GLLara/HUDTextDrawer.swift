@@ -26,6 +26,11 @@ struct HUDTextDrawer {
     static let capsulePaddingLeftRight = 10
     static let capsuleCornerRadius: CGFloat = 5
     
+    struct Rectangle {
+        let lowerLeft: SIMD2<Float>
+        let upperRight: SIMD2<Float>
+    }
+    
     struct DrawnText {
         let attributedString: NSAttributedString
         let height: Int
@@ -115,7 +120,7 @@ struct HUDTextDrawer {
             occupiedSpace = [ LineBlock(coveredLines: texture.height, remainingSpace: texture.width) ]
         }
         
-        func tryAdd(_ drawnText: DrawnText) -> CGRect? {
+        func tryAdd(_ drawnText: DrawnText) -> Rectangle? {
             // Find a block that has enough remaining space
             var beginLine = 0
             for i in 0 ..< occupiedSpace.count {
@@ -135,7 +140,8 @@ struct HUDTextDrawer {
                     }
                     occupiedSpace[i].remainingSpace -= drawnText.width
                     
-                    return CGRect(x: xBegin, y: beginLine, width: drawnText.width, height: drawnText.height)
+                    return Rectangle(lowerLeft: SIMD2<Float>(x: Float(xBegin), y: Float(beginLine)),
+                                     upperRight: SIMD2<Float>(x: Float(xBegin + drawnText.width), y: Float(beginLine + drawnText.height)))
                 } else {
                     beginLine += block.coveredLines
                 }
@@ -211,48 +217,46 @@ struct HUDTextDrawer {
     }
     
     private let atlas: TextureAtlas
-    private let area: CGRect
+    private let area: Rectangle
     
-    init(atlas: TextureAtlas, area: CGRect) {
+    init(atlas: TextureAtlas, area: Rectangle) {
         self.atlas = atlas
         self.area = area
     }
     
-    var size: CGSize {
-        return area.size
+    var size: SIMD2<Float> {
+        return area.upperRight - area.lowerLeft
     }
     
     struct PositionReference {
-        /// Relative offset from left. 0 means position refers to left edge, 1 means position refers to right edge
-        let offsetX: Double
-        /// Relative offset from bottom. 0 means positions refers to bottom edge, 1 means position refers to top edge
-        let offsetY: Double
+        /// Relative offset from left/bottom. 0 means position refers to left/bottom edge, 1 means position refers to right/top edge
+        let offset: SIMD2<Float>
         
-        static var bottomLeft = PositionReference(offsetX: 0.0, offsetY: 0.0)
-        static var bottomCenter = PositionReference(offsetX: 0.5, offsetY: 0.0)
-        static var bottomRight = PositionReference(offsetX: 1.0, offsetY: 0.0)
+        static var bottomLeft = PositionReference(offset: SIMD2<Float>(x: 0.0, y: 0.0))
+        static var bottomCenter = PositionReference(offset: SIMD2<Float>(x: 0.5, y: 0.0))
+        static var bottomRight = PositionReference(offset: SIMD2<Float>(x: 1.0, y: 0.0))
         
-        static var topLeft = PositionReference(offsetX: 0.0, offsetY: 1.0)
-        static var topCenter = PositionReference(offsetX: 0.5, offsetY: 1.0)
-        static var topRight = PositionReference(offsetX: 1.0, offsetY: 1.0)
+        static var topLeft = PositionReference(offset: SIMD2<Float>(x: 0.0, y: 1.0))
+        static var topCenter = PositionReference(offset: SIMD2<Float>(x: 0.5, y: 1.0))
+        static var topRight = PositionReference(offset: SIMD2<Float>(x: 1.0, y: 1.0))
         
-        static var centerLeft = PositionReference(offsetX: 0.0, offsetY: 0.5)
-        static var center = PositionReference(offsetX: 0.5, offsetY: 0.5)
-        static var centerRight = PositionReference(offsetX: 1.0, offsetY: 0.5)
+        static var centerLeft = PositionReference(offset: SIMD2<Float>(x: 0.0, y: 0.5))
+        static var center = PositionReference(offset: SIMD2<Float>(x: 0.5, y: 0.5))
+        static var centerRight = PositionReference(offset: SIMD2<Float>(x: 1.0, y: 0.5))
     }
     
     /**
      Draws at the given point. active is a double specifically for animation
      */
-    func draw(position: CGPoint, reference: PositionReference = .bottomLeft, active: Double = 1.0, fadeOutEnd: CGRect = CGRect(x: -10.0, y: -10.0, width: 1e7, height: 1e7), fadeOutLength: Double = 10.0, into encoder: MTLRenderCommandEncoder) {
+    func draw(position: SIMD2<Float>, reference: PositionReference = .bottomLeft, active: Float = 1.0, fadeOutEnd: HUDTextDrawer.Rectangle = HUDTextDrawer.Rectangle(lowerLeft: SIMD2<Float>(x: -10.0, y: -10.0), upperRight: SIMD2<Float>(x: 1e7, y: 1e7)), fadeOutLength: Float = 10.0, into encoder: MTLRenderCommandEncoder) {
         
-        let ownSize = SIMD2<Float>(x: Float(size.width), y: Float(size.height))
-        let lowerLeft = SIMD2<Float>(x: Float(position.x - reference.offsetX * size.width), y: Float(position.y - reference.offsetY * size.height))
+        let ownSize = size
+        let lowerLeft = position - reference.offset * ownSize
         let upperRight = lowerLeft + ownSize
         
         let textureSize = SIMD2<Float>(repeating: 2048)
-        let textureLowerLeft = SIMD2<Float>(x: Float(area.minX), y: Float(area.minY)) / textureSize
-        let textureUpperRight = SIMD2<Float>(x: Float(area.maxX), y: Float(area.maxY)) / textureSize
+        let textureLowerLeft = area.lowerLeft / textureSize
+        let textureUpperRight = area.upperRight / textureSize
         encoder.setFragmentTexture(atlas.texture, index: Int(HUDFragmentTextureBase.rawValue))
         
         let alpha = Float(active)
@@ -270,8 +274,8 @@ struct HUDTextDrawer {
         }
         
         let fadeOutEndBox = (
-            SIMD2<Float>(x: Float(fadeOutEnd.minX), y: Float(fadeOutEnd.minY)),
-            SIMD2<Float>(x: Float(fadeOutEnd.maxX), y: Float(fadeOutEnd.maxY))
+            fadeOutEnd.lowerLeft,
+            fadeOutEnd.upperRight
         )
         let fadeOutStartBox = (
             fadeOutEndBox.0 + SIMD2<Float>(repeating: Float(fadeOutLength)),

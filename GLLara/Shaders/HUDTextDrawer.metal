@@ -14,6 +14,7 @@ using namespace metal;
 struct RasterizerData {
     float4 position [[position]];
     float2 texCoord;
+    float2 screenPosition;
 };
 
 vertex RasterizerData hudTextDrawerVertex(uint vertexID [[ vertex_id ]],
@@ -24,6 +25,7 @@ vertex RasterizerData hudTextDrawerVertex(uint vertexID [[ vertex_id ]],
     float2 position = (2 * vertices[vertexID].position / params->screenSize) - 1;
     
     out.position = float4(position, 0, 1);
+    out.screenPosition = vertices[vertexID].position;
     out.texCoord = vertices[vertexID].texCoord;
     
     return out;
@@ -39,10 +41,10 @@ fragment float4 hudTextDrawerFragment(RasterizerData in [[stage_in]],
     constexpr sampler textureSampler(mag_filter::linear, min_filter::linear);
     float4 color = texture.sample(textureSampler, in.texCoord);
     
-    color.a *= fraction(in.position.x, params->fadeOutEndBox[0].x, params->fadeOutStartBox[0].x);
-    color.a *= fraction(in.position.y, params->fadeOutEndBox[0].y, params->fadeOutStartBox[0].y);
-    color.a *= fraction(in.position.x, params->fadeOutEndBox[1].x, params->fadeOutStartBox[1].x);
-    color.a *= fraction(in.position.y, params->fadeOutEndBox[1].y, params->fadeOutStartBox[1].y);
+    color.a *= fraction(in.screenPosition.x, params->fadeOutEndBox[0].x, params->fadeOutStartBox[0].x);
+    color.a *= fraction(in.screenPosition.y, params->fadeOutEndBox[0].y, params->fadeOutStartBox[0].y);
+    color.a *= fraction(in.screenPosition.x, params->fadeOutEndBox[1].x, params->fadeOutStartBox[1].x);
+    color.a *= fraction(in.screenPosition.y, params->fadeOutEndBox[1].y, params->fadeOutStartBox[1].y);
     
     return color * params->alpha;
 }

@@ -254,18 +254,13 @@ import GameController
         }
     }
     
-    private func selectFirstBone(of item: GLLItem) {
-        guard let document = document else {
-            return
-        }
-        if let firstBone = item.bones.firstObject as? GLLItemBone {
-            document.selection.selectedObjects = [ firstBone ]
-        }
+    private func firstBone(of item: GLLItem) -> GLLItemBone? {
+        return item.bones.firstObject as? GLLItemBone
     }
     
-    private func selectBoneOfDocument(first: Bool) {
+    private func boneOfDocument(first: Bool) -> GLLItemBone? {
         guard let document = document, let managedObjectContext = document.managedObjectContext else {
-            return
+            return nil
         }
         
         let fetchRequest = NSFetchRequest<GLLItem>()
@@ -274,26 +269,22 @@ import GameController
         fetchRequest.fetchLimit = 1
         
         let result = (try? managedObjectContext.fetch(fetchRequest)) ?? []
-        if let firstItem = result.first {
-            selectFirstBone(of: firstItem)
-        }
+        return result.first?.bones.firstObject as? GLLItemBone
     }
 
-    private func selectParentBone() {
+    private func parentBone() -> GLLItemBone? {
         guard let document = document else {
-            return
+            return nil
         }
 
         // If item is selected: Select its root bone
         if let firstSelected = document.selection.selectedObjects.firstObject as? GLLItem {
-            selectFirstBone(of: firstSelected)
-            return
+            return firstSelected.bones.firstObject as? GLLItemBone
         }
         
         // If nothing selected: Root bone of first model
         if document.selection.selectedBones.isEmpty {
-            selectBoneOfDocument(first: true)
-            return
+            return boneOfDocument(first: true)
         }
         
         // If multiple selection: Parent of first item that doesn't have an ancestor in the selection
@@ -302,26 +293,22 @@ import GameController
         filteredBones.removeAll { bone in
             bone.isChild(ofAny: selectedBones)
         }
-        if let first = filteredBones.first, let parent = first.parent {
-            document.selection.selectedObjects = [ parent ]
-        }
+        return filteredBones.first?.parent
     }
     
-    private func selectChildBone() {
+    private func childBone() -> GLLItemBone? {
         guard let document = document else {
-            return
+            return nil
         }
         
         // If item is selected: Select its root bone
         if let firstSelected = document.selection.selectedObjects.firstObject as? GLLItem {
-            selectFirstBone(of: firstSelected)
-            return
+            return firstSelected.bones.firstObject as? GLLItemBone
         }
         
         // If nothing selected: Root bone of first model
         if document.selection.selectedBones.isEmpty {
-            selectBoneOfDocument(first: false)
-            return
+            return boneOfDocument(first: false)
         }
         
         // If multiple selected: First child of last item that doesn't have a child in the selection
@@ -338,26 +325,22 @@ import GameController
         filteredBones.removeAll { bone in
             ancestorsOfSelected.contains(bone)
         }
-        if let last = filteredBones.last, let firstChild = last.children.first {
-            document.selection.selectedObjects = [ firstChild ]
-        }
+        return filteredBones.last?.children.first
     }
     
-    private func selectNextSiblingBone() {
+    private func nextSiblingBone() -> GLLItemBone? {
         guard let document = document, let managedObjectContext = document.managedObjectContext else {
-            return
+            return nil
         }
         
         // If item is selected: Select its root bone
         if let firstSelected = document.selection.selectedObjects.firstObject as? GLLItem {
-            selectFirstBone(of: firstSelected)
-            return
+            return firstSelected.bones.firstObject as? GLLItemBone
         }
         
         // If nothing selected: Root bone of first model
         if document.selection.selectedBones.isEmpty {
-            selectBoneOfDocument(first: true)
-            return
+            return boneOfDocument(first: true)
         }
         // Select next sibling bone of last selected bone.
         let selection = document.selection.selectedBones
@@ -366,7 +349,7 @@ import GameController
                 let siblings = parent.children!
                 if let index = siblings.firstIndex(of: lastBone) {
                     let nextIndex = index < siblings.count - 1 ? index + 1 : 0
-                    document.selection.selectedObjects = [ siblings[nextIndex] ]
+                    return siblings[nextIndex]
                 }
             } else {
                 // If root bone: Either next root bone or next model
@@ -374,7 +357,7 @@ import GameController
                 let rootBones = item.rootBones!
                 if let index = rootBones.firstIndex(of: lastBone) {
                     let nextIndex = index < rootBones.count - 1 ? index + 1 : 0
-                    document.selection.selectedObjects = [ item.rootBones[nextIndex] ]
+                    return item.rootBones[nextIndex]
                 } else {
                     // Root of next item
                     let fetchRequest = NSFetchRequest<GLLItem>()
@@ -383,37 +366,30 @@ import GameController
                     
                     if let result = try? managedObjectContext.fetch(fetchRequest), let index = result.firstIndex(of: item) {
                         if index < result.count - 1 {
-                            let nextItem = result[index + 1]
-                            if let firstRoot = nextItem.rootBones.first {
-                                document.selection.selectedObjects = [ firstRoot ]
-                            }
+                            return result[index + 1].rootBones.first
                         } else {
-                            let firstItem = result[0]
-                            if let lastRoot = firstItem.rootBones.last {
-                                document.selection.selectedObjects = [ lastRoot ]
-                            }
+                            return result[0].rootBones.last
                         }
                     }
                 }
             }
         }
+        return nil
     }
     
-    private func selectPreviousSiblingBone() {
+    private func previousSiblingBone() -> GLLItemBone? {
         guard let document = document, let managedObjectContext = document.managedObjectContext else {
-            return
+            return nil
         }
         
         // If item is selected: Select its root bone
         if let firstSelected = document.selection.selectedObjects.firstObject as? GLLItem {
-            selectFirstBone(of: firstSelected)
-            return
+            return firstSelected.bones.firstObject as? GLLItemBone
         }
         
         // If nothing selected: Root bone of last model
         if document.selection.selectedBones.isEmpty {
-            selectBoneOfDocument(first: false)
-            return
+            return boneOfDocument(first: false)
         }
         // Select next sibling bone of last selected bone.
         let selection = document.selection.selectedBones
@@ -422,7 +398,7 @@ import GameController
                 let siblings = parent.children!
                 if let index = siblings.firstIndex(of: firstBone) {
                     let nextIndex = index > 0 ? index - 1 : siblings.count - 1
-                    document.selection.selectedObjects = [ siblings[nextIndex] ]
+                    return siblings[nextIndex]
                 }
             } else {
                 // If root bone: Either next root bone or next model
@@ -430,7 +406,7 @@ import GameController
                 let rootBones = item.rootBones!
                 if let index = rootBones.firstIndex(of: firstBone) {
                     let nextIndex = index > 0 ? index - 1 : rootBones.count - 1
-                    document.selection.selectedObjects = [ item.rootBones[nextIndex] ]
+                    return item.rootBones[nextIndex]
                 } else {
                     // Root of previous item
                     let fetchRequest = NSFetchRequest<GLLItem>()
@@ -439,20 +415,15 @@ import GameController
                     
                     if let result = try? managedObjectContext.fetch(fetchRequest), let index = result.firstIndex(of: item) {
                         if index > 0 {
-                            let previousItem = result[index - 1]
-                            if let lastRoot = previousItem.rootBones.last {
-                                document.selection.selectedObjects = [ lastRoot ]
-                            }
+                            return result[index - 1].rootBones.last
                         } else {
-                            let firstItem = result[0]
-                            if let firstRoot = firstItem.rootBones.first {
-                                document.selection.selectedObjects = [ firstRoot ]
-                            }
+                            return result[0].rootBones.first
                         }
                     }
                 }
             }
         }
+        return nil
     }
     
     private func selectGamepadMode(delta: Int) {
@@ -481,14 +452,21 @@ import GameController
         
         // DPad: Go to different bone
         if element == gamepad.dpad {
+            let newSelection: GLLItemBone?
             if buttonPressed(element: gamepad.dpad.up) {
-                selectParentBone()
+                newSelection = parentBone()
             } else if buttonPressed(element: gamepad.dpad.down) {
-                selectChildBone()
+                newSelection = childBone()
             } else if buttonPressed(element: gamepad.dpad.left) {
-                selectNextSiblingBone()
+                newSelection = previousSiblingBone()
             } else if buttonPressed(element: gamepad.dpad.right) {
-                selectPreviousSiblingBone()
+                newSelection = nextSiblingBone()
+            } else {
+                newSelection = nil
+            }
+            if let document = document, let bone = newSelection {
+                document.selection.selectedBones = [ bone ]
+                viewDrawer?.selectViaController(bone: bone)
             }
         }
         
