@@ -24,6 +24,7 @@
 #import "GLLSelection.h"
 #import "GLLSkeletonDrawerVertexFormat.h"
 #import "GLLTexture.h"
+#import "HUDShared.h"
 #import "NSColor+Color32Bit.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"

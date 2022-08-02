@@ -63,10 +63,10 @@ static inline mat_float16 simd_mat_rotate(float angleInRadian, vec_float4 axis)
      * kommen. Daher ist nicht einer negiert und einer positiv, sondernd beide
      * durchmischt, was den Code zweifellos schwieriger zu lesen macht.
      */
-    vec_float4 sin = simd_make_float4(sinf(angleInRadian));
-    vec_float4 cos = simd_make_float4(cosf(angleInRadian));
+    vec_float4 sin = sinf(angleInRadian);
+    vec_float4 cos = cosf(angleInRadian);
     
-    vec_float4 one_minus_c_times_axis = (simd_make_float4(1.0f) - cos) * axis;
+    vec_float4 one_minus_c_times_axis = (1.0f - cos) * axis;
     cos = simd_e_x * cos;
     vec_float4 sin_times_axis_a = axis * sin * simd_make_float4(1.0f, -1.0f, 1.0f, -1.0f); // +X -Y +Z 0
     vec_float4 sin_times_axis_b = -sin_times_axis_a; // -X +Y -Z 0

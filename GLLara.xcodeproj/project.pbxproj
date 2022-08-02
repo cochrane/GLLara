@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		521102DF288C1FB7001BE4BC /* HUDTextDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521102DE288C1FB7001BE4BC /* HUDTextDrawer.swift */; };
+		521102E3288C2126001BE4BC /* HUDControllerMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521102E2288C2126001BE4BC /* HUDControllerMode.swift */; };
+		521102E5288DAB0E001BE4BC /* HUDTextDrawer.metal in Sources */ = {isa = PBXBuildFile; fileRef = 521102E4288DAB0E001BE4BC /* HUDTextDrawer.metal */; };
+		521102E7288DBF72001BE4BC /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521102E6288DBF72001BE4BC /* HUD.swift */; };
+		521102EC28972939001BE4BC /* HUDButtonDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521102EB28972939001BE4BC /* HUDButtonDrawer.swift */; };
+		521102ED2897E9A8001BE4BC /* HUDBoneNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521102E928968865001BE4BC /* HUDBoneNames.swift */; };
+		521102EF2899C430001BE4BC /* GLLItemBoneExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521102EE2899C430001BE4BC /* GLLItemBoneExtensions.swift */; };
 		5211F83226246EE600A1EC23 /* GLLTextureAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */; };
 		5213F8831C0E411C007A9EBB /* GLLPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213F8811C0E411C007A9EBB /* GLLPreferencesWindowController.m */; };
 		5213F8881C0E478C007A9EBB /* GLLPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5213F88A1C0E478C007A9EBB /* GLLPreferencesWindow.xib */; };
@@ -370,6 +377,14 @@
 
 /* Begin PBXFileReference section */
 		521102DC288C0302001BE4BC /* GLLara.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GLLara.xcconfig; sourceTree = "<group>"; };
+		521102DE288C1FB7001BE4BC /* HUDTextDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDTextDrawer.swift; sourceTree = "<group>"; };
+		521102E2288C2126001BE4BC /* HUDControllerMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDControllerMode.swift; sourceTree = "<group>"; };
+		521102E4288DAB0E001BE4BC /* HUDTextDrawer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = HUDTextDrawer.metal; sourceTree = "<group>"; };
+		521102E6288DBF72001BE4BC /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
+		521102E8288F28ED001BE4BC /* HUDShared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HUDShared.h; sourceTree = "<group>"; };
+		521102E928968865001BE4BC /* HUDBoneNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDBoneNames.swift; sourceTree = "<group>"; };
+		521102EB28972939001BE4BC /* HUDButtonDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDButtonDrawer.swift; sourceTree = "<group>"; };
+		521102EE2899C430001BE4BC /* GLLItemBoneExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLItemBoneExtensions.swift; sourceTree = "<group>"; };
 		5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLTextureAssignment.swift; sourceTree = "<group>"; };
 		5211F84A262B800300A1EC23 /* GLLSceneModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		5213F8801C0E411C007A9EBB /* GLLPreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLPreferencesWindowController.h; sourceTree = "<group>"; };
@@ -890,10 +905,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		521102DD288C1F9E001BE4BC /* HUD */ = {
+			isa = PBXGroup;
+			children = (
+				521102DE288C1FB7001BE4BC /* HUDTextDrawer.swift */,
+				521102E2288C2126001BE4BC /* HUDControllerMode.swift */,
+				521102E6288DBF72001BE4BC /* HUD.swift */,
+				521102E8288F28ED001BE4BC /* HUDShared.h */,
+				521102E928968865001BE4BC /* HUDBoneNames.swift */,
+				521102EB28972939001BE4BC /* HUDButtonDrawer.swift */,
+			);
+			name = HUD;
+			sourceTree = "<group>";
+		};
 		521326371602B17800787AA1 /* Internal use only */ = {
 			isa = PBXGroup;
 			children = (
+				52CDFEE7287619D800BC4298 /* Square.metal */,
+				52AC5DC52876F315004949D4 /* CopyDepth.metal */,
+				52FB1FD72879846A006ABC4F /* DepthBufferCheck.metal */,
 				5274447D280300F400E5A3FD /* Skeleton.metal */,
+				521102E4288DAB0E001BE4BC /* HUDTextDrawer.metal */,
 			);
 			name = "Internal use only";
 			sourceTree = "<group>";
@@ -1343,9 +1375,6 @@
 			children = (
 				521326371602B17800787AA1 /* Internal use only */,
 				5274448A280606A200E5A3FD /* XnaLaraShader.metal */,
-				52CDFEE7287619D800BC4298 /* Square.metal */,
-				52AC5DC52876F315004949D4 /* CopyDepth.metal */,
-				52FB1FD72879846A006ABC4F /* DepthBufferCheck.metal */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -1414,6 +1443,7 @@
 				5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */,
 				5214470B16DC2312003E260F /* GLLItem+MeshExport.h */,
 				5214470C16DC2312003E260F /* GLLItem+MeshExport.m */,
+				521102EE2899C430001BE4BC /* GLLItemBoneExtensions.swift */,
 			);
 			name = "Scene members";
 			sourceTree = "<group>";
@@ -1475,6 +1505,7 @@
 		5296946115F7B22E00DF2FA3 /* Document and UI */ = {
 			isa = PBXGroup;
 			children = (
+				521102DD288C1F9E001BE4BC /* HUD */,
 				52423B6E160619F4009F5753 /* Source List */,
 				522783651C0A60B0002E43FD /* MainMenu.xib */,
 				525ACD5D15F0F1A700534E7D /* GLLDocument.h */,
@@ -1622,15 +1653,15 @@
 				ORGANIZATIONNAME = "Torsten Kammer";
 				TargetAttributes = {
 					523DE0DD1604A5ED00BB9F61 = {
-						DevelopmentTeam = T7AV5E4TN9;
+						DevelopmentTeam = MXAKMKWG34;
 					};
 					525ACD4615F0F1A700534E7D = {
-						DevelopmentTeam = T7AV5E4TN9;
+						DevelopmentTeam = MXAKMKWG34;
 						LastSwiftMigration = 1240;
 						ProvisioningStyle = Automatic;
 					};
 					525ACD6A15F0F1A700534E7D = {
-						DevelopmentTeam = T7AV5E4TN9;
+						DevelopmentTeam = MXAKMKWG34;
 					};
 				};
 			};
@@ -1913,9 +1944,11 @@
 				529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */,
 				529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */,
 				5274448B280606A200E5A3FD /* XnaLaraShader.metal in Sources */,
+				521102E7288DBF72001BE4BC /* HUD.swift in Sources */,
 				52C517012871CBBB000EB8C2 /* baseData.swift in Sources */,
 				5274448628031D5700E5A3FD /* GLLVertexArray.swift in Sources */,
 				52F73EA4288BDF3B00A580EC /* GLLColorRenderParameterView.swift in Sources */,
+				521102E3288C2126001BE4BC /* HUDControllerMode.swift in Sources */,
 				52F73EA2288BDE5F00A580EC /* GLLFloatRenderParameterView.swift in Sources */,
 				5274446627FD64F000E5A3FD /* GLLModelMeshObj.swift in Sources */,
 				5296943515F421D900DF2FA3 /* simd_matrix.c in Sources */,
@@ -1934,11 +1967,13 @@
 				5274448228031C0C00E5A3FD /* GLLModelDrawData.swift in Sources */,
 				5291DB9415FBF7BE00ECDBCA /* GLLAmbientLight.m in Sources */,
 				52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */,
+				521102EF2899C430001BE4BC /* GLLItemBoneExtensions.swift in Sources */,
 				52528D751D6AC2AA002E0074 /* GLLTiming.cpp in Sources */,
 				523BBB072880C78600B2D52E /* GLLPreferenceKeys.swift in Sources */,
 				52AC5DC62876F315004949D4 /* CopyDepth.metal in Sources */,
 				52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */,
 				52BB21DB15FCF02200937450 /* GLLCamera.m in Sources */,
+				521102E5288DAB0E001BE4BC /* HUDTextDrawer.metal in Sources */,
 				52C9F60E15FF1753003272E1 /* GLLItemViewController.m in Sources */,
 				52C9F6161600022B003272E1 /* GLLModelObj.mm in Sources */,
 				52C9F61A160004E3003272E1 /* GLLObjFile.cpp in Sources */,
@@ -1982,15 +2017,18 @@
 				527444802803121D00E5A3FD /* GLLItemDrawer.swift in Sources */,
 				52301E382089372200B3E331 /* GLLOptionalPart.m in Sources */,
 				5274447A2802DCC200E5A3FD /* GLLSkeletonDrawer.swift in Sources */,
+				521102DF288C1FB7001BE4BC /* HUDTextDrawer.swift in Sources */,
 				52D8DDE62621D47E0006F0E5 /* GLLTextureDescription.swift in Sources */,
 				52E864B926B144120005AA82 /* (null) in Sources */,
 				52D8DE022621F5910006F0E5 /* GLLModelParams.swift in Sources */,
+				521102EC28972939001BE4BC /* HUDButtonDrawer.swift in Sources */,
 				52CDFEA4287369B100BC4298 /* GLLVertexAttribAccessor.swift in Sources */,
 				528934EB16A332BD00F05312 /* GLLMeshListController.m in Sources */,
 				528934EE16A3593500F05312 /* GLLBoneListController.m in Sources */,
 				523BBB01287E94EF00B2D52E /* GLLControllerPreferencesView.swift in Sources */,
 				52474B1B16A73B6C007A0223 /* GLLMtlFile.cpp in Sources */,
 				52474B1E16A73CB2007A0223 /* GLLStringURLConversion.cpp in Sources */,
+				521102ED2897E9A8001BE4BC /* HUDBoneNames.swift in Sources */,
 				52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */,
 				52D8DDF72621E67F0006F0E5 /* GLLShaderDescription.swift in Sources */,
 				52653D8116BAB729001D802F /* GLLPoseExporter.m in Sources */,
