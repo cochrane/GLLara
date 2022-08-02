@@ -115,8 +115,9 @@ struct HUDTextDrawer {
         
         var occupiedSpace: [LineBlock] = []
         
-        init() {
+        init(label: String) {
             texture = GLLResourceManager.shared.metalDevice.makeTexture(descriptor: TextureAtlas.descriptor)!
+            texture.label = label
             occupiedSpace = [ LineBlock(coveredLines: texture.height, remainingSpace: texture.width) ]
         }
         
@@ -138,7 +139,8 @@ struct HUDTextDrawer {
                         occupiedSpace.insert(newBlock, at: i+1)
                         occupiedSpace[i].coveredLines = drawnText.height
                     }
-                    occupiedSpace[i].remainingSpace -= drawnText.width
+                    let interBlockSpacing = 1
+                    occupiedSpace[i].remainingSpace -= (drawnText.width + interBlockSpacing)
                     
                     return Rectangle(lowerLeft: SIMD2<Float>(x: Float(xBegin), y: Float(beginLine)),
                                      upperRight: SIMD2<Float>(x: Float(xBegin + drawnText.width), y: Float(beginLine + drawnText.height)))
@@ -203,7 +205,7 @@ struct HUDTextDrawer {
             }
         }
         // No free space found, gotta open a new texture atlas
-        let newAtlas = TextureAtlas()
+        let newAtlas = TextureAtlas(label: "HUD Text \(textureAtlases.count)")
         textureAtlases.append(newAtlas)
         let rect = newAtlas.tryAdd(drawnText)!
         

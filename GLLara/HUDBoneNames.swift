@@ -303,10 +303,10 @@ class HUDBoneNames {
         let fullyActive: Float = 1.0
         let fullyInactive: Float = 0.75
         
-        if bone == previous {
-            return frame.fade * (frame.currentIsCentered * fullyInactive + (1 - frame.currentIsCentered) * fullyActive)
-        } else if bone == transitioningTo.bone {
+        if bone == transitioningTo.bone {
             return frame.fade * (frame.currentIsCentered * fullyActive + (1 - frame.currentIsCentered) * fullyInactive)
+        } else if bone == previous {
+            return frame.fade * (frame.currentIsCentered * fullyInactive + (1 - frame.currentIsCentered) * fullyActive)
         } else {
             return frame.fade * fullyInactive
         }

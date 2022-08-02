@@ -361,7 +361,7 @@ import GameController
         if let lastSelectedBone = selection?.last {
             if let siblings = lastSelectedBone.siblings(skippingUnused: skipUnused) {
                 if let index = siblings.firstIndex(of: lastSelectedBone) {
-                    let nextIndex = index < siblings.count - 1 ? index + 1 : 0
+                    let nextIndex = (index + 1) % siblings.count
                     return siblings[nextIndex]
                 }
             } else {
@@ -369,8 +369,8 @@ import GameController
                 let item = lastSelectedBone.item!
                 let rootBones = item.rootBones!
                 if let index = rootBones.firstIndex(of: lastSelectedBone) {
-                    let nextIndex = index < rootBones.count - 1 ? index + 1 : 0
-                    return item.rootBones[nextIndex]
+                    let nextIndex = (index + 1) % rootBones.count
+                    return rootBones[nextIndex]
                 } else {
                     // Root of next item
                     let fetchRequest = NSFetchRequest<GLLItem>()
@@ -410,7 +410,7 @@ import GameController
         if let firstSelectedBone = selection?.first {
             if let siblings = firstSelectedBone.siblings(skippingUnused: skipUnused) {
                 if let index = siblings.firstIndex(of: firstSelectedBone) {
-                    let nextIndex = index > 0 ? index - 1 : siblings.count - 1
+                    let nextIndex = (index + siblings.count - 1) % siblings.count
                     return siblings[nextIndex]
                 }
             } else {
@@ -418,7 +418,7 @@ import GameController
                 let item = firstSelectedBone.item!
                 let rootBones = item.rootBones!
                 if let index = rootBones.firstIndex(of: firstSelectedBone) {
-                    let nextIndex = index > 0 ? index - 1 : rootBones.count - 1
+                    let nextIndex = (index + rootBones.count - 1) % rootBones.count
                     return item.rootBones[nextIndex]
                 } else {
                     // Root of previous item
