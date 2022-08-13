@@ -41,6 +41,16 @@
  */
 - (void)_setupObservingForShaderChanges;
 
+/*!
+ * For all the render parameters that are required by the shader data but that aren't set yet, set up an object with default values.
+ */
+- (void)_setupMissingRenderParameters;
+
+/*!
+ * Historically GLLara (like XNALara) used a single value for specular contribution, except for OBJ files that had a full specular color. This unifies that by replacing the single value with a color, multiplying with the color if it is already set (the default is white so that makes no difference).
+ */
+- (void)_fixupBumpAmount;
+
 @end
 
 @implementation GLLItemMesh
@@ -90,8 +100,15 @@
         else
             continue; // Skip this param
         
-        if (values[uniformName] == nil) {
-            NSLog(@"Have no value for %@", uniformName);
+        NSLog(@"Assigning parameter %@", uniformName);
+        if (values[uniformName] != nil) {
+            [parameter setValue:values[uniformName] forKey:@"value"];
+        } else {
+            if (description.type == GLLRenderParameterTypeFloat) {
+                [parameter setValue:[NSNumber numberWithDouble:[self.item.model.parameters defaultValueForRenderParameter:uniformName]] forKey:@"value"];
+            } else if (description.type == GLLRenderParameterTypeColor) {
+                [parameter setValue:[self.item.model.parameters defaultColorForRenderParameter:uniformName] forKey:@"value"];
+            }
         }
         
         parameter.name = uniformName;
@@ -99,6 +116,7 @@
         
         [renderParameters addObject:parameter];
     }
+    [self _fixupBumpAmount];
     
     // Set display name
     self.displayName = self.mesh.displayName;
@@ -145,6 +163,9 @@
             [self setValue:nil forKey:@"shaderName"];
         }
     }
+    
+    [self _setupMissingRenderParameters];
+    [self _fixupBumpAmount];
     
     if (!self.displayName)
         self.displayName = self.mesh.displayName;
@@ -341,6 +362,67 @@
     }
     
     return [self.mesh.model.parameters explicitShaderWithBase:self.shaderBase modules:activeModules texCoordAssignments: texCoordSets alphaBlending: self.isUsingBlending];
+}
+
+- (void)_setupMissingRenderParameters {
+    
+    NSDictionary *values = self.mesh.renderParameterValues;
+    NSMutableSet *renderParameters = [self mutableSetValueForKey:@"renderParameters"];
+    for (NSString *uniformName in self.shader.parameterUniforms) {
+        if ([self renderParameterWithName:uniformName]) {
+            continue;
+        }
+        
+        GLLRenderParameterDescription *description = [self.shader descriptionForParameter:uniformName];
+        
+        GLLRenderParameter *parameter;
+        
+        if (description.type == GLLRenderParameterTypeFloat)
+            parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLFloatRenderParameter" inManagedObjectContext:self.managedObjectContext];
+        else if (description.type == GLLRenderParameterTypeColor)
+            parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLColorRenderParameter" inManagedObjectContext:self.managedObjectContext];
+        else
+            continue; // Skip this param
+        
+        if (values[uniformName] != nil) {
+            [parameter setValue:values[uniformName] forKey:@"value"];
+        } else {
+            if (description.type == GLLRenderParameterTypeFloat) {
+                [parameter setValue:[NSNumber numberWithDouble:[self.item.model.parameters defaultValueForRenderParameter:uniformName]] forKey:@"value"];
+            } else if (description.type == GLLRenderParameterTypeColor) {
+                [parameter setValue:[self.item.model.parameters defaultColorForRenderParameter:uniformName] forKey:@"value"];
+            }
+        }
+        
+        parameter.name = uniformName;
+        [renderParameters addObject:parameter];
+    }
+}
+
+- (void)_fixupBumpAmount {
+    GLLRenderParameter* scalarParameter = [self renderParameterWithName:@"bumpSpecularAmount"];
+    if (!scalarParameter) {
+        return;
+    }
+    GLLRenderParameter* colorParameter = [self renderParameterWithName:@"specularColor"];
+    NSColor *colorParameterValue = [NSColor whiteColor];
+    if (colorParameter) {
+        colorParameterValue = [colorParameter valueForKey:@"value"];
+    } else {
+        colorParameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLColorRenderParameter" inManagedObjectContext:self.managedObjectContext];
+        colorParameter.name = @"specularColor";
+        [self addRenderParametersObject:colorParameter];
+    }
+    
+    CGFloat red, green, blue, alpha;
+    [[colorParameterValue colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&red green:&green blue:&blue alpha:&alpha];
+    
+    double scalar = [[scalarParameter valueForKey:@"value"] doubleValue];
+    
+    NSColor *result = [NSColor colorWithRed:red * scalar green:green * scalar blue:blue * scalar alpha:alpha];
+    [colorParameter setValue:result forKey:@"value"];
+    
+    [self removeRenderParametersObject:scalarParameter];
 }
 
 @end

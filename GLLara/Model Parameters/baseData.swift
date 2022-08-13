@@ -10,7 +10,9 @@ import Foundation
 
 func registerModelParams() {
     let baseData = try! GLLModelParams(plistData: GLLModelParams.PlistDataTransferObject(shaders: [
-    GLLShaderBase(name: "default", vertex: "xnaLaraVertex", fragment: "xnaLaraFragment", children: [
+    GLLShaderBase(name: "default", vertex: "xnaLaraVertex", fragment: "xnaLaraFragment", parameterUniforms: [
+        "ambientColor", "diffuseColor", "specularColor"
+            ], children: [
         GLLShaderModule(name: "skinning", requiredVertexAttributes: ["boneIndices", "boneWeights"], activeBoolConstants: [ .useSkinning ]),
         GLLShaderModule(name: "skinningVariable", requiredVertexAttributes: ["boneDataOffsetLength"], activeBoolConstants: [ .hasVariableBoneWeights ]),
         GLLShaderModule(name: "diffuseTexture", textureUniforms: [ "diffuseTexture" ], activeBoolConstants: [ .hasDiffuseTexture ]),
@@ -21,7 +23,7 @@ func registerModelParams() {
         ]),
         GLLShaderModule(name: "lighting", requiredVertexAttributes: [ "normal" ], activeBoolConstants: [ .hasNormal ], children: [
             GLLShaderModule(name: "diffuseLighting", activeBoolConstants: [ .hasDiffuseLighting ]),
-            GLLShaderModule(name: "specularLighting", parameterUniforms: [ "bumpSpecularGloss", "bumpSpecularAmount" ], activeBoolConstants: [ .hasSpecularLighting ], children: [
+            GLLShaderModule(name: "specularLighting", parameterUniforms: [ "bumpSpecularGloss" ], activeBoolConstants: [ .hasSpecularLighting ], children: [
                 GLLShaderModule(name: "specularTexture", textureUniforms: [ "specularTexture" ], activeBoolConstants: [ .hasSpecularTexture ], children: [
                     GLLShaderModule(name: "specularTextureScale", parameterUniforms: [ "specularTextureScale" ], activeBoolConstants: [ .hasSpecularTextureScale ]),
                 ])

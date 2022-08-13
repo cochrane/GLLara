@@ -457,7 +457,7 @@ _([^_\\n]+)
         return self.base!.defaultValue(forTexture: name)
     }
     @objc func defaultColor(forRenderParameter name: String) -> NSColor {
-        return NSColor.black
+        return NSColor.white
     }
     
     @objc func description(forParameter name: String) -> GLLRenderParameterDescription {

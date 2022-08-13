@@ -3,7 +3,6 @@ To be clear: Not all of them will make it to 0.3
 
 ## Missing things from new features
 
-- Autogenerate the always present render parameters, in particular materials. Automatically replace specular intensity with specular color.
 - Add assign tex coord to textures in mesh view; consider redoing textures as normal table view
     - Maybe also redo render parameters as normal table view? Dream would be a combined view including features, numeric values, color values and textures (with coordinates), similar in overall design to how Metal shows resources
 
@@ -13,8 +12,8 @@ To be clear: Not all of them will make it to 0.3
 - Add „show in finder“ context menu item to textures; show filename somewhere
 - Include feedback link that brings you to Github, with a form you can fill out
 - Consider three-point light setup as default
-    - Floor
-    - Camera Position
+    - Add floor
+    - Change camera position
 - Make the optional parts (handgun in hand and holster, Thor stuff) officially optional
 
 ### Graphics features
@@ -31,6 +30,7 @@ To be clear: Not all of them will make it to 0.3
 ### 3D UI
 
 - Show rotation target
+    - game controller rotate around target
 - Can we do something nicer when drawing skeletons?
 - Add mode that shows where which light is coming from (draw a line or something)
 
@@ -38,6 +38,7 @@ To be clear: Not all of them will make it to 0.3
 
 - Check more random models
 - Check tangents on Wonder Woman those look off
+    - Show tangent matrix shader via compute pass? Necessitates moving skinning into compute pass.
 - Check all shaders whether they really have the right set of features
 - Make private list of interesting test files and what they test. 
 - Do something about NSKeyedUnarchiveFromData
@@ -57,6 +58,7 @@ To be clear: Not all of them will make it to 0.3
 ## Finish game controller support
 
 - Hint on first launch for 3D mouse, gamepad
+- Switch to "rotate around target" mode. Make that mode also selectable in UI, and show HUD indicator when switching from controller
 - Game controller bonus feature: Use some key (menu?) to open context menu that allows accessing more features and settings. Features should include: Reset (bone and recursive), undo, redo, …
 
 ## Camera
