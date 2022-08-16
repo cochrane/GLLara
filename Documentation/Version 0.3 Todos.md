@@ -16,6 +16,46 @@ To be clear: Not all of them will make it to 0.3
     - Change camera position
 - Make the optional parts (handgun in hand and holster, Thor stuff) officially optional
 
+### 3D UI
+
+- Show rotation target
+    - game controller rotate around target
+- Can we do something nicer when drawing skeletons?
+- Add mode that shows where which light is coming from (draw a line or something)
+
+## Bugs
+
+- Check more random models
+- Check tangents on Wonder Woman those look off
+- Check all shaders whether they really have the right set of features
+- Make private list of interesting test files and what they test. 
+- Do something about NSKeyedUnarchiveFromData
+- Initial Visible state seems wrong sometimes (e.g. Ruby, Weiss from RWBY)
+- Window size gets doubled on restore, probably using wrong size on loading (actual pixels vs drawn size)
+
+## Finish game controller support
+
+- Hint on first launch for 3D mouse, gamepad
+- Switch to "rotate around target" mode. Make that mode also selectable in UI, and show HUD indicator when switching from controller
+
+## Camera
+
+- Can we store the camera as a quaternion instead? (how to translate that back to euler angles for the UI?)
+- At least limit max camera up angle
+- Quaternion-based editing for bones perhaps? (at least for game controllers)
+
+# Not required for 0.3
+
+## Completely new
+
+- Add „show in finder“ context menu item to models
+- Add „show in finder“ context menu item to textures; show filename somewhere
+- Include feedback link that brings you to Github, with a form you can fill out
+- Consider three-point light setup as default
+    - Add floor
+    - Change camera position
+- Make the optional parts (handgun in hand and holster, Thor stuff) officially optional
+
 ### Graphics features
 
 - Shadow maps
@@ -33,17 +73,7 @@ To be clear: Not all of them will make it to 0.3
     - game controller rotate around target
 - Can we do something nicer when drawing skeletons?
 - Add mode that shows where which light is coming from (draw a line or something)
-
-## Bugs
-
-- Check more random models
-- Check tangents on Wonder Woman those look off
-    - Show tangent matrix shader via compute pass? Necessitates moving skinning into compute pass.
-- Check all shaders whether they really have the right set of features
-- Make private list of interesting test files and what they test. 
-- Do something about NSKeyedUnarchiveFromData
-- Initial Visible state seems wrong sometimes (e.g. Ruby, Weiss from RWBY)
-- Window size gets doubled on restore, probably using wrong size on loading (actual pixels vs drawn size)
+- Show tangent matrix shader via compute pass? Necessitates moving skinning into compute pass.
 
 ## Stuff to think about if it becomes a performance issue
 
@@ -57,8 +87,6 @@ To be clear: Not all of them will make it to 0.3
 
 ## Finish game controller support
 
-- Hint on first launch for 3D mouse, gamepad
-- Switch to "rotate around target" mode. Make that mode also selectable in UI, and show HUD indicator when switching from controller
 - Game controller bonus feature: Use some key (menu?) to open context menu that allows accessing more features and settings. Features should include: Reset (bone and recursive), undo, redo, …
 
 ## Camera

@@ -452,6 +452,16 @@ import GameController
         }
     }
     
+    private func selectNextGamepadCameraMode() {
+        let current = controllerLeftStickMode
+        let orderedModes = CameraMovementMode.allCases
+        if let index = orderedModes.firstIndex(of: current) {
+            var nextIndex = (index + 1) % orderedModes.count
+            let next = orderedModes[nextIndex % orderedModes.count]
+            UserDefaults.standard.set(next.rawValue, forKey: GLLPrefControllerLeftStickMode)
+        }
+    }
+    
     func gamepadChanged(gamepad: GCExtendedGamepad, element: GCControllerElement) {
         // Left shoulder: Go to previous controller mode
         if element == gamepad.leftShoulder && buttonPressed(element: element) {
@@ -461,6 +471,10 @@ import GameController
         // Right trigger: Go to next controller mode
         if element == gamepad.rightShoulder && buttonPressed(element: element) {
             selectGamepadMode(delta: +1)
+        }
+        
+        if let leftStickButton = gamepad.leftThumbstickButton, element == leftStickButton, buttonPressed(element: element) {
+            selectNextGamepadCameraMode()
         }
         
         // DPad: Go to different bone
@@ -816,7 +830,7 @@ import GameController
         UserDefaults.standard.double(forKey: GLLPrefSpaceMouseSpeedTranslation)
     }
     
-    enum CameraMovementMode: String {
+    enum CameraMovementMode: String, CaseIterable {
         case rotateAroundTarget
         case rotateAroundCamera
     }

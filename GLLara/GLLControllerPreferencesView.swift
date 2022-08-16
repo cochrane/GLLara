@@ -83,6 +83,25 @@ struct ControllerBatteryView: View {
     
 }
 
+struct RotateCameraView: View {
+    
+    @Binding var mode: String
+    
+    var body: some View {
+        HStack {
+            Text("Rotation:")
+                .frame(width: 100, height: nil, alignment: .trailing)
+            
+            Picker(selection: $mode, content: {
+                Text("Directly").tag( GLLView.CameraMovementMode.rotateAroundCamera.rawValue )
+                Text("Around target").tag( GLLView.CameraMovementMode.rotateAroundTarget.rawValue )
+            }, label: {
+                EmptyView()
+            })
+        }
+    }
+}
+
 struct GLLControllerPreferencesView: View {
     // Mode is not set here, that is something the user can adjust on the fly using the buttons (eventually)
     // Note: Going via @state and explicit update instead of @appstorage because otherwise the labels on the sliders don't work
@@ -93,6 +112,8 @@ struct GLLControllerPreferencesView: View {
     
     @AppStorage(GLLPrefControllerInvertXAxis) var invertXAxis = false
     @AppStorage(GLLPrefControllerInvertYAxis) var invertYAxis = false
+    @AppStorage(GLLPrefSpaceMouseMode) var spaceMouseMode = GLLView.CameraMovementMode.rotateAroundCamera.rawValue
+    @AppStorage(GLLPrefControllerLeftStickMode) var controllerCameraMode = GLLView.CameraMovementMode.rotateAroundCamera.rawValue
     
     @State var discoveringWirelessControllers = false
     
@@ -117,6 +138,8 @@ struct GLLControllerPreferencesView: View {
                         GroupBox("Camera") {
                             Toggle("Invert X-Axis", isOn: $invertXAxis)
                             Toggle("Invert Y-Axis", isOn: $invertYAxis)
+                            
+                            RotateCameraView(mode: $controllerCameraMode)
                             
                             ControllerPreferencesSlider(for: GLLPrefControllerCameraMovementSpeed, in : 0 ... 3, label: "Movement:", valueDescription: { value in
                                 "\(value, specifier: "%.1f") unit/s"
@@ -154,6 +177,7 @@ struct GLLControllerPreferencesView: View {
                             })
                         }
                         GroupBox("Rotation") {
+                            RotateCameraView(mode: $spaceMouseMode)
                             ControllerPreferencesSlider(for: GLLPrefSpaceMouseSpeedRotation, in : 0 ... 360.0*Double.pi/180.0, label: "Speed:", valueDescription: { value in
                                 "\(value * 180.0 / Double.pi, specifier: "%.0f")°/s"
                             })
