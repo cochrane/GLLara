@@ -22,11 +22,13 @@ jobs:
           xcodebuild archive -project "GLLara.xcodeproj" -scheme "GLLara" -archivePath GLLaraNightly.xcarchive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty && exit ${PIPESTATUS[0]}
       - name: Export
         run: |
-          xcodebuild -project "GLLara.xcodeproj" -exportArchive -archivePath GLLaraNightly.xcarchive -exportPath GLLaraNightly.zip -exportOptionsPlist .github/exportGithub.plist CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty && exit ${PIPESTATUS[0]}
+          xcodebuild -project "GLLara.xcodeproj" -exportArchive -archivePath GLLaraNightly.xcarchive -exportPath GLLaraNightly -exportOptionsPlist .github/exportGithub.plist CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty && exit ${PIPESTATUS[0]}
+      - name: Tar files
+        run: tar -cvf GLLaraNightly.tar GLLaraNightly
       - name: Upload
         uses: actions/upload-artifact@v3
         with:
-          name: Binary
+          name: GLLaraNightly
           path: |
-            GLLaraNightly.zip
+            GLLaraNightly.tar
 
