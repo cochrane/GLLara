@@ -36,6 +36,7 @@
 @property (nonatomic, readonly) GLLItem *item;
 
 // Local
+@property (nonatomic, readonly) mat_float16 rotation;
 @property (nonatomic) mat_float16 relativeTransform;
 @property (nonatomic) mat_float16 globalTransform;
 @property (nonatomic) vec_float4 globalPosition;

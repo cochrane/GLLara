@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G72" minimumToolsVersion="Xcode 4.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G83" minimumToolsVersion="Xcode 4.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="GLLAmbientLight" representedClassName="GLLAmbientLight" parentEntity="GLLLight" syncable="YES">
         <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
     </entity>
@@ -68,9 +68,9 @@
         <attribute name="positionX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="positionY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="positionZ" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="rotationX" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="rotationY" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="rotationZ" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="rotationX" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.3" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="rotationY" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.3" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="rotationZ" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.3" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="cameraTargets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="GLLCameraTarget" inverseName="bones" inverseEntity="GLLCameraTarget" syncable="YES"/>
         <relationship name="items" toMany="YES" minCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="GLLItem" inverseName="bones" inverseEntity="GLLItem" elementID="item" syncable="YES"/>
     </entity>
@@ -113,7 +113,7 @@
         <element name="GLLDirectionalLight" positionX="0" positionY="0" width="128" height="120"/>
         <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLItem" positionX="0" positionY="0" width="128" height="404"/>
-        <element name="GLLItemBone" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="GLLItemBone" positionX="0" positionY="0" width="128" height="149"/>
         <element name="GLLItemMesh" positionX="0" positionY="0" width="128" height="194"/>
         <element name="GLLItemMeshTexture" positionX="0" positionY="0" width="128" height="104"/>
         <element name="GLLLight" positionX="0" positionY="0" width="128" height="60"/>

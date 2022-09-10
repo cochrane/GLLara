@@ -148,17 +148,10 @@ import GameController
             
             let angle = amountX + amountY
             
-            for bone in document?.selection.selectedBones ?? [] {
-                if keysDown.contains("x") {
-                    bone.rotationX += Float(angle)
-                }
-                if keysDown.contains("y") {
-                    bone.rotationY += Float(angle)
-                }
-                if keysDown.contains("z") {
-                    bone.rotationZ += Float(angle)
-                }
-            }
+            let rotation = SIMD3<Float>(x: keysDown.contains("x") ? Float(angle) : 0.0,
+                                        y: keysDown.contains("y") ? Float(angle) : 0.0,
+                                        z: keysDown.contains("z") ? Float(angle) : 0.0)
+            rotateBones(eulerAngles: rotation)
         } else if event.modifierFlags.contains(.option) {
             // Move the object in the x/z plane
             let factor = event.modifierFlags.contains(.shift) ? 0.01 : 0.001
@@ -714,22 +707,37 @@ import GameController
                             let movementSpeed = Float(controllerMoveCameraSpeed * controllerMoveBoneSpeed * diff)
                             for bone in bones {
                                 // Move bone
+                                // Note y/z swap that's on purpose
                                 bone.positionX += otherStickX * movementSpeed
                                 bone.positionY += otherStickZ * movementSpeed
                                 bone.positionZ += otherStickY * movementSpeed
                             }
                         } else {
                             let rotationSpeed = Float(controllerRotationSpeedCamera * controllerRotationSpeedBone * diff)
-                            for bone in bones {
-                                // Rotate bone
-                                bone.rotationX += otherStickY * rotationSpeed
-                                bone.rotationY += otherStickX * rotationSpeed
-                                bone.rotationZ += otherStickZ * rotationSpeed
-                            }
+                            // Note x/y swapped that's on purpose
+                            rotateBones(eulerAngles: SIMD3<Float>(x: otherStickY, y: otherStickX, z: otherStickZ) * rotationSpeed)
                         }
                     }
                 }
             }
+        }
+    }
+    
+    private func rotateBones(eulerAngles: SIMD3<Float>) {
+        guard let bones = document?.selection.selectedBones, !bones.isEmpty, eulerAngles != SIMD3<Float>(repeating: 0) else {
+            return
+        }
+        
+        for bone in bones {
+            // Rotate bone
+            let current = bone.rotation
+            let multiply = GLLItemBone.rotationMatrix(angles: eulerAngles)
+            let modified = current * multiply
+            
+            let angles = GLLItemBone.eulerAngles(rotationMatrix: modified)
+            bone.rotationX = angles.x
+            bone.rotationY = angles.y
+            bone.rotationZ = angles.z
         }
     }
     

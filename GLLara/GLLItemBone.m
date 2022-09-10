@@ -15,6 +15,8 @@
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
+#import "GLLara-Swift.h"
+
 @interface GLLItemBone ()
 {
     NSArray *children;
@@ -191,14 +193,17 @@
 {
     value = fmodf(value, M_PI * 2.0);
     if (value < 0.0f)
-        value = M_PI * 2.0 - value;
+        value = M_PI * 2.0 + value;
     
     // Ugly hotfix for Bug #63 - limit range to shortly under 2π
-    // TODO: In the Managed Object Model, up the limit for the angles to something like 7.0 and let this code here handle the details of keeping it in the 0…2π range.
-    if (value > 6.283)
-        value = 6.283;
+    if (value > (float)(2.0*M_PI))
+        value = 2.0*M_PI;
     
     [self _standardSetValue:@(value) forKey:key];
+}
+
+- (mat_float16)rotation {
+    return [[self class] rotationMatrixWithAngles:simd_make_float3(self.rotationX, self.rotationY, self.rotationZ)];
 }
 
 - (void)_updateRelativeTransform
@@ -206,9 +211,7 @@
     cachedBoneIndex = NSNotFound;
     
     mat_float16 transform = simd_mat_positional(simd_make_float4(self.positionX, self.positionY, self.positionZ, 1.0f));
-    transform = simd_mul(transform, simd_mat_rotate(self.rotationY, simd_e_y));
-    transform = simd_mul(transform, simd_mat_rotate(self.rotationX, simd_e_x));
-    transform = simd_mul(transform, simd_mat_rotate(self.rotationZ, simd_e_z));
+    transform = simd_mul(transform, self.rotation);
     
     self.relativeTransform = transform;
     
