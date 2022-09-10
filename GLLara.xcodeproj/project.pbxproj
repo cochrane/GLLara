@@ -627,6 +627,7 @@
 		524C707416087B350038823B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		524D3AAE28CCB37F00B50391 /* GLLaraTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GLLaraTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		524D3AAF28CCB37F00B50391 /* GLLBoneAnglesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLBoneAnglesTest.swift; sourceTree = "<group>"; };
+		524D3AB428CD01A600B50391 /* .github */ = {isa = PBXFileReference; lastKnownFileType = folder; path = .github; sourceTree = "<group>"; };
 		524F99AC288888DA0081F335 /* ShaderFeatures.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = ShaderFeatures.strings; sourceTree = "<group>"; };
 		52528D731D6AC2AA002E0074 /* GLLTiming.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLLTiming.cpp; sourceTree = "<group>"; };
 		52528D741D6AC2AA002E0074 /* GLLTiming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTiming.h; sourceTree = "<group>"; };
@@ -1031,6 +1032,7 @@
 		525ACD3C15F0F1A700534E7D = {
 			isa = PBXGroup;
 			children = (
+				524D3AB428CD01A600B50391 /* .github */,
 				521102DC288C0302001BE4BC /* GLLara.xcconfig */,
 				52FB1FD628796E49006ABC4F /* find_tga_empty.py */,
 				5296943E15F51F2B00DF2FA3 /* Readme.md */,
