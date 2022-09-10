@@ -18,14 +18,14 @@ To use GLLara, look in the help system, which covers everything I could think of
 System requirements
 -------------------
 
-Any Mac with OS X 10.10 or higher should work. However, there appear to be some problems, sometimes, on ones with Intel HD 4000 graphics cards. Especially more complicated models may cause problems there.
+Any Mac with OS X 12.3 or higher should work. However, there appear to be some problems, sometimes, on ones with Intel HD 4000 graphics cards. Especially more complicated models may cause problems there.
 
 Frequently Asked Questions
 --------------------------
 
 ### Are you going to make a Linux version?
 
-Nope. Anyone who wants to try is free to do so, but since this is all Objective-C, I think they might be better of just using this for inspiration and rewriting much of it in C++. I can help with any questions about the file format.
+Nope. Anyone who wants to try is free to do so, but since this is all Objective-C and Swift, I think they might be better of just using this for inspiration and rewriting much of it in C++. I can help with any questions about the file format.
 
 ### Where can I get models?
 

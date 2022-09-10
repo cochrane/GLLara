@@ -13,9 +13,9 @@ layout:
             <title>{{ post.title }}</title>
             <link>{{site.github.url}}/{{ post.url }}</link>
             <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-            <author>{{ post.author }}</author>
+            <author>{{ post.author }}</author>
             <guid isPermaLink="true">{{site.github.url}}/{{ post.url }}</guid>
-            <description>{{ post.content | xml_escape }}</description>
+            <description>{{ post.content | xml_escape }}</description>
         </item>
         {% endfor %}
     </channel>
