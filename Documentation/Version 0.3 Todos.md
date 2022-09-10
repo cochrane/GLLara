@@ -38,12 +38,6 @@ To be clear: Not all of them will make it to 0.3
 - Hint on first launch for 3D mouse, gamepad
 - Switch to "rotate around target" mode. Make that mode also selectable in UI, and show HUD indicator when switching from controller
 
-## Camera
-
-- Can we store the camera as a quaternion instead? (how to translate that back to euler angles for the UI?)
-- At least limit max camera up angle
-- Quaternion-based editing for bones perhaps? (at least for game controllers)
-
 # Not required for 0.3
 
 ## Completely new

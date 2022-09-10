@@ -88,6 +88,23 @@
     [self didChangeValueForKey:@"longitude"];
 }
 
+- (void)setLatitude:(float)latitude
+{
+    [self willChangeValueForKey:@"latitude"];
+    
+    float epsilon = 1e-3;
+    float maxAngle = M_PI_2 - epsilon;
+    
+    if (latitude < -maxAngle) {
+        latitude = -maxAngle;
+    } else if (latitude > maxAngle) {
+        latitude = maxAngle;
+    }
+    
+    [self setPrimitiveValue:@(latitude) forKey:@"latitude"];
+    [self didChangeValueForKey:@"latitude"];
+}
+
 - (float)latestWindowWidth
 {
     return self.actualWindowWidth;
