@@ -21,7 +21,7 @@
 
 - (NSData *)uniformValue;
 {
-    float values[4];
+    float values[4] = { 0, 0, 0, 0 };
     [self.value get128BitRGBAComponents:values];
     return [NSData dataWithBytes:&values length:sizeof(values)];
 }

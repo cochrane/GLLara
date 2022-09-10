@@ -18,8 +18,8 @@
  */
 @interface GLLColorRenderParameter : GLLRenderParameter
 
-@property (nonatomic, retain) NSColor *value;
+@property (nonatomic, retain, nonnull) NSColor *value;
 
-@property (nonatomic, readonly) NSData *uniformValue;
+@property (nonatomic, readonly, nonnull) NSData *uniformValue;
 
 @end

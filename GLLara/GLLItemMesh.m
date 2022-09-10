@@ -24,13 +24,6 @@
 }
 
 /*!
- * Assign the textures from the model to this item.
- * Used when creating this object, or when loading a (very) old file that was
- * created before we had the texture assignments.
- */
-- (void)_assignTexturesFromModel;
-
-/*!
  * Creates the GLLShaderData object for this mesh, given the current values.
  */
 - (GLLShaderData *)_createShaderData;
@@ -40,16 +33,6 @@
  * sure we update the shader when we need to.
  */
 - (void)_setupObservingForShaderChanges;
-
-/*!
- * For all the render parameters that are required by the shader data but that aren't set yet, set up an object with default values.
- */
-- (void)_setupMissingRenderParameters;
-
-/*!
- * Historically GLLara (like XNALara) used a single value for specular contribution, except for OBJ files that had a full specular color. This unifies that by replacing the single value with a color, multiplying with the color if it is already set (the default is white so that makes no difference).
- */
-- (void)_fixupBumpAmount;
 
 @end
 
@@ -83,46 +66,8 @@
     self.cullFaceMode = self.mesh.cullFaceMode;
     self.isVisible = self.mesh.initiallyVisible;
     
-    // Set the initial render parameter values
-    NSDictionary *values = self.mesh.renderParameterValues;
-    NSMutableSet *renderParameters = [self mutableSetValueForKey:@"renderParameters"];
-    [renderParameters removeAllObjects];
-    for (NSString *uniformName in self.mesh.shader.parameterUniforms)
-    {
-        GLLRenderParameterDescription *description = [self.mesh.shader descriptionForParameter:uniformName];
-        
-        GLLRenderParameter *parameter;
-        
-        if (description.type == GLLRenderParameterTypeFloat)
-            parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLFloatRenderParameter" inManagedObjectContext:self.managedObjectContext];
-        else if (description.type == GLLRenderParameterTypeColor)
-            parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLColorRenderParameter" inManagedObjectContext:self.managedObjectContext];
-        else
-            continue; // Skip this param
-        
-        NSLog(@"Assigning parameter %@", uniformName);
-        if (values[uniformName] != nil) {
-            [parameter setValue:values[uniformName] forKey:@"value"];
-        } else {
-            if (description.type == GLLRenderParameterTypeFloat) {
-                [parameter setValue:[NSNumber numberWithDouble:[self.item.model.parameters defaultValueForRenderParameter:uniformName]] forKey:@"value"];
-            } else if (description.type == GLLRenderParameterTypeColor) {
-                [parameter setValue:[self.item.model.parameters defaultColorForRenderParameter:uniformName] forKey:@"value"];
-            }
-        }
-        
-        parameter.name = uniformName;
-        [parameter setValue:values[uniformName] forKey:@"value"];
-        
-        [renderParameters addObject:parameter];
-    }
-    [self _fixupBumpAmount];
-    
     // Set display name
     self.displayName = self.mesh.displayName;
-    
-    // Set the textures
-    [self _assignTexturesFromModel];
     
     GLLShaderData *modelShaderData = self.mesh.shader;
     self.shaderBase = modelShaderData.base.name;
@@ -130,19 +75,14 @@
         [self setIncluded:YES forShaderModule:module.name];
     }
     
+    // Set the initial rendering values
+    [self updateShader];
+    
     [self _setupObservingForShaderChanges];
 }
 
 - (void)awakeFromFetch
 {
-    NSMutableSet *textures = [self mutableSetValueForKey:@"textures"];
-    
-    // No textures? This may be an old scene file from before when textures got
-    // stored in the database. Try loading the texture assignments from the
-    // model file.
-    if (textures.count == 0)
-        [self _assignTexturesFromModel];
-    
     if (self.shaderBase == nil) {
         // Old file, migrate to new format
         NSString *shaderName = [self valueForKey:@"shaderName"];
@@ -164,8 +104,7 @@
         }
     }
     
-    [self _setupMissingRenderParameters];
-    [self _fixupBumpAmount];
+    [self updateShader];
     
     if (!self.displayName)
         self.displayName = self.mesh.displayName;
@@ -242,6 +181,7 @@
     }
     
     GLLModelParams *params = self.mesh.model.parameters;
+    NSDictionary *values = self.mesh.renderParameterValues;
     
     // Set up render parameters that do not exist yet
     for (NSString *renderParameterName in shaderDescription.parameterUniforms)
@@ -261,6 +201,32 @@
             } else
                 continue; // Skip this param
             
+            // Check if we have mesh-specific value for this
+            if (values[renderParameterName]) {
+                [parameter setValue:values[renderParameterName] forKey:@"value"];
+            }
+            
+            // Special case: bumpSpecularAmount gets mapped to specularColor
+            if (description.type == GLLRenderParameterTypeColor && [renderParameterName isEqual:@"specularColor"]) {
+                double scalar = 1.0;
+                GLLRenderParameter* scalarParameter = [self renderParameterWithName:@"bumpSpecularAmount"];
+                if (scalarParameter) {
+                    scalar = [[scalarParameter valueForKey:@"value"] doubleValue];
+                    [[self mutableSetValueForKey:@"renderParameters"] removeObject:scalarParameter];
+                    [self.managedObjectContext deleteObject:scalarParameter];
+                }
+                else if (values[@"bumpSpecularAmount"]) {
+                    scalar = [values[@"bumpSpecularAmount"] doubleValue];
+                }
+                
+                NSColor *colorParameterValue = [parameter valueForKey:@"value"];
+                CGFloat red, green, blue, alpha;
+                [[colorParameterValue colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&red green:&green blue:&blue alpha:&alpha];
+                
+                NSColor *result = [NSColor colorWithRed:red * scalar green:green * scalar blue:blue * scalar alpha:alpha];
+                [parameter setValue:result forKey:@"value"];
+            }
+            
             parameter.name = renderParameterName;
             parameter.mesh = self;
         }
@@ -272,10 +238,19 @@
         if (![self textureWithIdentifier:textureName])
         {
             GLLItemMeshTexture *texture = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMeshTexture" inManagedObjectContext:self.managedObjectContext];
-            texture.identifier = textureName;
-            texture.textureURL = [params defaultValueForTexture:textureName];
-            texture.texCoordSet = 0;
             texture.mesh = self;
+            texture.identifier = textureName;
+            GLLTextureAssignment *textureAssignment = self.mesh.textures[textureName];
+            if (!textureAssignment) {
+                // Don't have assignment, either because we changed to new shader or because original model was defective
+                // Use default.
+                texture.textureURL = [self.mesh.model.parameters defaultValueForTexture:texture.identifier];
+                NSNumber *texCoordAssignmentInShader = self.mesh.shader.texCoordAssignments[texture.identifier];
+                texture.texCoordSet = texCoordAssignmentInShader ? texCoordAssignmentInShader.integerValue : 0;
+            } else {
+                texture.textureURL = textureAssignment.url;
+                texture.texCoordSet = textureAssignment.texCoordSet;
+            }
         }
     }
     
@@ -327,30 +302,6 @@
 
 #pragma mark - Private
 
-- (void)_assignTexturesFromModel;
-{
-    // Replace all textures
-    NSMutableSet<GLLItemMeshTexture *> *textures = [self mutableSetValueForKey:@"textures"];
-    [textures removeAllObjects];
-    for (NSString *identifier in self.mesh.shader.textureUniforms)
-    {
-        GLLItemMeshTexture *texture = [NSEntityDescription insertNewObjectForEntityForName:@"GLLItemMeshTexture" inManagedObjectContext:self.managedObjectContext];
-        texture.mesh = self;
-        texture.identifier = identifier;
-        GLLTextureAssignment *textureAssignment = self.mesh.textures[identifier];
-        if (!textureAssignment) {
-            // Grrr, idiot forgot to set texture that the shader is clearly
-            // using. Need to use some default.
-            texture.textureURL = [self.mesh.model.parameters defaultValueForTexture:texture.identifier];
-            NSNumber *texCoordAssignmentInShader = self.mesh.shader.texCoordAssignments[texture.identifier];
-            texture.texCoordSet = texCoordAssignmentInShader ? texCoordAssignmentInShader.integerValue : 0;
-        } else {
-            texture.textureURL = textureAssignment.url;
-            texture.texCoordSet = textureAssignment.texCoordSet;
-        }
-    }
-}
-
 - (GLLShaderData *)_createShaderData {
     // Find the shader data object for this item based on active features and assigned tex coord sets
     NSArray<NSString *>* activeModules = [[self mutableSetValueForKey:@"shaderFeatures"] map:^NSString *(NSManagedObject *object) {
@@ -362,67 +313,6 @@
     }
     
     return [self.mesh.model.parameters explicitShaderWithBase:self.shaderBase modules:activeModules texCoordAssignments: texCoordSets alphaBlending: self.isUsingBlending];
-}
-
-- (void)_setupMissingRenderParameters {
-    
-    NSDictionary *values = self.mesh.renderParameterValues;
-    NSMutableSet *renderParameters = [self mutableSetValueForKey:@"renderParameters"];
-    for (NSString *uniformName in self.shader.parameterUniforms) {
-        if ([self renderParameterWithName:uniformName]) {
-            continue;
-        }
-        
-        GLLRenderParameterDescription *description = [self.shader descriptionForParameter:uniformName];
-        
-        GLLRenderParameter *parameter;
-        
-        if (description.type == GLLRenderParameterTypeFloat)
-            parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLFloatRenderParameter" inManagedObjectContext:self.managedObjectContext];
-        else if (description.type == GLLRenderParameterTypeColor)
-            parameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLColorRenderParameter" inManagedObjectContext:self.managedObjectContext];
-        else
-            continue; // Skip this param
-        
-        if (values[uniformName] != nil) {
-            [parameter setValue:values[uniformName] forKey:@"value"];
-        } else {
-            if (description.type == GLLRenderParameterTypeFloat) {
-                [parameter setValue:[NSNumber numberWithDouble:[self.item.model.parameters defaultValueForRenderParameter:uniformName]] forKey:@"value"];
-            } else if (description.type == GLLRenderParameterTypeColor) {
-                [parameter setValue:[self.item.model.parameters defaultColorForRenderParameter:uniformName] forKey:@"value"];
-            }
-        }
-        
-        parameter.name = uniformName;
-        [renderParameters addObject:parameter];
-    }
-}
-
-- (void)_fixupBumpAmount {
-    GLLRenderParameter* scalarParameter = [self renderParameterWithName:@"bumpSpecularAmount"];
-    if (!scalarParameter) {
-        return;
-    }
-    GLLRenderParameter* colorParameter = [self renderParameterWithName:@"specularColor"];
-    NSColor *colorParameterValue = [NSColor whiteColor];
-    if (colorParameter) {
-        colorParameterValue = [colorParameter valueForKey:@"value"];
-    } else {
-        colorParameter = [NSEntityDescription insertNewObjectForEntityForName:@"GLLColorRenderParameter" inManagedObjectContext:self.managedObjectContext];
-        colorParameter.name = @"specularColor";
-        [self addRenderParametersObject:colorParameter];
-    }
-    
-    CGFloat red, green, blue, alpha;
-    [[colorParameterValue colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]] getRed:&red green:&green blue:&blue alpha:&alpha];
-    
-    double scalar = [[scalarParameter valueForKey:@"value"] doubleValue];
-    
-    NSColor *result = [NSColor colorWithRed:red * scalar green:green * scalar blue:blue * scalar alpha:alpha];
-    [colorParameter setValue:result forKey:@"value"];
-    
-    [self removeRenderParametersObject:scalarParameter];
 }
 
 @end

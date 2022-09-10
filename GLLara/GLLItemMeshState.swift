@@ -21,7 +21,12 @@ extension GLLRenderParameter {
     var colorValue: vector_float4 {
         assert(uniformValue.count == MemoryLayout<vector_float4>.size, "Not a float4")
         var result = vector_float4(repeating: 0)
-        _ = withUnsafeMutableBytes(of: &result) { uniformValue.copyBytes(to: $0) }
+        withUnsafeMutableBytes(of: &result) {
+            guard let uniformValue = uniformValue else {
+                return
+            }
+            uniformValue.copyBytes(to: $0)
+        }
         return result
     }
 }
