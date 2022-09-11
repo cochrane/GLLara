@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build and analyse default scheme using xcodebuild command
-    runs-on: macos-latest
+    runs-on: macos-12
 
     steps:
       - name: Checkout
@@ -17,6 +17,9 @@ jobs:
       - name: Build
         run: |
           xcodebuild clean build analyze -project "GLLara.xcodeproj" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty && exit ${PIPESTATUS[0]}
+      - name: Test
+        run: |
+          xcodebuild -project "GLLara.xcodeproj" -scheme "GLLara" test | xcpretty && exit ${PIPESTATUS[0]}
       - name: Archive
         run: |
           xcodebuild archive -project "GLLara.xcodeproj" -scheme "GLLara" -archivePath GLLaraNightly.xcarchive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty && exit ${PIPESTATUS[0]}
