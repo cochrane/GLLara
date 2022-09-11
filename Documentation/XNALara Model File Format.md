@@ -14,7 +14,7 @@ Without further ado, the file format:
 	uint32_t numMeshes
 	Mesh meshes[numMeshes]
 
-Beware, though: If the first uint32 has the magic value 323232, it is not the bone count, but instead the header of a file with the Generic Item 2 format. You have to ask `XNAaral` (sorry, I don't know of a homepage for him) for details about this format, I'm afraid I don't know any.
+Beware, though: If the first uint32 has the magic value 323232, it is not the bone count, but instead the header of a file with the Generic Item 2 format. This is described more later.
 
 The format for a bone is:
 
@@ -53,3 +53,49 @@ A texture is less interesting, it is just
 	uint32_t uvLayer
 	
 Note that several textures can use the same uv layer.
+
+## Ascii Format
+
+The ASCII format is functionally the same. Strings are terminated by newlines instead of leading sizes. Numbers are just written as ASCII and separated by whitespace. The main difference is that tangents are not included in the file, and must be calculated manually.
+
+## Generic Item 2
+
+XPS is a closed-source fork of XNALara that also supports its own file format, called generic mesh 2. There is no full documentation for it as far as I know, but I was able to reverse-engineer most of it. Here's the format:
+
+    uint32_t magicNumber; // 323232; that is how you tell it is a generic mesh v2 file
+    uint16_t majorVersion; 
+    uint16_t minorVersion; // Irrelevant
+    string toolAuthor; // always XNAaraL
+    uint32_t countOfUnknownInts;
+    string unknownString1;
+    string unknownString2;
+    string unknownString3; // These strings contain file paths and computer names of whoever created the file. They are not needed for anything.
+    uint32_t unknownInts[countOfUnknownInts]; // Unclear what this is.
+    
+    uint32_t numBones
+    Bone bones[numBones]
+    uint32_t numMeshes
+    Mesh meshes[numMeshes]
+    
+    // There is some additional trailing data that doesn't seem to be relevant.
+    
+The format for bones is identical, but the vertex data has some additional wrinkles:
+
+*   If the major version is at least 2, the file does not contain tangents. These must be calculated manually. The vertex format becomes:
+    
+        float vertex[3];
+        float normal[3];
+        uint8_t color[4];
+        float texCoord[2][numUVLayers]
+        uint16_t boneIndex[4] // Only if the model has bones
+        float boneIndex[4] // Only if the model has bones
+
+*   If the major version is at least 3, the number of bones per vertex is variable and given by an uint16\_t before the bones. This is usually 4, but can be higher (I have not seen lower values in the models I've tested). As a result the vertex format no longer has a uniform stride. It is now:
+    
+        float vertex[3];
+        float normal[3];
+        uint8_t color[4];
+        float texCoord[2][numUVLayers]
+        uint16_t boneCountForVertex // Only if the model has bones
+        uint16_t boneIndex[boneCountForVertex] // Only if the model has bones
+        float boneIndex[boneCountForVertex] // Only if the model has bones
