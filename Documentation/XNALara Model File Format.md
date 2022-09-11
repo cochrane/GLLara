@@ -37,7 +37,9 @@ The format for a mesh is:
 	uint32_t numElements
 	uint32_t elements[numElements]
 
-Special notes: numTextures often is not the same as numUVLayers. The format of a vertex depends on the number of UV layers and whether the model has bones:
+Special notes: numTextures is completely independent from numUVLayers. Most models have only one UV layer, but several textures for different purposes. Which texture does what depends on its order in the texture array and the chosen mesh group.
+
+The format of a vertex depends on the number of UV layers and whether the model has bones:
 
 	float vertex[3];
 	float normal[3];
@@ -52,7 +54,7 @@ A texture is less interesting, it is just
 	string filename
 	uint32_t uvLayer
 	
-Note that several textures can use the same uv layer.
+The uvLayer is not actually used. Textures all use UV Layer 0, except for lightmaps in some static models, which use UV Layer 1. This is hardcoded in the shader (which is chosen by the mesh group), regardless of what the UV Layer field here says.
 
 ## Ascii Format
 
