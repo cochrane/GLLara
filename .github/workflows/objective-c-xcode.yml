@@ -19,7 +19,7 @@ jobs:
           xcodebuild clean build analyze -project "GLLara.xcodeproj" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty && exit ${PIPESTATUS[0]}
       - name: Test
         run: |
-          xcodebuild -project "GLLara.xcodeproj" -scheme "GLLara" test | xcpretty && exit ${PIPESTATUS[0]}
+          xcodebuild -project "GLLara.xcodeproj" -scheme "GLLara" test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty && exit ${PIPESTATUS[0]}
       - name: Archive
         run: |
           xcodebuild archive -project "GLLara.xcodeproj" -scheme "GLLara" -archivePath GLLaraNightly.xcarchive CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty && exit ${PIPESTATUS[0]}
