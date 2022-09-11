@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G83" minimumToolsVersion="Xcode 4.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="GLLAmbientLight" representedClassName="GLLAmbientLight" parentEntity="GLLLight" syncable="YES">
-        <attribute name="color" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="color" optional="YES" attributeType="Transformable" valueTransformerName="GLLColorValueTransformer" syncable="YES"/>
     </entity>
     <entity name="GLLCamera" representedClassName="GLLCamera" syncable="YES">
         <attribute name="cameraLocked" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -26,14 +26,14 @@
         <relationship name="cameras" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="GLLCamera" inverseName="target" inverseEntity="GLLCamera" syncable="YES"/>
     </entity>
     <entity name="GLLColorRenderParameter" representedClassName="GLLColorRenderParameter" parentEntity="GLLRenderParameter" syncable="YES">
-        <attribute name="value" attributeType="Transformable" syncable="YES"/>
+        <attribute name="value" attributeType="Transformable" valueTransformerName="GLLColorValueTransformer" syncable="YES"/>
     </entity>
     <entity name="GLLDirectionalLight" representedClassName="GLLDirectionalLight" parentEntity="GLLLight" syncable="YES">
-        <attribute name="diffuseColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="diffuseColor" optional="YES" attributeType="Transformable" valueTransformerName="GLLColorValueTransformer" syncable="YES"/>
         <attribute name="isEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="latitude" attributeType="Float" minValueString="-1.5707963267949" maxValueString="1.5707963267949" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Float" minValueString="0" maxValueString="6.28318530717959" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="specularColor" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="specularColor" optional="YES" attributeType="Transformable" valueTransformerName="GLLColorValueTransformer" syncable="YES"/>
     </entity>
     <entity name="GLLFloatRenderParameter" representedClassName="GLLFloatRenderParameter" parentEntity="GLLRenderParameter" syncable="YES">
         <attribute name="value" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
@@ -106,11 +106,11 @@
         <relationship name="mesh" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="GLLItemMesh" inverseName="shaderFeatures" inverseEntity="GLLItemMesh" syncable="YES"/>
     </entity>
     <elements>
-        <element name="GLLAmbientLight" positionX="0" positionY="0" width="128" height="60"/>
+        <element name="GLLAmbientLight" positionX="0" positionY="0" width="128" height="44"/>
         <element name="GLLCamera" positionX="0" positionY="0" width="128" height="254"/>
         <element name="GLLCameraTarget" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="GLLColorRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="GLLDirectionalLight" positionX="0" positionY="0" width="128" height="120"/>
+        <element name="GLLColorRenderParameter" positionX="0" positionY="0" width="128" height="44"/>
+        <element name="GLLDirectionalLight" positionX="0" positionY="0" width="128" height="104"/>
         <element name="GLLFloatRenderParameter" positionX="0" positionY="0" width="128" height="60"/>
         <element name="GLLItem" positionX="0" positionY="0" width="128" height="404"/>
         <element name="GLLItemBone" positionX="0" positionY="0" width="128" height="149"/>

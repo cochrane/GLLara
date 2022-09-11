@@ -29,7 +29,6 @@ To be clear: Not all of them will make it to 0.3
 - Check tangents on Wonder Woman those look off
 - Check all shaders whether they really have the right set of features
 - Make private list of interesting test files and what they test. 
-- Do something about NSKeyedUnarchiveFromData
 - Initial Visible state seems wrong sometimes (e.g. Ruby, Weiss from RWBY)
 - Window size gets doubled on restore, probably using wrong size on loading (actual pixels vs drawn size)
 

@@ -50,6 +50,7 @@ NSString* GLLPrefPoseExportOnlySelected = @"exportPose-onlySelected";
 {
     [NSValueTransformer setValueTransformer:[[GLLAngleRangeValueTransformer alloc] init] forName:@"GLLAngleRangeValueTransformer"];
     [NSValueTransformer setValueTransformer:[[GLLLogarithmicValueTransformer alloc] init] forName:@"GLLLogarithmicValueTransformer"];
+    [GLLColorValueTransformer registerTransformer];
 }
 
 - (id)initWithType:(NSString *)typeName error:(NSError **)outError
