@@ -514,9 +514,7 @@ import GameController
         if !contiuousInputActive && !somethingChangedLastFrame && !(viewDrawer?.runningAnimation ?? false) {
             isPaused = true
         }
-        if somethingChangedLastFrame {
-            somethingChangedLastFrame = false
-        }
+        somethingChangedLastFrame = false
     }
     
     // MARK: - Drag and drop
@@ -550,11 +548,9 @@ import GameController
     
     func windowBecameKey() {
         GLLView.lastActiveView = self
-        // TODO Pause and unpause updates in response to this
     }
     
     func windowResignedKey() {
-        // TODO Pause and unpause updates in response to this
     }
     
     // MARK: - Private methods
