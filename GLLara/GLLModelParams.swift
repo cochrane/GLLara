@@ -239,7 +239,7 @@ _([^_\\n]+)
         params.displayName = meshName
         
         if self.model != nil {
-            if let components = GLLModelParams.meshNameRegexp.firstMatch(in: meshName, options: .anchored, range: NSRange(meshName.startIndex ..< meshName.endIndex, in: description)) {
+            if let components = GLLModelParams.meshNameRegexp.firstMatch(in: meshName, options: .anchored, range: NSRange(meshName.startIndex ..< meshName.endIndex, in: meshName)) {
                 
                 // 1st match: mesh group
                 // Need this later for render parameters, so this part is always extracted.

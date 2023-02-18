@@ -101,7 +101,7 @@ struct HUDTextDrawer {
             descriptor.width = 2048
             descriptor.height = 2048
             descriptor.pixelFormat = .bgra8Unorm
-            descriptor.storageMode = .shared
+            descriptor.storageMode = .managed
             
             return descriptor
         }()
