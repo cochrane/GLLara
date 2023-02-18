@@ -221,8 +221,10 @@ static NSOperationQueue *imageInformationQueue = nil;
     else
         result = [self _loadCGCompatibleTexture:data error:error];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLLTextureChangeNotification object:self];
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLLTextureChangeNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLLDrawStateChangedNotification object:self];
+    });
     
     return result;
 }

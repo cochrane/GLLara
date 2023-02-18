@@ -14,7 +14,7 @@ class GLLItemDrawer {
     weak var sceneDrawer: GLLSceneDrawer?
     var needUpdateTransforms = true
     var replacedTextures: [URL:Error] = [:]
-    var meshStates: [GLLItemMeshState] = []
+    var meshStates: [GLLItemMeshState] = [] // Not sorted
     
     private let transformsBuffer: MTLBuffer
     private var observations: [NSKeyValueObservation] = []
@@ -49,12 +49,25 @@ class GLLItemDrawer {
         }
         
         // Observe the settings of all the meshes
-        var replacedTextures: [String: Error] = [:]
         for meshData in drawData.meshDrawData {
             let meshState = try GLLItemMeshState(itemDrawer: self, meshData: meshData, itemMesh: item.itemMesh(for: meshData.modelMesh))
-            let failedTextures = meshState.updateTextures()
-            replacedTextures.merge(failedTextures, uniquingKeysWith: { a, b in return b })
             meshStates.append(meshState)
+        }
+        runAndBlockReturn {
+            await withTaskGroup(of: Void.self) { taskGroup in
+                for meshState in self.meshStates {
+                    taskGroup.addTask {
+                        await meshState.updateTextures()
+                    }
+                }
+            }
+        }
+        for meshState in meshStates {
+            for loadedTexture in meshState.loadedTextures {
+                if let url = loadedTexture.originalTexture, let error = loadedTexture.errorThatCausedReplacement {
+                    replacedTextures[url] = error
+                }
+            }
         }
     }
     

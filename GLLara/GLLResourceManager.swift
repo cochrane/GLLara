@@ -9,6 +9,7 @@
 import Foundation
 import Metal
 import AppKit
+import Combine
 
 /*
  * Stores all resources for the program.
@@ -119,23 +120,48 @@ import AppKit
         }
     }
     
-    @objc func texture(url: URL) throws -> GLLTexture {
-        return try value(key: url, from: &textures) {
-            var effectiveUrl = url
-            do {
-                // TODO shouldn't we use this data somewhere? Maybe? Why are we reading this twice?
-                _ = try Data(contentsOf: url)
-            } catch  {
-                // Second attempt: Maybe there is a default version of that in the bundle.
-                // If not, then keep error from first read.
-                let originalError = error
-                let bundleUrl = Bundle.main.url(forResource: url.lastPathComponent, withExtension: nil)
-                guard let bundleUrl = bundleUrl else {
-                    throw originalError
-                }
-                effectiveUrl = bundleUrl
+    func textureFuture(url: URL) throws -> Future<GLLTexture, Error> {
+        texturesLock.withLock { [self] in
+            if let existing = textures[url] {
+                return existing
             }
-            return try GLLTexture(url: effectiveUrl, device: metalDevice)
+            
+            let future = Future<GLLTexture, Error> { promise in
+                Task {
+                    do {
+                        var effectiveUrl = url
+                        do {
+                            // TODO shouldn't we use this data somewhere? Maybe? Why are we reading this twice?
+                            _ = try Data(contentsOf: url)
+                        } catch  {
+                            // Second attempt: Maybe there is a default version of that in the bundle.
+                            // If not, then keep error from first read.
+                            let originalError = error
+                            let bundleUrl = Bundle.main.url(forResource: url.lastPathComponent, withExtension: nil)
+                            guard let bundleUrl = bundleUrl else {
+                                throw originalError
+                            }
+                            effectiveUrl = bundleUrl
+                        }
+                        let texture = try GLLTexture(url: effectiveUrl, device: self.metalDevice)
+                        promise(Result.success(texture))
+                    } catch {
+                        promise(Result.failure(error))
+                    }
+                }
+            }
+            textures[url] = future
+            return future
+        }
+    }
+    
+    func textureAsync(url: URL) async throws -> GLLTexture {
+        return try await textureFuture(url: url).value
+    }
+    
+    @objc func texture(url: URL) throws -> GLLTexture {
+        return try throwingRunAndBlockReturn {
+            try await self.textureAsync(url: url)
         }
     }
     
@@ -149,21 +175,23 @@ import AppKit
             "variableBoneWeights": hasVariableBoneWeights
         ]
         
-        return try value(key: key, from: &pipelines) {
-            let vertexFunction = try function(name: shader.vertexName!, shader: shader, numberOfTexCoordSets: numberOfTexCoordSets, texCoordAssignments: texCoordAssignments, hasVariableBoneWeights: hasVariableBoneWeights)
-            let fragmentFunction = try function(name: shader.fragmentName!, shader: shader, numberOfTexCoordSets: numberOfTexCoordSets, texCoordAssignments: texCoordAssignments, hasVariableBoneWeights: hasVariableBoneWeights)
-            
-            let descriptor = MTLRenderPipelineDescriptor()
-            
-            descriptor.vertexFunction = vertexFunction
-            descriptor.fragmentFunction = fragmentFunction
-            descriptor.colorAttachments[0].pixelFormat = pixelFormat
-            descriptor.colorAttachments[0].isBlendingEnabled = false
-            descriptor.depthAttachmentPixelFormat = depthPixelFormat
-            descriptor.vertexDescriptor = vertex.vertexDescriptor
-            
-            let pipelineState = try metalDevice.makeRenderPipelineState(descriptor: descriptor)
-            return GLLPipelineStateInformation(pipelineState: pipelineState, vertexProgram: vertexFunction, fragmentProgram: fragmentFunction)
+        return try pipelinesLock.withLock {
+            return try value(key: key, from: &pipelines) {
+                let vertexFunction = try function(name: shader.vertexName!, shader: shader, numberOfTexCoordSets: numberOfTexCoordSets, texCoordAssignments: texCoordAssignments, hasVariableBoneWeights: hasVariableBoneWeights)
+                let fragmentFunction = try function(name: shader.fragmentName!, shader: shader, numberOfTexCoordSets: numberOfTexCoordSets, texCoordAssignments: texCoordAssignments, hasVariableBoneWeights: hasVariableBoneWeights)
+                
+                let descriptor = MTLRenderPipelineDescriptor()
+                
+                descriptor.vertexFunction = vertexFunction
+                descriptor.fragmentFunction = fragmentFunction
+                descriptor.colorAttachments[0].pixelFormat = pixelFormat
+                descriptor.colorAttachments[0].isBlendingEnabled = false
+                descriptor.depthAttachmentPixelFormat = depthPixelFormat
+                descriptor.vertexDescriptor = vertex.vertexDescriptor
+                
+                let pipelineState = try metalDevice.makeRenderPipelineState(descriptor: descriptor)
+                return GLLPipelineStateInformation(pipelineState: pipelineState, vertexProgram: vertexFunction, fragmentProgram: fragmentFunction)
+            }
         }
     }
 
@@ -175,8 +203,10 @@ import AppKit
         functions.removeAll()
     }
     
-    private var textures: [URL: GLLTexture] = [:]
+    private var texturesLock = NSLock()
+    private var textures: [URL: Future<GLLTexture, Error>] = [:]
     private var models: [URL: GLLModelDrawData] = [:]
+    private var pipelinesLock = NSLock()
     private var pipelines: [AnyHashable: GLLPipelineStateInformation] = [:]
     private var functions: [AnyHashable: MTLFunction] = [:]
     

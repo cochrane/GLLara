@@ -31,12 +31,19 @@ extension GLLRenderParameter {
     }
 }
 
+struct LoadedTexture {
+    let resourceId: Int
+    let texture: MTLTexture
+    let originalTexture: URL?
+    let errorThatCausedReplacement: Error?
+}
+
 class GLLItemMeshState {
     let drawer: GLLItemDrawer
     let itemMesh: GLLItemMesh
     let meshData: GLLMeshDrawData
     
-    var texturesForResourceIds: [Int: MTLTexture] = [:]
+    var loadedTextures: [LoadedTexture] = []
     var pipelineStateInformation: GLLPipelineStateInformation? = nil
     var fragmentArgumentBuffer: MTLBuffer? = nil
     
@@ -109,12 +116,12 @@ class GLLItemMeshState {
         }
     }
     
-    private func loadTexture(identifier: String) throws -> GLLTexture {
+    private func loadTexture(identifier: String) async throws -> GLLTexture {
         let textureAssignment = itemMesh.texture(withIdentifier: identifier)
         
         if let url = textureAssignment?.textureURL {
             // Load from the given URL (where possible
-            return try drawer.resourceManager.texture(url: url)
+            return try await drawer.resourceManager.textureAsync(url: url)
         } else if let data = itemMesh.mesh.textures[identifier]?.data {
             // Load what the model provided
             return try GLLTexture(data: data, sourceURL: itemMesh.mesh.model!.baseURL, device: drawer.resourceManager.metalDevice)
@@ -196,8 +203,8 @@ class GLLItemMeshState {
         encoder.setArgumentBuffer(fragmentArgumentBuffer, offset: 0)
         
         // Set textures
-        for (resourceId, texture) in texturesForResourceIds {
-            encoder.setTexture(texture, index: resourceId)
+        for texture in loadedTextures {
+            encoder.setTexture(texture.texture, index: texture.resourceId)
         }
         
         // Set render parameters
@@ -232,33 +239,56 @@ class GLLItemMeshState {
         return shader.alphaBlending
     }
     
+    private func displayUrl(for identifier: String) -> URL? {
+        let textureAssignment = itemMesh.texture(withIdentifier: identifier)
+        
+        if let url = textureAssignment?.textureURL {
+            // Use URL in model
+            return url
+        } else if (itemMesh.mesh.textures[identifier]?.data) != nil {
+            // Use URL of model
+            return itemMesh.mesh.model!.baseURL
+        }
+        return nil
+    }
+    
     /**
      * Updates the textures. Returns which ones could not be loaded and the associated error.
      */
-    func updateTextures() -> [String: Error] {
-        var failures: [String: Error] = [:]
-        
-        guard let shader = itemMesh.shader else {
-            return failures
-        }
-        
-        texturesForResourceIds.removeAll()
-        for identifier in shader.textureUniforms {
-            do {
-                let texture = try loadTexture(identifier: identifier)
-                texturesForResourceIds[textureIndex(for: identifier)] = texture.texture
-            } catch {
-                failures[identifier] = error
-                
-                // Load default
-                let texture = try! drawer.resourceManager.texture(url: itemMesh.mesh.model!.parameters.defaultValue(forTexture: identifier))
-                texturesForResourceIds[textureIndex(for: identifier)] = texture.texture
+    func updateTextures() async {
+        loadedTextures = await withTaskGroup(of: LoadedTexture.self) { group in
+            
+            guard let shader = itemMesh.shader else {
+                return self.loadedTextures // No change
             }
+            
+            for identifier in shader.textureUniforms {
+                group.addTask { [self] in
+                    let displayUrl = displayUrl(for: identifier)
+                    let index = textureIndex(for: identifier)
+
+                    do {
+                        let texture = try await loadTexture(identifier: identifier)
+                        return LoadedTexture(resourceId: index, texture: texture.texture, originalTexture: displayUrl, errorThatCausedReplacement: nil)
+                    } catch {
+                        // Load default
+                        let texture = try! await drawer.resourceManager.textureAsync(url: itemMesh.mesh.model!.parameters.defaultValue(forTexture: identifier))
+                        
+                        return LoadedTexture(resourceId: index, texture: texture.texture, originalTexture: displayUrl, errorThatCausedReplacement: error)
+                    }
+                }
+            }
+            
+            var newLoadedTextures: [LoadedTexture] = []
+            for await result in group {
+                newLoadedTextures.append(result)
+            }
+            
+            needsTextureUpdate = false
+            return newLoadedTextures
         }
         
-        needsTextureUpdate = false
         updateArgumentBuffer()
-        return failures
     }
         
     private func updatePipelineState() {
@@ -308,11 +338,13 @@ class GLLItemMeshState {
         }
         
         if needsTextureUpdate {
-            _ = updateTextures()
+            runAndBlockReturn {
+                await self.updateTextures()
+            }
         }
         
         /// TODO Ugly
-        let textures = texturesForResourceIds.values.map { $0 }
+        let textures = loadedTextures.map { $0.texture }
         commandEncoder.useResources(textures, usage: .sample)
         
         commandEncoder.setRenderPipelineState(pipelineStateInformation.pipelineState)
