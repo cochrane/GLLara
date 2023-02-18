@@ -449,7 +449,7 @@ import GameController
         let current = controllerLeftStickMode
         let orderedModes = CameraMovementMode.allCases
         if let index = orderedModes.firstIndex(of: current) {
-            var nextIndex = (index + 1) % orderedModes.count
+            let nextIndex = (index + 1) % orderedModes.count
             let next = orderedModes[nextIndex % orderedModes.count]
             UserDefaults.standard.set(next.rawValue, forKey: GLLPrefControllerLeftStickMode)
         }

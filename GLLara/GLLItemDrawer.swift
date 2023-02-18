@@ -29,7 +29,7 @@ class GLLItemDrawer {
         transformsBuffer.label = item.displayName + "-transforms"
         
         // Prepare draw data
-        let drawData = try throwingRunAndBlockReturn {
+        try throwingRunAndBlock {
             let drawData = try await sceneDrawer.resourceManager.drawDataAsync(model: item.model)
             for meshData in drawData.meshDrawData {
                 let meshState = try GLLItemMeshState(itemDrawer: self, meshData: meshData, itemMesh: item.itemMesh(for: meshData.modelMesh))
@@ -42,7 +42,6 @@ class GLLItemDrawer {
                     }
                 }
             }
-            return drawData
         }
         
         // Observe channel assignments

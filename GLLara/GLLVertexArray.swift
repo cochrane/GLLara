@@ -96,7 +96,6 @@ class GLLVertexArray {
         }
         
         // Process vertex data
-        let actualStride = stride
         let newBytes = vertexData!.baseAddress!.advanced(by: reservation.vertexBytesStart)
             
         let sortedReadAccessors = optimizedFormat.accessors.map { writeAccessor in
