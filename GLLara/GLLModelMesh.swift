@@ -20,6 +20,8 @@ import simd
         self.model = model
     }
     
+    var fileAccessors: GLLVertexAttribAccessorSet? = nil
+    
     init(fromStream stream: TRInDataStream, partOfModel model: GLLModel, versionCode: Int) throws {
         self.versionCode = versionCode
         super.init()
@@ -56,7 +58,6 @@ import simd
         }
         
         countOfVertices = Int(stream.readUint32())
-        let fileAccessors: GLLVertexAttribAccessorSet
         if (hasVariableBonesPerVertex) {
             // Special difficult case!
             var vertexData = Data(capacity: countOfVertices * Int(fileVertexFormat.stride))
@@ -115,17 +116,21 @@ import simd
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),                                                                                                             NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file breaks off inside a mesh's vertex data.", comment: "Premature end of file error") ])
         }
         self.elementData = elementData
-        
+    }
+    
+    func finishProcessing() throws {
         // Prepare the vertex data
         
-        try validate(vertexData: fileAccessors, indexData: elementData)
+        try validate(vertexData: fileAccessors!, indexData: elementData)
         
         // Always recalculate tangents, the ones in the model file can be 0
-        let tangents = calculateTangents(for: fileAccessors)
-        vertexDataAccessors = fileAccessors.combining(with: tangents)
+        let tangents = calculateTangents(for: fileAccessors!)
+        vertexDataAccessors = fileAccessors!.combining(with: tangents)
         
         vertexFormat = vertexDataAccessors!.vertexFormat(vertexCount: countOfVertices, hasIndices: true)
         loadRenderParameters()
+        
+        fileAccessors = nil
     }
     
     init(fromScanner scanner: GLLASCIIScanner, partOfModel model: GLLModel) throws {

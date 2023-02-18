@@ -29,7 +29,7 @@ import Foundation
         parameters = try GLLModelParams.parameters(forModel: self)
         
         let stream = TRInDataStream(data: data)!
-        var genericItemVersion = 0
+        let genericItemVersion: Int
         var header = stream.readUint32()
         if header == 323232 {
             /*
@@ -38,13 +38,13 @@ import Foundation
              * know whether my variable names are correct, and I do not interpret
              * it in any way.
              */
-            genericItemVersion = 2
             
             // First: Two uint16s. My guess: Major, then minor version.
             let majorVersion = stream.readUint16()
             let minorVersion = stream.readUint16()
             print("Versions: \(majorVersion).\(minorVersion)")
             if majorVersion == 1 {
+                genericItemVersion = 2
             } else if majorVersion == 2 {
                 genericItemVersion = 3
             } else if majorVersion == 3 {
@@ -76,6 +76,8 @@ import Foundation
             
             // Now read number of bones
             header = stream.readUint32()
+        } else {
+            genericItemVersion = 0
         }
         
         let numBones = header
@@ -98,18 +100,32 @@ import Foundation
             ])
         }
         
-        let numMeshes = stream.readUint32()
-        var meshes: [GLLModelMesh] = []
+        let numMeshes = Int(stream.readUint32())
+        var unprocessedMeshes: [GLLModelMesh] = []
         for _ in 0..<numMeshes {
-            let mesh = try GLLModelMesh(fromStream: stream, partOfModel: self, versionCode: genericItemVersion)
-            let params = self.parameters.params(forMesh: mesh.name)
-            if params.splitters.isEmpty {
-                meshes.append(mesh)
-            } else {
-                meshes.append(contentsOf: params.splitters.map { mesh.partialMesh(fromSplitter: $0) })
+            try unprocessedMeshes.append(GLLModelMesh(fromStream: stream, partOfModel: self, versionCode: genericItemVersion))
+        }
+        
+        let meshCopy = unprocessedMeshes
+        try throwingRunAndBlock {
+            try await withThrowingTaskGroup(of: Void.self) { group in
+                for mesh in meshCopy {
+                    group.addTask {
+                        try mesh.finishProcessing()
+                    }
+                }
+                try await group.waitForAll()
             }
         }
-        self.meshes = meshes
+        
+        self.meshes = unprocessedMeshes.flatMap { mesh in
+            let params = self.parameters.params(forMesh: mesh.name)
+            if params.splitters.isEmpty {
+                return [mesh]
+            } else {
+                return params.splitters.map { mesh.partialMesh(fromSplitter: $0) }
+            }
+        }
         
         guard stream.isValid else {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
