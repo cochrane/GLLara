@@ -11,8 +11,8 @@ import Metal
 
 class GLLVertexArray {
     
-    private var vertexData: Data? = Data()
-    private var elementData: Data? = Data()
+    private var vertexData: UnsafeMutableRawBufferPointer? = nil
+    private var elementData: UnsafeMutableRawBufferPointer? = nil
     var format: GLLVertexFormat
     var optimizedFormat: GLLVertexAttribAccessorSet
     
@@ -60,26 +60,58 @@ class GLLVertexArray {
         }
     }
     
-    var countOfVertices: Int {
-        return vertexData!.count / stride
+    struct Reservation {
+        let vertexBytesStart: Int
+        let elementBytesStart: Int
+        
+        let baseVertex: Int
     }
     
-    var elementDataLength: Int {
-        return elementData!.count
+    private var totalVertexByteCount = 0
+    private var totalElementByteCount = 0
+    private let lock = NSLock()
+    
+    func reserve(vertexCount: Int, elements: Data?, bytesPerElement: Int) -> Reservation {
+        assert(vertexData == nil && elementData == nil)
+        return lock.withLock {
+            let reservation = Reservation(vertexBytesStart: totalVertexByteCount, elementBytesStart: totalElementByteCount, baseVertex: totalVertexByteCount / stride)
+            
+            totalVertexByteCount += vertexCount * stride
+            if format.hasIndices, let elements = elements {
+                totalElementByteCount += numberOfElementBytes * (elements.count / bytesPerElement)
+            }
+            
+            return reservation
+        }
     }
     
-    func add(vertices: GLLVertexAttribAccessorSet, count: Int, elements: Data?, bytesPerElement: Int) {
+    func add(vertices: GLLVertexAttribAccessorSet, count: Int, elements: Data?, bytesPerElement: Int, at reservation: Reservation) {
+        lock.withLock {
+            if vertexData == nil {
+                vertexData = UnsafeMutableRawBufferPointer.allocate(byteCount: totalVertexByteCount, alignment: 16)
+            }
+            if elementData == nil && totalElementByteCount > 0 {
+                elementData = UnsafeMutableRawBufferPointer.allocate(byteCount: totalElementByteCount, alignment: 16)
+            }
+        }
+        
         // Process vertex data
         let actualStride = stride
-        let newBytes = UnsafeMutableRawBufferPointer.allocate(byteCount: count * actualStride, alignment: MemoryLayout<Int32>.alignment)
+        let newBytes = vertexData!.baseAddress!.advanced(by: reservation.vertexBytesStart)
+            
+        let sortedReadAccessors = optimizedFormat.accessors.map { writeAccessor in
+            let attribute = writeAccessor.attribute
+            return vertices.accessor(semantic: attribute.semantic, layer: attribute.layer)!
+        }
         
         for i in 0..<count {
-            for writeAccessor in optimizedFormat.accessors {
+            for accessorIndex in 0 ..< sortedReadAccessors.count {
+                let writeAccessor = optimizedFormat.accessors[accessorIndex]
                 let attribute = writeAccessor.attribute
-                let readAccessor = vertices.accessor(semantic: attribute.semantic, layer: attribute.layer)!
+                let readAccessor = sortedReadAccessors[accessorIndex]
                 
                 readAccessor.withBytes(element: i) { originalVertex in
-                    let vertex = newBytes.baseAddress!.advanced(by: writeAccessor.offset(element: i))
+                    let vertex = newBytes.advanced(by: writeAccessor.offset(element: i))
                     // Need to do some processing
                     if attribute.semantic == .normal && attribute.format == .int1010102Normalized {
                         // Normal. Compress from float[3] to int_2_10_10_10_rev format
@@ -142,28 +174,26 @@ class GLLVertexArray {
             }
         }
         
-        vertexData!.append(newBytes.baseAddress!.bindMemory(to: UInt8.self, capacity: newBytes.count), count: newBytes.count)
-        newBytes.deallocate()
-        
         // Compress elements
         if self.format.hasIndices, let elements = elements {
-            let ourElementBytes = numberOfElementBytes
-            if bytesPerElement == ourElementBytes {
-                // Straight copy
-                elementData!.append(elements)
-            } else {
-                let additionalCount = elements.count / bytesPerElement
-                elementData!.reserveCapacity(elementData!.count + count*ourElementBytes)
-                if ourElementBytes <= bytesPerElement {
-                    // Downsample. Assumes little endian. RIP PPC :(
-                    for i in 0..<additionalCount {
-                        elementData!.append(elements.subdata(in: i*bytesPerElement ..< i*bytesPerElement+ourElementBytes))
-                    }
+            elements.withUnsafeBytes { newElements in
+                let ourElementBytes = numberOfElementBytes
+                if bytesPerElement == ourElementBytes {
+                    // Straight copy
+                    elementData!.baseAddress!.advanced(by: reservation.elementBytesStart).copyMemory(from: newElements.baseAddress!, byteCount: elements.count)
                 } else {
-                    // Upsample. Assumes little endian. RIP PPC :(
-                    for i in 0..<additionalCount {
-                        elementData!.append(elements.subdata(in:i*bytesPerElement ..< (i+1)*bytesPerElement))
-                        elementData!.append(contentsOf: Array.init(repeating: UInt8(0), count: ourElementBytes - bytesPerElement))
+                    let additionalCount = elements.count / bytesPerElement
+                    if ourElementBytes <= bytesPerElement {
+                        // Downsample. Assumes little endian. RIP PPC :(
+                        for i in 0..<additionalCount {
+                            elementData!.baseAddress!.advanced(by: reservation.elementBytesStart + i*ourElementBytes).copyMemory(from: newElements.baseAddress!.advanced(by: i*bytesPerElement), byteCount: ourElementBytes)
+                        }
+                    } else {
+                        // Upsample. Assumes little endian. RIP PPC :(
+                        // Also assumes elementData is zero-initialized
+                        for i in 0..<additionalCount {
+                            elementData!.baseAddress!.advanced(by: reservation.elementBytesStart + i*ourElementBytes).copyMemory(from: newElements.baseAddress!.advanced(by: i*bytesPerElement), byteCount: bytesPerElement)
+                        }
                     }
                 }
             }
@@ -275,7 +305,9 @@ class GLLVertexArray {
             elementBuffer = device.makeBuffer(bytes: $0.baseAddress!, length: $0.count, options: .storageModeManaged)
             elementBuffer?.label = "elements-" + debugLabel
         }
+        vertexData?.deallocate()
         vertexData = nil
+        elementData?.deallocate()
         elementData = nil
     }
 }

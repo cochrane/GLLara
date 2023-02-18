@@ -15,7 +15,7 @@ class GLLModelDrawData {
     
     let meshDrawData: [GLLMeshDrawData]
     
-    init(model: GLLModel, resourceManager: GLLResourceManager) {
+    init(model: GLLModel, resourceManager: GLLResourceManager) async {
         self.model = model
         self.resourceManager = resourceManager
         
@@ -34,8 +34,20 @@ class GLLModelDrawData {
             return GLLMeshDrawData(mesh: mesh, vertexArray: array, resourceManager: resourceManager)
         }
         
-        for array in vertexArrayMap.values {
-            array.upload()
+        await withTaskGroup(of: Void.self) { group in
+            for datum in meshDrawData {
+                group.addTask {
+                    datum.addToVertexArray()
+                }
+            }
+        }
+        
+        await withTaskGroup(of: Void.self) { group in
+            for array in vertexArrayMap.values {
+                group.addTask {
+                    array.upload()
+                }
+            }
         }
     }
     

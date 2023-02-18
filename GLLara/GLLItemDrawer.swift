@@ -29,7 +29,21 @@ class GLLItemDrawer {
         transformsBuffer.label = item.displayName + "-transforms"
         
         // Prepare draw data
-        let drawData = try sceneDrawer.resourceManager.drawData(model: item.model)
+        let drawData = try throwingRunAndBlockReturn {
+            let drawData = try await sceneDrawer.resourceManager.drawDataAsync(model: item.model)
+            for meshData in drawData.meshDrawData {
+                let meshState = try GLLItemMeshState(itemDrawer: self, meshData: meshData, itemMesh: item.itemMesh(for: meshData.modelMesh))
+                self.meshStates.append(meshState)
+            }
+            await withTaskGroup(of: Void.self) { taskGroup in
+                for meshState in self.meshStates {
+                    taskGroup.addTask {
+                        await meshState.updateTextures()
+                    }
+                }
+            }
+            return drawData
+        }
         
         // Observe channel assignments
         let updateTransformsHandler = { [weak self] (item: GLLItem, change: NSKeyValueObservedChange<Int16>) -> Void in
@@ -48,20 +62,6 @@ class GLLItemDrawer {
             observations.append(bone.observe(\.globalTransformValue, options: .new, changeHandler: updateBoneHandler))
         }
         
-        // Observe the settings of all the meshes
-        for meshData in drawData.meshDrawData {
-            let meshState = try GLLItemMeshState(itemDrawer: self, meshData: meshData, itemMesh: item.itemMesh(for: meshData.modelMesh))
-            meshStates.append(meshState)
-        }
-        runAndBlockReturn {
-            await withTaskGroup(of: Void.self) { taskGroup in
-                for meshState in self.meshStates {
-                    taskGroup.addTask {
-                        await meshState.updateTextures()
-                    }
-                }
-            }
-        }
         for meshState in meshStates {
             for loadedTexture in meshState.loadedTextures {
                 if let url = loadedTexture.originalTexture, let error = loadedTexture.errorThatCausedReplacement {

@@ -114,44 +114,33 @@ import Combine
     // Can and will change if user settings change
     var metalSampler: MTLSamplerState! = nil
     
-    func drawData(model: GLLModel) throws -> GLLModelDrawData {
-        return value(key: model.baseURL, from: &models) {
-            return GLLModelDrawData(model: model, resourceManager: self)
+    func drawDataFuture(model: GLLModel) -> Future<GLLModelDrawData, Error> {
+        return futureValue(key: model.baseURL, from: &models, lock: modelsLock) {
+            await GLLModelDrawData(model: model, resourceManager: self)
         }
     }
     
+    func drawDataAsync(model: GLLModel) async throws -> GLLModelDrawData {
+        return try await drawDataFuture(model: model).value
+    }
+    
     func textureFuture(url: URL) throws -> Future<GLLTexture, Error> {
-        texturesLock.withLock { [self] in
-            if let existing = textures[url] {
-                return existing
-            }
-            
-            let future = Future<GLLTexture, Error> { promise in
-                Task {
-                    do {
-                        var effectiveUrl = url
-                        do {
-                            // TODO shouldn't we use this data somewhere? Maybe? Why are we reading this twice?
-                            _ = try Data(contentsOf: url)
-                        } catch  {
-                            // Second attempt: Maybe there is a default version of that in the bundle.
-                            // If not, then keep error from first read.
-                            let originalError = error
-                            let bundleUrl = Bundle.main.url(forResource: url.lastPathComponent, withExtension: nil)
-                            guard let bundleUrl = bundleUrl else {
-                                throw originalError
-                            }
-                            effectiveUrl = bundleUrl
-                        }
-                        let texture = try GLLTexture(url: effectiveUrl, device: self.metalDevice)
-                        promise(Result.success(texture))
-                    } catch {
-                        promise(Result.failure(error))
-                    }
+        futureValue(key: url, from: &textures, lock: texturesLock) {
+            var effectiveUrl = url
+            do {
+                // TODO shouldn't we use this data somewhere? Maybe? Why are we reading this twice?
+                _ = try Data(contentsOf: url)
+            } catch  {
+                // Second attempt: Maybe there is a default version of that in the bundle.
+                // If not, then keep error from first read.
+                let originalError = error
+                let bundleUrl = Bundle.main.url(forResource: url.lastPathComponent, withExtension: nil)
+                guard let bundleUrl = bundleUrl else {
+                    throw originalError
                 }
+                effectiveUrl = bundleUrl
             }
-            textures[url] = future
-            return future
+            return try GLLTexture(url: effectiveUrl, device: self.metalDevice)
         }
     }
     
@@ -203,9 +192,10 @@ import Combine
         functions.removeAll()
     }
     
-    private var texturesLock = NSLock()
+    private let texturesLock = NSLock()
     private var textures: [URL: Future<GLLTexture, Error>] = [:]
-    private var models: [URL: GLLModelDrawData] = [:]
+    private let modelsLock = NSLock()
+    private var models: [URL: Future<GLLModelDrawData, Error>] = [:]
     private var pipelinesLock = NSLock()
     private var pipelines: [AnyHashable: GLLPipelineStateInformation] = [:]
     private var functions: [AnyHashable: MTLFunction] = [:]
@@ -287,6 +277,27 @@ import Combine
         let newItem = try ifNotFound()
         dictionary[key] = newItem
         return newItem
+    }
+    
+    private func futureValue<K, V>(key: K, from dictionary: inout [K: Future<V, Error>], lock: NSLock, create: @Sendable @escaping () async throws -> V) -> Future<V, Error> {
+        lock.withLock {
+            if let existing = dictionary[key] {
+                return existing
+            }
+            
+            let future = Future<V, Error> { promise in
+                Task {
+                    do {
+                        let value = try await create()
+                        promise(Result.success(value))
+                    } catch {
+                        promise(Result.failure(error))
+                    }
+                }
+            }
+            dictionary[key] = future
+            return future
+        }
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {

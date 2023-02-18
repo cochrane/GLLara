@@ -20,21 +20,22 @@ class GLLMeshDrawData {
     let vertexArray: GLLVertexArray
     let boneDataArray: MTLBuffer?
     let boneIndexOffset: Int?
+    let reservation: GLLVertexArray.Reservation
     
     init(mesh: GLLModelMesh, vertexArray array: GLLVertexArray, resourceManager: GLLResourceManager) {
         modelMesh = mesh
         self.vertexArray = array
         
-        indicesStart = vertexArray.elementDataLength
-        baseVertex = vertexArray.countOfVertices
+        reservation = array.reserve(vertexCount: modelMesh.countOfVertices, elements: modelMesh.elementData, bytesPerElement: modelMesh.elementSize)
+        
+        indicesStart = reservation.elementBytesStart
+        baseVertex = reservation.baseVertex
         elementType = vertexArray.format.indexType
         if vertexArray.format.hasIndices {
             elementsOrVerticesCount = mesh.countOfElements
         } else {
             elementsOrVerticesCount = mesh.countOfVertices
         }
-        
-        vertexArray.add(vertices: mesh.vertexDataAccessors!, count: mesh.countOfVertices, elements: mesh.elementData, bytesPerElement: mesh.elementSize)
         
         if let boneIndices = mesh.variableBoneIndices, let boneWeights = mesh.variableBoneWeights {
             let weightsSize = MemoryLayout<Float>.stride * boneWeights.count
@@ -49,6 +50,10 @@ class GLLMeshDrawData {
             boneDataArray = nil
             boneIndexOffset = nil
         }
+    }
+    
+    func addToVertexArray() {
+        vertexArray.add(vertices: modelMesh.vertexDataAccessors!, count: modelMesh.countOfVertices, elements: modelMesh.elementData, bytesPerElement: modelMesh.elementSize, at: reservation)
     }
     
 }
