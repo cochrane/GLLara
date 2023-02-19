@@ -15,7 +15,6 @@
 #import "GLLItemMesh.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLModel.h"
-#import "GLLModelBone.h"
 #import "GLLNotifications.h"
 #import "GLLVertexAttrib.h"
 #import "GLLPreferencesWindowController.h"

@@ -819,7 +819,7 @@ class GLLModelGltf: GLLModel {
         }
         
         // Set up the one and only bone we have for now
-        self.bones = [GLLModelBone(model: self)]
+        self.bones = [GLLModelBone()]
     }
 
 }

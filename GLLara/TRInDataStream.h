@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TRInDataStream : NSObject
+#import "GLLDataReader.h"
+
+@interface TRInDataStream : NSObject <GLLDataReader>
 
 - (id)initWithData:(NSData *)data;
 

@@ -11,7 +11,6 @@
 #import "NSArray+Map.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh+OBJExport.h"
-#import "GLLModelBone.h"
 
 #import "GLLara-Swift.h"
 

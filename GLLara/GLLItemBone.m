@@ -10,7 +10,6 @@
 
 #import "GLLItem.h"
 #import "GLLModel.h"
-#import "GLLModelBone.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
@@ -236,7 +235,7 @@
     self.globalTransform = transform;
     self.globalTransformValue = [NSData dataWithBytes:&transform length:sizeof(transform)];
     
-    self.globalPosition = simd_mul(transform, simd_make_float4(self.bone.positionX, self.bone.positionY, self.bone.positionZ, 1.0f));
+    self.globalPosition = simd_mul(transform, simd_make_float4(self.bone.position.x, self.bone.position.x, self.bone.position.z, 1.0f));
     
     [self.children makeObjectsPerformSelector:@selector(updateGlobalTransform)];
 }

@@ -88,7 +88,7 @@ import Foundation
             ])
         }
         
-        bones = try (0..<numBones).map { try GLLModelBone(fromSequentialData: stream, partOf: self, at: UInt($0)) }
+        bones = try (0..<numBones).map { _ in try GLLModelBone(sequentialData: stream) }
         try assignBoneChildren()
         
         guard stream.isValid else {
@@ -151,8 +151,8 @@ import Foundation
         let scanner = GLLASCIIScanner(string: string)!
         let numBones = scanner.readUint32()
         var bones: [GLLModelBone] = []
-        for i in 0..<numBones {
-            let bone = try GLLModelBone(fromSequentialData: scanner, partOf: self, at: UInt(i))
+        for _ in 0..<numBones {
+            let bone = try GLLModelBone(sequentialData: scanner)
             
             // Check whether parent has this bone and defer to it instead
             if let boneInParent = parent?.bone(forName: bone.name) {
@@ -193,9 +193,21 @@ import Foundation
     }
     
     func assignBoneChildren() throws {
-        for bone in bones {
-            if Int(bone.parentIndex) == Int(UInt16.max) {
+        for i in 0 ..< bones.count {
+            let bone = bones[i]
+            if Int(bone.parentIndex) < 0 {
                 continue
+            }
+            if Int(bone.parentIndex) == i {
+                // Apparently that's a thing that people do. Create unused bones with themselves set as parent. Why, though?
+                if bone.name.hasPrefix("unused") {
+                    print("Bone \(i) (named \(bone.name ?? "<no name>") has itself as parent. Unused, so treated as root bone.")
+                    continue
+                } else {
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [
+                        NSLocalizedDescriptionKey : String(format:NSLocalizedString("Bone \"%@\" has itself as an ancestor.", comment: "Found a circle in the bone relationships."), bone.name),
+                        NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The bones would form an infinite loop.", comment: "Found a circle in a bone relationship")])
+                }
             }
             if Int(bone.parentIndex) >= bones.count {
                 throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [
@@ -203,9 +215,12 @@ import Foundation
                     NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("All bones have to have a parent that exists or no parent at all.", comment: "The parent index of this bone is invalid.")])
             }
             let parent = bones[Int(bone.parentIndex)]
+            bone.parent = parent
             parent.children.append(bone)
-            
-            var ancestor: GLLModelBone? = parent
+        }
+        
+        for bone in bones {
+            var ancestor: GLLModelBone? = bone.parent
             while ancestor != nil {
                 if ancestor == bone {
                     throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_CircularReference.rawValue), userInfo: [

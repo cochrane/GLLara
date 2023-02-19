@@ -10,8 +10,9 @@
 
 #import "GLLItemBone.h"
 #import "GLLItemMesh+MeshExport.h"
-#import "GLLModelBone.h"
 #import "TROutDataStream.h"
+
+#import "GLLara-Swift.h"
 
 @implementation GLLItem (MeshExport)
 

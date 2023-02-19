@@ -10,7 +10,8 @@
 
 #import "GLLItem.h"
 #import "GLLItemBone.h"
-#import "GLLModelBone.h"
+
+#import "GLLara-Swift.h"
 
 @interface GLLPoseExporter ()
 

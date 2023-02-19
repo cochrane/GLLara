@@ -11,7 +11,6 @@
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
 #import "GLLModel.h"
-#import "GLLModelBone.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"

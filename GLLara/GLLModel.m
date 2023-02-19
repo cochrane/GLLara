@@ -12,7 +12,6 @@
 
 #import "NSArray+Map.h"
 #import "GLLASCIIScanner.h"
-#import "GLLModelBone.h"
 #import "GLLModelObj.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
