@@ -118,7 +118,7 @@ struct GLLControllerPreferencesView: View {
     @State var discoveringWirelessControllers = false
     
     @ObservedObject var gameControllerManager = GLLGameControllerManager.shared
-    @ObservedObject var spaceMouseManager = GLLSpaceMouseManager.shared
+    var spaceMouseManager = GLLConnexionManager.shared()
     
     var body: some View {
         ScrollView {
@@ -163,11 +163,6 @@ struct GLLControllerPreferencesView: View {
                 
                 GroupBox("3D Mouse") {
                     VStack(alignment: .leading) {
-                        if spaceMouseManager.firstDeviceName != nil {
-                            Text("Connected: \(spaceMouseManager.firstDeviceName!)")
-                        } else {
-                            Text("No 3D mouse connected")
-                        }
                         GroupBox("Movement") {
                             ControllerPreferencesSlider(for: GLLPrefSpaceMouseSpeedTranslation, in : 0 ... 3, label: "Speed:", valueDescription: { value in
                                 "\(value, specifier: "%.1f") unit/s"

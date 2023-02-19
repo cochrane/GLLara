@@ -42,7 +42,7 @@ import GameController
         _ = GLLGameControllerManager.shared
     }
     
-    func unpause() {
+    @objc func unpause() {
         if isPaused {
             lastPositionUpdate = Date.timeIntervalSinceReferenceDate
         }
@@ -546,7 +546,7 @@ import GameController
     }
     
     // MARK: - Activity status
-    static weak var lastActiveView: GLLView? = nil
+    @objc static weak var lastActiveView: GLLView? = nil
     
     func windowBecameKey() {
         GLLView.lastActiveView = self
@@ -591,7 +591,8 @@ import GameController
         }
         
         // Get the current state for the space mouse
-        let (rawSpaceMouseRotation, rawSpaceMousePosition) = GLLSpaceMouseManager.shared.averageRotationAndPosition
+        let rawSpaceMouseRotation = GLLConnexionManager.shared().averageRotation()
+        let rawSpaceMousePosition = GLLConnexionManager.shared().averagePosition()
         
         let (adjustedRotation, rotationInsideDeadzone) = adjustForDeadzone(vector: rawSpaceMouseRotation, deadzone: spaceMouseDeadZoneRotation)
         let (adjustedPosition, positionInsideDeadzone) = adjustForDeadzone(vector: rawSpaceMousePosition, deadzone: spaceMouseDeadZoneTranslation)

@@ -7,6 +7,7 @@
 #import "GLLASCIIScanner.h"
 #import "GLLAmbientLight.h"
 #import "GLLCamera.h"
+#import "GLLConnexionManager.h"
 #import "GLLDirectionalLight.h"
 #import "GLLDocument.h"
 #import "GLLItem.h"

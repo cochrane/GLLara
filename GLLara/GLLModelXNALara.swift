@@ -201,7 +201,7 @@ import Foundation
             if Int(bone.parentIndex) == i {
                 // Apparently that's a thing that people do. Create unused bones with themselves set as parent. Why, though?
                 if bone.name.hasPrefix("unused") {
-                    print("Bone \(i) (named \(bone.name ?? "<no name>") has itself as parent. Unused, so treated as root bone.")
+                    print("Bone \(i) (named \(bone.name) has itself as parent. Unused, so treated as root bone.")
                     continue
                 } else {
                     throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [
