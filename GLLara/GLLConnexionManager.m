@@ -244,7 +244,7 @@ static GLLConnexionManager *sharedManager;
         result += device.lastPositionState;
     }
     float factor = 1.0f / fmaxf((float) knownDevices.count, 1.0f);
-    return result /= simd_make_float3(factor, factor, factor);
+    return result / simd_make_float3(factor, factor, factor);
 }
 
 - (simd_float3)averageRotation {
@@ -254,7 +254,7 @@ static GLLConnexionManager *sharedManager;
         result += device.lastRotationState;
     }
     float factor = 1.0f / fmaxf((float) knownDevices.count, 1.0f);
-    return result /= simd_make_float3(factor, factor, factor);
+    return result / simd_make_float3(factor, factor, factor);
 }
 
 @end
