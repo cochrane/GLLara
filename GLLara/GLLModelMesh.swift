@@ -291,12 +291,12 @@ import simd
     var vertexFormat: GLLVertexFormat?
     
     // Element data. Arranged as triangles, often but not necessarily UInt32
-    @objc var elementData: Data?
-    @objc var elementSize: Int = 4
-    @objc var countOfElements: Int = 0
+    var elementData: Data?
+    var elementSize: Int = 4
+    var countOfElements: Int = 0
     
     // Returns the element fo the index. If there is no element buffer (i.e. directly), returns its index
-    @objc func element(at index: Int) -> Int {
+    func element(at index: Int) -> Int {
         guard let elementData = elementData else {
             return index
         }
@@ -314,7 +314,7 @@ import simd
     }
     
     // Returns the count of indices you can use with elementAt - that is either the number of elements, if there is an element buffer, or the number of vertices if drawing directly without one
-    @objc var countOfUsedElements: Int {
+    var countOfUsedElements: Int {
         if elementData == nil {
             return countOfVertices
         }

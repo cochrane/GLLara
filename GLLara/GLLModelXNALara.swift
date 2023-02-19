@@ -89,9 +89,7 @@ import Foundation
         }
         
         bones = try (0..<numBones).map { try GLLModelBone(fromSequentialData: stream, partOf: self, at: UInt($0)) }
-        for bone in bones {
-            try bone.findParentsAndChildrenError()
-        }
+        try assignBoneChildren()
         
         guard stream.isValid else {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
@@ -101,15 +99,13 @@ import Foundation
         }
         
         let numMeshes = Int(stream.readUint32())
-        var unprocessedMeshes: [GLLModelMesh] = []
-        for _ in 0..<numMeshes {
-            try unprocessedMeshes.append(GLLModelMesh(fromStream: stream, partOfModel: self, versionCode: genericItemVersion))
+        let unprocessedMeshes = try (0 ..< numMeshes).map { _ in
+            try GLLModelMesh(fromStream: stream, partOfModel: self, versionCode: genericItemVersion)
         }
         
-        let meshCopy = unprocessedMeshes
         try throwingRunAndBlock {
             try await withThrowingTaskGroup(of: Void.self) { group in
-                for mesh in meshCopy {
+                for mesh in unprocessedMeshes {
                     group.addTask {
                         try mesh.finishProcessing()
                     }
@@ -118,14 +114,17 @@ import Foundation
             }
         }
         
-        self.meshes = unprocessedMeshes.flatMap { mesh in
+        var splitMeshes: [GLLModelMesh] = []
+        splitMeshes.reserveCapacity(unprocessedMeshes.count)
+        for mesh in unprocessedMeshes {
             let params = self.parameters.params(forMesh: mesh.name)
             if params.splitters.isEmpty {
-                return [mesh]
+                splitMeshes.append(mesh)
             } else {
-                return params.splitters.map { mesh.partialMesh(fromSplitter: $0) }
+                splitMeshes.append(contentsOf: params.splitters.map { mesh.partialMesh(fromSplitter: $0) })
             }
         }
+        self.meshes = splitMeshes
         
         guard stream.isValid else {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
@@ -163,9 +162,7 @@ import Foundation
             }
         }
         self.bones = bones
-        for bone in self.bones {
-            try bone.findParentsAndChildrenError()
-        }
+        try assignBoneChildren()
         
         guard scanner.isValid else {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
@@ -192,6 +189,31 @@ import Foundation
                 NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The mesh data is incomplete. The file may be damaged.", comment: "Premature end of file error.")
             ])
+        }
+    }
+    
+    func assignBoneChildren() throws {
+        for bone in bones {
+            if Int(bone.parentIndex) == Int(UInt16.max) {
+                continue
+            }
+            if Int(bone.parentIndex) >= bones.count {
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [
+                    NSLocalizedDescriptionKey : String(format:NSLocalizedString("Parent of bone \"%@\" does not exist.", comment: "The parent index of this bone is invalid."), bone.name),
+                    NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("All bones have to have a parent that exists or no parent at all.", comment: "The parent index of this bone is invalid.")])
+            }
+            let parent = bones[Int(bone.parentIndex)]
+            parent.children.append(bone)
+            
+            var ancestor: GLLModelBone? = parent
+            while ancestor != nil {
+                if ancestor == bone {
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_CircularReference.rawValue), userInfo: [
+                        NSLocalizedDescriptionKey : String(format:NSLocalizedString("Bone \"%@\" has itself as an ancestor.", comment: "Found a circle in the bone relationships."), bone.name),
+                        NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The bones would form an infinite loop.", comment: "Found a circle in a bone relationship")])
+                }
+                ancestor = ancestor?.parent
+            }
         }
     }
 }

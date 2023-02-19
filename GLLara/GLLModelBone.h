@@ -49,11 +49,6 @@
  * cache their results in any way.
  */
 @property (nonatomic, weak, readonly) GLLModelBone *parent;
-@property (nonatomic, retain, readonly) NSArray<GLLModelBone *> *children;
-
-/*
- * Called as part of the model loading process;
- */
-- (BOOL)findParentsAndChildrenError:(NSError *__autoreleasing*)error;
+@property (nonatomic, retain) NSArray<GLLModelBone *> *children;
 
 @end
