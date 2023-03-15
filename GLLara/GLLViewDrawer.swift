@@ -290,6 +290,8 @@ import UniformTypeIdentifiers
     
     private func draw(commandBuffer: MTLCommandBuffer, viewRenderPassDescriptor: MTLRenderPassDescriptor, surface: Surface, includeUI: Bool = true, screenScale: Double = 2.0) {
         
+        sceneDrawer.needsUpdate = false
+        
         var viewProjection = camera.viewProjectionMatrix(forAspectRatio: Float(surface.width) / Float(surface.height))
         
         if needsUpdateLights {

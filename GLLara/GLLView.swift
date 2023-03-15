@@ -9,6 +9,7 @@
 import Cocoa
 import MetalKit
 import GameController
+import Combine
 
 @objc class GLLView: MTKView {
     
@@ -26,9 +27,6 @@ import GameController
         })
         notificationObservers.append(NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: OperationQueue.main) { [weak self] notification in
             self?.showSelection = UserDefaults.standard.bool(forKey: GLLPrefShowSkeleton)
-        })
-        notificationObservers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.GLLSceneDrawerNeedsUpdate, object: nil, queue: OperationQueue.main) { [weak self] notification in
-            self?.unpause()
         })
         notificationObservers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.GCControllerDidBecomeCurrent, object: nil, queue: OperationQueue.main) { [weak self] notification in
             self?.unpause()
@@ -57,13 +55,20 @@ import GameController
     
     @objc func set(camera: GLLCamera, sceneDrawer: GLLSceneDrawer) {
         self.camera = camera
+        sceneDrawerUpdateRegistration?.cancel()
         self.sceneDrawer = sceneDrawer
+        sceneDrawerUpdateRegistration = sceneDrawer.$needsUpdate.sink { [weak self] value in
+            if value {
+                self?.unpause()
+            }
+        }
         self.viewDrawer = GLLViewDrawer(sceneDrawer: sceneDrawer, camera: camera, view: self)
     }
     
     var camera: GLLCamera? = nil
     @objc weak var document: GLLDocument? = nil
     var sceneDrawer: GLLSceneDrawer? = nil
+    var sceneDrawerUpdateRegistration: AnyCancellable? = nil
     @objc var viewDrawer: GLLViewDrawer? = nil
     var showSelection: Bool = false
     var keysDown = CharacterSet()

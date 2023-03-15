@@ -8,8 +8,9 @@
 
 import Cocoa
 import CoreData
+import Combine
 
-@objc class GLLSceneDrawer: NSObject {
+@objc class GLLSceneDrawer: NSObject, ObservableObject {
     
     @objc init(document: GLLDocument) {
         self.document = document
@@ -40,11 +41,11 @@ import CoreData
                     }
                 }
             }
-            self.notifyRedraw()
+            self.needsUpdate = true
         }
         
         drawStateNotificationObserver = NotificationCenter.default.addObserver(forName: Notification.Name.GLLDrawStateChanged, object: nil, queue: OperationQueue.main) { [weak self] notification in
-            self?.notifyRedraw()
+            self?.needsUpdate = true
         }
         
         // Load existing items
@@ -78,7 +79,7 @@ import CoreData
     @objc var selectedBones: [GLLItemBone] {
         set {
             skeletonDrawer.selectedBones = newValue
-            notifyRedraw()
+            needsUpdate = true
         }
         get {
             return skeletonDrawer.selectedBones
@@ -95,9 +96,7 @@ import CoreData
         skeletonDrawer.draw(into: commandEncoder)
     }
     
-    func notifyRedraw() {
-        NotificationCenter.default.post(name: NSNotification.Name.GLLSceneDrawerNeedsUpdate, object: self)
-    }
+    @Published var needsUpdate = false
     
     private var itemDrawers: [GLLItemDrawer] = []
     private let skeletonDrawer: GLLSkeletonDrawer

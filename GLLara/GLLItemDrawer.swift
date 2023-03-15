@@ -80,7 +80,7 @@ class GLLItemDrawer {
     }
     
     func propertiesChanged() {
-        sceneDrawer?.notifyRedraw()
+        sceneDrawer?.needsUpdate = true
     }
     
     private func permutationTableColumn(for assignment: GLLItemChannelAssignment) -> vector_float4 {

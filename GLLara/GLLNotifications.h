@@ -8,8 +8,6 @@
 
 #include <Foundation/Foundation.h>
 
-extern NSString *GLLSceneDrawerNeedsUpdateNotification;
-
 // Sent when bound textures or similar change outside of normal execution, to
 // indicate that the draw state needs to be reset for the next frame.
 extern NSString *GLLDrawStateChangedNotification;

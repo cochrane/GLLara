@@ -8,7 +8,4 @@
 
 #import <Foundation/Foundation.h>
 
-
-NSString *GLLSceneDrawerNeedsUpdateNotification = @"GLLSceneDrawerNeedsUpdateNotification";
-
 NSString *GLLDrawStateChangedNotification = @"GLLDrawStateChangedNotification";
