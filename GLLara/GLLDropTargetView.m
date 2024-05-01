@@ -12,7 +12,7 @@
 
 #import "GLLDocument.h"
 #import "GLLDocumentWindowController.h"
-#import "GLLItemDragDestination.h"
+#import "GLLara-Swift.h"
 
 @interface GLLDropTargetView()
 

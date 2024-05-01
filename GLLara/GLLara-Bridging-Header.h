@@ -12,7 +12,6 @@
 #import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
-#import "GLLItemDragDestination.h"
 #import "GLLItemMesh.h"
 #import "GLLItemMeshTexture.h"
 #import "GLLModel.h"

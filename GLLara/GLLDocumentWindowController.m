@@ -19,7 +19,6 @@
 #import "GLLItem+OBJExport.h"
 #import "GLLItemBone.h"
 #import "GLLItemController.h"
-#import "GLLItemDragDestination.h"
 #import "GLLItemListController.h"
 #import "GLLItemMesh.h"
 #import "GLLItemOptionalPartMarker.h"

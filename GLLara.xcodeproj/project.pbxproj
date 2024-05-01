@@ -272,7 +272,7 @@
 		5296947815F80F4800DF2FA3 /* GLLBoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */; };
 		52AC5DC62876F315004949D4 /* CopyDepth.metal in Sources */ = {isa = PBXBuildFile; fileRef = 52AC5DC52876F315004949D4 /* CopyDepth.metal */; };
 		52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */; };
-		52B5630A1EFD8681008C6CAD /* GLLItemDragDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B563091EFD8681008C6CAD /* GLLItemDragDestination.m */; };
+		52B6C51F2BE28DE7005E53CE /* GLLItemDragDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B6C51E2BE28DE7005E53CE /* GLLItemDragDestination.swift */; };
 		52B9E0781602086D00641518 /* objFileParameters.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */; };
 		52B9E0AE1602815800641518 /* RenderParameters.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52B9E0B01602815800641518 /* RenderParameters.strings */; };
 		52BB206815F8275E00937450 /* doppelganger.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB206715F8275E00937450 /* doppelganger.modelparams.plist */; };
@@ -755,8 +755,7 @@
 		52AC5DC52876F315004949D4 /* CopyDepth.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CopyDepth.metal; sourceTree = "<group>"; };
 		52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLCameraTarget.h; sourceTree = "<group>"; };
 		52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLCameraTarget.m; sourceTree = "<group>"; };
-		52B563081EFD8681008C6CAD /* GLLItemDragDestination.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLItemDragDestination.h; sourceTree = "<group>"; };
-		52B563091EFD8681008C6CAD /* GLLItemDragDestination.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLItemDragDestination.m; sourceTree = "<group>"; };
+		52B6C51E2BE28DE7005E53CE /* GLLItemDragDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLItemDragDestination.swift; sourceTree = "<group>"; };
 		52B9E0771602086D00641518 /* objFileParameters.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = objFileParameters.modelparams.plist; path = ../Shaders/objFileParameters.modelparams.plist; sourceTree = "<group>"; };
 		52B9E09616027FC800641518 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		52B9E0AF1602815800641518 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RenderParameters.strings; sourceTree = "<group>"; };
@@ -1511,8 +1510,6 @@
 				5213F88A1C0E478C007A9EBB /* GLLPreferencesWindow.xib */,
 				52232EAA1EFC459E007FE9AD /* GLLDropTargetView.h */,
 				52232EAB1EFC459E007FE9AD /* GLLDropTargetView.m */,
-				52B563081EFD8681008C6CAD /* GLLItemDragDestination.h */,
-				52B563091EFD8681008C6CAD /* GLLItemDragDestination.m */,
 				52301E312087E6FC00B3E331 /* GLLOptionalPartView.xib */,
 				52301E332087E71400B3E331 /* GLLOptionalPartViewController.h */,
 				52301E342087E71400B3E331 /* GLLOptionalPartViewController.m */,
@@ -1537,6 +1534,7 @@
 				52F73EAD288BE42600A580EC /* GLLPoseExportViewController.swift */,
 				52D18D5029A2716400BE2815 /* GLLConnexionManager.h */,
 				52D18D5129A2716400BE2815 /* GLLConnexionManager.m */,
+				52B6C51E2BE28DE7005E53CE /* GLLItemDragDestination.swift */,
 			);
 			name = "Document and UI";
 			sourceTree = "<group>";
@@ -1949,6 +1947,7 @@
 				52CDFEE42875B46700BC4298 /* GLLSceneDrawer.swift in Sources */,
 				52232EAC1EFC459E007FE9AD /* GLLDropTargetView.m in Sources */,
 				52301E352087E71400B3E331 /* GLLOptionalPartViewController.m in Sources */,
+				52B6C51F2BE28DE7005E53CE /* GLLItemDragDestination.swift in Sources */,
 				52F73EA8288BE06600A580EC /* GLLDrawingPreferencesViewController.swift in Sources */,
 				52C3AD8C29A13DEB002EC334 /* WillinglyBlock.swift in Sources */,
 				52F73EA6288BDFC000A580EC /* GLLNoSelectionViewController.swift in Sources */,
@@ -1969,7 +1968,6 @@
 				52CDFEE8287619D800BC4298 /* Square.metal in Sources */,
 				528934DE16A2281900F05312 /* GLLSettingsListController.m in Sources */,
 				52F73EAA288BE1AD00A580EC /* GLLTextureAssignmentView.swift in Sources */,
-				52B5630A1EFD8681008C6CAD /* GLLItemDragDestination.m in Sources */,
 				5274447E280300F400E5A3FD /* Skeleton.metal in Sources */,
 				528934E816A29B8300F05312 /* GLLLightController.m in Sources */,
 				527444802803121D00E5A3FD /* GLLItemDrawer.swift in Sources */,
