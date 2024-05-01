@@ -6,7 +6,7 @@
 //  Copyright © 2021 Torsten Kammer. All rights reserved.
 //
 
-#ifndef __METAL_MACOS__
+#ifndef __METAL__
 
 #import <Foundation/Foundation.h>
 

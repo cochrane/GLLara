@@ -11,6 +11,7 @@
 #import "GLLDirectionalLight.h"
 #import "GLLDocument.h"
 #import "GLLDocumentWindowController.h"
+#import "GLLFloatRenderParameter.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"

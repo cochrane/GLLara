@@ -17,8 +17,8 @@
 		5211F83226246EE600A1EC23 /* GLLTextureAssignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211F83126246EE600A1EC23 /* GLLTextureAssignment.swift */; };
 		5213F8831C0E411C007A9EBB /* GLLPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5213F8811C0E411C007A9EBB /* GLLPreferencesWindowController.m */; };
 		5213F8881C0E478C007A9EBB /* GLLPreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5213F88A1C0E478C007A9EBB /* GLLPreferencesWindow.xib */; };
-		5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */; };
-		5214470D16DC2312003E260F /* GLLItem+MeshExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5214470C16DC2312003E260F /* GLLItem+MeshExport.m */; };
+		5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214470916DBF206003E260F /* GLLItemMesh+MeshExport.swift */; };
+		5214470D16DC2312003E260F /* GLLItem+MeshExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5214470C16DC2312003E260F /* GLLItem+MeshExport.swift */; };
 		5214471116DE22E1003E260F /* GLLara.help in Resources */ = {isa = PBXBuildFile; fileRef = 5214471016DE22E0003E260F /* GLLara.help */; };
 		52152CEF16B66951001AE54C /* GLLDDSFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 52152CEE16B66951001AE54C /* GLLDDSFile.m */; };
 		52232EAE1EFC57D4007FE9AD /* XYAlignedSquare.obj in Resources */ = {isa = PBXBuildFile; fileRef = 52232EAD1EFC57D4007FE9AD /* XYAlignedSquare.obj */; };
@@ -404,10 +404,8 @@
 		521446FC16DAD8C3003E260F /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/RenderParameters.strings; sourceTree = "<group>"; };
 		521446FD16DAD8C3003E260F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = de; path = de.lproj/Credits.rtf; sourceTree = "<group>"; };
 		521446FE16DAD8C4003E260F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5214470816DBF205003E260F /* GLLItemMesh+MeshExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLItemMesh+MeshExport.h"; sourceTree = "<group>"; };
-		5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItemMesh+MeshExport.m"; sourceTree = "<group>"; };
-		5214470B16DC2312003E260F /* GLLItem+MeshExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLItem+MeshExport.h"; sourceTree = "<group>"; };
-		5214470C16DC2312003E260F /* GLLItem+MeshExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItem+MeshExport.m"; sourceTree = "<group>"; };
+		5214470916DBF206003E260F /* GLLItemMesh+MeshExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GLLItemMesh+MeshExport.swift"; sourceTree = "<group>"; };
+		5214470C16DC2312003E260F /* GLLItem+MeshExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GLLItem+MeshExport.swift"; sourceTree = "<group>"; };
 		5214471016DE22E0003E260F /* GLLara.help */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GLLara.help; sourceTree = "<group>"; };
 		52152CED16B66951001AE54C /* GLLDDSFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDDSFile.h; sourceTree = "<group>"; };
 		52152CEE16B66951001AE54C /* GLLDDSFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDDSFile.m; sourceTree = "<group>"; };
@@ -1393,10 +1391,8 @@
 				526AB31B1609C7C300940A74 /* GLLItem+OBJExport.m */,
 				523D368316BED849004FAD4B /* GLLItemMeshTexture.h */,
 				523D368416BED84A004FAD4B /* GLLItemMeshTexture.m */,
-				5214470816DBF205003E260F /* GLLItemMesh+MeshExport.h */,
-				5214470916DBF206003E260F /* GLLItemMesh+MeshExport.m */,
-				5214470B16DC2312003E260F /* GLLItem+MeshExport.h */,
-				5214470C16DC2312003E260F /* GLLItem+MeshExport.m */,
+				5214470916DBF206003E260F /* GLLItemMesh+MeshExport.swift */,
+				5214470C16DC2312003E260F /* GLLItem+MeshExport.swift */,
 				521102EE2899C430001BE4BC /* GLLItemBoneExtensions.swift */,
 			);
 			name = "Scene members";
@@ -2000,8 +1996,8 @@
 				5213F8831C0E411C007A9EBB /* GLLPreferencesWindowController.m in Sources */,
 				522783AD1C0B79F2002E43FD /* GLLItemMeshTextureSelectionPlaceholder.m in Sources */,
 				526756AA16BF543800FB85CA /* GLLImageView.m in Sources */,
-				5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.m in Sources */,
-				5214470D16DC2312003E260F /* GLLItem+MeshExport.m in Sources */,
+				5214470A16DBF206003E260F /* GLLItemMesh+MeshExport.swift in Sources */,
+				5214470D16DC2312003E260F /* GLLItem+MeshExport.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2422,7 +2418,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = "";
 				SWIFT_VERSION = 5.0;
@@ -2476,7 +2472,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				SDKROOT = "";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
@@ -2501,7 +2497,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.3.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				PRODUCT_BUNDLE_IDENTIFIER = "${ORGANIZATION_IDENTIFIER}.${PRODUCT_NAME:rfc1034identifier}";
@@ -2526,7 +2522,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "GLLara/GLLara-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.3.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "${ORGANIZATION_IDENTIFIER}.${PRODUCT_NAME:rfc1034identifier}";

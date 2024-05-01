@@ -16,7 +16,6 @@
 #import "GLLDirectionalLight.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLItem.h"
-#import "GLLItem+MeshExport.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
 #import "GLLItemMeshTexture.h"
@@ -405,7 +404,7 @@ NSString* GLLPrefPoseExportOnlySelected = @"exportPose-onlySelected";
         }
         
         // Save mesh file there - both with and without ascii
-        NSString *ascii = [item writeASCIIError:&error];
+        NSString *ascii = [item writeASCIIAndReturnError:&error];
         if (!ascii)
         {
             [manager removeItemAtURL:panel.URL error:NULL];
@@ -420,7 +419,7 @@ NSString* GLLPrefPoseExportOnlySelected = @"exportPose-onlySelected";
         }
         
         // Ignore if writing binary fails; the mesh.ascii version includes all data already.
-        NSData *binary = [item writeBinaryError:NULL];
+        NSData *binary = [item writeBinaryAndReturnError:NULL];
         if (!binary) return;
         if (![binary writeToURL:[panel.URL URLByAppendingPathComponent:@"generic_item.mesh"] options:NSDataWritingAtomic error:&error]) return;
     }];
