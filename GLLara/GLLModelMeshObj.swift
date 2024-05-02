@@ -8,8 +8,8 @@
 
 import Foundation
 
-@objc class GLLModelMeshObj: GLLModelMesh {
-    @objc init(asPartOfModel model: GLLModel, fileVertexAccessors: GLLVertexAttribAccessorSet, countOfVertices: Int, elementData: Data, textures: [String: GLLTextureAssignment], renderParameterValues: [String: AnyObject]) throws {
+class GLLModelMeshObj: GLLModelMesh {
+    init(asPartOfModel model: GLLModel, fileVertexAccessors: GLLVertexAttribAccessorSet, countOfVertices: Int, elementData: Data, textures: [String: GLLTextureAssignment], renderParameterValues: [String: AnyObject]) throws {
         super.init(asPartOfModel: model)
         countOfUVLayers = 1
         

@@ -62,7 +62,7 @@ import Foundation
     }
     
     // Export
-    @objc func writeASCII() -> String {
+    func writeASCII() -> String {
         var result = ""
         
         result.append("\(name)\n")
@@ -72,7 +72,7 @@ import Foundation
         return result
     }
     
-    @objc func writeBinary() -> Data {
+    func writeBinary() -> Data {
         let stream = TROutDataStream()
         
         stream.appendPascalString(name)

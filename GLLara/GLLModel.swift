@@ -80,12 +80,8 @@ enum GLLModelLoadingErrorCode: Int {
     @objc var baseURL: URL! = nil
     @objc var parameters: GLLModelParams! = nil
     
-    @objc var hasBones: Bool {
-        return bones.count > 0
-    }
-    
-    @objc var rootBones: [GLLModelBone] {
-        return bones.filter({ bone in bone.parent == nil } as (GLLModelBone)->Bool)
+    var hasBones: Bool {
+        return bones.count > 1
     }
     
     @objc var cameraTargetNames: [GLLCameraTargetDescription] {

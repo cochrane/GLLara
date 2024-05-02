@@ -15,8 +15,8 @@ import Metal
  * every material used. XNALara-specific extensions and simplifications are
  * supported, too.
  */
-@objc class GLLModelObj: GLLModel {
-    @objc init(contentsOf url: URL) throws {
+class GLLModelObj: GLLModel {
+    init(contentsOf url: URL) throws {
         
         file = try ObjFile(from: url)
         materialFiles = try file.materialLibraries.map { try MtlFile(from: $0) }

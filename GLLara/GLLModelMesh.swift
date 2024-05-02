@@ -15,7 +15,7 @@ import simd
  */
 @objc class GLLModelMesh: NSObject {
     // For subclasses
-    @objc init(asPartOfModel model: GLLModel) {
+    init(asPartOfModel model: GLLModel) {
         super.init()
         self.model = model
     }

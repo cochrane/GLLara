@@ -510,7 +510,7 @@ extension Data {
 
 class GLLModelGltf: GLLModel {
     
-    @objc convenience init(url: URL, isBinary: Bool = false) throws {
+    convenience init(url: URL, isBinary: Bool = false) throws {
         let data = try Data(contentsOf: url, options: .mappedIfSafe)
         
         if (isBinary) {
@@ -795,7 +795,7 @@ class GLLModelGltf: GLLModel {
         self.meshes.append(modelMesh)
     }
     
-    @objc init(jsonData: Data, baseUrl: URL, binaryData: Data? = nil) throws {
+    init(jsonData: Data, baseUrl: URL, binaryData: Data? = nil) throws {
         let decoder = JSONDecoder()
         let document = try decoder.decode(GltfDocument.self, from: jsonData)
         

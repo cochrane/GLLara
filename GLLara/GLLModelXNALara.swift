@@ -8,13 +8,13 @@
 
 import Foundation
 
-@objc class GLLModelXNALara: GLLModel {
-    @objc convenience init(binaryFromFile file: URL!, parent: GLLModel!) throws {
+class GLLModelXNALara: GLLModel {
+    convenience init(binaryFromFile file: URL!, parent: GLLModel!) throws {
         let data = try Data(contentsOf: file, options: .mappedIfSafe)
         try self.init(binaryFrom: data, baseURL: file, parent: parent)
     }
     
-    @objc init(binaryFrom data: Data!, baseURL: URL!, parent: GLLModel?) throws {
+    init(binaryFrom data: Data!, baseURL: URL!, parent: GLLModel?) throws {
         super.init()
         
         guard data.count >= 2 else {
@@ -136,13 +136,13 @@ import Foundation
         // Ignore the trailing data. XNALara writes some metadata there that varies depending on the version, but doesn't seem to be actually necessary for anything (famous last words…?)
     }
     
-    @objc convenience init(ASCIIFromFile file: URL!, parent: GLLModel?) throws {
+    convenience init(ASCIIFromFile file: URL!, parent: GLLModel?) throws {
         var encoding: String.Encoding = .utf8
         let source = try String(contentsOf: file, usedEncoding: &encoding)
         try self.init(asciiFrom: source, baseURL: file, parent: parent)
     }
     
-    @objc init(asciiFrom string: String, baseURL: URL, parent: GLLModel?) throws {
+    init(asciiFrom string: String, baseURL: URL, parent: GLLModel?) throws {
         super.init()
         
         self.baseURL = baseURL
