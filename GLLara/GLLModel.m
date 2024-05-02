@@ -12,7 +12,6 @@
 
 #import "NSArray+Map.h"
 #import "GLLASCIIScanner.h"
-#import "GLLModelObj.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
 
@@ -50,7 +49,7 @@ static NSCache *cachedModels;
         }
         else if ([file.path hasSuffix:@".obj"])
         {
-            result = [[GLLModelObj alloc] initWithContentsOfURL:file error:error];
+            result = [[GLLModelObj alloc] initWithContentsOf:file error:error];
             if (!result) return nil;
         }
         else if ([file.path hasSuffix:@".gltf"])

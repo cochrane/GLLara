@@ -10,7 +10,7 @@ import Foundation
 
 extension GLLItemMesh {
     
-    func shaderDescription() throws -> XnaLaraShaderDescription {
+    private func shaderDescription() throws -> XnaLaraShaderDescription {
         let description = mesh.model?.parameters.xnaLaraShaderDescriptions.first {
             if $0.baseName != shaderBase {
                 return false
@@ -25,7 +25,7 @@ extension GLLItemMesh {
         return description
     }
     
-    func genericName(shaderDescription: XnaLaraShaderDescription) -> String {
+    private func genericName(shaderDescription: XnaLaraShaderDescription) -> String {
         var name = ""
         
         let possibleGroups = mesh.usesAlphaBlending ? shaderDescription.alphaMeshGroups : shaderDescription.solidMeshGroups
@@ -50,7 +50,7 @@ extension GLLItemMesh {
         return name
     }
     
-    func textureUrls(description: XnaLaraShaderDescription) -> [URL] {
+    private func textureUrls(description: XnaLaraShaderDescription) -> [URL] {
         return description.textureUniformsInOrder.map { texture(withIdentifier: $0).textureURL }
     }
     
