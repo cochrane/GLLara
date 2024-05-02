@@ -19,7 +19,7 @@ import Foundation
         
         guard data.count >= 2 else {
             // Minimum length
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [
                 NSLocalizedDescriptionKey : NSLocalizedString("The file is shorter than the minimum file size.", comment: "Premature end of file error"),
                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("A model has to be at least eight bytes long. This file may be corrupted.", comment: "Premature end of file error.")
             ])
@@ -82,7 +82,7 @@ import Foundation
         
         let numBones = header
         guard numBones * 15 <= stream.levelData.count - Int(stream.position) else { // Sanity check
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [
                 NSLocalizedDescriptionKey : NSLocalizedString("The file cannot contain as many bones as it claims.", comment: "numBones too large error (short description)"),
                 NSLocalizedRecoverySuggestionErrorKey : String(format: NSLocalizedString("The file declares that it contains %lu bones, but it is shorter than the minimum size required to store all of them. This can happen if a file in the ASCII format is read as Binary.", comment: "numBones too large error (long description)"), numBones)
             ])
@@ -92,7 +92,7 @@ import Foundation
         try assignBoneChildren()
         
         guard stream.isValid else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [
                 NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file contains only bones and no meshes. Maybe it was damaged?", comment: "Premature end of file error.")
             ])
@@ -127,7 +127,7 @@ import Foundation
         self.meshes = splitMeshes
         
         guard stream.isValid else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [
                 NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The mesh data is incomplete. The file may be damaged.", comment: "Premature end of file error.")
             ])
@@ -155,7 +155,7 @@ import Foundation
             let bone = try GLLModelBone(sequentialData: scanner)
             
             // Check whether parent has this bone and defer to it instead
-            if let boneInParent = parent?.bone(forName: bone.name) {
+            if let boneInParent = parent?.bone(name: bone.name) {
                 bones.append(boneInParent)
             } else {
                 bones.append(bone)
@@ -165,7 +165,7 @@ import Foundation
         try assignBoneChildren()
         
         guard scanner.isValid else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [
                 NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file contains only bones and no meshes. Maybe it was damaged?", comment: "Premature end of file error.")
             ])
@@ -185,7 +185,7 @@ import Foundation
         self.meshes = meshes
         
         guard scanner.isValid else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [
                 NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The mesh data is incomplete. The file may be damaged.", comment: "Premature end of file error.")
             ])
@@ -204,13 +204,13 @@ import Foundation
                     print("Bone \(i) (named \(bone.name) has itself as parent. Unused, so treated as root bone.")
                     continue
                 } else {
-                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.indexOutOfRange.rawValue), userInfo: [
                         NSLocalizedDescriptionKey : String(format:NSLocalizedString("Bone \"%@\" has itself as an ancestor.", comment: "Found a circle in the bone relationships."), bone.name),
                         NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The bones would form an infinite loop.", comment: "Found a circle in a bone relationship")])
                 }
             }
             if Int(bone.parentIndex) >= bones.count {
-                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.indexOutOfRange.rawValue), userInfo: [
                     NSLocalizedDescriptionKey : String(format:NSLocalizedString("Parent of bone \"%@\" does not exist.", comment: "The parent index of this bone is invalid."), bone.name),
                     NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("All bones have to have a parent that exists or no parent at all.", comment: "The parent index of this bone is invalid.")])
             }
@@ -223,7 +223,7 @@ import Foundation
             var ancestor: GLLModelBone? = bone.parent
             while ancestor != nil {
                 if ancestor == bone {
-                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_CircularReference.rawValue), userInfo: [
+                    throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.circularReference.rawValue), userInfo: [
                         NSLocalizedDescriptionKey : String(format:NSLocalizedString("Bone \"%@\" has itself as an ancestor.", comment: "Found a circle in the bone relationships."), bone.name),
                         NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The bones would form an infinite loop.", comment: "Found a circle in a bone relationship")])
                 }

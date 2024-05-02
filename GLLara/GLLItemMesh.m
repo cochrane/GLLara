@@ -12,7 +12,6 @@
 
 #import "GLLItem.h"
 #import "GLLItemMeshTexture.h"
-#import "GLLModel.h"
 #import "GLLRenderParameter.h"
 #import "NSArray+Map.h"
 

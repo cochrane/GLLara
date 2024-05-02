@@ -201,7 +201,7 @@
 		525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD5E15F0F1A700534E7D /* GLLDocument.m */; };
 		525ACD6E15F0F1A700534E7D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 525ACD4B15F0F1A700534E7D /* Cocoa.framework */; };
 		525ACD7615F0F1A700534E7D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 525ACD7415F0F1A700534E7D /* InfoPlist.strings */; };
-		525ACD8415F0F33700534E7D /* GLLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8315F0F33700534E7D /* GLLModel.m */; };
+		525ACD8415F0F33700534E7D /* GLLModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8315F0F33700534E7D /* GLLModel.swift */; };
 		525BF29B2879E95800E30D48 /* GLLAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525BF29A2879E95800E30D48 /* GLLAppDelegate.swift */; };
 		525BF29D287A0AE200E30D48 /* GLLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525BF29C287A0AE200E30D48 /* GLLView.swift */; };
 		52653D8116BAB729001D802F /* GLLPoseExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52653D8016BAB729001D802F /* GLLPoseExporter.m */; };
@@ -639,8 +639,7 @@
 		525ACD6B15F0F1A700534E7D /* GLLaraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLLaraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		525ACD7315F0F1A700534E7D /* GLLaraTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GLLaraTests-Info.plist"; sourceTree = "<group>"; };
 		525ACD7515F0F1A700534E7D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		525ACD8215F0F33700534E7D /* GLLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLModel.h; sourceTree = "<group>"; };
-		525ACD8315F0F33700534E7D /* GLLModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLModel.m; sourceTree = "<group>"; };
+		525ACD8315F0F33700534E7D /* GLLModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLModel.swift; sourceTree = "<group>"; };
 		525BF29A2879E95800E30D48 /* GLLAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLAppDelegate.swift; sourceTree = "<group>"; };
 		525BF29C287A0AE200E30D48 /* GLLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLView.swift; sourceTree = "<group>"; };
 		5260CE9C163B16450069459D /* GLLSceneModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -1330,8 +1329,7 @@
 			isa = PBXGroup;
 			children = (
 				52D8DDDD2621CFF10006F0E5 /* GLLMeshSplitter.swift */,
-				525ACD8215F0F33700534E7D /* GLLModel.h */,
-				525ACD8315F0F33700534E7D /* GLLModel.m */,
+				525ACD8315F0F33700534E7D /* GLLModel.swift */,
 				52C9F6151600022B003272E1 /* GLLModelObj.swift */,
 				52D8DDBD261E06F40006F0E5 /* GLLModelGltf.swift */,
 				52D8DDBC261E06F30006F0E5 /* GLLara-Bridging-Header.h */,
@@ -1869,7 +1867,7 @@
 				52FB1FD82879846A006ABC4F /* DepthBufferCheck.metal in Sources */,
 				52301E2D2087D91600B3E331 /* GLLOptionalPartController.m in Sources */,
 				52D8DDEC2621D56F0006F0E5 /* GLLRenderParameterDescription.swift in Sources */,
-				525ACD8415F0F33700534E7D /* GLLModel.m in Sources */,
+				525ACD8415F0F33700534E7D /* GLLModel.swift in Sources */,
 				5274448428031CA900E5A3FD /* GLLMeshDrawData.swift in Sources */,
 				529692CC15F1568200DF2FA3 /* TRInDataStream.m in Sources */,
 				529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */,

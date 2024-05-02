@@ -13,7 +13,7 @@
 #import "GLLItem.h"
 #import "GLLItemMesh.h"
 #import "GLLItemMeshTexture.h"
-#import "GLLModel.h"
+#import "GLLara-Swift.h"
 
 @interface GLLItemViewController ()
 
@@ -79,7 +79,7 @@
         if (result != NSModalResponseOK) return;
         
         NSError *error = nil;
-        GLLModel *model = [GLLModel cachedModelFromFile:panel.URL parent:item.model error:&error];
+        GLLModel *model = [GLLModel cachedModelFrom:panel.URL parent:item.model error:&error];
         
         if (!model)
         {

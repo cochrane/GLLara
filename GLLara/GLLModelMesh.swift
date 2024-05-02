@@ -54,7 +54,7 @@ import simd
         }
         
         guard stream.isValid else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),                                                                                                             NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file breaks off during the descriptions of a mesh. Maybe it is damaged?", comment: "Premature end of file error") ])
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),                                                                                                             NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file breaks off during the descriptions of a mesh. Maybe it is damaged?", comment: "Premature end of file error") ])
         }
         
         countOfVertices = Int(stream.readUint32())
@@ -105,7 +105,7 @@ import simd
         } else {
             let fileVertexFormat = self.fileVertexFormat
             guard let vertexData = stream.data(withLength: countOfVertices * fileVertexFormat.stride) else {
-                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
+                throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                                                                                                                                NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The vertex data for a mesh could not be loaded.", comment: "Premature end of file error") ])
             }
             fileAccessors = accessors(forFile: vertexData, format: fileVertexFormat)
@@ -113,7 +113,7 @@ import simd
         
         countOfElements = 3 * Int(stream.readUint32())
         guard let elementData = stream.data(withLength: countOfElements * 4) else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),                                                                                                             NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file breaks off inside a mesh's vertex data.", comment: "Premature end of file error") ])
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),                                                                                                             NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file breaks off inside a mesh's vertex data.", comment: "Premature end of file error") ])
         }
         self.elementData = elementData
     }
@@ -263,7 +263,7 @@ import simd
         vertexFormat = vertexDataAccessors!.vertexFormat(vertexCount: countOfVertices, hasIndices: true)
         
         guard scanner.isValid else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                                                                                                                            NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file breaks off in the middle of the meshes section. Maybe it is damaged?", comment: "Premature end of file error") ])
         }
         
@@ -443,7 +443,7 @@ import simd
                 let t1 = texCoords[1].y - texCoords[0].y
                 let s2 = texCoords[2].x - texCoords[0].x
                 let t2 = texCoords[2].y - texCoords[0].y
-                let d = s1 * t2 - s2 * t1
+                let d: Float = s1 * t2 - s2 * t1
                 if (d == 0) {
                     continue
                 }
@@ -487,7 +487,7 @@ import simd
                 let indices = boneIndexData.typedElementArray(at: i, type: UInt16.self)
                 for j in 0..<4 {
                     if indices[j] >= model!.bones.count {
-                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file references bones that do not exist.", comment: "Bone index out of range error"),
+                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.indexOutOfRange.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file references bones that do not exist.", comment: "Bone index out of range error"),
                                                                                                                                     NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("An index in the bone references is out of range", comment: "Bone index out of range error") ])
                     }
                 }
@@ -500,7 +500,7 @@ import simd
                 let indices = data.bindMemory(to: UInt32.self)
                 for i in 0..<countOfElements {
                     if indices[i] >= countOfVertices {
-                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_IndexOutOfRange.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("A mesh references vertices that do not exist.", comment: "Vertex index out of range error"),
+                        throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.indexOutOfRange.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("A mesh references vertices that do not exist.", comment: "Vertex index out of range error"),
                                                                                                                                     NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("AAn index in the graphics data is out of range", comment: "Vertex index out of range error") ])
                     }
                 }

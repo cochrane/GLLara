@@ -10,7 +10,6 @@
 
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
-#import "GLLModel.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
@@ -133,7 +132,7 @@
     if (itemURL)
     {
         NSError *error = nil;
-        GLLModel *model = [GLLModel cachedModelFromFile:itemURL parent:self.parent.model error:&error];
+        GLLModel *model = [GLLModel cachedModelFrom:itemURL parent:self.parent.model error:&error];
         if (!model) {
             NSLog(@"Could not load model due to %@", error);
         }

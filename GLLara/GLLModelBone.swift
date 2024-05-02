@@ -36,7 +36,7 @@ import Foundation
     
     init(sequentialData stream: GLLDataReader) throws {
         guard stream.isValid else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [
                 NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file breaks off in the middle of the bones section. Maybe it is damaged?", comment: "Premature end of file error.")
             ])
@@ -54,7 +54,7 @@ import Foundation
         inversePositionMatrix = simd_mat_positional(SIMD4(-position, 1.0))
         
         guard stream.isValid else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingError_PrematureEndOfFile.rawValue), userInfo: [
+            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [
                 NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                 NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file breaks off in the middle of the bones section. Maybe it is damaged?", comment: "Premature end of file error.")
             ])

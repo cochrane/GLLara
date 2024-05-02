@@ -21,7 +21,6 @@
 #import "GLLItemMeshTexture.h"
 #import "GLLItem+OBJExport.h"
 #import "GLLLogarithmicValueTransformer.h"
-#import "GLLModel.h"
 #import "GLLPoseExporter.h"
 #import "GLLRenderWindowController.h"
 #import "GLLSelection.h"
@@ -145,7 +144,7 @@ NSString* GLLPrefPoseExportOnlySelected = @"exportPose-onlySelected";
 
 - (GLLItem *)addModelAtURL:(NSURL *)url error:(NSError *__autoreleasing*)error;
 {
-    GLLModel *model = [GLLModel cachedModelFromFile:url parent:nil error:error];
+    GLLModel *model = [GLLModel cachedModelFrom:url parent:nil error:error];
     if (!model) return nil;
     
     return [self addModel:model];
@@ -177,7 +176,7 @@ NSString* GLLPrefPoseExportOnlySelected = @"exportPose-onlySelected";
     
     // Load default model
     NSURL *xyAlignedPlaneURL = [[NSBundle mainBundle] URLForResource:@"XYAlignedSquare" withExtension:@"obj" subdirectory:nil];
-    GLLModel *model = [GLLModel cachedModelFromFile:xyAlignedPlaneURL parent:nil error:error];
+    GLLModel *model = [GLLModel cachedModelFrom:xyAlignedPlaneURL parent:nil error:error];
     if (!model) {
         // Should never happen
         return nil;

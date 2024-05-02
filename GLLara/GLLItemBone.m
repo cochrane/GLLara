@@ -9,7 +9,6 @@
 #import "GLLItemBone.h"
 
 #import "GLLItem.h"
-#import "GLLModel.h"
 #import "simd_matrix.h"
 #import "TRInDataStream.h"
 #import "TROutDataStream.h"
