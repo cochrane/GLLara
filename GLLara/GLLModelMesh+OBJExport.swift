@@ -10,7 +10,7 @@ import Foundation
 
 extension GLLModelMesh {
     
-    @objc func writeOBJ(transformations: UnsafePointer<mat_float16>, baseIndex: Int, includeColors: Bool) -> String {
+    func writeOBJ(transformations: [mat_float16], baseIndex: Int, includeColors: Bool) -> String {
         
         var objString = ""
         let groupName = name.components(separatedBy: CharacterSet.whitespacesAndNewlines).joined(separator: "_")

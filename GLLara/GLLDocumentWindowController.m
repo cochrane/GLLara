@@ -16,7 +16,6 @@
 #import "GLLDirectionalLight.h"
 #import "GLLDocument.h"
 #import "GLLItem.h"
-#import "GLLItem+OBJExport.h"
 #import "GLLItemBone.h"
 #import "GLLItemController.h"
 #import "GLLItemListController.h"

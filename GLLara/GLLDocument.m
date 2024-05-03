@@ -18,7 +18,6 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
-#import "GLLItem+OBJExport.h"
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLRenderWindowController.h"
 #import "GLLSelection.h"
@@ -304,12 +303,12 @@ NSString* GLLPrefPoseExportOnlySelected = @"exportPose-onlySelected";
         NSURL *mtlURL = [NSURL URLWithString:materialLibraryName relativeToURL:objURL];
         
         NSError *error = nil;
-        if (![item writeOBJToLocation:objURL withTransform:controller.includeTransformations withColor:controller.includeVertexColors error:&error])
+        if (![item writeOBJWithLocation:objURL transform:controller.includeTransformations color:controller.includeVertexColors error:&error])
         {
             [self.windowForSheet presentError:error];
             return;
         }
-        if (![item writeMTLToLocation:mtlURL error:&error])
+        if (![item writeMTLWithLocation:mtlURL error:&error])
         {
             [self.windowForSheet presentError:error];
             return;

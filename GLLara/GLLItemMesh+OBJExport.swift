@@ -10,12 +10,12 @@ import Foundation
 
 extension GLLItemMesh {
     
-    @objc var willLoseDataWhenConvertedToOBJ: Bool {
+    var willLoseDataWhenConvertedToOBJ: Bool {
         return (self.mesh.textures.count > 1) || (self.mesh.textures.count == 1 && self.mesh.textures["diffuseTexture"]?.url == nil) || (self.renderParameters.count > 0)
     }
     
-    @objc func writeMTL(baseURL: URL) -> String {
-        var result = "newmtl material\(meshIndex)\n"
+    func writeMTL(baseURL: URL) -> String {
+        var result = "newmtl material\(meshIndex)\r\n"
         
         // Use only first texture and only if it isn't baked into the model file
         // TODO It's probably possible to extract this texture, but does anyone care?
@@ -48,7 +48,7 @@ extension GLLItemMesh {
         return result
     }
     
-    @objc func writeOBJ(transformations: UnsafePointer<mat_float16>, baseIndex: Int, includeColors: Bool) -> String {
+    func writeOBJ(transformations: [mat_float16], baseIndex: Int, includeColors: Bool) -> String {
         return mesh.writeOBJ(transformations: transformations, baseIndex: baseIndex, includeColors: includeColors)
     }
     
