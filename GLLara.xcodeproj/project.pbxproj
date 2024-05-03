@@ -203,7 +203,7 @@
 		525ACD8415F0F33700534E7D /* GLLModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525ACD8315F0F33700534E7D /* GLLModel.swift */; };
 		525BF29B2879E95800E30D48 /* GLLAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525BF29A2879E95800E30D48 /* GLLAppDelegate.swift */; };
 		525BF29D287A0AE200E30D48 /* GLLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525BF29C287A0AE200E30D48 /* GLLView.swift */; };
-		52653D8116BAB729001D802F /* GLLPoseExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52653D8016BAB729001D802F /* GLLPoseExporter.m */; };
+		52653D8116BAB729001D802F /* GLLPoseExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52653D8016BAB729001D802F /* GLLPoseExporter.swift */; };
 		526756AA16BF543800FB85CA /* GLLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 526756A916BF543800FB85CA /* GLLImageView.m */; };
 		5267F1B61615B2C400987717 /* moveChildren.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B31615B2C400987717 /* moveChildren.pdf */; };
 		5267F1B71615B2C400987717 /* moveNodeOnly.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B41615B2C400987717 /* moveNodeOnly.pdf */; };
@@ -640,8 +640,7 @@
 		525BF29A2879E95800E30D48 /* GLLAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLAppDelegate.swift; sourceTree = "<group>"; };
 		525BF29C287A0AE200E30D48 /* GLLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLView.swift; sourceTree = "<group>"; };
 		5260CE9C163B16450069459D /* GLLSceneModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "GLLSceneModel 2.xcdatamodel"; sourceTree = "<group>"; };
-		52653D7F16BAB729001D802F /* GLLPoseExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLPoseExporter.h; sourceTree = "<group>"; };
-		52653D8016BAB729001D802F /* GLLPoseExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLPoseExporter.m; sourceTree = "<group>"; };
+		52653D8016BAB729001D802F /* GLLPoseExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLPoseExporter.swift; sourceTree = "<group>"; };
 		526756A816BF543800FB85CA /* GLLImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLImageView.h; sourceTree = "<group>"; };
 		526756A916BF543800FB85CA /* GLLImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLImageView.m; sourceTree = "<group>"; };
 		5267F1B31615B2C400987717 /* moveChildren.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveChildren.pdf; sourceTree = "<group>"; };
@@ -1095,8 +1094,7 @@
 				529693F315F2B58A00DF2FA3 /* GLLASCIIScanner.h */,
 				529693F415F2B58B00DF2FA3 /* GLLASCIIScanner.m */,
 				52BB217B15F972AB00937450 /* GLLSceneModel.xcdatamodeld */,
-				52653D7F16BAB729001D802F /* GLLPoseExporter.h */,
-				52653D8016BAB729001D802F /* GLLPoseExporter.m */,
+				52653D8016BAB729001D802F /* GLLPoseExporter.swift */,
 			);
 			path = GLLara;
 			sourceTree = "<group>";
@@ -1965,7 +1963,7 @@
 				52152CEF16B66951001AE54C /* GLLDDSFile.swift in Sources */,
 				52D8DDF72621E67F0006F0E5 /* GLLShaderDescription.swift in Sources */,
 				52C3AD8F29A224E2002EC334 /* GLLModelBone.swift in Sources */,
-				52653D8116BAB729001D802F /* GLLPoseExporter.m in Sources */,
+				52653D8116BAB729001D802F /* GLLPoseExporter.swift in Sources */,
 				523BBAFF287B23D600B2D52E /* GLLRenderWindow.swift in Sources */,
 				523D368116BEB29F004FAD4B /* GLLSubItemController.m in Sources */,
 				522783B01C0B7FC0002E43FD /* GLLRenderParameterSelectionPlaceholder.m in Sources */,

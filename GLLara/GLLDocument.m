@@ -20,7 +20,6 @@
 #import "GLLItemMesh.h"
 #import "GLLItem+OBJExport.h"
 #import "GLLLogarithmicValueTransformer.h"
-#import "GLLPoseExporter.h"
 #import "GLLRenderWindowController.h"
 #import "GLLSelection.h"
 #import "GLLTexture.h"
