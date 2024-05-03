@@ -13,7 +13,7 @@
 #import <AppKit/AppKit.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
-#import "GLLDDSFile.h"
+#import "GLLara-Swift.h"
 #import "GLLNotifications.h"
 #import "GLLTiming.h"
 
@@ -254,34 +254,36 @@ static NSOperationQueue *imageInformationQueue = nil;
     }
     
     if (file.numMipmaps != 0) {
-        if (file.numMipmaps != descriptor.mipmapLevelCount) {
+        if (file.numMipmaps != (NSInteger) descriptor.mipmapLevelCount) {
             NSLog(@"Unexpectedly few mipmaps on %@", self.url.lastPathComponent);
         }
         descriptor.mipmapLevelCount = file.numMipmaps;
+    } else {
+        descriptor.mipmapLevelCount = 1;
     }
     
     BOOL expand24BitFormat = NO;
     switch (file.dataFormat) {
-        case GLL_DDS_DXT1:
+        case GLLDDSDataFormatDxt1:
             descriptor.pixelFormat = MTLPixelFormatBC1_RGBA;
             break;
-        case GLL_DDS_DXT3:
+        case GLLDDSDataFormatDxt3:
             descriptor.pixelFormat = MTLPixelFormatBC2_RGBA;
             break;
-        case GLL_DDS_DXT5:
+        case GLLDDSDataFormatDxt5:
             descriptor.pixelFormat = MTLPixelFormatBC3_RGBA;
             break;
-        case GLL_DDS_BGR_8:
+        case GLLDDSDataFormatBgr8:
             descriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
             expand24BitFormat = YES;
             break;
-        case GLL_DDS_BGRA_8:
+        case GLLDDSDataFormatBgra8:
             descriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
             break;
-        case GLL_DDS_RGBA_8:
+        case GLLDDSDataFormatRgba8:
             descriptor.pixelFormat = MTLPixelFormatRGBA8Unorm;
             break;
-        case GLL_DDS_ARGB_4:
+        case GLLDDSDataFormatArgb4:
             // TODO Does this need swizzling? Probably, right?
             descriptor.pixelFormat = MTLPixelFormatABGR4Unorm;
             MTLTextureSwizzleChannels channels = {
@@ -292,13 +294,13 @@ static NSOperationQueue *imageInformationQueue = nil;
             };
             descriptor.swizzle = channels;
             break;
-        case GLL_DDS_RGB_565:
+        case GLLDDSDataFormatRgb565:
             descriptor.pixelFormat = MTLPixelFormatB5G6R5Unorm;
             break;
-        case GLL_DDS_ARGB_1555:
+        case GLLDDSDataFormatArgb1555:
             descriptor.pixelFormat = MTLPixelFormatBGR5A1Unorm;
             break;
-        case GLL_DDS_BGRX_8:
+        case GLLDDSDataFormatBgrx8:
             descriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
             break;
         default:
@@ -318,7 +320,7 @@ static NSOperationQueue *imageInformationQueue = nil;
         
         MTLRegion region = MTLRegionMake2D(0, 0, levelWidth, levelHeight);
         
-        NSData *data = [file dataForMipmapLevel:i];
+        NSData *data = [file dataWithMipmapLevel:i];
         if (expand24BitFormat) {
             // Metal does not support 24 bit texture formats, so we need to expand this data manually.
             // Grr
