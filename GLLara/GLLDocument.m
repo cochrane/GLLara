@@ -18,7 +18,6 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
-#import "GLLItemMeshTexture.h"
 #import "GLLItem+OBJExport.h"
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLPoseExporter.h"

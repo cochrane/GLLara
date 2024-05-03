@@ -51,7 +51,7 @@ extension GLLItemMesh {
     }
     
     private func textureUrls(description: XnaLaraShaderDescription) -> [URL] {
-        return description.textureUniformsInOrder.map { texture(withIdentifier: $0).textureURL }
+        return description.textureUniformsInOrder.map { texture(withIdentifier: $0).textureURL as! URL }
     }
     
     func writeASCII() throws -> String {

@@ -121,7 +121,7 @@ class GLLItemMeshState {
         
         if let url = textureAssignment?.textureURL {
             // Load from the given URL (where possible
-            return try await drawer.resourceManager.textureAsync(url: url)
+            return try await drawer.resourceManager.textureAsync(url: url as URL)
         } else if let data = itemMesh.mesh.textures[identifier]?.data {
             // Load what the model provided
             return try GLLTexture(data: data, sourceURL: itemMesh.mesh.model!.baseURL, device: drawer.resourceManager.metalDevice)
@@ -244,7 +244,7 @@ class GLLItemMeshState {
         
         if let url = textureAssignment?.textureURL {
             // Use URL in model
-            return url
+            return url as URL
         } else if (itemMesh.mesh.textures[identifier]?.data) != nil {
             // Use URL of model
             return itemMesh.mesh.model!.baseURL

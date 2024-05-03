@@ -10,7 +10,6 @@
 
 #import "GLLItemMesh.h"
 #import "GLLItemMeshSelectionPlaceholder.h"
-#import "GLLItemMeshTexture.h"
 #import "GLLItemMeshTextureSelectionPlaceholder.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameterSelectionPlaceholder.h"

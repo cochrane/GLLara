@@ -12,7 +12,6 @@
 
 #import "GLLItem.h"
 #import "GLLItemMesh.h"
-#import "GLLItemMeshTexture.h"
 #import "GLLara-Swift.h"
 
 @interface GLLItemViewController ()
