@@ -208,7 +208,7 @@
 		5267F1B61615B2C400987717 /* moveChildren.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B31615B2C400987717 /* moveChildren.pdf */; };
 		5267F1B71615B2C400987717 /* moveNodeOnly.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B41615B2C400987717 /* moveNodeOnly.pdf */; };
 		5267F1B81615B2C400987717 /* moveParent.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 5267F1B51615B2C400987717 /* moveParent.pdf */; };
-		526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.m */; };
+		526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.swift */; };
 		526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */ = {isa = PBXBuildFile; fileRef = 526AB31B1609C7C300940A74 /* GLLItem+OBJExport.m */; };
 		526D5AE62060596000DCDE85 /* GLLNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 526D5AE52060596000DCDE85 /* GLLNotifications.m */; };
 		526E0F9C1C169E3500F198BF /* testDiffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F8B1C169E3500F198BF /* testDiffuse.png */; };
@@ -646,8 +646,7 @@
 		5267F1B31615B2C400987717 /* moveChildren.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveChildren.pdf; sourceTree = "<group>"; };
 		5267F1B41615B2C400987717 /* moveNodeOnly.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveNodeOnly.pdf; sourceTree = "<group>"; };
 		5267F1B51615B2C400987717 /* moveParent.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = moveParent.pdf; sourceTree = "<group>"; };
-		526AB3131609BD4300940A74 /* GLLItemMesh+OBJExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLItemMesh+OBJExport.h"; sourceTree = "<group>"; };
-		526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItemMesh+OBJExport.m"; sourceTree = "<group>"; };
+		526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GLLItemMesh+OBJExport.swift"; sourceTree = "<group>"; };
 		526AB31A1609C7C300940A74 /* GLLItem+OBJExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLLItem+OBJExport.h"; sourceTree = "<group>"; };
 		526AB31B1609C7C300940A74 /* GLLItem+OBJExport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GLLItem+OBJExport.m"; sourceTree = "<group>"; };
 		526D5AE52060596000DCDE85 /* GLLNotifications.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLNotifications.m; sourceTree = "<group>"; };
@@ -1369,8 +1368,7 @@
 				52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.m */,
 				52BB21D915FCF02200937450 /* GLLCamera.h */,
 				52BB21DA15FCF02200937450 /* GLLCamera.m */,
-				526AB3131609BD4300940A74 /* GLLItemMesh+OBJExport.h */,
-				526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.m */,
+				526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.swift */,
 				526AB31A1609C7C300940A74 /* GLLItem+OBJExport.h */,
 				526AB31B1609C7C300940A74 /* GLLItem+OBJExport.m */,
 				5214470916DBF206003E260F /* GLLItemMesh+MeshExport.swift */,
@@ -1917,7 +1915,7 @@
 				5275F6821607293000978779 /* GLLItemController.m in Sources */,
 				52C516FF2871998C000EB8C2 /* GLLPipelineStateInformation.swift in Sources */,
 				5275F6891607399800978779 /* GLLItemListController.m in Sources */,
-				526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.m in Sources */,
+				526AB3151609BD4300940A74 /* GLLItemMesh+OBJExport.swift in Sources */,
 				52B6C5392BE2EB26005E53CE /* MtlFile.swift in Sources */,
 				526AB31C1609C7C300940A74 /* GLLItem+OBJExport.m in Sources */,
 				525BF29D287A0AE200E30D48 /* GLLView.swift in Sources */,

@@ -10,7 +10,6 @@
 
 #import "NSArray+Map.h"
 #import "GLLItemBone.h"
-#import "GLLItemMesh+OBJExport.h"
 
 #import "GLLara-Swift.h"
 
