@@ -20,7 +20,6 @@
 @interface GLLItem ()
 {
     NSOrderedSet* cachedCombinedBones;
-    id childItemsObserver;
 }
 
 - (void)_standardSetValue:(id)value forKey:(NSString *)key;
@@ -204,7 +203,7 @@
     [bones removeAllObjects];
     for (NSUInteger i = 0; i < model.bones.count; i++)
     {
-        GLLItemBone *parentsBone = [self.parent boneForName:[model.bones[i] name]];
+        GLLItemBone *parentsBone = [self.parent boneWithName:[model.bones[i] name]];
         if (parentsBone)
             [bones addObject:parentsBone];
         else
@@ -259,25 +258,6 @@
 
 #pragma mark - Derived
 
-- (NSArray<GLLItemBone *> *)rootBones
-{
-    NSIndexSet *indices = [self.bones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop) {
-        return !bone.parent;
-    }];
-    return [self.bones objectsAtIndexes:indices];
-}
-
-- (GLLItemMesh *)itemMeshForModelMesh:(GLLModelMesh *)mesh;
-{
-    return self.meshes[mesh.meshIndex];
-}
-
-- (GLLItemBone *)boneForName:(NSString *)name;
-{
-    return [self.bones firstObjectMatching:^BOOL(GLLItemBone *bone) {
-        return [bone.bone.name isEqual:name];
-    }];
-}
 - (NSOrderedSet<GLLItemBone *> *)combinedBones;
 {
     if (cachedCombinedBones) {
@@ -305,101 +285,12 @@
     return combinedBones;
 }
 
-- (GLLItem *)rootItem
-{
-    if (self.parent)
-        return self.parent.rootItem;
-    else
-        return self;
-}
-
-- (BOOL)hasOptionalParts {
-    for (GLLItemMesh *mesh in self.meshes) {
-        if (mesh.mesh.optionalPartNames.count > 0)
-            return YES;
-    }
-    return NO;
-}
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if ([keyPath isEqual:@"childItems"] && object == self) {
         cachedCombinedBones = nil;
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
-}
-
-#pragma mark - Poses I/O
-
-- (BOOL)loadPoseFrom:(NSURL *)poseUrl error:(NSError *__autoreleasing*)error; {
-    NSString *poseDescription = [NSString stringWithContentsOfURL:poseUrl usedEncoding:NULL error:error];
-    
-    if (!poseDescription) {
-        return NO;
-    }
-    
-    return [self loadPose:poseDescription error:error];
-}
-
-- (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error
-{
-    NSArray *lines = [poseDescription componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    if ([poseDescription rangeOfString:@":"].location == NSNotFound)
-    {
-        // Old-style loading: Same number of lines as bones, sequentally stored, no names.
-        if (lines.count != self.bones.count)
-        {
-            if (error)
-                *error = [NSError errorWithDomain:@"poses" code:1 userInfo:@{
-                                                                             NSLocalizedDescriptionKey : NSLocalizedString(@"Pose file does not contain the right amount of bones", @"error loading pose old-style"),
-                                                                             NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString(@"Poses in the old format have to contain exactly as many items as bones. Try using a newer pose.", @"error loading pose old-style")}];
-            return NO;
-        }
-        
-        for (NSUInteger i = 0; i < lines.count; i++)
-        {
-            NSScanner *scanner = [NSScanner scannerWithString:lines[i]];
-            float x = 0, y = 0, z = 0;
-            if ([scanner scanFloat:&x])
-                [self.bones[i] setRotationX:x];
-            if ([scanner scanFloat:&y])
-                [self.bones[i] setRotationY:y];
-            if ([scanner scanFloat:&z])
-                [self.bones[i] setRotationZ:z];
-        }
-    }
-    else
-    {
-        for (NSString *line in lines)
-        {
-            if (line.length == 0) continue; // May insert empty lines due to Windows line endings.
-            
-            NSScanner *scanner = [NSScanner scannerWithString:line];
-            NSString *name;
-            [scanner scanUpToString:@":" intoString:&name];
-            [scanner scanString:@":" intoString:NULL];
-            
-            NSIndexSet *indices = [self.bones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop) {
-                return [bone.bone.name isEqual:name];
-            }];
-            if (indices.count == 0)
-            {
-                NSLog(@"Skipping unknown bone %@", name);
-                continue;
-            }
-            GLLItemBone *transform = self.bones[indices.firstIndex];
-            
-            float x = 0, y = 0, z = 0;
-            if ([scanner scanFloat:&x]) transform.rotationX = x * M_PI / 180.0;
-            if ([scanner scanFloat:&y]) transform.rotationY = y * M_PI / 180.0;
-            if ([scanner scanFloat:&z]) transform.rotationZ = z * M_PI / 180.0;
-            
-            if ([scanner scanFloat:&x]) transform.positionX = x;
-            if ([scanner scanFloat:&y]) transform.positionY = y;
-            if ([scanner scanFloat:&z]) transform.positionZ = z;
-        }
-    }
-    return YES;
 }
 
 #pragma mark - Private methods

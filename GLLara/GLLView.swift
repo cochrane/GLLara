@@ -365,7 +365,7 @@ import Combine
             } else {
                 // If root bone: Either next root bone or next model
                 let item = lastSelectedBone.item!
-                let rootBones = item.rootBones!
+                let rootBones = item.rootBones
                 if let index = rootBones.firstIndex(of: lastSelectedBone) {
                     let nextIndex = (index + 1) % rootBones.count
                     return rootBones[nextIndex]
@@ -414,7 +414,7 @@ import Combine
             } else {
                 // If root bone: Either next root bone or next model
                 let item = firstSelectedBone.item!
-                let rootBones = item.rootBones!
+                let rootBones = item.rootBones
                 if let index = rootBones.firstIndex(of: firstSelectedBone) {
                     let nextIndex = (index + rootBones.count - 1) % rootBones.count
                     return item.rootBones[nextIndex]

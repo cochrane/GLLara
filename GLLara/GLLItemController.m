@@ -14,6 +14,7 @@
 #import "GLLOptionalPartController.h"
 #import "GLLSubItemController.h"
 #import "NSArray+Map.h"
+#import "GLLara-Swift.h"
 
 @interface GLLItemController ()
 // How many controllers for specific topics (as opposed to child items) there

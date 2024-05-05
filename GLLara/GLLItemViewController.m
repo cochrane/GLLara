@@ -55,7 +55,7 @@
         self.undoManager.actionName = NSLocalizedString(@"Load pose", @"load pose undo action name");
         for (GLLItem *item in self.selectedItems)
         {
-            if (![item loadPose:file error:&error])
+            if (![item loadPoseWithDescription:file error:&error])
             {
                 [self.view.window presentError:error];
                 return;

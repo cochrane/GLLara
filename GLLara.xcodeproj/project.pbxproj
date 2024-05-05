@@ -229,6 +229,7 @@
 		526E0FAB1C169E3500F198BF /* testStaticTRUDiffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F9A1C169E3500F198BF /* testStaticTRUDiffuse.png */; };
 		526E0FAC1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F9B1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png */; };
 		5272709C2BE77A7D00EE52B5 /* GLLTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5272709A2BE600C300EE52B5 /* GLLTexture.swift */; };
+		527270A32BE7E0F100EE52B5 /* GLLItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527270A12BE7E0F100EE52B5 /* GLLItem+Extensions.swift */; };
 		5274446427FCC9C100E5A3FD /* GLLModelMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */; };
 		5274446627FD64F000E5A3FD /* GLLModelMeshObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */; };
 		5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */; };
@@ -669,6 +670,7 @@
 		526E0F9A1C169E3500F198BF /* testStaticTRUDiffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRUDiffuse.png; sourceTree = "<group>"; };
 		526E0F9B1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRUDiffuseLightmap.png; sourceTree = "<group>"; };
 		5272709A2BE600C300EE52B5 /* GLLTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLTexture.swift; sourceTree = "<group>"; };
+		527270A12BE7E0F100EE52B5 /* GLLItem+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GLLItem+Extensions.swift"; sourceTree = "<group>"; };
 		5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMesh.swift; sourceTree = "<group>"; };
 		5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMeshObj.swift; sourceTree = "<group>"; };
 		5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexAttribAccessorSet.swift; sourceTree = "<group>"; };
@@ -1345,6 +1347,7 @@
 		5296941F15F4112E00DF2FA3 /* Scene members */ = {
 			isa = PBXGroup;
 			children = (
+				527270A12BE7E0F100EE52B5 /* GLLItem+Extensions.swift */,
 				52B6C53A2BE5645B005E53CE /* GLLItemMeshTexture.swift */,
 				52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */,
 				52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */,
@@ -1907,6 +1910,7 @@
 				52B6C53C2BE56696005E53CE /* GLLItemMeshTexture.swift in Sources */,
 				52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */,
 				52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */,
+				527270A32BE7E0F100EE52B5 /* GLLItem+Extensions.swift in Sources */,
 				52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */,
 				52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m in Sources */,
 				5275F6821607293000978779 /* GLLItemController.m in Sources */,

@@ -49,7 +49,7 @@ import UniformTypeIdentifiers
                 guard let item = itemForPose else {
                     throw NSError(domain: "Pasteboard", code: 0)
                 }
-                try item.loadPose(from: url)
+                try item.loadPose(url: url)
             } else {
                 try document.addModel(at: url)
             }

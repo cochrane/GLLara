@@ -87,7 +87,7 @@ class GLLSkeletonDrawer: NSObject {
             selection.removeAll()
             selectionObservers.removeAll()
             for bone in newValue {
-                let root = bone.item.root!
+                let root = bone.item.rootItem
                 if let existing = selection[root] {
                     selection[root] = existing + [bone]
                 } else {

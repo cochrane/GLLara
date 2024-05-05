@@ -65,23 +65,9 @@ typedef NS_ENUM(int16_t, GLLItemChannelAssignment)
 
 @property (nonatomic, retain) GLLModel *model;
 
-@property (nonatomic, retain, readonly) NSArray<GLLItemBone *> *rootBones;
-
-- (GLLItemMesh *)itemMeshForModelMesh:(GLLModelMesh *)mesh;
-
 @property (nonatomic, readonly) mat_float16 modelTransform;
 
-@property (nonatomic, readonly) GLLItem *rootItem;
-
-// Whether some meshes together form optional parts.
-@property (nonatomic, readonly) BOOL hasOptionalParts;
-
-// Poses
-- (BOOL)loadPoseFrom:(NSURL *)poseUrl error:(NSError *__autoreleasing*)error;
-- (BOOL)loadPose:(NSString *)poseDescription error:(NSError *__autoreleasing*)error;
-
 // Bones
-- (GLLItemBone *)boneForName:(NSString *)name;
 - (NSOrderedSet<GLLItemBone *> *)combinedBones;
 - (NSOrderedSet<GLLItemBone *> *)combinedUsedBones;
 

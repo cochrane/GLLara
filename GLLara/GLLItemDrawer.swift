@@ -32,7 +32,7 @@ class GLLItemDrawer {
         try throwingRunAndBlock {
             let drawData = try await sceneDrawer.resourceManager.drawDataAsync(model: item.model)
             for meshData in drawData.meshDrawData {
-                let meshState = try GLLItemMeshState(itemDrawer: self, meshData: meshData, itemMesh: item.itemMesh(for: meshData.modelMesh))
+                let meshState = try GLLItemMeshState(itemDrawer: self, meshData: meshData, itemMesh: item.itemMesh(for: meshData.modelMesh)!)
                 self.meshStates.append(meshState)
             }
             await withTaskGroup(of: Void.self) { taskGroup in
