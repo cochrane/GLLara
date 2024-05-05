@@ -439,53 +439,34 @@ struct LoadData {
 }
 
 extension Data {
-    func readUInt32(at: Data.Index) throws -> UInt32 {
-        guard at + 4 <= self.count else {
+    func readInt<T: BinaryInteger>(at: Data.Index, type: T.Type) throws -> T {
+        guard at + MemoryLayout<T>.size <= self.count else {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
         }
-        var result: UInt32 = 0
-        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 4) })
+        var result: T = 0
+        _ = Swift.withUnsafeMutableBytes(of: &result) { bytes in
+            copyBytes(to: bytes.bindMemory(to: UInt8.self), from: at ..< at + MemoryLayout<T>.size)
+        }
         return result
     }
-    func readInt32(at: Data.Index) throws -> Int32 {
-        guard at + 4 <= self.count else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
-        }
-        var result: Int32 = 0
-        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 4) })
-        return result
+    
+    func readUInt32(at index: Data.Index) throws -> UInt32 {
+        return try readInt(at: index, type: UInt32.self)
     }
-    func readUInt16(at: Data.Index) throws -> UInt16 {
-        guard at + 2 <= self.count else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
-        }
-        var result: UInt16 = 0
-        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 2) })
-        return result
+    func readInt32(at index: Data.Index) throws -> Int32 {
+        return try readInt(at: index, type: Int32.self)
     }
-    func readInt16(at: Data.Index) throws -> Int16 {
-        guard at + 2 <= self.count else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
-        }
-        var result: Int16 = 0
-        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 2) })
-        return result
+    func readUInt16(at index: Data.Index) throws -> UInt16 {
+        return try readInt(at: index, type: UInt16.self)
     }
-    func readUInt8(at: Data.Index) throws -> UInt8 {
-        guard at + 1 <= self.count else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
-        }
-        var result: UInt8 = 0
-        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 1) })
-        return result
+    func readInt16(at index: Data.Index) throws -> Int16 {
+        return try readInt(at: index, type: Int16.self)
     }
-    func readInt8(at: Data.Index) throws -> Int8 {
-        guard at + 1 <= self.count else {
-            throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [NSLocalizedDescriptionKey: "The file is missing some data."])
-        }
-        var result: Int8 = 0
-        _ = Swift.withUnsafeMutableBytes(of: &result, { self.copyBytes(to: $0, from: at ..< at + 1) })
-        return result
+    func readUInt8(at index: Data.Index) throws -> UInt8 {
+        return try readInt(at: index, type: UInt8.self)
+    }
+    func readInt8(at index: Data.Index) throws -> Int8 {
+        return try readInt(at: index, type: Int8.self)
     }
     
     mutating public func append(_ newElement: Float32) {
