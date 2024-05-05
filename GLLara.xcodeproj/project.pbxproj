@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -228,6 +228,7 @@
 		526E0FAA1C169E3500F198BF /* testStaticTRLShadeless.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F991C169E3500F198BF /* testStaticTRLShadeless.png */; };
 		526E0FAB1C169E3500F198BF /* testStaticTRUDiffuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F9A1C169E3500F198BF /* testStaticTRUDiffuse.png */; };
 		526E0FAC1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 526E0F9B1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png */; };
+		5272709C2BE77A7D00EE52B5 /* GLLTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5272709A2BE600C300EE52B5 /* GLLTexture.swift */; };
 		5274446427FCC9C100E5A3FD /* GLLModelMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */; };
 		5274446627FD64F000E5A3FD /* GLLModelMeshObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */; };
 		5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */; };
@@ -255,7 +256,6 @@
 		529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692D015F2374F00DF2FA3 /* libz.dylib */; };
 		529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692D915F2625200DF2FA3 /* GLLItem.m */; };
 		529692DD15F2759400DF2FA3 /* GLLItemBone.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692DC15F2759400DF2FA3 /* GLLItemBone.m */; };
-		529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692E815F28BFB00DF2FA3 /* GLLTexture.m */; };
 		529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 529693F415F2B58B00DF2FA3 /* GLLASCIIScanner.m */; };
 		529693F815F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */; };
 		529693FA15F36DDB00DF2FA3 /* lara.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 529693F915F36DDB00DF2FA3 /* lara.modelparams.plist */; };
@@ -668,6 +668,7 @@
 		526E0F991C169E3500F198BF /* testStaticTRLShadeless.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRLShadeless.png; sourceTree = "<group>"; };
 		526E0F9A1C169E3500F198BF /* testStaticTRUDiffuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRUDiffuse.png; sourceTree = "<group>"; };
 		526E0F9B1C169E3500F198BF /* testStaticTRUDiffuseLightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testStaticTRUDiffuseLightmap.png; sourceTree = "<group>"; };
+		5272709A2BE600C300EE52B5 /* GLLTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLTexture.swift; sourceTree = "<group>"; };
 		5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMesh.swift; sourceTree = "<group>"; };
 		5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMeshObj.swift; sourceTree = "<group>"; };
 		5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexAttribAccessorSet.swift; sourceTree = "<group>"; };
@@ -713,8 +714,6 @@
 		529692DC15F2759400DF2FA3 /* GLLItemBone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemBone.m; sourceTree = "<group>"; };
 		529692DF15F27D5900DF2FA3 /* Source Code Overview.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Source Code Overview.md"; sourceTree = "<group>"; };
 		529692E515F289EB00DF2FA3 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		529692E715F28BFB00DF2FA3 /* GLLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLTexture.h; sourceTree = "<group>"; };
-		529692E815F28BFB00DF2FA3 /* GLLTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLTexture.m; sourceTree = "<group>"; };
 		529693F315F2B58A00DF2FA3 /* GLLASCIIScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLASCIIScanner.h; sourceTree = "<group>"; };
 		529693F415F2B58B00DF2FA3 /* GLLASCIIScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLASCIIScanner.m; sourceTree = "<group>"; };
 		529693F715F2D02900DF2FA3 /* xnaLaraDefault.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = xnaLaraDefault.modelparams.plist; sourceTree = "<group>"; };
@@ -1393,12 +1392,11 @@
 		5296942115F4115800DF2FA3 /* Render resources */ = {
 			isa = PBXGroup;
 			children = (
-				529692E715F28BFB00DF2FA3 /* GLLTexture.h */,
-				529692E815F28BFB00DF2FA3 /* GLLTexture.m */,
 				52152CEE16B66951001AE54C /* GLLDDSFile.swift */,
 				52C516FE2871998C000EB8C2 /* GLLPipelineStateInformation.swift */,
 				52CDFEA3287369B100BC4298 /* GLLVertexAttribAccessor.swift */,
 				52C6115A2877080900ED8112 /* GLLResourceManager.swift */,
+				5272709A2BE600C300EE52B5 /* GLLTexture.swift */,
 			);
 			name = "Render resources";
 			sourceTree = "<group>";
@@ -1573,9 +1571,10 @@
 		525ACD3E15F0F1A700534E7D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = GLL;
 				LastTestingUpgradeCheck = 0620;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1520;
 				ORGANIZATIONNAME = "Torsten Kammer";
 				TargetAttributes = {
 					523DE0DD1604A5ED00BB9F61 = {
@@ -1866,7 +1865,6 @@
 				529692DA15F2625200DF2FA3 /* GLLItem.m in Sources */,
 				529692DD15F2759400DF2FA3 /* GLLItemBone.m in Sources */,
 				523BBB052880BCB300B2D52E /* GLLGameControllerManager.swift in Sources */,
-				529692E915F28BFB00DF2FA3 /* GLLTexture.m in Sources */,
 				529693F515F2B58B00DF2FA3 /* GLLASCIIScanner.m in Sources */,
 				5274448B280606A200E5A3FD /* XnaLaraShader.metal in Sources */,
 				521102E7288DBF72001BE4BC /* HUD.swift in Sources */,
@@ -1903,6 +1901,7 @@
 				52C9F6161600022B003272E1 /* GLLModelObj.swift in Sources */,
 				5274447427FE428000E5A3FD /* GLLModelXNALara.swift in Sources */,
 				52B6C5372BE2AB0E005E53CE /* ObjFile.swift in Sources */,
+				5272709C2BE77A7D00EE52B5 /* GLLTexture.swift in Sources */,
 				526D5AE62060596000DCDE85 /* GLLNotifications.m in Sources */,
 				5274447027FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift in Sources */,
 				52B6C53C2BE56696005E53CE /* GLLItemMeshTexture.swift in Sources */,
@@ -2377,6 +2376,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -2438,6 +2438,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2523,7 +2524,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "GLLaraTests/GLLaraTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "GLLaraTests/GLLaraTests-Bridging-Header.h";
@@ -2546,7 +2551,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "GLLaraTests/GLLaraTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "de.ferroequinologist.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "GLLaraTests/GLLaraTests-Bridging-Header.h";

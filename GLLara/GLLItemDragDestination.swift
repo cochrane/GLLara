@@ -13,7 +13,7 @@ import UniformTypeIdentifiers
     @objc weak var document: GLLDocument? = nil
     
     @objc func itemDraggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
-        guard let document = document, let pasteboardItems = sender.draggingPasteboard.pasteboardItems else {
+        guard document != nil, let pasteboardItems = sender.draggingPasteboard.pasteboardItems else {
             return []
         }
         

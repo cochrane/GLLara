@@ -345,7 +345,7 @@ class GLLItemMeshState {
         
         /// TODO Ugly
         let textures = loadedTextures.map { $0.texture }
-        commandEncoder.useResources(textures, usage: .sample)
+        commandEncoder.useResources(textures, usage: .read)
         
         commandEncoder.setRenderPipelineState(pipelineStateInformation.pipelineState)
         commandEncoder.setFragmentBuffer(fragmentArgumentBuffer, offset: 0, index: Int(GLLFragmentBufferIndexArguments.rawValue))

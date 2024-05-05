@@ -21,7 +21,6 @@
 #import "GLLLogarithmicValueTransformer.h"
 #import "GLLRenderWindowController.h"
 #import "GLLSelection.h"
-#import "GLLTexture.h"
 
 #import "GLLara-Swift.h"
 

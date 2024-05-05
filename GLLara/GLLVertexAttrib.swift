@@ -126,6 +126,10 @@ struct GLLVertexAttrib: Hashable, Comparable {
             return 2
         case .half:
             return 2
+        case .floatRG11B10:
+            return 4
+        case .floatRGB9E5:
+            return 4
         @unknown default:
             return 0
         }

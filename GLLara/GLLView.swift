@@ -22,7 +22,7 @@ import Combine
         autoResizeDrawable = true
         sampleCount = 1
         
-        notificationObservers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.GLLTextureChange, object: nil, queue: OperationQueue.main) { [weak self] notification in
+        notificationObservers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name(GLLTexture.changeNotification), object: nil, queue: OperationQueue.main) { [weak self] notification in
             self?.unpause()
         })
         notificationObservers.append(NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: OperationQueue.main) { [weak self] notification in
