@@ -295,22 +295,17 @@ import simd
     var elementSize: Int = 4
     var countOfElements: Int = 0
     
-    // Returns the element fo the index. If there is no element buffer (i.e. directly), returns its index
+    // Returns the element of the index. If there is no element buffer (i.e. directly), returns its index
     func element(at index: Int) -> Int {
-        guard let elementData = elementData else {
+        guard let elementData else {
             return index
         }
-        switch elementSize {
-        case 1:
-            return try! Int(elementData.readUInt8(at: index * 1))
-        case 2:
-            return try! Int(elementData.readUInt16(at: index * 2))
-        case 4:
-            return try! Int(elementData.readUInt32(at: index * 4))
-        default:
-            assertionFailure("Unknown element component type")
-            return 0
+        // This trickery only works on little endian machines. But nowadays, that's all of them
+        var result: Int = 0
+        _ = withUnsafeMutableBytes(of: &result) { bytes in
+            elementData.copyBytes(to: bytes, from: index * elementSize ..< (index + 1) * elementSize)
         }
+        return result
     }
     
     // Returns the count of indices you can use with elementAt - that is either the number of elements, if there is an element buffer, or the number of vertices if drawing directly without one
