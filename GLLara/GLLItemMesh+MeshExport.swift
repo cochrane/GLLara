@@ -43,7 +43,7 @@ extension GLLItemMesh {
         
         // 3 - write required parameters
         for parameterNames in shaderDescription.parameterUniformsInOrder {
-            let param = renderParameter(withName: parameterNames[0]) as! GLLFloatRenderParameter
+            let param = renderParameter(name: parameterNames[0]) as! GLLFloatRenderParameter
             name += "_\(param.value)"
         }
         
@@ -51,7 +51,7 @@ extension GLLItemMesh {
     }
     
     private func textureUrls(description: XnaLaraShaderDescription) -> [URL] {
-        return description.textureUniformsInOrder.map { texture(withIdentifier: $0).textureURL! as URL }
+        return description.textureUniformsInOrder.map { texture(identifier: $0)!.textureURL! as URL }
     }
     
     func writeASCII() throws -> String {

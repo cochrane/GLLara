@@ -17,9 +17,6 @@
 #import "GLLara-Swift.h"
 
 @interface GLLItemMesh ()
-{
-    __weak GLLModelMesh *underlyingMesh;
-}
 
 /*!
  * Creates the GLLShaderData object for this mesh, given the current values.
@@ -48,7 +45,6 @@
 @dynamic mesh;
 @dynamic meshIndex;
 @dynamic displayName;
-@dynamic isUsingBlending;
 
 @synthesize shader;
 
@@ -262,40 +258,6 @@
 - (NSUInteger)meshIndex
 {
     return [self.item.meshes indexOfObject:self];
-}
-
-- (GLLModelMesh *)mesh
-{
-    if (!underlyingMesh)
-        underlyingMesh = self.item.model.meshes[self.meshIndex];
-    return underlyingMesh;
-}
-
-- (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
-{
-    return [self.renderParameters anyObjectMatching:^BOOL(GLLRenderParameter *parameter){
-        return [parameter.name isEqual:parameterName];
-    }];
-}
-- (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;
-{
-    return [self.textures anyObjectMatching:^BOOL(GLLItemMeshTexture *texture){
-        return [texture.identifier isEqual:textureIdentifier];
-    }];
-}
-
-- (BOOL)isUsingBlending
-{
-    if (self.isCustomBlending)
-        return self.isBlended;
-    else
-        return self.mesh.usesAlphaBlending;
-}
-
-- (void)setIsUsingBlending:(BOOL)isUsingBlending
-{
-    self.isCustomBlending = YES;
-    self.isBlended = isUsingBlending;
 }
 
 #pragma mark - Private

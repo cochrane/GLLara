@@ -117,7 +117,7 @@ class GLLItemMeshState {
     }
     
     private func loadTexture(identifier: String) async throws -> GLLTexture {
-        let textureAssignment = itemMesh.texture(withIdentifier: identifier)
+        let textureAssignment = itemMesh.texture(identifier: identifier)
         
         if let url = textureAssignment?.textureURL {
             // Load from the given URL (where possible
@@ -156,7 +156,7 @@ class GLLItemMeshState {
     }
     
     private func parameterColor(name: String, defaultValue: SIMD4<Float32>) -> SIMD4<Float32> {
-        guard let parameter = itemMesh.renderParameter(withName: name) else {
+        guard let parameter = itemMesh.renderParameter(name: name) else {
             return defaultValue
         }
         
@@ -169,7 +169,7 @@ class GLLItemMeshState {
     }
     
     private func parameterFloat(name: String, defaultValue: Float32) -> Float32 {
-        guard let parameter = itemMesh.renderParameter(withName: name) else {
+        guard let parameter = itemMesh.renderParameter(name: name) else {
             return defaultValue
         }
         
@@ -240,7 +240,7 @@ class GLLItemMeshState {
     }
     
     private func displayUrl(for identifier: String) -> URL? {
-        let textureAssignment = itemMesh.texture(withIdentifier: identifier)
+        let textureAssignment = itemMesh.texture(identifier: identifier)
         
         if let url = textureAssignment?.textureURL {
             // Use URL in model
@@ -301,7 +301,7 @@ class GLLItemMeshState {
         var texCoordAssignments: [Int: Int] = [:]
         for identifier in shader.textureUniforms {
             let index = textureIndex(for: identifier)
-            if let assignment = itemMesh.texture(withIdentifier: identifier) {
+            if let assignment = itemMesh.texture(identifier: identifier) {
                 if (assignment.texCoordSet < 0) {
                     if let texture = itemMesh.mesh.textures[identifier], texture.texCoordSet > 0 {
                         texCoordAssignments[index] = min(texture.texCoordSet, itemMesh.mesh.countOfUVLayers - 1)

@@ -13,14 +13,12 @@
 - (NSArray *)map:(id (^)(ObjectType))block;
 - (NSMutableArray *)mapMutable:(id (^)(ObjectType))block;
 - (NSArray *)mapAndJoin:(NSArray *(^)(id))block;
-- (ObjectType)firstObjectMatching:(BOOL(^)(ObjectType))predicate;
 
 @end
 
 @interface NSOrderedSet<__covariant ObjectType> (Map)
 
 - (NSArray *)map:(id (^)(ObjectType))block;
-- (ObjectType)firstObjectMatching:(BOOL(^)(ObjectType))predicate;
 
 @end
 
@@ -34,7 +32,6 @@
 @interface NSSet<__covariant ObjectType> (Map)
 
 - (NSArray *)map:(id (^)(ObjectType))block;
-- (ObjectType)anyObjectMatching:(BOOL(^)(ObjectType))predicate;
 
 @end
 

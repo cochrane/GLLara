@@ -53,11 +53,6 @@
 // Called only internally and from child objects, in case some setting changed that requires a shader recompile
 - (void)updateShader;
 
-@property (nonatomic) BOOL isUsingBlending;
-
-- (GLLRenderParameter *)renderParameterWithName:(NSString *)parameterName;
-- (GLLItemMeshTexture *)textureWithIdentifier:(NSString *)textureIdentifier;
-
 @end
 
 @interface GLLItemMesh (CoreDataGeneratedAccessors)

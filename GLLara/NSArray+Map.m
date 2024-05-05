@@ -8,14 +8,6 @@
 
 #import "NSArray+Map.h"
 
-static id firstObjectMatching(id<NSFastEnumeration> collection, BOOL(^predicate)(id))
-{
-    for (id object in collection)
-        if (predicate(object))
-            return object;
-    return nil;
-}
-
 static id mapMutable(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(id))
 {
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:count];
@@ -58,10 +50,6 @@ static id map(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(
     
     return result;
 }
-- (id)firstObjectMatching:(BOOL(^)(id))predicate;
-{
-    return firstObjectMatching(self, predicate);
-}
 
 @end
 
@@ -71,10 +59,6 @@ static id map(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(
 {
     return map(self, self.count, block);
 }
-- (id)firstObjectMatching:(BOOL(^)(id))predicate;
-{
-    return firstObjectMatching(self, predicate);
-}
 
 @end
 
@@ -83,10 +67,6 @@ static id map(id<NSFastEnumeration> collection, NSUInteger count, id(^function)(
 - (NSArray *)map:(id (^)(id))block;
 {
     return map(self, self.count, block);
-}
-- (id)anyObjectMatching:(BOOL(^)(id))predicate;
-{
-    return firstObjectMatching(self, predicate);
 }
 
 @end
