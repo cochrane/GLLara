@@ -11,20 +11,6 @@ import Foundation
 // All information about the DDS file format is taken from
 // http://msdn.microsoft.com/archive/default.asp?url=/archive/en-us/directx9_c/directx/graphics/reference/ddsfilereference/ddsfileformat.asp
 
-@objc enum GLLDDSDataFormat: Int
-{
-    case dxt1
-    case dxt3
-    case dxt5
-    case argb1555
-    case argb4
-    case rgb565
-    case bgr8
-    case bgra8
-    case rgba8
-    case bgrx8
-}
-
 /**
  * # Parses DDS files.
  *
@@ -33,7 +19,20 @@ import Foundation
  * does not handle decompression and the like; it only provides the data to be
  * loaded into the GPU.
  */
-@objc class GLLDDSFile: NSObject {
+class GLLDDSFile {
+    enum DataFormat {
+        case dxt1
+        case dxt3
+        case dxt5
+        case argb1555
+        case argb4
+        case rgb565
+        case bgr8
+        case bgra8
+        case rgba8
+        case bgrx8
+    }
+    
     struct DDSPixelFormat {
         var size: UInt32 = 0
         var flags: UInt32 = 0
@@ -66,25 +65,25 @@ import Foundation
         var reserved2: UInt32 = 0
     }
     
-    @objc let fileData: Data
-    @objc let width: Int
-    @objc let height: Int
-    @objc let numMipmaps: Int
-    @objc let dataFormat: GLLDDSDataFormat
+    let fileData: Data
+    let width: Int
+    let height: Int
+    let numMipmaps: Int
+    let dataFormat: DataFormat
     
-    @objc var hasMipmaps: Bool {
+    var hasMipmaps: Bool {
         return numMipmaps > 0
     }
-    @objc var isCompressed: Bool {
+    var isCompressed: Bool {
         return dataFormat == .dxt1 || dataFormat == .dxt3 || dataFormat == .dxt5
     }
     
-    @objc convenience init(contentsOf: URL) throws {
+    convenience init(contentsOf: URL) throws {
         let data = try Data(contentsOf: contentsOf, options: [.mappedIfSafe])
         try self.init(data: data)
     }
     
-    @objc init(data: Data) throws {
+    init(data: Data) throws {
         self.fileData = data
         
         guard data.count >= 128 && data[0] == Character("D").asciiValue! && data[1] == Character("D").asciiValue! && data[2] == Character("S").asciiValue! && data[3] == Character(" ").asciiValue! else {
@@ -182,11 +181,9 @@ import Foundation
         width = Int(header.width)
         height = Int(header.height)
         numMipmaps = Int(header.mipMapCount)
-        
-        super.init()
     }
     
-    @objc func data(mipmapLevel: Int) -> Data? {
+    func data(mipmapLevel: Int) -> Data? {
         // Stupid implementation because I have a headache
         var size = 0
         var offset = 0

@@ -168,10 +168,6 @@ import System
                 break;
             case .bgrx8:
                 descriptor.pixelFormat = .bgra8Unorm
-            default:
-                throw NSError(domain:"Textures", code:12, userInfo:[
-                    NSLocalizedDescriptionKey : String(format:NSLocalizedString("DDS File %@ couldn't be opened: Pixel format is not supported", comment: "Can't find pixel format"), self.url.lastPathComponent)
-                ]);
             }
             
             texture = device.makeTexture(descriptor: descriptor)
