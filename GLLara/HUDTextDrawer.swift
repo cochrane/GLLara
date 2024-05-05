@@ -128,8 +128,8 @@ struct HUDTextDrawer {
                 let block = occupiedSpace[i]
                 if block.remainingSpace >= drawnText.width && block.coveredLines >= drawnText.height {
                     let xBegin = texture.width - block.remainingSpace
-                    drawnText.data.withUnsafeBytes { bytes in
-                        texture.replace(region: MTLRegionMake2D(xBegin, beginLine, drawnText.width, drawnText.height), mipmapLevel: 0, withBytes: bytes, bytesPerRow: drawnText.width * 4)
+                    drawnText.data.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) in
+                        texture.replace(region: MTLRegionMake2D(xBegin, beginLine, drawnText.width, drawnText.height), mipmapLevel: 0, withBytes: bytes.baseAddress!, bytesPerRow: drawnText.width * 4)
                     }
                     
                     // Split block if new height isn't that big

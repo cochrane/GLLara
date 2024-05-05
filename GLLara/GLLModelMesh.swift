@@ -36,7 +36,7 @@ import simd
         let numTextures = Int(stream.readUint32())
         for i in 0..<numTextures {
             let textureName = stream.readPascalString()
-            stream.readUint32() // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
+            _ = stream.readUint32() // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
             guard let finalPathComponent = textureName.components(separatedBy: "\\").last else {
                 throw NSError()
             }
@@ -146,7 +146,7 @@ import simd
         let numTextures = Int(scanner.readUint32())
         for i in 0..<numTextures {
             let textureName = scanner.readPascalString()
-            scanner.readUint32() // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
+            _ = scanner.readUint32() // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
             guard let finalPathComponent = textureName.components(separatedBy: "\\").last else {
                 throw NSError()
             }
