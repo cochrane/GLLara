@@ -25,6 +25,8 @@ class MtlFile {
     init(from location: URL) throws {
         let contents = try String(contentsOf: location)
         let scanner = Scanner(string: contents)
+        // Use american english at all times, because that is the number format used.
+        scanner.locale = Locale(identifier: "en_US")
         var hasFirstMaterial = false
         var currentMaterial = Material()
         

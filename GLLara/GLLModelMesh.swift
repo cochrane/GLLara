@@ -37,7 +37,7 @@ import simd
         for i in 0..<numTextures {
             let textureName = stream.readPascalString()
             stream.readUint32() // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
-            guard let finalPathComponent = textureName?.components(separatedBy: "\\").last else {
+            guard let finalPathComponent = textureName.components(separatedBy: "\\").last else {
                 throw NSError()
             }
             
@@ -70,7 +70,7 @@ import simd
             
             for _ in 0 ..< countOfVertices {
                 // Vertices, normals, color, tex coords (no tangents)
-                vertexData.append(stream.data(withLength: sizeToCopy))
+                vertexData.append(stream.data(length: sizeToCopy)!)
                 
                 // Variable number of bones
                 let numberOfBones = stream.readUint16()
@@ -104,7 +104,7 @@ import simd
             variableBoneWeights = boneWeights
         } else {
             let fileVertexFormat = self.fileVertexFormat
-            guard let vertexData = stream.data(withLength: countOfVertices * fileVertexFormat.stride) else {
+            guard let vertexData = stream.data(length: countOfVertices * fileVertexFormat.stride) else {
                 throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),
                                                                                                                                NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The vertex data for a mesh could not be loaded.", comment: "Premature end of file error") ])
             }
@@ -112,7 +112,7 @@ import simd
         }
         
         countOfElements = 3 * Int(stream.readUint32())
-        guard let elementData = stream.data(withLength: countOfElements * 4) else {
+        guard let elementData = stream.data(length: countOfElements * 4) else {
             throw NSError(domain: GLLModelLoadingErrorDomain, code: Int(GLLModelLoadingErrorCode.prematureEndOfFile.rawValue), userInfo: [ NSLocalizedDescriptionKey : NSLocalizedString("The file is missing some data.", comment: "Premature end of file error"),                                                                                                             NSLocalizedRecoverySuggestionErrorKey : NSLocalizedString("The file breaks off inside a mesh's vertex data.", comment: "Premature end of file error") ])
         }
         self.elementData = elementData
@@ -147,7 +147,7 @@ import simd
         for i in 0..<numTextures {
             let textureName = scanner.readPascalString()
             scanner.readUint32() // UV layer. Ignored; the shader always has the UV layer for the texture hardcoded.
-            guard let finalPathComponent = textureName?.components(separatedBy: "\\").last else {
+            guard let finalPathComponent = textureName.components(separatedBy: "\\").last else {
                 throw NSError()
             }
             

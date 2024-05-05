@@ -28,7 +28,7 @@ class GLLModelXNALara: GLLModel {
         self.baseURL = baseURL
         parameters = try GLLModelParams.parameters(forModel: self)
         
-        let stream = TRInDataStream(data: data)!
+        let stream = TRInDataStream(data: data)
         let genericItemVersion: Int
         var header = stream.readUint32()
         if header == 323232 {
@@ -66,13 +66,13 @@ class GLLModelXNALara: GLLModel {
             let countOfUnknownInts = stream.readUint32()
             
             // These strings don't do anything, they just leak machine names and paths of whoever created the model file
-            let firstAuxiliaryString = stream.readPascalString()!
-            let secondAuxiliaryString = stream.readPascalString()!
-            let thirdAuxiliaryString = stream.readPascalString()!
+            let firstAuxiliaryString = stream.readPascalString()
+            let secondAuxiliaryString = stream.readPascalString()
+            let thirdAuxiliaryString = stream.readPascalString()
             print("Auxiliary strings: \(firstAuxiliaryString) \(secondAuxiliaryString) \(thirdAuxiliaryString)")
             
             // The thingies from above. All the same value in the models I've seen so far, typically small integers (0 or 3). Not sure what count relates to; is not bone count, mesh count, bone count + mesh count or anything like that.
-            stream.skipBytes(4 * UInt(countOfUnknownInts))
+            stream.skip(bytes: 4 * Int(countOfUnknownInts))
             
             // Now read number of bones
             header = stream.readUint32()
@@ -148,7 +148,7 @@ class GLLModelXNALara: GLLModel {
         self.baseURL = baseURL
         self.parameters = try GLLModelParams.parameters(forModel: self)
         
-        let scanner = GLLASCIIScanner(string: string)!
+        let scanner = GLLASCIIScanner(string: string)
         let numBones = scanner.readUint32()
         var bones: [GLLModelBone] = []
         for _ in 0..<numBones {

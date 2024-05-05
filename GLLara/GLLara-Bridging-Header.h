@@ -4,7 +4,6 @@
 
 #import <MetalKit/MetalKit.h>
 
-#import "GLLASCIIScanner.h"
 #import "GLLAmbientLight.h"
 #import "GLLCamera.h"
 #import "GLLConnexionManager.h"
@@ -25,5 +24,4 @@
 #import "HUDShared.h"
 #import "NSColor+Color32Bit.h"
 #import "simd_matrix.h"
-#import "TRInDataStream.h"
 #import "TROutDataStream.h"
