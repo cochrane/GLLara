@@ -12,14 +12,6 @@
 
 @implementation NSColor (Color32Bit)
 
-- (void)get32BitRGBAComponents:(uint8_t *)components;
-{
-    float floatComponents[4];
-    [self get128BitRGBAComponents:floatComponents];
-    
-    for (int i = 0; i < 4; i++)
-        components[i] = (uint8_t) (floatComponents[i] * 255.0f);
-}
 - (void)get128BitRGBAComponents:(float *)components;
 {
     NSColor *selfAsRGB = [self colorUsingColorSpace:[NSColorSpace genericRGBColorSpace]];

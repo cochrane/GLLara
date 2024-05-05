@@ -146,9 +146,8 @@
         if (combinedBones == nil) {
             return nil;
         }
-        NSUInteger myIndex = [combinedBones indexOfObject:self];
         NSIndexSet *childIndices = [combinedBones indexesOfObjectsPassingTest:^BOOL(GLLItemBone *bone, NSUInteger idx, BOOL *stop){
-            return bone.parentIndexInCombined == myIndex;
+            return bone.parent == self;
         }];
         children = [combinedBones objectsAtIndexes:childIndices];
     }
@@ -163,12 +162,6 @@
         return NSNotFound;
 }
 
-- (BOOL)isChildOfBone:(GLLItemBone *)bone;
-{
-    if (bone == self) return YES;
-    else if (self.parent) return [self.parent isChildOfBone:bone];
-    else return NO;
-}
 - (BOOL)isChildOfAny:(id)boneSet;
 {
     if (!self.parent) return NO;

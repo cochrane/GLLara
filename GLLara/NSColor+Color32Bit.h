@@ -12,7 +12,6 @@
 
 @interface NSColor (Color32Bit)
 
-- (void)get32BitRGBAComponents:(uint8_t *)components;
 - (void)get128BitRGBAComponents:(float *)components;
 
 @property (assign, readonly) vector_float4 rgbaComponents128Bit;

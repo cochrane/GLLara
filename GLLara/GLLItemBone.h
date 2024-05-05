@@ -49,14 +49,11 @@
 @property (nonatomic, weak, readonly) GLLItemBone *parent;
 @property (nonatomic, retain, readonly) NSArray<GLLItemBone *> *children;
 
-@property (nonatomic, readonly) NSUInteger parentIndexInCombined;
-
 // Whether this bone was changed from its default rotation or position
 // by the user
 @property (nonatomic, assign, readonly) BOOL hasNonDefaultTransform;
 
 // Checks whether the parameter is the bone or one of its ancestors
-- (BOOL)isChildOfBone:(GLLItemBone *)bone;
 - (BOOL)isChildOfAny:(id)boneSet;
 
 // Updates the bone data. Should only be called from the item or a parent bone (or itself)
