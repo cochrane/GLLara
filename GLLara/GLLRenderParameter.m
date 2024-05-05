@@ -23,11 +23,6 @@
 @dynamic name;
 @dynamic mesh;
 
-- (GLLItem *)item
-{
-    return self.mesh.item;
-}
-
 - (GLLRenderParameterDescription *)parameterDescription
 {
     return [self.mesh.mesh.shader descriptionForParameter:self.name];

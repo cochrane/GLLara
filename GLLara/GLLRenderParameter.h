@@ -28,7 +28,4 @@
 
 @property (nonatomic, readonly) NSData *uniformValue;
 
-// The corresponding item
-@property (nonatomic, readonly) GLLItem *item;
-
 @end
