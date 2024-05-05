@@ -10,10 +10,8 @@
 
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
-#import "GLLAmbientLight.h"
 #import "GLLAngleRangeValueTransformer.h"
 #import "GLLCamera.h"
-#import "GLLDirectionalLight.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"

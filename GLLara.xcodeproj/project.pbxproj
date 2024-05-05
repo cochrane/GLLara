@@ -22,7 +22,6 @@
 		5214471116DE22E1003E260F /* GLLara.help in Resources */ = {isa = PBXBuildFile; fileRef = 5214471016DE22E0003E260F /* GLLara.help */; };
 		52152CEF16B66951001AE54C /* GLLDDSFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52152CEE16B66951001AE54C /* GLLDDSFile.swift */; };
 		52232EAE1EFC57D4007FE9AD /* XYAlignedSquare.obj in Resources */ = {isa = PBXBuildFile; fileRef = 52232EAD1EFC57D4007FE9AD /* XYAlignedSquare.obj */; };
-		5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */; };
 		5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */; };
 		5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
 		5227833F1C0A6074002E43FD /* GLLNoSelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522783411C0A6074002E43FD /* GLLNoSelectionView.xib */; };
@@ -232,6 +231,8 @@
 		527270A32BE7E0F100EE52B5 /* GLLItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527270A12BE7E0F100EE52B5 /* GLLItem+Extensions.swift */; };
 		527270A52BE8064100EE52B5 /* GLLDataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C3AD8D29A2241E002EC334 /* GLLDataReader.swift */; };
 		527270A72BE810A600EE52B5 /* GLLItemMesh+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527270A62BE810A600EE52B5 /* GLLItemMesh+Extensions.swift */; };
+		527270AA2BE8187100EE52B5 /* GLLAmbientLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527270A82BE8187100EE52B5 /* GLLAmbientLight.swift */; };
+		527270AE2BE819EC00EE52B5 /* GLLDirectionalLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527270AC2BE819EC00EE52B5 /* GLLDirectionalLight.swift */; };
 		5274446427FCC9C100E5A3FD /* GLLModelMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */; };
 		5274446627FD64F000E5A3FD /* GLLModelMeshObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */; };
 		5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */; };
@@ -253,7 +254,6 @@
 		528934E816A29B8300F05312 /* GLLLightController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528934E716A29B8300F05312 /* GLLLightController.m */; };
 		528934EB16A332BD00F05312 /* GLLMeshListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528934EA16A332BC00F05312 /* GLLMeshListController.m */; };
 		528934EE16A3593500F05312 /* GLLBoneListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 528934ED16A3593400F05312 /* GLLBoneListController.m */; };
-		5291DB9415FBF7BE00ECDBCA /* GLLAmbientLight.m in Sources */ = {isa = PBXBuildFile; fileRef = 5291DB9315FBF7BD00ECDBCA /* GLLAmbientLight.m */; };
 		529692CC15F1568200DF2FA3 /* TRInDataStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529692C915F1568200DF2FA3 /* TRInDataStream.swift */; };
 		529692CD15F1568200DF2FA3 /* TROutDataStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 529692CB15F1568200DF2FA3 /* TROutDataStream.m */; };
 		529692D115F2374F00DF2FA3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529692D015F2374F00DF2FA3 /* libz.dylib */; };
@@ -411,8 +411,6 @@
 		5214471016DE22E0003E260F /* GLLara.help */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GLLara.help; sourceTree = "<group>"; };
 		52152CEE16B66951001AE54C /* GLLDDSFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLDDSFile.swift; sourceTree = "<group>"; };
 		52232EAD1EFC57D4007FE9AD /* XYAlignedSquare.obj */ = {isa = PBXFileReference; lastKnownFileType = text; name = XYAlignedSquare.obj; path = Shaders/XYAlignedSquare.obj; sourceTree = "<group>"; };
-		5224C8E415FA4F18002A6C76 /* GLLDirectionalLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLDirectionalLight.h; sourceTree = "<group>"; };
-		5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLDirectionalLight.m; sourceTree = "<group>"; };
 		5224C8EC15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAngleRangeValueTransformer.h; sourceTree = "<group>"; };
 		5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAngleRangeValueTransformer.m; sourceTree = "<group>"; };
 		5224C8EF15FABC92002A6C76 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -674,6 +672,8 @@
 		5272709A2BE600C300EE52B5 /* GLLTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLTexture.swift; sourceTree = "<group>"; };
 		527270A12BE7E0F100EE52B5 /* GLLItem+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GLLItem+Extensions.swift"; sourceTree = "<group>"; };
 		527270A62BE810A600EE52B5 /* GLLItemMesh+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GLLItemMesh+Extensions.swift"; sourceTree = "<group>"; };
+		527270A82BE8187100EE52B5 /* GLLAmbientLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLAmbientLight.swift; sourceTree = "<group>"; };
+		527270AC2BE819EC00EE52B5 /* GLLDirectionalLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLDirectionalLight.swift; sourceTree = "<group>"; };
 		5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMesh.swift; sourceTree = "<group>"; };
 		5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMeshObj.swift; sourceTree = "<group>"; };
 		5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexAttribAccessorSet.swift; sourceTree = "<group>"; };
@@ -705,8 +705,6 @@
 		528934EC16A3593400F05312 /* GLLBoneListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneListController.h; sourceTree = "<group>"; };
 		528934ED16A3593400F05312 /* GLLBoneListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneListController.m; sourceTree = "<group>"; };
 		5291DB7F15FB711900ECDBCA /* Model Parameters (english).md */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Model Parameters (english).md"; sourceTree = "<group>"; };
-		5291DB9215FBF7BC00ECDBCA /* GLLAmbientLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAmbientLight.h; sourceTree = "<group>"; };
-		5291DB9315FBF7BD00ECDBCA /* GLLAmbientLight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAmbientLight.m; sourceTree = "<group>"; };
 		529692C915F1568200DF2FA3 /* TRInDataStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TRInDataStream.swift; sourceTree = "<group>"; };
 		529692CA15F1568200DF2FA3 /* TROutDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TROutDataStream.h; sourceTree = "<group>"; };
 		529692CB15F1568200DF2FA3 /* TROutDataStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TROutDataStream.m; sourceTree = "<group>"; };
@@ -1346,14 +1344,12 @@
 		5296941F15F4112E00DF2FA3 /* Scene members */ = {
 			isa = PBXGroup;
 			children = (
+				527270A82BE8187100EE52B5 /* GLLAmbientLight.swift */,
+				527270AC2BE819EC00EE52B5 /* GLLDirectionalLight.swift */,
 				527270A12BE7E0F100EE52B5 /* GLLItem+Extensions.swift */,
 				52B6C53A2BE5645B005E53CE /* GLLItemMeshTexture.swift */,
 				52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */,
 				52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */,
-				5291DB9215FBF7BC00ECDBCA /* GLLAmbientLight.h */,
-				5291DB9315FBF7BD00ECDBCA /* GLLAmbientLight.m */,
-				5224C8E415FA4F18002A6C76 /* GLLDirectionalLight.h */,
-				5224C8E515FA4F18002A6C76 /* GLLDirectionalLight.m */,
 				529692D815F2625200DF2FA3 /* GLLItem.h */,
 				529692D915F2625200DF2FA3 /* GLLItem.m */,
 				529692DB15F2759400DF2FA3 /* GLLItemBone.h */,
@@ -1853,6 +1849,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				525ACD5815F0F1A700534E7D /* main.m in Sources */,
+				527270AA2BE8187100EE52B5 /* GLLAmbientLight.swift in Sources */,
 				52301E302087E36100B3E331 /* GLLItemOptionalPartMarker.m in Sources */,
 				5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */,
 				525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */,
@@ -1888,10 +1885,8 @@
 				52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */,
 				52CDFEA82874161400BC4298 /* GLLVertexAttrib.swift in Sources */,
 				52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */,
-				5224C8E615FA4F18002A6C76 /* GLLDirectionalLight.m in Sources */,
 				5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */,
 				5274448228031C0C00E5A3FD /* GLLModelDrawData.swift in Sources */,
-				5291DB9415FBF7BE00ECDBCA /* GLLAmbientLight.m in Sources */,
 				52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */,
 				521102EF2899C430001BE4BC /* GLLItemBoneExtensions.swift in Sources */,
 				52528D751D6AC2AA002E0074 /* GLLTiming.cpp in Sources */,
@@ -1959,6 +1954,7 @@
 				52CDFEA4287369B100BC4298 /* GLLVertexAttribAccessor.swift in Sources */,
 				528934EB16A332BD00F05312 /* GLLMeshListController.m in Sources */,
 				528934EE16A3593500F05312 /* GLLBoneListController.m in Sources */,
+				527270AE2BE819EC00EE52B5 /* GLLDirectionalLight.swift in Sources */,
 				523BBB01287E94EF00B2D52E /* GLLControllerPreferencesView.swift in Sources */,
 				521102ED2897E9A8001BE4BC /* HUDBoneNames.swift in Sources */,
 				52152CEF16B66951001AE54C /* GLLDDSFile.swift in Sources */,

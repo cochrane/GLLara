@@ -4,10 +4,8 @@
 
 #import <MetalKit/MetalKit.h>
 
-#import "GLLAmbientLight.h"
 #import "GLLCamera.h"
 #import "GLLConnexionManager.h"
-#import "GLLDirectionalLight.h"
 #import "GLLDocument.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLFloatRenderParameter.h"

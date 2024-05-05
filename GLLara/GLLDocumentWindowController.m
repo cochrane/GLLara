@@ -11,9 +11,7 @@
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 #import "NSArray+Map.h"
-#import "GLLAmbientLight.h"
 #import "GLLBoneViewController.h"
-#import "GLLDirectionalLight.h"
 #import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
