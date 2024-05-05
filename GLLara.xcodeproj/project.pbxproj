@@ -233,6 +233,7 @@
 		527270A72BE810A600EE52B5 /* GLLItemMesh+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527270A62BE810A600EE52B5 /* GLLItemMesh+Extensions.swift */; };
 		527270AA2BE8187100EE52B5 /* GLLAmbientLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527270A82BE8187100EE52B5 /* GLLAmbientLight.swift */; };
 		527270AE2BE819EC00EE52B5 /* GLLDirectionalLight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527270AC2BE819EC00EE52B5 /* GLLDirectionalLight.swift */; };
+		527270B22BE8254E00EE52B5 /* GLLCameraTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527270B02BE8254D00EE52B5 /* GLLCameraTarget.swift */; };
 		5274446427FCC9C100E5A3FD /* GLLModelMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */; };
 		5274446627FD64F000E5A3FD /* GLLModelMeshObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */; };
 		5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */; };
@@ -270,7 +271,6 @@
 		5296947315F7FB3300DF2FA3 /* GLLItemMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947215F7FB3200DF2FA3 /* GLLItemMesh.m */; };
 		5296947815F80F4800DF2FA3 /* GLLBoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */; };
 		52AC5DC62876F315004949D4 /* CopyDepth.metal in Sources */ = {isa = PBXBuildFile; fileRef = 52AC5DC52876F315004949D4 /* CopyDepth.metal */; };
-		52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */ = {isa = PBXBuildFile; fileRef = 52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */; };
 		52B6C51F2BE28DE7005E53CE /* GLLItemDragDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B6C51E2BE28DE7005E53CE /* GLLItemDragDestination.swift */; };
 		52B6C5212BE2947B005E53CE /* GLLDropTargetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B6C5202BE2947B005E53CE /* GLLDropTargetView.swift */; };
 		52B6C5372BE2AB0E005E53CE /* ObjFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B6C5362BE2AB0E005E53CE /* ObjFile.swift */; };
@@ -674,6 +674,7 @@
 		527270A62BE810A600EE52B5 /* GLLItemMesh+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GLLItemMesh+Extensions.swift"; sourceTree = "<group>"; };
 		527270A82BE8187100EE52B5 /* GLLAmbientLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLAmbientLight.swift; sourceTree = "<group>"; };
 		527270AC2BE819EC00EE52B5 /* GLLDirectionalLight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLDirectionalLight.swift; sourceTree = "<group>"; };
+		527270B02BE8254D00EE52B5 /* GLLCameraTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLCameraTarget.swift; sourceTree = "<group>"; };
 		5274446327FCC9C100E5A3FD /* GLLModelMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMesh.swift; sourceTree = "<group>"; };
 		5274446527FD64F000E5A3FD /* GLLModelMeshObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLModelMeshObj.swift; sourceTree = "<group>"; };
 		5274446727FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexAttribAccessorSet.swift; sourceTree = "<group>"; };
@@ -737,8 +738,6 @@
 		5296947515F80F4500DF2FA3 /* GLLBoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLBoneViewController.h; sourceTree = "<group>"; };
 		5296947615F80F4500DF2FA3 /* GLLBoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLBoneViewController.m; sourceTree = "<group>"; };
 		52AC5DC52876F315004949D4 /* CopyDepth.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = CopyDepth.metal; sourceTree = "<group>"; };
-		52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLCameraTarget.h; sourceTree = "<group>"; };
-		52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLCameraTarget.m; sourceTree = "<group>"; };
 		52B6C51E2BE28DE7005E53CE /* GLLItemDragDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLItemDragDestination.swift; sourceTree = "<group>"; };
 		52B6C5202BE2947B005E53CE /* GLLDropTargetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLDropTargetView.swift; sourceTree = "<group>"; };
 		52B6C5362BE2AB0E005E53CE /* ObjFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjFile.swift; sourceTree = "<group>"; };
@@ -1348,8 +1347,7 @@
 				527270AC2BE819EC00EE52B5 /* GLLDirectionalLight.swift */,
 				527270A12BE7E0F100EE52B5 /* GLLItem+Extensions.swift */,
 				52B6C53A2BE5645B005E53CE /* GLLItemMeshTexture.swift */,
-				52AF115415FCD4A000DF2565 /* GLLCameraTarget.h */,
-				52AF115515FCD4A000DF2565 /* GLLCameraTarget.m */,
+				527270B02BE8254D00EE52B5 /* GLLCameraTarget.swift */,
 				529692D815F2625200DF2FA3 /* GLLItem.h */,
 				529692D915F2625200DF2FA3 /* GLLItem.m */,
 				529692DB15F2759400DF2FA3 /* GLLItemBone.h */,
@@ -1892,7 +1890,6 @@
 				52528D751D6AC2AA002E0074 /* GLLTiming.cpp in Sources */,
 				523BBB072880C78600B2D52E /* GLLPreferenceKeys.swift in Sources */,
 				52AC5DC62876F315004949D4 /* CopyDepth.metal in Sources */,
-				52AF115615FCD4A000DF2565 /* GLLCameraTarget.m in Sources */,
 				52BB21DB15FCF02200937450 /* GLLCamera.m in Sources */,
 				521102E5288DAB0E001BE4BC /* HUDTextDrawer.metal in Sources */,
 				52C9F60E15FF1753003272E1 /* GLLItemViewController.m in Sources */,
@@ -1905,6 +1902,7 @@
 				52B6C53C2BE56696005E53CE /* GLLItemMeshTexture.swift in Sources */,
 				52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */,
 				52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */,
+				527270B22BE8254E00EE52B5 /* GLLCameraTarget.swift in Sources */,
 				527270A32BE7E0F100EE52B5 /* GLLItem+Extensions.swift in Sources */,
 				52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */,
 				52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m in Sources */,

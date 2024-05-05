@@ -7,10 +7,10 @@
 //
 
 #import "GLLCamera.h"
-#import "GLLCameraTarget.h"
 
 #import "simd_matrix.h"
 #import "simd_project.h"
+#import "GLLara-Swift.h"
 
 @interface GLLCamera ()
 
