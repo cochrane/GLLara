@@ -44,7 +44,7 @@
 		52301E2D2087D91600B3E331 /* GLLOptionalPartController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E2C2087D91600B3E331 /* GLLOptionalPartController.m */; };
 		52301E302087E36100B3E331 /* GLLItemOptionalPartMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E2F2087E36100B3E331 /* GLLItemOptionalPartMarker.m */; };
 		52301E322087E6FC00B3E331 /* GLLOptionalPartView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52301E312087E6FC00B3E331 /* GLLOptionalPartView.xib */; };
-		52301E352087E71400B3E331 /* GLLOptionalPartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E342087E71400B3E331 /* GLLOptionalPartViewController.m */; };
+		52301E352087E71400B3E331 /* GLLOptionalPartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52301E342087E71400B3E331 /* GLLOptionalPartViewController.swift */; };
 		52301E382089372200B3E331 /* GLLOptionalPart.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E372089372200B3E331 /* GLLOptionalPart.m */; };
 		52301E472096518500B3E331 /* GLLDrawingPreferencesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52301E492096518500B3E331 /* GLLDrawingPreferencesView.xib */; };
 		52329F4C16C1D71E00338A0A /* GLLItemExportView.strings in Resources */ = {isa = PBXBuildFile; fileRef = 52329F4A16C1D71E00338A0A /* GLLItemExportView.strings */; };
@@ -311,7 +311,7 @@
 		52CDFEE42875B46700BC4298 /* GLLSceneDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CDFEE32875B46700BC4298 /* GLLSceneDrawer.swift */; };
 		52CDFEE62875C4AA00BC4298 /* GLLViewDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CDFEE52875C4AA00BC4298 /* GLLViewDrawer.swift */; };
 		52CDFEE8287619D800BC4298 /* Square.metal in Sources */ = {isa = PBXBuildFile; fileRef = 52CDFEE7287619D800BC4298 /* Square.metal */; };
-		52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m */; };
+		52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.swift */; };
 		52D18D5229A2716400BE2815 /* GLLConnexionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D18D5129A2716400BE2815 /* GLLConnexionManager.m */; };
 		52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */; };
 		52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */; };
@@ -466,8 +466,7 @@
 		52301E2E2087E36100B3E331 /* GLLItemOptionalPartMarker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLItemOptionalPartMarker.h; sourceTree = "<group>"; };
 		52301E2F2087E36100B3E331 /* GLLItemOptionalPartMarker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLItemOptionalPartMarker.m; sourceTree = "<group>"; };
 		52301E312087E6FC00B3E331 /* GLLOptionalPartView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GLLOptionalPartView.xib; sourceTree = "<group>"; };
-		52301E332087E71400B3E331 /* GLLOptionalPartViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLOptionalPartViewController.h; sourceTree = "<group>"; };
-		52301E342087E71400B3E331 /* GLLOptionalPartViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLOptionalPartViewController.m; sourceTree = "<group>"; };
+		52301E342087E71400B3E331 /* GLLOptionalPartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLOptionalPartViewController.swift; sourceTree = "<group>"; };
 		52301E362089372200B3E331 /* GLLOptionalPart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLOptionalPart.h; sourceTree = "<group>"; };
 		52301E372089372200B3E331 /* GLLOptionalPart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLOptionalPart.m; sourceTree = "<group>"; };
 		52301E482096518500B3E331 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLDrawingPreferencesView.xib; sourceTree = "<group>"; };
@@ -787,8 +786,7 @@
 		52CDFEE32875B46700BC4298 /* GLLSceneDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLSceneDrawer.swift; sourceTree = "<group>"; };
 		52CDFEE52875C4AA00BC4298 /* GLLViewDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLViewDrawer.swift; sourceTree = "<group>"; };
 		52CDFEE7287619D800BC4298 /* Square.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Square.metal; sourceTree = "<group>"; };
-		52CE280A1605FE98005A86E9 /* GLLLogarithmicValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLLogarithmicValueTransformer.h; sourceTree = "<group>"; };
-		52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLLogarithmicValueTransformer.m; sourceTree = "<group>"; };
+		52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLLogarithmicValueTransformer.swift; sourceTree = "<group>"; };
 		52D18D5029A2716400BE2815 /* GLLConnexionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLConnexionManager.h; sourceTree = "<group>"; };
 		52D18D5129A2716400BE2815 /* GLLConnexionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLConnexionManager.m; sourceTree = "<group>"; };
 		52D18D5329A2A29100BE2815 /* GLLaraRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GLLaraRelease.entitlements; sourceTree = "<group>"; };
@@ -1455,8 +1453,7 @@
 				5227834A1C0A6083002E43FD /* GLLRenderAccessoryView.xib */,
 				52D3D72716029BD8006CB743 /* GLLRenderAccessoryViewController.h */,
 				52D3D72816029BD8006CB743 /* GLLRenderAccessoryViewController.m */,
-				52CE280A1605FE98005A86E9 /* GLLLogarithmicValueTransformer.h */,
-				52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m */,
+				52CE280B1605FE98005A86E9 /* GLLLogarithmicValueTransformer.swift */,
 				522783471C0A607E002E43FD /* GLLItemExportView.xib */,
 				52ED9E1C168399AE0082EABB /* GLLSelection.h */,
 				52ED9E1D168399AE0082EABB /* GLLSelection.m */,
@@ -1476,8 +1473,7 @@
 				5213F8811C0E411C007A9EBB /* GLLPreferencesWindowController.m */,
 				5213F88A1C0E478C007A9EBB /* GLLPreferencesWindow.xib */,
 				52301E312087E6FC00B3E331 /* GLLOptionalPartView.xib */,
-				52301E332087E71400B3E331 /* GLLOptionalPartViewController.h */,
-				52301E342087E71400B3E331 /* GLLOptionalPartViewController.m */,
+				52301E342087E71400B3E331 /* GLLOptionalPartViewController.swift */,
 				52301E362089372200B3E331 /* GLLOptionalPart.h */,
 				52301E372089372200B3E331 /* GLLOptionalPart.m */,
 				52301E492096518500B3E331 /* GLLDrawingPreferencesView.xib */,
@@ -1905,7 +1901,7 @@
 				527270B22BE8254E00EE52B5 /* GLLCameraTarget.swift in Sources */,
 				527270A32BE7E0F100EE52B5 /* GLLItem+Extensions.swift in Sources */,
 				52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */,
-				52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.m in Sources */,
+				52CE280C1605FE98005A86E9 /* GLLLogarithmicValueTransformer.swift in Sources */,
 				527270A72BE810A600EE52B5 /* GLLItemMesh+Extensions.swift in Sources */,
 				5275F6821607293000978779 /* GLLItemController.m in Sources */,
 				52C516FF2871998C000EB8C2 /* GLLPipelineStateInformation.swift in Sources */,
@@ -1916,7 +1912,7 @@
 				525BF29D287A0AE200E30D48 /* GLLView.swift in Sources */,
 				527270A52BE8064100EE52B5 /* GLLDataReader.swift in Sources */,
 				52CDFEE42875B46700BC4298 /* GLLSceneDrawer.swift in Sources */,
-				52301E352087E71400B3E331 /* GLLOptionalPartViewController.m in Sources */,
+				52301E352087E71400B3E331 /* GLLOptionalPartViewController.swift in Sources */,
 				52B6C51F2BE28DE7005E53CE /* GLLItemDragDestination.swift in Sources */,
 				52F73EA8288BE06600A580EC /* GLLDrawingPreferencesViewController.swift in Sources */,
 				52C3AD8C29A13DEB002EC334 /* WillinglyBlock.swift in Sources */,

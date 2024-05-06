@@ -16,7 +16,6 @@
 #import "GLLItem.h"
 #import "GLLItemBone.h"
 #import "GLLItemMesh.h"
-#import "GLLLogarithmicValueTransformer.h"
 #import "GLLRenderWindowController.h"
 #import "GLLSelection.h"
 

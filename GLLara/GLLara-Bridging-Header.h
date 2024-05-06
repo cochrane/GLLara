@@ -14,6 +14,7 @@
 #import "GLLItemMesh.h"
 #import "GLLNotifications.h"
 #import "GLLVertexAttrib.h"
+#import "GLLOptionalPart.h"
 #import "GLLPreferencesWindowController.h"
 #import "GLLRenderParameter.h"
 #import "GLLRenderParameters.h"

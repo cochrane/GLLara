@@ -22,7 +22,6 @@
 #import "GLLItemViewController.h"
 #import "GLLLightsListController.h"
 #import "GLLMeshViewController.h"
-#import "GLLOptionalPartViewController.h"
 #import "GLLSelection.h"
 #import "GLLSettingsListController.h"
 
