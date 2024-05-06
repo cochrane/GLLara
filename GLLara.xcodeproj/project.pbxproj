@@ -42,7 +42,7 @@
 		522783B01C0B7FC0002E43FD /* GLLRenderParameterSelectionPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 522783AF1C0B7FBF002E43FD /* GLLRenderParameterSelectionPlaceholder.m */; };
 		522783B31C0B91EF002E43FD /* GLLItemMeshSelectionPlaceholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 522783B21C0B91EF002E43FD /* GLLItemMeshSelectionPlaceholder.m */; };
 		52301E2D2087D91600B3E331 /* GLLOptionalPartController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E2C2087D91600B3E331 /* GLLOptionalPartController.m */; };
-		52301E302087E36100B3E331 /* GLLItemOptionalPartMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E2F2087E36100B3E331 /* GLLItemOptionalPartMarker.m */; };
+		52301E302087E36100B3E331 /* GLLItemOptionalPartMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52301E2F2087E36100B3E331 /* GLLItemOptionalPartMarker.swift */; };
 		52301E322087E6FC00B3E331 /* GLLOptionalPartView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52301E312087E6FC00B3E331 /* GLLOptionalPartView.xib */; };
 		52301E352087E71400B3E331 /* GLLOptionalPartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52301E342087E71400B3E331 /* GLLOptionalPartViewController.swift */; };
 		52301E382089372200B3E331 /* GLLOptionalPart.m in Sources */ = {isa = PBXBuildFile; fileRef = 52301E372089372200B3E331 /* GLLOptionalPart.m */; };
@@ -462,8 +462,7 @@
 		522783B21C0B91EF002E43FD /* GLLItemMeshSelectionPlaceholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemMeshSelectionPlaceholder.m; sourceTree = "<group>"; };
 		52301E2B2087D91600B3E331 /* GLLOptionalPartController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLOptionalPartController.h; sourceTree = "<group>"; };
 		52301E2C2087D91600B3E331 /* GLLOptionalPartController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLOptionalPartController.m; sourceTree = "<group>"; };
-		52301E2E2087E36100B3E331 /* GLLItemOptionalPartMarker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLItemOptionalPartMarker.h; sourceTree = "<group>"; };
-		52301E2F2087E36100B3E331 /* GLLItemOptionalPartMarker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLLItemOptionalPartMarker.m; sourceTree = "<group>"; };
+		52301E2F2087E36100B3E331 /* GLLItemOptionalPartMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLItemOptionalPartMarker.swift; sourceTree = "<group>"; };
 		52301E312087E6FC00B3E331 /* GLLOptionalPartView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GLLOptionalPartView.xib; sourceTree = "<group>"; };
 		52301E342087E71400B3E331 /* GLLOptionalPartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLOptionalPartViewController.swift; sourceTree = "<group>"; };
 		52301E362089372200B3E331 /* GLLOptionalPart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLLOptionalPart.h; sourceTree = "<group>"; };
@@ -1000,8 +999,7 @@
 				523D368016BEB29F004FAD4B /* GLLSubItemController.m */,
 				52301E2B2087D91600B3E331 /* GLLOptionalPartController.h */,
 				52301E2C2087D91600B3E331 /* GLLOptionalPartController.m */,
-				52301E2E2087E36100B3E331 /* GLLItemOptionalPartMarker.h */,
-				52301E2F2087E36100B3E331 /* GLLItemOptionalPartMarker.m */,
+				52301E2F2087E36100B3E331 /* GLLItemOptionalPartMarker.swift */,
 			);
 			name = "Source List";
 			sourceTree = "<group>";
@@ -1842,7 +1840,7 @@
 			files = (
 				525ACD5815F0F1A700534E7D /* main.m in Sources */,
 				527270AA2BE8187100EE52B5 /* GLLAmbientLight.swift in Sources */,
-				52301E302087E36100B3E331 /* GLLItemOptionalPartMarker.m in Sources */,
+				52301E302087E36100B3E331 /* GLLItemOptionalPartMarker.swift in Sources */,
 				5274446827FD6F7F00E5A3FD /* GLLVertexAttribAccessorSet.swift in Sources */,
 				525ACD5F15F0F1A700534E7D /* GLLDocument.m in Sources */,
 				52FB1FD82879846A006ABC4F /* DepthBufferCheck.metal in Sources */,

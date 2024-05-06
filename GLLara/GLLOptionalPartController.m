@@ -8,7 +8,7 @@
 
 #import "GLLOptionalPartController.h"
 
-#import "GLLItemOptionalPartMarker.h"
+#import "GLLara-Swift.h"
 
 @implementation GLLOptionalPartController
 

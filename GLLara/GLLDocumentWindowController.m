@@ -18,7 +18,6 @@
 #import "GLLItemController.h"
 #import "GLLItemListController.h"
 #import "GLLItemMesh.h"
-#import "GLLItemOptionalPartMarker.h"
 #import "GLLItemViewController.h"
 #import "GLLLightsListController.h"
 #import "GLLMeshViewController.h"
