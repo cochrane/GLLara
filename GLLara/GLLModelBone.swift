@@ -43,8 +43,8 @@ import Foundation
         }
         
         name = stream.readPascalString()
-        let parentIndexValue = stream.readUint16()
-        parentIndex = (parentIndexValue == UInt16.max) ? -1 : Int(parentIndexValue)
+        let parentIndexValue = stream.readInt16()
+        parentIndex = (parentIndexValue == Int16.max) ? -1 : Int(parentIndexValue)
         let x = stream.readFloat32()
         let y = stream.readFloat32()
         let z = stream.readFloat32()

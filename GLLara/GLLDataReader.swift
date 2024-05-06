@@ -9,6 +9,7 @@
 protocol GLLDataReader {
     func readUint32() -> UInt32
     func readUint16() -> UInt16
+    func readInt16() -> Int16
     func readUint8() -> UInt8
     func readFloat32() -> Float32
     

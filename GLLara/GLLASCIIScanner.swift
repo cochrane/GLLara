@@ -30,6 +30,10 @@ class GLLASCIIScanner: GLLDataReader {
         return UInt16(readInteger())
     }
     
+    func readInt16() -> Int16 {
+        return Int16(readInteger())
+    }
+    
     func readUint8() -> UInt8 {
         return UInt8(readInteger())
     }
