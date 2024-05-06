@@ -22,7 +22,7 @@
 		5214471116DE22E1003E260F /* GLLara.help in Resources */ = {isa = PBXBuildFile; fileRef = 5214471016DE22E0003E260F /* GLLara.help */; };
 		52152CEF16B66951001AE54C /* GLLDDSFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52152CEE16B66951001AE54C /* GLLDDSFile.swift */; };
 		52232EAE1EFC57D4007FE9AD /* XYAlignedSquare.obj in Resources */ = {isa = PBXBuildFile; fileRef = 52232EAD1EFC57D4007FE9AD /* XYAlignedSquare.obj */; };
-		5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */; };
+		5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.swift */; };
 		5224C8F015FABC92002A6C76 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5224C8EF15FABC92002A6C76 /* Accelerate.framework */; };
 		5227833F1C0A6074002E43FD /* GLLNoSelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522783411C0A6074002E43FD /* GLLNoSelectionView.xib */; };
 		522783421C0A6079002E43FD /* GLLPoseExportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522783441C0A6079002E43FD /* GLLPoseExportViewController.xib */; };
@@ -411,8 +411,7 @@
 		5214471016DE22E0003E260F /* GLLara.help */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GLLara.help; sourceTree = "<group>"; };
 		52152CEE16B66951001AE54C /* GLLDDSFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLDDSFile.swift; sourceTree = "<group>"; };
 		52232EAD1EFC57D4007FE9AD /* XYAlignedSquare.obj */ = {isa = PBXFileReference; lastKnownFileType = text; name = XYAlignedSquare.obj; path = Shaders/XYAlignedSquare.obj; sourceTree = "<group>"; };
-		5224C8EC15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLAngleRangeValueTransformer.h; sourceTree = "<group>"; };
-		5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLAngleRangeValueTransformer.m; sourceTree = "<group>"; };
+		5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLAngleRangeValueTransformer.swift; sourceTree = "<group>"; };
 		5224C8EF15FABC92002A6C76 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		522783661C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		522783671C0A60E6002E43FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GLLRenderWindowController.xib; sourceTree = "<group>"; };
@@ -1443,8 +1442,7 @@
 				52D6A09515F8B0F7002A0BB4 /* GLLMeshViewController.m */,
 				522783591C0A609B002E43FD /* GLLMeshView.xib */,
 				522783561C0A6096002E43FD /* GLLLightView.xib */,
-				5224C8EC15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.h */,
-				5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m */,
+				5224C8ED15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.swift */,
 				52C9F60B15FF1752003272E1 /* GLLItemViewController.h */,
 				52C9F60C15FF1752003272E1 /* GLLItemViewController.m */,
 				522783531C0A6091002E43FD /* GLLItemView.xib */,
@@ -1879,7 +1877,7 @@
 				52D6A09715F8B0F7002A0BB4 /* GLLMeshViewController.m in Sources */,
 				52CDFEA82874161400BC4298 /* GLLVertexAttrib.swift in Sources */,
 				52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */,
-				5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.m in Sources */,
+				5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.swift in Sources */,
 				5274448228031C0C00E5A3FD /* GLLModelDrawData.swift in Sources */,
 				52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */,
 				521102EF2899C430001BE4BC /* GLLItemBoneExtensions.swift in Sources */,

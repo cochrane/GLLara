@@ -10,7 +10,6 @@
 
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
-#import "GLLAngleRangeValueTransformer.h"
 #import "GLLCamera.h"
 #import "GLLDocumentWindowController.h"
 #import "GLLItem.h"
