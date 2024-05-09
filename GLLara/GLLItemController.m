@@ -11,7 +11,6 @@
 #import "GLLItem.h"
 #import "GLLBoneListController.h"
 #import "GLLMeshListController.h"
-#import "GLLOptionalPartController.h"
 #import "GLLSubItemController.h"
 #import "NSArray+Map.h"
 #import "GLLara-Swift.h"

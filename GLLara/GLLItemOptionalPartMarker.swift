@@ -16,7 +16,7 @@ import Foundation
  * if the underlying items are.
  */
 @objc class GLLItemOptionalPartMarker: NSObject {
-    @objc init(item: GLLItem) {
+    init(item: GLLItem) {
         self.item = item
     }
     
