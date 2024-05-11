@@ -50,6 +50,7 @@
 @dynamic model;
 @dynamic itemURL;
 @dynamic itemDirectory;
+@dynamic childItems;
 
 @synthesize modelTransform;
 

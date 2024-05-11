@@ -71,6 +71,9 @@ typedef NS_ENUM(int16_t, GLLItemChannelAssignment)
 - (NSOrderedSet<GLLItemBone *> *)combinedBones;
 - (NSOrderedSet<GLLItemBone *> *)combinedUsedBones;
 
+// Children
+@property (nonatomic, readonly) NSOrderedSet<GLLItem *> *childItems;
+
 @end
 
 @interface GLLItem (CoreDataGeneratedAccessors)

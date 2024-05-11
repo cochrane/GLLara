@@ -15,14 +15,10 @@
 #import "GLLDocument.h"
 #import "GLLItem.h"
 #import "GLLItemBone.h"
-#import "GLLItemController.h"
-#import "GLLItemListController.h"
 #import "GLLItemMesh.h"
 #import "GLLItemViewController.h"
-#import "GLLLightsListController.h"
 #import "GLLMeshViewController.h"
 #import "GLLSelection.h"
-#import "GLLSettingsListController.h"
 
 #import "GLLara-Swift.h"
 
