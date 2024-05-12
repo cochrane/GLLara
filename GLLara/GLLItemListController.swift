@@ -37,7 +37,7 @@ import Cocoa
                 }
                 return item.parent == self.item && !deletedObjects.contains($0)
             }
-            itemControllers.append(contentsOf: newItems.map { GLLItemController(item: $0 as! GLLItem, outlineView: outlineView, parent: self, showBones: self.item != nil)})
+            itemControllers.append(contentsOf: newItems.map { GLLItemController(item: $0 as! GLLItem, outlineView: outlineView, parent: self, showBones: self.item == nil)})
             itemControllers.sort { $0.item!.displayName < $1.item!.displayName }
             outlineView.reloadItem(self, reloadChildren: true)
         }
@@ -47,7 +47,7 @@ import Cocoa
         initialRequest.predicate = NSPredicate(format: "parent == %@", item ?? NSNull())
         let initial = try! managedObjectContext.fetch(initialRequest)
         itemControllers = initial.map {
-            GLLItemController(item: $0, outlineView: outlineView, parent: self, showBones: self.item != nil)
+            GLLItemController(item: $0, outlineView: outlineView, parent: self, showBones: self.item == nil)
         }
     }
     
