@@ -9,27 +9,7 @@
 import Foundation
 import Metal
 import simd
-
-extension GLLRenderParameter {
-    var floatValue: Float32 {
-        assert(uniformValue.count == MemoryLayout<Float32>.size, "Not a float")
-        var result = Float32(0)
-        _ = withUnsafeMutableBytes(of: &result) { uniformValue.copyBytes(to: $0) }
-        return result
-    }
-    
-    var colorValue: vector_float4 {
-        assert(uniformValue.count == MemoryLayout<vector_float4>.size, "Not a float4")
-        var result = vector_float4(repeating: 0)
-        withUnsafeMutableBytes(of: &result) {
-            guard let uniformValue = uniformValue else {
-                return
-            }
-            uniformValue.copyBytes(to: $0)
-        }
-        return result
-    }
-}
+import Combine
 
 struct LoadedTexture {
     let resourceId: Int
@@ -49,7 +29,7 @@ class GLLItemMeshState {
     
     private var observations: [NSKeyValueObservation] = []
     private var textureObservations: [NSKeyValueObservation] = []
-    private var renderParameterObservations: [NSKeyValueObservation] = []
+    private var renderParameterObservations: [AnyCancellable] = []
     private var needsTextureUpdate = true
     private var argumentsEncoder: MTLArgumentEncoder? = nil
     
@@ -79,6 +59,7 @@ class GLLItemMeshState {
             _ = self?.updateParameterObjects()
         })
         
+        updateParameterObjects()
         updateTextureObjects()
     }
     
@@ -109,7 +90,7 @@ class GLLItemMeshState {
         }
         
         for parameter in newRenderParameters {
-            renderParameterObservations.append(parameter.observe(\.uniformValue) { [weak self] _,_ in
+            renderParameterObservations.append(parameter.objectWillChange.sink { [weak self] _ in
                 self?.updateArgumentBuffer()
                 self?.drawer.propertiesChanged()
             })
@@ -156,7 +137,7 @@ class GLLItemMeshState {
     }
     
     private func parameterColor(name: String, defaultValue: SIMD4<Float32>) -> SIMD4<Float32> {
-        guard let parameter = itemMesh.renderParameter(name: name) else {
+        guard let parameter = itemMesh.renderParameter(name: name) as? GLLColorRenderParameter else {
             return defaultValue
         }
         
@@ -169,11 +150,11 @@ class GLLItemMeshState {
     }
     
     private func parameterFloat(name: String, defaultValue: Float32) -> Float32 {
-        guard let parameter = itemMesh.renderParameter(name: name) else {
+        guard let parameter = itemMesh.renderParameter(name: name) as? GLLFloatRenderParameter else {
             return defaultValue
         }
         
-        return parameter.floatValue
+        return parameter.value
     }
     
     private func assignParameterFloat(name: String, defaultValue: Float32, encoder: MTLArgumentEncoder, index: GLLFragmentArgumentIndex) {

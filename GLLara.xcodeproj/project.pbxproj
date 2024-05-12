@@ -289,7 +289,7 @@
 		52BB21B315FB7A6200937450 /* foliage_tree4.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B215FB7A6200937450 /* foliage_tree4.modelparams.plist */; };
 		52BB21BA15FB7D0600937450 /* ship.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21B915FB7D0500937450 /* ship.modelparams.plist */; };
 		52BB21BC15FB7E4A00937450 /* yacht.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */; };
-		52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21C715FC732800937450 /* GLLRenderParameter.m */; };
+		52BB21C815FC732A00937450 /* GLLRenderParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BB21C715FC732800937450 /* GLLRenderParameter.swift */; };
 		52BB21CF15FCA4A000937450 /* amanda_light.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */; };
 		52BB21D115FCA6DC00937450 /* amanda_heavy.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21D015FCA6DC00937450 /* amanda_heavy.modelparams.plist */; };
 		52BB21D715FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BB21D615FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist */; };
@@ -302,8 +302,8 @@
 		52C7B5DD16AA15A100FC2927 /* MapTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C7B5DC16AA15A100FC2927 /* MapTests.m */; };
 		52C9F60E15FF1753003272E1 /* GLLItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F60C15FF1752003272E1 /* GLLItemViewController.m */; };
 		52C9F6161600022B003272E1 /* GLLModelObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F6151600022B003272E1 /* GLLModelObj.swift */; };
-		52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.m */; };
-		52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.m */; };
+		52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.swift */; };
+		52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.swift */; };
 		52CDFEA4287369B100BC4298 /* GLLVertexAttribAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CDFEA3287369B100BC4298 /* GLLVertexAttribAccessor.swift */; };
 		52CDFEA62874145F00BC4298 /* GLLVertexFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CDFEA52874145F00BC4298 /* GLLVertexFormat.swift */; };
 		52CDFEA82874161400BC4298 /* GLLVertexAttrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CDFEA72874161400BC4298 /* GLLVertexAttrib.swift */; };
@@ -746,8 +746,7 @@
 		52BB21B215FB7A6200937450 /* foliage_tree4.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = foliage_tree4.modelparams.plist; sourceTree = "<group>"; };
 		52BB21B915FB7D0500937450 /* ship.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ship.modelparams.plist; sourceTree = "<group>"; };
 		52BB21BB15FB7E4900937450 /* yacht.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = yacht.modelparams.plist; sourceTree = "<group>"; };
-		52BB21C615FC732700937450 /* GLLRenderParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLRenderParameter.h; sourceTree = "<group>"; };
-		52BB21C715FC732800937450 /* GLLRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLRenderParameter.m; sourceTree = "<group>"; };
+		52BB21C715FC732800937450 /* GLLRenderParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLRenderParameter.swift; sourceTree = "<group>"; };
 		52BB21CE15FCA4A000937450 /* amanda_light.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = amanda_light.modelparams.plist; sourceTree = "<group>"; };
 		52BB21D015FCA6DC00937450 /* amanda_heavy.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = amanda_heavy.modelparams.plist; sourceTree = "<group>"; };
 		52BB21D615FCE2E200937450 /* lara_dlc_designer_peoples_choice.modelparams.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = lara_dlc_designer_peoples_choice.modelparams.plist; sourceTree = "<group>"; };
@@ -764,10 +763,8 @@
 		52C9F60B15FF1752003272E1 /* GLLItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLItemViewController.h; sourceTree = "<group>"; };
 		52C9F60C15FF1752003272E1 /* GLLItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLItemViewController.m; sourceTree = "<group>"; };
 		52C9F6151600022B003272E1 /* GLLModelObj.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLModelObj.swift; sourceTree = "<group>"; };
-		52C9F61E1600CCFB003272E1 /* GLLFloatRenderParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLFloatRenderParameter.h; sourceTree = "<group>"; };
-		52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLFloatRenderParameter.m; sourceTree = "<group>"; };
-		52C9F6211600CCFC003272E1 /* GLLColorRenderParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLLColorRenderParameter.h; sourceTree = "<group>"; };
-		52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLLColorRenderParameter.m; sourceTree = "<group>"; };
+		52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLFloatRenderParameter.swift; sourceTree = "<group>"; };
+		52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLLColorRenderParameter.swift; sourceTree = "<group>"; };
 		52CDFEA3287369B100BC4298 /* GLLVertexAttribAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexAttribAccessor.swift; sourceTree = "<group>"; };
 		52CDFEA52874145F00BC4298 /* GLLVertexFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexFormat.swift; sourceTree = "<group>"; };
 		52CDFEA72874161400BC4298 /* GLLVertexAttrib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GLLVertexAttrib.swift; sourceTree = "<group>"; };
@@ -1324,12 +1321,9 @@
 				529692DC15F2759400DF2FA3 /* GLLItemBone.m */,
 				5296947115F7FB3200DF2FA3 /* GLLItemMesh.h */,
 				5296947215F7FB3200DF2FA3 /* GLLItemMesh.m */,
-				52BB21C615FC732700937450 /* GLLRenderParameter.h */,
-				52BB21C715FC732800937450 /* GLLRenderParameter.m */,
-				52C9F61E1600CCFB003272E1 /* GLLFloatRenderParameter.h */,
-				52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.m */,
-				52C9F6211600CCFC003272E1 /* GLLColorRenderParameter.h */,
-				52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.m */,
+				52BB21C715FC732800937450 /* GLLRenderParameter.swift */,
+				52C9F61F1600CCFC003272E1 /* GLLFloatRenderParameter.swift */,
+				52C9F6221600CCFC003272E1 /* GLLColorRenderParameter.swift */,
 				52BB21D915FCF02200937450 /* GLLCamera.h */,
 				52BB21DA15FCF02200937450 /* GLLCamera.m */,
 				526AB3141609BD4300940A74 /* GLLItemMesh+OBJExport.swift */,
@@ -1853,7 +1847,7 @@
 				52BB217D15F972AB00937450 /* GLLSceneModel.xcdatamodeld in Sources */,
 				5224C8EE15FA8FB0002A6C76 /* GLLAngleRangeValueTransformer.swift in Sources */,
 				5274448228031C0C00E5A3FD /* GLLModelDrawData.swift in Sources */,
-				52BB21C815FC732A00937450 /* GLLRenderParameter.m in Sources */,
+				52BB21C815FC732A00937450 /* GLLRenderParameter.swift in Sources */,
 				521102EF2899C430001BE4BC /* GLLItemBoneExtensions.swift in Sources */,
 				52528D751D6AC2AA002E0074 /* GLLTiming.cpp in Sources */,
 				523BBB072880C78600B2D52E /* GLLPreferenceKeys.swift in Sources */,
@@ -1868,8 +1862,8 @@
 				526D5AE62060596000DCDE85 /* GLLNotifications.m in Sources */,
 				5274447027FE21F100E5A3FD /* GLLModelMesh+OBJExport.swift in Sources */,
 				52B6C53C2BE56696005E53CE /* GLLItemMeshTexture.swift in Sources */,
-				52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.m in Sources */,
-				52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.m in Sources */,
+				52C9F6201600CCFC003272E1 /* GLLFloatRenderParameter.swift in Sources */,
+				52C9F6231600CCFC003272E1 /* GLLColorRenderParameter.swift in Sources */,
 				527270B22BE8254E00EE52B5 /* GLLCameraTarget.swift in Sources */,
 				527270A32BE7E0F100EE52B5 /* GLLItem+Extensions.swift in Sources */,
 				52D3D72916029BD9006CB743 /* GLLRenderAccessoryViewController.m in Sources */,

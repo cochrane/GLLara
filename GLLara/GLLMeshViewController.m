@@ -11,7 +11,6 @@
 #import "GLLItemMesh.h"
 #import "GLLItemMeshSelectionPlaceholder.h"
 #import "GLLItemMeshTextureSelectionPlaceholder.h"
-#import "GLLRenderParameter.h"
 #import "GLLRenderParameterSelectionPlaceholder.h"
 #import "GLLSelection.h"
 #import "GLLMultipleSelectionPlaceholder.h"

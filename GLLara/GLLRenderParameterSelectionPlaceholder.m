@@ -9,7 +9,6 @@
 #import "GLLRenderParameterSelectionPlaceholder.h"
 
 #import "GLLItemMesh.h"
-#import "GLLRenderParameter.h"
 #import "GLLara-Swift.h"
 
 @interface GLLRenderParameterSelectionPlaceholder ()

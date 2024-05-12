@@ -11,7 +11,6 @@
 #import <AppKit/NSKeyValueBinding.h>
 
 #import "GLLItem.h"
-#import "GLLRenderParameter.h"
 #import "NSArray+Map.h"
 
 #import "GLLara-Swift.h"
